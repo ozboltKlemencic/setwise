@@ -33,7 +33,7 @@ const teamMembers = [
 export default function SplitBlueSection() {
     return (
         <div className="w-full flex flex-col pt-20 pb-10 lg:flex-row justify-between items-center   lg:max-w-[1060px] lg:w-[1060px]   ">
-            <div className=" w-1/2 pt-10 pl-20 pb-28 pr-12 flex flex-col justify-start h-full items-start gap-6 ">
+            <div className="w-1/2 pt-10 pl-20 pb-28 pr-12 flex flex-col justify-start h-full items-start gap-6 ">
                 <div className="self-stretch flex flex-col justify-start items-start gap-3">
                     <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                         Poglejte ekipa za SetWise-om?
@@ -53,21 +53,20 @@ export default function SplitBlueSection() {
                     </div>
                 </div>
             </div>
-
-            <div className="w-1/2 relative overflow-hidden pl-6">
+            <div className="w-1/2 relative overflow-hidden mr-[2px]">
                 <Carousel
                     opts={{
                         align: "start",
                         loop: false,
                     }}
-                    className="w-full "
+                    className="w-full oberflow-hidden "
                 >
                     <CarouselContent className="">
                         {teamMembers.map((member, index) => (
-                            <CarouselItem key={index} className="basis-[60%] pl-3">
+                            <CarouselItem key={index} className="basis-[55%] pl-2">
                                 <ProfileCard
                                     avatarUrl={member.avatarUrl}
-                                    innerGradient="linear-gradient(145deg,#2a70fa 0%,#f0f4ff 70%,#dbe7ff 80%)"
+                                    innerGradient="linear-gradient(145deg,#4d88ff 0%,#f0f4ff 55%,#dbe7ff 80%)"
                                     behindGlowEnabled={true}
                                     miniAvatarUrl={member.miniAvatarUrl}
                                     name={member.name}
@@ -85,12 +84,12 @@ export default function SplitBlueSection() {
                         <CarouselPrevious className="static translate-y-0  rounded-xs cursor-pointer translate-x-0 h-10 w-10 border-gray-200 hover:bg-gray-50" />
                         <CarouselNext className="static translate-y-0 rounded-xs cursor-pointer translate-x-0 h-10 w-10 border-gray-200 hover:bg-gray-50" />
                     </div>
-                    <div className="absolute right-px bottom-16 translate-x-1/3 h-full w-24 bg-linear-to-r pointer-events-none to-[#F7F5F3] from-[#f7f5f300]"></div>
+
 
 
                 </Carousel>
             </div>
-            <div className="w-[1px] h-full absolute right-0 sm:right-6 md:right-8 lg:right-0 top-0 bg-[rgba(55,50,47,0.12)] shadow-[1px_0px_0px_white] z-0"></div>
+
         </div>
     );
 }
