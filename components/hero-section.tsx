@@ -74,13 +74,13 @@ export default function HeroSection() {
       {/* Right Column: Phones */}
       <div className="relative h-[500px] md:h-[600px] w-full flex items-center justify-center md:justify-end perspective-1000">
         {/* Back Phone */}
-        <div className="absolute top-28 right-0 md:right-8 w-[200px] md:w-[230px] transform-gpu will-change-auto z-10">
-          <Iphone src="/demo-phone-pic.avif" />
+        <div className="absolute top-28 right-0  w-[200px] md:w-[230px] transform-gpu will-change-transform z-10">
+          <Iphone src="/demo-phone-pic.avif" priority />
         </div>
 
         {/* Front Phone */}
-        <div className="absolute top-16 right-12 md:right-44 w-[200px] md:w-[230px] transform-gpu will-change-auto rotate-[0deg] ">
-          <Iphone src="/demo-phone-pic.avif" />
+        <div className="absolute top-16 right-12 md:right-44 w-[200px] md:w-[230px] transform-gpu will-change-transform rotate-[0deg] ">
+          <Iphone src="/demo-phone-pic.avif" priority />
         </div>
       </div>
     </div>

@@ -58,6 +58,20 @@ export default function LandingPage() {
           <TestimonialsSection />
           {/* Feature 2: Analytics */}
           <Feature
+            isReverse={false}
+            title="Smart Workout Logging"
+            description={
+              <>
+                Log your sets with ease using our intuitive interface.
+                <br />
+                Track RPE, rest times, and supersets without the hassle.
+              </>
+            }
+            buttonText="Start Logging"
+            imageSrc="/demo-phone-pic.avif"
+          />
+
+          <Feature
             isReverse={true}
             title="Deep Performance Analytics"
             description={

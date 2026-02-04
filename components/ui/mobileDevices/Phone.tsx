@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from "react"
 
+import Image from "next/image"
+
 const PHONE_WIDTH = 433
 const PHONE_HEIGHT = 882
 const SCREEN_X = 21.25
@@ -19,6 +21,7 @@ const RADIUS_V = (SCREEN_RADIUS / SCREEN_HEIGHT) * 100
 export interface IphoneProps extends HTMLAttributes<HTMLDivElement> {
     src?: string
     videoSrc?: string
+    priority?: boolean
 }
 
 export function Iphone({
@@ -26,6 +29,7 @@ export function Iphone({
     videoSrc,
     className,
     style,
+    priority = false,
     ...props
 }: IphoneProps) {
     const hasVideo = !!videoSrc
@@ -75,10 +79,14 @@ export function Iphone({
                         borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
                     }}
                 >
-                    <img
+                    <Image
                         src={src}
-                        alt=""
-                        className="block size-full object-cover object-top"
+                        alt="App Screenshot"
+                        fill
+                        className="object-cover object-top"
+                        sizes="(max-width: 768px) 200px, 230px"
+                        priority={priority}
+                        quality={100}
                     />
                 </div>
             )}

@@ -10,6 +10,8 @@ import { OrbitingCircles } from "@/components/ui/orbiting-circles"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { cn } from "@/lib/utils"
 import { Dumbbell, Activity, Heart, Watch, Smartphone } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import DialogStickyFooterDemo from "./dialog"
 
 // Orbiting Circles with fixed radius - animates when in view
 function DynamicOrbitingCircles() {
@@ -53,6 +55,7 @@ function DynamicOrbitingCircles() {
     )
 }
 
+
 // Workout notification item interface
 interface WorkoutItem {
     name: string
@@ -60,6 +63,7 @@ interface WorkoutItem {
     icon: string
     color: string
     time: string
+    highlight?: boolean
 }
 
 // Sample workout history data
@@ -91,35 +95,46 @@ const workoutHistory: WorkoutItem[] = [
         time: "2 days ago",
         icon: "🦵",
         color: "#8B5CF6",
+        highlight: true,
     },
 ]
 
-// Repeat for infinite scroll effect
-const notifications = Array.from({ length: 10 }, () => workoutHistory).flat()
+// Single iteration of workout history
+const notifications = workoutHistory
 
 // Workout notification component
-const WorkoutNotification = ({ name, description, icon, color, time }: WorkoutItem) => {
-    return (
+const WorkoutNotification = ({ name, description, icon, color, time, highlight }: WorkoutItem) => {
+    const Content = (
         <figure
             className={cn(
-                "relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer overflow-hidden rounded-sm p-3",
-                "transition-all duration-200 ease-in-out hover:scale-[103%]",
-                "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]"
+                "relative mx-auto min-h-fit w-full  max-w-[400px] cursor-pointer  rounded-sm p-3",
+                "transition-all duration-200 ease-in-out ",
+
+                "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
+                highlight && "border border-blue-500"
             )}
         >
-            <div className="flex flex-row items-center gap-3">
+            {highlight && (
+                <div className="absolute top-0 right-8 border rounded-xl border-blue-500 bg-white text-neutral-700 text-[10px] -translate-y-1/2 transition-all duration-200 ease-in-out font-bold px-2 py-0.5  z-10 font-sans tracking-wide  ">
+                    Klikni
+                </div>
+            )}
+            <div className="flex flex-row items-center gap-3 ">
                 <div
                     className="flex size-10 items-center justify-center rounded-sm"
                     style={{ backgroundColor: color }}
                 >
                     <span className="text-lg">{icon}</span>
                 </div>
-                <div className="flex flex-col overflow-hidden">
-                    <figcaption className="flex flex-row items-center text-base font-medium whitespace-pre">
-                        <span className="text-sm">{name}</span>
-                        <span className="mx-1 text-gray-400">·</span>
-                        <span className="text-xs text-gray-500">{time}</span>
-                    </figcaption>
+                <div className="flex flex-col overflow-hidden flex-1">
+                    <div className="flex flex-row items-center justify-between">
+                        <figcaption className="flex flex-row items-center text-base font-medium whitespace-pre">
+                            <span className="text-sm">{name}</span>
+                            <span className="mx-1 text-gray-400">·</span>
+                            <span className="text-xs text-gray-500">{time}</span>
+                        </figcaption>
+                    </div>
+
                     <p className="text-xs font-normal text-gray-500">
                         {description}
                     </p>
@@ -127,13 +142,19 @@ const WorkoutNotification = ({ name, description, icon, color, time }: WorkoutIt
             </div>
         </figure>
     )
+
+    if (highlight) {
+        return <DialogStickyFooterDemo trigger={Content} />
+    }
+
+    return Content
 }
 
 // Animated workout history list
 function WorkoutHistoryList() {
     return (
-        <div className="relative flex h-full w-full flex-col overflow-hidden">
-            <AnimatedList>
+        <div className="relative flex h-full w-full flex-col">
+            <AnimatedList className="overflow-visible pt-4">
                 {notifications.map((item, idx) => (
                     <WorkoutNotification {...item} key={idx} />
                 ))}
@@ -257,7 +278,7 @@ export default function BentoGridSection() {
 
                     {/* Bottom Right - Workout History */}
                     <div className="flex flex-col justify-start items-start gap-4 sm:gap-6">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 ">
+                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-0 md:pb-0   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Zgodovina treningov
                             </h3>
@@ -265,7 +286,7 @@ export default function BentoGridSection() {
                                 Pregled vseh tvojih treningov in napredka na enem mestu.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden items-center justify-center relative">
+                        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px]  rounded-lg flex overflow-hidden items-center justify-center relative">
                             <WorkoutHistoryList />
                         </div>
                     </div>
