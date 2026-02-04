@@ -115,7 +115,7 @@ const WorkoutNotification = ({ name, description, icon, color, time, highlight }
             )}
         >
             {highlight && (
-                <div className="absolute -top-2.5 right-10 border border-blue-500 bg-white text-neutral-800 text-[10px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
+                <div className="absolute -top-2.5 right-10 border border-blue-500 bg-white text-neutral-800 text-[9px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
                     Klikni
                 </div>
             )}
@@ -223,10 +223,10 @@ export default function BentoGridSection() {
                     <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start">
                         <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                                Smart workout tracking
+                                Track. Analyze. Improve.
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Log your exercises with intuitive tracking that adapts to your routine and goals.
+                                Turn workout data into progress.
                             </p>
                         </div>
                         <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex items-center justify-center overflow-hidden">
@@ -278,7 +278,7 @@ export default function BentoGridSection() {
 
                     {/* Bottom Right - Workout History */}
                     <div className="flex flex-col justify-start items-start gap-4 sm:gap-6">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-0 md:pb-0   ">
+                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-0 md:pb-4   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Zgodovina treningov
                             </h3>
