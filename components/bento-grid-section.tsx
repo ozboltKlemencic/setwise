@@ -111,7 +111,7 @@ const WorkoutNotification = ({ name, description, icon, color, time, highlight }
                 "transition-all duration-200 ease-in-out ",
 
                 "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
-                highlight && "border border-blue-500 hover:bg-linear-to-b hover:from-blue-500/5 hover:-translate-y-px hover:to-white transition-all duration-300 "
+                highlight && "bg-linear-to-b from-blue-500/5 hover:to-white border border-blue-500 hover:bg-linear-to-b hover:from-blue-500/5  to-white transition-all duration-300 "
             )}
         >
             {highlight && (

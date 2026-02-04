@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from "react"
+import { type HTMLAttributes, useId } from "react"
 
 import Image from "next/image"
 
@@ -30,10 +30,14 @@ export function Iphone({
     className,
     style,
     priority = false,
+    children,
     ...props
 }: IphoneProps) {
+    const id = useId()
+    const maskId = `phone-mask-${id.replace(/:/g, "")}`
+
     const hasVideo = !!videoSrc
-    const hasMedia = hasVideo || !!src
+    const hasMedia = hasVideo || !!src || !!children
 
     return (
         <div
@@ -91,6 +95,21 @@ export function Iphone({
                 </div>
             )}
 
+            {children && (
+                <div
+                    className="absolute z-0 overflow-hidden bg-white"
+                    style={{
+                        left: `${LEFT_PCT}%`,
+                        top: `${TOP_PCT}%`,
+                        width: `${WIDTH_PCT}%`,
+                        height: `${HEIGHT_PCT}%`,
+                        borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
+                    }}
+                >
+                    {children}
+                </div>
+            )}
+
             <svg
                 viewBox={`0 0 ${PHONE_WIDTH} ${PHONE_HEIGHT}`}
                 fill="none"
@@ -98,7 +117,7 @@ export function Iphone({
                 className="absolute inset-0 size-full"
                 style={{ transform: "translateZ(0)" }}
             >
-                <g mask={hasMedia ? "url(#screenPunch)" : undefined}>
+                <g mask={hasMedia ? `url(#${maskId})` : undefined}>
                     <path
                         d="M2 73C2 32.6832 34.6832 0 75 0H357C397.317 0 430 32.6832 430 73V809C430 849.317 397.317 882 357 882H75C34.6832 882 2 849.317 2 809V73Z"
                         className="fill-[#E5E5E5] dark:fill-[#404040]"
@@ -134,11 +153,11 @@ export function Iphone({
                 <path
                     d={`M${SCREEN_X} 75C${SCREEN_X} 44.2101 46.2101 ${SCREEN_Y} 77 ${SCREEN_Y}H355C385.79 ${SCREEN_Y} 410.75 44.2101 410.75 75V807C410.75 837.79 385.79 862.75 355 862.75H77C46.2101 862.75 ${SCREEN_X} 837.79 ${SCREEN_X} 807V75Z`}
                     className="fill-[#E5E5E5] stroke-[#E5E5E5] stroke-[0.5] dark:fill-[#404040] dark:stroke-[#404040]"
-                    mask={hasMedia ? "url(#screenPunch)" : undefined}
+                    mask={hasMedia ? `url(#${maskId})` : undefined}
                 />
 
                 <defs>
-                    <mask id="screenPunch" maskUnits="userSpaceOnUse">
+                    <mask id={maskId} maskUnits="userSpaceOnUse">
                         <rect
                             x="0"
                             y="0"
@@ -156,7 +175,7 @@ export function Iphone({
                             fill="black"
                         />
                     </mask>
-                    <clipPath id="roundedCorners">
+                    <clipPath id={`${maskId}-corners`}>
                         <rect
                             x={SCREEN_X}
                             y={SCREEN_Y}
