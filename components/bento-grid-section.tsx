@@ -115,7 +115,7 @@ const WorkoutNotification = ({ name, description, icon, color, time, highlight }
             )}
         >
             {highlight && (
-                <div className="absolute top-0 right-8 border rounded-xl border-blue-500 bg-white text-neutral-700 text-[10px] -translate-y-1/2 transition-all duration-200 ease-in-out font-bold px-2 py-0.5  z-10 font-sans tracking-wide  ">
+                <div className="absolute -top-2.5 right-10 border border-blue-500 bg-white text-neutral-800 text-[10px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
                     Klikni
                 </div>
             )}
