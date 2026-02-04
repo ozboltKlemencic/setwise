@@ -226,7 +226,7 @@ export default function BentoGridSection() {
                                 Track. Analyze. Improve.
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Turn workout data into progress.
+                                Turn workout data into progress. You can see your progress in real-time on graphs and make adjustments to your workout plan to get the results you want.
                             </p>
                         </div>
                         <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex items-center justify-center overflow-hidden">
@@ -243,7 +243,7 @@ export default function BentoGridSection() {
                     <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start gap-4 sm:gap-6">
                         <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-0">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
-                                Vse na enem mestu
+                                No internet. No excuses.
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
                                 Vse v enem fitnes app-u. Od beleženja treningov ter makrotov do analitike in napredka.
