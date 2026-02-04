@@ -226,7 +226,7 @@ export default function BentoGridSection() {
                                 Track. Analyze. Improve.
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Turn workout data into progress. You can see your progress in real-time on graphs and make adjustments to your workout plan to get the results you want.
+                                Turn workout data into progress. You can see your progress in real-time on graphs.
                             </p>
                         </div>
                         <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex items-center justify-center overflow-hidden">
@@ -246,7 +246,7 @@ export default function BentoGridSection() {
                                 No internet. No excuses.
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Track sessions, sets, and timers offline — everything saves automatically.
+                                Track sessions, sets, and timers offline - everything saves automatically.
                             </p>
                         </div>
                         <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden text-right items-center justify-center">
