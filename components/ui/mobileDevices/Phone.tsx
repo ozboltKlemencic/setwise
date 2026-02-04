@@ -97,7 +97,7 @@ export function Iphone({
 
             {children && (
                 <div
-                    className="absolute z-0 overflow-hidden bg-white"
+                    className="absolute z-10 overflow-hidden bg-white"
                     style={{
                         left: `${LEFT_PCT}%`,
                         top: `${TOP_PCT}%`,

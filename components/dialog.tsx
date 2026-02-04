@@ -20,7 +20,7 @@ const DialogStickyFooterDemo = ({ trigger }: { trigger?: React.ReactNode }) => {
             <DialogTrigger asChild>
                 {trigger || <Button variant='outline'>Sticky Footer Dialog</Button>}
             </DialogTrigger>
-            <DialogContent className='max-h-screen w-auto border-none bg-transparent p-0 shadow-none sm:max-w-[400px]'>
+            <DialogContent className='max-h-screen w-full border-none bg-transparent p-0 shadow-none sm:max-w-[400px]'>
                 <Iphone className="w-full h-full drop-shadow-2xl">
                     <div className='flex h-full w-full flex-col bg-white'>
                         <DialogHeader className='contents space-y-0 text-left'>
