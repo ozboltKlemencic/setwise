@@ -66,7 +66,7 @@ export default function SplitBlueSection() {
                             <CarouselItem key={index} className="basis-[55%] pl-2">
                                 <ProfileCard
                                     avatarUrl={member.avatarUrl}
-                                    innerGradient="linear-gradient(145deg,#4d88ff 0%,#f0f4ff 55%,#dbe7ff 80%)"
+                                    innerGradient="linear-gradient(145deg,#75a2ff 0%,#f0f4ff 55%,#dbe7ff 80%)"
                                     behindGlowEnabled={true}
                                     miniAvatarUrl={member.miniAvatarUrl}
                                     name={member.name}
