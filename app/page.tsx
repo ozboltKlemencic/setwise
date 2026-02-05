@@ -67,7 +67,7 @@ export default function LandingPage() {
               </>
             }
             buttonText="Create workout"
-            imageSrc="/demo-phone-pic.avif"
+            imageSrc="/workout-in-progres.png"
           />
 
           <Feature
@@ -79,7 +79,7 @@ export default function LandingPage() {
               </>
             }
             buttonText="View progress"
-            imageSrc="/demo-phone-pic.avif"
+            imageSrc="/workout.png"
           />
 
           {/* Split Blue Section */}
