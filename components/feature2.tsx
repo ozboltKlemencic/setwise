@@ -30,9 +30,9 @@ export default function Feature2({
     const [isHovered, setIsHovered] = useState(false)
 
     return (
-        <div className="w-full relative  group flex flex-col justify-center items-center  overflow-hidden">
+        <div className="w-full relative  group flex flex-col justify-center items-center   overflow-hidden">
             {/* Content */}
-            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'}   border-b border-[rgba(55,50,47,0.12)] flex justify-start items-center relative z-10 h-[530px] max-h-[580px]`}>
+            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'}   border-b border-[rgba(55,50,47,0.12)] flex justify-start items-center relative z-10 h-[600px] max-h-[600px]`}>
 
                 <div className=" max-w-[586px] py-12 w-1/2 md:pl-12 pr-16 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-6 relative z-20">
                     <div className="self-stretch flex flex-col justify-start items-start gap-3">
@@ -56,7 +56,7 @@ export default function Feature2({
                 </div>
 
                 <div
-                    className="w-1/2 relative h-full border-l border-[#E0DEDB]/80 overflow-hidden group/phone"
+                    className="w-1/2 relative h-full border-l border-[#E0DEDB]/80  overflow-hidden group/phone"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
@@ -73,15 +73,15 @@ export default function Feature2({
                             ></div>
                         ))}
                     </div>
-                    <div className="absolute top-2 left-2 right-2 bottom-2 overflow-hidden bg-blue-500 rounded-lg shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)]">
+                    <div className="absolute top-2 left-2 right-2 bottom-2  overflow-hidden bg-blue-500  rounded-lg shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)]">
                         {/* Background Pattern */}
                         {/* iPhone Container */}
 
                         <motion.div
                             ref={phoneRef}
-                            initial={{ y: "-50%" }}
-                            animate={{ y: isHovered ? "-25%" : isInView ? "25%" : "-50%" }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            initial={{ y: "-80%" }}
+                            animate={{ y: isHovered ? "-35%" : isInView ? "25%" : "-50%" }}
+                            transition={{ type: "spring", stiffness: 200, damping: 20 }}
                             className="absolute top-0 left-0 translate-x-1/2 w-[300px] transform-gpu will-change-transform"
                         >
                             <Iphone src={imageSrc} />
