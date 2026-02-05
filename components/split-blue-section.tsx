@@ -61,13 +61,11 @@ export default function SplitBlueSection() {
                     }}
                     className="w-full oberflow-hidden "
                 >
-                    <CarouselContent className="">
+                    <CarouselContent className="px-2">
                         {teamMembers.map((member, index) => (
-                            <CarouselItem key={index} className="basis-[55%] pl-2">
+                            <CarouselItem key={index} className="basis-[55%] pl-4 py-2 ">
                                 <ProfileCard
                                     avatarUrl={member.avatarUrl}
-                                    innerGradient="linear-gradient(145deg,#75a2ff 0%,#f0f4ff 55%,#dbe7ff 80%)"
-                                    behindGlowEnabled={true}
                                     miniAvatarUrl={member.miniAvatarUrl}
                                     name={member.name}
                                     title={member.title}
