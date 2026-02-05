@@ -1,5 +1,7 @@
 "use client"
 
+import { useRef, useState } from "react"
+import { motion, useInView } from "framer-motion"
 import { Iphone } from "./ui/mobileDevices/Phone"
 
 interface FeatureProps {
@@ -23,12 +25,16 @@ export default function Feature({
     buttonText = "Start for free",
     imageSrc = "https://framerusercontent.com/images/pZ55dJGHumRqj3rs95ckc0clqk.png?width=1290&height=2796"
 }: FeatureProps) {
-    return (
-        <div className="w-full relative  group flex flex-col justify-center items-center gap-2 overflow-hidden">
-            {/* Content */}
-            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'} px-6 md:px-24 py-12 md:py-12 border-b border-[rgba(55,50,47,0.12)] flex justify-start items-center gap-6 relative z-10 h-[530px] max-h-[580px]`}>
+    const containerRef = useRef<HTMLDivElement>(null)
+    const isInView = useInView(containerRef, { once: true, margin: "-0px" })
+    const [isHovered, setIsHovered] = useState(false)
 
-                <div className=" max-w-[586px] w-1/2 px-6 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-6 relative z-20">
+    return (
+        <div className="w-full relative  group flex flex-col  justify-center items-center gap-2 overflow-hidden">
+            {/* Content */}
+            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'} border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center  relative z-10 h-[530px] max-h-[580px]`}>
+
+                <div className=" max-w-[586px] w-1/2 h-full   px-16 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-center items-center gap-6 relative z-20">
                     <div className="self-stretch flex flex-col justify-start items-start gap-3">
                         <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                             {title}
@@ -49,27 +55,42 @@ export default function Feature({
                     </div>
                 </div>
 
-                <div className="w-1/2 relative h-full bg-blue-500/10 rounded-2xl overflow-hidden group/phone">
-                    <div className="absolute inset-0 w-full h-full">
-                        {/* Background Pattern */}
-                        <div className="w-full h-full relative opacity-80">
-                            {Array.from({ length: 300 }).map((_, i) => (
-                                <div
-                                    key={i}
-                                    className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
-                                    style={{
-                                        top: `${i * 16 - 120}px`,
-                                        left: "-100%",
-                                        width: "300%",
-                                    }}
-                                ></div>
-                            ))}
+                <div className="w-1/2 h-full p-4">
+                    <div
+                        ref={containerRef}
+                        className="w-full relative h-full bg-blue-500 shadow-lg rounded-2xl overflow-hidden group/phone"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
+                        <div className="absolute inset-0 w-full h-full">
+                            {/* Background Pattern */}
+                            <div className="w-full h-full relative  [mask-image:radial-gradient(300px_circle_at_center,white,transparent)]">
+                                {Array.from({ length: 300 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.4)] outline-offset-[-0.25px]"
+                                        style={{
+                                            top: `${i * 16 - 120}px`,
+                                            left: "-100%",
+                                            width: "300%",
+                                        }}
+                                    ></div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
 
-                    {/* iPhone Container */}
-                    <div className="absolute top-12 left-12 w-[300px] transition-transform duration-700 ease-in-out group-hover/phone:-translate-y-64 transform-gpu will-change-transform">
-                        <Iphone src={imageSrc} />
+                        <div className="absolute top-0 right-0 w-3/5 -translate-y-1/2 translate-x-1/2 h-full bg-white/15 blur-3xl rounded-full"></div>
+                        <div className="absolute bottom-0 left-0 w-3/5 translate-y-1/2 -translate-x-1/2 h-full bg-white/10 blur-3xl rounded-full"></div>
+
+                        {/* iPhone Container */}
+                        <motion.div
+                            initial={{ y: "70%" }}
+                            animate={{ y: isHovered ? "15%" : isInView ? "-25%" : "-5%" }}
+                            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                            className="absolute top-0 left-1/5 w-[300px] transform-gpu will-change-transform"
+                        >
+                            <Iphone src={imageSrc} />
+                        </motion.div>
                     </div>
                 </div>
             </div>

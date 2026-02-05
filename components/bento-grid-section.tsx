@@ -82,14 +82,6 @@ interface WorkoutItem {
 
 const notifications: WorkoutItem[] = [
     {
-        name: "Lower 2",
-        date: "Wed, Feb 4 • 03:48 PM",
-        duration: "42 min",
-        volume: "1.7k kg",
-        status: "+1%",
-        isTrending: true,
-    },
-    {
         name: "Chest & Triceps",
         date: "Mon, Feb 2 • 05:12 PM",
         duration: "55 min",
@@ -97,12 +89,11 @@ const notifications: WorkoutItem[] = [
         status: "HIGH VOL",
     },
     {
-        name: "Back & Biceps",
-        date: "Sun, Jan 31 • 10:00 AM",
-        duration: "48 min",
-        volume: "3.5k kg",
-
-        status: "+21%",
+        name: "Upper 2",
+        date: "Wed, Feb 4 • 03:48 PM",
+        duration: "42 min",
+        volume: "1.7k kg",
+        status: "+1%",
         isTrending: true,
     },
     {
