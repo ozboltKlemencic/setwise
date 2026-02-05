@@ -77,6 +77,7 @@ interface WorkoutItem {
     volume: string
     status: string
     highlight?: boolean
+    isTrending?: boolean
 }
 
 const notifications: WorkoutItem[] = [
@@ -85,33 +86,36 @@ const notifications: WorkoutItem[] = [
         date: "Wed, Feb 4 • 03:48 PM",
         duration: "42 min",
         volume: "1.7k kg",
-        status: "STEADY",
+        status: "+1%",
+        isTrending: true,
     },
     {
         name: "Chest & Triceps",
         date: "Mon, Feb 2 • 05:12 PM",
         duration: "55 min",
         volume: "2.1k kg",
-        status: "PR",
+        status: "HIGH VOL",
     },
     {
         name: "Back & Biceps",
         date: "Sun, Jan 31 • 10:00 AM",
         duration: "48 min",
         volume: "3.5k kg",
-        status: "HIGH VOL",
+
+        status: "+21%",
+        isTrending: true,
     },
     {
         name: "Leg Day",
         date: "Thu, Jan 28 • 06:30 PM",
         duration: "65 min",
         volume: "4.2k kg",
-        status: "HEAVY",
+        status: "STEADY",
         highlight: true,
     },
 ]
 
-const WorkoutNotification = ({ name, date, duration, volume, status, highlight }: WorkoutItem) => {
+const WorkoutNotification = ({ name, date, duration, volume, status, highlight, isTrending }: WorkoutItem) => {
     const Content = (
         <figure
             className={cn(
@@ -146,16 +150,23 @@ const WorkoutNotification = ({ name, date, duration, volume, status, highlight }
                             <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">DURATION</span>
                             <span className="text-sm font-medium text-gray-900">{duration}</span>
                         </div>
-                        <div className="h-full w-4 bg-gray-900 mx-2"></div>
+                        <div className="h-auto w-px bg-neutral-200/70 mx-4"></div>
                         <div className="flex flex-col gap-0.5">
                             <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">VOLUME</span>
                             <span className="text-sm font-medium text-gray-900">{volume}</span>
                         </div>
                     </div>
 
-                    <div className="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 text-[10px] font-bold text-gray-600 tracking-wide uppercase">
-                        {status}
-                    </div>
+                    {isTrending ? (
+                        <div className="px-2.5 py-1 rounded-md bg-emerald-100/50 border border-emerald-200 text-emerald-600 flex items-center gap-1">
+                            <TrendingUp className="h-3 w-3" />
+                            <span className="text-[11px] font-bold">{status}</span>
+                        </div>
+                    ) : (
+                        <div className="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 text-[10px] font-bold text-gray-600 tracking-wide uppercase">
+                            {status}
+                        </div>
+                    )}
                 </div>
             </div>
         </figure>
