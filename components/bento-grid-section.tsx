@@ -1,7 +1,8 @@
 "use client"
 
-import type React from "react"
-import { useRef } from "react"
+
+import React, { useRef } from "react"
+import Image from "next/image"
 import { useInView } from "framer-motion"
 import SmartSimpleBrilliant from "./smart-simple-brilliant"
 import YourWorkInSync from "./your-work-in-sync"
@@ -9,7 +10,7 @@ import NumbersThatSpeak from "./numbers-that-speak"
 import { OrbitingCircles } from "@/components/ui/orbiting-circles"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { cn } from "@/lib/utils"
-import { Dumbbell, Activity, Heart, Watch, Smartphone } from "lucide-react"
+import { Dumbbell, Timer, Zap, TrendingUp, NotebookPen, Ruler, ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DialogStickyFooterDemo from "./dialog"
 
@@ -28,17 +29,17 @@ function DynamicOrbitingCircles() {
                 speed={1.5}
                 pathClassName={cn("origin-center transition-all duration-700 ease-out delay-300", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
             >
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
-                    <Watch className="h-5 w-5 text-blue-600" />
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br from-blue-100/80 to-white shadow-md border border-neutral-200 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                    <Timer className="h-5 w-5 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
-                    <Activity className="h-5 w-5 text-green-500" />
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tr from-blue-100/80 to-white shadow-md border border-neutral-300 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                    <Zap className="h-5 w-5 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
-                    <Heart className="h-5 w-5 text-red-500" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-br from-blue-100/80 to-white  shadow-md border border-neutral-200 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                    <TrendingUp className="h-5 w-5 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
-                    <Smartphone className="h-5 w-5 text-purple-500" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-tr from-blue-100/80 to-white  shadow-md border border-neutral-200 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                    <NotebookPen className="h-5 w-5 text-neutral-400" />
                 </div>
             </OrbitingCircles>
             <OrbitingCircles
@@ -48,21 +49,22 @@ function DynamicOrbitingCircles() {
                 speed={1}
                 pathClassName={cn("origin-center transition-all duration-700 ease-out delay-200", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
             >
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
-                    <Dumbbell className="h-4 w-4 text-orange-500" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-bl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                    <Ruler className="h-4 w-4 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
-                    <Activity className="h-4 w-4 text-teal-500" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-tl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                    <ArrowUpDown className="h-4 w-4 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
-                    <Activity className="h-4 w-4 text-teal-500" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-bl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
+                    <Dumbbell className="h-4 w-4 text-neutral-400" />
                 </div>
             </OrbitingCircles>
+
             {/* Center Icon */}
-            <div className={cn("absolute flex items-center justify-center rounded-full bg-blue-600 border border-gray-200 p-4 z-10", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0s' }}>
-                <Dumbbell className="h-8 w-8 text-white" />
+            <div className={cn("absolute flex items-center justify-center rounded-full bg-[#0263ff] border border-neutral-300 p-4 z-10", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0s' }}>
+                <Image src="/setwise-logo.png" width={40} height={40} alt="SetWise Logo" className="w-10 h-10 object-contain" />
             </div>
-        </div>
+        </div >
     )
 }
 
