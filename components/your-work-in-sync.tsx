@@ -81,7 +81,7 @@ export default function YourWorkInSync({
 
         <MotionCard
           ref={centerRef}
-          className="size-12 sm:size-24 bg-linear-to-t from-blue-500/5 to-white text-neutral-500/50 overflow-hidden p-0 relative "
+          className="size-12 sm:size-24 bg-linear-to-tr from-blue-500/10 via-blue-100/5 to-blue-500/10 text-neutral-500/50 overflow-hidden p-0 relative "
           initial={{ opacity: 1, scale: 0.9 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
