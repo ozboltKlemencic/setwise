@@ -8,11 +8,12 @@ export default function CTASection() {
       {/* Content */}
       <div className="self-stretch flex-row px-6 md:px-24 py-12 md:py-12 border-t border-b border-[rgba(55,50,47,0.12)] flex justify-start items-center gap-6 relative z-10">
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative bg-blue-500/10 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]">
+
             {Array.from({ length: 300 }).map((_, i) => (
               <div
                 key={i}
-                className="absolute h-4 w-full rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                className="absolute h-4 w-full rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.1)] outline-offset-[-0.25px]"
                 style={{
                   top: `${i * 16 - 120}px`,
                   left: "-100%",
@@ -44,7 +45,7 @@ export default function CTASection() {
         </div>
 
         <div className="w-[334px] absolute top-[4rem] right-[6rem] group-hover:-translate-y-64 transition-transform duration-700 ease-in-out transform-gpu will-change-transform">
-          <Iphone src="/demo-phone-pic.avif" />
+          <Iphone src="/home.png" />
 
         </div>
       </div>

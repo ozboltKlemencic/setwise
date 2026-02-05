@@ -48,6 +48,21 @@ export default function BlueCTASection() {
                             <div className="absolute bottom-0 left-[10%] w-[50%] h-full bg-gradient-to-tr from-white/20 to-transparent transform skew-x-12 opacity-50 blur-sm"></div>
                         </div>
 
+                        <div className="absolute inset-0 w-full h-full [mask-image:radial-gradient(300px_circle_at_center,white,transparent)]">
+
+                            {Array.from({ length: 300 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="absolute h-4 w-full rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(255,255,255,0.3)] outline-offset-[-0.25px]"
+                                    style={{
+                                        top: `${i * 16 - 120}px`,
+                                        left: "-100%",
+                                        width: "300%",
+                                    }}
+                                ></div>
+                            ))}
+                        </div>
+
                         <div className="relative z-10 flex flex-col items-center gap-8">
                             <h2 className="text-white text-4xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight leading-tight">
                                 Turn any plan into<br />  a trackable session <br /> in seconds.
@@ -64,10 +79,10 @@ export default function BlueCTASection() {
                         </div>
 
                         <div className="absolute right-[-50px] top-[20px] z-20 w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-700 ease-in-out transform-gpu will-change-transform">
-                            <Iphone src="/demo-phone-pic.avif" />
+                            <Iphone src="/home.png" />
                         </div>
                         <div className="absolute left-[-50px] top-[40px] z-20 w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-700 ease-in-out transform-gpu will-change-transform">
-                            <Iphone src="/demo-phone-pic.avif" />
+                            <Iphone src="/workout-in-progres.png" />
                         </div>
                     </div>
                 </div>
