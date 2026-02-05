@@ -1,12 +1,21 @@
-"use client"
-
+import { useRef, useState } from "react"
+import { motion, useInView } from "framer-motion"
 import { Iphone } from "./ui/mobileDevices/Phone"
 
 export default function CTASection() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+  const [isHovered, setIsHovered] = useState(false)
+
   return (
     <div className="w-full relative  group flex flex-col justify-center items-center gap-2 overflow-hidden">
       {/* Content */}
-      <div className="self-stretch flex-row px-6 md:px-24 py-12 md:py-12 border-t border-b border-[rgba(55,50,47,0.12)] flex justify-start items-center gap-6 relative z-10">
+      <div
+        ref={containerRef}
+        className="self-stretch flex-row min-h-[500px] px-6 md:px-24 py-12 md:py-12 border-t border-b border-[rgba(55,50,47,0.12)] flex justify-start items-center gap-6 relative z-10"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <div className="w-full h-full relative bg-blue-500/10 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]">
 
@@ -44,10 +53,14 @@ export default function CTASection() {
           </div>
         </div>
 
-        <div className="w-[334px] absolute top-[4rem] right-[6rem] group-hover:-translate-y-64 transition-transform duration-700 ease-in-out transform-gpu will-change-transform">
+        <motion.div
+          initial={{ y: "-80%" }}
+          animate={{ y: isHovered ? "-35%" : isInView ? "25%" : "-50%" }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          className="w-[334px] absolute top-[-4rem] right-[6rem] transform-gpu will-change-transform"
+        >
           <Iphone src="/home.png" />
-
-        </div>
+        </motion.div>
       </div>
     </div>
   )

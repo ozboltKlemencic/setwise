@@ -65,7 +65,7 @@ export default function BlueCTASection() {
 
                         <div className="relative z-10 flex flex-col items-center gap-8">
                             <h2 className="text-white text-4xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight leading-tight">
-                                Turn any plan into<br />  a trackable session <br /> in seconds.
+                                Turn any plan into<br />  a trackable<br />  session.
                             </h2>
 
                             <div className="flex flex-col items-center gap-3">
