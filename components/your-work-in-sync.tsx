@@ -4,6 +4,8 @@ import React, { forwardRef, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { AnimatedBeam } from "@/components/ui/animated-beam"
 import StarBorder from "./StarBorder"
+
+import { Database, Smartphone, WifiOff } from "lucide-react"
 import { BorderBeam } from "./ui/border-beam"
 
 interface YourWorkInSyncProps {
@@ -31,14 +33,7 @@ const Card = forwardRef<HTMLDivElement, { className?: string; children?: React.R
 )
 Card.displayName = "Card"
 
-// Custom "Connect" Icon (Two squares)
-const ConnectIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="text-black">
-    <rect x="4" y="4" width="7" height="7" rx="2" />
-    <rect x="13" y="13" width="7" height="7" rx="2" />
-    <path d="M11 11L13 13" stroke="currentColor" strokeWidth="2" />
-  </svg>
-)
+
 
 export default function YourWorkInSync({
   width = "100%",
@@ -63,100 +58,145 @@ export default function YourWorkInSync({
         style={{
           backgroundImage: 'radial-gradient(#94A3B8 1px, transparent 1px)',
           backgroundSize: '12px 12px',
-          maskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)',
-          WebkitMaskImage: 'radial-gradient(circle at center, black 40%, transparent 80%)'
+          maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
         }}>
       </div>
 
       {/* Cards Row */}
       <div className="flex items-center justify-center gap-12 sm:gap-16 mb-8">
         {/* Left Card */}
-        <Card ref={leftRef} className="w-12 h-12 sm:size-14">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-700">
-            <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
-            <path d="M3 12h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7-.7.7m0 11.4.7.7m-12.1-.7-.7.7" />
-          </svg>
+        <Card ref={leftRef} className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300">
+          <WifiOff className="size-4 sm:size-6" />
         </Card>
 
 
-        <Card ref={centerRef} className="size-12 sm:size-20 overflow-hidden p-0 relative ">
-          <ConnectIcon />
+        <Card ref={centerRef} className="size-12 sm:size-24 bg-linear-to-t from-blue-500/5 to-white text-neutral-500/50 overflow-hidden p-0 relative ">
+          <Smartphone className="size-8 sm:size-12" />
           <BorderBeam
             duration={3}
-            borderWidth={1.5}
+            borderWidth={1}
             size={50}
-            className="from-transparent via-blue-600 to-transparent"
+            className="from-blue-500/30 via-blue-600 to-blue-500/30"
           />
           <BorderBeam
             duration={3}
             delay={1.5}
             size={50}
-            borderWidth={1.5}
-            className="from-transparent via-blue-600 to-transparent"
+            borderWidth={1}
+            className="from-blue-500/30 via-blue-600 to-blue-500/30"
           />
         </Card>
 
         {/* Right Card */}
-        <Card ref={rightRef} className="size-12 sm:size-14">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-orange-500">
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-            <path d="M12 12h.01" />
-            <path d="M7 7h.01" />
-            <path d="M17 17h.01" />
-            <path d="M17 7h.01" />
-            <path d="M7 17h.01" />
-          </svg>
+        <Card ref={rightRef} className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300 ">
+          <Database className="size-4 sm:size-6" />
         </Card>
       </div>
 
       {/* Connected Badge */}
       <div
         ref={bottomRef}
-        className="z-10 bg-white border border-blue-200 text-blue-500 text-xs font-medium px-4 py-1.5 rounded-md shadow-sm"
+        className="z-10 bg-white border opacity-60 border-emerald-300/70 text-emerald-500/80  text-xs font-medium px-4 py-1.5 rounded-md flex items-center justify-center shadow-md"
       >
-        Connected
+        Works Offline
       </div>
 
       {/* Animated Beams */}
+      {/* leva do sreda */}
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={leftRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={12}
-        endYOffset={12}
-        duration={3}
+        startYOffset={16}
+        endYOffset={16}
+        startXOffset={44}
+        endXOffset={44}
+        duration={2}
         delay={0}
-        gradientStartColor="#3B82F6"
-        gradientStopColor="#60A5FA"
+        gradientStartColor="#828282"
+        gradientStopColor="#828282"
+        gradientLength={16}
       />
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={centerRef}
-        toRef={rightRef}
+        fromRef={leftRef}
+        toRef={centerRef}
         curvature={0}
-        startYOffset={12}
-        endYOffset={12}
-        startXOffset={10}
-        endXOffset={10}
-        duration={3}
-        delay={0.5}
-        gradientStartColor="#3B82F6"
-        gradientStopColor="#60A5FA"
+        startYOffset={16}
+        endYOffset={16}
+        startXOffset={44}
+        endXOffset={44}
+        duration={2}
+        delay={1}
+        gradientStartColor="#828282"
+        gradientStopColor="#828282"
+        gradientLength={16}
+      />
+
+      {/* sredo do desno */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={rightRef}
+        toRef={centerRef}
+        curvature={0}
+        startYOffset={16}
+        endYOffset={16}
+        startXOffset={12}
+        endXOffset={12}
+        duration={2}
+        delay={0}
+        gradientStartColor="#828282"
+        gradientStopColor="#828282"
+        gradientLength={16}
       />
       <AnimatedBeam
         containerRef={containerRef}
-        fromRef={centerRef}
-        toRef={bottomRef}
+        fromRef={rightRef}
+        toRef={centerRef}
         curvature={0}
-        startYOffset={12}
-        endYOffset={12}
-        startXOffset={22}
-        endXOffset={22}
-        duration={5}
+        startYOffset={16}
+        endYOffset={16}
+        startXOffset={12}
+        endXOffset={12}
+        duration={2}
+        delay={1}
+        gradientStartColor="#828282"
+        gradientStopColor="#828282"
+        gradientLength={16}
+      />
+
+      {/*  spondji beam */}
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={bottomRef}
+        toRef={centerRef}
+        curvature={0}
+        startYOffset={8}
+        endYOffset={8}
+        startXOffset={28}
+        endXOffset={28}
+        duration={2}
         delay={0}
-        gradientStartColor="#3B82F6"
-        gradientStopColor="#60A5FA"
+        gradientStartColor="#828282"
+        gradientStopColor="#828282"
+        gradientLength={16}
+      />
+      <AnimatedBeam
+        containerRef={containerRef}
+        fromRef={bottomRef}
+        toRef={centerRef}
+        curvature={0}
+        startYOffset={8}
+        endYOffset={8}
+        startXOffset={28}
+        endXOffset={28}
+        duration={2}
+        delay={1}
+        gradientStartColor="#828282"
+        gradientStopColor="#828282"
+        gradientLength={16}
       />
     </div>
   )

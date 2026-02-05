@@ -109,7 +109,7 @@ export function ParticleText({ text, className }: ParticleTextProps) {
                 const alpha = Math.min(p.baseAlpha, p.targetAlpha) + (Math.sin(p.phase) + 1) / 2 * opacityRange
 
                 ctx.fillStyle = p.isActive
-                    ? `rgba(195, 195, 195, ${alpha})` // Lighter grey for text blue je 194, 215, 255
+                    ? `rgba(200, 200, 200, ${alpha})` // Lighter grey for text blue je 194, 215, 255
                     : `rgba(200, 200, 200, ${alpha})` // Light grey for background
 
                 // Draw particle (square)

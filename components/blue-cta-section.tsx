@@ -50,16 +50,15 @@ export default function BlueCTASection() {
 
                         <div className="relative z-10 flex flex-col items-center gap-8">
                             <h2 className="text-white text-4xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight leading-tight">
-                                Automate.<br />
-                                Simplify. Thrive
+                                Turn any plan into<br />  a trackable session <br /> in seconds.
                             </h2>
 
                             <div className="flex flex-col items-center gap-3">
                                 <button className="bg-white text-[#1A62FF] hover:bg-gray-100 transition-colors px-6 py-3 rounded-full font-medium text-base sm:text-lg shadow-lg">
-                                    Start Your 30-Day Free Trial Today
+                                    Download for iOS or Android
                                 </button>
                                 <p className="text-white/80 text-sm font-medium">
-                                    Cancel anytime, no questions asked
+                                    Free beta version
                                 </p>
                             </div>
                         </div>

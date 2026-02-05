@@ -116,7 +116,7 @@ const WorkoutNotification = ({ name, description, icon, color, time, highlight }
         >
             {highlight && (
                 <div className="absolute -top-2.5 right-8 border border-blue-500 bg-white text-neutral-800 text-[9px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
-                    Klikni
+                    Click
                 </div>
             )}
             <div className="flex flex-row items-center gap-3 ">
@@ -181,7 +181,7 @@ export default function BentoGridSection() {
         <div className="w-full border-b border-t border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
             {/* Header Section */}
             <div className="self-stretch px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-[1060px] lg:w-[1060px] py-8 sm:py-12 md:py-12 border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center gap-6">
-                <div className="w-full max-w-[616px] lg:w-[616px] px-4 sm:px-6 py-4 sm:py-5 shadow-[0px_2px_4px_rgba(50,45,43,0.06)] overflow-hidden rounded-lg flex flex-col justify-start items-center gap-3 sm:gap-4 shadow-none">
+                <div className="w-full max-w-[616px] lg:w-[616px] px-4 sm:px-6 py-4 sm:py-5 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-3 sm:gap-4">
                     <Badge
                         icon={
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -220,8 +220,8 @@ export default function BentoGridSection() {
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-[rgba(55,50,47,0.12)]">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12">
+                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start lg:min-h-[500px]">
+                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Track. Analyze. Improve.
                             </h3>
@@ -229,7 +229,7 @@ export default function BentoGridSection() {
                                 Turn workout data into progress. You can see your progress in real-time on graphs.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="w-full h-[200px] sm:h-[250px] md:h-full rounded-lg flex  items-center justify-center overflow-hidden">
                             <SmartSimpleBrilliant
                                 width="100%"
                                 height="100%"
@@ -240,8 +240,8 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start gap-4 sm:gap-6">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-0">
+                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start   lg:min-h-[500px]">
+                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
                                 No internet. No excuses.
                             </h3>
@@ -249,7 +249,7 @@ export default function BentoGridSection() {
                                 Track sessions, sets, and timers offline - everything saves automatically.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] rounded-lg flex overflow-hidden text-right items-center justify-center">
+                        <div className="w-full h-[200px] sm:h-[250px] md:h-full  rounded-lg flex overflow-hidden text-right items-center justify-center">
                             <YourWorkInSync
                                 width="400"
                                 height="250"
@@ -260,13 +260,13 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start    relative  items-start">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12">
+                    <div className="border-r-0 lg:min-h-[500px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start    relative  items-start">
+                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                                Connect your devices
+                                Details drive progress
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Sync with fitness trackers, smartwatches, and health apps seamlessly.
+                                Reps and weight don’t tell the full story. Capture tempo, ROM, and intensifiers with quick notes, and turn every session into actionable progress.
                             </p>
                         </div>
                         <div className="absolute bottom-0 translate-y-1/3 w-full h-[430px]  rounded-lg flex overflow-hidden justify-center items-center  ">
@@ -277,16 +277,16 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Right - Workout History */}
-                    <div className="flex flex-col justify-start items-start gap-4 sm:gap-6">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-0 md:pb-4   ">
+                    <div className="flex flex-col lg:min-h-[500px] justify-start items-start ">
+                        <div className="flex flex-col w-full gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4 md:pb-4   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                                Zgodovina treningov
+                                Progress Overview
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Pregled vseh tvojih treningov in napredka na enem mestu.
+                                See trends, spot patterns, and push past plateaus. Every rep counts, every set matters.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px]  rounded-lg flex overflow-hidden items-center justify-center relative">
+                        <div className="w-full h-[200px] sm:h-[250px] md:h-full rounded-lg lg:pt-8 flex overflow-hidden items-center justify-center relative">
                             <WorkoutHistoryList />
                         </div>
                     </div>

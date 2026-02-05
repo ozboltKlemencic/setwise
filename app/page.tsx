@@ -19,7 +19,7 @@ export default function LandingPage() {
         {/* Navigation */}
         <Navigation />
         {/* Main container with proper margins */}
-        <div className="w-full max-w-none px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-[1060px] lg:w-[1060px] relative flex flex-col justify-start items-start min-h-screen  border-l border-r border-[#E0DEDB]/80">
+        <div className="w-full max-w-none px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-6xl relative flex flex-col justify-start items-start min-h-screen  border-l border-r border-[#E0DEDB]/80">
 
           {/* Hero Section */}
 
@@ -40,15 +40,21 @@ export default function LandingPage() {
           {/* Feature 1: Smart Logging */}
           <Feature
             isReverse={false}
-            title="Smart Workout Logging"
+            title="Train with precision. Progress with proof."
             description={
               <>
-                Log your sets with ease using our intuitive interface.
-                <br />
-                Track RPE, rest times, and supersets without the hassle.
+                Log sets in seconds — with
+
+                **RPE/RIR, tempo, ROM, and intensifiers**
+
+                built in. Add notes per exercise or per set, then
+
+                **instantly compare every set to your last workout**
+
+                to see what improved.
               </>
             }
-            buttonText="Start Logging"
+            buttonText="Start training"
             imageSrc="/demo-phone-pic.avif"
           />
 
@@ -58,33 +64,27 @@ export default function LandingPage() {
           {/* Feature 2: Analytics */}
           <Feature
             isReverse={false}
-            title="Smart Workout Logging"
+            title="From copy-paste to a workout."
             description={
               <>
-                Log your sets with ease using our intuitive interface.
-                <br />
-                Track RPE, rest times, and supersets without the hassle.
+                Paste your plan we structure it automatically. No more manual setup, no more formatting headaches - just clean, organized workout ready to log.
               </>
             }
-            buttonText="Start Logging"
+            buttonText="Create workout"
             imageSrc="/demo-phone-pic.avif"
           />
 
           <Feature
             isReverse={true}
-            title="Deep Performance Analytics"
+            title="See your progress at a glance."
             description={
               <>
-                Visualize your progress with advanced charts and heatmaps.
-                <br />
-                Understand your strengths and optimize your training.
+                Charts that make trends obvious - filter by exercise and time to track every lift.
               </>
             }
-            buttonText="View Analytics"
+            buttonText="View progress"
             imageSrc="/demo-phone-pic.avif"
           />
-
-
 
           {/* Split Blue Section */}
           <SplitBlueSection />

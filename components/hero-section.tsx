@@ -6,10 +6,10 @@ import { ShimmerButton } from "./ui/shimmer-button"
 
 export default function HeroSection() {
   return (
-    <div className="relative max-w-[1050px] mx-auto">
+    <div className="relative max-w-6xl  mx-auto">
       <div className="absolute top-0 -left-3 w-3 h-full  bg-linear-to-b from-[#F7F5F3] to-transparent "></div>
       <div className="absolute top-0 -right-3 w-3 h-full  bg-linear-to-b from-[#F7F5F3] to-transparent "></div>
-      <div className="w-full max-w-[1050px] shadow-[rgba(55,50,47,0.12)] m-1 rounded-b-lg  px-16  py-4 bg-linear-to-t from-blue-500/20 to-transparent mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="w-full  shadow-[rgba(55,50,47,0.12)] m-1 rounded-b-lg  px-16  py-4 bg-linear-to-t from-blue-500/20 to-transparent mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
         <div className="absolute top-0 left-0 w-full h-full -z-10 blur-md -translate-y-[0%]" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.8) 0%, rgba(247, 245, 243,0) 80%)' }} />
         <div className="absolute top-0 left-0 w-full h-full -z-10 -translate-x-[5%] -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.9) 0%, rgba(247, 245, 243,0) 80%)' }} />
         <div className="absolute top-0 left-0 w-full h-full -z-10 translate-x-[5%]  -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.8) 0%, rgba(247, 245, 243,0) 80%)' }} />
@@ -28,7 +28,7 @@ export default function HeroSection() {
           <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-5xl font-bold text-left text-[#1A1A1A] tracking-tight mb-2.5 leading-[1.05] font-sans">
             Log Workouts <br />
             <span className="text-blue-600">Get Stronger</span> <br />
-            Stay Motivated
+            Stay disciplined
           </h1>
 
           {/* Subtext */}
@@ -78,12 +78,12 @@ export default function HeroSection() {
         <div className="relative h-[500px] md:h-[600px] w-full flex items-center justify-center md:justify-end perspective-1000">
           {/* Back Phone */}
           <div className="absolute top-28 right-0  w-[200px] md:w-[230px] transform-gpu will-change-transform z-10">
-            <Iphone src="/demo-phone-pic.avif" priority />
+            <Iphone src="/workout.png" priority />
           </div>
 
           {/* Front Phone */}
           <div className="absolute top-16 right-12 md:right-44 w-[200px] md:w-[230px] transform-gpu will-change-transform rotate-[0deg] ">
-            <Iphone src="/demo-phone-pic.avif" priority />
+            <Iphone src="/workout.png" priority />
           </div>
         </div>
       </div>

@@ -33,7 +33,7 @@ export default function Feature({
                         <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                             {title}
                         </div>
-                        <div className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
+                        <div className="self-stretch text-left text-[#605A57] text-sm leading-7 font-sans font-medium">
                             {description}
                         </div>
                     </div>

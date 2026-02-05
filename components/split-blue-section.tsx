@@ -36,10 +36,10 @@ export default function SplitBlueSection() {
             <div className="w-1/2 pt-10 pl-20 pb-28 pr-12 flex flex-col justify-start h-full items-start gap-6 ">
                 <div className="self-stretch flex flex-col justify-start items-start gap-3">
                     <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-                        Poglejte ekipa za SetWise-om?
+                        Built by lifters, for lifters.
                     </div>
                     <div className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
-                        SetWise ekipa je tu da pomogne vašem poslovanju da raste. Poglejte si kdo razvija aplikacijo.
+                        SetWise is built with passion and tested in real workouts - refined through feedback and improved with every update.
                     </div>
                 </div>
                 <div className="w-full max-w-[497px] flex flex-col justify-start items-start gap-12">
@@ -47,7 +47,7 @@ export default function SplitBlueSection() {
                         <div className="h-10 px-12 py-[6px] relative bg-[#37322F] shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#2A2520] transition-colors">
                             <div className="w-44 h-[41px] absolute left-0 top-0 bg-linear-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
                             <div className="flex flex-col justify-center text-white text-[13px] font-medium leading-5 font-sans">
-                                Start for free
+                                Download for free
                             </div>
                         </div>
                     </div>

@@ -23,6 +23,7 @@ export interface AnimatedBeamProps {
   startYOffset?: number
   endXOffset?: number
   endYOffset?: number
+  gradientLength?: number
 }
 
 export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
@@ -35,33 +36,23 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   duration = Math.random() * 3 + 4,
   delay = 0,
   pathColor = "gray",
-  pathWidth = 2,
-  pathOpacity = 0.2,
-  gradientStartColor = "#ffaa40",
+  pathWidth = 1,
+  pathOpacity = 0.3,
+  gradientStartColor = "#9c40ff",
   gradientStopColor = "#9c40ff",
   startXOffset = 0,
   startYOffset = 0,
   endXOffset = 0,
   endYOffset = 0,
+  gradientLength = 10,
 }) => {
   const id = useId()
   const [pathD, setPathD] = useState("")
   const [svgDimensions, setSvgDimensions] = useState({ width: 0, height: 0 })
 
-  // Calculate the gradient coordinates based on the reverse prop
-  const gradientCoordinates = reverse
-    ? {
-      x1: ["90%", "-10%"],
-      x2: ["100%", "0%"],
-      y1: ["0%", "0%"],
-      y2: ["0%", "0%"],
-    }
-    : {
-      x1: ["10%", "110%"],
-      x2: ["0%", "100%"],
-      y1: ["0%", "0%"],
-      y2: ["0%", "0%"],
-    }
+  // Manually calculate start/end points using logic similar to updatePath
+  const [startPoint, setStartPoint] = useState({ x: 0, y: 0 })
+  const [endPoint, setEndPoint] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const updatePath = () => {
@@ -88,6 +79,8 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
           ? `M ${startX},${startY} L ${endX},${endY}`
           : `M ${startX},${startY} Q ${(startX + endX) / 2},${controlY} ${endX},${endY}`
         setPathD(d)
+        setStartPoint({ x: startX, y: startY })
+        setEndPoint({ x: endX, y: endY })
       }
     }
 
@@ -118,6 +111,79 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
     endXOffset,
     endYOffset,
   ])
+
+  // Calculate Gradient Keyframes
+  // Assume curvature=0 for gradient calculation (linear)
+  const dx = endPoint.x - startPoint.x
+  const dy = endPoint.y - startPoint.y
+  const distance = Math.sqrt(dx * dx + dy * dy)
+  const angle = Math.atan2(dy, dx)
+
+  // Gradient length vector components
+  // To keep it simple, we animate the gradient line from start to end.
+  // We want the gradient to be `gradientLength` long.
+  // The 'visual' beam is defined by the stops (here 0 -> 100% of the linearGradient usage).
+  // But wait, <linearGradient> coordinates are x1,y1,x2,y2. 
+  // If we set x1,y1 to the 'tail' and x2,y2 to the 'head' of the beam:
+  // The effective beam logic needs properly spaced stops or moving coordinates.
+  // 
+  // Let's effectively move a segment of length `gradientLength` along the path.
+  // Segment Vector: (cos(angle)*len, sin(angle)*len)
+  const gradientLenX = Math.cos(angle) * gradientLength
+  const gradientLenY = Math.sin(angle) * gradientLength
+
+  // We animate the "Tail" of the gradient.
+  // Tail start: StartPoint - SegmentVector (so it's just entering) - wait, user wants repeated flow?
+  // Usually these beams fade in/out. 
+  // Let's emulate the previous logic's visual window but with fixed pixels.
+  // Previous logic: gradient covered the whole path, and stops animated.
+  // New logic: Gradient coordinates (x1, y1) -> (x2, y2) define the beam ITSELF.
+  // So the gradient box IS the beam. Stops are fixed (e.g. 0% transp, 50% color, 100% transp).
+
+  const initialX = reverse ? endPoint.x + gradientLenX : startPoint.x - gradientLenX
+  const initialY = reverse ? endPoint.y + gradientLenY : startPoint.y - gradientLenY
+  const finalX = reverse ? startPoint.x : endPoint.x
+  const finalY = reverse ? startPoint.y : endPoint.y
+
+  // Actually, to fully clear the path:
+  // Start: Head at StartPoint. Tail at StartPoint - Len.
+  // End: Tail at EndPoint. Head at EndPoint + Len.
+  // So animated coordinate "tail" travels from (Start - Len) to (End).
+
+  // Correction for precise "flow": 
+  // If reverse: Start at End, go to Start.
+  // tailStart = EndPoint
+  // tailEnd = StartPoint - GradientVector
+
+  // Let's refine for "reverse" logic simplified: just swap start/end logic conceptually.
+  const startX = reverse ? endPoint.x : startPoint.x
+  const startY = reverse ? endPoint.y : startPoint.y
+  const endX = reverse ? startPoint.x : endPoint.x
+  const endY = reverse ? startPoint.y : endPoint.y
+
+  // Recalculate diffs for direction
+  const dX = endX - startX
+  const dY = endY - startY
+  // magnitude of direction
+  const mag = Math.sqrt(dX * dX + dY * dY)
+  // unit vector
+  const uX = mag ? dX / mag : 0
+  const uY = mag ? dY / mag : 0
+
+  // Determine start/end states for the animation
+  const startKeyFrame = {
+    x1: startX - uX * gradientLength,
+    y1: startY - uY * gradientLength,
+    x2: startX,
+    y2: startY,
+  }
+
+  const endKeyFrame = {
+    x1: endX,
+    y1: endY,
+    x2: endX + uX * gradientLength,
+    y2: endY + uY * gradientLength,
+  }
 
   return (
     <svg
@@ -151,33 +217,28 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
           id={id}
           gradientUnits={"userSpaceOnUse"}
           initial={{
-            x1: "0%",
-            x2: "0%",
-            y1: "0%",
-            y2: "0%",
+            x1: 0,
+            x2: 0,
+            y1: 0,
+            y2: 0,
           }}
           animate={{
-            x1: gradientCoordinates.x1,
-            x2: gradientCoordinates.x2,
-            y1: gradientCoordinates.y1,
-            y2: gradientCoordinates.y2,
+            x1: [startKeyFrame.x1, endKeyFrame.x1],
+            y1: [startKeyFrame.y1, endKeyFrame.y1],
+            x2: [startKeyFrame.x2, endKeyFrame.x2],
+            y2: [startKeyFrame.y2, endKeyFrame.y2],
           }}
           transition={{
             delay,
             duration,
-            ease: [0.16, 1, 0.3, 1], // https://easings.net/#easeOutExpo
+            ease: "linear",
             repeat: Infinity,
             repeatDelay: 0,
           }}
         >
-          <stop stopColor={gradientStartColor} stopOpacity="0"></stop>
-          <stop stopColor={gradientStartColor}></stop>
-          <stop offset="32.5%" stopColor={gradientStopColor}></stop>
-          <stop
-            offset="100%"
-            stopColor={gradientStopColor}
-            stopOpacity="0"
-          ></stop>
+          <stop offset="0%" stopColor={gradientStartColor} stopOpacity="0"></stop>
+          <stop offset="50%" stopColor={gradientStartColor} stopOpacity="1"></stop>
+          <stop offset="100%" stopColor={gradientStopColor} stopOpacity="0"></stop>
         </motion.linearGradient>
       </defs>
     </svg>

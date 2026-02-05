@@ -9,34 +9,44 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "What is Brillance and who is it for?",
+    question: "What analytics does SetWise provide?",
     answer:
-      "Brillance is a comprehensive billing automation platform designed for businesses that need custom contract management. It's perfect for SaaS companies, service providers, and enterprises looking to streamline their billing processes.",
+      "Progress charts and filters per exercise and time range, so you can visualize strength trends, consistency, and performance changes at a glance.",
   },
   {
-    question: "How does the custom contract billing work?",
+    question: "How is my data stored?",
     answer:
-      "Our platform automatically processes your custom contracts, calculates billing amounts based on your specific terms, and generates invoices. You can set up complex pricing structures, usage-based billing, and custom billing cycles.",
+      "Your data is encrypted at rest and in transit. We believe your workout data belongs to you, so we offer full JSON/CSV exports at any time.",
   },
   {
-    question: "Can I integrate Brillance with my existing tools?",
+    question: "Is SetWise fast to use during a workout?",
     answer:
-      "Yes! Brillance integrates seamlessly with popular CRM systems, accounting software, and payment processors. We support APIs and webhooks for custom integrations with your existing workflow.",
+      "Yes - logging is designed for speed. Most sets take seconds to record, with advanced options (RPE/RIR, tempo, notes) available when you need them.",
   },
   {
-    question: "What kind of support do you provide?",
+    question: "Can it handle my training style (strength, bodybuilding, powerbuilding)?",
     answer:
-      "We offer 24/7 customer support, dedicated account managers for enterprise clients, comprehensive documentation, and onboarding assistance to help you get started quickly.",
+      "Yes. It supports straight sets, supersets, and advanced set types (e.g., drop sets, rest-pause, myo-reps), so it fits most programs.",
   },
   {
-    question: "Is my data secure with Brillance?",
+    question: "How does “Paste Import” work - and what formats does it understand?",
     answer:
-      "Absolutely. We use enterprise-grade security measures including end-to-end encryption, SOC 2 compliance, and regular security audits. Your data is stored in secure, redundant data centers.",
+      "Paste any workout as plain text (from Notes, WhatsApp, Excel, or copied text). SetWise uses LLM - powered parsing to recognize exercises, sets, reps, and common set types - then converts it into a clean, structured workout you can log instantly.It’s designed to handle different writing styles and messy formatting.",
   },
   {
-    question: "How do I get started with Brillance?",
+    question: "Will this feel too advanced or complicated?",
     answer:
-      "Getting started is simple! Sign up for our free trial, connect your existing systems, and our onboarding team will help you set up your first custom billing workflow within 24 hours.",
+      "No. SetWise adapts to your style - keep it simple with weight/reps only, or toggle Advanced Tracking when you want details like RPE / RIR, tempo, ROM, and intensifiers.",
+  },
+  {
+    question: "Can I see progress per exercise (not just overall)?",
+    answer:
+      "Yes - analytics are exercise-level, with filters for time ranges and key metrics so you can zoom in on any lift.",
+  },
+  {
+    question: "Does it work offline in the gym?",
+    answer:
+      "Yes. You can log offline and sync later when you’re back online.",
   },
 ]
 

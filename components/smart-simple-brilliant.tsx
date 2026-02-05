@@ -1,8 +1,9 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 import { cn } from "@/lib/utils"
+import { motion, useInView } from "framer-motion"
 
 interface SmartSimpleBrilliantProps {
   width?: number | string
@@ -39,6 +40,7 @@ export default function SmartSimpleBrilliant({
   const [activePoint, setActivePoint] = useState(defaultPoint)
 
   const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 })
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return
@@ -100,12 +102,26 @@ export default function SmartSimpleBrilliant({
             <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
           </linearGradient>
+          <clipPath id="graph-line-clip">
+            <motion.rect
+              x="0"
+              y="0"
+              width="400"
+              height="300"
+              initial={{ width: 0 }}
+              animate={{ width: isInView ? 400 : 0 }}
+              transition={{ duration: 1.5, delay: 0.1, ease: "easeInOut" }}
+            />
+          </clipPath>
         </defs>
 
         {/* Area fill */}
-        <path
+        <motion.path
           d="M0,200 C80,180 120,190 180,140 S300,160 400,100 V300 H0 Z"
           fill="url(#blue-gradient)"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isInView ? 1 : 0 }}
+          transition={{ duration: 0.3, delay: 0, ease: "easeOut" }}
         />
 
         {/* The Curve Line */}
@@ -117,17 +133,21 @@ export default function SmartSimpleBrilliant({
           strokeLinecap="round"
           strokeLinejoin="round"
           vectorEffect="non-scaling-stroke"
+          clipPath="url(#graph-line-clip)"
         />
       </svg>
 
       {/* Overlays positioned at the active point */}
-      <div
-        className="absolute w-full h-full pointer-events-none transition-all duration-75 ease-linear"
+      <motion.div
+        className="absolute w-full h-full pointer-events-none"
         style={{ left: 0, top: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isInView ? 1 : 0 }}
+        transition={{ duration: 0.5, delay: 1.5, ease: "easeOut" }}
       >
         {/* Vertical Line Container */}
         <div
-          className="absolute"
+          className="absolute transition-all duration-75 ease-linear"
           style={{
             left: `${pointXPercent}%`,
             top: `${pointYPercent}%`,
@@ -141,12 +161,13 @@ export default function SmartSimpleBrilliant({
 
         {/* The Point and Tooltip Container */}
         <div
-          className="absolute"
+          className="absolute transition-all duration-75 ease-linear"
           style={{
             left: `${pointXPercent}%`,
             top: `${pointYPercent}%`,
             transform: 'translate(-50%, -50%)' // Center the dot on the coordinate
           }}
+
         >
           {/* Main Blue Dot */}
           <div className="relative w-3 h-3 bg-blue-500 rounded-full ring-4 ring-blue-500/20 shadow-sm z-10 flex items-center justify-center">
@@ -168,7 +189,7 @@ export default function SmartSimpleBrilliant({
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
