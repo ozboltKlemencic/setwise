@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react"
 import ReviewCard from "./ui/cards/ReviewCard"
 import { motion, useMotionValue, useAnimationFrame, useAnimate, type AnimationPlaybackControls } from "framer-motion"
+import { SparklesText } from "./ui/sparkles-text";
 
 const reviews = [
     {
@@ -92,85 +93,116 @@ export default function TestimonialsSection() {
     }, [animate])
 
     return (
-        <div className="w-full flex flex-col h-[500px] lg:flex-row justify-center items-center   border-b  border-[rgba(55,50,47,0.12)]  lg:max-w-[1060px] lg:w-[1060px]   ">
-
-            {/* Left Decorative Pattern */}
-            <div className="w-6 self-stretch relative overflow-hidden hidden md:block">
-                <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
-                    {Array.from({ length: 200 }).map((_, i) => (
-                        <div
-                            key={i}
-                            className="self-stretch h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
-                        ></div>
-                    ))}
-                </div>
+        <div>
+            <div className="w-full h-6 relative opacity-80 border-b border-[rgba(55,50,47,0.12)] overflow-hidden">
+                {Array.from({ length: 300 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                        style={{
+                            top: `${i * 16 - 120}px`,
+                            left: "-100%",
+                            width: "300%",
+                        }}
+                    ></div>
+                ))}
             </div>
-            <div className="flex-1 flex flex-col md:flex-row justify-center items-center gap-6 py-12 md:py-0 border-r border-l border-[rgba(55,50,47,0.12)] h-full">
-                <div className=" max-w-[586px] w-1/2 px-6 pl-6 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-6 relative z-20">
-                    <div className="self-stretch flex flex-col justify-start items-start gap-3">
-                        <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-                            Loved by serious lifters. Proven in real training.
-                        </div>
-                        <div className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
-                            Used daily by coaches, athletes, and serious gym-goers. No fluff, no hype - just a powerful tool that helps you get stronger, smarter, and more consistent.
-                        </div>
+            <div className="w-full flex flex-col h-[640px] lg:flex-row justify-center items-center      border-[rgba(55,50,47,0.12)]     ">
+
+                {/* Left Decorative Pattern */}
+                <div className="w-6 self-stretch relative overflow-hidden hidden md:block">
+                    <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
+                        {Array.from({ length: 200 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="self-stretch h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                            ></div>
+                        ))}
                     </div>
-                    <div className="w-full max-w-[497px] flex flex-col justify-start items-start gap-12">
-                        <div className="flex justify-start items-center gap-4">
-                            <div className="h-10 px-12 py-[6px] relative bg-[#37322F] shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#2A2520] transition-colors">
-                                <div className="w-44 h-[41px] absolute left-0 top-0 bg-linear-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
-                                <div className="flex flex-col justify-center text-white text-[13px] font-medium leading-5 font-sans">
-                                    Download for free
+                </div>
+
+                {/* content */}
+                <div className="flex-1 flex flex-col shadow-[0px_0px_3px_3px_rgba(60,60,60,0.00)] md:flex-row justify-center items-center gap-6 py-12 border-l border-r bborder border-[rgba(55,50,47,0.12)] h-full">
+                    <div className=" max-w-[586px] w-1/2 px-10 pl-12 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-6 relative z-20">
+                        <div className="self-stretch flex flex-col justify-start items-start gap-3">
+                            <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
+                                <SparklesText shapes={['heart', 'star']} colors={{ first: "#FFD700", second: "#EAB308" }}>Loved by</SparklesText> serious lifters. Proven in real training.
+                            </div>
+                            <div className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
+                                Used daily by coaches, athletes, and serious gym-goers. No fluff, no hype - just a powerful tool that helps you get stronger, smarter, and more consistent.
+                            </div>
+                        </div>
+                        <div className="w-full max-w-[497px] flex flex-col justify-start items-start gap-12">
+                            <div className="flex justify-start items-center gap-4">
+                                <div className="h-10 px-12 py-[6px] relative bg-[#37322F] shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#2A2520] transition-colors">
+                                    <div className="w-44 h-[41px] absolute left-0 top-0 bg-linear-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
+                                    <div className="flex flex-col justify-center text-white text-[13px] font-medium leading-5 font-sans">
+                                        Download for free
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div
-                    ref={containerRef}
-                    className="w-1/2 relative overflow-hidden h-full flex flex-col pl-6"
-                    onMouseEnter={() => animationRef.current?.pause()}
-                    onMouseLeave={() => animationRef.current?.play()}
-                >
-                    {/* Gradient Overlays */}
-                    <div className="absolute top-0 left-0 w-full h-20 bg-linear-to-b from-[#F7F5F3] to-transparent z-10 pointer-events-none"></div>
-                    <div className="absolute bottom-0 left-0 w-full h-20 bg-linear-to-t from-[#F7F5F3] to-transparent z-10 pointer-events-none"></div>
-
-                    <motion.div
-                        ref={scope}
-                        className="flex flex-col pl-8 pr-6"
-                        style={{
-                            willChange: "transform",
-                            transform: "translateZ(0)"
-                        }}
+                    <div
+                        ref={containerRef}
+                        className="w-1/2 relative overflow-hidden h-full flex flex-col pl-6  my-6"
+                        onMouseEnter={() => animationRef.current?.pause()}
+                        onMouseLeave={() => animationRef.current?.play()}
                     >
-                        {duplicatedReviews.map((review, index) => (
-                            <ScaledCard key={index} containerRef={containerRef}>
-                                <ReviewCard
-                                    name={review.name}
-                                    role={review.role}
-                                    company={review.company}
-                                    reviewText={review.reviewText}
-                                    rating={review.rating}
-                                    avatarUrl={review.avatarUrl}
-                                    className="w-full shrink-0 mb-3"
-                                />
-                            </ScaledCard>
+                        {/* Gradient Overlays */}
+                        <div className="absolute top-0 left-0 w-full h-20 bg-linear-to-b from-[#F7F5F3] to-transparent z-10 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-full h-20 bg-linear-to-t from-[#F7F5F3] to-transparent z-10 pointer-events-none"></div>
+
+                        <motion.div
+                            ref={scope}
+                            className="flex flex-col pl-8 pr-6"
+                            style={{
+                                willChange: "transform",
+                                transform: "translateZ(0)"
+                            }}
+                        >
+                            {duplicatedReviews.map((review, index) => (
+                                <ScaledCard key={index} containerRef={containerRef}>
+                                    <ReviewCard
+                                        name={review.name}
+                                        role={review.role}
+                                        company={review.company}
+                                        reviewText={review.reviewText}
+                                        rating={review.rating}
+                                        avatarUrl={review.avatarUrl}
+                                        className="w-full shrink-0 my-3"
+                                    />
+                                </ScaledCard>
+                            ))}
+                        </motion.div>
+                    </div>
+                </div>
+
+                {/* Right Decorative Pattern */}
+                <div className="w-6 self-stretch relative overflow-hidden hidden md:block">
+                    <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
+                        {Array.from({ length: 200 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="self-stretch h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                            ></div>
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
+            </div >
+            <div className="w-full h-6 relative opacity-80 border-t border-b border-[rgba(55,50,47,0.12)] overflow-hidden">
+                {Array.from({ length: 300 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                        style={{
+                            top: `${i * 16 - 120}px`,
+                            left: "-100%",
+                            width: "300%",
+                        }}
+                    ></div>
+                ))}
             </div>
-            {/* Right Decorative Pattern */}
-            <div className="w-6 self-stretch relative overflow-hidden hidden md:block">
-                <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
-                    {Array.from({ length: 200 }).map((_, i) => (
-                        <div
-                            key={i}
-                            className="self-stretch h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
-                        ></div>
-                    ))}
-                </div>
-            </div>
-        </div >
+        </div>
     );
 }
