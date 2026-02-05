@@ -60,7 +60,8 @@ export default function LandingPage() {
           {/* Feature 2: Analytics */}
           <Feature
             isReverse={false}
-            title="From copy-paste to a workout."
+            title={<h2>From  <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">copy-paste</span>  to a workout.</h2>}
+
             description={
               <>
                 Paste your plan we structure it automatically. No more manual setup, no more formatting headaches - just clean, organized workout ready to log.
@@ -72,10 +73,10 @@ export default function LandingPage() {
 
           <Feature
             isReverse={true}
-            title="See your progress at a glance."
+            title={<h2>See your <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">progress</span> at a glance</h2>}
             description={
               <>
-                Charts that make trends obvious - filter by exercise and time to track every lift.
+                Charts that make trends obvious - filter by exercise and time to track every lift. Advanced analytics help you understand your performance patterns and make informed training decisions.
               </>
             }
             buttonText="View progress"

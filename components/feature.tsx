@@ -6,7 +6,7 @@ import { Iphone } from "./ui/mobileDevices/Phone"
 
 interface FeatureProps {
     isReverse?: boolean
-    title?: string
+    title?: React.ReactNode
     description?: React.ReactNode
     buttonText?: string
     imageSrc?: string
@@ -32,7 +32,7 @@ export default function Feature({
     return (
         <div className="w-full relative  group flex flex-col  justify-center items-center gap-2 overflow-hidden">
             {/* Content */}
-            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'} border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center  relative z-10 h-[530px] max-h-[580px]`}>
+            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'} border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center  relative z-10 h-[580px] max-h-[580px]`}>
 
                 <div className=" max-w-[586px] w-1/2 h-full   px-16 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-center items-center gap-6 relative z-20">
                     <div className="self-stretch flex flex-col justify-start items-start gap-3">

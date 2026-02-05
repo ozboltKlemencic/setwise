@@ -78,7 +78,19 @@ export default function Feature2({
                     <div className="absolute top-2 left-2 right-2 bottom-2  overflow-hidden bg-blue-500  rounded-lg shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)] ">
                         {/* Background Pattern */}
                         {/* iPhone Container */}
-
+                        <div className="w-full h-full relative  [mask-image:radial-gradient(300px_circle_at_center,white,transparent)]">
+                            {Array.from({ length: 300 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.4)] outline-offset-[-0.25px]"
+                                    style={{
+                                        top: `${i * 16 - 120}px`,
+                                        left: "-100%",
+                                        width: "300%",
+                                    }}
+                                ></div>
+                            ))}
+                        </div>
                         <motion.div
                             ref={phoneRef}
                             initial={{ y: "-80%" }}
