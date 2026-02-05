@@ -10,7 +10,7 @@ import NumbersThatSpeak from "./numbers-that-speak"
 import { OrbitingCircles } from "@/components/ui/orbiting-circles"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { cn } from "@/lib/utils"
-import { Dumbbell, Timer, Zap, TrendingUp, NotebookPen, Ruler, ArrowUpDown } from "lucide-react"
+import { Dumbbell, Timer, Zap, TrendingUp, NotebookPen, Ruler, ArrowUpDown, ChevronRight, Calendar, CalendarDays } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import DialogStickyFooterDemo from "./dialog"
 
@@ -72,85 +72,90 @@ function DynamicOrbitingCircles() {
 // Workout notification item interface
 interface WorkoutItem {
     name: string
-    description: string
-    icon: string
-    color: string
-    time: string
+    date: string
+    duration: string
+    volume: string
+    status: string
     highlight?: boolean
 }
 
-// Sample workout history data
-const workoutHistory: WorkoutItem[] = [
+const notifications: WorkoutItem[] = [
+    {
+        name: "Lower 2",
+        date: "Wed, Feb 4 • 03:48 PM",
+        duration: "42 min",
+        volume: "1.7k kg",
+        status: "STEADY",
+    },
     {
         name: "Chest & Triceps",
-        description: "Completed 8 exercises",
-        time: "2h ago",
-        icon: "💪",
-        color: "#3B82F6",
+        date: "Mon, Feb 2 • 05:12 PM",
+        duration: "55 min",
+        volume: "2.1k kg",
+        status: "PR",
     },
     {
-        name: "Personal Record!",
-        description: "Bench Press 100kg",
-        time: "2h ago",
-        icon: "🏆",
-        color: "#F59E0B",
-    },
-    {
-        name: "Morning Run",
-        description: "5.2km in 28 minutes",
-        time: "Yesterday",
-        icon: "🏃",
-        color: "#10B981",
+        name: "Back & Biceps",
+        date: "Sun, Jan 31 • 10:00 AM",
+        duration: "48 min",
+        volume: "3.5k kg",
+        status: "HIGH VOL",
     },
     {
         name: "Leg Day",
-        description: "Completed 6 exercises",
-        time: "2 days ago",
-        icon: "🦵",
-        color: "#8B5CF6",
+        date: "Thu, Jan 28 • 06:30 PM",
+        duration: "65 min",
+        volume: "4.2k kg",
+        status: "HEAVY",
         highlight: true,
     },
 ]
 
-// Single iteration of workout history
-const notifications = workoutHistory
-
-// Workout notification component
-const WorkoutNotification = ({ name, description, icon, color, time, highlight }: WorkoutItem) => {
+const WorkoutNotification = ({ name, date, duration, volume, status, highlight }: WorkoutItem) => {
     const Content = (
         <figure
             className={cn(
-                "relative mx-auto min-h-fit w-full  max-w-[400px] cursor-pointer  rounded-sm p-3",
+                "relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer rounded-2xl p-4",
                 "transition-all duration-200 ease-in-out ",
-
-                "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
-                highlight && "bg-linear-to-b from-blue-500/5 hover:to-white border border-blue-500 hover:bg-linear-to-b hover:from-blue-500/5  to-white transition-all duration-300 "
+                "bg-white border border-neutral-200 shadow-md",
+                highlight && "bg-linear-to-b from-blue-500/10 to-white border-blue-500"
             )}
         >
             {highlight && (
-                <div className="absolute -top-2.5 right-8 border border-blue-500 bg-white text-neutral-800 text-[9px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
+                <div className="absolute -top-2.5 right-10 border border-blue-500 bg-white text-neutral-800 text-[9px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
                     Click
                 </div>
             )}
-            <div className="flex flex-row items-center gap-3 ">
-                <div
-                    className="flex size-10 items-center justify-center rounded-sm"
-                    style={{ backgroundColor: color }}
-                >
-                    <span className="text-lg">{icon}</span>
+            <div className="flex flex-col gap-3">
+                {/* Header */}
+                <div className="flex flex-row items-center justify-between">
+                    <span className="text-base font-semibold text-gray-900">{name}</span>
+                    <ChevronRight className="h-4 w-4 text-gray-400" />
                 </div>
-                <div className="flex flex-col overflow-hidden flex-1">
-                    <div className="flex flex-row items-center justify-between">
-                        <figcaption className="flex flex-row items-center text-base font-medium whitespace-pre">
-                            <span className="text-sm">{name}</span>
-                            <span className="mx-1 text-gray-400">·</span>
-                            <span className="text-xs text-gray-500">{time}</span>
-                        </figcaption>
+
+                {/* Date */}
+                <div className="flex flex-row items-center gap-1.5 text-xs text-gray-500">
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    <span>{date}</span>
+                </div>
+
+                {/* Stats & Status */}
+                <div className="flex flex-row items-end justify-between mt-1">
+                    <div className="flex flex-row">
+                        <div className="flex flex-col gap-0.5">
+                            <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">DURATION</span>
+                            <span className="text-sm font-medium text-gray-900">{duration}</span>
+                        </div>
+                        <div className="h-full w-4 bg-gray-900 mx-2"></div>
+                        <div className="flex flex-col gap-0.5">
+                            <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">VOLUME</span>
+                            <span className="text-sm font-medium text-gray-900">{volume}</span>
+                        </div>
                     </div>
 
-                    <p className="text-xs font-normal text-gray-500">
-                        {description}
-                    </p>
+                    <div className="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 text-[10px] font-bold text-gray-600 tracking-wide uppercase">
+                        {status}
+                    </div>
                 </div>
             </div>
         </figure>
@@ -175,7 +180,7 @@ function WorkoutHistoryList() {
                     <WorkoutNotification {...item} key={idx} />
                 ))}
             </AnimatedList>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#F7F5F3] to-transparent"></div>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/8 bg-gradient-to-t from-[#F7F5F3] to-transparent"></div>
         </div>
     )
 }
@@ -236,7 +241,7 @@ export default function BentoGridSection() {
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-[rgba(55,50,47,0.12)]">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start lg:min-h-[500px]">
+                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start lg:min-h-[550px] lg:max-h-[550px]">
                         <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Track. Analyze. Improve.
@@ -256,7 +261,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start   lg:min-h-[500px]">
+                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start   lg:min-h-[550px] lg:max-h-[550px]">
                         <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
                                 No internet. No excuses.
@@ -276,7 +281,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="border-r-0 lg:min-h-[500px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start    relative  items-start">
+                    <div className="border-r-0 lg:min-h-[550px] lg:max-h-[550px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start    relative  items-start">
                         <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Details drive progress
@@ -293,7 +298,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Right - Workout History */}
-                    <div className="flex flex-col lg:min-h-[500px] justify-start items-start ">
+                    <div className="flex flex-col lg:min-h-[550px] lg:max-h-[550px] justify-start items-start ">
                         <div className="flex flex-col w-full gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4 md:pb-4   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Progress Overview
