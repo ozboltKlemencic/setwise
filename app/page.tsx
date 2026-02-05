@@ -10,6 +10,7 @@ import Feature from "@/components/feature"
 import Navigation from "@/components/navigation"
 import HeroSection from "@/components/hero-section"
 import BentoGridSection from "@/components/bento-grid-section"
+import Feature2 from "@/components/feature2"
 
 export default function LandingPage() {
 
@@ -28,34 +29,29 @@ export default function LandingPage() {
           {/* Bento Grid Section */}
           <BentoGridSection />
 
-          {/* Documentation Section 
-              <DocumentationSection />
-
-*/}
-
-
-          {/* Features Section 
-              <FeaturesSection />
-*/}
-          {/* Feature 1: Smart Logging */}
-          <Feature
+          <Feature2
             isReverse={false}
-            title="Train with precision. Progress with proof."
+            title={
+              <h2 className="" >
+                Train with precision.
+                <span className="font-bold px-1 pl-2 bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Progress</span>  with <span className="font-bold px-1">proof.</span>
+              </h2>
+            }
             description={
               <>
-                Log sets in seconds — with
+                Log sets in seconds - with
 
-                **RPE/RIR, tempo, ROM, and intensifiers**
+                <span className="font-bold px-1">RPE/RIR, tempo, ROM, and intensifiers</span>
 
                 built in. Add notes per exercise or per set, then
 
-                **instantly compare every set to your last workout**
+                <span className="font-bold px-1">instantly compare every set to your last workout</span>
 
                 to see what improved.
               </>
             }
             buttonText="Start training"
-            imageSrc="/demo-phone-pic.avif"
+            imageSrc="/workout.png"
           />
 
 

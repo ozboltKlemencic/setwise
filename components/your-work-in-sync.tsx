@@ -71,7 +71,7 @@ export default function YourWorkInSync({
         <MotionCard
           ref={leftRef}
           className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300"
-          initial={{ opacity: 0.6, scale: 0.9 }}
+          initial={{ opacity: 0.6, scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
         >
@@ -81,8 +81,8 @@ export default function YourWorkInSync({
 
         <MotionCard
           ref={centerRef}
-          className="size-12 sm:size-24 bg-linear-to-tr from-blue-500/10 via-blue-100/5 to-blue-500/10 text-neutral-500/50 overflow-hidden p-0 relative "
-          initial={{ opacity: 1, scale: 0.9 }}
+          className="size-12 sm:size-24 bg-linear-to-tr from-blue-500/10 via-blue-100/5 to-blue-500/10 text-neutral-400 overflow-hidden p-0 relative "
+          initial={{ opacity: 1, scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
         >
@@ -106,7 +106,7 @@ export default function YourWorkInSync({
         <MotionCard
           ref={rightRef}
           className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300 "
-          initial={{ scale: 0.9 }}
+          initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
         >
@@ -118,7 +118,7 @@ export default function YourWorkInSync({
       <motion.div
         ref={bottomRef}
         className="z-10 bg-white border opacity-60 border-emerald-200/70 text-neutral-600/80  text-xs font-medium px-4 py-1.5 rounded-md flex items-center justify-center shadow-md"
-        initial={{ scale: 0.9 }}
+        initial={{ scale: 0.8 }}
         animate={{ scale: isInView ? 1 : 0.9 }}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
       >

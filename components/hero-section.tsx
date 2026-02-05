@@ -18,16 +18,16 @@ export default function HeroSection() {
         <div className="flex flex-col items-start text-left">
           {/* Badge */}
 
-          <ShimmerButton className="mb-8 border border-neutral-200" shimmerDuration={"3s"} shimmerSize={"0.05em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"#689efc"}>
+          <ShimmerButton className="mb-6 border border-neutral-200" shimmerDuration={"3s"} shimmerSize={"0.05em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"#689efc"}>
             <span className="text-center text-xs leading-none font-medium tracking-tight whitespace-pre-wrap text-gray-600  ">
-              Introducing intelligent tracking
+              Now accepting beta users
             </span>
           </ShimmerButton>
 
           {/* Headline */}
           <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-5xl font-bold text-left text-[#1A1A1A] tracking-tight mb-2.5 leading-[1.05] font-sans">
             Log Workouts <br />
-            <span className="text-blue-600">Get Stronger</span> <br />
+            <span className="bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Get Stronger</span> <br />
             Stay disciplined
           </h1>
 

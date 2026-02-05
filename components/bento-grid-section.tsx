@@ -212,7 +212,7 @@ export default function BentoGridSection() {
     return (
         <div className="w-full border-b border-t border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
             {/* Header Section */}
-            <div className="self-stretch px-4 sm:px-6 md:px-8 lg:px-0 lg:max-w-[1060px] lg:w-[1060px] py-8 sm:py-12 md:py-12 border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center gap-6">
+            <div className="self-stretch px-4 sm:px-6 md:px-8 lg:px-0 w-full py-8 sm:py-12 md:py-12 border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center gap-6">
                 <div className="w-full max-w-[616px] lg:w-[616px] px-4 sm:px-6 py-4 sm:py-5 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-3 sm:gap-4">
                     <Badge
                         icon={
@@ -223,7 +223,7 @@ export default function BentoGridSection() {
                                 <rect x="7" y="7" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
                             </svg>
                         }
-                        text="Bento grid"
+                        text="Features"
                     />
                     <div className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
                         Your fitness journey, simplified and powerful
@@ -272,7 +272,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start   lg:min-h-[550px] lg:max-h-[550px]">
+                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start lg:min-h-[550px] lg:max-h-[550px]">
                         <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
                                 No internet. No excuses.
