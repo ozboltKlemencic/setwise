@@ -86,17 +86,17 @@ export default function YourWorkInSync({
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
         >
-          <Smartphone className="size-8 sm:size-12" />
+          <Smartphone className="size-8 sm:size-10" />
           <BorderBeam
-            duration={3}
+            duration={2}
             borderWidth={1}
-            size={50}
+            size={60}
             className="from-blue-500/30 via-blue-600 to-blue-500/30"
           />
           <BorderBeam
-            duration={3}
-            delay={1.5}
-            size={50}
+            duration={2}
+            delay={1}
+            size={60}
             borderWidth={1}
             className="from-blue-500/30 via-blue-600 to-blue-500/30"
           />
@@ -117,7 +117,7 @@ export default function YourWorkInSync({
       {/* Connected Badge */}
       <motion.div
         ref={bottomRef}
-        className="z-10 bg-white border opacity-60 border-emerald-300/70 text-emerald-500/80  text-xs font-medium px-4 py-1.5 rounded-md flex items-center justify-center shadow-md"
+        className="z-10 bg-white border opacity-60 border-emerald-200/70 text-neutral-600/80  text-xs font-medium px-4 py-1.5 rounded-md flex items-center justify-center shadow-md"
         initial={{ scale: 0.9 }}
         animate={{ scale: isInView ? 1 : 0.9 }}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
