@@ -83,7 +83,7 @@ export default function HeroSection() {
 
           {/* Front Phone */}
           <div className="absolute top-16 right-12 md:right-44 w-[200px] md:w-[230px] transform-gpu will-change-transform rotate-[0deg] ">
-            <Iphone src="/workout.png" priority />
+            <Iphone src="/home.png" priority />
           </div>
         </div>
       </div>

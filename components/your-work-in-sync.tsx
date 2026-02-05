@@ -2,6 +2,7 @@
 
 import React, { forwardRef, useRef } from "react"
 import { cn } from "@/lib/utils"
+import { motion, useInView } from "framer-motion"
 import { AnimatedBeam } from "@/components/ui/animated-beam"
 import StarBorder from "./StarBorder"
 
@@ -32,7 +33,7 @@ const Card = forwardRef<HTMLDivElement, { className?: string; children?: React.R
   }
 )
 Card.displayName = "Card"
-
+const MotionCard = motion(Card)
 
 
 export default function YourWorkInSync({
@@ -42,6 +43,7 @@ export default function YourWorkInSync({
   theme = "light",
 }: YourWorkInSyncProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, amount: 0.2 })
   const leftRef = useRef<HTMLDivElement>(null)
   const centerRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
@@ -64,14 +66,26 @@ export default function YourWorkInSync({
       </div>
 
       {/* Cards Row */}
-      <div className="flex items-center justify-center gap-12 sm:gap-16 mb-8">
+      <div className="flex items-center justify-center gap-12 sm:gap-20 mb-10">
         {/* Left Card */}
-        <Card ref={leftRef} className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300">
+        <MotionCard
+          ref={leftRef}
+          className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300"
+          initial={{ opacity: 0.6, scale: 0.9 }}
+          animate={{ scale: isInView ? 1 : 0.9 }}
+          transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
+        >
           <WifiOff className="size-4 sm:size-6" />
-        </Card>
+        </MotionCard>
 
 
-        <Card ref={centerRef} className="size-12 sm:size-24 bg-linear-to-t from-blue-500/5 to-white text-neutral-500/50 overflow-hidden p-0 relative ">
+        <MotionCard
+          ref={centerRef}
+          className="size-12 sm:size-24 bg-linear-to-t from-blue-500/5 to-white text-neutral-500/50 overflow-hidden p-0 relative "
+          initial={{ opacity: 1, scale: 0.9 }}
+          animate={{ scale: isInView ? 1 : 0.9 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+        >
           <Smartphone className="size-8 sm:size-12" />
           <BorderBeam
             duration={3}
@@ -86,21 +100,30 @@ export default function YourWorkInSync({
             borderWidth={1}
             className="from-blue-500/30 via-blue-600 to-blue-500/30"
           />
-        </Card>
+        </MotionCard>
 
         {/* Right Card */}
-        <Card ref={rightRef} className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300 ">
+        <MotionCard
+          ref={rightRef}
+          className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300 "
+          initial={{ scale: 0.9 }}
+          animate={{ scale: isInView ? 1 : 0.9 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+        >
           <Database className="size-4 sm:size-6" />
-        </Card>
+        </MotionCard>
       </div>
 
       {/* Connected Badge */}
-      <div
+      <motion.div
         ref={bottomRef}
         className="z-10 bg-white border opacity-60 border-emerald-300/70 text-emerald-500/80  text-xs font-medium px-4 py-1.5 rounded-md flex items-center justify-center shadow-md"
+        initial={{ scale: 0.9 }}
+        animate={{ scale: isInView ? 1 : 0.9 }}
+        transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
       >
         Works Offline
-      </div>
+      </motion.div>
 
       {/* Animated Beams */}
       {/* leva do sreda */}
@@ -198,6 +221,6 @@ export default function YourWorkInSync({
         gradientStopColor="#828282"
         gradientLength={16}
       />
-    </div>
+    </div >
   )
 }

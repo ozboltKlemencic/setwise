@@ -22,28 +22,39 @@ function DynamicOrbitingCircles() {
 
     return (
         <div ref={containerRef} className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
-            <OrbitingCircles iconSize={64} radius={radius} speed={1.5}>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.2s' }}>
+            <OrbitingCircles
+                iconSize={64}
+                radius={radius}
+                speed={1.5}
+                pathClassName={cn("origin-center transition-all duration-700 ease-out delay-300", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
+            >
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
                     <Watch className="h-5 w-5 text-blue-600" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.25s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
                     <Activity className="h-5 w-5 text-green-500" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.3s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
                     <Heart className="h-5 w-5 text-red-500" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.35s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
                     <Smartphone className="h-5 w-5 text-purple-500" />
                 </div>
             </OrbitingCircles>
-            <OrbitingCircles iconSize={36} radius={innerRadius} reverse speed={1}>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.05s' }}>
+            <OrbitingCircles
+                iconSize={36}
+                radius={innerRadius}
+                reverse
+                speed={1}
+                pathClassName={cn("origin-center transition-all duration-700 ease-out delay-200", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
+            >
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
                     <Dumbbell className="h-4 w-4 text-orange-500" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.1s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
                     <Activity className="h-4 w-4 text-teal-500" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.15s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-white shadow-md border border-gray-100 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
                     <Activity className="h-4 w-4 text-teal-500" />
                 </div>
             </OrbitingCircles>
@@ -152,9 +163,12 @@ const WorkoutNotification = ({ name, description, icon, color, time, highlight }
 
 // Animated workout history list
 function WorkoutHistoryList() {
+    const containerRef = useRef<HTMLDivElement>(null)
+    const isInView = useInView(containerRef, { once: true, margin: "-50px" })
+
     return (
-        <div className="relative flex h-full w-full flex-col">
-            <AnimatedList className="overflow-visible pt-4">
+        <div ref={containerRef} className="relative flex h-full w-full flex-col">
+            <AnimatedList className="overflow-visible pt-4" start={isInView}>
                 {notifications.map((item, idx) => (
                     <WorkoutNotification {...item} key={idx} />
                 ))}
