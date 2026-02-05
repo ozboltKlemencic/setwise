@@ -91,14 +91,14 @@ export default function YourWorkInSync({
             duration={2}
             borderWidth={1}
             size={60}
-            className="from-blue-500/30 via-blue-600 to-blue-500/30"
+            className="from-blue-500/60 via-blue-600 to-blue-500/60"
           />
           <BorderBeam
             duration={2}
             delay={1}
             size={60}
             borderWidth={1}
-            className="from-blue-500/30 via-blue-600 to-blue-500/30"
+            className="from-blue-500/60 via-blue-600 to-blue-500/60"
           />
         </MotionCard>
 
