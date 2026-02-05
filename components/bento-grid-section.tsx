@@ -106,7 +106,7 @@ const notifications: WorkoutItem[] = [
         isTrending: true,
     },
     {
-        name: "Leg Day",
+        name: "Lower 1",
         date: "Thu, Jan 28 • 06:30 PM",
         duration: "65 min",
         volume: "4.2k kg",

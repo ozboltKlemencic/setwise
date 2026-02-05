@@ -110,7 +110,7 @@ export default function SmartSimpleBrilliant({
               height="300"
               initial={{ width: 0 }}
               animate={{ width: isInView ? 400 : 0 }}
-              transition={{ duration: 1.5, delay: 0.1, ease: "easeInOut" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: "easeInOut" }}
             />
           </clipPath>
         </defs>
@@ -143,7 +143,7 @@ export default function SmartSimpleBrilliant({
         style={{ left: 0, top: 0 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: isInView ? 1 : 0 }}
-        transition={{ duration: 0.5, delay: 1.5, ease: "easeOut" }}
+        transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
       >
         {/* Vertical Line Container */}
         <div
