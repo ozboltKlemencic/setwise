@@ -61,7 +61,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
         >
             {behindGlowEnabled && (
                 <div
-                    className="absolute inset-0 z-0 pointer-events-none"
+                    className="absolute inset-0 z-0 pointer-events-none "
                     style={{
                         background: `radial-gradient(circle at 50% 50%, var(--behind-glow-color) 0%, transparent var(--behind-glow-size))`,
                         filter: 'blur(50px) saturate(1.1)',
@@ -72,7 +72,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             <div className="relative z-[1] group">
 
                 <section
-                    className="grid relative overflow-hidden"
+                    className="grid relative overflow-hidden "
                     style={{
                         height: '100%',
                         maxHeight: '380px',
@@ -83,7 +83,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 >
                     {/* Blurred Gradient Background*/}
                     <div
-                        className="absolute inset-0 z-0"
+                        className="absolute inset-0 z-0 [mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
                         style={{
                             backgroundImage: 'var(--inner-gradient)',
                             borderRadius: cardRadius,

@@ -32,15 +32,15 @@ const teamMembers = [
 
 export default function SplitBlueSection() {
     return (
-        <div className="w-full flex flex-col pt-20 pb-10 lg:flex-row justify-between items-center   lg:max-w-[1060px] lg:w-[1060px]   ">
+        <div className="w-full flex flex-col pt-20 pb-10 min-h-[600px] lg:flex-row justify-between items-center     ">
             <div className="w-1/2 pt-10 pl-20 pb-28 pr-12 flex flex-col justify-start h-full items-start gap-6 ">
                 <div className="self-stretch flex flex-col justify-start items-start gap-3">
-                    <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-                        Built by lifters, for lifters.
-                    </div>
-                    <div className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
+                    <h3 className=" text-left  text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
+                        Built by <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">lifters</span>, for lifters.
+                    </h3>
+                    <p className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
                         SetWise is built with passion and tested in real workouts - refined through feedback and improved with every update.
-                    </div>
+                    </p>
                 </div>
                 <div className="w-full max-w-[497px] flex flex-col justify-start items-start gap-12">
                     <div className="flex justify-start items-center gap-4">
