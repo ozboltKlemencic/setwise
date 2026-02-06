@@ -180,7 +180,7 @@ export default function Navigation() {
                                     <motion.button
                                         onClick={() => {
                                             setIsMenuOpen(false)
-                                            setTimeout(() => setIsBetaDialogOpen(true), 200)
+                                            setTimeout(() => setIsBetaDialogOpen(true), 50)
                                         }}
                                         className="w-full relative inline-flex h-12 overflow-hidden rounded-full p-[2px]"
                                         whileTap={{ scale: 0.98 }}
