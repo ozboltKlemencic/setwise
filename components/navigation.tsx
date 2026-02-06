@@ -16,7 +16,11 @@ export default function Navigation() {
 
     return (
         <>
-            <nav className="w-full max-w-6xl px-8 pt-6 flex justify-between items-center z-50">
+            <nav className="fixed md:backdrop-blur-none backdrop-blur-sm md:relative top-0 left-0 w-screen md:w-full md:max-w-6xl px-6 md:px-8 py-2.5 md:py-3 flex justify-between border-b border-neutral-200/60 md:border-0 items-center z-50 overflow-hidden bg-white/60  md:bg-transparent">
+
+                <div className="absolute top-0 right-0 w-2/5 translate-y-1/3 translate-x-1/2 h-full bg-blue-500/10 blur-md rounded-full pointer-events-none"></div>
+                <div className="absolute top-0 left-0 w-3/5  translate-x-1/3 translate-y-1/3    h-full bg-blue-500/10 blur-md rounded-full pointer-events-none"></div>
+                <div className="absolute top-0 left-0 w-2/5 -translate-y-1/3 -translate-x-1/2 h-full bg-blue-500/10 blur-md rounded-full pointer-events-none"></div>
                 {/* Logo */}
                 <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-[#1A1A1A] font-sans">SetWise</span>
@@ -46,9 +50,9 @@ export default function Navigation() {
                     className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
                     aria-label="Open menu"
                 >
-                    <span className="w-6 h-0.5 bg-[#1A1A1A] rounded-full"></span>
-                    <span className="w-6 h-0.5 bg-[#1A1A1A] rounded-full"></span>
-                    <span className="w-6 h-0.5 bg-[#1A1A1A] rounded-full"></span>
+                    <span className="w-5 h-0.5 bg-neutral-500 rounded-full"></span>
+                    <span className="w-5 h-0.5 bg-neutral-500 rounded-full"></span>
+                    <span className="w-5 h-0.5 bg-neutral-500 rounded-full"></span>
                 </button>
             </nav>
 
@@ -179,8 +183,10 @@ export default function Navigation() {
                                     >
                                         <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#ccdbfc_0%,#155dfc_60%,#ccdbfc_100%)]" />
                                         <span className="relative inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-blue-600 px-8 py-1 text-base font-semibold text-white backdrop-blur-3xl">
-                                            Try for free
+                                            Download for free
                                         </span>
+                                        <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/20 blur-md rounded-full"></div>
+                                        <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/15 blur-md rounded-full"></div>
                                     </motion.button>
                                 </motion.div>
                             </motion.div>

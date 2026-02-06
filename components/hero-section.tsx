@@ -9,13 +9,13 @@ export default function HeroSection() {
     <div className="relative w-[98%] lg:max-w-6xl lg:w-[71.5rem]  mx-auto ">
       <div className="absolute top-0 -left-3 w-3 h-full  bg-linear-to-b from-[#F7F5F3] to-transparent "></div>
       <div className="absolute top-0 -right-3 w-3 h-full  bg-linear-to-b from-[#F7F5F3] to-transparent "></div>
-      <div className="w-full  shadow-[rgba(55,50,47,0.12)] m-1 rounded-b-lg  md:px-16 px-1 md:py-4  py-4 bg-linear-to-t from-blue-500/20 to-transparent mx-auto flex flex-col md:flex-row justify-between  gap-y-8 md:gap-x-12 items-center relative z-10">
+      <div className="w-full  shadow-[rgba(55,50,47,0.12)] m-1 rounded-b-lg  md:px-16 px-1 md:py-4 py-2  bg-linear-to-t from-blue-500/20 to-transparent mx-auto flex flex-col md:flex-row justify-between  gap-y-8 md:gap-x-12 items-center relative z-10">
         <div className="absolute top-0 left-0 w-full h-full -z-10 blur-md -translate-y-[0%]" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.8) 0%, rgba(247, 245, 243,0) 80%)' }} />
         <div className="absolute top-0 left-0 w-full h-full -z-10 -translate-x-[5%] -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.9) 0%, rgba(247, 245, 243,0) 80%)' }} />
         <div className="absolute top-0 left-0 w-full h-full -z-10 translate-x-[5%]  -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.8) 0%, rgba(247, 245, 243,0) 80%)' }} />
 
         {/* Left Column: Text */}
-        <div className="flex md:w-1/2 w-full lg:pb-8  py-2  gap-y-4 flex-col md:items-start items-center md:text-left text-center px-2 md:px-0">
+        <div className="flex md:w-1/2 w-full lg:pb-8 pt-20 md:pt-0 py-2  gap-y-4 flex-col md:items-start items-center md:text-left text-center px-2 md:px-0">
           {/* Badge */}
 
           <ShimmerButton className=" border border-neutral-200" shimmerDuration={"3s"} shimmerSize={"0.07em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"#689efc"}>
