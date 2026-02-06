@@ -1,6 +1,40 @@
 import { ParticleText } from "@/components/ui/particle-text"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 
+// Footer navigation links data
+const FOOTER_LINKS = [
+  {
+    title: "Product",
+    links: [
+      { label: "Workout Tracking", href: "#" },
+      { label: "Plans", href: "#" },
+      { label: "Device Sync", href: "#" },
+      { label: "Progress Analytics", href: "#" },
+      { label: "Personal Coaching", href: "#" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About us", href: "#" },
+      { label: "Our team", href: "#" },
+      { label: "Careers", href: "#" },
+      { label: "Brand", href: "#" },
+      { label: "Contact", href: "#" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Terms of use", href: "#" },
+      { label: "API Reference", href: "#" },
+      { label: "Documentation", href: "#" },
+      { label: "Community", href: "#" },
+      { label: "Support", href: "#" },
+    ],
+  },
+]
+
 export default function FooterSection() {
   return (
     <div className="w-full pt-10 flex flex-col justify-start items-start">
@@ -82,76 +116,25 @@ export default function FooterSection() {
         </div>
 
         {/* Navigation Links */}
-        <div className="self-stretch  p-4 md:p-8 flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-6 md:gap-8">
-          {/* Product Column */}
-
-          {/* Product Column */}
-          <div className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
-            <div className="self-stretch text-[rgba(73,66,61,0.50)] text-sm font-medium leading-5 font-sans">
-              Product
-            </div>
-            <div className="flex flex-col justify-end items-start gap-2">
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Workout Tracking
+        <div className="self-stretch p-4 md:p-8 flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-6 md:gap-8">
+          {FOOTER_LINKS.map((column) => (
+            <div key={column.title} className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
+              <div className="self-stretch text-[rgba(73,66,61,0.50)] text-sm font-medium leading-5 font-sans">
+                {column.title}
               </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Plans
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Device Sync
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Progress Analytics
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Personal Coaching
+              <div className="flex flex-col justify-end items-start gap-2">
+                {column.links.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ))}
               </div>
             </div>
-          </div>
-
-          {/* Company Column */}
-          <div className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
-            <div className="text-[rgba(73,66,61,0.50)] text-sm font-medium leading-5 font-sans">Company</div>
-            <div className="flex flex-col justify-center items-start gap-2">
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                About us
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Our team
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Careers
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Brand
-              </div>
-              <div className="text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Contact
-              </div>
-            </div>
-          </div>
-
-          {/* Resources Column */}
-          <div className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
-            <div className="text-[rgba(73,66,61,0.50)] text-sm font-medium leading-5 font-sans">Resources</div>
-            <div className="flex flex-col justify-center items-center gap-2">
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Terms of use
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                API Reference
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Documentation
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Community
-              </div>
-              <div className="self-stretch text-[#49423D] text-sm font-normal leading-5 font-sans cursor-pointer hover:text-[#37322F] transition-colors">
-                Support
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       {/* Particle Text Section */}

@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, useSpring, useMotionValue } from "framer-motion"
 
 interface SmartSimpleBrilliantProps {
   width?: number | string
@@ -41,6 +41,29 @@ export default function SmartSimpleBrilliant({
 
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.1 })
+
+  // Smooth animated values using springs
+  const springConfig = { stiffness: 300, damping: 30, mass: 0.5 }
+  const animatedMaxLift = useSpring(defaultPoint.maxLift, springConfig)
+  const animatedVolume = useSpring(defaultPoint.volume, springConfig)
+  const [displayMaxLift, setDisplayMaxLift] = useState(defaultPoint.maxLift)
+  const [displayVolume, setDisplayVolume] = useState(defaultPoint.volume)
+
+  // Update spring targets when activePoint changes
+  useEffect(() => {
+    animatedMaxLift.set(activePoint.maxLift)
+    animatedVolume.set(activePoint.volume)
+  }, [activePoint.maxLift, activePoint.volume, animatedMaxLift, animatedVolume])
+
+  // Subscribe to spring value changes
+  useEffect(() => {
+    const unsubMaxLift = animatedMaxLift.on("change", (v) => setDisplayMaxLift(Math.round(v)))
+    const unsubVolume = animatedVolume.on("change", (v) => setDisplayVolume(Math.round(v)))
+    return () => {
+      unsubMaxLift()
+      unsubVolume()
+    }
+  }, [animatedMaxLift, animatedVolume])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return
@@ -147,7 +170,7 @@ export default function SmartSimpleBrilliant({
       >
         {/* Vertical Line Container */}
         <div
-          className="absolute transition-all duration-75 ease-linear"
+          className="absolute"
           style={{
             left: `${pointXPercent}%`,
             top: `${pointYPercent}%`,
@@ -161,7 +184,7 @@ export default function SmartSimpleBrilliant({
 
         {/* The Point and Tooltip Container */}
         <div
-          className="absolute transition-all duration-75 ease-linear"
+          className="absolute"
           style={{
             left: `${pointXPercent}%`,
             top: `${pointYPercent}%`,
@@ -184,8 +207,8 @@ export default function SmartSimpleBrilliant({
           >
             <div className="bg-white text-neutral-700 border border-neutral-300/70 text-[10px] font-medium px-3 py-2 rounded-sm shadow-md flex flex-col gap-0.5 min-w-[100px] transition-all duration-75 text-left">
               <div className="text-neutral-800  font-semibold mb-0.5 uppercase tracking-wider text-[9px]">Stats</div>
-              <div>Max lift: <span className="font-bold text-neutral-900">{activePoint.maxLift} kg</span></div>
-              <div>Volume: <span className="font-bold text-neutral-900">{activePoint.volume.toLocaleString()}</span></div>
+              <div>Max lift: <span className="font-bold text-neutral-900 tabular-nums">{displayMaxLift} kg</span></div>
+              <div>Volume: <span className="font-bold text-neutral-900 tabular-nums">{displayVolume.toLocaleString()}</span></div>
             </div>
           </div>
         </div>
