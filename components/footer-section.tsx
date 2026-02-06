@@ -29,9 +29,9 @@ export default function FooterSection() {
                   className="flex-1 px-4 py-2.5 rounded-xl border border-neutral-200/80 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
                 />
                 <button
-                  className="relative overflow-hidden rounded-xl p-[1.5px] bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95"
+                  className="relative overflow-hidden rounded-xl p-[1.5px] bg-gradient-to-r from-blue-600/80 to-blue-500  transition-all duration-300  active:scale-95"
                 >
-                  <span className="relative flex items-center justify-center rounded-[10px] bg-blue-600 hover:bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition-colors">
+                  <span className="relative flex items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium text-white transition-colors">
                     Join
                   </span>
                   <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/30 blur-md rounded-full"></div>
