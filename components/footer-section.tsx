@@ -21,11 +21,18 @@ const FOOTER_LINKS = [
   {
     title: "Resources",
     links: [
-      { label: "Terms of use", href: "#" },
-      { label: "Privacy policy", href: "#" },
-      { label: "Documentation", href: "#" },
       { label: "Community", href: "#" },
+      { label: "Documentation", href: "#" },
+      { label: "Changelog", href: "#" },
       { label: "Support", href: "#" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy policy", href: "#" },
+      { label: "Terms of use", href: "#" },
+      { label: "Cookies", href: "#" },
     ],
   },
 ]
