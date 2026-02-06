@@ -55,19 +55,11 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-100">
                     <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center">
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                className="w-4 h-4 text-white"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" />
-                            </svg>
-                        </div>
+                        <img
+                            src="/setwise-logo.png"
+                            alt="SetWise"
+                            className="w-7 h-7 rounded-lg"
+                        />
                         <span className="text-base font-semibold text-neutral-900">SetWise</span>
                     </div>
                     <DialogClose className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors text-neutral-400 hover:text-neutral-600">

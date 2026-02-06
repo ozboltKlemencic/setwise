@@ -25,6 +25,7 @@ export default function Navigation() {
                 <div className="absolute md:hidden top-0 left-0 w-2/5 -translate-y-1/3 -translate-x-1/2 h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
                 {/* Logo */}
                 <div className="flex items-center gap-2">
+                    <img src="/setwise-logo.png" alt="SetWise" className="w-7 h-7 rounded-lg" />
                     <span className="text-lg font-bold text-[#1A1A1A] font-sans">SetWise</span>
                 </div>
 
@@ -98,19 +99,7 @@ export default function Navigation() {
                                 {/* Header with Logo and Close */}
                                 <div className="flex items-center justify-between px-6 py-4">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                            <svg
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                className="w-5 h-5 text-white"
-                                                stroke="currentColor"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            >
-                                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" />
-                                            </svg>
-                                        </div>
+                                        <img src="/setwise-logo.png" alt="SetWise" className="w-8 h-8 rounded-lg" />
                                         <span className="text-lg font-bold text-[#1A1A1A]">SetWise</span>
                                     </div>
                                     <motion.button
