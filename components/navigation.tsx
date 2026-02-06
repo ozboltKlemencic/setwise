@@ -18,9 +18,9 @@ export default function Navigation() {
         <>
             <nav className="fixed md:backdrop-blur-none backdrop-blur-sm md:relative top-0 left-0 w-screen md:w-full md:max-w-6xl px-6 md:px-8 py-2.5 md:py-3 flex justify-between border-b border-neutral-200/60 md:border-0 items-center z-50 overflow-hidden bg-white/60  md:bg-transparent">
 
-                <div className="absolute top-0 right-0 w-2/5 translate-y-1/3 translate-x-1/2 h-full bg-blue-500/10 blur-md rounded-full pointer-events-none"></div>
-                <div className="absolute top-0 left-0 w-3/5  translate-x-1/3 translate-y-1/3    h-full bg-blue-500/10 blur-md rounded-full pointer-events-none"></div>
-                <div className="absolute top-0 left-0 w-2/5 -translate-y-1/3 -translate-x-1/2 h-full bg-blue-500/10 blur-md rounded-full pointer-events-none"></div>
+                <div className="absolute md:hidden top-0 right-0 w-2/5 translate-y-1/3 translate-x-1/2 h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
+                <div className="absolute md:hidden top-0 left-0 w-3/5  translate-x-1/3 translate-y-1/3    h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
+                <div className="absolute md:hidden top-0 left-0 w-2/5 -translate-y-1/3 -translate-x-1/2 h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
                 {/* Logo */}
                 <div className="flex items-center gap-2">
                     <span className="text-lg font-bold text-[#1A1A1A] font-sans">SetWise</span>
