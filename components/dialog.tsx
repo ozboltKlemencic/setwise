@@ -18,11 +18,11 @@ const DialogStickyFooterDemo = ({ trigger }: { trigger?: React.ReactNode }) => {
             </DialogTrigger>
             <DialogContent showCloseButton={false} className='max-h-screen w-full border-none bg-transparent p-0 shadow-none sm:max-w-[640px]  overflow-visible flex items-center justify-center'>
                 <DialogTitle className="sr-only">Phone Preview</DialogTitle>
-                <DialogClose className="absolute cursor-pointer -top-10 right-0 z-50 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm text-white border border-white/20">
-                    <X className="w-6 h-6" />
+                <DialogClose className="absolute cursor-pointer -top-10 md:-top-10 right-0 z-50 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-sm text-white border border-white/20">
+                    <X className="size-4 md:size-8" />
                     <span className="sr-only">Close</span>
                 </DialogClose>
-                <div className='w-full h-full sm:max-w-[400px] dark'>
+                <div className='w-full h-full max-w-[94%] sm:max-w-[400px] dark'>
                     <Iphone src="/workout.png" className="w-full h-full sm:max-w-[400px] drop-shadow-2xl" />
                 </div>
             </DialogContent>

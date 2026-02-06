@@ -16,53 +16,66 @@ import DialogStickyFooterDemo from "./dialog"
 
 // Orbiting Circles with fixed radius - animates when in view
 function DynamicOrbitingCircles() {
-    const radius = 180
-    const innerRadius = 100
     const containerRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+
+    // Detect mobile screen
+    const [isMobile, setIsMobile] = React.useState(false)
+
+    React.useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    const radius = isMobile ? 145 : 200
+    const innerRadius = isMobile ? 85 : 120
+    const outerIconSize = isMobile ? 52 : 64
+    const innerIconSize = isMobile ? 42 : 48
 
     return (
         <div ref={containerRef} className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
             <OrbitingCircles
-                iconSize={64}
+                iconSize={outerIconSize}
                 radius={radius}
                 speed={1.5}
                 pathClassName={cn("origin-center transition-all duration-700 ease-out delay-300", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
             >
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br from-blue-100/80 to-white shadow-md border border-neutral-200 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
-                    <Timer className="h-5 w-5 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br from-blue-100/80 to-white shadow-md border border-neutral-200 p-1.5 md:p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                    <Timer className="h-4 w-4 md:h-5 md:w-5 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tr from-blue-100/80 to-white shadow-md border border-neutral-300 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
-                    <Zap className="h-5 w-5 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tr from-blue-100/80 to-white shadow-md border border-neutral-300 p-1.5 md:p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                    <Zap className="h-4 w-4 md:h-5 md:w-5 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-br from-blue-100/80 to-white  shadow-md border border-neutral-200 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
-                    <TrendingUp className="h-5 w-5 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-br from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5 md:p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                    <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-tr from-blue-100/80 to-white  shadow-md border border-neutral-200 p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
-                    <NotebookPen className="h-5 w-5 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-tr from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5 md:p-2", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                    <NotebookPen className="h-4 w-4 md:h-5 md:w-5 text-neutral-400" />
                 </div>
             </OrbitingCircles>
             <OrbitingCircles
-                iconSize={36}
+                iconSize={innerIconSize}
                 radius={innerRadius}
                 reverse
                 speed={1}
                 pathClassName={cn("origin-center transition-all duration-700 ease-out delay-200", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
             >
-                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-bl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
-                    <Ruler className="h-4 w-4 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-bl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1 md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                    <Ruler className="h-3 w-3 md:h-4 md:w-4 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-tl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
-                    <ArrowUpDown className="h-4 w-4 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-tl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1 md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                    <ArrowUpDown className="h-3 w-3 md:h-4 md:w-4 text-neutral-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-bl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
-                    <Dumbbell className="h-4 w-4 text-neutral-400" />
+                <div className={cn("flex items-center justify-center rounded-full  bg-linear-to-bl from-blue-100/80 to-white  shadow-md border border-neutral-200 p-1 md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
+                    <Dumbbell className="h-3 w-3 md:h-4 md:w-4 text-neutral-400" />
                 </div>
             </OrbitingCircles>
 
             {/* Center Icon */}
-            <div className={cn("absolute flex items-center justify-center rounded-full bg-[#0263ff] border border-neutral-300 p-4 z-10", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0s' }}>
-                <Image src="/setwise-logo.png" width={40} height={40} alt="SetWise Logo" className="w-10 h-10 object-contain" />
+            <div className={cn("absolute flex items-center justify-center rounded-full bg-[#0263ff] border border-neutral-300 p-6 md:p-8 z-10", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0s' }}>
+                <Image src="/setwise-logo.png" width={50} height={50} alt="SetWise Logo" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
             </div>
         </div >
     )
@@ -110,51 +123,51 @@ const WorkoutNotification = ({ name, date, duration, volume, status, highlight, 
     const Content = (
         <figure
             className={cn(
-                "relative mx-auto min-h-fit w-full max-w-[400px] cursor-pointer rounded-2xl p-4",
+                "relative mx-auto min-h-fit w-full w-full md:max-w-[400px] cursor-pointer rounded-xl md:rounded-2xl p-3 md:p-4",
                 "transition-all duration-200 ease-in-out ",
                 "bg-white border border-neutral-200 shadow-md",
                 highlight && "bg-linear-to-b from-blue-500/10 to-white border-blue-500"
             )}
         >
             {highlight && (
-                <div className="absolute -top-2.5 right-10 border border-blue-500 bg-white text-neutral-800 text-[9px] font-bold px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
+                <div className="absolute -top-2.5 right-8 md:right-10 border border-blue-500 bg-white text-neutral-800 text-[8px] md:text-[9px] font-bold px-1.5 md:px-2 py-0.5 z-10 font-sans tracking-wide rounded-full shadow-sm antialiased transition-all duration-200 ease-in-out">
                     Click
                 </div>
             )}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2 md:gap-3">
                 {/* Header */}
                 <div className="flex flex-row items-center justify-between">
-                    <span className="text-base font-semibold text-gray-900">{name}</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm md:text-base font-semibold text-gray-900">{name}</span>
+                    <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4 text-gray-400" />
                 </div>
 
                 {/* Date */}
-                <div className="flex flex-row items-center gap-1.5 text-xs text-gray-500">
-                    <CalendarDays className="h-3.5 w-3.5" />
+                <div className="flex flex-row items-center gap-1 md:gap-1.5 text-[11px] md:text-xs text-gray-500">
+                    <CalendarDays className="h-3 w-3 md:h-3.5 md:w-3.5" />
                     <span>{date}</span>
                 </div>
 
                 {/* Stats & Status */}
-                <div className="flex flex-row items-end justify-between mt-1">
+                <div className="flex flex-row items-end justify-between mt-0.5 md:mt-1">
                     <div className="flex flex-row">
                         <div className="flex flex-col gap-0.5">
-                            <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">DURATION</span>
-                            <span className="text-sm font-medium text-gray-900">{duration}</span>
+                            <span className="text-[9px] md:text-[10px] font-bold text-gray-400 tracking-wider uppercase">DURATION</span>
+                            <span className="text-xs md:text-sm font-medium text-gray-900">{duration}</span>
                         </div>
-                        <div className="h-auto w-px bg-neutral-200/70 mx-4"></div>
+                        <div className="h-auto w-px bg-neutral-200/70 mx-2 md:mx-4"></div>
                         <div className="flex flex-col gap-0.5">
-                            <span className="text-[10px] font-bold text-gray-400 tracking-wider uppercase">VOLUME</span>
-                            <span className="text-sm font-medium text-gray-900">{volume}</span>
+                            <span className="text-[9px] md:text-[10px] font-bold text-gray-400 tracking-wider uppercase">VOLUME</span>
+                            <span className="text-xs md:text-sm font-medium text-gray-900">{volume}</span>
                         </div>
                     </div>
 
                     {isTrending ? (
-                        <div className="px-2.5 py-1 rounded-md bg-emerald-100/50 border border-emerald-200 text-emerald-600 flex items-center gap-1">
-                            <TrendingUp className="h-3 w-3" />
-                            <span className="text-[11px] font-bold">{status}</span>
+                        <div className="px-2 md:px-2.5 py-0.5 md:py-1 rounded-md bg-emerald-100/50 border border-emerald-200 text-emerald-600 flex items-center gap-1">
+                            <TrendingUp className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                            <span className="text-[10px] md:text-[11px] font-bold">{status}</span>
                         </div>
                     ) : (
-                        <div className="px-2.5 py-1 rounded-md bg-gray-100 border border-gray-200 text-[10px] font-bold text-gray-600 tracking-wide uppercase">
+                        <div className="px-2 md:px-2.5 py-0.5 md:py-1 rounded-md bg-gray-100 border border-gray-200 text-[9px] md:text-[10px] font-bold text-gray-600 tracking-wide uppercase">
                             {status}
                         </div>
                     )}
@@ -243,7 +256,7 @@ export default function BentoGridSection() {
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-[rgba(55,50,47,0.12)]">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start min-h-[380px] md:min-h-[550px] md:max-h-[550px]">
+                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start min-h-[380px] max-h-[400px] md:min-h-[550px] md:max-h-[550px]">
                         <div className="flex flex-col gap-2 p-6 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Track. Analyze. Improve.
@@ -263,7 +276,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] min-h-[380px]">
+                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[400px] min-h-[380px]">
                         <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
                                 No internet. No excuses.
@@ -283,8 +296,8 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="border-r-0 lg:min-h-[550px] lg:max-h-[550px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start    relative  items-start">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
+                    <div className="border-b md:min-h-[550px] md:max-h-[550px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start  min-h-[380px] max-h-[400px]   relative  items-start">
+                        <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Details drive progress
                             </h3>
@@ -292,7 +305,7 @@ export default function BentoGridSection() {
                                 Reps and weight don’t tell the full story. Capture tempo, ROM, and intensifiers with quick notes, and turn every session into actionable progress.
                             </p>
                         </div>
-                        <div className="absolute bottom-0 translate-y-1/3 w-full h-[430px]  rounded-lg flex overflow-hidden justify-center items-center  ">
+                        <div className="absolute bottom-0 pt-8 translate-y-1/3 w-full h-full  rounded-lg flex overflow-hidden justify-center items-center  ">
                             <DynamicOrbitingCircles />
                             {/* Gradient mask for soft bottom edge */}
                             <div className="absolute bottom-0 left-0 right-0 h-8 bg-linear-to-t from-[#F7F5F3] to-transparent pointer-events-none"></div>
@@ -300,8 +313,8 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Right - Workout History */}
-                    <div className="flex flex-col lg:min-h-[550px] lg:max-h-[550px] justify-start items-start ">
-                        <div className="flex flex-col w-full gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4 md:pb-4   ">
+                    <div className="flex flex-col  min-h-[380px] max-h-[400px] md:min-h-[550px] md:max-h-[550px] justify-start items-start ">
+                        <div className="flex flex-col w-full gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4 md:pb-4   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Progress Overview
                             </h3>
@@ -309,7 +322,7 @@ export default function BentoGridSection() {
                                 See trends, spot patterns, and push past plateaus. Every rep counts, every set matters.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-full rounded-lg lg:pt-8 flex overflow-hidden items-center justify-center relative">
+                        <div className="w-full h-full rounded-lg pt-3 lg:pt-8 px-3 flex overflow-hidden items-center justify-center relative">
                             <WorkoutHistoryList />
                         </div>
                     </div>
