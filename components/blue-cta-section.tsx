@@ -38,7 +38,7 @@ export default function BlueCTASection() {
 
                 {/* Main Content Area */}
                 <div className="flex-1 border-l border-r border-[rgba(55,50,47,0.12)]">
-                    <div className="w-full bg-[#1A62FF] group rounded-md overflow-hidden relative flex flex-col justify-center items-center py-24 md:py-20 lg:py-24 px-4 text-center shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)]">
+                    <div className="w-full bg-[#1A62FF] group rounded-md overflow-hidden relative flex flex-col justify-center items-center py-12 md:py-20 lg:py-24 px-4 text-center shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)]">
 
                         {/* Background Shapes/Glows if needed, for now flat blue as per image */}
                         <div className="absolute inset-0 overflow-hidden">
@@ -78,12 +78,7 @@ export default function BlueCTASection() {
                         </div>
 
 
-                        <div className="absolute right-3  -top-3 w-12 z-1- -rotate-32 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform block md:hidden ">
-                            <Iphone src="/home.png" />
-                        </div>
-                        <div className="absolute left-3  -bottom-1 w-12 z-1 -rotate-42 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform block md:hidden">
-                            <Iphone src="/home.png" />
-                        </div>
+
 
                         {/* iPhones - hidden on mobile */}
                         <div className="absolute right-[-50px] md:right-[-30px] top-[20px] z-20 w-40 md:w-56 lg:w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-700 ease-in-out transform-gpu will-change-transform hidden md:block">
