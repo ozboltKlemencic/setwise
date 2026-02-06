@@ -229,7 +229,7 @@ export default function BentoGridSection() {
 
             {/* Bento Grid Content */}
             <div className="self-stretch flex justify-center items-start">
-                <div className="w-6  self-stretch relative overflow-hidden">
+                <div className="w-2 md:w-6  self-stretch relative overflow-hidden">
                     {/* Left decorative pattern */}
                     <div className="w-[120px] sm:w-[140px] md:w-[162px] left-[-40px] sm:left-[-50px] md:left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
                         {Array.from({ length: 200 }).map((_, i) => (
@@ -243,8 +243,8 @@ export default function BentoGridSection() {
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-[rgba(55,50,47,0.12)]">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start lg:min-h-[550px] lg:max-h-[550px]">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
+                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start min-h-[380px] md:min-h-[550px] md:max-h-[550px]">
+                        <div className="flex flex-col gap-2 p-6 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Track. Analyze. Improve.
                             </h3>
@@ -252,7 +252,7 @@ export default function BentoGridSection() {
                                 Turn workout data into progress. You can see your progress in real-time on graphs.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-full rounded-lg flex  items-center justify-center overflow-hidden">
+                        <div className="w-full h-full rounded-lg flex  items-center justify-center overflow-hidden">
                             <SmartSimpleBrilliant
                                 width="100%"
                                 height="100%"
@@ -263,8 +263,8 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start lg:min-h-[550px] lg:max-h-[550px]">
-                        <div className="flex flex-col gap-2 p-4 sm:p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
+                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] min-h-[380px]">
+                        <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
                                 No internet. No excuses.
                             </h3>
@@ -272,12 +272,12 @@ export default function BentoGridSection() {
                                 Track sessions, sets, and timers offline - everything saves automatically.
                             </p>
                         </div>
-                        <div className="w-full h-[200px] sm:h-[250px] md:h-full  rounded-lg flex overflow-hidden text-right items-center justify-center">
+                        <div className="w-full h-full  flex overflow-hidden text-right items-center justify-center">
                             <YourWorkInSync
-                                width="400"
-                                height="250"
+                                width="100%"
+                                height="100%"
                                 theme="light"
-                                className="scale-60 sm:scale-75 md:scale-90"
+                                className=""
                             />
                         </div>
                     </div>
@@ -315,7 +315,7 @@ export default function BentoGridSection() {
                     </div>
                 </div>
 
-                <div className="w-6  self-stretch relative overflow-hidden">
+                <div className="w-2 md:w-6  self-stretch relative overflow-hidden">
                     {/* Right decorative pattern */}
                     <div className="w-[120px] sm:w-[140px] md:w-[162px] left-[-40px] sm:left-[-50px] md:left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
                         {Array.from({ length: 200 }).map((_, i) => (
@@ -327,6 +327,6 @@ export default function BentoGridSection() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

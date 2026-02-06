@@ -1,6 +1,6 @@
 "use client"
 
-import React, { forwardRef, useRef } from "react"
+import React, { forwardRef, useRef, useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { motion, useInView } from "framer-motion"
 import { AnimatedBeam } from "@/components/ui/animated-beam"
@@ -49,6 +49,20 @@ export default function YourWorkInSync({
   const rightRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
+  // Detect mobile screen
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const gradientLength = isMobile ? 8 : 16
+  const XOffset = isMobile ? 24 : 32
+
+
   return (
     <div
       ref={containerRef}
@@ -58,8 +72,8 @@ export default function YourWorkInSync({
       {/* Dotted Background */}
       <div className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(#94A3B8 1px, transparent 1px)',
-          backgroundSize: '12px 12px',
+          backgroundImage: 'radial-gradient(#e1e3e6 1px, transparent 1px)',
+          backgroundSize: '10px 10px',
           maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
           WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
         }}>
@@ -81,7 +95,7 @@ export default function YourWorkInSync({
 
         <MotionCard
           ref={centerRef}
-          className="size-12 sm:size-24 bg-linear-to-tr from-blue-500/10 via-blue-100/5 to-blue-500/10 text-neutral-400 overflow-hidden p-0 relative "
+          className="size-16 sm:size-24 bg-linear-to-tr from-blue-500/10 via-blue-100/5 to-blue-500/10 text-neutral-400 overflow-hidden p-0 relative "
           initial={{ opacity: 1, scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
@@ -90,15 +104,15 @@ export default function YourWorkInSync({
           <BorderBeam
             duration={2}
             borderWidth={1}
-            size={60}
-            className="from-blue-500/60 via-blue-600 to-blue-500/60"
+            size={50}
+            className="from-blue-500/10  via-blue-500 to-blue-500/10 md:from-blue-500/60 md:via-blue-500 md:to-blue-500/60"
           />
           <BorderBeam
             duration={2}
             delay={1}
-            size={60}
+            size={50}
             borderWidth={1}
-            className="from-blue-500/60 via-blue-600 to-blue-500/60"
+            className="from-blue-500/10  via-blue-500 to-blue-500/10 md:from-blue-500/60 md:via-blue-500 md:to-blue-500/60"
           />
         </MotionCard>
 
@@ -132,30 +146,31 @@ export default function YourWorkInSync({
         fromRef={leftRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={16}
-        endYOffset={16}
-        startXOffset={44}
-        endXOffset={44}
+        startYOffset={0}
+        endYOffset={0}
+        startXOffset={XOffset}
+        endXOffset={XOffset}
         duration={2}
         delay={0}
         gradientStartColor="#828282"
         gradientStopColor="#828282"
-        gradientLength={16}
+        gradientLength={gradientLength}
       />
+
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={leftRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={16}
-        endYOffset={16}
-        startXOffset={44}
-        endXOffset={44}
+        startYOffset={0}
+        endYOffset={0}
+        startXOffset={XOffset}
+        endXOffset={XOffset}
         duration={2}
         delay={1}
         gradientStartColor="#828282"
         gradientStopColor="#828282"
-        gradientLength={16}
+        gradientLength={gradientLength}
       />
 
       {/* sredo do desno */}
@@ -164,30 +179,30 @@ export default function YourWorkInSync({
         fromRef={rightRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={16}
-        endYOffset={16}
-        startXOffset={12}
-        endXOffset={12}
+        startYOffset={0}
+        endYOffset={0}
+        startXOffset={-XOffset}
+        endXOffset={-XOffset}
         duration={2}
         delay={0}
         gradientStartColor="#828282"
         gradientStopColor="#828282"
-        gradientLength={16}
+        gradientLength={gradientLength}
       />
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={rightRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={16}
-        endYOffset={16}
-        startXOffset={12}
-        endXOffset={12}
+        startYOffset={0}
+        endYOffset={0}
+        startXOffset={-XOffset}
+        endXOffset={-XOffset}
         duration={2}
         delay={1}
         gradientStartColor="#828282"
         gradientStopColor="#828282"
-        gradientLength={16}
+        gradientLength={gradientLength}
       />
 
       {/*  spondji beam */}
@@ -196,30 +211,30 @@ export default function YourWorkInSync({
         fromRef={bottomRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={8}
-        endYOffset={8}
-        startXOffset={28}
-        endXOffset={28}
+        startYOffset={-16}
+        endYOffset={-16}
+        startXOffset={0}
+        endXOffset={0}
         duration={2}
         delay={0}
         gradientStartColor="#828282"
         gradientStopColor="#828282"
-        gradientLength={16}
+        gradientLength={gradientLength}
       />
       <AnimatedBeam
         containerRef={containerRef}
         fromRef={bottomRef}
         toRef={centerRef}
         curvature={0}
-        startYOffset={8}
-        endYOffset={8}
-        startXOffset={28}
-        endXOffset={28}
+        startYOffset={-16}
+        endYOffset={-16}
+        startXOffset={0}
+        endXOffset={0}
         duration={2}
         delay={1}
         gradientStartColor="#828282"
         gradientStopColor="#828282"
-        gradientLength={16}
+        gradientLength={gradientLength}
       />
     </div >
   )
