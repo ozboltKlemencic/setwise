@@ -47,7 +47,7 @@ export default function Navigation() {
                 {/* Mobile Menu Button */}
                 <button
                     onClick={() => setIsMenuOpen(true)}
-                    className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+                    className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1"
                     aria-label="Open menu"
                 >
                     <span className="w-5 h-0.5 bg-neutral-500 rounded-full"></span>
