@@ -87,7 +87,7 @@ export default function Feature({
                             initial={{ y: "70%" }}
                             animate={{ y: isHovered ? "15%" : isInView ? "-25%" : "-5%" }}
                             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-1/5 w-[75%] md:w-[300px] transform-gpu will-change-transform"
+                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-2/5 w-[75%] md:w-[300px] transform-gpu will-change-transform"
                         >
                             <Iphone src={imageSrc} />
                         </motion.div>

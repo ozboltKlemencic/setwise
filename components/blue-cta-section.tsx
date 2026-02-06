@@ -7,9 +7,7 @@ import { Highlighter } from "./ui/highlighter"
 export default function BlueCTASection() {
     return (
         <div className="w-full border-b border-t border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
-            {/* Decorative Lines Container - Matching other sections if needed, but for now simple container */}
-            {/* Decorative Lines Container - Top */}
-            {/* Decorative Lines Container - Top */}
+
             <div className=" w-full h-2 overflow-hidden">
                 <div className="w-full h-full relative">
                     {Array.from({ length: 300 }).map((_, i) => (
@@ -39,8 +37,8 @@ export default function BlueCTASection() {
                 </div>
 
                 {/* Main Content Area */}
-                <div className="flex-1  border-l border-r border-[rgba(55,50,47,0.12)]  ">
-                    <div className="w-full bg-[#1A62FF] group rounded-md overflow-hidden relative flex flex-col justify-center items-center py-16 sm:py-20 md:py-24 px-4 text-center shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)]">
+                <div className="flex-1 border-l border-r border-[rgba(55,50,47,0.12)]">
+                    <div className="w-full bg-[#1A62FF] group rounded-md overflow-hidden relative flex flex-col justify-center items-center py-24 md:py-20 lg:py-24 px-4 text-center shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)]">
 
                         {/* Background Shapes/Glows if needed, for now flat blue as per image */}
                         <div className="absolute inset-0 overflow-hidden">
@@ -64,25 +62,34 @@ export default function BlueCTASection() {
                             ))}
                         </div>
 
-                        <div className="relative z-10 flex flex-col items-center gap-8">
-                            <h2 className="text-white text-4xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight leading-tight">
-                                Turn any plan into<br />  a <Highlighter action="underline" color="#aec4e8">trackable</Highlighter><br />  session.
+                        <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8">
+                            <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-semibold tracking-tight leading-tight">
+                                Turn any plan into <br className="hidden sm:block" />a <Highlighter action="underline" color="#aec4e8">trackable</Highlighter> <br className="hidden sm:block" />session.
                             </h2>
 
                             <div className="flex flex-col items-center gap-3">
-                                <button className="bg-white text-[#1A62FF] hover:bg-gray-100 transition-colors px-6 py-3 rounded-full font-medium text-base sm:text-lg shadow-lg">
+                                <button className="bg-white text-[#1A62FF] hover:bg-gray-100 transition-colors px-5 md:px-6 py-2.5 md:py-3 rounded-full font-medium text-sm sm:text-base md:text-lg shadow-lg">
                                     Download for iOS or Android
                                 </button>
-                                <p className="text-white/80 text-sm font-medium">
+                                <p className="text-white/80 text-xs sm:text-sm font-medium">
                                     Free beta version
                                 </p>
                             </div>
                         </div>
 
-                        <div className="absolute right-[-50px] top-[20px] z-20 w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-700 ease-in-out transform-gpu will-change-transform">
+
+                        <div className="absolute right-3  -top-3 w-12 z-1- -rotate-32 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform ">
                             <Iphone src="/home.png" />
                         </div>
-                        <div className="absolute left-[-50px] top-[40px] z-20 w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-700 ease-in-out transform-gpu will-change-transform">
+                        <div className="absolute left-3  -bottom-1 w-12 z-1 -rotate-42 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform ">
+                            <Iphone src="/home.png" />
+                        </div>
+
+                        {/* iPhones - hidden on mobile */}
+                        <div className="absolute right-[-50px] md:right-[-30px] top-[20px] z-20 w-40 md:w-56 lg:w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-700 ease-in-out transform-gpu will-change-transform hidden md:block">
+                            <Iphone src="/home.png" />
+                        </div>
+                        <div className="absolute left-[-50px] md:left-[-30px] top-[40px] z-20 w-40 md:w-56 lg:w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-700 ease-in-out transform-gpu will-change-transform hidden md:block">
                             <Iphone src="/workout-in-progres.png" />
                         </div>
                     </div>
