@@ -4,13 +4,10 @@ import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 // Footer navigation links data
 const FOOTER_LINKS = [
   {
-    title: "Product",
+    title: "Products",
     links: [
-      { label: "Workout Tracking", href: "#" },
-      { label: "Plans", href: "#" },
-      { label: "Device Sync", href: "#" },
-      { label: "Progress Analytics", href: "#" },
-      { label: "Personal Coaching", href: "#" },
+      { label: "SetWise", href: "/" },
+      { label: "CoachWise", href: "/coachwise" },
     ],
   },
   {
@@ -18,8 +15,6 @@ const FOOTER_LINKS = [
     links: [
       { label: "About us", href: "#" },
       { label: "Our team", href: "#" },
-      { label: "Careers", href: "#" },
-      { label: "Brand", href: "#" },
       { label: "Contact", href: "#" },
     ],
   },
@@ -27,7 +22,7 @@ const FOOTER_LINKS = [
     title: "Resources",
     links: [
       { label: "Terms of use", href: "#" },
-      { label: "API Reference", href: "#" },
+      { label: "Privacy policy", href: "#" },
       { label: "Documentation", href: "#" },
       { label: "Community", href: "#" },
       { label: "Support", href: "#" },
