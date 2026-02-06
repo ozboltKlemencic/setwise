@@ -43,55 +43,47 @@ export default function FooterSection() {
     <div className="w-full pt-10 flex flex-col justify-start items-start">
       {/* Main Footer Content */}
       <div className="self-stretch h-auto flex flex-col md:flex-row justify-between items-stretch pr-0  pt-0">
-        <div className="h-auto max-w-[450px] p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-8 ">
-          {/* Brand Section */}
-          <div className="w-full flex flex-col justify-start items-start gap-4">
-            <div>
-              <div className="text-[#49423D] text-xl font-semibold leading-6 font-sans">SetWise</div>
-              <p className="text-[rgba(73,66,61,0.70)] text-sm font-medium leading-[18px] font-sans mt-1">
-                Your fitness journey, simplified. Setwise is a fitness app that helps you track your workouts and stay motivated.
-              </p>
+        <div className="h-auto max-w-[380px] p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-6">
+          {/* Brand & Description */}
+          <div className="flex flex-col gap-3">
+            <div className="text-neutral-800 text-xl font-semibold leading-6 font-sans">SetWise</div>
+            <p className="text-neutral-500 text-sm font-normal leading-relaxed font-sans">
+              Your fitness journey, simplified. Track workouts, stay motivated, and reach your goals.
+            </p>
+          </div>
+
+          {/* Newsletter Section */}
+          <div className="flex flex-col gap-y-2 w-full">
+            <div className="text-neutral-700 text-sm font-medium leading-5 font-sans">
+              Join the waitlist
             </div>
-            {/* Email Signup */}
-            <div className="flex flex-col gap-2 w-full max-w-sm mt-2">
-              <label htmlFor="footer-email" className="text-xs font-medium text-neutral-600 pb-0.5">
-                Join the waitlist
-              </label>
-              <div className="flex gap-2 w-full">
-                <input
-                  type="email"
-                  id="footer-email"
-                  placeholder="you@example.com"
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-neutral-200/80 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
-                />
-                <button
-                  className="relative overflow-hidden rounded-xl p-[1.5px] bg-gradient-to-r from-blue-600/80 to-blue-500  transition-all duration-300  active:scale-95"
-                >
-                  <span className="relative flex items-center justify-center rounded-[10px] px-5 py-2.5 text-sm font-medium text-white transition-colors">
-                    Join
-                  </span>
-                  <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/30 blur-md rounded-full"></div>
-                  <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/30 blur-md rounded-full"></div>
-                </button>
-              </div>
-            </div>
-            <div className="mt-2">
-              {/* Social Media Icons */}
-              <label htmlFor="footer-email" className="text-xs font-medium text-neutral-600 ">
-                Follow us
-              </label>
-              <div className="flex justify-start items-start gap-4 pt-1">
-                {/* Twitter/X Icon */}
-                <Instagram className="size-5 text-neutral-500" />
-                {/* LinkedIn Icon */}
-                <Linkedin className="size-5 text-neutral-500" />
-
-
-
-              </div>
+            <div className="flex gap-2 w-full">
+              <input
+                type="email"
+                id="footer-email"
+                placeholder="you@example.com"
+                className="flex-1 px-4 py-2 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              />
+              <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors duration-200">
+                Join
+              </button>
             </div>
           </div>
 
+          {/* Social Links Section */}
+          <div className="flex flex-col gap-y-2">
+            <div className="text-neutral-700 text-sm font-medium leading-5 font-sans">
+              Follow us
+            </div>
+            <div className="flex items-center gap-x-3">
+              <a href="#" className=" rounded-lg hover:bg-neutral-100 transition-colors duration-200">
+                <Instagram className="size-5 text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
+              </a>
+              <a href="#" className=" rounded-lg hover:bg-neutral-100 transition-colors duration-200">
+                <Linkedin className="size-5 text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* Navigation Links */}
