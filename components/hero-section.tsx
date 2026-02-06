@@ -15,7 +15,7 @@ export default function HeroSection() {
         <div className="absolute top-0 left-0 w-full h-full -z-10 translate-x-[5%]  -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243,0.8) 0%, rgba(247, 245, 243,0) 80%)' }} />
 
         {/* Left Column: Text */}
-        <div className="flex md:w-1/2 w-full  py-2  gap-y-4 flex-col md:items-start items-center md:text-left text-center px-2 md:px-0">
+        <div className="flex md:w-1/2 w-full lg:pb-8  py-2  gap-y-4 flex-col md:items-start items-center md:text-left text-center px-2 md:px-0">
           {/* Badge */}
 
           <ShimmerButton className=" border border-neutral-200" shimmerDuration={"3s"} shimmerSize={"0.07em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"#689efc"}>
@@ -75,14 +75,14 @@ export default function HeroSection() {
         </div>
 
         {/* Right Column: Phones */}
-        <div className="relative h-[458px]  md:w-1/2 w-full md:h-[600px]  flex items-center justify-center md:justify-end perspective-1000">
+        <div className="relative h-[458px]  md:w-1/2 w-full md:h-[540px]  flex items-center justify-center md:justify-end perspective-1000">
           {/* Back Phone */}
-          <div className="absolute top-10 md:top-28 right-2  w-[200px] md:w-[230px] transform-gpu will-change-transform z-10">
+          <div className="absolute top-10 md:top-12 right-2  w-[200px] md:w-[230px] transform-gpu will-change-transform z-10">
             <Iphone src="/workout.png" priority />
           </div>
 
           {/* Front Phone */}
-          <div className="absolute top-0 md:top-16 left-2 md:left-16 w-[200px] md:w-[230px] transform-gpu will-change-transform rotate-[0deg] ">
+          <div className="absolute top-0 md:top-8 left-2 md:left-12 w-[200px] md:w-[230px] transform-gpu will-change-transform rotate-[0deg] ">
             <Iphone src="/home.png" priority />
           </div>
         </div>
