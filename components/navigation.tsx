@@ -25,8 +25,8 @@ export default function Navigation() {
                 <div className="absolute md:hidden top-0 left-0 w-2/5 -translate-y-1/3 -translate-x-1/2 h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
                 {/* Logo */}
                 <div className="flex items-center gap-2">
-                    <img src="/setwise-logo.png" alt="SetWise" className="w-7 h-7 rounded-lg" />
-                    <span className="text-lg font-bold text-[#1A1A1A] font-sans">SetWise</span>
+                    <img src="/setwise-logo.png" alt="SetWise" className="size-6 md:size-8 rounded-sm " />
+                    <span className="md:text-lg text-base font-bold text-[#1A1A1A] font-sans">SetWise</span>
                 </div>
 
                 {/* Desktop Navigation */}
@@ -99,8 +99,8 @@ export default function Navigation() {
                                 {/* Header with Logo and Close */}
                                 <div className="flex items-center justify-between px-6 py-4">
                                     <div className="flex items-center gap-2">
-                                        <img src="/setwise-logo.png" alt="SetWise" className="w-8 h-8 rounded-lg" />
-                                        <span className="text-lg font-bold text-[#1A1A1A]">SetWise</span>
+                                        <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
+                                        <span className="text-base font-bold text-[#1A1A1A]">SetWise</span>
                                     </div>
                                     <motion.button
                                         onClick={() => setIsMenuOpen(false)}

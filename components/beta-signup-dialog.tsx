@@ -50,17 +50,18 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
             )}
             <DialogContent
                 showCloseButton={false}
-                className="md:min-w-[460px] md:max-w-[460px] w-[96vw] md:w-full border border-neutral-200/80 bg-white rounded-2xl p-0 shadow-xl shadow-black/5 overflow-hidden"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+                className="md:min-w-[460px] md:max-w-[460px] w-[96vw] md:w-full border border-neutral-200/80 bg-white rounded-2xl p-0 shadow-xl shadow-black/5 overflow-hidden h-fit gap-y-0"
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-100">
+                <div className="flex items-center justify-between px-5 py-2.5 border-b border-neutral-100">
                     <div className="flex items-center gap-2">
                         <img
                             src="/setwise-logo.png"
                             alt="SetWise"
-                            className="w-7 h-7 rounded-lg"
+                            className="size-6 rounded-sm "
                         />
-                        <span className="text-base font-semibold text-neutral-900">SetWise</span>
+                        <span className="text-sm font-semibold text-neutral-900">SetWise</span>
                     </div>
                     <DialogClose className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors text-neutral-400 hover:text-neutral-600">
                         <X className="w-4 h-4" />
@@ -69,7 +70,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                 </div>
 
                 {/* Content */}
-                <div className="px-5 py-5">
+                <div className="px-5 py-6 ">
                     {/* Title */}
                     <DialogTitle className="text-xl font-semibold text-center text-neutral-900 mb-1.5">
                         Get Early Access
