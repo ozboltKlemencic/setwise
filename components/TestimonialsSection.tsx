@@ -157,7 +157,7 @@ export default function TestimonialsSection() {
                     </div>
                     <div
                         ref={containerRef}
-                        className="md:w-1/2 w-[calc(100%-2rem)] md:mr-6  relative overflow-hidden md:h-full h-[400px]  flex flex-col md:pl-6 md:my-6 py-4"
+                        className="md:w-1/2 md:mr-6  relative overflow-hidden md:h-full h-[400px]  flex flex-col md:pl-6 md:my-6 py-4"
                         onMouseEnter={() => animationRef.current?.pause()}
                         onMouseLeave={() => animationRef.current?.play()}
                     >
