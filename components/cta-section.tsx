@@ -58,10 +58,16 @@ export default function CTASection() {
           initial={{ y: "-80%" }}
           animate={{ y: isHovered ? "-35%" : isInView ? "25%" : "-50%" }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[40%] right-12 md:right-[6rem] transform-gpu will-change-transform "
+          className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[40%] right-12 md:right-[6rem] transform-gpu will-change-transform hidden md:block"
         >
           <Iphone src="/home.png" />
         </motion.div>
+        <div
+
+          className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[75%] right-12 md:right-[6rem] transform-gpu will-change-transform "
+        >
+          <Iphone src="/home.png" />
+        </div>
       </div>
     </div>
   )
