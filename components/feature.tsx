@@ -32,9 +32,9 @@ export default function Feature({
     return (
         <div className="w-full relative  group flex flex-col  justify-center items-center gap-2 overflow-hidden">
             {/* Content */}
-            <div className={`self-stretch ${isReverse ? 'flex-row-reverse' : 'flex-row'} border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center  relative z-10 h-[580px] max-h-[580px]`}>
+            <div className={`self-stretch ${isReverse ? 'md:flex-row-reverse flex-col' : 'md:flex-row flex-col'} border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center relative z-10 md:h-[580px] md:max-h-[580px]`}>
 
-                <div className=" max-w-[586px] w-1/2 h-full   px-16 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-center items-center gap-6 relative z-20">
+                <div className="w-full p-6 md:max-w-[586px] md:w-1/2 h-full md:px-16 md:py-8 overflow-hidden rounded-lg flex flex-col justify-center items-center gap-6 relative z-20">
                     <div className="self-stretch flex flex-col justify-start items-start gap-3">
                         <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                             {title}
@@ -55,7 +55,7 @@ export default function Feature({
                     </div>
                 </div>
 
-                <div className="w-1/2 h-full p-4">
+                <div className="w-full h-[400px] md:w-1/2 md:h-full p-4">
                     <div
                         ref={containerRef}
                         className="w-full relative h-full bg-blue-500 shadow-lg rounded-2xl overflow-hidden group/phone"
@@ -87,7 +87,7 @@ export default function Feature({
                             initial={{ y: "70%" }}
                             animate={{ y: isHovered ? "15%" : isInView ? "-25%" : "-5%" }}
                             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                            className="absolute top-0 left-1/5 w-[300px] transform-gpu will-change-transform"
+                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-1/5 w-[75%] md:w-[300px] transform-gpu will-change-transform"
                         >
                             <Iphone src={imageSrc} />
                         </motion.div>

@@ -26,7 +26,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     className = ''
 }) => {
     return (
-        <div className={`relative touch-none  w-full h-full max-h-[380px] border border-neutral-200/80   aspect-[0.718] group ${className}`}>
+        <div className={`relative touch-none pointer-events-none md:pointer-events-auto w-full h-full max-h-[380px] border border-neutral-200/80   aspect-[0.718] group ${className}`}>
             {/* Behind Glow */}
             <div
                 className="absolute inset-0 z-0 pointer-events-none bg-linear-to-tr  from-neutral-100 to-white saturate-[1.1] "
