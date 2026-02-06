@@ -46,7 +46,7 @@ export default function HeroSection() {
           </div>
 
           {/* Social Proof */}
-          <div className="flex flex-col items-start gap-2 mt-2">
+          <div className="flex flex-col items-center md:items-start gap-2 mt-2">
             <div className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((i) => (
@@ -61,7 +61,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center justify-center  gap-1.5">
               <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FBBF24" xmlns="http://www.w3.org/2000/svg">
