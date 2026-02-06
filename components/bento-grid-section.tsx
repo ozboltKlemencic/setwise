@@ -217,7 +217,7 @@ export default function BentoGridSection() {
         <div className="w-full border-b border-t border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
             {/* Header Section */}
             <div className="self-stretch px-4 sm:px-6 md:px-8 lg:px-0 w-full py-8 sm:py-12 md:py-12 border-b border-[rgba(55,50,47,0.12)] flex justify-center items-center gap-6">
-                <div className="w-full max-w-[616px] lg:w-[616px] px-4 sm:px-6 py-4 sm:py-5 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-3 sm:gap-4">
+                <div className="w-full max-w-[616px] lg:w-[616px] px-4 sm:px-6 py-4 sm:py-5 overflow-hidden rounded-lg  flex flex-col justify-center items-center gap-3 ">
                     <Badge
                         icon={
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -232,7 +232,7 @@ export default function BentoGridSection() {
                     <h2 className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
                         Plan less. Execute more. <span className="bg-linear-to-r from-blue-200  via-blue-600/80 to-blue-500 bg-clip-text text-transparent">Effortlessly.</span>
                     </h2>
-                    <div className="self-stretch max-w-md text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
+                    <div className=" max-w-md text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
                         Spot improvements, plateaus, and next steps instantly. Progress becomes obvious. Make smarter decisions after every session.
                     </div>
                 </div>
