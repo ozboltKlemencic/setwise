@@ -50,7 +50,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
             )}
             <DialogContent
                 showCloseButton={false}
-                className="md:max-w-[400px] w-[96vw] md:w-full border border-neutral-200/80 bg-white rounded-2xl p-0 shadow-xl shadow-black/5 overflow-hidden"
+                className="md:min-w-[460px] md:max-w-[460px] w-[96vw] md:w-full border border-neutral-200/80 bg-white rounded-2xl p-0 shadow-xl shadow-black/5 overflow-hidden"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-100">
