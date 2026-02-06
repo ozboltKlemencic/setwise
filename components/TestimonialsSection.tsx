@@ -94,7 +94,7 @@ export default function TestimonialsSection() {
 
     return (
         <div>
-            <div className="w-full h-6 relative opacity-80 border-b border-[rgba(55,50,47,0.12)] overflow-hidden">
+            <div className="w-full md:h-6 h-2 relative opacity-80 border-b border-[rgba(55,50,47,0.12)] overflow-hidden">
                 {Array.from({ length: 300 }).map((_, i) => (
                     <div
                         key={i}
@@ -107,10 +107,22 @@ export default function TestimonialsSection() {
                     ></div>
                 ))}
             </div>
-            <div className="w-full flex flex-col h-[640px] lg:flex-row justify-center items-center      border-[rgba(55,50,47,0.12)]     ">
+            <div className="w-full flex flex-col md:h-[640px] lg:flex-row justify-center items-center border-[rgba(55,50,47,0.12)] relative">
 
-                {/* Left Decorative Pattern */}
-                <div className="w-6 self-stretch relative overflow-hidden hidden md:block">
+                {/* Left Decorative Pattern - Absolute positioned */}
+                <div className="absolute left-0 top-0 w-2 md:w-6 h-full overflow-hidden z-10 border-r border-[rgba(55,50,47,0.12)]">
+                    <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start ">
+                        {Array.from({ length: 200 }).map((_, i) => (
+                            <div
+                                key={i}
+                                className="self-stretch h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                            ></div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Right Decorative Pattern - Absolute positioned */}
+                <div className="absolute right-0 top-0 w-2 md:w-6 h-full overflow-hidden z-10 border-l border-[rgba(55,50,47,0.12)]">
                     <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
                         {Array.from({ length: 200 }).map((_, i) => (
                             <div
@@ -122,17 +134,17 @@ export default function TestimonialsSection() {
                 </div>
 
                 {/* content */}
-                <div className="flex-1 flex flex-col shadow-[0px_0px_3px_3px_rgba(60,60,60,0.00)] md:flex-row justify-center items-center gap-6 py-12 border-l border-r bborder border-[rgba(55,50,47,0.12)] h-full">
-                    <div className=" max-w-[586px] w-1/2 px-10 pl-12 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center gap-6 relative z-20">
-                        <div className="self-stretch flex flex-col justify-start items-start gap-3">
-                            <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
+                <div className="flex-1 flex flex-col shadow-[0px_0px_3px_3px_rgba(60,60,60,0.00)] md:flex-row justify-center items-center md:py-12   h-full gap-y-6 px-4 md:px-0 pb-6 md:pb-0">
+                    <div className="md:max-w-[586px] w-full md:w-1/2 md:px-10 md:pl-12 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-20 p-6 gap-y-4 py-8">
+                        <div className="w-full h-full flex flex-col justify-start items-start gap-3">
+                            <h2 className="self-stretch text-center md:text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                                 <SparklesText shapes={['heart', 'star']} colors={{ first: "#FFD700", second: "#EAB308" }}>Loved by</SparklesText> serious lifters. Proven in real training.
-                            </div>
-                            <div className="self-stretch text-left text-[#605A57] text-base leading-7 font-sans font-medium">
+                            </h2>
+                            <p className="self-stretch text-center md:text-left text-[#605A57] text-base leading-7 font-sans font-medium">
                                 Used daily by coaches, athletes, and serious gym-goers. No fluff, no hype - just a powerful tool that helps you get stronger, smarter, and more consistent.
-                            </div>
+                            </p>
                         </div>
-                        <div className="w-full max-w-[497px] flex flex-col justify-start items-start gap-12">
+                        <div className="w-full md:max-w-[497px] flex flex-col md:justify-start justify-center md:items-start items-center md:gap-12 gap-6">
                             <div className="flex justify-start items-center gap-4">
                                 <div className="h-10 px-12 py-[6px] relative bg-[#37322F] shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#2A2520] transition-colors">
                                     <div className="w-44 h-[41px] absolute left-0 top-0 bg-linear-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
@@ -145,7 +157,7 @@ export default function TestimonialsSection() {
                     </div>
                     <div
                         ref={containerRef}
-                        className="w-1/2 relative overflow-hidden h-full flex flex-col pl-6  my-6"
+                        className="md:w-1/2 w-full relative overflow-hidden md:h-full h-[400px]  flex flex-col md:pl-6 md:my-6 py-4"
                         onMouseEnter={() => animationRef.current?.pause()}
                         onMouseLeave={() => animationRef.current?.play()}
                     >
@@ -155,7 +167,7 @@ export default function TestimonialsSection() {
 
                         <motion.div
                             ref={scope}
-                            className="flex flex-col pl-8 pr-6"
+                            className="flex flex-col px-2 md:pl-8 md:pr-6 pointer-events-none md:pointer-events-auto"
                             style={{
                                 willChange: "transform",
                                 transform: "translateZ(0)"
@@ -170,27 +182,15 @@ export default function TestimonialsSection() {
                                         reviewText={review.reviewText}
                                         rating={review.rating}
                                         avatarUrl={review.avatarUrl}
-                                        className="w-full shrink-0 my-3"
+                                        className="w-full shrink-0 md:my-3"
                                     />
                                 </ScaledCard>
                             ))}
                         </motion.div>
                     </div>
                 </div>
-
-                {/* Right Decorative Pattern */}
-                <div className="w-6 self-stretch relative overflow-hidden hidden md:block">
-                    <div className="w-[162px] left-[-58px] top-[-120px] absolute flex flex-col justify-start items-start">
-                        {Array.from({ length: 200 }).map((_, i) => (
-                            <div
-                                key={i}
-                                className="self-stretch h-4 rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
-                            ></div>
-                        ))}
-                    </div>
-                </div>
             </div >
-            <div className="w-full h-6 relative opacity-80 border-t border-b border-[rgba(55,50,47,0.12)] overflow-hidden">
+            <div className="w-full md:h-6 h-2 relative opacity-80 border-t border-b border-[rgba(55,50,47,0.12)] overflow-hidden">
                 {Array.from({ length: 300 }).map((_, i) => (
                     <div
                         key={i}
