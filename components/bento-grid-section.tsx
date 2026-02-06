@@ -230,10 +230,10 @@ export default function BentoGridSection() {
                         text="How it works"
                     />
                     <h2 className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
-                        Plan less. Execute more. <span className="bg-linear-to-r from-blue-500  via-blue-600 to-blue-500 bg-clip-text text-transparent">Effortlessly.</span>
+                        Plan less. Execute more. <span className="bg-linear-to-r from-blue-200  via-blue-600/80 to-blue-500 bg-clip-text text-transparent">Effortlessly.</span>
                     </h2>
-                    <div className="self-stretch text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
-                        Spot improvements, plateaus, and next steps instantly. Progress becomes obvious.
+                    <div className="self-stretch max-w-md text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
+                        Spot improvements, plateaus, and next steps instantly. Progress becomes obvious. Make smarter decisions after every session.
                     </div>
                 </div>
             </div>
