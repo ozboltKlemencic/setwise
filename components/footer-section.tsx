@@ -1,33 +1,45 @@
 import { ParticleText } from "@/components/ui/particle-text"
+import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 
 export default function FooterSection() {
   return (
     <div className="w-full pt-10 flex flex-col justify-start items-start">
       {/* Main Footer Content */}
       <div className="self-stretch h-auto flex flex-col md:flex-row justify-between items-stretch pr-0  pt-0">
-        <div className="h-auto p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-8">
+        <div className="h-auto max-w-[450px] p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-8 ">
           {/* Brand Section */}
-          <div className="self-stretch flex flex-col justify-start items-start gap-3">
-            <div className="text-center text-[#49423D] text-xl font-semibold leading-4 font-sans">SetWise</div>
-            <p className="text-[rgba(73,66,61,0.90)] text-sm font-medium leading-[18px] font-sans">
-              Your fitness journey, simplified
-            </p>
-          </div>
-          <div>
-            <label htmlFor="email" className="block text-xs font-medium text-neutral-600 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={""}
-              onChange={() => { }}
-              placeholder="you@example.com"
-              required
-              className="w-full px-3.5 py-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-            />
-          </div>
+          <div className="w-full flex flex-col justify-start items-start gap-4">
+            <div>
+              <div className="text-[#49423D] text-xl font-semibold leading-6 font-sans">SetWise</div>
+              <p className="text-[rgba(73,66,61,0.70)] text-sm font-medium leading-[18px] font-sans mt-1">
+                Your fitness journey, simplified. Setwise is a fitness app that helps you track your workouts and stay motivated.
+              </p>
+            </div>
 
+            {/* Email Signup */}
+            <div className="flex flex-col gap-2 w-full max-w-sm mt-3">
+              <label htmlFor="footer-email" className="text-xs font-medium text-neutral-500">
+                Join the waitlist
+              </label>
+              <div className="flex gap-2 w-full">
+                <input
+                  type="email"
+                  id="footer-email"
+                  placeholder="you@example.com"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-neutral-200/80 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+                />
+                <button
+                  className="relative overflow-hidden rounded-xl p-[1.5px] bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95"
+                >
+                  <span className="relative flex items-center justify-center rounded-[10px] bg-blue-600 hover:bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition-colors">
+                    Join
+                  </span>
+                  <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/30 blur-md rounded-full"></div>
+                  <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/30 blur-md rounded-full"></div>
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Social Media Icons */}
           <div className="flex justify-start items-start gap-4">
@@ -70,7 +82,7 @@ export default function FooterSection() {
         </div>
 
         {/* Navigation Links */}
-        <div className="self-stretch p-4 md:p-8 flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-6 md:gap-8">
+        <div className="self-stretch  p-4 md:p-8 flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-6 md:gap-8">
           {/* Product Column */}
 
           {/* Product Column */}
