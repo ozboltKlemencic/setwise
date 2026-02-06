@@ -227,15 +227,13 @@ export default function BentoGridSection() {
                                 <rect x="7" y="7" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
                             </svg>
                         }
-                        text="Features"
+                        text="How it works"
                     />
-                    <div className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
-                        Your fitness journey, simplified and powerful
-                    </div>
+                    <h2 className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
+                        Plan less. Execute more. <span className="bg-linear-to-r from-blue-500  via-blue-600 to-blue-500 bg-clip-text text-transparent">Effortlessly.</span>
+                    </h2>
                     <div className="self-stretch text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
-                        Track every rep, monitor every metric, and celebrate
-                        <br />
-                        every milestone with tools built for your success.
+                        Spot improvements, plateaus, and next steps instantly. Progress becomes obvious.
                     </div>
                 </div>
             </div>
