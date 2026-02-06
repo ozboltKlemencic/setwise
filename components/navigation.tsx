@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import BetaSignupDialog from "./beta-signup-dialog"
@@ -8,6 +8,7 @@ import BetaSignupDialog from "./beta-signup-dialog"
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isBetaDialogOpen, setIsBetaDialogOpen] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
 
     const navLinks = [
         { href: "#", label: "Home" },
@@ -15,6 +16,17 @@ export default function Navigation() {
         { href: "#features", label: "Features" },
         { href: "#pricing", label: "Pricing" },
     ]
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 400)
+        }
+
+        window.addEventListener("scroll", handleScroll, { passive: true })
+        handleScroll() // Check initial scroll position
+
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
 
     return (
         <>
@@ -58,6 +70,48 @@ export default function Navigation() {
                     <span className="w-5 h-0.5 bg-neutral-500 rounded-full"></span>
                 </button>
             </nav>
+
+            {/* Desktop Floating Navigation - appears on scroll */}
+            <AnimatePresence>
+                {isScrolled && (
+                    <motion.nav
+                        initial={{ y: -100, opacity: 0, scale: 0.9 }}
+                        animate={{ y: 0, opacity: 1, scale: 1 }}
+                        exit={{ y: -100, opacity: 0, scale: 0.9 }}
+                        transition={{
+                            type: "spring",
+                            stiffness: 280,
+                            damping: 24,
+                            mass: 0.9
+                        }}
+                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/70 backdrop-blur-md border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-6"
+                    >
+                        {/* Logo */}
+                        <div className="flex items-center gap-2 pl-2.5 ">
+                            <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
+                            <span className="text-sm font-bold text-neutral-800 font-sans">SetWise</span>
+                        </div>
+
+
+                        {/* Navigation Links */}
+                        <div className="flex items-center gap-1">
+                            {navLinks.map((link) => (
+                                <a
+                                    key={link.href}
+                                    href={link.href}
+                                    className="px-3 py-1.5 hover:bg-neutral-100 duration-200 rounded-full text-sm font-medium text-gray-600 hover:text-[#1A1A1A] transition-colors"
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
+                        </div>
+
+
+                        {/* CTA Button */}
+                        <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
+                    </motion.nav>
+                )}
+            </AnimatePresence>
 
             <AnimatePresence>
                 {isMenuOpen && (
@@ -198,3 +252,4 @@ export default function Navigation() {
         </>
     )
 }
+
