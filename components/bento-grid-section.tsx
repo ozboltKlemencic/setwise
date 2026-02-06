@@ -162,12 +162,12 @@ const WorkoutNotification = ({ name, date, duration, volume, status, highlight, 
                     </div>
 
                     {isTrending ? (
-                        <div className="px-2 md:px-2.5 py-0.5 md:py-1 rounded-md bg-emerald-100/50 border border-emerald-200 text-emerald-600 flex items-center gap-1">
+                        <div className="px-2 md:px-2.5 py-0.5 md:py-1 rounded-sm bg-emerald-100/50 border border-emerald-200 text-emerald-600 flex items-center gap-1">
                             <TrendingUp className="h-2.5 w-2.5 md:h-3 md:w-3" />
                             <span className="text-[10px] md:text-[11px] font-bold">{status}</span>
                         </div>
                     ) : (
-                        <div className="px-2 md:px-2.5 py-0.5 md:py-1 rounded-md bg-gray-100 border border-gray-200 text-[9px] md:text-[10px] font-bold text-gray-600 tracking-wide uppercase">
+                        <div className="px-2 md:px-2.5 py-0.5 md:py-1 rounded-sm bg-gray-100 border border-gray-200 text-[9px] md:text-[10px] font-bold text-gray-600 tracking-wide uppercase">
                             {status}
                         </div>
                     )}
@@ -256,7 +256,7 @@ export default function BentoGridSection() {
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-[rgba(55,50,47,0.12)]">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start min-h-[380px] max-h-[400px] md:min-h-[550px] md:max-h-[550px]">
+                    <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px]">
                         <div className="flex flex-col gap-2 p-6 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Track. Analyze. Improve.
@@ -276,7 +276,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[400px] min-h-[380px]">
+                    <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[380px] min-h-[380px]">
                         <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
                                 No internet. No excuses.
@@ -296,7 +296,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="border-b md:min-h-[550px] md:max-h-[550px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start  min-h-[380px] max-h-[400px]   relative  items-start">
+                    <div className="border-b md:min-h-[550px] md:max-h-[550px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start  min-h-[380px] max-h-[380px]   relative  items-start">
                         <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Details drive progress
@@ -313,7 +313,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Right - Workout History */}
-                    <div className="flex flex-col  min-h-[380px] max-h-[400px] md:min-h-[550px] md:max-h-[550px] justify-start items-start ">
+                    <div className="flex flex-col  min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px] justify-start items-start ">
                         <div className="flex flex-col w-full gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4 md:pb-4   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
                                 Progress Overview
