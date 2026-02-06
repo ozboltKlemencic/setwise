@@ -60,7 +60,7 @@ export default function CTASection() {
         </motion.div>
         <div
 
-          className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[75%] right-12 md:right-[6rem] transform-gpu will-change-transform "
+          className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[75%] right-12 md:right-[6rem] transform-gpu will-change-transform block md:hidden"
         >
           <Iphone src="/home.png" />
         </div>
