@@ -23,11 +23,14 @@ export default function LandingPage() {
         <div className="   md:px-8 lg:px-0 w-[94vw] md:w-6xl max-w-6xl relative flex flex-col justify-start items-start min-h-screen  border-l border-r border-[#E0DEDB]/80">
 
           {/* Hero Section */}
+          <section id="hero">
+            <HeroSection />
+          </section>
 
-          <HeroSection />
-
-          {/* Bento Grid Section */}
-          <BentoGridSection />
+          {/* Bento Grid Section - How it Works */}
+          <section id="how-it-works" className="w-full">
+            <BentoGridSection />
+          </section>
 
           <Feature2
             isReverse={false}
@@ -56,20 +59,25 @@ export default function LandingPage() {
 
 
           {/* Testimonials Section */}
-          <TestimonialsSection />
-          {/* Feature 2: Analytics */}
-          <Feature
-            isReverse={false}
-            title={<h2>From  <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">copy-paste</span>  to a workout.</h2>}
+          <section id="testimonials" className="w-full">
+            <TestimonialsSection />
+          </section>
 
-            description={
-              <>
-                Paste your plan we structure it automatically. No more manual setup, no more formatting headaches - just clean, organized workout ready to log.
-              </>
-            }
-            buttonText="Create workout"
-            imageSrc="/workout-in-progres.png"
-          />
+          {/* Features Section */}
+          <section id="features" className="w-full">
+            <Feature
+              isReverse={false}
+              title={<h2>From  <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">copy-paste</span>  to a workout.</h2>}
+
+              description={
+                <>
+                  Paste your plan we structure it automatically. No more manual setup, no more formatting headaches - just clean, organized workout ready to log.
+                </>
+              }
+              buttonText="Create workout"
+              imageSrc="/workout-in-progres.png"
+            />
+          </section>
 
           <Feature
             isReverse={true}
@@ -90,7 +98,9 @@ export default function LandingPage() {
           <BlueCTASection />
 
           {/* FAQ Section */}
-          <FAQSection />
+          <section id="faq" className="w-full">
+            <FAQSection />
+          </section>
 
           {/* CTA Section */}
           <CTASection />

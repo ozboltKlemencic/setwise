@@ -7,12 +7,27 @@ export default function FooterSection() {
       <div className="self-stretch h-auto flex flex-col md:flex-row justify-between items-stretch pr-0  pt-0">
         <div className="h-auto p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-8">
           {/* Brand Section */}
-          <div className="self-stretch flex justify-start items-center gap-3">
+          <div className="self-stretch flex flex-col justify-start items-start gap-3">
             <div className="text-center text-[#49423D] text-xl font-semibold leading-4 font-sans">SetWise</div>
+            <p className="text-[rgba(73,66,61,0.90)] text-sm font-medium leading-[18px] font-sans">
+              Your fitness journey, simplified
+            </p>
           </div>
-          <div className="text-[rgba(73,66,61,0.90)] text-sm font-medium leading-[18px] font-sans">
-            Your fitness journey, simplified
+          <div>
+            <label htmlFor="email" className="block text-xs font-medium text-neutral-600 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={""}
+              onChange={() => { }}
+              placeholder="you@example.com"
+              required
+              className="w-full px-3.5 py-2.5 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            />
           </div>
+
 
           {/* Social Media Icons */}
           <div className="flex justify-start items-start gap-4">

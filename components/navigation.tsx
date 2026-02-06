@@ -9,12 +9,14 @@ export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isBetaDialogOpen, setIsBetaDialogOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
+    const [activeSection, setActiveSection] = useState("#")
 
     const navLinks = [
-        { href: "#", label: "Home" },
-        { href: "#how-it-works", label: "How it Works" },
-        { href: "#features", label: "Features" },
-        { href: "#pricing", label: "Pricing" },
+        { href: "#", label: "Home", sectionId: "hero" },
+        { href: "#how-it-works", label: "How it Works", sectionId: "how-it-works" },
+        { href: "#testimonials", label: "Testimonials", sectionId: "testimonials" },
+        { href: "#features", label: "Features", sectionId: "features" },
+        { href: "#faq", label: "Faq", sectionId: "faq" },
     ]
 
     useEffect(() => {
@@ -23,10 +25,58 @@ export default function Navigation() {
         }
 
         window.addEventListener("scroll", handleScroll, { passive: true })
-        handleScroll() // Check initial scroll position
+        handleScroll()
 
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
+
+    // Track active section based on scroll position
+    useEffect(() => {
+        const handleScrollActive = () => {
+            const scrollPosition = window.scrollY + 150 // offset for nav height
+
+            // If at top of page, set to Home
+            if (window.scrollY < 100) {
+                setActiveSection("#")
+                return
+            }
+
+            // Find the last section that we've scrolled past
+            let lastPassedSection = "#"
+
+            for (const link of navLinks) {
+                const element = document.getElementById(link.sectionId)
+                if (element) {
+                    const offsetTop = element.offsetTop
+
+                    if (scrollPosition >= offsetTop) {
+                        lastPassedSection = link.href
+                    }
+                }
+            }
+
+            setActiveSection(lastPassedSection)
+        }
+
+        window.addEventListener("scroll", handleScrollActive, { passive: true })
+        handleScrollActive() // Check initial position
+
+        return () => window.removeEventListener("scroll", handleScrollActive)
+    }, [])
+
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, sectionId: string) => {
+        e.preventDefault()
+        setIsMenuOpen(false)
+
+        if (href === "#") {
+            window.scrollTo({ top: 0, behavior: "smooth" })
+        } else {
+            const element = document.getElementById(sectionId)
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" })
+            }
+        }
+    }
 
     return (
         <>
@@ -47,7 +97,11 @@ export default function Navigation() {
                         <a
                             key={link.href}
                             href={link.href}
-                            className="px-3 py-1.5 hover:bg-neutral-200/60 duration-200 rounded-full text-sm font-medium text-gray-600 hover:text-[#1A1A1A] transition-colors"
+                            onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                            className={`px-3 py-1.5 duration-200 rounded-full text-sm font-medium transition-colors ${activeSection === link.href
+                                ? "bg-neutral-100/90 border border-neutral-200/80 text-[#1A1A1A]"
+                                : "hover:bg-neutral-200/60 text-gray-600 hover:text-[#1A1A1A]"
+                                }`}
                         >
                             {link.label}
                         </a>
@@ -84,7 +138,7 @@ export default function Navigation() {
                             damping: 24,
                             mass: 0.9
                         }}
-                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/70 backdrop-blur-md border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-6"
+                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-6"
                     >
                         {/* Logo */}
                         <div className="flex items-center gap-2 pl-2.5 ">
@@ -99,9 +153,22 @@ export default function Navigation() {
                                 <a
                                     key={link.href}
                                     href={link.href}
-                                    className="px-3 py-1.5 hover:bg-neutral-100 duration-200 rounded-full text-sm font-medium text-gray-600 hover:text-[#1A1A1A] transition-colors"
+                                    onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                                    className="relative px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 hover:text-[#1A1A1A]"
+                                    style={{ color: activeSection === link.href ? '#1A1A1A' : '#6b7280' }}
                                 >
-                                    {link.label}
+                                    {activeSection === link.href && (
+                                        <motion.div
+                                            layoutId="activeNavIndicator"
+                                            className="absolute inset-0 bg-neutral-100/90 border border-neutral-200/80 rounded-full"
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 380,
+                                                damping: 30
+                                            }}
+                                        />
+                                    )}
+                                    <span className="relative z-10">{link.label}</span>
                                 </a>
                             ))}
                         </div>
@@ -196,8 +263,11 @@ export default function Navigation() {
                                         >
                                             <a
                                                 href={link.href}
-                                                onClick={() => setIsMenuOpen(false)}
-                                                className="block px-3 py-4 text-base font-medium text-gray-700 hover:text-[#1A1A1A] hover:bg-neutral-50 rounded-xl transition-colors"
+                                                onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                                                className={`block px-3 py-4 text-base font-medium rounded-xl transition-colors ${activeSection === link.href
+                                                    ? "text-neutral-900 bg-neutral-50"
+                                                    : "text-gray-700 hover:text-[#1A1A1A] hover:bg-neutral-50"
+                                                    }`}
                                             >
                                                 {link.label}
                                             </a>
