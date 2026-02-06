@@ -35,7 +35,9 @@ export function ParticleText({ text, className }: ParticleTextProps) {
         const init = () => {
             const width = container.clientWidth
             const height = container.clientHeight
-            const density = 5 // Gap between particles. Smaller = more particles.
+            // Responsive density - larger gap on mobile = fewer particles
+            const isMobile = width < 768
+            const density = isMobile ? 3 : 5 // Gap between particles. Smaller = more particles.
 
             // Set canvas resolution for high DPI displays
             const dpr = window.devicePixelRatio || 1
@@ -53,8 +55,9 @@ export function ParticleText({ text, className }: ParticleTextProps) {
             if (!offCtx) return
 
             offCtx.fillStyle = "black"
-            // Use a bold sans-serif font
-            offCtx.font = "bold 160px system-ui, -apple-system, sans-serif"
+            // Use a bold sans-serif font - smaller on mobile
+            const fontSize = isMobile ? 70 : 160
+            offCtx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`
             offCtx.textAlign = "center"
             offCtx.textBaseline = "bottom"
             // Position text at the bottom with some padding
@@ -109,11 +112,12 @@ export function ParticleText({ text, className }: ParticleTextProps) {
                 const alpha = Math.min(p.baseAlpha, p.targetAlpha) + (Math.sin(p.phase) + 1) / 2 * opacityRange
 
                 ctx.fillStyle = p.isActive
-                    ? `rgba(205, 205, 205, ${alpha})` // Lighter grey for text blue je 194, 215, 255
+                    ? `rgba(180, 180, 180, ${alpha})` // Lighter grey for text blue je 194, 215, 255
                     : `rgba(200, 200, 200, ${alpha})` // Light grey for background
 
-                // Draw particle (square)
-                ctx.fillRect(p.x, p.y, 3, 3)
+                // Draw particle (square) - smaller on mobile
+                const particleSize = canvas.width < 768 * (window.devicePixelRatio || 1) ? 2 : 3
+                ctx.fillRect(p.x, p.y, particleSize, particleSize)
             })
 
             animationFrameId = requestAnimationFrame(animate)

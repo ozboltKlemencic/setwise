@@ -128,9 +128,9 @@ export default function FooterSection() {
         </div>
       </div>
       {/* Particle Text Section */}
-      <div className=" w-full relative overflow-hidden">
+      <div className="w-full relative overflow-hidden">
         {/* SetWise text made of particles */}
-        <div className="relative flex justify-center items-center  w-full h-[250px]">
+        <div className="relative flex justify-center items-center w-full h-[150px] md:h-[250px]">
           <ParticleText text="SetWise" className="w-full h-full" />
         </div>
       </div>
