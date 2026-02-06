@@ -66,7 +66,7 @@ export default function BlueCTASection() {
 
                         <div className="relative z-10 flex flex-col items-center gap-8">
                             <h2 className="text-white text-4xl sm:text-5xl md:text-6xl font-sans font-semibold tracking-tight leading-tight">
-                                Turn any plan into<br />  a <Highlighter action="box" color="#7dd3fc" isView>trackable</Highlighter><br />  session.
+                                Turn any plan into<br />  a <Highlighter action="underline" color="#aec4e8">trackable</Highlighter><br />  session.
                             </h2>
 
                             <div className="flex flex-col items-center gap-3">
