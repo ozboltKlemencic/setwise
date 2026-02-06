@@ -27,7 +27,7 @@ export default function HeroSection() {
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold text-center md:text-left text-[#1A1A1A] tracking-tight  leading-[1.05] font-sans">
             Log Workouts <br />
-            <span className="bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Get Stronger</span> <br />
+            <span className="bg-linear-to-r from-blue-500  via-blue-600 to-blue-500 bg-clip-text text-transparent">Get Stronger</span> <br />
             Stay disciplined
           </h1>
 

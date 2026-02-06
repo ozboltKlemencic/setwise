@@ -3,9 +3,11 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
+import BetaSignupDialog from "./beta-signup-dialog"
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isBetaDialogOpen, setIsBetaDialogOpen] = useState(false)
 
     const navLinks = [
         { href: "#", label: "Home" },
@@ -41,7 +43,7 @@ export default function Navigation() {
 
                 {/* Desktop Button */}
                 <div className="hidden md:block">
-                    <ButtonRotatingGradient />
+                    <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -176,6 +178,10 @@ export default function Navigation() {
                                     }}
                                 >
                                     <motion.button
+                                        onClick={() => {
+                                            setIsMenuOpen(false)
+                                            setTimeout(() => setIsBetaDialogOpen(true), 200)
+                                        }}
                                         className="w-full relative inline-flex h-12 overflow-hidden rounded-full p-[2px]"
                                         whileTap={{ scale: 0.98 }}
                                         whileHover={{ scale: 1.02 }}
@@ -194,6 +200,12 @@ export default function Navigation() {
                     </>
                 )}
             </AnimatePresence>
+
+            {/* Mobile Beta Dialog - outside AnimatePresence to prevent unmounting issues */}
+            <BetaSignupDialog
+                open={isBetaDialogOpen}
+                onOpenChange={setIsBetaDialogOpen}
+            />
         </>
     )
 }
