@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react"
 import ReviewCard from "./ui/cards/ReviewCard"
 import { motion, useMotionValue, useAnimationFrame, useAnimate, type AnimationPlaybackControls } from "framer-motion"
 import { SparklesText } from "./ui/sparkles-text";
+import DownloadButton from "./ui/buttons/DownloadButton";
 
 const reviews = [
     {
@@ -136,23 +137,14 @@ export default function TestimonialsSection() {
                 {/* content */}
                 <div className="flex-1 flex flex-col shadow-[0px_0px_3px_3px_rgba(60,60,60,0.00)] md:flex-row justify-center items-center md:py-12   h-full gap-y-6 px-4 md:px-0 pb-6 md:pb-0">
                     <div className="md:max-w-[586px] md:ml-6  w-full md:w-1/2 md:px-10 md:pl-12 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-20 p-6 gap-y-4 py-8">
-                        <div className="w-full h-full flex flex-col justify-start items-start gap-3">
+                        <div className="w-full h-full flex flex-col justify-center items-center md:items-start gap-3 md:pb-8">
                             <h2 className="self-stretch text-center md:text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                                 <SparklesText shapes={['heart', 'star']} colors={{ first: "#FFD700", second: "#EAB308" }}>Loved by</SparklesText> serious lifters. Proven in real training.
                             </h2>
                             <p className="self-stretch text-center md:text-left text-[#605A57] text-base leading-7 font-sans font-medium">
                                 Used daily by coaches, athletes, and serious gym-goers. No fluff, no hype - just a powerful tool that helps you get stronger, smarter, and more consistent.
                             </p>
-                        </div>
-                        <div className="w-full md:max-w-[497px] flex flex-col md:justify-start justify-center md:items-start items-center md:gap-12 gap-6">
-                            <div className="flex justify-start items-center gap-4">
-                                <div className="h-10 px-12 py-[6px] relative bg-[#37322F] shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#2A2520] transition-colors">
-                                    <div className="w-44 h-[41px] absolute left-0 top-0 bg-linear-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
-                                    <div className="flex flex-col justify-center text-white text-[13px] font-medium leading-5 font-sans">
-                                        Download for free
-                                    </div>
-                                </div>
-                            </div>
+                            <DownloadButton openBetaDialog={true} text="Download for free" />
                         </div>
                     </div>
                     <div

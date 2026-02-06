@@ -51,7 +51,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
             <DialogContent
                 showCloseButton={false}
                 onOpenAutoFocus={(e) => e.preventDefault()}
-                className="md:min-w-[460px] md:max-w-[460px] w-[96vw] md:w-full border border-neutral-200/80 bg-white rounded-2xl p-0 shadow-xl shadow-black/5 overflow-hidden h-fit gap-y-0"
+                className="md:min-w-[460px] max-h-[580px] md:max-w-[460px] w-[96vw] md:w-full border border-neutral-200/80 bg-white rounded-2xl p-0 shadow-xl shadow-black/5 overflow-hidden h-fit gap-y-0"
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-2.5 border-b border-neutral-100">
@@ -151,7 +151,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                                 type="button"
                                 onClick={() => setIsTrainer(!isTrainer)}
                                 className={`w-4 h-4 rounded border flex items-center justify-center transition-all shrink-0 ${isTrainer
-                                    ? "bg-blue-600 border-blue-600"
+                                    ? "bg-blue-500 border-blue-500"
                                     : "border-neutral-300 bg-white hover:border-neutral-400"
                                     }`}
                             >

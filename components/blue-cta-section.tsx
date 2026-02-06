@@ -3,6 +3,7 @@
 import React from "react"
 import { Iphone } from "./ui/mobileDevices/Phone"
 import { Highlighter } from "./ui/highlighter"
+import WhiteBtn from "./ui/buttons/WhiteBtn"
 
 export default function BlueCTASection() {
     return (
@@ -62,15 +63,13 @@ export default function BlueCTASection() {
                             ))}
                         </div>
 
-                        <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8">
+                        <div className="relative z-10 flex flex-col items-center gap-6 md:gap-4">
                             <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-semibold tracking-tight leading-tight">
                                 Turn any plan into <br className="hidden sm:block" />a <Highlighter action="underline" color="#aec4e8">trackable</Highlighter> <br className="hidden sm:block" />session.
                             </h2>
 
-                            <div className="flex flex-col items-center gap-3">
-                                <button className="bg-white text-[#1A62FF] hover:bg-gray-100 transition-colors px-5 md:px-6 py-2.5 md:py-3 rounded-full font-medium text-sm sm:text-base md:text-lg shadow-lg">
-                                    Download for iOS or Android
-                                </button>
+                            <div className="flex flex-col items-center gap-y-3">
+                                <WhiteBtn openBetaDialog={true} text="Download for iOS or Android" />
                                 <p className="text-white/80 text-xs sm:text-sm font-medium">
                                     Free beta version
                                 </p>
