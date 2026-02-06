@@ -78,10 +78,10 @@ export default function BlueCTASection() {
                         </div>
 
 
-                        <div className="absolute right-3  -top-3 w-12 z-1- -rotate-32 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform ">
+                        <div className="absolute right-3  -top-3 w-12 z-1- -rotate-32 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform block md:hidden ">
                             <Iphone src="/home.png" />
                         </div>
-                        <div className="absolute left-3  -bottom-1 w-12 z-1 -rotate-42 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform ">
+                        <div className="absolute left-3  -bottom-1 w-12 z-1 -rotate-42 opacity-80  transition-transform duration-700 ease-in-out transform-gpu will-change-transform block md:hidden">
                             <Iphone src="/home.png" />
                         </div>
 
