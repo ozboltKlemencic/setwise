@@ -135,7 +135,7 @@ export default function TestimonialsSection() {
 
                 {/* content */}
                 <div className="flex-1 flex flex-col shadow-[0px_0px_3px_3px_rgba(60,60,60,0.00)] md:flex-row justify-center items-center md:py-12   h-full gap-y-6 px-4 md:px-0 pb-6 md:pb-0">
-                    <div className="md:max-w-[586px] w-full md:w-1/2 md:px-10 md:pl-12 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-20 p-6 gap-y-4 py-8">
+                    <div className="md:max-w-[586px] md:ml-6  w-full md:w-1/2 md:px-10 md:pl-12 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-20 p-6 gap-y-4 py-8">
                         <div className="w-full h-full flex flex-col justify-start items-start gap-3">
                             <h2 className="self-stretch text-center md:text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
                                 <SparklesText shapes={['heart', 'star']} colors={{ first: "#FFD700", second: "#EAB308" }}>Loved by</SparklesText> serious lifters. Proven in real training.
@@ -157,7 +157,7 @@ export default function TestimonialsSection() {
                     </div>
                     <div
                         ref={containerRef}
-                        className="md:w-1/2 w-full relative overflow-hidden md:h-full h-[400px]  flex flex-col md:pl-6 md:my-6 py-4"
+                        className="md:w-1/2 w-[calc(100%-2rem)] md:mr-6  relative overflow-hidden md:h-full h-[400px]  flex flex-col md:pl-6 md:my-6 py-4"
                         onMouseEnter={() => animationRef.current?.pause()}
                         onMouseLeave={() => animationRef.current?.play()}
                     >
