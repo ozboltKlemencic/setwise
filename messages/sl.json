@@ -122,7 +122,7 @@
         "items": [
             {
                 "question": "Kakšno analitiko ponuja SetWise?",
-                "answer": "Grafe napredka in filtre po vaji in časovnem obdobju, da lahko vizualiziraš trende moči, konsistenco in spremembe uspešnosti na en pogled."
+                "answer": "Grafe napredka in filtre po vajah ti omogočajo hitro in pregledno vizualizacijo trendov moči ter analizo tvoje uspešnosti."
             },
             {
                 "question": "Kako so shranjeni moji podatki?",
@@ -130,27 +130,27 @@
             },
             {
                 "question": "Je SetWise hiter za uporabo med vadbo?",
-                "answer": "Da - beleženje je zasnovano za hitrost. Večina setov traja sekunde za zapis, z naprednimi možnostmi (RPE/RIR, tempo, opombe) na voljo, ko jih potrebuješ."
+                "answer": "Absolutno. Setwise je narejen za hitrost, ne za tipkanje. Serijo zabeležiš v le nekaj sekundah, napredne funkcije, kot so RPE/RIR, tempo in opombe, pa so ti na voljo kadarkoli jih potrebuješ, brez nepotrebnega klikanja."
             },
             {
                 "question": "Ali podpira moj stil treninga (moč, bodibilding, powerbuilding)?",
-                "answer": "Da. Podpira ravne sete, supersete in napredne tipe setov (npr. drop seti, rest-pause, myo-repi), tako da ustreza večini programov."
+                "answer": "Seveda. Setwise podpira klasične serije in vse napredne metode, kot so drop seti, rest-pause in myo-repi. Ne glede na to, kako specifičen je tvoj program, mu aplikacija brez težav sledi."
             },
             {
-                "question": "Kako deluje 'Prilepi uvoz' - in katere formate razume?",
-                "answer": "Prilepi katerokoli vadbo kot navaden tekst (iz Notes, WhatsApp, Excel ali kopiranega teksta). SetWise uporablja LLM-podprto razčlenjevanje za prepoznavanje vaj, setov, ponovitev in pogostih tipov setov - nato pretvori v čisto, strukturirano vadbo, ki jo lahko takoj beležiš. Zasnovano je za obdelavo različnih stilov pisanja in neurejenih formatov."
+                "question": "Kako deluje uvoz iz besedila in katere formate podpira?",
+                "answer": "Preprosto prilepi svoj trening kot navadno besedilo (iz Zapiskov, WhatsAppa, Excela ali spleta). SetWise s pomočjo umetne inteligence (LLM) samodejno prepozna vaje, serije in ponovitve ter neurejene zapiske v trenutku spremeni v pregleden, strukturiran trening, ki ga lahko takoj začneš izvajati. Sistem je zasnovan tako, da razume poljuben slog pisanja, ne glede na to, kako neorganiziran je."
             },
             {
-                "question": "Ali se bo zdel prenaprednen ali zapleten?",
-                "answer": "Ne. SetWise se prilagaja tvojemu stilu - ostani preprost samo z utežjo/ponovitvami ali preklopi Napredno sledenje, ko želiš podrobnosti kot RPE/RIR, tempo, ROM in intenzifikatorje."
+                "question": "Bo aplikacija zame prezahtevna ali preveč kompleksna?",
+                "answer": "Sploh ne. SetWise se prilagaja tvojemu načinu dela. Lahko ostaneš pri osnovah in beležiš le težo in ponovitve, ko pa želiš več, preprosto vklopiš napredno beleženje. Takrat so ti na voljo podrobnosti, kot so RPE/RIR, tempo, ROM in napredne metode za povečanje intenzivnosti. "
             },
             {
-                "question": "Ali lahko vidim napredek po vaji (ne samo splošno)?",
-                "answer": "Da - analitika je na nivoju vaje, s filtri za časovna obdobja in ključne metrike, tako da se lahko osredotočiš na katerikoli dvig."
+                "question": "Ali lahko spremljam napredek za vsako vajo posebej?",
+                "answer": "Absolutno. Na voljo imaš podrobno statistiko za vsako vajo z možnostjo filtriranja po obdobju in uspešnosti. Tako imaš vedno popoln pregled nad svojim razvojem pri specifičnih vajah."
             },
             {
-                "question": "Ali deluje brezpovezavno v telovadnici?",
-                "answer": "Da. Lahko beležiš brezpovezavno in sinhroniziraš pozneje, ko si spet povezan."
+                "question": "Kaj pa, če v fitnesu nimam signala?",
+                "answer": "Ni problema. SetWise deluje brezhibno tudi v tako imenovanih \"luknjah\" brez signala. Vpiši svoje serije v miru, aplikacija pa bo poskrbela, da se vse posodobi in shrani, ko prideš spet do povezave."
             }
         ]
     },
@@ -182,7 +182,7 @@
         "freeBeta": "Brezplačna beta verzija"
     },
     "Footer": {
-        "description": "Tvoja fitnes pot, poenostavljena. Sledi vadbam, ostani motiviran in doseži svoje cilje.",
+        "description": "Preprosta pot do tvojih ciljev. Treniraj, beleži in napreduj s SetWise.",
         "joinWaitlist": "Pridruži se čakalni listi",
         "emailPlaceholder": "ti@primer.com",
         "join": "Pridruži se",
