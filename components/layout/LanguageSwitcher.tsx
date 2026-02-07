@@ -6,17 +6,18 @@ export default function LanguageSwitcher() {
     const pathname = usePathname() || '/'
 
     // Detect current locale from URL
-    const isEnglish = pathname.startsWith('/en')
-    const currentLocale = isEnglish ? 'EN' : 'SL'
+    // With English as default: no prefix = English, /sl prefix = Slovenian
+    const isSlovenian = pathname.startsWith('/sl')
+    const currentLocale = isSlovenian ? 'SL' : 'EN'
 
     // Calculate path for other locale
     let otherLocalePath: string
-    if (isEnglish) {
-        // Remove /en prefix to go to Slovenian
-        otherLocalePath = pathname.replace(/^\/en/, '') || '/'
+    if (isSlovenian) {
+        // Remove /sl prefix to go to English (default)
+        otherLocalePath = pathname.replace(/^\/sl/, '') || '/'
     } else {
-        // Add /en prefix to go to English
-        otherLocalePath = `/en${pathname === '/' ? '' : pathname}`
+        // Add /sl prefix to go to Slovenian
+        otherLocalePath = `/sl${pathname === '/' ? '' : pathname}`
     }
 
     const handleClick = (e: React.MouseEvent) => {

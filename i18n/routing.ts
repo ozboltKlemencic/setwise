@@ -1,14 +1,14 @@
 import { defineRouting } from 'next-intl/routing';
 
-export const locales = ['sl', 'en'] as const;
+export const locales = ['en', 'sl'] as const;
 export type Locale = (typeof locales)[number];
 
 export const routing = defineRouting({
     // All supported locales
     locales,
 
-    // Default locale (Slovenian) - no prefix
-    defaultLocale: 'sl',
+    // Default locale (English) - no prefix
+    defaultLocale: 'en',
 
     // Only show prefix for non-default locales
     localePrefix: 'as-needed',

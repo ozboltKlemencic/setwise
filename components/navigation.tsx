@@ -228,34 +228,37 @@ export default function Navigation() {
                                 }}
                                 className="mx-4 mb-4 bg-white rounded-3xl shadow-2xl overflow-hidden"
                             >
-                                {/* Header with Logo and Close */}
+                                {/* Header with Logo, Language Switcher and Close */}
                                 <div className="flex items-center justify-between px-6 py-4">
                                     <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} className="flex items-center gap-2 cursor-pointer">
                                         <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
                                         <span className="text-base font-bold text-[#1A1A1A]">SetWise</span>
                                     </a>
-                                    <motion.button
-                                        onClick={() => setIsMenuOpen(false)}
-                                        className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors"
-                                        aria-label="Close menu"
-                                        whileTap={{ scale: 0.9 }}
-                                        whileHover={{ scale: 1.05 }}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
+                                    <div className="flex items-center gap-2">
+                                        <LanguageSwitcher />
+                                        <motion.button
+                                            onClick={() => setIsMenuOpen(false)}
+                                            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors"
+                                            aria-label="Close menu"
+                                            whileTap={{ scale: 0.9 }}
+                                            whileHover={{ scale: 1.05 }}
                                         >
-                                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                                        </svg>
-                                    </motion.button>
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </motion.button>
+                                    </div>
                                 </div>
 
                                 {/* Navigation Links with dividers - staggered animation */}
