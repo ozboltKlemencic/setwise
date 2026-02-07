@@ -209,9 +209,9 @@
         }
     },
     "CTA": {
-        "title": "Naredi naslednjo sejo pomembno.",
-        "subtitle": "Beleži pametneje, primerjaj sete in jasno vidi napredek. Prenesi zdaj in treniraj s ciljem.",
-        "button": "Začni sejo"
+        "title": "Naredi naslednji trening pomemben.",
+        "subtitle": "Beleži pametneje, primerjaj sete in jasno vidi napredek. Prenesi zdaj in treniraj pametno.",
+        "button": "Prenesi zdaj"
     },
     "NotFound": {
         "title": "Stran ni najdena",
