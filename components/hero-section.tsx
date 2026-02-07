@@ -1,10 +1,13 @@
 "use client"
 
 import Image from "next/image"
+import { useTranslations } from "next-intl"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 import { ShimmerButton } from "./ui/shimmer-button"
 
 export default function HeroSection() {
+  const t = useTranslations('HomePage')
+
   return (
     <div className="relative w-[98%] lg:max-w-6xl lg:w-[71.5rem]  mx-auto ">
       <div className="absolute top-0 -left-3 w-3 h-full  bg-linear-to-b from-[#F7F5F3] to-transparent "></div>
@@ -20,21 +23,20 @@ export default function HeroSection() {
 
           <ShimmerButton className=" border border-neutral-200" shimmerDuration={"3s"} shimmerSize={"0.07em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"#689efc"}>
             <span className="text-center text-xs leading-none font-medium tracking-tight whitespace-pre-wrap text-gray-600  ">
-              Now accepting beta users
+              {t('badge')}
             </span>
           </ShimmerButton>
 
           {/* Headline */}
           <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold text-center md:text-left text-[#1A1A1A] tracking-tight  leading-[1.05] font-sans">
-            Log Workouts <br />
-            <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">Get Stronger</span> <br />
-            Stay disciplined
+            {t('hero.title1')} <br />
+            <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('hero.title2')}</span> <br />
+            {t('hero.title3')}
           </h1>
 
           {/* Subtext */}
           <p className="text-sm text-center md:text-left text-gray-600 max-w-xl  leading-relaxed font-sans">
-            SetWise is the ultimate workout tracker for serious lifters.
-            Build routines, track progress, and reach your goals with AI-powered insights.
+            {t('hero.subtitle')}
           </p>
 
           {/* Store Buttons */}
@@ -56,8 +58,8 @@ export default function HeroSection() {
                 ))}
               </div>
               <div className="flex flex-col">
-                <span className="text-xs text-gray-700 font-medium leading-none mb-1">The #1 workout tracker</span>
-                <span className="text-[11px] text-gray-600 leading-none">Downloaded by 100+ fitness enthusiasts</span>
+                <span className="text-xs text-gray-700 font-medium leading-none mb-1">{t('socialProof.topTracker')}</span>
+                <span className="text-[11px] text-gray-600 leading-none">{t('socialProof.downloadedBy')}</span>
               </div>
             </div>
 
@@ -69,7 +71,7 @@ export default function HeroSection() {
                   </svg>
                 ))}
               </div>
-              <span className="text-[11px] font-medium text-gray-600">2+ Great reviews</span>
+              <span className="text-[11px] font-medium text-gray-600">{t('socialProof.reviews')}</span>
             </div>
           </div>
         </div>

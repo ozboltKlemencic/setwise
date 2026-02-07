@@ -1,0 +1,180 @@
+{
+    "Common": {
+        "buttons": {
+            "downloadFree": "Download for free",
+            "startTraining": "Start training",
+            "createWorkout": "Create workout",
+            "viewProgress": "View progress",
+            "joinWaitlist": "Join",
+            "learnMore": "Learn more"
+        },
+        "actions": {
+            "close": "Close",
+            "open": "Open",
+            "submit": "Submit",
+            "cancel": "Cancel"
+        }
+    },
+    "Navigation": {
+        "home": "Home",
+        "howItWorks": "How it Works",
+        "testimonials": "Testimonials",
+        "features": "Features",
+        "faq": "Faq",
+        "about": "About",
+        "pricing": "Pricing",
+        "contact": "Contact",
+        "blog": "Blog"
+    },
+    "Metadata": {
+        "title": "SetWise - Workout Tracker for Serious Lifters",
+        "description": "SetWise is the ultimate workout tracker for serious lifters. Build routines, track progress, and reach your goals with AI-powered insights.",
+        "keywords": "workout tracker, fitness app, workout logging, progress tracking, strength"
+    },
+    "HomePage": {
+        "badge": "Now accepting beta users",
+        "hero": {
+            "title1": "Log Workouts",
+            "title2": "Get Stronger",
+            "title3": "Stay disciplined",
+            "subtitle": "SetWise is the ultimate workout tracker for serious lifters. Build routines, track progress, and reach your goals with AI-powered insights."
+        },
+        "socialProof": {
+            "topTracker": "The #1 workout tracker",
+            "downloadedBy": "Downloaded by 100+ fitness enthusiasts",
+            "reviews": "2+ Great reviews"
+        },
+        "feature1": {
+            "title": "Train with precision.",
+            "titleHighlight": "Progress",
+            "titleEnd": "with proof.",
+            "description": "Log sets in seconds - with RPE/RIR, tempo, ROM, and intensifiers built in. Add notes per exercise or per set, then instantly compare every set to your last workout to see what improved.",
+            "button": "Start training"
+        },
+        "feature2": {
+            "title": "From",
+            "titleHighlight": "copy-paste",
+            "titleEnd": "to a workout.",
+            "description": "Paste your plan - we structure it automatically. No more manual setup, no more formatting headaches - just clean, organized workout ready to log.",
+            "button": "Create workout"
+        },
+        "feature3": {
+            "title": "See your",
+            "titleHighlight": "progress",
+            "titleEnd": "at a glance",
+            "description": "Charts that make trends obvious - filter by exercise and time to track every lift. Advanced analytics help you understand your performance patterns and make informed training decisions.",
+            "button": "View progress"
+        }
+    },
+    "BentoGrid": {
+        "title": "How it Works",
+        "subtitle": "Simple workout logging with advanced features",
+        "cards": {
+            "workoutHistory": {
+                "title": "Workout History",
+                "description": "View all your past workouts in one place"
+            },
+            "analytics": {
+                "title": "Analytics",
+                "description": "Visualize your progress with charts"
+            },
+            "exercises": {
+                "title": "Exercise Library",
+                "description": "Access 500+ exercises with instructions"
+            }
+        }
+    },
+    "Testimonials": {
+        "title": "What our users say",
+        "subtitle": "Join hundreds of athletes who trust SetWise for their workout tracking"
+    },
+    "FAQ": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Explore your data, build your dashboard, bring your team together.",
+        "items": [
+            {
+                "question": "What analytics does SetWise provide?",
+                "answer": "Progress charts and filters per exercise and time range, so you can visualize strength trends, consistency, and performance changes at a glance."
+            },
+            {
+                "question": "How is my data stored?",
+                "answer": "Your data is encrypted at rest and in transit. We believe your workout data belongs to you, so we offer full JSON/CSV exports at any time."
+            },
+            {
+                "question": "Is SetWise fast to use during a workout?",
+                "answer": "Yes - logging is designed for speed. Most sets take seconds to record, with advanced options (RPE/RIR, tempo, notes) available when you need them."
+            },
+            {
+                "question": "Can it handle my training style (strength, bodybuilding, powerbuilding)?",
+                "answer": "Yes. It supports straight sets, supersets, and advanced set types (e.g., drop sets, rest-pause, myo-reps), so it fits most programs."
+            },
+            {
+                "question": "How does 'Paste Import' work - and what formats does it understand?",
+                "answer": "Paste any workout as plain text (from Notes, WhatsApp, Excel, or copied text). SetWise uses LLM-powered parsing to recognize exercises, sets, reps, and common set types - then converts it into a clean, structured workout you can log instantly. It's designed to handle different writing styles and messy formatting."
+            },
+            {
+                "question": "Will this feel too advanced or complicated?",
+                "answer": "No. SetWise adapts to your style - keep it simple with weight/reps only, or toggle Advanced Tracking when you want details like RPE / RIR, tempo, ROM, and intensifiers."
+            },
+            {
+                "question": "Can I see progress per exercise (not just overall)?",
+                "answer": "Yes - analytics are exercise-level, with filters for time ranges and key metrics so you can zoom in on any lift."
+            },
+            {
+                "question": "Does it work offline in the gym?",
+                "answer": "Yes. You can log offline and sync later when you're back online."
+            }
+        ]
+    },
+    "Footer": {
+        "description": "Your fitness journey, simplified. Track workouts, stay motivated, and reach your goals.",
+        "joinWaitlist": "Join the waitlist",
+        "emailPlaceholder": "you@example.com",
+        "join": "Join",
+        "followUs": "Follow us",
+        "sections": {
+            "products": "Products",
+            "company": "Company",
+            "resources": "Resources",
+            "legal": "Legal"
+        },
+        "links": {
+            "setwise": "SetWise",
+            "coachwise": "CoachWise",
+            "aboutUs": "About us",
+            "ourTeam": "Our team",
+            "contact": "Contact",
+            "community": "Community",
+            "documentation": "Documentation",
+            "changelog": "Changelog",
+            "support": "Support",
+            "privacyPolicy": "Privacy policy",
+            "termsOfUse": "Terms of use",
+            "cookies": "Cookies"
+        }
+    },
+    "CTA": {
+        "title": "Start tracking your journey today",
+        "subtitle": "Join thousands of athletes who are already using SetWise to reach their fitness goals.",
+        "button": "Download for free"
+    },
+    "BlueCTA": {
+        "title": "Ready to transform your training?",
+        "subtitle": "Join the beta program and be among the first to experience SetWise.",
+        "button": "Join the waitlist"
+    },
+    "SplitBlue": {
+        "title": "Built for serious lifters",
+        "subtitle": "Whether you're a beginner or experienced athlete, SetWise adapts to your needs.",
+        "features": {
+            "flexible": "Flexible logging",
+            "analytics": "Advanced analytics",
+            "sync": "Cloud sync"
+        }
+    },
+    "NotFound": {
+        "title": "Page not found",
+        "description": "The page you're looking for doesn't exist.",
+        "backHome": "Back to home"
+    }
+}

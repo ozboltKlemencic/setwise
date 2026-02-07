@@ -1,44 +1,47 @@
+import { useTranslations } from "next-intl"
 import { ParticleText } from "@/components/ui/particle-text"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import { Instagram, Linkedin } from "lucide-react"
 
-// Footer navigation links data
-const FOOTER_LINKS = [
-  {
-    title: "Products",
-    links: [
-      { label: "SetWise", href: "/" },
-      { label: "CoachWise", href: "/coachwise" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About us", href: "#" },
-      { label: "Our team", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      { label: "Community", href: "#" },
-      { label: "Documentation", href: "#" },
-      { label: "Changelog", href: "#" },
-      { label: "Support", href: "#" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy policy", href: "#" },
-      { label: "Terms of use", href: "#" },
-      { label: "Cookies", href: "#" },
-    ],
-  },
-]
-
 export default function FooterSection() {
+  const t = useTranslations('Footer')
+
+  // Footer navigation links data with translations
+  const FOOTER_LINKS = [
+    {
+      title: t('sections.products'),
+      links: [
+        { label: t('links.setwise'), href: "/" },
+        { label: t('links.coachwise'), href: "/coachwise" },
+      ],
+    },
+    {
+      title: t('sections.company'),
+      links: [
+        { label: t('links.aboutUs'), href: "#" },
+        { label: t('links.ourTeam'), href: "#" },
+        { label: t('links.contact'), href: "#" },
+      ],
+    },
+    {
+      title: t('sections.resources'),
+      links: [
+        { label: t('links.community'), href: "#" },
+        { label: t('links.documentation'), href: "#" },
+        { label: t('links.changelog'), href: "#" },
+        { label: t('links.support'), href: "#" },
+      ],
+    },
+    {
+      title: t('sections.legal'),
+      links: [
+        { label: t('links.privacyPolicy'), href: "#" },
+        { label: t('links.termsOfUse'), href: "#" },
+        { label: t('links.cookies'), href: "#" },
+      ],
+    },
+  ]
+
   return (
     <div className="w-full pt-10 flex flex-col justify-start items-start">
       {/* Main Footer Content */}
@@ -52,24 +55,24 @@ export default function FooterSection() {
             </div>
 
             <p className="text-neutral-500 text-sm font-normal leading-relaxed font-sans">
-              Your fitness journey, simplified. Track workouts, stay motivated, and reach your goals.
+              {t('description')}
             </p>
           </div>
 
           {/* Newsletter Section */}
           <div className="flex flex-col gap-y-2 w-full">
             <div className="text-neutral-700 text-sm font-medium leading-5 font-sans">
-              Join the waitlist
+              {t('joinWaitlist')}
             </div>
             <div className="flex gap-2 w-full">
               <input
                 type="email"
                 id="footer-email"
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 className="flex-1 px-4 py-2 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
               />
               <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors duration-200">
-                Join
+                {t('join')}
               </button>
             </div>
           </div>
@@ -77,7 +80,7 @@ export default function FooterSection() {
           {/* Social Links Section */}
           <div className="flex flex-col gap-y-2">
             <div className="text-neutral-700 text-sm font-medium leading-5 font-sans">
-              Follow us
+              {t('followUs')}
             </div>
             <div className="flex items-center gap-x-3">
               <a href="#" className="  ">
@@ -86,9 +89,11 @@ export default function FooterSection() {
               <a href="#" className="  h">
                 <Linkedin className="size-4 font-thin text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
               </a>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
-                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
-              </svg>
+              <a href="#" className=" size-4 text-neutral-500 hover:text-neutral-800 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16">
+                  <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
+                </svg>
+              </a>
             </div>
           </div>
         </div>
@@ -125,3 +130,4 @@ export default function FooterSection() {
     </div>
   )
 }
+

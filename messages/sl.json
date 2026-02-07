@@ -1,0 +1,180 @@
+{
+    "Common": {
+        "buttons": {
+            "downloadFree": "Prenesi brezplačno",
+            "startTraining": "Začni trenirati",
+            "createWorkout": "Ustvari vadbo",
+            "viewProgress": "Poglej napredek",
+            "joinWaitlist": "Pridruži se",
+            "learnMore": "Več informacij"
+        },
+        "actions": {
+            "close": "Zapri",
+            "open": "Odpri",
+            "submit": "Pošlji",
+            "cancel": "Prekliči"
+        }
+    },
+    "Navigation": {
+        "home": "Domov",
+        "howItWorks": "Kako deluje",
+        "testimonials": "Mnenja",
+        "features": "Funkcije",
+        "faq": "Pogosta vprašanja",
+        "about": "O nas",
+        "pricing": "Cenik",
+        "contact": "Kontakt",
+        "blog": "Blog"
+    },
+    "Metadata": {
+        "title": "SetWise - Sledilnik vadb za resne dvigovalce",
+        "description": "SetWise je ultimativni sledilnik vadb za resne dvigovalce. Ustvarjajte rutine, sledite napredku in dosezite cilje z AI-podprtimi vpogledi.",
+        "keywords": "sledilnik vadb, fitnes aplikacija, beleženje vadb, sledenje napredku, moč"
+    },
+    "HomePage": {
+        "badge": "Zdaj sprejemamo beta uporabnike",
+        "hero": {
+            "title1": "Beleži vadbe",
+            "title2": "Postani močnejši",
+            "title3": "Ostani discipliniran",
+            "subtitle": "SetWise je ultimativni sledilnik vadb za resne dvigovalce. Ustvarjajte rutine, sledite napredku in dosezite cilje z AI-podprtimi vpogledi."
+        },
+        "socialProof": {
+            "topTracker": "Št. 1 sledilnik vadb",
+            "downloadedBy": "Prenešen 100+ fitnes navdušenci",
+            "reviews": "2+ odličnih mnenj"
+        },
+        "feature1": {
+            "title": "Treniraj z natančnostjo.",
+            "titleHighlight": "Napreduj",
+            "titleEnd": "z dokazi.",
+            "description": "Beleži sete v sekundah - z RPE/RIR, tempom, ROM in intenzifikatorji vgrajenimi. Dodaj opombe na vajo ali set, nato takoj primerjaj vsak set s prejšnjo vadbo, da vidiš kaj se je izboljšalo.",
+            "button": "Začni trenirati"
+        },
+        "feature2": {
+            "title": "Od",
+            "titleHighlight": "kopiraj-prilepi",
+            "titleEnd": "do vadbe.",
+            "description": "Prilepi svoj načrt - mi ga avtomatsko strukturiramo. Brez ročnega nastavljanja, brez težav z oblikovanjem - samo čista, organizirana vadba pripravljena za beleženje.",
+            "button": "Ustvari vadbo"
+        },
+        "feature3": {
+            "title": "Poglej svoj",
+            "titleHighlight": "napredek",
+            "titleEnd": "na en pogled",
+            "description": "Grafi, ki naredijo trende očitne - filtriraj po vaji in času za sledenje vsakemu dvigu. Napredna analitika ti pomaga razumeti vzorce uspešnosti in sprejemati informirane odločitve o treningu.",
+            "button": "Poglej napredek"
+        }
+    },
+    "BentoGrid": {
+        "title": "Kako deluje",
+        "subtitle": "Enostavno beleženje vadb z naprednimi funkcijami",
+        "cards": {
+            "workoutHistory": {
+                "title": "Zgodovina vadb",
+                "description": "Poglej vse svoje pretekle vadbe na enem mestu"
+            },
+            "analytics": {
+                "title": "Analitika",
+                "description": "Vizualiziraj svoj napredek z grafi"
+            },
+            "exercises": {
+                "title": "Knjižnica vaj",
+                "description": "Dostopaj do 500+ vaj z navodili"
+            }
+        }
+    },
+    "Testimonials": {
+        "title": "Kar pravijo naši uporabniki",
+        "subtitle": "Pridruži se stotinam atletov, ki zaupajo SetWise za sledenje vadb"
+    },
+    "FAQ": {
+        "title": "Pogosta vprašanja",
+        "subtitle": "Razišči svoje podatke, zgradi svojo nadzorno ploščo, združi svojo ekipo.",
+        "items": [
+            {
+                "question": "Kakšno analitiko ponuja SetWise?",
+                "answer": "Grafe napredka in filtre po vaji in časovnem obdobju, da lahko vizualiziraš trende moči, konsistenco in spremembe uspešnosti na en pogled."
+            },
+            {
+                "question": "Kako so shranjeni moji podatki?",
+                "answer": "Tvoji podatki so šifrirani v mirovanju in med prenosom. Verjamemo, da tvoji podatki o vadbah pripadajo tebi, zato ponujamo poln JSON/CSV izvoz kadarkoli."
+            },
+            {
+                "question": "Je SetWise hiter za uporabo med vadbo?",
+                "answer": "Da - beleženje je zasnovano za hitrost. Večina setov traja sekunde za zapis, z naprednimi možnostmi (RPE/RIR, tempo, opombe) na voljo, ko jih potrebuješ."
+            },
+            {
+                "question": "Ali podpira moj stil treninga (moč, bodibilding, powerbuilding)?",
+                "answer": "Da. Podpira ravne sete, supersete in napredne tipe setov (npr. drop seti, rest-pause, myo-repi), tako da ustreza večini programov."
+            },
+            {
+                "question": "Kako deluje 'Prilepi uvoz' - in katere formate razume?",
+                "answer": "Prilepi katerokoli vadbo kot navaden tekst (iz Notes, WhatsApp, Excel ali kopiranega teksta). SetWise uporablja LLM-podprto razčlenjevanje za prepoznavanje vaj, setov, ponovitev in pogostih tipov setov - nato pretvori v čisto, strukturirano vadbo, ki jo lahko takoj beležiš. Zasnovano je za obdelavo različnih stilov pisanja in neurejenih formatov."
+            },
+            {
+                "question": "Ali se bo zdel prenaprednen ali zapleten?",
+                "answer": "Ne. SetWise se prilagaja tvojemu stilu - ostani preprost samo z utežjo/ponovitvami ali preklopi Napredno sledenje, ko želiš podrobnosti kot RPE/RIR, tempo, ROM in intenzifikatorje."
+            },
+            {
+                "question": "Ali lahko vidim napredek po vaji (ne samo splošno)?",
+                "answer": "Da - analitika je na nivoju vaje, s filtri za časovna obdobja in ključne metrike, tako da se lahko osredotočiš na katerikoli dvig."
+            },
+            {
+                "question": "Ali deluje brezpovezavno v telovadnici?",
+                "answer": "Da. Lahko beležiš brezpovezavno in sinhroniziraš pozneje, ko si spet povezan."
+            }
+        ]
+    },
+    "Footer": {
+        "description": "Tvoja fitnes pot, poenostavljena. Sledi vadbam, ostani motiviran in doseži svoje cilje.",
+        "joinWaitlist": "Pridruži se čakalni listi",
+        "emailPlaceholder": "ti@primer.com",
+        "join": "Pridruži se",
+        "followUs": "Sledi nam",
+        "sections": {
+            "products": "Izdelki",
+            "company": "Podjetje",
+            "resources": "Viri",
+            "legal": "Pravno"
+        },
+        "links": {
+            "setwise": "SetWise",
+            "coachwise": "CoachWise",
+            "aboutUs": "O nas",
+            "ourTeam": "Naša ekipa",
+            "contact": "Kontakt",
+            "community": "Skupnost",
+            "documentation": "Dokumentacija",
+            "changelog": "Dnevnik sprememb",
+            "support": "Podpora",
+            "privacyPolicy": "Politika zasebnosti",
+            "termsOfUse": "Pogoji uporabe",
+            "cookies": "Piškotki"
+        }
+    },
+    "CTA": {
+        "title": "Začni slediti svojo pot še danes",
+        "subtitle": "Pridruži se tisočim atletom, ki že uporabljajo SetWise za doseganje svojih fitnes ciljev.",
+        "button": "Prenesi brezplačno"
+    },
+    "BlueCTA": {
+        "title": "Pripravljeni za spreminjanje vašega treninga?",
+        "subtitle": "Pridruži se beta programu in bodi med prvimi, ki boš izkusil SetWise.",
+        "button": "Pridruži se čakalni listi"
+    },
+    "SplitBlue": {
+        "title": "Zgrajen za resne dvigovalce",
+        "subtitle": "Ne glede na to ali si začetnik ali izkušen atlet, SetWise se prilagodi tvojim potrebam.",
+        "features": {
+            "flexible": "Prilagodljivo beleženje",
+            "analytics": "Napredna analitika",
+            "sync": "Oblačna sinhronizacija"
+        }
+    },
+    "NotFound": {
+        "title": "Stran ni najdena",
+        "description": "Stran, ki jo iščeš, ne obstaja.",
+        "backHome": "Nazaj na domov"
+    }
+}

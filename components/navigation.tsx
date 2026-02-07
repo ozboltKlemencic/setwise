@@ -2,21 +2,25 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { useTranslations } from "next-intl"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import BetaSignupDialog from "./beta-signup-dialog"
+import LanguageSwitcher from "./layout/LanguageSwitcher"
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isBetaDialogOpen, setIsBetaDialogOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
     const [activeSection, setActiveSection] = useState("#")
+    const t = useTranslations('Navigation')
+    const tCommon = useTranslations('Common')
 
     const navLinks = [
-        { href: "#", label: "Home", sectionId: "hero" },
-        { href: "#how-it-works", label: "How it Works", sectionId: "how-it-works" },
-        { href: "#testimonials", label: "Testimonials", sectionId: "testimonials" },
-        { href: "#features", label: "Features", sectionId: "features" },
-        { href: "#faq", label: "Faq", sectionId: "faq" },
+        { href: "#", label: t('home'), sectionId: "hero" },
+        { href: "#how-it-works", label: t('howItWorks'), sectionId: "how-it-works" },
+        { href: "#testimonials", label: t('testimonials'), sectionId: "testimonials" },
+        { href: "#features", label: t('features'), sectionId: "features" },
+        { href: "#faq", label: t('faq'), sectionId: "faq" },
     ]
 
     useEffect(() => {
@@ -109,7 +113,8 @@ export default function Navigation() {
                 </div>
 
                 {/* Desktop Button */}
-                <div className="hidden md:block">
+                <div className="hidden md:flex items-center gap-2">
+                    <LanguageSwitcher />
                     <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
                 </div>
 
@@ -175,6 +180,7 @@ export default function Navigation() {
 
 
                         {/* CTA Button */}
+                        <LanguageSwitcher />
                         <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
                     </motion.nav>
                 )}
@@ -302,7 +308,7 @@ export default function Navigation() {
                                     >
                                         <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#ccdbfc_0%,#155dfc_60%,#ccdbfc_100%)]" />
                                         <span className="relative inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-blue-600 px-8 py-1 text-base font-semibold text-white backdrop-blur-3xl">
-                                            Download for free
+                                            {tCommon('buttons.downloadFree')}
                                         </span>
                                         <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/20 blur-md rounded-full"></div>
                                         <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/15 blur-md rounded-full"></div>
