@@ -16,12 +16,15 @@ export default function Navigation() {
     const tCommon = useTranslations('Common')
 
     const navLinks = [
-        { href: "#", label: t('home'), sectionId: "hero" },
         { href: "#how-it-works", label: t('howItWorks'), sectionId: "how-it-works" },
         { href: "#testimonials", label: t('testimonials'), sectionId: "testimonials" },
         { href: "#features", label: t('features'), sectionId: "features" },
         { href: "#faq", label: t('faq'), sectionId: "faq" },
     ]
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -89,11 +92,11 @@ export default function Navigation() {
                 <div className="absolute md:hidden top-0 right-0 w-2/5 translate-y-1/3 translate-x-1/2 h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
                 <div className="absolute md:hidden top-0 left-0 w-3/5  translate-x-1/3 translate-y-1/3    h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
                 <div className="absolute md:hidden top-0 left-0 w-2/5 -translate-y-1/3 -translate-x-1/2 h-full bg-blue-500/5 blur-md rounded-full pointer-events-none"></div>
-                {/* Logo */}
-                <div className="flex items-center gap-2">
+                {/* Logo - clickable to scroll to top */}
+                <button onClick={scrollToTop} className="flex items-center gap-2 cursor-pointer">
                     <img src="/setwise-logo.png" alt="SetWise" className="size-6 md:size-8 rounded-sm " />
                     <span className="md:text-lg text-base font-bold text-[#1A1A1A] font-sans">SetWise</span>
-                </div>
+                </button>
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center gap-2 px-8 py-2.5 rounded-full">
