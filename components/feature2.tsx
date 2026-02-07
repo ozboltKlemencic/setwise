@@ -37,7 +37,7 @@ export default function Feature2({
             {/* Content */}
             <div className={`self-stretch ${isReverse ? 'md:flex-row-reverse flex-col-reverse' : 'md:flex-row flex-col'}   flex justify-start items-center relative z-10 md:h-[600px] md:max-h-[600px]`}>
 
-                <div className="w-full p-6 md:max-w-[586px] py-12 md:w-1/2 md:pl-12 pr-16 border-r md:py-8 overflow-hidden rgounded-br-lg flex flex-col justify-center items-center gap-6 relative z-20 h-full border-b border-[rgba(55,50,47,0.12)]">
+                <div className="w-full p-6  md:max-w-[586px] py-12 md:w-1/2 md:pl-12 pr-16 border-r md:py-8  overflow-hidden rgounded-br-lg flex flex-col justify-center items-center gap-6 relative z-20 h-full border-b border-[rgba(55,50,47,0.12)]">
                     <div className="self-stretch flex flex-col justify-start items-start gap-3">
                         <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight ">
                             {title}

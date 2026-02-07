@@ -233,7 +233,7 @@ export default function BentoGridSection() {
                         }
                         text={t('badge')}
                     />
-                    <h2 className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
+                    <h2 className="w-full  max-w-[530.06px] lg:w-[508.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
                         {t('title')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">{t('titleHighlight')}</span>
                     </h2>
                     <div className=" max-w-md text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">

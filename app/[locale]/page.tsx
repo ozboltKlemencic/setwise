@@ -39,7 +39,7 @@ export default function LandingPage() {
                         title={
                             <h2 className="">
                                 {t('feature1.title')}
-                                <span className="font-bold px-1 pl-2 bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">{t('feature1.titleHighlight')}</span> {t('feature1.titleEnd')}
+                                <span className="inline-block font-bold px-0.5 bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">{t('feature1.titleHighlight')}</span> {t('feature1.titleEnd')}
                             </h2>
                         }
                         description={<>{t('feature1.description')}</>}
@@ -48,15 +48,12 @@ export default function LandingPage() {
                     />
 
 
-                    {/* Testimonials Section */}
-                    <section id="testimonials" className="w-full">
-                        <TestimonialsSection />
-                    </section>
+
 
                     {/* Features Section */}
                     <section id="features" className="w-full">
                         <Feature
-                            isReverse={false}
+                            isReverse={true}
                             title={
                                 <h2>
                                     {t('feature2.title')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('feature2.titleHighlight')}</span> {t('feature2.titleEnd')}
@@ -69,7 +66,7 @@ export default function LandingPage() {
                     </section>
 
                     <Feature
-                        isReverse={true}
+                        isReverse={false}
                         title={
                             <h2>
                                 {t('feature3.title')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('feature3.titleHighlight')}</span> {t('feature3.titleEnd')}
@@ -79,6 +76,11 @@ export default function LandingPage() {
                         buttonText={t('feature3.button')}
                         imageSrc="/workout.png"
                     />
+
+                    {/* Testimonials Section */}
+                    <section id="testimonials" className="w-full">
+                        <TestimonialsSection />
+                    </section>
 
                     {/* Split Blue Section */}
                     <SplitBlueSection />

@@ -45,7 +45,7 @@
             "reviews": "2+ odličnih mnenj"
         },
         "feature1": {
-            "title": "Treniraj z natančnostjo.",
+            "title": "Treniraj natančno.",
             "titleHighlight": "Napreduj",
             "titleEnd": "z dokazi.",
             "description": "Beleži sete v sekundah - z RPE/RIR, tempom, ROM in intenzifikatorji vgrajenimi. Dodaj opombe na vajo ali set, nato takoj primerjaj vsak set s prejšnjo vadbo, da vidiš kaj se je izboljšalo.",
@@ -68,21 +68,21 @@
     },
     "BentoGrid": {
         "badge": "Kako deluje",
-        "title": "Načrtuj manj. Izvedi več.",
-        "titleHighlight": "Brez napora.",
-        "subtitle": "Opazi izboljšave, platoje in naslednje korake takoj. Napredek postane očiten. Sprejmi pametnejše odločitve po vsaki vadbi.",
+        "title": "Manj načrtovanja. Več treniranja.",
+        "titleHighlight": "Manj napora.",
+        "subtitle": "Opazi izboljšave, platoje in predvidi naslednji korak. Napredek postane očiten. Sprejmi pametnejše odločitve po vsakem treningu.",
         "cards": {
             "trackAnalyze": {
                 "title": "Sledi. Analiziraj. Izboljšaj.",
-                "description": "Spremeni podatke o vadbah v napredek. Svoj napredek lahko vidiš v realnem času na grafih."
+                "description": "Obrni podatke o treningih v napredek. Svoj napredek lahko vidiš v realnem času na grafih."
             },
             "offline": {
                 "title": "Brez interneta. Brez izgovorov.",
-                "description": "Sledi sejam, setom in časovnikom brez povezave - vse se shrani samodejno."
+                "description": "Sledi treningom, setom brez povezave - vse se shrani samodejno."
             },
             "details": {
                 "title": "Podrobnosti poganjajo napredek",
-                "description": "Ponovitve in teža ne povesta celotne zgodbe. Zabeleži tempo, ROM in intenzifikatorje s hitrimi opombami, in spremeni vsako sejo v izvedljiv napredek."
+                "description": "Ponovitve in teža ne povesta celotne zgodbe. Zabeleži tempo, ROM in intenzifikatorje s hitrimi zapiski, in spremeni vsak trening v izvedljiv napredek."
             },
             "progress": {
                 "title": "Pregled napredka",
