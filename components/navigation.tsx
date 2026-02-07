@@ -237,7 +237,7 @@ export default function Navigation() {
                                         <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
                                         <span className="text-base font-bold text-[#1A1A1A]">SetWise</span>
                                     </a>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-1">
                                         <ThemeToggler />
                                         <LanguageSwitcher />
                                         <motion.button
