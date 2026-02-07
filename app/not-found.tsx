@@ -20,7 +20,7 @@ export default function NotFound() {
                             <p className="text-neutral-500 mb-5 max-w-md text-sm md:text-base text-center">Stran, ki jo iščeš, ne obstaja.</p>
 
                             <Link href="/">
-                                <ButtonRotatingGradient className="">
+                                <ButtonRotatingGradient onClick={() => { window.location.href = "/" }} className="">
                                     Nazaj domov
                                 </ButtonRotatingGradient>
                             </Link>
