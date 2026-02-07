@@ -1,12 +1,16 @@
+"use client"
+
 import { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { Iphone } from "./ui/mobileDevices/Phone"
 import DownloadButton from "./ui/buttons/DownloadButton"
+import { useTranslations } from "next-intl"
 
 export default function CTASection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
   const [isHovered, setIsHovered] = useState(false)
+  const t = useTranslations('CTA')
 
   return (
     <div className="w-full relative group flex flex-col justify-center items-center gap-2 overflow-hidden">
@@ -36,15 +40,15 @@ export default function CTASection() {
         <div className="w-full md:max-w-[586px] pb-20 md:pb-0 md:w-1/2 px-4 md:px-6 py-5 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center md:items-start gap-4 md:gap-6 relative z-20">
           <div className="self-stretch flex flex-col justify-start items-center md:items-start gap-2 md:gap-3">
             <div className="self-stretch text-center md:text-left flex justify-center flex-col text-[#49423D] text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-              Make your next session count.
+              {t('title')}
             </div>
             <div className="self-stretch text-center md:text-left text-[#605A57] text-sm md:text-base leading-6 md:leading-7 font-sans font-medium">
-              Log smarter, compare sets, and see progress clearly. Download now and train with purpose.
+              {t('subtitle')}
             </div>
           </div>
           <div className="w-full max-w-[497px] flex flex-col justify-start items-center md:items-start gap-12">
             <div className="flex justify-start items-center gap-4">
-              <DownloadButton openBetaDialog={true} text="Start session" />
+              <DownloadButton openBetaDialog={true} text={t('button')} />
             </div>
           </div>
         </div>

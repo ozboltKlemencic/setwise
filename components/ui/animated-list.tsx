@@ -65,6 +65,7 @@ export const AnimatedList = React.memo(
               {item}
             </AnimatedListItem>
           ))}
+
         </AnimatePresence>
       </div>
     )

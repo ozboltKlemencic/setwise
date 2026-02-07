@@ -69,9 +69,9 @@ export default function FooterSection() {
                 type="email"
                 id="footer-email"
                 placeholder={t('emailPlaceholder')}
-                className="flex-1 px-4 py-2 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                className="flex-1 px-4 py-2 h-10 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
               />
-              <button className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors duration-200">
+              <button className="px-5 py-2 h-10 min-w-[100px] whitespace-nowrap rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors duration-200">
                 {t('join')}
               </button>
             </div>

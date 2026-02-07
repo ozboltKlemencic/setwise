@@ -4,6 +4,7 @@
 import React, { useRef } from "react"
 import Image from "next/image"
 import { useInView } from "framer-motion"
+import { useTranslations } from "next-intl"
 import SmartSimpleBrilliant from "./smart-simple-brilliant"
 import YourWorkInSync from "./your-work-in-sync"
 import NumbersThatSpeak from "./numbers-that-speak"
@@ -194,6 +195,7 @@ function WorkoutHistoryList() {
                 {notifications.map((item, idx) => (
                     <WorkoutNotification {...item} key={idx} />
                 ))}
+
             </AnimatedList>
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/8 bg-gradient-to-t from-[#F7F5F3] to-transparent"></div>
         </div>
@@ -213,6 +215,8 @@ function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
 }
 
 export default function BentoGridSection() {
+    const t = useTranslations('BentoGrid')
+
     return (
         <div className="w-full border-b border-t border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
             {/* Header Section */}
@@ -227,13 +231,13 @@ export default function BentoGridSection() {
                                 <rect x="7" y="7" width="4" height="4" stroke="#37322F" strokeWidth="1" fill="none" />
                             </svg>
                         }
-                        text="How it works"
+                        text={t('badge')}
                     />
                     <h2 className="w-full max-w-[598.06px] lg:w-[598.06px] text-center flex justify-center flex-col text-[#49423D] text-xl sm:text-2xl md:text-3xl lg:text-5xl font-semibold leading-tight md:leading-[60px] font-sans tracking-tight">
-                        Plan less. Execute more. <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">Effortlessly.</span>
+                        {t('title')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">{t('titleHighlight')}</span>
                     </h2>
                     <div className=" max-w-md text-center text-[#605A57] text-sm sm:text-base font-normal leading-6 sm:leading-7 font-sans">
-                        Spot improvements, plateaus, and next steps instantly. Progress becomes obvious. Make smarter decisions after every session.
+                        {t('subtitle')}
                     </div>
                 </div>
             </div>
@@ -257,10 +261,10 @@ export default function BentoGridSection() {
                     <div className="border-b border-r-0 md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col justify-start items-start min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px]">
                         <div className="flex flex-col gap-2 p-6 sm:p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                                Track. Analyze. Improve.
+                                {t('cards.trackAnalyze.title')}
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Turn workout data into progress. You can see your progress in real-time on graphs.
+                                {t('cards.trackAnalyze.description')}
                             </p>
                         </div>
                         <div className="w-full h-full rounded-lg flex  items-center justify-center overflow-hidden">
@@ -277,10 +281,10 @@ export default function BentoGridSection() {
                     <div className="border-b border-[rgba(55,50,47,0.12)] flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[380px] min-h-[380px]">
                         <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4  ">
                             <h3 className="text-[#37322F] font-semibold leading-tight font-sans text-lg sm:text-xl">
-                                No internet. No excuses.
+                                {t('cards.offline.title')}
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Track sessions, sets, and timers offline - everything saves automatically.
+                                {t('cards.offline.description')}
                             </p>
                         </div>
                         <div className="w-full h-full  flex overflow-hidden text-right items-center justify-center">
@@ -297,10 +301,10 @@ export default function BentoGridSection() {
                     <div className="border-b md:min-h-[550px] md:max-h-[550px] md:border-r border-[rgba(55,50,47,0.12)]  flex flex-col overflow-hidden justify-start  min-h-[380px] max-h-[380px]   relative  items-start">
                         <div className="flex flex-col gap-2 p-6 md:p-8 lg:p-12 lg:pb-4 ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                                Details drive progress
+                                {t('cards.details.title')}
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                Reps and weight don’t tell the full story. Capture tempo, ROM, and intensifiers with quick notes, and turn every session into actionable progress.
+                                {t('cards.details.description')}
                             </p>
                         </div>
                         <div className="absolute bottom-0 pt-8 translate-y-1/3 w-full h-full  rounded-lg flex overflow-hidden justify-center items-center  ">
@@ -314,10 +318,10 @@ export default function BentoGridSection() {
                     <div className="flex flex-col  min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px] justify-start items-start ">
                         <div className="flex flex-col w-full gap-2 p-6 md:p-8 lg:p-12 pb-0 lg:pb-4 md:pb-4   ">
                             <h3 className="text-[#37322F] text-lg sm:text-xl font-semibold leading-tight font-sans">
-                                Progress Overview
+                                {t('cards.progress.title')}
                             </h3>
                             <p className="text-[#605A57] text-sm md:text-base font-normal leading-relaxed font-sans">
-                                See trends, spot patterns, and push past plateaus. Every rep counts, every set matters.
+                                {t('cards.progress.description')}
                             </p>
                         </div>
                         <div className="w-full h-full rounded-lg pt-3 lg:pt-8 px-3 flex overflow-hidden items-center justify-center relative">

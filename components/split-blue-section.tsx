@@ -10,42 +10,44 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel"
 import DownloadButton from "./ui/buttons/DownloadButton";
+import { useTranslations } from "next-intl"
 
-const teamMembers = [
-
-    {
-        name: "Jernej Peternel",
-        title: "Co-Founder",
-        handle: "Jernej.fit",
-        avatarUrl: "/jernej.png",
-        miniAvatarUrl: "/jernej.png",
-        status: "Online"
-    },
-    {
-        name: "Jernej Peternel",
-        title: "Developer",
-        handle: "Jernej.fit",
-        avatarUrl: "/jernej.png",
-        miniAvatarUrl: "/jernej.png",
-        status: "Online"
-    }
-];
+interface TeamMember {
+    name: string
+    title: string
+    handle: string
+    avatarUrl: string
+    miniAvatarUrl: string
+    status: string
+}
 
 export default function SplitBlueSection() {
+    const t = useTranslations('SplitBlue')
+
+    // Get team members from translations
+    const translatedMembers = t.raw('teamMembers') as Array<{ name: string; title: string; handle: string }>
+
+    const teamMembers: TeamMember[] = translatedMembers.map((member) => ({
+        ...member,
+        avatarUrl: "/jernej.png",
+        miniAvatarUrl: "/jernej.png",
+        status: "Online"
+    }))
+
     return (
         <div className="w-full flex flex-col py-10 md:pt-20 md:pb-10 md:min-h-[600px] lg:flex-row justify-between items-center">
             <div className="w-full lg:w-1/2 pt-6 md:pt-10 px-6 md:pl-20 pb-10 md:pb-28 md:pr-12 flex flex-col justify-start h-full items-center md:items-start gap-6">
                 <div className="self-stretch flex flex-col justify-start items-center md:items-start gap-3">
                     <h3 className="text-center md:text-left text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-                        Built by <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">lifters</span>, for lifters.
+                        {t('headline')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('headlineHighlight')}</span>{t('headlineRest')}
                     </h3>
                     <p className="self-stretch text-center md:text-left text-[#605A57] text-base leading-7 font-sans font-medium">
-                        SetWise is built with passion and tested in real workouts - refined through feedback and improved with every update.
+                        {t('description')}
                     </p>
                 </div>
                 <div className="w-full max-w-[497px] flex flex-col justify-start items-center md:items-start gap-12">
                     <div className="flex justify-start items-center gap-4">
-                        <DownloadButton openBetaDialog={true} text="Download for free" />
+                        <DownloadButton openBetaDialog={true} text={t('button')} />
                     </div>
                 </div>
             </div>
@@ -67,7 +69,7 @@ export default function SplitBlueSection() {
                                     title={member.title}
                                     handle={member.handle}
                                     status={member.status}
-                                    contactText="Sledi mi"
+                                    contactText={t('contactText')}
                                     showUserInfo={true}
                                     onContactClick={() => console.log(`Contact clicked for ${member.name}`)}
                                 />

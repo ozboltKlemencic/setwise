@@ -4,8 +4,11 @@ import React from "react"
 import { Iphone } from "./ui/mobileDevices/Phone"
 import { Highlighter } from "./ui/highlighter"
 import WhiteBtn from "./ui/buttons/WhiteBtn"
+import { useTranslations } from "next-intl"
 
 export default function BlueCTASection() {
+    const t = useTranslations('BlueCTA')
+
     return (
         <div className="w-full border-b border-t border-[rgba(55,50,47,0.12)] flex flex-col justify-center items-center">
 
@@ -64,14 +67,14 @@ export default function BlueCTASection() {
                         </div>
 
                         <div className="relative z-10 flex flex-col items-center gap-6 md:gap-4">
-                            <h2 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sans font-semibold tracking-tight leading-tight">
-                                Turn any plan into <br className="hidden sm:block" />a <Highlighter action="underline" color="#aec4e8">trackable</Highlighter> <br className="hidden sm:block" />session.
+                            <h2 className="text-white text-3xl sm:text-4xl md:text-5xl max-w-lg lg:text-6xl font-sans font-semibold tracking-tight leading-tight">
+                                {t('headlinePart1')} <br className="hidden sm:block" /><Highlighter action="underline" color="#aec4e8">{t('headlineHighlight')}</Highlighter> <br className="hidden sm:block" />{t('headlinePart2')}
                             </h2>
 
                             <div className="flex flex-col items-center gap-y-3">
-                                <WhiteBtn openBetaDialog={true} text="Download for iOS or Android" />
+                                <WhiteBtn openBetaDialog={true} text={t('button')} />
                                 <p className="text-white/80 text-xs sm:text-sm font-medium">
-                                    Free beta version
+                                    {t('freeBeta')}
                                 </p>
                             </div>
                         </div>

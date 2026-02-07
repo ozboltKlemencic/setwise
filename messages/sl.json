@@ -67,26 +67,54 @@
         }
     },
     "BentoGrid": {
-        "title": "Kako deluje",
-        "subtitle": "Enostavno beleženje vadb z naprednimi funkcijami",
+        "badge": "Kako deluje",
+        "title": "Načrtuj manj. Izvedi več.",
+        "titleHighlight": "Brez napora.",
+        "subtitle": "Opazi izboljšave, platoje in naslednje korake takoj. Napredek postane očiten. Sprejmi pametnejše odločitve po vsaki vadbi.",
         "cards": {
-            "workoutHistory": {
-                "title": "Zgodovina vadb",
-                "description": "Poglej vse svoje pretekle vadbe na enem mestu"
+            "trackAnalyze": {
+                "title": "Sledi. Analiziraj. Izboljšaj.",
+                "description": "Spremeni podatke o vadbah v napredek. Svoj napredek lahko vidiš v realnem času na grafih."
             },
-            "analytics": {
-                "title": "Analitika",
-                "description": "Vizualiziraj svoj napredek z grafi"
+            "offline": {
+                "title": "Brez interneta. Brez izgovorov.",
+                "description": "Sledi sejam, setom in časovnikom brez povezave - vse se shrani samodejno."
             },
-            "exercises": {
-                "title": "Knjižnica vaj",
-                "description": "Dostopaj do 500+ vaj z navodili"
+            "details": {
+                "title": "Podrobnosti poganjajo napredek",
+                "description": "Ponovitve in teža ne povesta celotne zgodbe. Zabeleži tempo, ROM in intenzifikatorje s hitrimi opombami, in spremeni vsako sejo v izvedljiv napredek."
+            },
+            "progress": {
+                "title": "Pregled napredka",
+                "description": "Opazi trende, vzorce in premagaj platoje. Vsaka ponovitev šteje, vsak set je pomemben."
             }
         }
     },
     "Testimonials": {
-        "title": "Kar pravijo naši uporabniki",
-        "subtitle": "Pridruži se stotinam atletov, ki zaupajo SetWise za sledenje vadb"
+        "headline": "Obožujejo ga",
+        "headlineRest": "resni dvigovalci. Dokazano v resničnem treningu.",
+        "description": "Uporabljajo ga vsak dan trenerji, atleti in resni obiskovalci telovadnic. Brez praznih besed, brez reklamiranja - samo močno orodje, ki ti pomaga postati močnejši, pametnejši in bolj dosleden.",
+        "button": "Prenesi brezplačno",
+        "reviews": [
+            {
+                "name": "Sarah Jenkins",
+                "role": "Tekmovalna powerlifterka",
+                "company": "3x državna prvakinja",
+                "reviewText": "SetWise je poenostavil moj celoten trening. Prej sem porabil ure za ročni vnos, zdaj je vse avtomatizirano. Zelo priporočam!"
+            },
+            {
+                "name": "Mark Thompson",
+                "role": "Trener moči",
+                "company": "GrowthX Fitness",
+                "reviewText": "Vpogledi, ki jih dobim od SetWise, so revolucionarni. Res mi pomagajo sprejemati odločitve na podlagi podatkov za moje atlete."
+            },
+            {
+                "name": "Elena Rodriguez",
+                "role": "Fitnes influencerka",
+                "company": "500k+ sledilcev",
+                "reviewText": "Neverjetna uporabniška izkušnja in podpora. Ekipa pri SetWise res skrbi za uspeh svojih strank."
+            }
+        ]
     },
     "FAQ": {
         "title": "Pogosta vprašanja",
@@ -126,6 +154,33 @@
             }
         ]
     },
+    "SplitBlue": {
+        "headline": "Zgrajeno s strani",
+        "headlineHighlight": "dvigovalcev",
+        "headlineRest": ", za dvigovalce.",
+        "description": "SetWise je zgrajen s strastjo in preizkušen v resničnih vadbah - izboljšan skozi povratne informacije in posodobljen z vsakim updateom.",
+        "button": "Prenesi brezplačno",
+        "contactText": "Sledi mi",
+        "teamMembers": [
+            {
+                "name": "Jernej Peternel",
+                "title": "Soustanovitelj",
+                "handle": "Jernej.fit"
+            },
+            {
+                "name": "Jernej Peternel",
+                "title": "Razvijalec",
+                "handle": "Jernej.fit"
+            }
+        ]
+    },
+    "BlueCTA": {
+        "headlinePart1": "Spremeni načrte v",
+        "headlineHighlight": "sledljivo",
+        "headlinePart2": "sejo.",
+        "button": "Prenesi za iOS ali Android",
+        "freeBeta": "Brezplačna beta verzija"
+    },
     "Footer": {
         "description": "Tvoja fitnes pot, poenostavljena. Sledi vadbam, ostani motiviran in doseži svoje cilje.",
         "joinWaitlist": "Pridruži se čakalni listi",
@@ -154,23 +209,9 @@
         }
     },
     "CTA": {
-        "title": "Začni slediti svojo pot še danes",
-        "subtitle": "Pridruži se tisočim atletom, ki že uporabljajo SetWise za doseganje svojih fitnes ciljev.",
-        "button": "Prenesi brezplačno"
-    },
-    "BlueCTA": {
-        "title": "Pripravljeni za spreminjanje vašega treninga?",
-        "subtitle": "Pridruži se beta programu in bodi med prvimi, ki boš izkusil SetWise.",
-        "button": "Pridruži se čakalni listi"
-    },
-    "SplitBlue": {
-        "title": "Zgrajen za resne dvigovalce",
-        "subtitle": "Ne glede na to ali si začetnik ali izkušen atlet, SetWise se prilagodi tvojim potrebam.",
-        "features": {
-            "flexible": "Prilagodljivo beleženje",
-            "analytics": "Napredna analitika",
-            "sync": "Oblačna sinhronizacija"
-        }
+        "title": "Naredi naslednjo sejo pomembno.",
+        "subtitle": "Beleži pametneje, primerjaj sete in jasno vidi napredek. Prenesi zdaj in treniraj s ciljem.",
+        "button": "Začni sejo"
     },
     "NotFound": {
         "title": "Stran ni najdena",

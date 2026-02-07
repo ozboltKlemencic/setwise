@@ -1,9 +1,10 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 export default function LanguageSwitcher() {
     const pathname = usePathname() || '/'
+    const router = useRouter()
 
     // Detect current locale from URL
     // With English as default: no prefix = English, /sl prefix = Slovenian
@@ -22,8 +23,8 @@ export default function LanguageSwitcher() {
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault()
-        // Force full page navigation
-        window.location.assign(otherLocalePath)
+        // Use Next.js router for faster client-side navigation
+        router.push(otherLocalePath)
     }
 
     return (

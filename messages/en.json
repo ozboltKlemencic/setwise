@@ -67,26 +67,54 @@
         }
     },
     "BentoGrid": {
-        "title": "How it Works",
-        "subtitle": "Simple workout logging with advanced features",
+        "badge": "How it works",
+        "title": "Plan less. Execute more.",
+        "titleHighlight": "Effortlessly.",
+        "subtitle": "Spot improvements, plateaus, and next steps instantly. Progress becomes obvious. Make smarter decisions after every session.",
         "cards": {
-            "workoutHistory": {
-                "title": "Workout History",
-                "description": "View all your past workouts in one place"
+            "trackAnalyze": {
+                "title": "Track. Analyze. Improve.",
+                "description": "Turn workout data into progress. You can see your progress in real-time on graphs."
             },
-            "analytics": {
-                "title": "Analytics",
-                "description": "Visualize your progress with charts"
+            "offline": {
+                "title": "No internet. No excuses.",
+                "description": "Track sessions, sets, and timers offline - everything saves automatically."
             },
-            "exercises": {
-                "title": "Exercise Library",
-                "description": "Access 500+ exercises with instructions"
+            "details": {
+                "title": "Details drive progress",
+                "description": "Reps and weight don't tell the full story. Capture tempo, ROM, and intensifiers with quick notes, and turn every session into actionable progress."
+            },
+            "progress": {
+                "title": "Progress Overview",
+                "description": "See trends, spot patterns, and push past plateaus. Every rep counts, every set matters."
             }
         }
     },
     "Testimonials": {
-        "title": "What our users say",
-        "subtitle": "Join hundreds of athletes who trust SetWise for their workout tracking"
+        "headline": "Loved by",
+        "headlineRest": "serious lifters. Proven in real training.",
+        "description": "Used daily by coaches, athletes, and serious gym-goers. No fluff, no hype - just a powerful tool that helps you get stronger, smarter, and more consistent.",
+        "button": "Download for free",
+        "reviews": [
+            {
+                "name": "Sarah Jenkins",
+                "role": "Competitive Powerlifter",
+                "company": "3x National Champion",
+                "reviewText": "SetWise streamlined my entire training workflow. I used to spend hours on manual entry, now it's all automated. Highly recommended!"
+            },
+            {
+                "name": "Mark Thompson",
+                "role": "Strength Coach",
+                "company": "GrowthX Fitness",
+                "reviewText": "The insights I get from SetWise are game-changing. It really helps me make data-driven decisions for my athletes."
+            },
+            {
+                "name": "Elena Rodriguez",
+                "role": "Fitness Influencer",
+                "company": "500k+ followers",
+                "reviewText": "Incredible user experience and support. The team at SetWise really cares about their customers' success."
+            }
+        ]
     },
     "FAQ": {
         "title": "Frequently Asked Questions",
@@ -126,6 +154,33 @@
             }
         ]
     },
+    "SplitBlue": {
+        "headline": "Built by",
+        "headlineHighlight": "lifters",
+        "headlineRest": ", for lifters.",
+        "description": "SetWise is built with passion and tested in real workouts - refined through feedback and improved with every update.",
+        "button": "Download for free",
+        "contactText": "Follow me",
+        "teamMembers": [
+            {
+                "name": "Jernej Peternel",
+                "title": "Co-Founder",
+                "handle": "Jernej.fit"
+            },
+            {
+                "name": "Jernej Peternel",
+                "title": "Developer",
+                "handle": "Jernej.fit"
+            }
+        ]
+    },
+    "BlueCTA": {
+        "headlinePart1": "Turn any plan into",
+        "headlineHighlight": "trackable",
+        "headlinePart2": "session.",
+        "button": "Download for iOS or Android",
+        "freeBeta": "Free beta version"
+    },
     "Footer": {
         "description": "Your fitness journey, simplified. Track workouts, stay motivated, and reach your goals.",
         "joinWaitlist": "Join the waitlist",
@@ -154,23 +209,9 @@
         }
     },
     "CTA": {
-        "title": "Start tracking your journey today",
-        "subtitle": "Join thousands of athletes who are already using SetWise to reach their fitness goals.",
-        "button": "Download for free"
-    },
-    "BlueCTA": {
-        "title": "Ready to transform your training?",
-        "subtitle": "Join the beta program and be among the first to experience SetWise.",
-        "button": "Join the waitlist"
-    },
-    "SplitBlue": {
-        "title": "Built for serious lifters",
-        "subtitle": "Whether you're a beginner or experienced athlete, SetWise adapts to your needs.",
-        "features": {
-            "flexible": "Flexible logging",
-            "analytics": "Advanced analytics",
-            "sync": "Cloud sync"
-        }
+        "title": "Make your next session count.",
+        "subtitle": "Log smarter, compare sets, and see progress clearly. Download now and train with purpose.",
+        "button": "Start session"
     },
     "NotFound": {
         "title": "Page not found",

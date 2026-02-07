@@ -1,35 +1,20 @@
+"use client"
+
 import React, { useRef, useEffect } from "react"
 import ReviewCard from "./ui/cards/ReviewCard"
 import { motion, useMotionValue, useAnimationFrame, useAnimate, type AnimationPlaybackControls } from "framer-motion"
 import { SparklesText } from "./ui/sparkles-text";
 import DownloadButton from "./ui/buttons/DownloadButton";
+import { useTranslations } from "next-intl"
 
-const reviews = [
-    {
-        name: "Sarah Jenkins",
-        role: "COO",
-        company: "LogisticsPlus",
-        reviewText: "SetWise streamlined our entire workflow. We used to spend hours on manual entry, now it's all automated. Highly recommended!",
-        rating: 5,
-        avatarUrl: "/jernej.png"
-    },
-    {
-        name: "Mark Thompson",
-        role: "Founder",
-        company: "GrowthX",
-        reviewText: "The insights we get from SetWise are game-changing. It really helps us make data-driven decisions that impact our bottom line.",
-        rating: 5,
-        avatarUrl: "/jernej.png"
-    },
-    {
-        name: "Elena Rodriguez",
-        role: "Product Manager",
-        company: "TechFlow",
-        reviewText: "Incredible user experience and support. The team at SetWise really cares about their customers' success.",
-        rating: 5,
-        avatarUrl: "/jernej.png"
-    }
-];
+interface ReviewItem {
+    name: string
+    role: string
+    company: string
+    reviewText: string
+    avatarUrl?: string
+    rating?: number
+}
 
 function ScaledCard({ children, containerRef }: { children: React.ReactNode, containerRef: React.RefObject<HTMLDivElement | null> }) {
     const cardRef = useRef<HTMLDivElement>(null)
@@ -77,6 +62,17 @@ function ScaledCard({ children, containerRef }: { children: React.ReactNode, con
 }
 
 export default function TestimonialsSection() {
+    const t = useTranslations('Testimonials')
+
+    // Get reviews from translations
+    const translatedReviews = t.raw('reviews') as Array<{ name: string; role: string; company: string; reviewText: string }>
+
+    const reviews: ReviewItem[] = translatedReviews.map((item) => ({
+        ...item,
+        rating: 5,
+        avatarUrl: "/jernej.png"
+    }))
+
     // Duplicate reviews for seamless loop
     const duplicatedReviews = [...reviews, ...reviews];
     const containerRef = useRef<HTMLDivElement>(null)
@@ -139,12 +135,12 @@ export default function TestimonialsSection() {
                     <div className="md:max-w-[586px] md:ml-6  w-full md:w-1/2 md:px-10 md:pl-12 md:py-8 overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-20 p-6 gap-y-4 py-8">
                         <div className="w-full h-full flex flex-col justify-center items-center md:items-start gap-3 md:pb-8">
                             <h2 className="self-stretch text-center md:text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-                                <SparklesText shapes={['heart', 'star']} colors={{ first: "#FFD700", second: "#EAB308" }}>Loved by</SparklesText> serious lifters. Proven in real training.
+                                <SparklesText shapes={['heart', 'star']} colors={{ first: "#FFD700", second: "#EAB308" }}>{t('headline')}</SparklesText> {t('headlineRest')}
                             </h2>
                             <p className="self-stretch text-center md:text-left text-[#605A57] text-base leading-7 font-sans font-medium">
-                                Used daily by coaches, athletes, and serious gym-goers. No fluff, no hype - just a powerful tool that helps you get stronger, smarter, and more consistent.
+                                {t('description')}
                             </p>
-                            <DownloadButton openBetaDialog={true} text="Download for free" />
+                            <DownloadButton openBetaDialog={true} text={t('button')} />
                         </div>
                     </div>
                     <div
@@ -172,8 +168,8 @@ export default function TestimonialsSection() {
                                         role={review.role}
                                         company={review.company}
                                         reviewText={review.reviewText}
-                                        rating={review.rating}
-                                        avatarUrl={review.avatarUrl}
+                                        rating={review.rating || 5}
+                                        avatarUrl={review.avatarUrl || "/jernej.png"}
                                         className="w-full shrink-0 md:my-3"
                                     />
                                 </ScaledCard>

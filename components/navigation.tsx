@@ -146,7 +146,7 @@ export default function Navigation() {
                             damping: 24,
                             mass: 0.9
                         }}
-                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/85 backdrop-blur-lg border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-12"
+                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/85 backdrop-blur-lg border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-20"
                     >
                         {/* Logo */}
                         <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} className="flex items-center gap-2 pl-2.5 ">

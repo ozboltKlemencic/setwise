@@ -27,10 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: meta.description,
         keywords: meta.keywords,
         alternates: {
-            canonical: locale === 'sl' ? '/' : `/${locale}`,
+            canonical: locale === 'en' ? '/' : `/${locale}`,
             languages: {
-                'sl': '/',
-                'en': '/en',
+                'en': '/',
+                'sl': '/sl',
             },
         },
         openGraph: {
@@ -53,11 +53,10 @@ export default async function LocaleLayout({ children, params }: Props) {
     const messages = await getMessages()
 
     // The root layout provides html/body tags
-    // This layout just adds the i18n provider
+    // This layout just adds the i18n provider with locale
     return (
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={messages}>
             {children}
         </NextIntlClientProvider>
     )
 }
-
