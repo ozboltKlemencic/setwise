@@ -20,7 +20,7 @@
         "howItWorks": "Kako deluje",
         "testimonials": "Mnenja",
         "features": "Funkcije",
-        "faq": "Pogosta vprašanja",
+        "faq": "Faq",
         "about": "O nas",
         "pricing": "Cenik",
         "contact": "Kontakt",
@@ -32,16 +32,16 @@
         "keywords": "sledilnik vadb, fitnes aplikacija, beleženje vadb, sledenje napredku, moč"
     },
     "HomePage": {
-        "badge": "Zdaj sprejemamo beta uporabnike",
+        "badge": "Sprejemamo beta uporabnike",
         "hero": {
-            "title1": "Beleži vadbe",
+            "title1": "Beleži treninge",
             "title2": "Postani močnejši",
             "title3": "Ostani discipliniran",
-            "subtitle": "SetWise je ultimativni sledilnik vadb za resne dvigovalce. Ustvarjajte rutine, sledite napredku in dosezite cilje z AI-podprtimi vpogledi."
+            "subtitle": "SetWise je najboljši sledilnik treningov za vse, ki resno trenirate. Ustvarjajte vadbene načrte, spremljajte napredek in dosegajte cilje z AI vpogledi."
         },
         "socialProof": {
-            "topTracker": "Št. 1 sledilnik vadb",
-            "downloadedBy": "Prenešen 100+ fitnes navdušenci",
+            "topTracker": "Št. 1 sledilnik treningov",
+            "downloadedBy": "Uporablja ga 100+ fitnes navdušencev",
             "reviews": "2+ odličnih mnenj"
         },
         "feature1": {
