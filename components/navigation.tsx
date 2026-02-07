@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import BetaSignupDialog from "./beta-signup-dialog"
 import LanguageSwitcher from "./layout/LanguageSwitcher"
+import ThemeToggler from "./layout/ThemeToggler"
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -117,6 +118,7 @@ export default function Navigation() {
 
                 {/* Desktop Button */}
                 <div className="hidden md:flex items-center gap-1.5">
+                    <ThemeToggler />
                     <LanguageSwitcher />
                     <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
                 </div>
@@ -184,6 +186,7 @@ export default function Navigation() {
 
                         {/* CTA Button */}
                         <div className="flex items-center gap-1.5">
+                            <ThemeToggler />
                             <LanguageSwitcher />
                             <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
                         </div>
@@ -235,6 +238,7 @@ export default function Navigation() {
                                         <span className="text-base font-bold text-[#1A1A1A]">SetWise</span>
                                     </a>
                                     <div className="flex items-center gap-2">
+                                        <ThemeToggler />
                                         <LanguageSwitcher />
                                         <motion.button
                                             onClick={() => setIsMenuOpen(false)}
