@@ -31,7 +31,7 @@ export default function NotFound() {
                 </div>
             </div>
             <div className="absolute bottom-10  w-full h-[500px] md:h-[900px]  flex items-end justify-center overflow-hidden pointer-events-none">
-                <ParticleText text="404" fontSize={460} fontSizeMobile={180} className="w-full h-full opacity-50  z-10" />
+                <ParticleText text="404" fontSize={460} fontSizeMobile={180} className="w-full h-full opacity-70 md:opacity-50  z-10" />
             </div>
         </div>
     )
