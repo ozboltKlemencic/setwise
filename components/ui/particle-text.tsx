@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react"
 interface ParticleTextProps {
     text: string
     className?: string
+    fontSize?: number // Optional manual font size
 }
 
 interface Particle {
@@ -17,7 +18,7 @@ interface Particle {
     speed: number
 }
 
-export function ParticleText({ text, className }: ParticleTextProps) {
+export function ParticleText({ text, className, fontSize: manualFontSize }: ParticleTextProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
@@ -56,7 +57,8 @@ export function ParticleText({ text, className }: ParticleTextProps) {
 
             offCtx.fillStyle = "black"
             // Use a bold sans-serif font - smaller on mobile
-            const fontSize = isMobile ? 70 : 160
+            // Use manual font size if provided, otherwise default responsive sizes
+            const fontSize = manualFontSize || (isMobile ? 70 : 160)
             offCtx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`
             offCtx.textAlign = "center"
             offCtx.textBaseline = "bottom"
@@ -136,7 +138,7 @@ export function ParticleText({ text, className }: ParticleTextProps) {
             window.removeEventListener("resize", handleResize)
             cancelAnimationFrame(animationFrameId)
         }
-    }, [text])
+    }, [text, manualFontSize])
 
     return (
         <div ref={containerRef} className={`w-full h-full min-h-[150px] ${className}`}>

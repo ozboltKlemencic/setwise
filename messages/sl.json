@@ -48,13 +48,13 @@
             "title": "Treniraj natančno.",
             "titleHighlight": "Napreduj",
             "titleEnd": "z dokazi.",
-            "description": "Beleži sete v sekundah - z RPE/RIR, tempom, ROM in intenzifikatorji vgrajenimi. Dodaj opombe na vajo ali set, nato takoj primerjaj vsak set s prejšnjo vadbo, da vidiš kaj se je izboljšalo.",
+            "description": "Če napredek meriš po občutku, ga pogosto zgrešiš. SetWise vizualizira tvoje treninge po vajah, od volumna do top setov, da je progresija očitna.",
             "button": "Začni trenirati"
         },
         "feature2": {
-            "title": "Od",
-            "titleHighlight": "kopiraj-prilepi",
-            "titleEnd": "do vadbe.",
+            "title": "S",
+            "titleHighlight": "copy-pastom",
+            "titleEnd": "do treninga.",
             "description": "Prilepi svoj načrt - mi ga avtomatsko strukturiramo. Brez ročnega nastavljanja, brez težav z oblikovanjem - samo čista, organizirana vadba pripravljena za beleženje.",
             "button": "Ustvari vadbo"
         },
