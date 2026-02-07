@@ -46,7 +46,11 @@ export default function FooterSection() {
         <div className="h-auto max-w-[380px] p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-6">
           {/* Brand & Description */}
           <div className="flex flex-col gap-3">
-            <div className="text-neutral-800 text-xl font-semibold leading-6 font-sans">SetWise</div>
+            <div className="flex items-center gap-2  ">
+              <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
+              <span className="text-lg font-bold text-neutral-700 font-sans">SetWise</span>
+            </div>
+
             <p className="text-neutral-500 text-sm font-normal leading-relaxed font-sans">
               Your fitness journey, simplified. Track workouts, stay motivated, and reach your goals.
             </p>
@@ -76,12 +80,15 @@ export default function FooterSection() {
               Follow us
             </div>
             <div className="flex items-center gap-x-3">
-              <a href="#" className=" rounded-lg hover:bg-neutral-100 transition-colors duration-200">
-                <Instagram className="size-5 text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
+              <a href="#" className="  ">
+                <Instagram className="size-4 font-thin text-neutral-500  hover:text-neutral-800 transition-colors duration-200" />
               </a>
-              <a href="#" className=" rounded-lg hover:bg-neutral-100 transition-colors duration-200">
-                <Linkedin className="size-5 text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
+              <a href="#" className="  h">
+                <Linkedin className="size-4 font-thin text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
               </a>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
+                <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
+              </svg>
             </div>
           </div>
         </div>
