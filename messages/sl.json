@@ -59,11 +59,11 @@
             "button": "Ustvari vadbo"
         },
         "feature3": {
-            "title": "Poglej svoj",
-            "titleHighlight": "napredek",
-            "titleEnd": "na en pogled",
-            "description": "Grafi, ki naredijo trende očitne - filtriraj po vaji in času za sledenje vsakemu dvigu. Napredna analitika ti pomaga razumeti vzorce uspešnosti in sprejemati informirane odločitve o treningu.",
-            "button": "Poglej napredek"
+            "title": "Najhitrejši način",
+            "titleHighlight": "beleženja",
+            "titleEnd": "",
+            "description": "Vsak klik šteje. Zato smo vnos setov skrčili na bistvo, da med treningom ne izgubljaš časa v aplikaciji.",
+            "button": "Začni beležiti"
         }
     },
     "BentoGrid": {

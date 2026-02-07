@@ -6,6 +6,7 @@ interface ParticleTextProps {
     text: string
     className?: string
     fontSize?: number // Optional manual font size
+    fontSizeMobile?: number // Optional manual mobile font size
 }
 
 interface Particle {
@@ -18,7 +19,7 @@ interface Particle {
     speed: number
 }
 
-export function ParticleText({ text, className, fontSize: manualFontSize }: ParticleTextProps) {
+export function ParticleText({ text, className, fontSize: manualFontSize, fontSizeMobile: manualFontSizeMobile }: ParticleTextProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
@@ -58,7 +59,11 @@ export function ParticleText({ text, className, fontSize: manualFontSize }: Part
             offCtx.fillStyle = "black"
             // Use a bold sans-serif font - smaller on mobile
             // Use manual font size if provided, otherwise default responsive sizes
-            const fontSize = manualFontSize || (isMobile ? 70 : 160)
+            // If manualFontSizeMobile is provided, use it for mobile. Otherwise fall back to manualFontSize (if provided) or default mobile size
+            const fontSize = isMobile
+                ? (manualFontSizeMobile || (manualFontSize ? manualFontSize / 2 : 70))
+                : (manualFontSize || 160)
+
             offCtx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`
             offCtx.textAlign = "center"
             offCtx.textBaseline = "bottom"
@@ -138,7 +143,7 @@ export function ParticleText({ text, className, fontSize: manualFontSize }: Part
             window.removeEventListener("resize", handleResize)
             cancelAnimationFrame(animationFrameId)
         }
-    }, [text, manualFontSize])
+    }, [text, manualFontSize, manualFontSizeMobile])
 
     return (
         <div ref={containerRef} className={`w-full h-full min-h-[150px] ${className}`}>

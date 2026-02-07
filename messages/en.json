@@ -54,15 +54,15 @@
             "title": "From",
             "titleHighlight": "copy-paste",
             "titleEnd": "to a workout.",
-            "description": "Paste your plan - we structure it automatically. No more manual setup, no more formatting headaches - just clean, organized workout ready to log.",
+            "description": "Already have a plan in a PDF or your notes? Just paste it. SetWise converts it into a clean, structured program you can start logging right away.",
             "button": "Create workout"
         },
         "feature3": {
-            "title": "See your",
-            "titleHighlight": "progress",
-            "titleEnd": "at a glance",
-            "description": "Charts that make trends obvious - filter by exercise and time to track every lift. Advanced analytics help you understand your performance patterns and make informed training decisions.",
-            "button": "View progress"
+            "title": "Built to",
+            "titleHighlight": "minimize",
+            "titleEnd": "taps",
+            "description": "Fewer taps, faster logging. SetWise keeps everything you need on one screen, so you don’t break your training flow.",
+            "button": "Start tracking"
         }
     },
     "BentoGrid": {
