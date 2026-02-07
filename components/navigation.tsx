@@ -116,7 +116,7 @@ export default function Navigation() {
                 </div>
 
                 {/* Desktop Button */}
-                <div className="hidden md:flex items-center gap-2">
+                <div className="hidden md:flex items-center gap-1.5">
                     <LanguageSwitcher />
                     <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
                 </div>
@@ -146,13 +146,13 @@ export default function Navigation() {
                             damping: 24,
                             mass: 0.9
                         }}
-                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/80 backdrop-blur-md border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-6"
+                        className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/85 backdrop-blur-lg border border-neutral-200/70 rounded-full px-2 py-2 shadow-lg shadow-black/5 items-center gap-x-12"
                     >
                         {/* Logo */}
-                        <div className="flex items-center gap-2 pl-2.5 ">
+                        <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} className="flex items-center gap-2 pl-2.5 ">
                             <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
                             <span className="text-sm font-bold text-neutral-800 font-sans">SetWise</span>
-                        </div>
+                        </a>
 
 
                         {/* Navigation Links */}
@@ -162,13 +162,13 @@ export default function Navigation() {
                                     key={link.href}
                                     href={link.href}
                                     onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
-                                    className="relative px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 hover:text-[#1A1A1A]"
+                                    className="relative px-3 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 "
                                     style={{ color: activeSection === link.href ? '#1A1A1A' : '#6b7280' }}
                                 >
                                     {activeSection === link.href && (
                                         <motion.div
                                             layoutId="activeNavIndicator"
-                                            className="absolute inset-0 bg-neutral-100/90 border border-neutral-200/80 rounded-full"
+                                            className="absolute inset-0 bg-neutral-100/90 border border-neutral-200/80 rounded-full h"
                                             transition={{
                                                 type: "spring",
                                                 stiffness: 380,
@@ -176,15 +176,17 @@ export default function Navigation() {
                                             }}
                                         />
                                     )}
-                                    <span className="relative z-10">{link.label}</span>
+                                    <span className="relative z-10 hover:text-neutral-800 transition-colors duration-200">{link.label}</span>
                                 </a>
                             ))}
                         </div>
 
 
                         {/* CTA Button */}
-                        <LanguageSwitcher />
-                        <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
+                        <div className="flex items-center gap-1.5">
+                            <LanguageSwitcher />
+                            <BetaSignupDialog trigger={<ButtonRotatingGradient />} />
+                        </div>
                     </motion.nav>
                 )}
             </AnimatePresence>
@@ -228,10 +230,10 @@ export default function Navigation() {
                             >
                                 {/* Header with Logo and Close */}
                                 <div className="flex items-center justify-between px-6 py-4">
-                                    <div className="flex items-center gap-2">
+                                    <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} className="flex items-center gap-2 cursor-pointer">
                                         <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
                                         <span className="text-base font-bold text-[#1A1A1A]">SetWise</span>
-                                    </div>
+                                    </a>
                                     <motion.button
                                         onClick={() => setIsMenuOpen(false)}
                                         className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-neutral-100 transition-colors"
