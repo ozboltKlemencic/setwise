@@ -328,7 +328,7 @@
      ---------------------------------------------------------- */
   --container-sm:    640px;   /* Use: Narrow content (login, settings, forms) */
   --container-md:    768px;   /* Use: Medium content (blog posts, docs) */
-  --container-lg:    1024px;  /* Use: Standard content area (most pages) */
+  --container-lg:    1152px;  /* Use: Standard content area (most pages) 6xl = 1152px */
   --container-xl:    1280px;  /* Use: Wide content (dashboards, galleries) */
   --container-2xl:   1536px;  /* Use: Extra wide (admin panels, data tables) */
   --container-prose: 65ch;    /* Use: Optimal reading width for text blocks */
@@ -754,14 +754,11 @@
     box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--brand-500);
   }
 
-  /* Smooth theme transitions (Apple HIG: 200ms simultaneous) */
-  *,
-  *::before,
-  *::after {
-    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-    transition-duration: var(--duration-normal);
-    transition-timing-function: var(--ease-apple);
-  }
+  /* Theme transitions — ONLY on interactive elements, NOT global *
+     Global * transitions kill performance on theme switch (hundreds of
+     simultaneous CSS transitions). Use Tailwind transition-colors /
+     transition-all utilities on individual components that need hover/focus
+     animations instead. Theme switch itself is instant (disableTransitionOnChange). */
 
   /* Respect reduced motion (Apple HIG + WCAG) */
   @media (prefers-reduced-motion: reduce) {
