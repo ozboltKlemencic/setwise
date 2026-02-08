@@ -226,27 +226,27 @@ Ustvari celovit, premium design system za Next.js 15 spletno aplikacijo z Tailwi
 }
 ```
 
-### 1.8 Brand Primary Color
+### 1.8 Brand Primary Color — #0063FF
 
-Za SetWise app uporabljamo modro paleto:
+Za SetWise app uporabljamo modro paleto generirano iz `#0063FF` / `rgb(0, 99, 255)`:
 
 ```css
 :root {
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-300: #93c5fd;
-  --color-brand-400: #60a5fa;
-  --color-brand-500: #3b82f6;   /* Light mode primary */
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
-  --color-brand-900: #1e3a8a;
-  --color-brand-950: #172554;
+  --brand-50:  #E6F0FF;
+  --brand-100: #CCE0FF;
+  --brand-200: #99C2FF;
+  --brand-300: #66A3FF;
+  --brand-400: #3385FF;
+  --brand-500: #0063FF;   /* ← PRIMARY — Light mode */
+  --brand-600: #0052D6;
+  --brand-700: #0042AD;
+  --brand-800: #003285;
+  --brand-900: #00215C;
+  --brand-950: #001133;
 }
 
 .dark {
-  /* V dark mode: brand-400 (#60a5fa) kot primary za vibrancy */
+  --brand-500: #3385FF;   /* ← Vibrant primary v dark mode */
 }
 ```
 
