@@ -1,7 +1,25 @@
 /* ============================================================
-   SETWISE DESIGN SYSTEM — globals.css
-   Centralni vir za VSE design tokene (barve, tipografijo, spacing)
-   Spremeni tukaj → posodobi se cel projekt
+   DESIGN SYSTEM — globals.css
+   ─────────────────────────────────────────────────────────────
+   Centralni vir za VSE design tokene.
+   Spremeni TUKAJ → posodobi se cel projekt.
+
+   NAMING CONVENTION (scalable za vse projekte):
+   --brand-*   → Primary brand color (zamenjaj za rebrand)
+   --surface-* → Unified gray scale (backgrounds, text, borders, UI)
+
+   RESPONSIVE BREAKPOINTS (Tailwind v4 default):
+   ┌──────────┬─────────┬──────────────────────────────────────┐
+   │ Prefix   │ Min-W   │ Kontekst                             │
+   ├──────────┼─────────┼──────────────────────────────────────┤
+   │ (base)   │ 0       │ Mobile portrait (phones)              │
+   │ sm:      │ 640px   │ Mobile landscape / large phones       │
+   │ md:      │ 768px   │ Tablet portrait                       │
+   │ lg:      │ 1024px  │ Tablet landscape / small desktop      │
+   │ xl:      │ 1280px  │ Standard desktop                      │
+   │ 2xl:     │ 1536px  │ Large desktop / wide monitors         │
+   └──────────┴─────────┴──────────────────────────────────────┘
+   USAGE: Mobile-first → sm: → md: → lg: → xl: → 2xl:
    ============================================================ */
 
 @import "tailwindcss";
@@ -11,111 +29,113 @@
 
 
 /* ============================================================
-   1. DESIGN SYSTEM TOKENS — LIGHT THEME (default)
+   1. DESIGN TOKENS — LIGHT THEME (default)
    ============================================================ */
 
 :root {
-  
-  .primaryGradient{
+
+  /* Gradient utility — uporabi na <span> za gradient text effect */
+  .primaryGradient {
     background: linear-gradient(to right, var(--brand-400), var(--brand-600));
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
   }
+
   /* ----------------------------------------------------------
      1A. BRAND / PRIMARY — #0063FF
-     Glavna brand barva. Spremeni TUKAJ za rebrand.
+     ─────────────────────────────────────────────────────────
+     Glavna brand barva. Zamenjaj TUKAJ za rebrand.
+     Poimenovanje "brand" (ne "blue") = scalable za
+     katerikoli projekt (zamenjaj z rdečo, zeleno...).
      ---------------------------------------------------------- */
-  --brand-50:  #E6F0FF;
-  --brand-100: #CCE0FF;
-  --brand-200: #99C2FF;
-  --brand-300: #66A3FF;
-  --brand-400: #3385FF;
-  --brand-500: #0063FF;   /* ← PRIMARY */
-  --brand-600: #0052D6;
-  --brand-700: #0042AD;
-  --brand-800: #003285;
-  --brand-900: #00215C;
-  --brand-950: #001133;
+  --brand-50:  #E6F0FF;   /* Use: Light tinted bg (hover states, badge bg, selected rows) */
+  --brand-100: #CCE0FF;   /* Use: Soft bg (info panels, feature highlights, tag bg) */
+  --brand-200: #99C2FF;   /* Use: Light borders, focus ring bg, subtle accents */
+  --brand-300: #66A3FF;   /* Use: Secondary interactive, light links, progress bars */
+  --brand-400: #3385FF;   /* Use: Hover state na primary buttons, gradient start */
+  --brand-500: #0063FF;   /* Use: PRIMARY — buttons, links, active tabs, accent */
+  --brand-600: #0052D6;   /* Use: Hover on primary (darker), pressed state */
+  --brand-700: #0042AD;   /* Use: Active/pressed state, dark accents */
+  --brand-800: #003285;   /* Use: Dark brand surfaces, footer CTAs */
+  --brand-900: #00215C;   /* Use: Darkest brand — ultra emphasis only */
+  --brand-950: #001133;   /* Use: Near-black brand — extreme contrast needs */
 
   /* ----------------------------------------------------------
-     1B. WARM PALETTE — Unikaten SetWise branding
-     Topla rjava paleta za besedilo in ozadja.
+     1B. SURFACE — Unified Gray Scale
+     ─────────────────────────────────────────────────────────
+     Ena paleta za VSE: backgrounds, text, borders, UI elemente.
+     Neutral gray = čista, profesionalna.
+
+     V dark mode se lestvica obrne (50 = najtemnejši,
+     950 = najsvetlejši) po Apple HIG "elevated = lighter".
+
+     GENERIC NAME "surface" = uporabno v vsakem projektu.
+     Design system ima samo DVE barvni lestvici:
+       --brand-*   → interaktivno (buttons, links, accent)
+       --surface-* → vse ostalo (bg, text, borders, UI)
      ---------------------------------------------------------- */
-  --warm-50:  #FBFAF9;
-  --warm-100: #F7F5F3;    /* ← GLAVNI APP BACKGROUND */
-  --warm-200: #F0EFEE;
-  --warm-300: #E0DEDB;    /* ← BORDER barva */
-  --warm-400: #D2C6BF;
-  --warm-500: #B2AEA9;
-  --warm-600: #847971;
-  --warm-700: #605A57;    /* ← BODY TEXT */
-  --warm-800: #49423D;    /* ← SECTION HEADINGS */
-  --warm-900: #37322F;    /* ← PRIMARY DARK / BUTTONS */
-  --warm-950: #2A2520;    /* ← HOVER na warm-900 */
+  --surface-50:  #FAFAFA;  /* Use: Hover bg na white, subtle highlight, off-white */
+  --surface-100: #F5F5F5;  /* Use: MAIN APP BACKGROUND — default page canvas */
+  --surface-200: #E5E5E5;  /* Use: Input borders, dividers, shimmer bg, hover bg */
+  --surface-300: #D4D4D4;  /* Use: BORDERS — card borders, separators, disabled borders */
+  --surface-400: #A3A3A3;  /* Use: Placeholder text, disabled icons, muted dividers */
+  --surface-500: #737373;  /* Use: Secondary icons, helper text, footnotes */
+  --surface-600: #525252;  /* Use: Muted labels, captions, timestamps, form labels */
+  --surface-700: #404040;  /* Use: BODY TEXT — paragraphs, descriptions, footer text */
+  --surface-800: #262626;  /* Use: SECTION HEADINGS — h2, h3, emphasized text */
+  --surface-900: #171717;  /* Use: PRIMARY TEXT — h1, buttons, nav links, strong text */
+  --surface-950: #0A0A0A;  /* Use: Hover on surface-900, absolute maximum contrast */
 
   /* ----------------------------------------------------------
-     1C. NEUTRAL GRAYS — Tailwind neutral scale
-     Za UI elemente (inputi, gumbi, navigation).
-     ---------------------------------------------------------- */
-  --neutral-50:  #FAFAFA;
-  --neutral-100: #F5F5F5;
-  --neutral-200: #E5E5E5;
-  --neutral-300: #D4D4D4;
-  --neutral-400: #A3A3A3;
-  --neutral-500: #737373;
-  --neutral-600: #525252;
-  --neutral-700: #404040;
-  --neutral-800: #262626;
-  --neutral-900: #171717;
-  --neutral-950: #0A0A0A;
-
-  /* ----------------------------------------------------------
-     1D. SEMANTIC COLORS — Success, Warning, Error, Info
+     1C. SEMANTIC COLORS — Success, Warning, Error, Info
+     ─────────────────────────────────────────────────────────
      Temelji na Apple HIG system colors.
+     VEDNO dodaj ikone poleg barv (accessibility — WCAG).
      ---------------------------------------------------------- */
-  --success:     #34C759;
-  --success-light:#DCFCE7;
-  --success-dark: #166534;
+  --success:      #34C759;  /* Use: Success states, checkmarks, confirmed badges */
+  --success-light:#DCFCE7;  /* Use: Success bg (toast, alert, badge background) */
+  --success-dark: #166534;  /* Use: Success text na light bg */
 
-  --warning:     #FF9500;
-  --warning-light:#FFF7ED;
-  --warning-dark: #9A3412;
+  --warning:      #FF9500;  /* Use: Warning states, attention needed, pending */
+  --warning-light:#FFF7ED;  /* Use: Warning bg (alert, banner background) */
+  --warning-dark: #9A3412;  /* Use: Warning text na light bg */
 
-  --error:       #FF3B30;
-  --error-light: #FEF2F2;
-  --error-dark:  #991B1B;
+  --error:        #FF3B30;  /* Use: Error states, destructive actions, validation */
+  --error-light:  #FEF2F2;  /* Use: Error bg (form validation, alert background) */
+  --error-dark:   #991B1B;  /* Use: Error text na light bg */
 
-  --info:        #007AFF;
-  --info-light:  #EFF6FF;
-  --info-dark:   #1E40AF;
+  --info:         #007AFF;  /* Use: Info states, tips, help text, notifications */
+  --info-light:   #EFF6FF;  /* Use: Info bg (info panels, tooltips) */
+  --info-dark:    #1E40AF;  /* Use: Info text na light bg */
 
-  /* Star rating */
-  --star:        #fce412;
+  --star:         #fce412;  /* Use: Star rating fill color */
 
   /* ----------------------------------------------------------
-     1E. SHADCN/UI COMPATIBILITY — Preslikava na design system
+     1D. SHADCN/UI COMPATIBILITY
+     ─────────────────────────────────────────────────────────
      Te spremenljivke uporabljajo shadcn/ui komponente.
-     Sedaj kažejo na naše brand/warm tokene.
+     Preslikane na naše brand/surface tokene.
+     NE spreminjaj imen — samo override vrednosti.
      ---------------------------------------------------------- */
-  --background:           var(--warm-100);
-  --foreground:           var(--warm-900);
+  --background:           var(--surface-100);
+  --foreground:           var(--surface-900);
   --card:                 #FFFFFF;
-  --card-foreground:      var(--warm-900);
+  --card-foreground:      var(--surface-900);
   --popover:              #FFFFFF;
-  --popover-foreground:   var(--warm-900);
+  --popover-foreground:   var(--surface-900);
   --primary:              var(--brand-500);
   --primary-foreground:   #FFFFFF;
-  --secondary:            var(--neutral-100);
-  --secondary-foreground: var(--warm-900);
-  --muted:                var(--neutral-100);
-  --muted-foreground:     var(--warm-700);
-  --accent:               var(--neutral-100);
-  --accent-foreground:    var(--warm-900);
+  --secondary:            var(--surface-100);
+  --secondary-foreground: var(--surface-900);
+  --muted:                var(--surface-100);
+  --muted-foreground:     var(--surface-700);
+  --accent:               var(--surface-100);
+  --accent-foreground:    var(--surface-900);
   --destructive:          var(--error);
   --destructive-foreground: #FFFFFF;
-  --border:               var(--warm-300);
-  --input:                var(--neutral-200);
+  --border:               var(--surface-300);
+  --input:                var(--surface-200);
   --ring:                 var(--brand-500);
 
   /* Charts */
@@ -126,66 +146,226 @@
   --chart-5: var(--info);
 
   /* Sidebar */
-  --sidebar:                    var(--warm-50);
-  --sidebar-foreground:         var(--warm-900);
+  --sidebar:                    var(--surface-50);
+  --sidebar-foreground:         var(--surface-900);
   --sidebar-primary:            var(--brand-500);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent:             var(--neutral-100);
-  --sidebar-accent-foreground:  var(--warm-900);
-  --sidebar-border:             var(--warm-300);
+  --sidebar-accent:             var(--surface-100);
+  --sidebar-accent-foreground:  var(--surface-900);
+  --sidebar-border:             var(--surface-300);
   --sidebar-ring:               var(--brand-500);
 
   /* ----------------------------------------------------------
-     1F. RADIUS — Border radius tokens
-     Spremeni --radius za global rescale. Ostali se izračunajo.
+     1E. BORDER RADIUS
+     ─────────────────────────────────────────────────────────
+     Spremeni --radius za global rescale.
+
+     Usage guide:
+     badges/chips     → sm (6px)
+     inputs/buttons   → md–lg (8–10px)
+     cards            → lg–xl (10–14px)
+     modals/dialogs   → xl–2xl (14–18px)
+     hero sections    → 2xl+ (18px+)
+     pills/avatars    → full (9999px)
      ---------------------------------------------------------- */
   --radius: 0.625rem;    /* 10px — base unit */
 
   /* ----------------------------------------------------------
-     1G. SHADOWS — Light mode
+     1F. SHADOWS
+     ─────────────────────────────────────────────────────────
+     Neutral-toned shadows za čist, profesionalen videz.
+     rgba(23,23,23) = surface-900 tonski ekvivalent.
+
+     Usage guide:
+     xs  → Subtle depth: badges, tags, chips
+     sm  → Cards, dropdowns, small panels
+     md  → Floating cards, popovers, elevated surfaces
+     lg  → Modals, dialogs, large overlays
+     xl  → Hero elements, featured cards, dragged items
+     2xl → Full-page overlays, dramatic depth
      ---------------------------------------------------------- */
-  --shadow-xs:  0 1px 2px 0 rgba(55, 50, 47, 0.05);
-  --shadow-sm:  0 1px 3px 0 rgba(55, 50, 47, 0.08), 0 1px 2px -1px rgba(55, 50, 47, 0.08);
-  --shadow-md:  0 4px 6px -1px rgba(55, 50, 47, 0.08), 0 2px 4px -2px rgba(55, 50, 47, 0.06);
-  --shadow-lg:  0 10px 15px -3px rgba(55, 50, 47, 0.08), 0 4px 6px -4px rgba(55, 50, 47, 0.04);
-  --shadow-xl:  0 20px 25px -5px rgba(55, 50, 47, 0.08), 0 8px 10px -6px rgba(55, 50, 47, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(55, 50, 47, 0.15);
+  --shadow-xs:  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm:  0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 
   /* ----------------------------------------------------------
-     1H. TYPOGRAPHY — Font families
+     1G. TYPOGRAPHY — Font Families
+     ─────────────────────────────────────────────────────────
+     --font-inter            → Display + Body (primary sans)
+     --font-instrument-serif → Accent / editorial headings
+     --font-mono             → Code blocks, technical data
      ---------------------------------------------------------- */
   --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-instrument-serif: "Instrument Serif", ui-serif, serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
 
   /* ----------------------------------------------------------
-     1I. TRANSITIONS — Timing tokens
+     1H. TRANSITIONS — Timing Tokens
+     ─────────────────────────────────────────────────────────
+     instant → micro-interactions (toggle, checkbox)
+     fast    → hover states, active press, color change
+     normal  → theme switch, color transitions, most UI
+     smooth  → modals, drawers, slide animations
+     slow    → page transitions, complex sequences
+
+     Apple HIG: 200ms = sweet spot za most transitions.
      ---------------------------------------------------------- */
   --duration-instant: 100ms;
   --duration-fast:    150ms;
   --duration-normal:  200ms;
   --duration-smooth:  300ms;
   --duration-slow:    500ms;
-  --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);         /* Standard Apple easing */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bounce/spring feel */
+
+  /* ----------------------------------------------------------
+     1I. Z-INDEX SCALE
+     ─────────────────────────────────────────────────────────
+     Poenotena z-index lestvica za predvidljivo layering.
+     Uporabi var(--z-*) ali direktno Tailwind z-* utilities.
+     ---------------------------------------------------------- */
+  --z-below:    -1;    /* Use: Background decorations, pseudo-elements behind */
+  --z-base:      0;    /* Use: Default stacking context */
+  --z-raised:   10;    /* Use: Cards, elevated surfaces, hover-lift */
+  --z-dropdown: 20;    /* Use: Dropdowns, tooltips, popovers */
+  --z-sticky:   30;    /* Use: Sticky headers, floating action buttons */
+  --z-fixed:    40;    /* Use: Fixed navigation, sidebars */
+  --z-overlay:  50;    /* Use: Modal overlays, backdrop dimming */
+  --z-modal:    60;    /* Use: Modal dialogs, sheets, drawers */
+  --z-toast:    70;    /* Use: Toast notifications, snackbars, alerts */
+  --z-max:      99;    /* Use: Loading screens, critical full-screen overlays */
+
+  /* ----------------------------------------------------------
+     1J. SPACING TOKENS — 8pt Grid System (Apple HIG)
+     ─────────────────────────────────────────────────────────
+     Tailwind default spacing je že 8pt-based.
+     Ti tokeni služijo kot reference za konsistentnost.
+
+     COMPONENT PADDING PATTERNS:
+     ┌──────────────────────────────────────────────────────┐
+     │ Button SM : px-3 py-1.5  (12/6px)   min-h-[32px]   │
+     │ Button MD : px-4 py-2    (16/8px)   min-h-[40px]   │
+     │ Button LG : px-6 py-3    (24/12px)  min-h-[48px]   │
+     │ Input     : px-3 py-2.5  (12/10px)  min-h-[44px]   │
+     │ Card SM   : p-4          (16px)                      │
+     │ Card MD   : p-6          (24px)                      │
+     │ Card LG   : p-8          (32px)                      │
+     │ List row  : px-4 py-3    (16/12px)  min-h-[44px]   │
+     └──────────────────────────────────────────────────────┘
+
+     44px = Apple minimum touch target. VEDNO zagotovi za
+     interaktivne elemente (buttons, inputs, list rows).
+
+     RESPONSIVE SECTION SPACING:
+       Vertical:   py-12 → md:py-16 → lg:py-24
+       Horizontal: px-4  → md:px-6  → lg:px-8
+     ---------------------------------------------------------- */
+  --space-1:  0.25rem;  /*  4px — icon gaps, micro spacing */
+  --space-2:  0.5rem;   /*  8px — BASE UNIT, tight padding */
+  --space-3:  0.75rem;  /* 12px — small component gaps, button py */
+  --space-4:  1rem;     /* 16px — standard padding, mobile margins */
+  --space-5:  1.25rem;  /* 20px — medium gaps */
+  --space-6:  1.5rem;   /* 24px — card padding, section inner gaps */
+  --space-8:  2rem;     /* 32px — large gaps, tablet margins */
+  --space-10: 2.5rem;   /* 40px — between major components */
+  --space-12: 3rem;     /* 48px — mobile section padding (py-12) */
+  --space-16: 4rem;     /* 64px — tablet section padding (py-16) */
+  --space-20: 5rem;     /* 80px — major section divisions */
+  --space-24: 6rem;     /* 96px — desktop section padding (py-24) */
+  --space-32: 8rem;     /* 128px — jumbo spacing (landing hero) */
+
+  /* ----------------------------------------------------------
+     1K. LINE HEIGHTS — Standalone Scale
+     ─────────────────────────────────────────────────────────
+     Za uporabo neodvisno od font-size utility-jev.
+     Apple HIG razmerja:
+       Display/Headlines: 1.0–1.2 (tight — dramatic)
+       Body text:         1.4–1.5 (comfortable — readability)
+       Long-form/prose:   1.6–1.75 (relaxed — extended reading)
+
+     Uporaba: class="leading-[var(--leading-snug)]"
+     ali pa Tailwind leading-tight, leading-normal itd.
+     ---------------------------------------------------------- */
+  --leading-none:     1;      /* Use: Display text, hero headlines (48px+) */
+  --leading-tight:    1.15;   /* Use: Large titles, display-sm (36px) */
+  --leading-snug:     1.25;   /* Use: Title 1–3, section headings (20–34px) */
+  --leading-normal:   1.4;    /* Use: Body text, default paragraphs (15–17px) */
+  --leading-relaxed:  1.5;    /* Use: Subheadline, callout, captions */
+  --leading-loose:    1.625;  /* Use: Long-form reading, prose, articles */
+  --leading-spacious: 1.75;   /* Use: Large body text, accessibility mode */
+
+  /* ----------------------------------------------------------
+     1L. LETTER SPACING — Standalone Scale
+     ─────────────────────────────────────────────────────────
+     Apple HIG tracking rules:
+       Display (48px+):    -0.04em to -0.05em (very tight)
+       Titles  (20–34px):  -0.02em to -0.04em
+       Body    (15–17px):   0em    (neutral)
+       Captions (11–13px): +0.01em (slightly open za legibility)
+       ALL CAPS:           +0.05em to +0.1em (VEDNO razprto!)
+
+     Uporaba: class="tracking-[var(--tracking-tight)]"
+     ali pa Tailwind tracking-tight, tracking-wide itd.
+     ---------------------------------------------------------- */
+  --tracking-tightest: -0.05em;  /* Use: Display XL/LG (60–72px) */
+  --tracking-tighter:  -0.04em;  /* Use: Display, Large Title (34–48px) */
+  --tracking-tight:    -0.02em;  /* Use: Title 1–3 (20–28px) */
+  --tracking-snug:     -0.01em;  /* Use: Headline (17px semibold) */
+  --tracking-normal:    0em;     /* Use: Body, Callout, Subheadline (15–17px) */
+  --tracking-wide:      0.01em;  /* Use: Captions, Footnotes (11–13px) */
+  --tracking-wider:     0.05em;  /* Use: ALL CAPS labels, overline text */
+  --tracking-widest:    0.1em;   /* Use: ALL CAPS large, spaced-out headings */
+
+  /* ----------------------------------------------------------
+     1M. CONTAINER MAX-WIDTHS
+     ─────────────────────────────────────────────────────────
+     Za section wrappers in content containers.
+     Uporaba: class="max-w-[var(--container-lg)] mx-auto"
+     ali Tailwind max-w-screen-lg, max-w-prose itd.
+     ---------------------------------------------------------- */
+  --container-sm:    640px;   /* Use: Narrow content (login, settings, forms) */
+  --container-md:    768px;   /* Use: Medium content (blog posts, docs) */
+  --container-lg:    1024px;  /* Use: Standard content area (most pages) */
+  --container-xl:    1280px;  /* Use: Wide content (dashboards, galleries) */
+  --container-2xl:   1536px;  /* Use: Extra wide (admin panels, data tables) */
+  --container-prose: 65ch;    /* Use: Optimal reading width for text blocks */
+
+  /* ----------------------------------------------------------
+     1N. OPACITY SCALE
+     ───────────────────────────────────────────────────────── */
+  --opacity-disabled: 0.5;   /* Use: Disabled buttons, inputs, inactive elements */
+  --opacity-muted:    0.7;   /* Use: Muted icons, secondary images */
+  --opacity-overlay:  0.4;   /* Use: Modal backdrop overlay (bg-black/40) */
+  --opacity-hover:    0.8;   /* Use: Hover dimming/fading effect */
 }
 
 
 /* ============================================================
    2. DARK THEME — Overrides
-   Aktivira se z .dark class na <html> (next-themes)
+   ─────────────────────────────────────────────────────────────
+   Aktivira se z .dark class na <html> (next-themes).
+
+   Apple HIG Dark Mode principi:
+   1. NI inverzija — namensko oblikovane vrednosti
+   2. Elevated = lighter (višja elevacija = svetlejši ton)
+   3. Vibrant foreground (bolj žive barve za boljši kontrast)
+   4. Reduced shadow (shadows skoraj nevidni, uporabi bg elevation)
+   5. Increased fill opacity
    ============================================================ */
 
 .dark {
-  /* Brand — bolj vibrantne v dark mode (Apple HIG princip) */
-  .primaryGradient{
+  /* Gradient utility */
+  .primaryGradient {
     background: linear-gradient(to right, var(--brand-400), var(--brand-600));
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
   }
-  
- 
+
+  /* Brand — bolj vibrantne v dark mode (Apple HIG princip) */
   --brand-50:  #001A42;
   --brand-100: #002266;
   --brand-200: #003399;
@@ -198,33 +378,28 @@
   --brand-900: #E6F0FF;
   --brand-950: #F5F9FF;
 
-  /* Warm — dark mode elevated surfaces (svetlejša = višja elevacija) */
-  --warm-50:  #1A1816;
-  --warm-100: #0F0E0D;    /* ← DARK BG (near black, warm) */
-  --warm-200: #1C1A18;
-  --warm-300: #2A2724;    /* ← BORDER */
-  --warm-400: #3D3935;
-  --warm-500: #5A5450;
-  --warm-600: #8A8380;
-  --warm-700: #B2ADA9;    /* ← BODY TEXT (svetlejše) */
-  --warm-800: #D5D0CC;    /* ← HEADINGS (svetlejše) */
-  --warm-900: #F0EEEC;    /* ← PRIMARY TEXT */
-  --warm-950: #FBFAF9;
+  /* ----------------------------------------------------------
+     SURFACE — Dark Mode (inverted lightness)
+     ─────────────────────────────────────────────────────────
+     Ista lestvica kot light mode, ampak obrnjena:
+     50/100 = najtemnejši (base background)
+     900/950 = najsvetlejši (primary text)
 
-  /* Neutral — dark mode */
-  --neutral-50:  #0A0A0A;
-  --neutral-100: #171717;
-  --neutral-200: #262626;
-  --neutral-300: #404040;
-  --neutral-400: #525252;
-  --neutral-500: #737373;
-  --neutral-600: #A3A3A3;
-  --neutral-700: #D4D4D4;
-  --neutral-800: #E5E5E5;
-  --neutral-900: #F5F5F5;
-  --neutral-950: #FAFAFA;
+     Apple HIG princip: "elevated = lighter"
+     ---------------------------------------------------------- */
+  --surface-50:  #0A0A0A;  /* Use: Elevated sidebar bg, darkest surface */
+  --surface-100: #171717;  /* Use: DARK BG — main app background */
+  --surface-200: #262626;  /* Use: Card bg, elevated surface level 1 */
+  --surface-300: #404040;  /* Use: BORDERS — dividers, separators */
+  --surface-400: #525252;  /* Use: Subtle borders, muted dividers */
+  --surface-500: #737373;  /* Use: Placeholder, disabled text */
+  --surface-600: #A3A3A3;  /* Use: Muted labels, captions, meta info */
+  --surface-700: #D4D4D4;  /* Use: BODY TEXT — paragraphs, descriptions */
+  --surface-800: #E5E5E5;  /* Use: SECTION HEADINGS — h2, h3 */
+  --surface-900: #F5F5F5;  /* Use: PRIMARY TEXT — h1, buttons, navigation */
+  --surface-950: #FAFAFA;  /* Use: Highest contrast text, pure white text */
 
-  /* Semantic — vibrant za dark mode */
+  /* Semantic — vibrant za dark mode (Apple HIG) */
   --success:      #30D158;
   --success-light: #052E16;
   --success-dark:  #BBF7D0;
@@ -244,37 +419,39 @@
   --star:         #FFD60A;
 
   /* shadcn/ui preslikava za dark mode */
-  --background:           var(--warm-100);
-  --foreground:           var(--warm-900);
-  --card:                 var(--warm-200);
-  --card-foreground:      var(--warm-900);
-  --popover:              var(--warm-200);
-  --popover-foreground:   var(--warm-900);
+  --background:           var(--surface-100);
+  --foreground:           var(--surface-900);
+  --card:                 var(--surface-200);
+  --card-foreground:      var(--surface-900);
+  --popover:              var(--surface-200);
+  --popover-foreground:   var(--surface-900);
   --primary:              var(--brand-500);
   --primary-foreground:   #FFFFFF;
-  --secondary:            var(--neutral-200);
-  --secondary-foreground: var(--warm-900);
-  --muted:                var(--neutral-200);
-  --muted-foreground:     var(--warm-600);
-  --accent:               var(--neutral-200);
-  --accent-foreground:    var(--warm-900);
+  --secondary:            var(--surface-200);
+  --secondary-foreground: var(--surface-900);
+  --muted:                var(--surface-200);
+  --muted-foreground:     var(--surface-600);
+  --accent:               var(--surface-200);
+  --accent-foreground:    var(--surface-900);
   --destructive:          var(--error);
   --destructive-foreground: #FFFFFF;
-  --border:               var(--warm-300);
-  --input:                var(--neutral-300);
+  --border:               var(--surface-300);
+  --input:                var(--surface-300);
   --ring:                 var(--brand-500);
 
   /* Sidebar dark */
-  --sidebar:                    var(--warm-50);
-  --sidebar-foreground:         var(--warm-900);
+  --sidebar:                    var(--surface-50);
+  --sidebar-foreground:         var(--surface-900);
   --sidebar-primary:            var(--brand-500);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent:             var(--neutral-200);
-  --sidebar-accent-foreground:  var(--warm-900);
-  --sidebar-border:             var(--warm-300);
+  --sidebar-accent:             var(--surface-200);
+  --sidebar-accent-foreground:  var(--surface-900);
+  --sidebar-border:             var(--surface-300);
   --sidebar-ring:               var(--brand-500);
 
-  /* Shadows — večja opacity v dark mode */
+  /* Shadows — večja opacity v dark mode
+     V dark mode shadows so manj vidni zato uporabi bg elevation
+     namesto shadow-sm uporabi bg-surface-200 za depth efekt */
   --shadow-xs:  0 1px 2px 0 rgba(0, 0, 0, 0.15);
   --shadow-sm:  0 1px 3px 0 rgba(0, 0, 0, 0.25), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
   --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
@@ -286,88 +463,125 @@
 
 /* ============================================================
    3. TAILWIND v4 THEME REGISTRATION
-   Registrira naše design tokene kot Tailwind utiliti.
-   Po tem lahko uporabis: bg-brand-500, text-warm-700, itd.
+   ─────────────────────────────────────────────────────────────
+   Registrira naše design tokene kot Tailwind utility klase.
+   Po tem lahko uporabis:
+     bg-brand-500, text-surface-700, border-surface-200, itd.
+
+   RESPONSIVE TYPOGRAPHY PATTERN:
+     Mobile:  text-large-title  (34px)
+     Tablet:  text-display-sm   (36px)
+     Desktop: text-display       (48px)
+     → <h1 class="text-large-title md:text-display-sm lg:text-display">
+
+   RESPONSIVE SECTION PATTERN:
+     → <section class="py-12 md:py-16 lg:py-24 px-4 md:px-6 lg:px-8">
    ============================================================ */
 
 @theme inline {
-  /* Fonts */
+  /* ---- Font Families ---- */
   --font-sans: var(--font-inter);
   --font-serif: var(--font-instrument-serif);
   --font-mono: var(--font-mono);
 
-  /* ---- Apple HIG Typography Scale ---- */
-  /* Caption 2 — 11px — Najmanjše besedilo, timestamps */
+  /* ---- Apple HIG Typography Scale ----
+
+     RESPONSIVE BREAKPOINT GUIDE:
+     ┌──────────────┬──────────────────────────────────────────────────┐
+     │ Breakpoint   │ Priporočena tipografija                          │
+     ├──────────────┼──────────────────────────────────────────────────┤
+     │ Base (mob)   │ text-large-title / text-title-1 za H1            │
+     │ sm (640px)   │ text-display-sm za H1                             │
+     │ md (768px)   │ text-display-sm za H1, text-title-1 za H2        │
+     │ lg (1024px)  │ text-display za H1, text-title-1 za H2           │
+     │ xl (1280px)  │ text-display-lg za hero, text-display za H1      │
+     │ 2xl (1536px) │ text-display-xl za hero                          │
+     └──────────────┴──────────────────────────────────────────────────┘
+
+     LINE-HEIGHT RULES:
+     Display (48px+)    → 1.0–1.05 (tight, dramatic)
+     Titles  (20–34px)  → 1.2–1.3  (balanced)
+     Body    (15–17px)  → 1.4–1.5  (comfortable)
+     Captions (11–13px) → 1.3–1.4  (compact)
+
+     LETTER-SPACING RULES (Apple HIG):
+     Display (48px+)    → -0.04em to -0.05em (very tight)
+     Titles  (20–34px)  → -0.02em to -0.04em
+     Body    (15–17px)  →  0em (neutral)
+     Captions (11–13px) → +0.01em (open za legibility)
+  */
+
+  /* Caption 2 — 11px — timestamps, micro-labels, metadata */
   --font-size-caption-2: 0.6875rem;
   --font-size-caption-2--line-height: 0.8125rem;
   --font-size-caption-2--letter-spacing: 0.01em;
 
-  /* Caption 1 — 12px — Captions, labels, badges */
+  /* Caption 1 — 12px — badges, tags, secondary labels, overlines */
   --font-size-caption-1: 0.75rem;
   --font-size-caption-1--line-height: 1rem;
   --font-size-caption-1--letter-spacing: 0.01em;
 
-  /* Footnote — 13px — Opombe, meta info */
+  /* Footnote — 13px — footnotes, disclaimers, helper text */
   --font-size-footnote: 0.8125rem;
   --font-size-footnote--line-height: 1.125rem;
   --font-size-footnote--letter-spacing: 0.01em;
 
-  /* Subheadline — 15px — Sekundarna informacija, opisi */
+  /* Subheadline — 15px — descriptions under titles, secondary info */
   --font-size-subheadline: 0.9375rem;
   --font-size-subheadline--line-height: 1.25rem;
   --font-size-subheadline--letter-spacing: 0em;
 
-  /* Callout — 16px — Callout besedilo (= base) */
+  /* Callout — 16px — callout text, base size (= 1rem) */
   --font-size-callout: 1rem;
   --font-size-callout--line-height: 1.3125rem;
   --font-size-callout--letter-spacing: 0em;
 
-  /* Body — 17px — Glavno body besedilo */
+  /* Body — 17px — main body text, paragraphs, descriptions */
   --font-size-body: 1.0625rem;
   --font-size-body--line-height: 1.375rem;
   --font-size-body--letter-spacing: 0em;
 
-  /* Headline — 17px semibold — Poudarjeno besedilo, cell titles */
+  /* Headline — 17px — cell titles, emphasized body (VEDNO s font-semibold!) */
   --font-size-headline: 1.0625rem;
   --font-size-headline--line-height: 1.375rem;
   --font-size-headline--letter-spacing: -0.01em;
 
-  /* Title 3 — 20px — Manjši naslovi */
+  /* Title 3 — 20px — card titles, small headings, sidebar titles */
   --font-size-title-3: 1.25rem;
   --font-size-title-3--line-height: 1.5625rem;
   --font-size-title-3--letter-spacing: -0.02em;
 
-  /* Title 2 — 22px — Podnaslovi sekcij */
+  /* Title 2 — 22px — section subheadings, feature card titles */
   --font-size-title-2: 1.375rem;
   --font-size-title-2--line-height: 1.75rem;
   --font-size-title-2--letter-spacing: -0.02em;
 
-  /* Title 1 — 28px — Section naslovi */
+  /* Title 1 — 28px — section headings, page titles */
   --font-size-title-1: 1.75rem;
   --font-size-title-1--line-height: 2.125rem;
   --font-size-title-1--letter-spacing: -0.03em;
 
-  /* Large Title — 34px — Hero naslovi, landing pages */
+  /* Large Title — 34px — hero mobile, landing page main headings */
   --font-size-large-title: 2.125rem;
   --font-size-large-title--line-height: 2.5625rem;
   --font-size-large-title--letter-spacing: -0.04em;
 
-  /* Display SM — 36px — Web extended display */
+  /* Display SM — 36px — hero tablet, web extended display */
   --font-size-display-sm: 2.25rem;
   --font-size-display-sm--line-height: 2.5rem;
   --font-size-display-sm--letter-spacing: -0.04em;
 
-  /* Display — 48px — Hero display text */
+  /* Display — 48px — hero desktop, primary display text */
   --font-size-display: 3rem;
   --font-size-display--line-height: 1;
   --font-size-display--letter-spacing: -0.04em;
 
-  /* Display LG — 60px — Large hero text */
+  /* Display LG — 60px — large hero, marketing pages */
   --font-size-display-lg: 3.75rem;
   --font-size-display-lg--line-height: 1;
   --font-size-display-lg--letter-spacing: -0.05em;
 
-  /* Display XL — 72px — Ultra large display */
+  /* Display XL — 72px — ultra display, splash screens */
   --font-size-display-xl: 4.5rem;
   --font-size-display-xl--line-height: 1;
   --font-size-display-xl--letter-spacing: -0.05em;
@@ -385,18 +599,18 @@
   --color-brand-900: var(--brand-900);
   --color-brand-950: var(--brand-950);
 
-  /* ---- Warm Palette ---- */
-  --color-warm-50:  var(--warm-50);
-  --color-warm-100: var(--warm-100);
-  --color-warm-200: var(--warm-200);
-  --color-warm-300: var(--warm-300);
-  --color-warm-400: var(--warm-400);
-  --color-warm-500: var(--warm-500);
-  --color-warm-600: var(--warm-600);
-  --color-warm-700: var(--warm-700);
-  --color-warm-800: var(--warm-800);
-  --color-warm-900: var(--warm-900);
-  --color-warm-950: var(--warm-950);
+  /* ---- Surface Scale (unified gray) ---- */
+  --color-surface-50:  var(--surface-50);
+  --color-surface-100: var(--surface-100);
+  --color-surface-200: var(--surface-200);
+  --color-surface-300: var(--surface-300);
+  --color-surface-400: var(--surface-400);
+  --color-surface-500: var(--surface-500);
+  --color-surface-600: var(--surface-600);
+  --color-surface-700: var(--surface-700);
+  --color-surface-800: var(--surface-800);
+  --color-surface-900: var(--surface-900);
+  --color-surface-950: var(--surface-950);
 
   /* ---- Semantic Colors ---- */
   --color-success:       var(--success);
@@ -447,7 +661,11 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* ---- Radius (derived from --radius base) ---- */
+  /* ---- Radius (derived from --radius base) ----
+     sm → badges, chips, small tags
+     md → inputs, secondary buttons
+     lg → primary buttons, small cards
+     xl → large cards, modals */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -511,7 +729,7 @@
 
 
 /* ============================================================
-   4. BASE LAYER — Global resets & defaults
+   4. BASE LAYER — Global Resets & Defaults
    ============================================================ */
 
 @layer base {
@@ -530,13 +748,13 @@
     display: none;
   }
 
-  /* Focus visible — brand ring za accessibility */
+  /* Focus visible — brand ring za accessibility (WCAG AA) */
   *:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--brand-500);
   }
 
-  /* Smooth theme transitions */
+  /* Smooth theme transitions (Apple HIG: 200ms simultaneous) */
   *,
   *::before,
   *::after {
@@ -545,7 +763,7 @@
     transition-timing-function: var(--ease-apple);
   }
 
-  /* Respect reduced motion */
+  /* Respect reduced motion (Apple HIG + WCAG) */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -612,140 +830,137 @@ body::-webkit-scrollbar {
    Vsak @utility nastavi font-size + line-height + letter-spacing.
    Deluje z VSEMI Tailwind varianti: sm:, md:, lg:, hover:, itd.
 
-   ┌─────────────────────┬────────┬─────────┬────────────┬─────────────────────────────┐
-   │ Utility class       │ Size   │ L-H     │ Tracking   │ Uporaba                     │
-   ├─────────────────────┼────────┼─────────┼────────────┼─────────────────────────────┤
-   │ text-caption-2      │ 11px   │ 13px    │ +0.01em    │ timestamps, meta info       │
-   │ text-caption-1      │ 12px   │ 16px    │ +0.01em    │ labels, badges, tags        │
-   │ text-footnote       │ 13px   │ 18px    │ +0.01em    │ opombe, footnotes           │
-   │ text-subheadline    │ 15px   │ 20px    │  0         │ opisi, secondary info       │
-   │ text-callout        │ 16px   │ 21px    │  0         │ base callout (= 1rem)       │
-   │ text-body           │ 17px   │ 22px    │  0         │ body text, paragrafi        │
-   │ text-headline       │ 17px   │ 22px    │ -0.01em    │ cell titles (+ semibold!)   │
-   │ text-title-3        │ 20px   │ 25px    │ -0.02em    │ manjši naslovi              │
-   │ text-title-2        │ 22px   │ 28px    │ -0.02em    │ podnaslovi sekcij           │
-   │ text-title-1        │ 28px   │ 34px    │ -0.03em    │ section naslovi             │
-   │ text-large-title    │ 34px   │ 41px    │ -0.04em    │ hero (mobile)               │
-   │ text-display-sm     │ 36px   │ 40px    │ -0.04em    │ hero (tablet)               │
-   │ text-display        │ 48px   │ 1       │ -0.04em    │ hero (desktop)              │
-   │ text-display-lg     │ 60px   │ 1       │ -0.05em    │ large hero                  │
-   │ text-display-xl     │ 72px   │ 1       │ -0.05em    │ ultra display               │
-   └─────────────────────┴────────┴─────────┴────────────┴─────────────────────────────┘
+   ┌─────────────────────┬────────┬─────────┬────────────┬──────────────────────────────────────┐
+   │ Utility class       │ Size   │ L-H     │ Tracking   │ Uporaba                              │
+   ├─────────────────────┼────────┼─────────┼────────────┼──────────────────────────────────────┤
+   │ text-caption-2      │ 11px   │ 13px    │ +0.01em    │ timestamps, micro-labels, metadata   │
+   │ text-caption-1      │ 12px   │ 16px    │ +0.01em    │ labels, badges, tags, overlines      │
+   │ text-footnote       │ 13px   │ 18px    │ +0.01em    │ footnotes, disclaimers, helper text   │
+   │ text-subheadline    │ 15px   │ 20px    │  0         │ descriptions, secondary info          │
+   │ text-callout        │ 16px   │ 21px    │  0         │ base callout (= 1rem)                │
+   │ text-body           │ 17px   │ 22px    │  0         │ body text, paragraphs                │
+   │ text-headline       │ 17px   │ 22px    │ -0.01em    │ cell titles (VEDNO + font-semibold!) │
+   │ text-title-3        │ 20px   │ 25px    │ -0.02em    │ card titles, small headings           │
+   │ text-title-2        │ 22px   │ 28px    │ -0.02em    │ section subheadings                  │
+   │ text-title-1        │ 28px   │ 34px    │ -0.03em    │ section headings, page titles         │
+   │ text-large-title    │ 34px   │ 41px    │ -0.04em    │ hero mobile, landing headings         │
+   │ text-display-sm     │ 36px   │ 40px    │ -0.04em    │ hero tablet                          │
+   │ text-display        │ 48px   │ 1       │ -0.04em    │ hero desktop                         │
+   │ text-display-lg     │ 60px   │ 1       │ -0.05em    │ large hero, marketing                │
+   │ text-display-xl     │ 72px   │ 1       │ -0.05em    │ ultra display, splash screens         │
+   └─────────────────────┴────────┴─────────┴────────────┴──────────────────────────────────────┘
 
-   TRACKING PRAVILO (Apple HIG):
-   Večji font → bolj negativen letter-spacing (tighter)
-   Display (48px+)  → -0.04em do -0.05em
-   Titles (20-34px) → -0.02em do -0.04em
-   Body (15-17px)   →  0em
-   Captions (11-13px) → +0.01em (razprto za berljivost)
+   RESPONSIVE HERO HEADING PATTERN:
+   <h1 class="text-large-title sm:text-display-sm lg:text-display xl:text-display-lg font-bold">
 
-   PRIMER UPORABE:
-   <h1 class="text-display-sm sm:text-display font-bold">Hero naslov</h1>
-   <p class="text-subheadline text-warm-700">Opis pod naslovom</p>
-   <span class="text-caption-1 font-medium">Badge label</span>
-   <span class="text-caption-2 text-warm-600">Timestamp</span>
+   RESPONSIVE SECTION HEADING PATTERN:
+   <h2 class="text-title-2 md:text-title-1 font-bold text-surface-900">
+
+   RESPONSIVE BODY TEXT PATTERN:
+   <p class="text-callout md:text-body text-surface-700">
 
    ============================================================ */
 
-/* Caption 2 — 11px */
+/* Caption 2 — 11px — timestamps, micro-labels */
 @utility text-caption-2 {
   font-size: 0.6875rem;
   line-height: 0.8125rem;
   letter-spacing: 0.01em;
 }
 
-/* Caption 1 — 12px */
+/* Caption 1 — 12px — badges, tags, secondary labels */
 @utility text-caption-1 {
   font-size: 0.75rem;
   line-height: 1rem;
   letter-spacing: 0.01em;
 }
 
-/* Footnote — 13px */
+/* Footnote — 13px — footnotes, helper text, disclaimers */
 @utility text-footnote {
   font-size: 0.8125rem;
   line-height: 1.125rem;
   letter-spacing: 0.01em;
 }
 
-/* Subheadline — 15px */
+/* Subheadline — 15px — descriptions under headings, secondary info */
 @utility text-subheadline {
   font-size: 0.9375rem;
   line-height: 1.25rem;
   letter-spacing: 0;
 }
 
-/* Callout — 16px (= 1rem base) */
+/* Callout — 16px (= 1rem base) — callout text, default size */
 @utility text-callout {
   font-size: 1rem;
   line-height: 1.3125rem;
   letter-spacing: 0;
 }
 
-/* Body — 17px — Apple privzeta body velikost */
+/* Body — 17px — Apple default body text, paragraphs */
 @utility text-body {
   font-size: 1.0625rem;
   line-height: 1.375rem;
   letter-spacing: 0;
 }
 
-/* Headline — 17px — Enaka velikost kot body, AMPAK vedno semibold! */
+/* Headline — 17px — Same size as body BUT always use with font-semibold!
+   Usage: <span class="text-headline font-semibold"> */
 @utility text-headline {
   font-size: 1.0625rem;
   line-height: 1.375rem;
   letter-spacing: -0.01em;
 }
 
-/* Title 3 — 20px */
+/* Title 3 — 20px — card titles, small headings, sidebar titles */
 @utility text-title-3 {
   font-size: 1.25rem;
   line-height: 1.5625rem;
   letter-spacing: -0.02em;
 }
 
-/* Title 2 — 22px */
+/* Title 2 — 22px — section subheadings, feature card titles */
 @utility text-title-2 {
   font-size: 1.375rem;
   line-height: 1.75rem;
   letter-spacing: -0.02em;
 }
 
-/* Title 1 — 28px */
+/* Title 1 — 28px — section headings, page titles */
 @utility text-title-1 {
   font-size: 1.75rem;
   line-height: 2.125rem;
   letter-spacing: -0.03em;
 }
 
-/* Large Title — 34px — Apple HIG Large Title */
+/* Large Title — 34px — hero mobile, landing page main headings */
 @utility text-large-title {
   font-size: 2.125rem;
   line-height: 1.2;
   letter-spacing: -0.04em;
 }
 
-/* Display SM — 36px — Web extended */
+/* Display SM — 36px — hero tablet, web extended display */
 @utility text-display-sm {
   font-size: 2.25rem;
   line-height: 1.1;
   letter-spacing: -0.04em;
 }
 
-/* Display — 48px — Hero display */
+/* Display — 48px — hero desktop, primary display text */
 @utility text-display {
   font-size: 3rem;
   line-height: 1.05;
   letter-spacing: -0.04em;
 }
 
-/* Display LG — 60px */
+/* Display LG — 60px — large hero, marketing pages */
 @utility text-display-lg {
   font-size: 3.75rem;
   line-height: 1;
   letter-spacing: -0.05em;
 }
 
-/* Display XL — 72px */
+/* Display XL — 72px — ultra display, splash screens */
 @utility text-display-xl {
   font-size: 4.5rem;
   line-height: 1;
@@ -767,19 +982,116 @@ body::-webkit-scrollbar {
 
 
 /* ============================================================
-   7. Utility Classes
+   7. UTILITY CLASSES
    ============================================================ */
 
-.primaryGradient{
+/* Primary gradient text — uporabi na <span> za brand gradient effect
+   Usage: <span class="primaryGradient">Gradient Text</span> */
+.primaryGradient {
   background: linear-gradient(to right, var(--brand-400), var(--brand-600));
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
 }
 
-.primaryGradientDark{
+.primaryGradientDark {
   background: linear-gradient(to right, var(--brand-400), var(--brand-600));
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
 }
+
+
+/* ============================================================
+   8. DESIGN SYSTEM QUICK REFERENCE
+   ============================================================
+
+   COLOR USAGE CHEAT-SHEET:
+   ┌─────────────────────────┬──────────────────────────────────────┐
+   │ What                    │ Token                                │
+   ├─────────────────────────┼──────────────────────────────────────┤
+   │ Page background         │ bg-surface-100                       │
+   │ Card background         │ bg-white / dark:bg-surface-200       │
+   │ Sidebar background      │ bg-surface-50                        │
+   │ Primary text (h1)       │ text-surface-900                     │
+   │ Section heading (h2-h3) │ text-surface-800                     │
+   │ Body text               │ text-surface-700                     │
+   │ Muted text / captions   │ text-surface-600                     │
+   │ Placeholder text        │ text-surface-500                     │
+   │ Card borders            │ border-surface-300                   │
+   │ Primary button          │ bg-brand-500 hover:bg-brand-600      │
+   │ Primary link            │ text-brand-500 hover:text-brand-600  │
+   │ Input borders           │ border-surface-200                   │
+   │ Input background        │ bg-surface-100                       │
+   │ Active tab              │ text-brand-500                       │
+   │ Success state           │ text-success / bg-success-light      │
+   │ Error state             │ text-error / bg-error-light          │
+   │ Warning state           │ text-warning / bg-warning-light      │
+   └─────────────────────────┴──────────────────────────────────────┘
+
+   TYPOGRAPHY CHEAT-SHEET:
+   ┌─────────────────────────┬──────────────────────────────────────┐
+   │ Element                 │ Classes                              │
+   ├─────────────────────────┼──────────────────────────────────────┤
+   │ Hero H1 (responsive)    │ text-large-title sm:text-display-sm  │
+   │                         │ lg:text-display font-bold            │
+   │                         │ text-surface-900                     │
+   │ Section H2 (responsive) │ text-title-2 md:text-title-1         │
+   │                         │ font-bold text-surface-900           │
+   │ Card title              │ text-title-3 font-semibold           │
+   │ Body text               │ text-body text-surface-700           │
+   │ Description             │ text-subheadline text-surface-600    │
+   │ Badge / tag label       │ text-caption-1 font-medium           │
+   │ Timestamp               │ text-caption-2 text-surface-500      │
+   │ ALL CAPS overline       │ text-caption-1 uppercase             │
+   │                         │ tracking-wider font-semibold         │
+   └─────────────────────────┴──────────────────────────────────────┘
+
+   SPACING CHEAT-SHEET:
+   ┌─────────────────────────┬──────────────────────────────────────┐
+   │ Context                 │ Tailwind Classes                     │
+   ├─────────────────────────┼──────────────────────────────────────┤
+   │ Section vertical        │ py-12 md:py-16 lg:py-24              │
+   │ Section horizontal      │ px-4 md:px-6 lg:px-8                 │
+   │ Card padding            │ p-4 md:p-6                           │
+   │ Card gap (grid)         │ gap-4 md:gap-6                       │
+   │ Button SM               │ px-3 py-1.5 min-h-[32px]             │
+   │ Button MD               │ px-4 py-2 min-h-[40px]               │
+   │ Button LG               │ px-6 py-3 min-h-[48px]               │
+   │ Input field             │ px-3 py-2.5 min-h-[44px]             │
+   │ List row                │ px-4 py-3 min-h-[44px]               │
+   │ Icon + text gap         │ gap-2 (8px) ali gap-1.5 (6px)        │
+   │ Stacked sections        │ space-y-12 md:space-y-16              │
+   │ Container (standard)    │ max-w-screen-xl mx-auto               │
+   │ Container (prose)       │ max-w-prose mx-auto                   │
+   └─────────────────────────┴──────────────────────────────────────┘
+
+   SHADOW CHEAT-SHEET:
+   ┌─────────────────────────┬──────────────────────────────────────┐
+   │ Element                 │ Shadow Token                         │
+   ├─────────────────────────┼──────────────────────────────────────┤
+   │ Badge, chip, tag        │ shadow-xs                            │
+   │ Card, dropdown          │ shadow-sm                            │
+   │ Floating card, popover  │ shadow-md                            │
+   │ Modal, dialog           │ shadow-lg                            │
+   │ Hero featured card      │ shadow-xl                            │
+   │ Full-page overlay       │ shadow-2xl                           │
+   │ Dark mode cards         │ shadow-none (use bg elevation)       │
+   └─────────────────────────┴──────────────────────────────────────┘
+
+   Z-INDEX CHEAT-SHEET:
+   ┌─────────────────────────┬──────────────────────────────────────┐
+   │ Element                 │ z-index                              │
+   ├─────────────────────────┼──────────────────────────────────────┤
+   │ Background decorations  │ z-[-1] ali var(--z-below)            │
+   │ Default content         │ z-0                                  │
+   │ Elevated cards          │ z-10 ali var(--z-raised)             │
+   │ Dropdowns, popovers     │ z-20 ali var(--z-dropdown)           │
+   │ Sticky headers          │ z-30 ali var(--z-sticky)             │
+   │ Fixed navigation        │ z-40 ali var(--z-fixed)              │
+   │ Modal overlay           │ z-50 ali var(--z-overlay)            │
+   │ Modal dialog            │ z-60 ali var(--z-modal)              │
+   │ Toast notifications     │ z-70 ali var(--z-toast)              │
+   └─────────────────────────┴──────────────────────────────────────┘
+
+   ============================================================ */

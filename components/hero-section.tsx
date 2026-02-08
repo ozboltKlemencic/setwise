@@ -10,13 +10,13 @@ export default function HeroSection() {
 
   return (
     <div className="relative w-[98%] lg:max-w-6xl lg:w-[71.5rem] mx-auto">
-      {/* Side gradient fade strips — warm-100 background bleed */}
-      <div className="absolute top-0 -left-3 w-3 h-full bg-linear-to-b from-warm-100 to-transparent"></div>
-      <div className="absolute top-0 -right-3 w-3 h-full bg-linear-to-b from-warm-100 to-transparent"></div>
+      {/* Side gradient fade strips — surface-100 background bleed */}
+      <div className="absolute top-0 -left-3 w-3 h-full bg-linear-to-b from-surface-100 to-transparent"></div>
+      <div className="absolute top-0 -right-3 w-3 h-full bg-linear-to-b from-surface-100 to-transparent"></div>
 
       {/* Main hero container — brand gradient, 8pt grid padding */}
       <div className="w-full shadow-[rgba(55,50,47,0.12)] m-1 rounded-b-lg md:px-16 px-4 md:py-6 py-4 bg-linear-to-t from-brand-500/20 to-transparent mx-auto flex flex-col md:flex-row justify-between gap-y-8 md:gap-x-12 items-center relative z-10">
-        {/* Radial gradient overlays — warm-100 ambient glow */}
+        {/* Radial gradient overlays — surface-100 ambient glow */}
         <div className="absolute top-0 left-0 w-full h-full -z-10 blur-md" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243, 0.8) 0%, rgba(247, 245, 243, 0) 80%)' }} />
         <div className="absolute top-0 left-0 w-full h-full -z-10 -translate-x-[5%] -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243, 0.9) 0%, rgba(247, 245, 243, 0) 80%)' }} />
         <div className="absolute top-0 left-0 w-full h-full -z-10 translate-x-[5%] -translate-y-[20%] blur-xl" style={{ background: 'radial-gradient(circle at center, rgba(247, 245, 243, 0.8) 0%, rgba(247, 245, 243, 0) 80%)' }} />
@@ -25,8 +25,8 @@ export default function HeroSection() {
         <div className="flex md:w-1/2 w-full lg:pb-8 pt-20 md:pt-0 py-4 gap-y-5 flex-col md:items-start items-center md:text-left text-center px-2 md:px-0">
 
           {/* Badge — text-caption-1 (12px, +0.01em tracking) */}
-          <ShimmerButton className="border border-warm-300" shimmerDuration={"3s"} shimmerSize={"0.07em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"var(--brand-300)"}>
-            <span className="text-center text-caption-1 font-medium whitespace-pre-wrap text-warm-700 leading-none">
+          <ShimmerButton className="border border-surface-300" shimmerDuration={"3s"} shimmerSize={"0.07em"} background={"rgba(247, 245, 243, 1)"} shimmerColor={"var(--brand-300)"}>
+            <span className="text-center text-caption-1 font-medium whitespace-pre-wrap text-surface-700 leading-none">
               {t('badge')}
             </span>
           </ShimmerButton>
@@ -42,7 +42,7 @@ export default function HeroSection() {
 
           {/* Subtext — text-subheadline (15px, 0 tracking)
               Apple HIG: Subheadline za secondary info pod naslovom */}
-          <p className="text-subheadline text-center md:text-left text-warm-700 max-w-xl font-sans">
+          <p className="text-subheadline text-center md:text-left text-surface-700 max-w-xl font-sans">
             {t('hero.subtitle')}
           </p>
 
@@ -57,14 +57,14 @@ export default function HeroSection() {
             <div className="flex flex-col md:flex-row items-center gap-2">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="w-6 h-6 rounded-full border border-white overflow-hidden bg-warm-300">
+                  <div key={i} className="w-6 h-6 rounded-full border border-white overflow-hidden bg-surface-300">
                     <img src="/jernej.png" alt="User" className="w-full h-full object-cover grayscale" />
                   </div>
                 ))}
               </div>
               <div className="flex flex-col">
-                <span className="text-caption-1 text-warm-800 font-medium leading-none mb-1">{t('socialProof.topTracker')}</span>
-                <span className="text-caption-2 text-warm-700 leading-none">{t('socialProof.downloadedBy')}</span>
+                <span className="text-caption-1 text-surface-800 font-medium leading-none mb-1">{t('socialProof.topTracker')}</span>
+                <span className="text-caption-2 text-surface-700 leading-none">{t('socialProof.downloadedBy')}</span>
               </div>
             </div>
 
@@ -76,7 +76,7 @@ export default function HeroSection() {
                   </svg>
                 ))}
               </div>
-              <span className="text-caption-2 font-medium text-warm-700">{t('socialProof.reviews')}</span>
+              <span className="text-caption-2 font-medium text-surface-700">{t('socialProof.reviews')}</span>
             </div>
           </div>
         </div>
