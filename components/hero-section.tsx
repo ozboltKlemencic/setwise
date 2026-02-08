@@ -9,23 +9,23 @@ export default function HeroSection() {
   const t = useTranslations('HomePage')
 
   return (
-    <div className="relative w-[98%] md:w-full mx-auto">
+    <div className="relative w-full self-stretch">
 
-      <div className="absolute top-0 -left-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent" />
-      <div className="absolute top-0 -right-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent" />
+      <div className="absolute top-0 -left-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent dark:to-background/20" />
+      <div className="absolute top-0 -right-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent dark:to-background/20" />
 
-      <div className="w-full shadow-sm dark:shadow-none m-(--space-1) rounded-b-lg px-(--space-4) md:px-(--space-8) lg:px-(--space-16) py-(--space-4) md:py-(--space-6) bg-linear-to-t from-brand-500/20 dark:from-brand-500/10 to-transparent mx-auto flex flex-col md:flex-row justify-between gap-y-(--space-8) md:gap-x-(--space-12) items-center relative z-(--z-raised)">
+      <div className="w-full m-(--space-1) rounded-b-lg  md:px-(--space-8) lg:px-(--space-16) py-(--space-4) md:py-(--space-6) bg-linear-to-t from-brand-500/20  to-transparent mx-auto flex flex-col md:flex-row justify-between gap-y-(--space-8) md:gap-x-(--space-12) items-center relative z-(--z-raised)">
 
         <div
-          className="absolute inset-0 -z-1 blur-md opacity-(--opacity-hover)"
+          className="absolute inset-0 -z-1 blur-(--blur-medium) opacity-(--opacity-hover)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
         <div
-          className="absolute inset-0 -z-1 -translate-x-[5%] -translate-y-[20%] blur-xl opacity-(--opacity-muted)"
+          className="absolute inset-0 -z-1 -translate-x-[5%] -translate-y-[20%] blur-(--blur-ultra) opacity-(--opacity-muted)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
         <div
-          className="absolute inset-0 -z-1 translate-x-[5%] -translate-y-[20%] blur-xl opacity-(--opacity-hover)"
+          className="absolute inset-0 -z-1 translate-x-[5%] -translate-y-[20%] blur-(--blur-ultra) opacity-(--opacity-hover)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
 
@@ -57,17 +57,18 @@ export default function HeroSection() {
             <Image
               src="/apple.png"
               alt="App Store"
-              className="h-full w-auto object-contain dark:brightness-200 dark:invert"
+              className="h-full w-auto object-contain "
               width={120}
               height={40}
             />
             <Image
               src="/google.png"
               alt="Google Play"
-              className="h-full w-auto object-contain dark:brightness-200 dark:invert"
+              className="h-full w-auto object-contain "
               width={135}
               height={40}
             />
+           
           </div>
 
           <div className="flex flex-col items-center md:items-start gap-(--space-2) mt-(--space-3)">
@@ -108,10 +109,20 @@ export default function HeroSection() {
 
         <div className="relative h-[458px] md:w-1/2 w-full md:h-[540px] flex items-center justify-center md:justify-end perspective-1000">
           <div className="absolute top-(--space-10) md:top-(--space-12) right-(--space-2) w-[200px] md:w-[230px] transform-gpu will-change-transform z-(--z-raised)">
-            <Iphone src="/workout.png" priority />
+            <div className="dark:hidden">
+              <Iphone src="/workout.png" priority />
+            </div>
+            <div className="hidden dark:block">
+              <Iphone src="/home-dark.png" priority />
+            </div>
           </div>
           <div className="absolute top-0 md:top-(--space-8) left-(--space-2) md:left-(--space-12) w-[200px] md:w-[230px] transform-gpu will-change-transform">
-            <Iphone src="/home.png" priority />
+            <div className="dark:hidden">
+              <Iphone src="/home.png" priority />
+            </div>
+            <div className="hidden dark:block">
+              <Iphone src="/home-dark.png" priority />
+            </div>
           </div>
         </div>
       </div>

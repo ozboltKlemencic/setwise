@@ -17,20 +17,17 @@ export default function LandingPage() {
     const t = useTranslations('HomePage')
 
     return (
-        <div className="w-full min-h-screen relative bg-[#F7F5F3] overflow-x-hidden flex flex-col justify-start items-center">
-            <div className="relative flex flex-col justify-start items-center w-full">
-                {/* Navigation */}
+        <div className="w-full min-h-screen relative bg-background overflow-x-hidden flex flex-col items-center">
+            <div className="relative flex flex-col items-center w-full">
                 <Navigation />
-                {/* Main container with proper margins */}
-                <div className="md:px-8 lg:px-1 w-[94vw] md:w-6xl max-w-6xl relative flex flex-col justify-start items-start min-h-screen border-l border-r border-[#E0DEDB]/80">
+                <div className="   w-[94vw] md:w-6xl  relative flex flex-col items-center  min-h-screen border-l border-r border-border dark:border-border/40 ">
 
-                    {/* Hero Section */}
-                    <section id="hero" className="w-full">
+                    <section id="hero" className="w-auto  px-1">
                         <HeroSection />
                     </section>
 
                     {/* Bento Grid Section - How it Works */}
-                    <section id="how-it-works" className="w-full">
+                    <section id="how-it-works" className="w-full ">
                         <BentoGridSection />
                     </section>
 

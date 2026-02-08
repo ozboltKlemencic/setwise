@@ -4,11 +4,12 @@ import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { Sun, Moon } from 'lucide-react'
 
+const btnClass = "size-(--space-9) flex items-center justify-center duration-(--duration-normal) rounded-full text-[10px] md:text-xs font-medium transition-all text-muted-foreground hover:text-foreground border border-border/60 hover:border-border shadow-(--shadow-xs) backdrop-blur-(--blur-medium) bg-linear-to-tr from-surface-100 to-surface-200/80 hover:from-surface-200/80 hover:to-surface-100 hover:ring-2 hover:ring-offset-1 ring-offset-background hover:ring-border/80 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-border/80 focus:scale-95 transform-gpu will-change-transform"
+
 export default function ThemeToggler() {
-    const { theme, setTheme, resolvedTheme } = useTheme()
+    const { setTheme, resolvedTheme } = useTheme()
     const [mounted, setMounted] = useState(false)
 
-    // Prevent hydration mismatch
     useEffect(() => {
         setMounted(true)
     }, [])
@@ -17,13 +18,9 @@ export default function ThemeToggler() {
         setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
     }
 
-    // Don't render until mounted to prevent hydration mismatch
     if (!mounted) {
         return (
-            <button
-                className="size-9 flex items-center justify-center duration-200 rounded-full text-[10px] md:text-xs font-medium transition-all hover:to-neutral-100 hover:from-neutral-200/80 text-gray-600 hover:text-neutral-800 dark:text-surface-400 dark:hover:text-surface-200 border hover:border-neutral-300 border-neutral-200/60 dark:border-surface-300/40 dark:hover:border-surface-300/60 shadow-xs backdrop-blur-md bg-linear-to-tr from-neutral-100 to-neutral-200/80 dark:from-surface-200 dark:to-surface-300/60 hover:ring-2 hover:ring-offset-1 hover:ring-neutral-200/80 dark:hover:ring-surface-400/40 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-neutral-200/80 focus:scale-95 transform-gpu will-change-transform"
-                aria-label="Toggle theme"
-            >
+            <button className={btnClass} aria-label="Toggle theme">
                 <Sun className="size-3.5 md:size-4" />
             </button>
         )
@@ -34,7 +31,7 @@ export default function ThemeToggler() {
     return (
         <button
             onClick={toggleTheme}
-            className="size-9 flex items-center justify-center duration-200 rounded-full text-[10px] md:text-xs font-medium transition-all hover:to-neutral-100 hover:from-neutral-200/80 text-gray-600 hover:text-neutral-800 dark:text-surface-400 dark:hover:text-surface-200 border hover:border-neutral-300 border-neutral-200/60 dark:border-surface-300/40 dark:hover:border-surface-300/60 shadow-xs backdrop-blur-md bg-linear-to-tr from-neutral-100 to-neutral-200/80 dark:from-surface-200 dark:to-surface-300/60 hover:ring-2 hover:ring-offset-1 hover:ring-neutral-200/80 dark:hover:ring-surface-400/40 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-neutral-200/80 focus:scale-95 transform-gpu will-change-transform"
+            className={btnClass}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
             {isDark ? (
