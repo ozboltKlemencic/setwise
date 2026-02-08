@@ -85,14 +85,14 @@ export default function Navigation() {
 
     return (
         <>
-            <nav className="fixed md:backdrop-blur-none backdrop-blur-(--blur-thin) md:relative top-0 left-0 w-screen md:w-full md:max-w-6xl px-(--space-6) md:px-(--space-8) py-(--space-2\.5) md:py-(--space-3) flex justify-between border-b border-border/60 md:border-0 items-center z-(--z-overlay) overflow-hidden bg-background/60 md:bg-transparent">
+            <nav aria-label="Primary" className="fixed md:backdrop-blur-none backdrop-blur-(--blur-thin) md:relative top-0 left-0 w-screen md:w-full md:max-w-6xl px-(--space-6) md:px-(--space-8) py-(--space-2\.5) md:py-(--space-3) flex justify-between border-b border-border/60 md:border-0 items-center z-(--z-overlay) overflow-hidden bg-background/60 md:bg-transparent">
 
                 <Blur className="md:hidden top-0 right-0 w-2/5 h-full translate-y-1/3 translate-x-1/2 bg-brand-500/5" />
                 <Blur className="md:hidden top-0 left-0 w-3/5 h-full translate-x-1/3 translate-y-1/3 bg-brand-500/5" />
                 <Blur className="md:hidden top-0 left-0 w-2/5 h-full -translate-y-1/3 -translate-x-1/2 bg-brand-500/5" />
 
-                <button onClick={scrollToTop} className="flex items-center gap-(--space-2) cursor-pointer">
-                    <img src="/setwise-logo.png" alt="SetWise" className="size-(--space-6) md:size-(--space-8) rounded-sm" />
+                <button onClick={scrollToTop} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
+                    <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) md:size-(--space-8) rounded-sm" />
                     <span className="text-callout md:text-body font-bold text-foreground font-sans">SetWise</span>
                 </button>
 
@@ -123,15 +123,16 @@ export default function Navigation() {
                     className="md:hidden flex flex-col justify-center items-center size-(--space-10) gap-(--space-1)"
                     aria-label="Open menu"
                 >
-                    <span className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
-                    <span className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
-                    <span className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
+                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
+                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
+                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
                 </button>
             </nav>
 
             <AnimatePresence>
                 {isScrolled && (
                     <motion.nav
+                        aria-label="Primary"
                         initial={{ y: -100, opacity: 0, scale: 0.9 }}
                         animate={{ y: 0, opacity: 1, scale: 1 }}
                         exit={{ y: -100, opacity: 0, scale: 0.9 }}
@@ -143,8 +144,8 @@ export default function Navigation() {
                         }}
                         className="hidden md:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/70 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
                     >
-                        <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
-                            <img src="/setwise-logo.png" alt="SetWise" className="size-(--space-6) rounded-sm" />
+                        <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
+                            <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
                             <span className="text-footnote font-bold text-foreground font-sans">SetWise</span>
                         </a>
 
@@ -186,6 +187,7 @@ export default function Navigation() {
                 {isMenuOpen && (
                     <>
                         <motion.div
+                            aria-hidden="true"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -195,6 +197,9 @@ export default function Navigation() {
                         />
 
                         <motion.div
+                            role="dialog"
+                            aria-label="Navigation menu"
+                            aria-modal="true"
                             initial={{ y: "100%", opacity: 0, scale: 0.9 }}
                             animate={{ y: 0, opacity: 1, scale: 1 }}
                             exit={{ y: "100%", opacity: 0, scale: 0.9 }}
@@ -218,8 +223,8 @@ export default function Navigation() {
                                 className="mx-(--space-4) mb-(--space-4) bg-background rounded-3xl shadow-(--shadow-2xl) overflow-hidden"
                             >
                                 <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
-                                    <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} className="flex items-center gap-(--space-2) cursor-pointer">
-                                        <img src="/setwise-logo.png" alt="SetWise" className="size-(--space-6) rounded-sm" />
+                                    <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
+                                        <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
                                         <span className="text-callout font-bold text-foreground">SetWise</span>
                                     </a>
                                     <div className="flex items-center gap-(--space-1)">
@@ -233,6 +238,7 @@ export default function Navigation() {
                                             whileHover={{ scale: 1.05 }}
                                         >
                                             <svg
+                                                aria-hidden="true"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="20"
                                                 height="20"
@@ -250,7 +256,7 @@ export default function Navigation() {
                                     </div>
                                 </div>
 
-                                <div className="px-(--space-4)">
+                                <nav aria-label="Mobile" className="px-(--space-4)">
                                     {navLinks.map((link, index) => (
                                         <motion.div
                                             key={link.href}
@@ -274,11 +280,11 @@ export default function Navigation() {
                                                 {link.label}
                                             </a>
                                             {index < navLinks.length - 1 && (
-                                                <div className="h-px bg-border mx-(--space-3)"></div>
+                                                <div role="separator" className="h-px bg-border mx-(--space-3)"></div>
                                             )}
                                         </motion.div>
                                     ))}
-                                </div>
+                                </nav>
 
                                 <motion.div
                                     className="px-(--space-6) py-(--space-5)"

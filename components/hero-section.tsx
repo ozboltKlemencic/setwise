@@ -54,7 +54,7 @@ export default function HeroSection() {
             {t('hero.subtitle')}
           </p>
 
-          <div className="flex flex-row items-center gap-(--space-2) md:gap-(--space-3) h-9 md:h-11">
+          <div role="group" aria-label="Download the app" className="flex flex-row items-center gap-(--space-2) md:gap-(--space-3) h-9 md:h-11">
             <Image
               src="/apple.png"
               alt="App Store"
@@ -72,7 +72,7 @@ export default function HeroSection() {
            
           </div>
 
-          <div className="flex flex-col items-center md:items-start gap-(--space-2) mt-(--space-3)">
+          <aside aria-label="Social proof" className="flex flex-col items-center md:items-start gap-(--space-2) mt-(--space-3)">
             <div className="flex flex-col md:flex-row items-center gap-(--space-2)">
               <div className="flex -space-x-2">
                 {[1, 2, 3].map((i) => (
@@ -86,29 +86,29 @@ export default function HeroSection() {
               </div>
 
               <div className="flex flex-col">
-                <span className="text-caption-1 text-surface-800 font-medium leading-none mb-(--space-1)">
+                <p className="text-caption-1 text-surface-800 font-medium leading-none mb-(--space-1)">
                   {t('socialProof.topTracker')}
-                </span>
-                <span className="text-caption-2 text-surface-600 leading-none">
+                </p>
+                <p className="text-caption-2 text-surface-600 leading-none">
                   {t('socialProof.downloadedBy')}
-                </span>
+                </p>
               </div>
             </div>
 
             <div className="flex items-center justify-center gap-1.5">
-              <div className="flex items-center gap-(--space-1)">
+              <div role="img" aria-label="Rated 5 out of 5 stars" className="flex items-center gap-(--space-1)">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="var(--star)" xmlns="http://www.w3.org/2000/svg">
+                  <svg key={i} aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="var(--star)" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
                   </svg>
                 ))}
               </div>
-              <span className="text-caption-2 font-medium text-surface-600">{t('socialProof.reviews')}</span>
+              <p className="text-caption-2 font-medium text-surface-600">{t('socialProof.reviews')}</p>
             </div>
-          </div>
+          </aside>
         </div>
 
-        <div className="relative h-[458px] md:w-1/2 w-full md:h-[540px] flex items-center justify-center md:justify-end perspective-1000">
+        <figure aria-label="App preview screenshots" className="relative h-[458px] md:w-1/2 w-full md:h-[540px] flex items-center justify-center md:justify-end perspective-1000">
           <div className="absolute top-(--space-10) md:top-(--space-12) right-(--space-2) w-[200px] md:w-[230px] transform-gpu will-change-transform z-(--z-raised)">
             <div className="dark:hidden">
               <Iphone src="/workout.png" priority />
@@ -125,7 +125,7 @@ export default function HeroSection() {
               <Iphone src="/home-dark.png" priority />
             </div>
           </div>
-        </div>
+        </figure>
       </div>
     </div>
   )
