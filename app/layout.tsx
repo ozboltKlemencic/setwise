@@ -1,5 +1,6 @@
 import type React from "react"
 import { Inter, Instrument_Serif } from "next/font/google"
+import { ThemeProvider } from "@/components/providers/ThemeProvider"
 import "./globals.css"
 
 const inter = Inter({
@@ -25,8 +26,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="sl" className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="sl" suppressHydrationWarning className={`${inter.variable} ${instrumentSerif.variable} antialiased`}>
+      <body className="font-sans antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
