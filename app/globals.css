@@ -15,6 +15,13 @@
    ============================================================ */
 
 :root {
+  
+  .primaryGradient{
+    background: linear-gradient(to right, var(--brand-400), var(--brand-600));
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
   /* ----------------------------------------------------------
      1A. BRAND / PRIMARY — #0063FF
      Glavna brand barva. Spremeni TUKAJ za rebrand.
@@ -84,7 +91,7 @@
   --info-dark:   #1E40AF;
 
   /* Star rating */
-  --star:        #FFB800;
+  --star:        #fce412;
 
   /* ----------------------------------------------------------
      1E. SHADCN/UI COMPATIBILITY — Preslikava na design system
@@ -171,6 +178,14 @@
 
 .dark {
   /* Brand — bolj vibrantne v dark mode (Apple HIG princip) */
+  .primaryGradient{
+    background: linear-gradient(to right, var(--brand-400), var(--brand-600));
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  
+ 
   --brand-50:  #001A42;
   --brand-100: #002266;
   --brand-200: #003399;
@@ -281,6 +296,82 @@
   --font-serif: var(--font-instrument-serif);
   --font-mono: var(--font-mono);
 
+  /* ---- Apple HIG Typography Scale ---- */
+  /* Caption 2 — 11px — Najmanjše besedilo, timestamps */
+  --font-size-caption-2: 0.6875rem;
+  --font-size-caption-2--line-height: 0.8125rem;
+  --font-size-caption-2--letter-spacing: 0.01em;
+
+  /* Caption 1 — 12px — Captions, labels, badges */
+  --font-size-caption-1: 0.75rem;
+  --font-size-caption-1--line-height: 1rem;
+  --font-size-caption-1--letter-spacing: 0.01em;
+
+  /* Footnote — 13px — Opombe, meta info */
+  --font-size-footnote: 0.8125rem;
+  --font-size-footnote--line-height: 1.125rem;
+  --font-size-footnote--letter-spacing: 0.01em;
+
+  /* Subheadline — 15px — Sekundarna informacija, opisi */
+  --font-size-subheadline: 0.9375rem;
+  --font-size-subheadline--line-height: 1.25rem;
+  --font-size-subheadline--letter-spacing: 0em;
+
+  /* Callout — 16px — Callout besedilo (= base) */
+  --font-size-callout: 1rem;
+  --font-size-callout--line-height: 1.3125rem;
+  --font-size-callout--letter-spacing: 0em;
+
+  /* Body — 17px — Glavno body besedilo */
+  --font-size-body: 1.0625rem;
+  --font-size-body--line-height: 1.375rem;
+  --font-size-body--letter-spacing: 0em;
+
+  /* Headline — 17px semibold — Poudarjeno besedilo, cell titles */
+  --font-size-headline: 1.0625rem;
+  --font-size-headline--line-height: 1.375rem;
+  --font-size-headline--letter-spacing: -0.01em;
+
+  /* Title 3 — 20px — Manjši naslovi */
+  --font-size-title-3: 1.25rem;
+  --font-size-title-3--line-height: 1.5625rem;
+  --font-size-title-3--letter-spacing: -0.02em;
+
+  /* Title 2 — 22px — Podnaslovi sekcij */
+  --font-size-title-2: 1.375rem;
+  --font-size-title-2--line-height: 1.75rem;
+  --font-size-title-2--letter-spacing: -0.02em;
+
+  /* Title 1 — 28px — Section naslovi */
+  --font-size-title-1: 1.75rem;
+  --font-size-title-1--line-height: 2.125rem;
+  --font-size-title-1--letter-spacing: -0.03em;
+
+  /* Large Title — 34px — Hero naslovi, landing pages */
+  --font-size-large-title: 2.125rem;
+  --font-size-large-title--line-height: 2.5625rem;
+  --font-size-large-title--letter-spacing: -0.04em;
+
+  /* Display SM — 36px — Web extended display */
+  --font-size-display-sm: 2.25rem;
+  --font-size-display-sm--line-height: 2.5rem;
+  --font-size-display-sm--letter-spacing: -0.04em;
+
+  /* Display — 48px — Hero display text */
+  --font-size-display: 3rem;
+  --font-size-display--line-height: 1;
+  --font-size-display--letter-spacing: -0.04em;
+
+  /* Display LG — 60px — Large hero text */
+  --font-size-display-lg: 3.75rem;
+  --font-size-display-lg--line-height: 1;
+  --font-size-display-lg--letter-spacing: -0.05em;
+
+  /* Display XL — 72px — Ultra large display */
+  --font-size-display-xl: 4.5rem;
+  --font-size-display-xl--line-height: 1;
+  --font-size-display-xl--letter-spacing: -0.05em;
+
   /* ---- Brand Colors ---- */
   --color-brand-50:  var(--brand-50);
   --color-brand-100: var(--brand-100);
@@ -356,7 +447,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-s  /* ---- Radius (derived from --radius base) ---- */
+  /* ---- Radius (derived from --radius base) ---- */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -511,6 +602,158 @@ body::-webkit-scrollbar {
 
 
 /* ============================================================
+   5A. APPLE HIG TYPOGRAPHY SCALE — @utility definitions
+   ============================================================
+
+   Vir: Apple Human Interface Guidelines — Typography
+   https://developer.apple.com/design/human-interface-guidelines/typography
+   Verificirano: december 2025
+
+   Vsak @utility nastavi font-size + line-height + letter-spacing.
+   Deluje z VSEMI Tailwind varianti: sm:, md:, lg:, hover:, itd.
+
+   ┌─────────────────────┬────────┬─────────┬────────────┬─────────────────────────────┐
+   │ Utility class       │ Size   │ L-H     │ Tracking   │ Uporaba                     │
+   ├─────────────────────┼────────┼─────────┼────────────┼─────────────────────────────┤
+   │ text-caption-2      │ 11px   │ 13px    │ +0.01em    │ timestamps, meta info       │
+   │ text-caption-1      │ 12px   │ 16px    │ +0.01em    │ labels, badges, tags        │
+   │ text-footnote       │ 13px   │ 18px    │ +0.01em    │ opombe, footnotes           │
+   │ text-subheadline    │ 15px   │ 20px    │  0         │ opisi, secondary info       │
+   │ text-callout        │ 16px   │ 21px    │  0         │ base callout (= 1rem)       │
+   │ text-body           │ 17px   │ 22px    │  0         │ body text, paragrafi        │
+   │ text-headline       │ 17px   │ 22px    │ -0.01em    │ cell titles (+ semibold!)   │
+   │ text-title-3        │ 20px   │ 25px    │ -0.02em    │ manjši naslovi              │
+   │ text-title-2        │ 22px   │ 28px    │ -0.02em    │ podnaslovi sekcij           │
+   │ text-title-1        │ 28px   │ 34px    │ -0.03em    │ section naslovi             │
+   │ text-large-title    │ 34px   │ 41px    │ -0.04em    │ hero (mobile)               │
+   │ text-display-sm     │ 36px   │ 40px    │ -0.04em    │ hero (tablet)               │
+   │ text-display        │ 48px   │ 1       │ -0.04em    │ hero (desktop)              │
+   │ text-display-lg     │ 60px   │ 1       │ -0.05em    │ large hero                  │
+   │ text-display-xl     │ 72px   │ 1       │ -0.05em    │ ultra display               │
+   └─────────────────────┴────────┴─────────┴────────────┴─────────────────────────────┘
+
+   TRACKING PRAVILO (Apple HIG):
+   Večji font → bolj negativen letter-spacing (tighter)
+   Display (48px+)  → -0.04em do -0.05em
+   Titles (20-34px) → -0.02em do -0.04em
+   Body (15-17px)   →  0em
+   Captions (11-13px) → +0.01em (razprto za berljivost)
+
+   PRIMER UPORABE:
+   <h1 class="text-display-sm sm:text-display font-bold">Hero naslov</h1>
+   <p class="text-subheadline text-warm-700">Opis pod naslovom</p>
+   <span class="text-caption-1 font-medium">Badge label</span>
+   <span class="text-caption-2 text-warm-600">Timestamp</span>
+
+   ============================================================ */
+
+/* Caption 2 — 11px */
+@utility text-caption-2 {
+  font-size: 0.6875rem;
+  line-height: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+
+/* Caption 1 — 12px */
+@utility text-caption-1 {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.01em;
+}
+
+/* Footnote — 13px */
+@utility text-footnote {
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  letter-spacing: 0.01em;
+}
+
+/* Subheadline — 15px */
+@utility text-subheadline {
+  font-size: 0.9375rem;
+  line-height: 1.25rem;
+  letter-spacing: 0;
+}
+
+/* Callout — 16px (= 1rem base) */
+@utility text-callout {
+  font-size: 1rem;
+  line-height: 1.3125rem;
+  letter-spacing: 0;
+}
+
+/* Body — 17px — Apple privzeta body velikost */
+@utility text-body {
+  font-size: 1.0625rem;
+  line-height: 1.375rem;
+  letter-spacing: 0;
+}
+
+/* Headline — 17px — Enaka velikost kot body, AMPAK vedno semibold! */
+@utility text-headline {
+  font-size: 1.0625rem;
+  line-height: 1.375rem;
+  letter-spacing: -0.01em;
+}
+
+/* Title 3 — 20px */
+@utility text-title-3 {
+  font-size: 1.25rem;
+  line-height: 1.5625rem;
+  letter-spacing: -0.02em;
+}
+
+/* Title 2 — 22px */
+@utility text-title-2 {
+  font-size: 1.375rem;
+  line-height: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+/* Title 1 — 28px */
+@utility text-title-1 {
+  font-size: 1.75rem;
+  line-height: 2.125rem;
+  letter-spacing: -0.03em;
+}
+
+/* Large Title — 34px — Apple HIG Large Title */
+@utility text-large-title {
+  font-size: 2.125rem;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+/* Display SM — 36px — Web extended */
+@utility text-display-sm {
+  font-size: 2.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+/* Display — 48px — Hero display */
+@utility text-display {
+  font-size: 3rem;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+/* Display LG — 60px */
+@utility text-display-lg {
+  font-size: 3.75rem;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+/* Display XL — 72px */
+@utility text-display-xl {
+  font-size: 4.5rem;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+
+/* ============================================================
    6. BLEND & FILTER UTILITIES
    ============================================================ */
 
@@ -524,58 +767,19 @@ body::-webkit-scrollbar {
 
 
 /* ============================================================
-   7. STAR BORDER ANIMATION COMPONENT
+   7. Utility Classes
    ============================================================ */
 
-.star-border-container {
-  display: inline-block;
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
+.primaryGradient{
+  background: linear-gradient(to right, var(--brand-400), var(--brand-600));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-.border-gradient-bottom {
-  position: absolute;
-  width: 300%;
-  height: 50%;
-  opacity: 0.7;
-  bottom: -12px;
-  right: -250%;
-  border-radius: 50%;
-  animation: star-movement-bottom linear infinite alternate;
-  z-index: 0;
-}
-
-.border-gradient-top {
-  position: absolute;
-  opacity: 0.7;
-  width: 300%;
-  height: 50%;
-  top: -12px;
-  left: -250%;
-  border-radius: 50%;
-  animation: star-movement-top linear infinite alternate;
-  z-index: 0;
-}
-
-.inner-content {
-  position: relative;
-  border: 1px solid var(--warm-300);
-  background: var(--warm-900);
-  color: white;
-  font-size: 16px;
-  text-align: center;
-  padding: 16px 26px;
-  border-radius: 20px;
-  z-index: 1;
-}
-
-@keyframes star-movement-bottom {
-  0% { transform: translate(0%, 0%); opacity: 1; }
-  100% { transform: translate(-100%, 0%); opacity: 0; }
-}
-
-@keyframes star-movement-top {
-  0% { transform: translate(0%, 0%); opacity: 1; }
-  100% { transform: translate(100%, 0%); opacity: 0; }
+.primaryGradientDark{
+  background: linear-gradient(to right, var(--brand-400), var(--brand-600));
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
