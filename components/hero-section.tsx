@@ -4,6 +4,7 @@ import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 import { ShimmerButton } from "./ui/shimmer-button"
+import Blur from "./ui/Blur"
 
 export default function HeroSection() {
   const t = useTranslations('HomePage')
@@ -16,16 +17,16 @@ export default function HeroSection() {
 
       <div className="w-full m-(--space-1) rounded-b-lg  md:px-(--space-8) lg:px-(--space-16) py-(--space-4) md:py-(--space-6) bg-linear-to-t from-brand-500/20  to-transparent mx-auto flex flex-col md:flex-row justify-between gap-y-(--space-8) md:gap-x-(--space-12) items-center relative z-(--z-raised)">
 
-        <div
-          className="absolute inset-0 -z-1 blur-(--blur-medium) opacity-(--opacity-hover)"
+        <Blur
+          className="inset-0 -z-1 rounded-none opacity-(--opacity-hover)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
-        <div
-          className="absolute inset-0 -z-1 -translate-x-[5%] -translate-y-[20%] blur-(--blur-ultra) opacity-(--opacity-muted)"
+        <Blur
+          className="inset-0 -z-1 -translate-x-[5%] -translate-y-[20%] blur-(--blur-ultra) rounded-none opacity-(--opacity-muted)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
-        <div
-          className="absolute inset-0 -z-1 translate-x-[5%] -translate-y-[20%] blur-(--blur-ultra) opacity-(--opacity-hover)"
+        <Blur
+          className="inset-0 -z-1 translate-x-[5%] -translate-y-[20%] blur-(--blur-ultra) rounded-none opacity-(--opacity-hover)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
 

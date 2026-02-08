@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslations } from "next-intl"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
-import AmbientGlow from "./ui/AmbientGlow"
+import Blur from "./ui/Blur"
 import BetaSignupDialog from "./beta-signup-dialog"
 import LanguageSwitcher from "./layout/LanguageSwitcher"
 import ThemeToggler from "./layout/ThemeToggler"
@@ -87,9 +87,9 @@ export default function Navigation() {
         <>
             <nav className="fixed md:backdrop-blur-none backdrop-blur-(--blur-thin) md:relative top-0 left-0 w-screen md:w-full md:max-w-6xl px-(--space-6) md:px-(--space-8) py-(--space-2\.5) md:py-(--space-3) flex justify-between border-b border-border/60 md:border-0 items-center z-(--z-overlay) overflow-hidden bg-background/60 md:bg-transparent">
 
-                <AmbientGlow className="md:hidden top-0 right-0 w-2/5 h-full translate-y-1/3 translate-x-1/2 bg-brand-500/5" />
-                <AmbientGlow className="md:hidden top-0 left-0 w-3/5 h-full translate-x-1/3 translate-y-1/3 bg-brand-500/5" />
-                <AmbientGlow className="md:hidden top-0 left-0 w-2/5 h-full -translate-y-1/3 -translate-x-1/2 bg-brand-500/5" />
+                <Blur className="md:hidden top-0 right-0 w-2/5 h-full translate-y-1/3 translate-x-1/2 bg-brand-500/5" />
+                <Blur className="md:hidden top-0 left-0 w-3/5 h-full translate-x-1/3 translate-y-1/3 bg-brand-500/5" />
+                <Blur className="md:hidden top-0 left-0 w-2/5 h-full -translate-y-1/3 -translate-x-1/2 bg-brand-500/5" />
 
                 <button onClick={scrollToTop} className="flex items-center gap-(--space-2) cursor-pointer">
                     <img src="/setwise-logo.png" alt="SetWise" className="size-(--space-6) md:size-(--space-8) rounded-sm" />
