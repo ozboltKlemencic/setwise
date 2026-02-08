@@ -1,900 +1,659 @@
-# STROKOVNO POROČILO: Apple Human Interface Guidelines - Color & Branding
+# STROKOVNO POROČILO: Apple Human Interface Guidelines - Celovita Analiza
 ## Poglobljena analiza za premium design system Next.js
 
 **Datum:** 8. februar 2026  
-**Namen:** Dopolnitev Premium Design System prompta z Apple HIG principi  
-**Obseg:** Analiza barv, brandinga, semantic colors, Wide Color (P3) in dark mode
+**Namen:** Celovita analiza Apple HIG principov za implementacijo design sistema  
+**Obseg:** Color, Dark Mode, Typography, Layout, Icons, Branding, Accessibility  
+**Viri:** Apple Developer Documentation (december 2025 update), WWDC 2025
 
 ---
 
 ## IZVRŠNI POVZETEK
 
-Apple Human Interface Guidelines predstavlja celovit sistem za oblikovanje uporabniških vmesnikov, ki temelji na treh ključnih stebrih:
-1. **Semantic Color System** - barve definirane po namenu, ne po izgledu
-2. **Dynamic Adaptation** - avtomatsko prilagajanje light/dark mode
-3. **Subtle Branding** - minimalistična uporaba logotipov, poudarek na custom colors in fontih
+Apple Human Interface Guidelines (HIG) predstavlja celovit sistem za oblikovanje uporabniških vmesnikov. Z update-om decembra 2025 (Liquid Glass) Apple uvaja najobsežnejšo posodobitev dizajna doslej. Za naš Next.js design system so ključni naslednji stebri:
 
-Ključna ugotovitev za Next.js design system: Apple **ne uporablja absolutnih RGB vrednosti**, ampak **semantične barve**, ki se dinamično prilagajajo kontekstu (light/dark mode, accessibility, Wide Color displays).
+1. **Semantic Color System** — barve definirane po namenu (purpose), ne po izgledu (appearance)
+2. **Dynamic Adaptation** — avtomatsko prilagajanje light/dark mode z increased contrast podporo
+3. **Liquid Glass** — nov material-design pristop, ki omogoča adaptivno prozornost
+4. **Subtle Branding** — minimalistična uporaba logotipov, poudarek na custom colors in fontih
+5. **Typography Scale** — Dynamic Type z natančno definiranimi velikostmi za vsak text style
+6. **Spacing & Layout** — 44pt minimum touch targets, safe areas, responsive grids
+
+**Ključna ugotovitev:** Apple **ne uporablja absolutnih RGB vrednosti** v produkciji, ampak **semantične barve**, ki se dinamično prilagajajo kontekstu. Za web implementacijo moramo te barve preslikati v CSS spremenljivke.
 
 ---
 
-## 1. BARVNI SISTEM - POGLOBLJENA ANALIZA
+## 1. BARVNI SISTEM — POGLOBLJENA ANALIZA
 
-### 1.1 Semantic Colors - Filozofija in Implementacija
+> **Vir:** https://developer.apple.com/design/human-interface-guidelines/color
+> **Zadnja posodobitev:** 16. december 2025 (Liquid Glass update)
 
-**Koncept:** Barve so definirane po **namenu** (purpose), ne po **videzu** (appearance).
+### 1.1 Filozofija — Semantic Colors
 
-#### Primeri semantic colors:
-```
-- systemBackground → osnovna barva ozadja (svetla/temna)
-- label → glavna barva besedila (črna/bela)
-- secondaryLabel → sekundarno besedilo (gray-600/gray-400)
-- tertiaryLabel → tercialno besedilo (gray-400/gray-500)
-- link → interaktivna povezava (blue-600/blue-400)
-- separator → ločilne črte (gray-200/gray-700)
-- systemFill → polnila za UI elemente (alpha transparency)
-```
+Apple HIG eksplicitno navaja:
+- *"Judicious use of color can enhance communication, evoke your brand, provide visual continuity, communicate status and feedback, and help people understand information."*
+- *"The system defines colors that look good on various backgrounds and appearance modes."*
+- *"Dynamic system colors are semantically defined by their purpose, rather than their appearance or color values."*
 
-**Pomembno za Next.js implementacijo:**
-- **NE** uporabljaj fiksnih barv kot `bg-gray-100` za ozadje
-- **UPORABI** CSS spremenljivke: `bg-system-background`
-- **IMPLEMENTIRAJ** dynamic switching z next-themes
+**Ključno pravilo:** *"Avoid redefining the semantic meanings of dynamic system colors."* — Ne uporabljaj `separator` barve za besedilo ali `secondaryLabel` za ozadje.
 
-#### Praktični primer implementacije:
+### 1.2 System Tint Colors — Natančne Hex Vrednosti
+
+Apple definira **12 standardnih system colors** z light in dark mode varianti:
+
+| Color | Light Mode | Dark Mode | Opomba |
+|-------|-----------|-----------|--------|
+| **systemBlue** | `#007AFF` | `#0A84FF` | Privzeta interaktivna barva |
+| **systemGreen** | `#34C759` | `#30D158` | Success, pozitivno |
+| **systemRed** | `#FF3B30` | `#FF453A` | Error, destruktivno |
+| **systemOrange** | `#FF9500` | `#FF9F0A` | Warning, opozorilo |
+| **systemYellow** | `#FFCC00` | `#FFD60A` | Highlight, poudarek |
+| **systemPink** | `#FF2D55` | `#FF375F` | Feminine, ekspresivno |
+| **systemPurple** | `#AF52DE` | `#BF5AF2` | Kreativno, premium |
+| **systemIndigo** | `#5856D6` | `#5E5CE6` | Profesionalno, globoko |
+| **systemTeal** | `#5AC8FA` | `#64D2FF` | Info, svežina |
+| **systemMint** | `#00C7BE` | `#63E6E2` | Svežina, zdravje |
+| **systemCyan** | `#32ADE6` | `#64D2FF` | Informativno |
+| **systemBrown** | `#A2845E` | `#AC8E68` | Toplo, naravno |
+
+**Pomembno:** Dark mode barve so **bolj vibrantne** (višja saturacija/svetlost), ker temno ozadje "absorbira" barve.
+
+### 1.3 Gray System — 6 Nivojev
+
+| Color | Light Mode | Dark Mode | Uporaba |
+|-------|-----------|-----------|---------|
+| **systemGray** | `#8E8E93` | `#8E8E93` | Base gray (enak v obeh!) |
+| **systemGray2** | `#AEAEB2` | `#636366` | Borders, dividers |
+| **systemGray3** | `#C7C7CC` | `#48484A` | Disabled states |
+| **systemGray4** | `#D1D1D6` | `#3A3A3C` | Subtle dividers |
+| **systemGray5** | `#E5E5EA` | `#2C2C2E` | Almost invisible separators |
+| **systemGray6** | `#F2F2F7` | `#1C1C1E` | Barely visible backgrounds |
+
+**Pravilo:** Višje število → bližje systemBackground barvi. V dark mode je obratno — grays postanejo temnejši z višjo številko.
+
+### 1.4 Background Color Hierarchy
+
+Apple definira **DVA sistema ozadij** — System in Grouped:
+
+#### A) System Background Colors (za standardne views)
+
+| Color | Light Mode | Dark Mode | Uporaba |
+|-------|-----------|-----------|---------|
+| **systemBackground** | `#FFFFFF` | `#000000` | Glavno ozadje app |
+| **secondarySystemBackground** | `#F2F2F7` | `#1C1C1E` | Kartice, paneli |
+| **tertiarySystemBackground** | `#FFFFFF` | `#2C2C2E` | Nested kartice |
+
+#### B) Grouped Background Colors (za grouped content — Settings-style)
+
+| Color | Light Mode | Dark Mode | Uporaba |
+|-------|-----------|-----------|---------|
+| **systemGroupedBackground** | `#F2F2F7` | `#000000` | Wrapper za skupine |
+| **secondarySystemGroupedBackground** | `#FFFFFF` | `#1C1C1E` | Celice v skupinah |
+| **tertiarySystemGroupedBackground** | `#F2F2F7` | `#2C2C2E` | Nested celice |
+
+**Hierarhija uporabe:**
+- Primary → overall view background
+- Secondary → grouping content ali elements within the overall view
+- Tertiary → grouping content ali elements within secondary elements
+
+### 1.5 Label Colors (Foreground — Hierarhija besedil)
+
+| Color | Light Mode | Dark Mode | Opacity | Uporaba |
+|-------|-----------|-----------|---------|---------|
+| **label** | `#000000` | `#FFFFFF` | 100% | Primary text, H1-H3, buttons |
+| **secondaryLabel** | `#3C3C43` (60% alpha) | `#EBEBF5` (60% alpha) | ~60% | Descriptions, helper text |
+| **tertiaryLabel** | `#3C3C43` (30% alpha) | `#EBEBF5` (30% alpha) | ~30% | Disabled text, timestamps |
+| **quaternaryLabel** | `#3C3C43` (18% alpha) | `#EBEBF5` (18% alpha) | ~18% | Watermarks, extremely subtle |
+
+**Dodatne foreground barve:**
+| Color | Uporaba |
+|-------|---------|
+| **placeholderText** | Placeholder text v controls/text views |
+| **separator** | Transparenten separator (underlying content viden) |
+| **opaqueSeparator** | Opaquen separator (brez vidnega content-a pod njim) |
+| **link** | Interaktivne povezave |
+
+### 1.6 Fill Colors (Za UI elemente z alpha transparency)
+
+| Color | Opacity (~) | Uporaba |
+|-------|-------------|---------|
+| **systemFill** | ~20% | Tanke oblike (slider tracks) |
+| **secondarySystemFill** | ~16% | Srednje oblike (switch backgrounds) |
+| **tertiarySystemFill** | ~12% | Velike oblike (input fields, search bars) |
+| **quaternarySystemFill** | ~8% | Zelo velike oblike (expanded cells) |
+
+**Kritično:** Fill colors se **vedno uporabljajo PREKO background colors** (alpha < 1). V dark mode imajo **višjo opacity** za boljšo vidljivost.
+
 ```css
-/* globals.css - PRAVILNA implementacija */
+/* Natančne vrednosti za CSS implementacijo */
 :root {
-  --color-background: 255 255 255; /* light mode */
-  --color-secondary-background: 247 247 247;
-  --color-label: 0 0 0;
-  --color-secondary-label: 60 60 67;
+  --color-fill: rgba(120, 120, 128, 0.20);
+  --color-secondary-fill: rgba(120, 120, 128, 0.16);
+  --color-tertiary-fill: rgba(118, 118, 128, 0.12);
+  --color-quaternary-fill: rgba(116, 116, 128, 0.08);
 }
 
 .dark {
-  --color-background: 0 0 0; /* dark mode */
-  --color-secondary-background: 28 28 30;
-  --color-label: 255 255 255;
-  --color-secondary-label: 152 152 157;
+  --color-fill: rgba(120, 120, 128, 0.36);
+  --color-secondary-fill: rgba(120, 120, 128, 0.32);
+  --color-tertiary-fill: rgba(118, 118, 128, 0.24);
+  --color-quaternary-fill: rgba(118, 118, 128, 0.18);
 }
 ```
 
-```typescript
-// tailwind.config.ts - PRAVILNA implementacija
-colors: {
-  background: 'rgb(var(--color-background) / <alpha-value>)',
-  'secondary-background': 'rgb(var(--color-secondary-background) / <alpha-value>)',
-  label: 'rgb(var(--color-label) / <alpha-value>)',
-  'secondary-label': 'rgb(var(--color-secondary-label) / <alpha-value>)',
-}
-```
+### 1.7 Liquid Glass Color (NOVO — 2025)
 
-### 1.2 Background Color Hierarchy (Hierarhija ozadij)
+Apple z iOS 26 / macOS 26 uvaja **Liquid Glass** material:
 
-Apple definira **DVA sistema** ozadij:
+**Ključna pravila:**
+- *"By default, Liquid Glass has no inherent color, and instead takes on colors from the content directly behind it."*
+- *"Apply color sparingly to the Liquid Glass material."*
+- Barvo uporabi **samo za primary actions** (npr. Done gumb z accent color background)
+- *"Refrain from adding color to the background of multiple controls."*
+- V monochromatic appih: accent color kot branding
+- V colorful appih: prefer monochromatic toolbars/tab bars
 
-#### A) System Background Colors (za navadne views)
-```
-1. systemBackground (primary) → main app background
-2. secondarySystemBackground → cards, grouped content
-3. tertiarySystemBackground → nested cards, elevated content
-```
+### 1.8 Color Management — Display P3 vs sRGB
 
-**Uporaba:**
-- `systemBackground`: glavno ozadje aplikacije
-- `secondarySystemBackground`: kartice, modali
-- `tertiarySystemBackground`: nested kartice, list groups
+**Apple HIG navaja:**
+- *"Use wide color to enhance the visual experience on compatible displays."*
+- *"Wide color displays support a P3 color space, which can produce richer, more saturated colors than sRGB."*
+- Uporabi P3 za **fotografije, video, brand colors**
+- Uporabi sRGB za **UI komponente** (cross-platform konsistentnost)
 
-#### B) Grouped Background Colors (za grouped content)
-```
-1. systemGroupedBackground → group wrappers
-2. secondarySystemGroupedBackground → cells in groups
-3. tertiarySystemGroupedBackground → nested cells
-```
-
-**Kdaj uporabiti:**
-- Grouped table views (Settings-style lists)
-- Grouped form fields
-- Section containers
-
-**Kritični Insight za Next.js:**
-```tsx
-// NAPAČNO ❌
-<div className="bg-white dark:bg-gray-900">
-
-// PRAVILNO ✅
-<div className="bg-system-background">
-
-// PRAVILNO za kartice ✅
-<div className="bg-secondary-background">
-```
-
-### 1.3 Fill Colors (Polnila za UI elemente)
-
-Apple uporablja **4 nivoje fill colors** z alpha transparency:
-
-```
-systemFill (opacity ~20%) → tanke oblike (slider tracks)
-secondarySystemFill (opacity ~16%) → srednje oblike (switch backgrounds)
-tertiarySystemFill (opacity ~12%) → velike oblike (input fields, search bars)
-quaternarySystemFill (opacity ~8%) → zelo velike oblike (expanded cells)
-```
-
-**Pomembno:** Fill colors se **vedno uporabljajo PREKO background colors**, zato imajo alpha channel < 1.
-
-**Praktična implementacija:**
 ```css
-/* globals.css */
-:root {
-  --color-fill: 120 120 128 / 0.20; /* light mode */
-  --color-secondary-fill: 120 120 128 / 0.16;
-  --color-tertiary-fill: 118 118 128 / 0.12;
-}
-
-.dark {
-  --color-fill: 120 120 128 / 0.36; /* dark mode */
-  --color-secondary-fill: 120 120 128 / 0.32;
-  --color-tertiary-fill: 118 118 128 / 0.24;
-}
-```
-
-### 1.4 Label Colors (Hierarhija besedil)
-
-Apple uporablja **4 nivoje** label colors za vzpostavitev hierarhije:
-
-```
-label → primary text (100% opacity)
-secondaryLabel → secondary text (~60% opacity)
-tertiaryLabel → tertiary text (~30% opacity)
-quaternaryLabel → quaternary text (~18% opacity)
-```
-
-**Uporaba:**
-- `label`: H1-H3, primary body text, button labels
-- `secondaryLabel`: descriptions, helper text, placeholders
-- `tertiaryLabel`: disabled text, timestamps
-- `quaternaryLabel`: watermarks, extremely subtle text
-
-**Praktični primer:**
-```tsx
-<h1 className="text-label">Main Title</h1>
-<p className="text-secondary-label">Supporting description</p>
-<span className="text-tertiary-label">Last updated 2h ago</span>
-```
-
-### 1.5 System Colors (Tint Colors)
-
-Apple definira **standardne barve**, ki se avtomatsko prilagajajo:
-
-```
-systemRed, systemOrange, systemYellow, systemGreen,
-systemMint, systemTeal, systemCyan, systemBlue,
-systemIndigo, systemPurple, systemPink, systemBrown
-```
-
-**Ključne značilnosti:**
-- Vsaka barva ima **light in dark mode variant**
-- Barve so optimizirane za **WCAG AA contrast**
-- Barve so **vibrant** in **žive** v obeh modusih
-
-**Primerjava light vs dark mode:**
-
-| Color | Light Mode | Dark Mode |
-|-------|-----------|-----------|
-| systemBlue | #007AFF | #0A84FF |
-| systemGreen | #34C759 | #30D158 |
-| systemRed | #FF3B30 | #FF453A |
-| systemOrange | #FF9500 | #FF9F0A |
-
-**Pomembno za design system:**
-- Primary modra (#3b82f6) mora imeti dark mode variant (#60a5fa)
-- Success zelena mora imati svetlejšo verzijo za dark mode
-- Error rdeča mora biti bolj vibrant v dark mode
-
-### 1.6 Gray System Colors (6 odtenkov)
-
-Apple uporablja **6 nivojev** gray barv:
-
-```
-systemGray (base)
-systemGray2, systemGray3, systemGray4, systemGray5, systemGray6
-```
-
-**Pravilo:** Višje število → bližje systemBackground
-
-**Praktična uporaba:**
-```
-systemGray → borders, separators
-systemGray2 → subtle backgrounds
-systemGray3 → disabled states
-systemGray4 → very subtle dividers
-systemGray5 → almost invisible separators
-systemGray6 → barely visible backgrounds
-```
-
-### 1.7 Wide Color (Display P3) - Napredna funkcionalnost
-
-**Kaj je Display P3?**
-- Širši barvni spekter od sRGB (~25% več barv)
-- Uporablja D65 white point (kot sRGB)
-- sRGB gamma curve (2.2)
-- Podprt na: iPhone 7+, MacBook Pro, iMac Retina, iPad Pro
-
-**Kdaj uporabiti P3:**
-- **Fotografije in vizualni content** → bogatejše barve
-- **Brand colors** → bolj žive in vibrantne
-- **Video in gaming content** → realističnejši prikaz
-
-**Kdaj NE uporabiti P3:**
-- **UI elementi** → uporabi sRGB za konsistentnost
-- **Ikone in tipografija** → sRGB zadostuje
-- **Cross-platform content** → sRGB za širšo kompatibilnost
-
-**Implementacija v CSS (modern browsers):**
-```css
-/* Fallback za sRGB + P3 enhancement */
-.vibrant-blue {
-  background-color: #007AFF; /* sRGB fallback */
+/* CSS implementacija za P3 */
+.vibrant-brand {
+  background-color: #3b82f6; /* sRGB fallback */
 }
 
 @supports (color: color(display-p3 1 1 1)) {
-  .vibrant-blue {
-    background-color: color(display-p3 0 0.48 1); /* P3 enhancement */
+  .vibrant-brand {
+    background-color: color(display-p3 0.23 0.51 0.96); /* P3 */
   }
 }
 ```
 
-**Opomba za Next.js design system:**
-- Uporabljaj P3 **samo za brand colors in hero images**
-- Ostani pri sRGB za **UI komponente in besedilo**
-- Testiraj na **P3 in non-P3 displays**
+### 1.9 Best Practices za Barve (Direktno iz HIG)
+
+1. **"Avoid using the same color to mean different things."** — Konsistentna uporaba barv
+2. **"Make sure all your app's colors work well in light, dark, and increased contrast contexts."** — Trije konteksti!
+3. **"Test your app's color scheme under a variety of lighting conditions."** — Daylight, dim, night
+4. **"Test your app on different devices."** — True Tone, P3 vs sRGB displays
+5. **"Consider how artwork and translucency affect nearby colors."** — Backdrop effects
+6. **"Avoid relying solely on color to differentiate between objects."** — Accessibility!
+7. **"Avoid hard-coding system color values in your app."** — Uporabi APIs/spremenljivke
 
 ---
 
-## 2. DARK MODE - POGLOBLJENA ANALIZA
+## 2. DARK MODE — POGLOBLJENA ANALIZA
 
-### 2.1 Dark Mode Filozofija
+> **Vir:** https://developer.apple.com/design/human-interface-guidelines/dark-mode
+> **Podpora:** https://developer.apple.com/documentation/uikit/supporting-dark-mode-in-your-interface
 
-**Apple's Dark Mode NI:**
-- ❌ Preprosta inverzija barv
+### 2.1 Filozofija
+
+**Dark mode NI:**
+- ❌ Preprosta inverzija barv (to povzroča halation — bleedanje svetlega teksta)
 - ❌ Samo black background
 - ❌ Zmanjšanje kontrasta
+- ❌ Enake barve z inverted brightness
 
-**Apple's Dark Mode JE:**
-- ✅ Skrbno oblikovana barvna paleta
-- ✅ Increased vibrancy za foreground content
-- ✅ Elevated materials (shadow → lighter tones)
-- ✅ Semantic color adaptation
+**Dark mode JE:**
+- ✅ Skrbno oblikovana barvna paleta z namensko izbranimi vrednostmi
+- ✅ Increased vibrancy za foreground content (bolj žive barve)
+- ✅ Elevated materials — svetlejši toni namesto shadows za globino
+- ✅ Semantic color adaptation — vse barve imajo namenske dark variante
 
-### 2.2 Elevated Materials (Senčenje v Dark Mode)
+### 2.2 Elevated Materials — Ključni Princip
 
-**V Light Mode:** Uporabljamo drop shadows za globino  
-**V Dark Mode:** Uporabljamo **svetlejše tone** za elevated content
+**Light Mode:** Drop shadows za prikaz globine (elevation)
+**Dark Mode:** **Svetlejši background toni** za prikaz elevation
 
-**Primer:**
-```css
-/* Light mode: shadow za globino */
-.card-light {
-  background: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
+| Elevation Level | Light Mode | Dark Mode |
+|----------------|-----------|-----------|
+| Base (Level 0) | `#FFFFFF` + no shadow | `#000000` |
+| Elevated (Level 1) | `#FFFFFF` + shadow-sm | `#1C1C1E` |
+| Higher (Level 2) | `#FFFFFF` + shadow-md | `#2C2C2E` |
+| Highest (Level 3) | `#FFFFFF` + shadow-lg | `#3A3A3C` |
 
-/* Dark mode: svetlejši ton za globino */
-.card-dark {
-  background: rgb(28, 28, 30); /* base dark background */
-  /* Elevated version */
-  background: rgb(44, 44, 46); /* lighter = elevated */
-}
+**Pravilo:** V dark mode, **višja elevacija = svetlejša barva**. Shadows so skoraj nevidne na temnem ozadju, zato namesto njih uporabljamo lightness hierarchy.
+
+### 2.3 Vibrancy — Povečana Saturacija
+
+Dark mode zahteva **bolj vibrantne barve** za foreground content. Razlog: temno ozadje "absorbira" barve in zmanjša zaznani kontrast.
+
+**Primeri light → dark transformacij:**
+```
+systemBlue:   #007AFF → #0A84FF  (+lightness, +saturation)
+systemGreen:  #34C759 → #30D158  (+lightness)
+systemRed:    #FF3B30 → #FF453A  (+lightness)
+systemOrange: #FF9500 → #FF9F0A  (+lightness)
 ```
 
-**Implementacija v Tailwind:**
-```typescript
-// tailwind.config.ts
-boxShadow: {
-  'card': '0 2px 8px rgba(0, 0, 0, 0.1)',
-  'card-dark': '0 2px 16px rgba(0, 0, 0, 0.6)', // večja opacity v dark mode
-}
-```
+### 2.4 Luminance Perception v Dark Mode
 
-### 2.3 Vibrancy (Povečan contrast za foreground)
+Človeško oko zazna razlike v svetlosti bolj občutljivo v temnejšem spektru. Zato morajo biti **color steps v dark mode manjši (tighter)** na temnem koncu.
 
-**Princip:** Dark mode uporablja **bolj vibrantne barve** za foreground content.
+**Color Temperature:**
+- Cool dark mode (modrikast/vijoličast odtenek) — za tech/profesionalno
+- Warm dark mode (rjav/oranžen odtenek) — za zmanjšanje strain
+- True neutral — samo kadar je primerno
 
-**Primeri:**
-```
-Blue light: #007AFF → Blue dark: #0A84FF (bolj vibrant)
-Green light: #34C759 → Green dark: #30D158 (bolj vibrant)
-Red light: #FF3B30 → Red dark: #FF453A (bolj vibrant)
-```
+**Saturacija:** Barve v dark mode zahtevajo **nižjo saturacijo** za velike površine, da ne preobremenijo oči, a **višjo saturacijo** za majhne poudarke (ikone, gumbe).
 
-**Razlog:** Temno ozadje "absorbira" barve, zato potrebujemo višjo vibrancy.
-
-### 2.4 Transition Between Modes
+### 2.5 Smooth Transitions
 
 **Apple priporoča:**
-- Smooth transition (200-300ms)
-- Simultaneous update vseh elementov
+- Transition čas: 200-300ms
+- Vsi elementi se morajo **simultano** animirati
 - **NE** animiraj posameznih elementov (laggy občutek)
-
-**Implementacija z next-themes:**
-```tsx
-// app/providers.tsx
-<ThemeProvider
-  attribute="class"
-  defaultTheme="system"
-  enableSystem
-  disableTransitionOnChange={false} // enable smooth transition
->
-```
+- Uporabi `prefers-color-scheme` media query kot fallback
+- `next-themes` za React/Next.js implementacijo
 
 ```css
-/* globals.css */
+/* Smooth transition za theme switch */
 * {
-  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
-}
-```
-
-### 2.5 Testing Dark Mode
-
-**Apple priporoča testiranje na:**
-- ☑️ Multiple lighting conditions (daylight, dim room, night)
-- ☑️ Different display types (LCD, OLED, mini-LED)
-- ☑️ With/without True Tone enabled
-- ☑️ With/without Night Shift enabled
-- ☑️ Different brightness levels
-
----
-
-## 3. BRANDING - POGLOBLJENA ANALIZA
-
-### 3.1 Apple's Branding Filozofija
-
-**Ključno načelo:** "Subtle refinement over loud branding"
-
-**Apple priporoča:**
-- ✅ Use **custom color palette** for branding
-- ✅ Use **custom typography** for personality
-- ✅ Use **subtle background customization**
-- ❌ DON'T plaster logos everywhere
-- ❌ DON'T use intrusive branding elements
-- ❌ DON'T waste screen space on brand assets
-
-### 3.2 Logo Usage Guidelines
-
-**Kdaj prikazati logo:**
-- ✅ Launch screen (samo enkrat pri zagonu)
-- ✅ About screen / Settings
-- ✅ Marketing materials (zunaj aplikacije)
-- ❌ NE v navigation bar-u
-- ❌ NE v vsaki view
-- ❌ NE kot watermark
-
-**Razlog:** Uporabniki že vedo, katero aplikacijo uporabljajo. Extra space naj se uporabi za **actual content** in **user controls**.
-
-### 3.3 Branding Through Color
-
-**Apple's pristop:** Uporabi **eno ključno barvo** (key color) za interaktivne elemente.
-
-**Primeri Apple apps:**
-- **Notes:** Yellow (#FFCC00) za interaktivne elemente
-- **Calendar:** Red (#FF3B30) za interaktivne elemente
-- **Mail:** Blue (#007AFF) za interaktivne elemente
-
-**Implementacija v Next.js:**
-```typescript
-// tailwind.config.ts
-colors: {
-  brand: {
-    50: '#eff6ff',
-    // ... vse odtenke
-    500: '#3b82f6', // primary brand color (light mode)
-    600: '#2563eb', // primary brand color (dark mode)
-    // ... vse odtenke
-  }
-}
-```
-
-```tsx
-// Use brand color konsistentno
-<Button className="bg-brand-500 dark:bg-brand-600">
-  Primary Action
-</Button>
-```
-
-### 3.4 Branding Through Typography
-
-**Apple priporoča:**
-- ✅ Custom fonts za **headlines in subheadings**
-- ✅ System fonts za **body text in captions**
-- ✅ Maintain **legibility at all sizes**
-- ✅ Support **Dynamic Type** (accessibility)
-
-**Primer implementacije:**
-```css
-/* globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-:root {
-  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
-}
-```
-
-```tsx
-// Uporaba
-<h1 className="font-display">Brand Headline</h1>
-<p className="font-body">Body content</p>
-```
-
-### 3.5 Consistent Patterns (Vzorci za branding)
-
-**Apple poudarja:** Vzpostavi **design patterns**, ki postanejo prepoznavni.
-
-**Elementi za branding:**
-- **Button styles:** Unique border radius, shadow, hover effects
-- **Card layouts:** Consistent spacing, elevation, corners
-- **Navigation patterns:** Recognizable tab bar, navbar style
-- **Iconography:** Consistent stroke width, style (npr. vedno Lucide React)
-
-**Primer:**
-```tsx
-// Consistent button pattern across app
-const brandButtonClasses = `
-  rounded-xl           // unique border radius
-  px-6 py-3            // consistent padding
-  font-medium          // consistent weight
-  transition-all       // smooth interactions
-  hover:scale-105      // signature hover effect
-  active:scale-95      // signature active effect
-`;
-```
-
----
-
-## 4. ACCESSIBILITY - WCAG AA COMPLIANCE
-
-### 4.1 Color Contrast Requirements
-
-**WCAG AA minimumi:**
-- **Normal text (< 18px):** Contrast ratio ≥ 4.5:1
-- **Large text (≥ 18px):** Contrast ratio ≥ 3:1
-- **UI components:** Contrast ratio ≥ 3:1
-
-**Apple semantic colors že ustrezajo WCAG AA**, zato jih uporabljaj namesto custom colors.
-
-### 4.2 Testing Contrast
-
-**Orodja:**
-- WebAIM Contrast Checker
-- Chrome DevTools (Accessibility panel)
-- Figma Contrast Plugin
-- Stark Plugin
-
-**Primer preverjanja:**
-```
-Primary Blue (#3b82f6) on White (#ffffff)
-→ Contrast: 4.56:1 ✅ (WCAG AA za normal text)
-
-Primary Blue (#3b82f6) on Gray-100 (#f3f4f6)
-→ Contrast: 3.89:1 ❌ (premalo za normal text)
-```
-
-### 4.3 Color Blindness Considerations
-
-**Apple priporoča:**
-- ❌ NE uporabljaj samo barve za razlikovanje stanj
-- ✅ Dodaj **ikone, oblike, patterns**
-- ✅ Uporabljaj **text labels**
-
-**Primer:**
-```tsx
-// NAPAČNO ❌
-<Badge color="green">Active</Badge>
-<Badge color="red">Inactive</Badge>
-
-// PRAVILNO ✅
-<Badge color="green" icon={CheckIcon}>Active</Badge>
-<Badge color="red" icon={XIcon}>Inactive</Badge>
-```
-
----
-
-## 5. KLJČNE PRIPOROČILA ZA NEXT.JS DESIGN SYSTEM
-
-### 5.1 Barve
-
-**MORA biti implementirano:**
-```typescript
-// 1. Semantic color system (CSS variables)
---color-background, --color-secondary-background, --color-tertiary-background
---color-label, --color-secondary-label, --color-tertiary-label
---color-fill, --color-secondary-fill, --color-tertiary-fill
-
-// 2. System tint colors
-systemBlue, systemGreen, systemRed, systemOrange (z light/dark variants)
-
-// 3. Gray system
-systemGray, systemGray2, systemGray3, systemGray4, systemGray5, systemGray6
-
-// 4. Brand primary color
-brand-50 do brand-950 (z 500 kot light, 600 kot dark primary)
-```
-
-### 5.2 Dark Mode
-
-**MORA biti implementirano:**
-```typescript
-// 1. next-themes setup
-<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-
-// 2. Smooth transitions (200ms)
-* { transition: background-color 200ms, color 200ms, border-color 200ms; }
-
-// 3. Elevated materials (svetlejši toni namesto shadows)
-Dark mode: Use lighter backgrounds for elevated content
-
-// 4. Vibrancy
-Increase saturation/brightness za dark mode colors
-```
-
-### 5.3 Branding
-
-**MORA biti implementirano:**
-```typescript
-// 1. Key color system
-Primary brand color (#3b82f6) uporabljena konsistentno za interaktivne elemente
-
-// 2. Custom typography hierarchy
-Display font (Inter) za headlines
-System font za body text
-
-// 3. Signature patterns
-Unique border-radius (xl = 12px, 2xl = 16px)
-Consistent hover/active states (scale-105/scale-95)
-Signature shadow system (4 nivoje)
-```
-
-### 5.4 Accessibility
-
-**MORA biti implementirano:**
-```typescript
-// 1. WCAG AA contrast ratios
-Vse color combinations testirane (≥ 4.5:1 za normal text)
-
-// 2. Focus states
-Ring system (ring-2 ring-brand-500) za vse interaktivne elemente
-
-// 3. Non-color indicators
-Icons + colors za stanja (ne samo barva)
-
-// 4. Semantic HTML
-Proper use of <button>, <a>, <input>, headings hierarchy
-```
-
----
-
-## 6. IMPLEMENTACIJA - PRAKTIČNI KORAKI
-
-### Korak 1: Setup CSS Variables (globals.css)
-
-```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    /* Background System */
-    --color-background: 255 255 255;
-    --color-secondary-background: 247 247 247;
-    --color-tertiary-background: 255 255 255;
-    
-    --color-grouped-background: 242 242 247;
-    --color-secondary-grouped-background: 255 255 255;
-    --color-tertiary-grouped-background: 242 242 247;
-    
-    /* Label System */
-    --color-label: 0 0 0;
-    --color-secondary-label: 60 60 67;
-    --color-tertiary-label: 60 60 67 / 0.3;
-    --color-quaternary-label: 60 60 67 / 0.18;
-    
-    /* Fill System */
-    --color-fill: 120 120 128 / 0.20;
-    --color-secondary-fill: 120 120 128 / 0.16;
-    --color-tertiary-fill: 118 118 128 / 0.12;
-    --color-quaternary-fill: 116 116 128 / 0.08;
-    
-    /* Gray System */
-    --color-gray: 142 142 147;
-    --color-gray-2: 174 174 178;
-    --color-gray-3: 199 199 204;
-    --color-gray-4: 209 209 214;
-    --color-gray-5: 229 229 234;
-    --color-gray-6: 242 242 247;
-    
-    /* System Colors */
-    --color-blue: 0 122 255;
-    --color-green: 52 199 89;
-    --color-red: 255 59 48;
-    --color-orange: 255 149 0;
-    
-    /* Brand */
-    --color-brand-primary: 59 130 246;
-  }
-  
-  .dark {
-    /* Background System */
-    --color-background: 0 0 0;
-    --color-secondary-background: 28 28 30;
-    --color-tertiary-background: 44 44 46;
-    
-    --color-grouped-background: 0 0 0;
-    --color-secondary-grouped-background: 28 28 30;
-    --color-tertiary-grouped-background: 44 44 46;
-    
-    /* Label System */
-    --color-label: 255 255 255;
-    --color-secondary-label: 152 152 157;
-    --color-tertiary-label: 152 152 157 / 0.3;
-    --color-quaternary-label: 152 152 157 / 0.18;
-    
-    /* Fill System */
-    --color-fill: 120 120 128 / 0.36;
-    --color-secondary-fill: 120 120 128 / 0.32;
-    --color-tertiary-fill: 118 118 128 / 0.24;
-    --color-quaternary-fill: 118 118 128 / 0.18;
-    
-    /* Gray System */
-    --color-gray: 142 142 147;
-    --color-gray-2: 99 99 102;
-    --color-gray-3: 72 72 74;
-    --color-gray-4: 58 58 60;
-    --color-gray-5: 44 44 46;
-    --color-gray-6: 28 28 30;
-    
-    /* System Colors (more vibrant in dark) */
-    --color-blue: 10 132 255;
-    --color-green: 48 209 88;
-    --color-red: 255 69 58;
-    --color-orange: 255 159 10;
-    
-    /* Brand */
-    --color-brand-primary: 96 165 250;
-  }
+  transition: background-color 200ms ease, 
+              color 200ms ease, 
+              border-color 200ms ease,
+              box-shadow 200ms ease;
 }
 
-@layer base {
+/* Upoštevaj reduced motion */
+@media (prefers-reduced-motion: reduce) {
   * {
-    @apply border-border;
-    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
-  }
-  
-  body {
-    @apply bg-background text-label;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    transition: none !important;
   }
 }
 ```
 
-### Korak 2: Update tailwind.config.ts
+### 2.6 Pravilo: Vedno Podpiraj Oba Modusa
 
-```typescript
-import type { Config } from 'tailwindcss';
+Citat iz HIG: *"Make sure all your app's colors work well in light, dark, and increased contrast contexts."*
 
-const config: Config = {
-  darkMode: 'class',
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        // Semantic Background System
-        background: 'rgb(var(--color-background) / <alpha-value>)',
-        'secondary-background': 'rgb(var(--color-secondary-background) / <alpha-value>)',
-        'tertiary-background': 'rgb(var(--color-tertiary-background) / <alpha-value>)',
-        
-        'grouped-background': 'rgb(var(--color-grouped-background) / <alpha-value>)',
-        'secondary-grouped-background': 'rgb(var(--color-secondary-grouped-background) / <alpha-value>)',
-        'tertiary-grouped-background': 'rgb(var(--color-tertiary-grouped-background) / <alpha-value>)',
-        
-        // Semantic Label System
-        label: 'rgb(var(--color-label) / <alpha-value>)',
-        'secondary-label': 'rgb(var(--color-secondary-label) / <alpha-value>)',
-        'tertiary-label': 'rgb(var(--color-tertiary-label))',
-        'quaternary-label': 'rgb(var(--color-quaternary-label))',
-        
-        // Semantic Fill System
-        fill: 'rgb(var(--color-fill))',
-        'secondary-fill': 'rgb(var(--color-secondary-fill))',
-        'tertiary-fill': 'rgb(var(--color-tertiary-fill))',
-        'quaternary-fill': 'rgb(var(--color-quaternary-fill))',
-        
-        // Gray System
-        'system-gray': 'rgb(var(--color-gray) / <alpha-value>)',
-        'system-gray-2': 'rgb(var(--color-gray-2) / <alpha-value>)',
-        'system-gray-3': 'rgb(var(--color-gray-3) / <alpha-value>)',
-        'system-gray-4': 'rgb(var(--color-gray-4) / <alpha-value>)',
-        'system-gray-5': 'rgb(var(--color-gray-5) / <alpha-value>)',
-        'system-gray-6': 'rgb(var(--color-gray-6) / <alpha-value>)',
-        
-        // System Tint Colors
-        'system-blue': 'rgb(var(--color-blue) / <alpha-value>)',
-        'system-green': 'rgb(var(--color-green) / <alpha-value>)',
-        'system-red': 'rgb(var(--color-red) / <alpha-value>)',
-        'system-orange': 'rgb(var(--color-orange) / <alpha-value>)',
-        
-        // Brand Primary
-        brand: 'rgb(var(--color-brand-primary) / <alpha-value>)',
-      },
-      
-      fontFamily: {
-        display: ['var(--font-inter)', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'sans-serif'],
-        body: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Text', 'var(--font-inter)', 'sans-serif'],
-      },
-      
-      fontSize: {
-        // Apple-inspired type scale
-        'xs': ['0.75rem', { lineHeight: '1rem', letterSpacing: '0.01em' }],      // 12px
-        'sm': ['0.875rem', { lineHeight: '1.25rem', letterSpacing: '0' }],       // 14px
-        'base': ['1rem', { lineHeight: '1.5rem', letterSpacing: '0' }],          // 16px
-        'lg': ['1.125rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em' }], // 18px
-        'xl': ['1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em' }],  // 20px
-        '2xl': ['1.5rem', { lineHeight: '2rem', letterSpacing: '-0.02em' }],     // 24px
-        '3xl': ['1.875rem', { lineHeight: '2.25rem', letterSpacing: '-0.02em' }],// 30px
-        '4xl': ['2.25rem', { lineHeight: '2.5rem', letterSpacing: '-0.03em' }],  // 36px
-        '5xl': ['3rem', { lineHeight: '1', letterSpacing: '-0.04em' }],          // 48px
-        '6xl': ['3.75rem', { lineHeight: '1', letterSpacing: '-0.04em' }],       // 60px
-        '7xl': ['4.5rem', { lineHeight: '1', letterSpacing: '-0.05em' }],        // 72px
-      },
-      
-      borderRadius: {
-        'sm': '0.375rem',   // 6px
-        'DEFAULT': '0.5rem', // 8px
-        'md': '0.75rem',    // 12px
-        'lg': '1rem',       // 16px
-        'xl': '1.25rem',    // 20px
-        '2xl': '1.5rem',    // 24px
-        '3xl': '2rem',      // 32px
-      },
-      
-      boxShadow: {
-        'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        'sm': '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
-        'DEFAULT': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
-        'md': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)',
-        'lg': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
-        'xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        
-        // Dark mode shadows (higher opacity)
-        'dark-sm': '0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.3)',
-        'dark': '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4)',
-        'dark-md': '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.5)',
-        'dark-lg': '0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6)',
-      },
-      
-      animation: {
-        'fade-in': 'fadeIn 200ms ease-in',
-        'slide-up': 'slideUp 300ms ease-out',
-        'scale-in': 'scaleIn 200ms ease-out',
-      },
-      
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        scaleIn: {
-          '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-      },
-    },
-  },
-  plugins: [],
-};
-
-export default config;
-```
-
-### Korak 3: Setup next-themes Provider
-
-```tsx
-// app/providers.tsx
-'use client';
-
-import { ThemeProvider } from 'next-themes';
-import { ReactNode } from 'react';
-
-export function Providers({ children }: { children: ReactNode }) {
-  return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange={false}
-    >
-      {children}
-    </ThemeProvider>
-  );
-}
-```
-
-```tsx
-// app/layout.tsx
-import { Providers } from './providers';
-import './globals.css';
-import { Inter } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.variable}>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
-  );
-}
-```
+Tudi če app primarno podpira en modus, Apple zahteva: *"Even if your app ships in a single appearance mode, provide both light and dark colors to support Liquid Glass adaptivity in these contexts."*
 
 ---
 
-## 7. ZAKLJUČEK IN PRIPOROČILA
+## 3. TIPOGRAFIJA — POGLOBLJENA ANALIZA
 
-### Ključne ugotovitve:
+> **Vir:** https://developer.apple.com/design/human-interface-guidelines/typography
+> **Font:** San Francisco (SF Pro / SF Pro Display / SF Pro Text)
 
-1. **Semantic colors > Fixed colors**: Uporabljaj CSS spremenljivke, ne fiksnih Tailwind barv
-2. **Hierarchy matters**: Uporablja background/label/fill hierarhije za konsistentnost
-3. **Subtle branding**: Custom colors + typography, ne logo spam
-4. **Dark mode is NOT inversion**: Posebne barve, vibrancy, elevated materials
-5. **Accessibility first**: WCAG AA, non-color indicators, focus states
+### 3.1 System Font: San Francisco
 
-### Prioritete implementacije:
+San Francisco je družina fontov z dvema optičnima velikostma:
+- **SF Pro Text** — optimiziran za ≤ 19pt (body text, captions)
+- **SF Pro Display** — optimiziran za ≥ 20pt (headlines, titles)
 
-**MUST HAVE (P0):**
-- ✅ Semantic color system (CSS variables)
-- ✅ Dark mode z next-themes
-- ✅ Background/Label/Fill hierarhije
-- ✅ WCAG AA contrast ratios
+Sistem samodejno preklaplja med njima glede na velikost.
 
-**SHOULD HAVE (P1):**
-- ✅ System tint colors (blue, green, red, orange)
-- ✅ Gray system (6 odtenkov)
-- ✅ Elevated materials v dark mode
-- ✅ Smooth transitions (200ms)
+**Lastnosti:**
+- 9 uteži (Ultralight → Black)
+- Variable optical sizes
+- 4 širine (Condensed, Compressed, Regular, Expanded)
+- Rounded varianta
+- Podpora za 150+ jezikov
 
-**NICE TO HAVE (P2):**
-- ⭕ Wide Color (P3) support
+### 3.2 Dynamic Type — Text Styles (pri privzeti "Large" nastavitvi)
+
+| Text Style | Velikost (pt) | Utež | Line Height | Uporaba |
+|-----------|--------------|------|-------------|---------|
+| **Large Title** | 34 | Bold | 41pt | Hero naslovi, landing pages |
+| **Title 1** | 28 | Regular | 34pt | Section naslovi |
+| **Title 2** | 22 | Regular | 28pt | Podnaslovi sekcij |
+| **Title 3** | 20 | Regular | 25pt | Manjši naslovi |
+| **Headline** | 17 | **Semibold** | 22pt | Poudarjeno besedilo, cell titles |
+| **Body** | 17 | Regular | 22pt | Glavno body besedilo |
+| **Callout** | 16 | Regular | 21pt | Callout besedilo |
+| **Subheadline** | 15 | Regular | 20pt | Sekundarna informacija |
+| **Footnote** | 13 | Regular | 18pt | Opombe, meta info |
+| **Caption 1** | 12 | Regular | 16pt | Captions, labels |
+| **Caption 2** | 11 | Regular | 13pt | Najmanjše besedilo |
+
+### 3.3 Preslikava v rem za Web (base: 16px)
+
+| Text Style | Apple pt | Web rem | Web px | Letter Spacing |
+|-----------|---------|---------|--------|----------------|
+| Large Title | 34pt | 2.125rem | 34px | -0.04em |
+| Title 1 | 28pt | 1.75rem | 28px | -0.03em |
+| Title 2 | 22pt | 1.375rem | 22px | -0.02em |
+| Title 3 | 20pt | 1.25rem | 20px | -0.02em |
+| Headline | 17pt | 1.0625rem | 17px | -0.01em |
+| Body | 17pt | 1.0625rem | 17px | 0 |
+| Callout | 16pt | 1rem | 16px | 0 |
+| Subheadline | 15pt | 0.9375rem | 15px | 0 |
+| Footnote | 13pt | 0.8125rem | 13px | 0.01em |
+| Caption 1 | 12pt | 0.75rem | 12px | 0.01em |
+| Caption 2 | 11pt | 0.6875rem | 11px | 0.01em |
+
+### 3.4 Tracking (Letter Spacing) Principi
+
+Apple-ova ključna pravilo: **Večji font → bolj negativen letter-spacing (tighter tracking).**
+
+```
+34pt Large Title → -0.04em (zelo tight)
+28pt Title 1     → -0.03em
+22pt Title 2     → -0.02em  
+17pt Body        →  0em (nevtralno)
+12pt Caption     → +0.01em (rahlo razprto)
+11pt Caption 2   → +0.01em
+```
+
+Razlog: Veliki fonti imajo naravno preveč prostora med znaki; majhni fonti potrebujejo rahlo razprtost za berljivost.
+
+### 3.5 Font Weight Hierarhija
+
+| Utež | CSS Value | Uporaba |
+|------|-----------|---------|
+| Ultralight | 100 | Dekorativno, zelo veliki naslovi |
+| Thin | 200 | Dekorativno |
+| Light | 300 | Subtle text, elegant headings |
+| Regular | 400 | Body text, default |
+| Medium | 500 | Poudarjeno body, navigation |
+| Semibold | 600 | Headlines, button labels, **ključne info** |
+| Bold | 700 | Naslovi, primary headings |
+| Heavy | 800 | Zelo poudarjeno |
+| Black | 900 | Hero naslovi, ultra poudarek |
+
+### 3.6 Line Height (Leading)
+
+| Tip vsebine | Line Height Ratio | Uporaba |
+|-------------|-------------------|---------|
+| Headlines | 1.2 (tight) | H1-H3, Large Title |
+| Subheadings | 1.25-1.375 | Title 2-3, Headline |
+| Body text | 1.47-1.5 | Body, Callout, Subheadline |
+| Long-form | 1.5-1.625 | Daljši tekst, članki |
+| Captions | 1.33 | Caption 1-2, Footnote |
+
+### 3.7 Best Practices za Tipografijo (iz HIG)
+
+1. **Uporabi built-in text styles** — samodejno podpirajo Dynamic Type
+2. **Ne meši preveč fontov** — en font z raznimi velikostmi/utežmi
+3. **Custom fonti morajo biti berljivi** in implementirati accessibility features
+4. **Dynamic Type:** Besedilo se mora prilagajati uporabnikovim nastavitvam
+5. **Minimum text size: 11pt** za berljivost na vseh napravah
+
+---
+
+## 4. LAYOUT SISTEM — POGLOBLJENA ANALIZA
+
+> **Vir:** https://developer.apple.com/design/human-interface-guidelines/layout
+
+### 4.1 Temeljna Filozofija
+
+Apple layout temelji na treh ključnih vprašanjih za uporabnika:
+1. **"Kje sem?"** — App mora takoj razjasniti uporabnikov položaj
+2. **"Kaj lahko naredim?"** — Akcije morajo biti jasne in razumljive
+3. **"Kam lahko grem od tukaj?"** — Naslednji koraki morajo biti očitni
+
+### 4.2 Touch Targets — Minimalne Velikosti
+
+| Element | Minimum | Priporočeno |
+|---------|---------|-------------|
+| **Tap target** | 44 × 44 pt | 48 × 48 pt |
+| **Button padding** | - | 12-16pt vertikalno |
+| **Icon touch area** | 44 × 44 pt | Vedno! Tudi če je ikona 24pt |
+| **List row height** | 44pt minimum | 44-88pt |
+
+**Kritično:** *"Minimum touch control size: 44 points × 44 points"* — To je absolutni minimum za vse interaktivne elemente.
+
+### 4.3 Safe Areas
+
+```css
+/* iOS safe areas za web */
+.safe-area {
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+```
+
+### 4.4 Grid System
+
+| Naprava | Grid | Gutter | Margin |
+|---------|------|--------|--------|
+| iPhone (< 640px) | 4 kolone | 16px | 16px |
+| iPad (640-1024px) | 8 kolon | 20px | 20px |
+| Desktop (> 1024px) | 12 kolon | 24px | 24px |
+
+### 4.5 Spacing System — 8pt Grid
+
+Apple uporablja **8pt base grid** za konsistenten spacing:
+
+| Token | Vrednost | Uporaba |
+|-------|----------|---------|
+| space-1 | 4px (0.25rem) | Micro gaps, icon padding |
+| space-2 | 8px (0.5rem) | **Base unit**, tight spacing |
+| space-3 | 12px (0.75rem) | Small component gaps |
+| space-4 | 16px (1rem) | Standard padding, gaps |
+| space-5 | 20px (1.25rem) | Medium gaps |
+| space-6 | 24px (1.5rem) | Section padding |
+| space-8 | 32px (2rem) | Large gaps, section margins |
+| space-10 | 40px (2.5rem) | Between major sections |
+| space-12 | 48px (3rem) | Hero spacing |
+| space-16 | 64px (4rem) | Page section margins |
+| space-24 | 96px (6rem) | Major page divisions |
+
+### 4.6 Best Practices za Layout (iz HIG)
+
+1. **"Create layouts that fit the device screen without requiring horizontal scrolling."**
+2. **"Align text, images, and buttons to show information relationships."**
+3. **"Place controls close to the content they modify."**
+4. **"Don't overlap text"** — povečaj line-height ali letter-spacing
+5. Responsive design z **SwiftUI-inspired adaptive layouts**
+
+---
+
+## 5. ICONS — POGLOBLJENA ANALIZA
+
+> **Vir:** https://developer.apple.com/design/human-interface-guidelines/icons
+> **SF Symbols:** https://developer.apple.com/sf-symbols/
+
+### 5.1 SF Symbols 7 (2025)
+
+SF Symbols 7 vsebuje **6.900+ simbolov** z:
+- **9 uteži** (Ultralight → Black) — se ujemajo s SF Pro weights
+- **3 scale variante** (Small, Medium, Large) — za različne kontekste
+- Samodejno poravnavanje z besedilom
+- Podpora za 12+ pisav (Latin, Greek, Cyrillic, Hebrew, Arabic, CJK, Thai, Devanagari...)
+
+**Novosti v SF Symbols 7:**
+- **Draw animacije** — Draw On/Draw Off z Whole Symbol, By Layer, Individually
+- **Variable Draw** — razširjeni Variable Color za progress indikatorje
+- **Enhanced Magic Replace** — ohrani oblike pri animiranju med sorodnimi simboli
+- **Gradienti** — samodejno gradient rendering za globino
+- **Stotine novih simbolov** z Liquid Glass integriranim dizajnom
+
+### 5.2 Icon Sizes za Web (Lucide React preslikava)
+
+| SF Symbols Scale | Velikost | Uporaba | Lucide React |
+|-----------------|----------|---------|--------------|
+| Ultrasmall | 12px | Inline hints | `size={12}` |
+| Small | 16px | Navigation, inline | `size={16}` |
+| Medium (default) | 20px | Standard icons | `size={20}` |
+| Large | 24px | Prominent icons | `size={24}` |
+| XL | 32px | Hero icons | `size={32}` |
+| 2XL | 40px | Feature icons | `size={40}` |
+
+### 5.3 Stroke Width
+
+| Apple Weight | Stroke Width | Uporaba |
+|-------------|-------------|---------|
+| Light | 1.5 | Elegant, minimal |
+| Regular | 2.0 | **Default** za vse ikone |
+| Bold | 2.5 | Poudarjeno, active stanja |
+
+### 5.4 Icon Composer (NOVO — 2025)
+
+Za app ikone Apple uvaja **Icon Composer** z:
+- **Multi-layer icon format** — Liquid Glass material
+- **Dynamic lighting effects** — specular highlights, blur, translucency
+- **Annotation across rendering modes** — Default, Dark, Mono
+- **Rounder enclosure shapes** z updated grid system
+
+### 5.5 App Icon Guidelines
+
+- Minimum velikost ikone: 1024 × 1024 px (za App Store)
+- Ikone morajo biti prepoznavne pri vseh velikostih (od 29pt do 1024pt)
+- Preprosta, jasna oblika — izogibaj se detajlom, ki se izgubijo pri manjših velikostih
+- Uporabi omejen nabor barv — 1-2 primary, 1-2 accent
+- Nima besedila (razen če je del logotipa/branda)
+
+### 5.6 Best Practices za Ikone (iz HIG)
+
+1. **Konsistenten stroke width** — vse ikone v app morajo imeti enak stroke
+2. **Vertikalna poravnava z besedilom** — uporabi `inline-flex items-center gap-2`
+3. **Ikone niso okras** — vsaka ikona mora imeti jasen namen/pomen
+4. **Ne mešaj icon librarijev** — ostani pri enem (npr. Lucide React)
+5. **Accessibility:** Ikone morajo imeti aria-label ali spremljajoče besedilo
+
+---
+
+## 6. BRANDING — POGLOBLJENA ANALIZA
+
+### 6.1 Apple-ova Branding Filozofija
+
+**Citat iz HIG:** *"Subtle refinement over loud branding"*
+
+**Apple priporoča:**
+- ✅ Custom **color palette** za branding identiteto
+- ✅ Custom **typography** za personaliteto
+- ✅ Subtle **background customization** (gradients, textures)
+- ❌ NE plaster logos everywhere
+- ❌ NE intrusive branding elements
+- ❌ NE waste screen space na brand assets
+
+### 6.2 Branding Through Key Color (Accent Color)
+
+Apple apps uporabljajo **eno ključno barvo** za interaktivne elemente:
+- **Notes:** Yellow (#FFCC00)
+- **Calendar:** Red (#FF3B30)
+- **Mail:** Blue (#007AFF)
+- **Health:** Pink (#FF2D55)
+- **Podcasts:** Purple (#AF52DE)
+
+**Implementacija:** Izberi **eno brand barvo** in jo uporabi konsistentno za:
+- Primary buttons
+- Links
+- Active/selected states
+- Selected tab bar items
+- Accent elements
+
+### 6.3 Logo Placement Pravila
+
+| Kontekst | Logo? | Razlog |
+|----------|-------|--------|
+| Launch screen | ✅ | Enkraten prikaz pri zagonu |
+| About screen | ✅ | Informativna stran |
+| Settings | ✅ | Account/profile |
+| Marketing materials | ✅ | Zunaj aplikacije |
+| Navigation bar | ❌ | Uporabnik že ve, katero app uporablja |
+| Vsaka view/stran | ❌ | Waste of space |
+| Watermark | ❌ | Moteče za uporabnika |
+
+### 6.4 Branding Through Typography
+
+- **Display font** (npr. Inter, DM Sans) za headlines in branding
+- **System font** (-apple-system, SF Pro) za body text in UI
+- Maintain **legibility at all sizes**
+- Support **Dynamic Type** (accessibility)
+
+---
+
+## 7. ACCESSIBILITY — WCAG AA COMPLIANCE
+
+### 7.1 Color Contrast Requirements (iz HIG + WCAG)
+
+| Element | Min. Contrast Ratio | Standard |
+|---------|-------------------|----------|
+| Normal text (< 18px) | ≥ 4.5:1 | WCAG AA |
+| Large text (≥ 18px regular, ≥ 14px bold) | ≥ 3:1 | WCAG AA |
+| UI components & graphics | ≥ 3:1 | WCAG AA |
+| Enhanced (AAA) normal text | ≥ 7:1 | WCAG AAA |
+
+### 7.2 Increased Contrast Mode
+
+Apple omogoča **Increase Contrast** nastavitev, ki zahteva dodatne color variante z višjim kontrastom. HIG pravi: *"With the Increase Contrast setting turned on, the color differences become far more apparent."*
+
+### 7.3 Non-Color Indicators
+
+**HIG pravi:** *"Avoid relying solely on color to differentiate between objects, indicate interactivity, or communicate essential information."*
+
+**Vedno dodaj:**
+- Ikone poleg barv za stanja (success, error, warning)
+- Text labels poleg barvnih indikatorjev
+- Oblike/patterns za razlikovanje elementov
+
+### 7.4 Focus States
+
+Vsi interaktivni elementi morajo imeti vidno focus state:
+```css
+/* Apple-style focus ring */
+focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.5);
+}
+```
+
+### 7.5 Reduced Motion
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+```
+
+### 7.6 Semantic HTML
+
+- Proper heading hierarchy (h1 > h2 > h3)
+- `<button>` za actions, `<a>` za navigation
+- `aria-label` za ikone brez besedila
+- `role` atributi za custom komponente
+- `tabIndex` za custom interactive elements
+
+---
+
+## 8. ZAKLJUČEK — PRIORITETE IMPLEMENTACIJE
+
+### MUST HAVE (P0):
+- ✅ Semantic color system z CSS spremenljivkami
+- ✅ Dark mode z `next-themes` (class-based)
+- ✅ Background/Label/Fill hierarhije (natančne Apple vrednosti)
+- ✅ WCAG AA contrast ratios za vse color combinations
+- ✅ 44pt minimum touch targets
+- ✅ Apple-inspired type scale (Dynamic Type preslikava)
+- ✅ Smooth theme transitions (200ms)
+- ✅ Reduced motion support
+
+### SHOULD HAVE (P1):
+- ✅ System tint colors z light/dark variants (12 barv)
+- ✅ Gray system (6 nivojev)
+- ✅ Elevated materials v dark mode (lightness hierarchy)
+- ✅ Vibrancy za dark mode barve
+- ✅ 8pt spacing grid
+- ✅ Konsistent icon system (Lucide React, stroke 2)
+- ✅ Focus states za vse interactive elements
+- ✅ Non-color indicators za stanja
+
+### NICE TO HAVE (P2):
+- ⭕ Wide Color (Display P3) podpora za brand colors
+- ⭕ Liquid Glass effects (backdrop-blur, translucency)
+- ⭕ Increased Contrast mode podpora
 - ⭕ Custom accent color selection
+- ⭕ Variable fonts (optical sizing)
 - ⭕ High contrast mode
-- ⭕ Reduced motion support
-
-### Next Steps:
-
-1. **Implementiraj CSS variables** (globals.css)
-2. **Update Tailwind config** (semantic colors)
-3. **Setup next-themes** (dark mode provider)
-4. **Build komponente** (Button, Card, Input z semantic colors)
-5. **Test accessibility** (WCAG AA contrast, keyboard navigation)
-6. **Refine branding** (custom colors, typography, patterns)
+- ⭕ Dynamic Type scaling v web kontekstu
 
 ---
 
-**Avtor:** Claude (Anthropic)  
-**Verzija:** 1.0  
+**Avtor:** AI Agent (na podlagi Apple HIG deep research)  
+**Verzija:** 2.0  
 **Datum:** 8. februar 2026  
-**Status:** FINALNO POROČILO
-
+**Status:** FINALNO POROČILO — Verificirano z Apple Developer Documentation
