@@ -249,5 +249,20 @@
         "title": "Page not found",
         "description": "The page you're looking for doesn't exist.",
         "backHome": "Back to home"
+    },
+    "FeaturesPage": {
+        "title": "Features",
+        "description": "Discover all the powerful features SetWise offers to help you reach your fitness goals."
+    },
+    "ToolsPage": {
+        "title": "Tools",
+        "description": "Useful tools and calculators to optimize your training and nutrition."
+    },
+    "ComingSoon": {
+        "title": "Coming Soon",
+        "subtitle": "We're working on it",
+        "description": "This feature is currently under development. Stay tuned for updates!",
+        "backHome": "Back to home",
+        "particleText": "SOON"
     }
 }

@@ -45,6 +45,14 @@ export const routing = defineRouting({
             sl: '/cenik',
             en: '/pricing',
         },
+        '/features': {
+            sl: '/funkcije',
+            en: '/features',
+        },
+        '/tools': {
+            sl: '/orodja',
+            en: '/tools',
+        },
     },
 });
 

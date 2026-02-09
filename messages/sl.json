@@ -249,5 +249,20 @@
         "title": "Stran ni najdena",
         "description": "Stran, ki jo iščeš, ne obstaja.",
         "backHome": "Nazaj na domov"
+    },
+    "FeaturesPage": {
+        "title": "Funkcije",
+        "description": "Odkrij vse močne funkcije, ki jih SetWise ponuja za dosego tvojih ciljev."
+    },
+    "ToolsPage": {
+        "title": "Orodja",
+        "description": "Uporabna orodja in kalkulatorji za optimizacijo tvojega treninga in prehrane."
+    },
+    "ComingSoon": {
+        "title": "Prihaja kmalu",
+        "subtitle": "Delamo na tem",
+        "description": "Ta funkcija je trenutno v razvoju. Spremljajte novosti!",
+        "backHome": "Nazaj domov",
+        "particleText": "KMALU"
     }
 }
