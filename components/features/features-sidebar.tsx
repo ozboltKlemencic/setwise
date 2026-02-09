@@ -26,9 +26,9 @@ const sidebarItems = [
         href: "/features",
         icon: Zap,
         subItems: [
-            { title: "Live Session", href: "/features" },
-            { title: "Log Manually", href: "/features" },
-            { title: "Rest Timer", href: "/features" },
+            { title: "Live Session", href: "#live-session" },
+            { title: "Log Manually", href: "#log-manually" },
+            { title: "Rest Timer", href: "#rest-timer" },
         ]
     },
     {
@@ -36,9 +36,9 @@ const sidebarItems = [
         href: "/features",
         icon: LayoutTemplate,
         subItems: [
-            { title: "My Templates", href: "/features" },
-            { title: "Public Programs", href: "/features" },
-            { title: "Create New", href: "/features" },
+            { title: "My Templates", href: "#my-templates" },
+            { title: "Public Programs", href: "#public-programs" },
+            { title: "Create New", href: "#create-new" },
         ]
     },
     {
@@ -46,9 +46,9 @@ const sidebarItems = [
         href: "/features",
         icon: History,
         subItems: [
-            { title: "Workout Log", href: "/features" },
-            { title: "Personal Records", href: "/features" },
-            { title: "Calendar", href: "/features" },
+            { title: "Workout Log", href: "#workout-log" },
+            { title: "Personal Records", href: "#personal-records" },
+            { title: "Calendar", href: "#calendar" },
         ]
     },
     {
@@ -56,9 +56,9 @@ const sidebarItems = [
         href: "/features",
         icon: TrendingUp,
         subItems: [
-            { title: "Volume Charts", href: "/features" },
-            { title: "Strength Curves", href: "/features" },
-            { title: "Muscle Heatmap", href: "/features" },
+            { title: "Volume Charts", href: "#volume-charts" },
+            { title: "Strength Curves", href: "#strength-curves" },
+            { title: "Muscle Heatmap", href: "#muscle-heatmap" },
         ]
     },
     {
@@ -66,9 +66,9 @@ const sidebarItems = [
         href: "/features",
         icon: Gauge,
         subItems: [
-            { title: "Exertion Scale", href: "/features" },
-            { title: "Rep Quality", href: "/features" },
-            { title: "Advanced Metrics", href: "/features" },
+            { title: "Exertion Scale", href: "#exertion-scale" },
+            { title: "Rep Quality", href: "#rep-quality" },
+            { title: "Advanced Metrics", href: "#advanced-metrics" },
         ]
     },
     {
@@ -76,9 +76,9 @@ const sidebarItems = [
         href: "/features",
         icon: Flame,
         subItems: [
-            { title: "Drop Sets", href: "/features" },
-            { title: "Supersets", href: "/features" },
-            { title: "Cluster Sets", href: "/features" },
+            { title: "Drop Sets", href: "#drop-sets" },
+            { title: "Supersets", href: "#supersets" },
+            { title: "Cluster Sets", href: "#cluster-sets" },
         ]
     },
     {
@@ -86,8 +86,8 @@ const sidebarItems = [
         href: "/features",
         icon: GitCompare,
         subItems: [
-            { title: "vs Last Session", href: "/features" },
-            { title: "vs Best All-Time", href: "/features" },
+            { title: "vs Last Session", href: "#vs-last-session" },
+            { title: "vs Best All-Time", href: "#vs-best-all-time" },
         ]
     },
     {
@@ -95,9 +95,9 @@ const sidebarItems = [
         href: "/features",
         icon: WifiOff,
         subItems: [
-            { title: "Offline Mode", href: "/features" },
-            { title: "Cloud Sync", href: "/features" },
-            { title: "Data Export", href: "/features" },
+            { title: "Offline Mode", href: "#offline-mode" },
+            { title: "Cloud Sync", href: "#cloud-sync" },
+            { title: "Data Export", href: "#data-export" },
         ]
     },
 ]
@@ -106,6 +106,14 @@ export function FeaturesSidebar() {
     const pathname = usePathname()
     // State to track open accordions. Defaulting to the first item open.
     const [openItems, setOpenItems] = useState<string[]>(["Quick logging"])
+    const [activeHash, setActiveHash] = useState("")
+
+    // Set initial active hash on mount
+    useState(() => {
+        if (typeof window !== "undefined") {
+            setActiveHash(window.location.hash)
+        }
+    })
 
     const toggleItem = (title: string) => {
         setOpenItems(prev =>
@@ -115,6 +123,10 @@ export function FeaturesSidebar() {
         )
     }
 
+    const handleLinkClick = (href: string) => {
+        setActiveHash(href)
+    }
+
     return (
         <aside className="w-full md:w-64 shrink-0 border-r border-border/40 bg-background dark:bg-surface-100/10 md:min-h-[calc(100vh-4rem)]">
             <div className="p-2 sticky top-0 flex flex-col h-[calc(100vh-1rem)] md:h-[calc(100vh-5rem)]">
@@ -122,8 +134,6 @@ export function FeaturesSidebar() {
                     {sidebarItems.map((item) => {
                         const isOpen = openItems.includes(item.title)
                         const Icon = item.icon
-                        // Check if any sub-item is active (for parent styling if needed, though usually parent is just a toggle)
-                        const isChildActive = item.subItems.some(sub => pathname === sub.href && false) // Disabled active check for now as all hrefs are same
 
                         return (
                             <div key={item.title} className="w-full">
@@ -132,8 +142,8 @@ export function FeaturesSidebar() {
                                     className={cn(
                                         "w-full px-4 py-3 flex justify-between items-center text-left transition-colors duration-200 rounded-2xl group cursor-pointer",
                                         isOpen
-                                            ? "bg-surface-100 dark:bg-surface-800/50 text-foreground"
-                                            : "hover:bg-surface-50 dark:hover:bg-surface-800/30 text-muted-foreground hover:text-foreground"
+                                            ? "bg-surface-200/80 border border-border dark:bg-surface-300/40 text-foreground"
+                                            : "hover:bg-surface-200 dark:hover:bg-surface-300/20 text-muted-foreground hover:text-foreground"
                                     )}
                                 >
                                     <div className="flex items-center gap-3">
@@ -154,16 +164,36 @@ export function FeaturesSidebar() {
                                             transition={{ duration: 0.2, ease: "easeInOut" }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="relative pl-4 ml-4 mt-1 border-l border-border dark:border-border/40 space-y-1 py-1">
-                                                {item.subItems.map((subItem) => (
-                                                    <Link
-                                                        key={subItem.title}
-                                                        href={subItem.href as any}
-                                                        className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-surface-100 dark:hover:bg-surface-800/50 rounded-lg transition-colors"
-                                                    >
-                                                        {subItem.title}
-                                                    </Link>
-                                                ))}
+                                            <div className="relative pl-4  space-y-1 py-1" style={{ marginLeft: "25px" }}>
+                                                {/* Continuous gray line */}
+                                                <div className="absolute left-0 top-0 bottom-0 w-px bg-border dark:bg-border" />
+
+                                                {item.subItems.map((subItem) => {
+                                                    const isActive = activeHash === subItem.href
+                                                    return (
+                                                        <div key={subItem.title} className="relative py-1">
+                                                            {isActive && (
+                                                                <motion.div
+                                                                    layoutId="active-nav-line"
+                                                                    className="absolute -left-[16px] top-0 bottom-0 w-px bg-surface-500 "
+                                                                    initial={{ opacity: 0 }}
+                                                                    animate={{ opacity: 1 }}
+                                                                    exit={{ opacity: 0 }}
+                                                                />
+                                                            )}
+                                                            <Link
+                                                                href={subItem.href as any}
+                                                                onClick={() => handleLinkClick(subItem.href)}
+                                                                className={cn(
+                                                                    "block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-surface-200/80 dark:hover:bg-surface-300/20 rounded-lg transition-colors",
+                                                                    isActive && "bg-surface-200/50 dark:bg-surface-300/20 text-foreground font-medium"
+                                                                )}
+                                                            >
+                                                                {subItem.title}
+                                                            </Link>
+                                                        </div>
+                                                    )
+                                                })}
                                             </div>
                                         </motion.div>
                                     )}
@@ -172,7 +202,7 @@ export function FeaturesSidebar() {
                         )
                     })}
                 </nav>
-
+                {/* card*/}
                 <div className="mt-auto px-1 pt-4">
                     <div className="relative overflow-hidden rounded-2xl border border-border/60 dark:border-border/40 bg-backgorund ">
                         {/* Background Particles - Passing empty text to get just the background field effect */}
@@ -182,7 +212,7 @@ export function FeaturesSidebar() {
 
                         <div className="relative z-10 p-5 flex flex-col items-start gap-4">
                             <div className="space-y-1">
-                                <h3 className="text-lg font-bold text-surface-800 tracking-tight">
+                                <h3 className="text-lg font-bold text-surface-700 tracking-tight">
                                     Get Beta Access
                                 </h3>
                                 <p className="text-sm text-surface-600 dark:text-surface-600 leading-relaxed font-sans">
