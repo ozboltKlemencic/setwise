@@ -139,7 +139,7 @@ export default function FooterSection() {
         </div>
 
         {/* Navigation Links */}
-        <div className="self-stretch p-(--space-4) md:p-(--space-8) flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-(--space-6) md:gap-(--space-8)">
+        <div className="self-stretch p-(--space-4) md:p-(--space-8) flex flex-row flex-wrap justify-start sm:justify-between items-start gap-(--space-6) md:gap-(--space-8)">
           {FOOTER_COLUMNS.map((column, colIndex) => (
             <div key={colIndex} className="flex flex-col justify-start items-start gap-(--space-8) flex-1 min-w-[120px]">
               {column.sections.map((section) => (

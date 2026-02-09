@@ -48,7 +48,8 @@
             "title": "Train with precision.",
             "titleHighlight": "Progress",
             "titleEnd": "with proof.",
-            "description": "If you track progress by feel, you’ll miss it more often than you think. SetWise visualizes every lift by exercise, from volume to top sets, so progress is obvious."
+            "description": "If you track progress by feel, you’ll miss it more often than you think. SetWise visualizes every lift by exercise, from volume to top sets, so progress is obvious.",
+            "button": "Start training"
         },
         "feature2": {
             "title": "From",
