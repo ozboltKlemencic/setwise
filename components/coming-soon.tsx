@@ -11,7 +11,7 @@ export default function ComingSoon() {
     const t = useTranslations('ComingSoon')
 
     return (
-        <div className="w-full h-dvh md:h-screen relative bg-surface-50 mask-[radial-gradient(300px_circle_at_center,white,transparent)] md:mask-[radial-gradient(560px_circle_at_center,white,transparent)] overflow-x-hidden flex flex-col justify-start items-center transition-colors duration-normal">
+        <div className="w-full h-dvh md:h-screen relative bg-surface-50 mask-[radial-gradient(300px_circle_at_center,white,transparent)] md:mask-[radial-gradient(600px_circle_at_center,white,transparent)] overflow-x-hidden flex flex-col justify-start items-center transition-colors duration-normal">
             <div className="relative flex flex-col justify-start items-center w-full h-full min-h-screen">
 
                 {/* Main container with side borders matching Home Page */}

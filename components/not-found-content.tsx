@@ -55,7 +55,7 @@ export default function NotFoundContent() {
                     text="404"
                     fontSize={400}
                     fontSizeMobile={160}
-                    className="w-full h-full opacity-60 md:opacity-80 dark:md:opacity-30 z-10"
+                    className="w-full h-full opacity-60 md:opacity-90 dark:md:opacity-30 z-10"
                 />
             </div>
         </div>
