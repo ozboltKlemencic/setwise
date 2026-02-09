@@ -195,6 +195,7 @@
             "guides": "Guides",
             "company": "Company",
             "resources": "Resources",
+            "tools": "Tools",
             "legal": "Legal"
         },
         "links": {
@@ -212,6 +213,8 @@
             "createRoutine": "Create Routine",
             "exportData": "Export Data",
             "advancedTips": "Advanced Tips",
+            "bmrCalculator": "BMR Calculator",
+            "bodyFatCalculator": "Body Fat Calculator",
             "aboutUs": "About us",
             "ourTeam": "Our team",
             "contact": "Contact",

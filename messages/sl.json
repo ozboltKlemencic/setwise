@@ -195,6 +195,7 @@
             "guides": "Vodiči",
             "company": "Podjetje",
             "resources": "Viri",
+            "tools": "Orodja",
             "legal": "Pravno"
         },
         "links": {
@@ -212,6 +213,8 @@
             "createRoutine": "Ustvari rutino",
             "exportData": "Izvoz podatkov",
             "advancedTips": "Napredni nasveti",
+            "bmrCalculator": "BMR kalkulator",
+            "bodyFatCalculator": "Body Fat kalkulator",
             "aboutUs": "O nas",
             "ourTeam": "Naša ekipa",
             "contact": "Kontakt",

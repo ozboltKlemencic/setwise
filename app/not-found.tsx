@@ -7,7 +7,7 @@ import { ParticleText } from '@/components/ui/particle-text'
 // Root 404 page - Static (no translations/provider guaranteed)
 export default function NotFound() {
     return (
-        <div className="w-full h-dvh md:h-screen relative bg-[#F7F5F3] mask-[radial-gradient(350px_circle_at_center,white,transparent)] md:mask-[radial-gradient(700px_circle_at_center,white,transparent)] overflow-x-hidden flex flex-col justify-start items-center">
+        <div className="w-full h-dvh md:h-screen relative bg-[#F7F5F3] mask-[radial-gradient(350px_circle_at_center,white,transparent)] md:mask-[radial-gradient(900px_circle_at_center,white,transparent)] overflow-x-hidden flex flex-col justify-start items-center">
             <div className="relative flex flex-col justify-start items-center w-full h-full min-h-screen">
 
 

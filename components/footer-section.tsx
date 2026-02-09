@@ -47,6 +47,13 @@ export default function FooterSection() {
           ],
         },
         {
+          title: t('sections.tools'),
+          links: [
+            { label: t('links.bmrCalculator'), href: "/tools/bmr-calculator" },
+            { label: t('links.bodyFatCalculator'), href: "/tools/body-fat-calculator" },
+          ],
+        },
+        {
           title: t('sections.resources'),
           links: [
             { label: t('links.community'), href: "#" },
