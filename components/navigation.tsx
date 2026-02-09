@@ -161,7 +161,7 @@ export default function Navigation() {
                                     {activeSection === link.href && (
                                         <motion.div
                                             layoutId="activeNavIndicator"
-                                            className="absolute inset-0 bg-surface-100/90 border border-surface-300/40 rounded-full"
+                                            className="absolute inset-0 bg-surface-200/70 border border-surface-300/40 rounded-full"
                                             transition={{
                                                 type: "spring",
                                                 stiffness: 380,
@@ -220,7 +220,7 @@ export default function Navigation() {
                                     stiffness: 350,
                                     damping: 20
                                 }}
-                                className="mx-(--space-4) mb-(--space-4) bg-card/80 rounded-3xl shadow-(--shadow-2xl) overflow-hidden border border-border/60"
+                                className="mx-(--space-4) mb-(--space-4) bg-card/95 rounded-3xl shadow-(--shadow-2xl) overflow-hidden border border-border/60"
                             >
                                 <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
                                     <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
@@ -273,7 +273,7 @@ export default function Navigation() {
                                                 href={link.href}
                                                 onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
                                                 className={`block px-(--space-3) py-(--space-4) text-callout font-medium rounded-xl transition-colors ${activeSection === link.href
-                                                    ? "text-foreground bg-surface-50"
+                                                    ? "text-foreground dark:bg-surface-300/30 bg-surface-300/25"
                                                     : "text-muted-foreground hover:text-foreground hover:bg-surface-50"
                                                     }`}
                                             >

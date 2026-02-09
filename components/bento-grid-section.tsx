@@ -11,8 +11,9 @@ import NumbersThatSpeak from "./numbers-that-speak"
 import { OrbitingCircles } from "@/components/ui/orbiting-circles"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { cn } from "@/lib/utils"
-import { Dumbbell, Timer, Zap, TrendingUp, NotebookPen, Ruler, ArrowUpDown, ChevronRight, Calendar, CalendarDays } from "lucide-react"
+import { Dumbbell, Timer, Zap, TrendingUp, NotebookPen, Ruler, ArrowUpDown, ChevronRight, Calendar, CalendarDays, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ShimmerButton } from "./ui/shimmer-button"
 import DialogStickyFooterDemo from "./dialog"
 
 // Orbiting Circles with fixed radius - animates when in view
@@ -202,38 +203,27 @@ function WorkoutHistoryList() {
     )
 }
 
-// Reusable Badge Component
-function Badge({ icon, text }: { icon: React.ReactNode; text: string }) {
-    return (
-        <div className="px-(--space-3) py-1.5 bg-card overflow-hidden rounded-full flex items-center gap-(--space-2) border border-surface-200 text-surface-700">
-            <div className="w-4 h-4 relative overflow-hidden flex items-center justify-center">{icon}</div>
-            <div className="text-center text-caption-1 font-medium">
-                {text}
-            </div>
-        </div>
-    )
-}
-
 export default function BentoGridSection() {
     const t = useTranslations('BentoGrid')
 
     return (
-        <div className="w-full border-b border-t border-border flex flex-col justify-center items-center">
+        <div className="w-full border-b border-t border-border dark:border-border/40 flex flex-col justify-center items-center">
             {/* Header Section */}
-            <div className="self-stretch px-(--space-4) md:px-(--space-6) lg:px-0 w-full py-(--space-12) md:py-(--space-16) border-b border-border flex justify-center items-center gap-(--space-6)">
+            <div className="self-stretch px-(--space-4) md:px-(--space-6) lg:px-0 w-full py-(--space-12) md:py-(--space-16) border-b border-border dark:border-border/40 flex justify-center items-center gap-(--space-6)">
                 <div className="w-full max-w-[616px] lg:w-[616px] px-(--space-4) md:px-(--space-6) py-(--space-4) md:py-(--space-5) overflow-hidden rounded-lg flex flex-col justify-center items-center gap-(--space-3)">
-                    <Badge
-                        icon={
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="1" y="1" width="4" height="4" stroke="currentColor" strokeWidth="1" fill="none" />
-                                <rect x="7" y="1" width="4" height="4" stroke="currentColor" strokeWidth="1" fill="none" />
-                                <rect x="1" y="7" width="4" height="4" stroke="currentColor" strokeWidth="1" fill="none" />
-                                <rect x="7" y="7" width="4" height="4" stroke="currentColor" strokeWidth="1" fill="none" />
-                            </svg>
-                        }
-                        text={t('badge')}
-                    />
-                    <h2 className="w-full max-w-[530px] text-center text-surface-900 text-title-3 sm:text-title-1 md:text-large-title lg:text-display font-semibold">
+                    <ShimmerButton
+                        className="border border-border"
+                        shimmerDuration="3s"
+                        shimmerSize="0.05em"
+                        background="var(--background)"
+                        shimmerColor="var(--brand-300)"
+                    >
+                        <span className="flex items-center gap-1.5 text-center text-caption-2 font-medium whitespace-pre-wrap text-muted-foreground leading-none">
+                            <Sparkles className="h-3 w-3" />
+                            {t('badge')}
+                        </span>
+                    </ShimmerButton>
+                    <h2 className="w-full max-w-[530px] text-center text-surface-900 text-title-1 sm:text-title-1 md:text-large-title lg:text-display font-semibold">
                         {t('title')} <span className="primaryGradient font-bold">{t('titleHighlight')}</span>
                     </h2>
                     <div className="max-w-md text-center text-surface-600 text-subheadline md:text-callout">
@@ -250,15 +240,15 @@ export default function BentoGridSection() {
                         {Array.from({ length: 200 }).map((_, i) => (
                             <div
                                 key={i}
-                                className="self-stretch h-(--space-3) sm:h-(--space-4) -rotate-45 origin-top-left outline-[0.5px] outline-border/20 outline-offset-[-0.25px]"
+                                className="self-stretch h-(--space-3) sm:h-(--space-4) -rotate-45 origin-top-left outline-[0.5px] outline-border/30 outline-offset-[-0.25px]"
                             />
                         ))}
                     </div>
                 </div>
 
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-border">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-border dark:border-border/40">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-border flex flex-col justify-start items-start min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px]">
+                    <div className="border-b border-r-0 md:border-r border-border dark:border-border/40 flex flex-col justify-start items-start min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px]">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.trackAnalyze.title')}
@@ -278,7 +268,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-border flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[380px] min-h-[380px]">
+                    <div className="border-b border-border dark:border-border/40 flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[380px] min-h-[380px]">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.offline.title')}
@@ -298,7 +288,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="border-b md:min-h-[550px] md:max-h-[550px] md:border-r border-border flex flex-col overflow-hidden justify-start min-h-[380px] max-h-[380px] relative items-start">
+                    <div className="md:min-h-[550px] md:max-h-[550px] md:border-r border-border dark:border-border/40 flex flex-col overflow-hidden justify-start min-h-[380px] max-h-[380px] relative items-start">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.details.title')}
@@ -336,7 +326,7 @@ export default function BentoGridSection() {
                         {Array.from({ length: 200 }).map((_, i) => (
                             <div
                                 key={i}
-                                className="self-stretch h-(--space-3) sm:h-(--space-4) -rotate-45 origin-top-left outline-[0.5px] outline-border/20 outline-offset-[-0.25px]"
+                                className="self-stretch h-(--space-3) sm:h-(--space-4) -rotate-45 origin-top-left outline-[0.5px] outline-border/30 outline-offset-[-0.25px]"
                             />
                         ))}
                     </div>

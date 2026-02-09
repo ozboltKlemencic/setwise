@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 import { ShimmerButton } from "./ui/shimmer-button"
 import Blur from "./ui/Blur"
+import { Users } from "lucide-react"
 
 export default function HeroSection() {
   const t = useTranslations('HomePage')
@@ -39,7 +40,8 @@ export default function HeroSection() {
             background="var(--background)"
             shimmerColor="var(--brand-300)"
           >
-            <span className="text-center text-caption-1 font-medium whitespace-pre-wrap text-muted-foreground leading-none">
+            <span className="flex items-center gap-1.5 text-center text-caption-1 font-medium whitespace-pre-wrap text-muted-foreground leading-none">
+              <Users className="size-3 text-muted-foreground/80" />
               {t('badge')}
             </span>
           </ShimmerButton>
