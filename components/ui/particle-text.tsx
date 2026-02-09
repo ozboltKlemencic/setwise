@@ -7,6 +7,7 @@ interface ParticleTextProps {
     className?: string
     fontSize?: number // Optional manual font size
     fontSizeMobile?: number // Optional manual mobile font size
+    reverse?: boolean
 }
 
 interface Particle {
@@ -26,7 +27,8 @@ export function ParticleText({
     fontSizeMobile: manualFontSizeMobile,
     size: manualParticleSize,
     textBrightness,
-    backgroundBrightness
+    backgroundBrightness,
+    reverse = false
 }: ParticleTextProps & {
     size?: number
     textBrightness?: { dark: number; light: number }
@@ -97,13 +99,16 @@ export function ParticleText({
                     const isActive = alpha > 128
 
                     // Gradient for background particles
-                    // Bottom (y=height) = most visible, Top (y=0) = least visible
+                    // Default: Bottom (y=height) = more visible, Top (y=0) = less visible
+                    // Reverse: Top (y=0) = more visible, Bottom (y=height) = less visible
                     const normalizedY = y / height
+                    const yRatio = reverse ? (1 - normalizedY) : normalizedY
+
                     const gradientStats = isActive
                         ? { base: 1.0, target: 0.2 }
                         : {
-                            base: 0.4 * normalizedY,
-                            target: 0.1 * normalizedY
+                            base: 0.4 * yRatio,
+                            target: 0.1 * yRatio
                         }
 
                     particles.push({
@@ -178,7 +183,7 @@ export function ParticleText({
             window.removeEventListener("resize", handleResize)
             cancelAnimationFrame(animationFrameId)
         }
-    }, [text, manualFontSize, manualFontSizeMobile, manualParticleSize, textBrightness, backgroundBrightness])
+    }, [text, manualFontSize, manualFontSizeMobile, manualParticleSize, textBrightness, backgroundBrightness, reverse])
 
     return (
         <div ref={containerRef} className={`w-full h-full min-h-[150px] ${className}`}>
