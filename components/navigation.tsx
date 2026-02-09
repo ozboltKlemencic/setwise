@@ -192,7 +192,7 @@ export default function Navigation() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed inset-0 bg-black/40 backdrop-blur-(--blur-thin) z-(--z-modal) md:hidden"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-(--blur-thin) z-(--z-modal) md:hidden"
                             onClick={() => setIsMenuOpen(false)}
                         />
 
@@ -220,7 +220,7 @@ export default function Navigation() {
                                     stiffness: 350,
                                     damping: 20
                                 }}
-                                className="mx-(--space-4) mb-(--space-4) bg-background rounded-3xl shadow-(--shadow-2xl) overflow-hidden"
+                                className="mx-(--space-4) mb-(--space-4) bg-card/80 rounded-3xl shadow-(--shadow-2xl) overflow-hidden border border-border/60"
                             >
                                 <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
                                     <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
