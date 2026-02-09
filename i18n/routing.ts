@@ -97,6 +97,10 @@ export const routing = defineRouting({
             sl: '/piskotki',
             en: '/cookies',
         },
+        '/guides': {
+            sl: '/vodici',
+            en: '/guides',
+        },
     },
 });
 

@@ -28,12 +28,12 @@ export default function FooterSection() {
         {
           title: t('sections.guides'),
           links: [
-            { label: t('links.gettingStarted'), href: "/features" },
-            { label: t('links.logFirstWorkout'), href: "/features" },
-            { label: t('links.trackProgress'), href: "/features" },
-            { label: t('links.createRoutine'), href: "/features" },
-            { label: t('links.exportData'), href: "/features" },
-            { label: t('links.advancedTips'), href: "/features" },
+            { label: t('links.gettingStarted'), href: "/guides" },
+            { label: t('links.logFirstWorkout'), href: "/guides" },
+            { label: t('links.trackProgress'), href: "/guides" },
+            { label: t('links.createRoutine'), href: "/guides" },
+            { label: t('links.exportData'), href: "/guides" },
+            { label: t('links.advancedTips'), href: "/guides" },
           ],
         },
       ],

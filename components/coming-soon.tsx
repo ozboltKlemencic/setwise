@@ -1,5 +1,7 @@
+
 "use client"
 
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import ButtonRotatingGradient from '@/components/ui/buttons/ButtonRotatingGradient'
@@ -15,7 +17,12 @@ export default function ComingSoon() {
                 {/* Main container with side borders matching Home Page */}
                 <div className="md:px-8 lg:px-0 md:w-6xl max-w-6xl relative flex flex-col justify-center items-center grow border-l border-r border-border bg-surface-50 transition-colors duration-normal">
                     <div className='border-b py-12 md:py-32 border-t flex items-center justify-center border-border w-full z-20 transition-colors duration-normal'>
-                        <div className="flex flex-col items-center justify-center z-10 w-[94vw] text-center">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className="flex flex-col items-center justify-center z-10 w-[94vw] text-center"
+                        >
                             <h1 className="text-[60px] md:text-[100px] font-bold text-surface-900 leading-none tracking-tighter select-none px-4">
                                 {t('title')}
                             </h1>
@@ -31,7 +38,7 @@ export default function ComingSoon() {
                                     {t('backHome')}
                                 </ButtonRotatingGradient>
                             </Link>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </div>
