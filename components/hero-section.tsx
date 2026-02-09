@@ -6,6 +6,7 @@ import { Iphone } from "@/components/ui/mobileDevices/Phone"
 import { ShimmerButton } from "./ui/shimmer-button"
 import Blur from "./ui/Blur"
 import { Users } from "lucide-react"
+import BetaSignupDialog from "./beta-signup-dialog"
 
 export default function HeroSection() {
   const t = useTranslations('HomePage')
@@ -57,21 +58,21 @@ export default function HeroSection() {
           </p>
 
           <div role="group" aria-label="Download the app" className="flex flex-row items-center gap-(--space-2) md:gap-(--space-3) h-9 md:h-11">
-            <Image
+            <BetaSignupDialog trigger={<Image
               src="/apple.png"
               alt="App Store"
               className="h-full w-auto object-contain "
               width={120}
               height={40}
-            />
-            <Image
+            />} />
+
+            <BetaSignupDialog trigger={<Image
               src="/google.png"
               alt="Google Play"
               className="h-full w-auto object-contain "
               width={135}
               height={40}
-            />
-           
+            />} />
           </div>
 
           <aside aria-label="Social proof" className="flex flex-col items-center md:items-start gap-(--space-2) mt-(--space-3)">

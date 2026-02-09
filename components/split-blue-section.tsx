@@ -16,6 +16,7 @@ interface TeamMember {
     name: string
     title: string
     handle: string
+    linkedinUrl?: string
     avatarUrl: string
     miniAvatarUrl: string
     status: string
@@ -24,7 +25,7 @@ interface TeamMember {
 export default function SplitBlueSection() {
     const t = useTranslations('SplitBlue')
 
-    const translatedMembers = t.raw('teamMembers') as Array<{ name: string; title: string; handle: string }>
+    const translatedMembers = t.raw('teamMembers') as Array<{ name: string; title: string; handle: string; linkedinUrl?: string }>
 
     const teamMembers: TeamMember[] = translatedMembers.map((member) => ({
         ...member,
@@ -76,6 +77,7 @@ export default function SplitBlueSection() {
                                     name={member.name}
                                     title={member.title}
                                     handle={member.handle}
+                                    linkedinUrl={member.linkedinUrl}
                                     status={member.status}
                                     contactText={t('contactText')}
                                     showUserInfo={true}

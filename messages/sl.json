@@ -165,12 +165,14 @@
             {
                 "name": "Jernej Peternel",
                 "title": "Soustanovitelj",
-                "handle": "Jernej.fit"
+                "handle": "Jernej.fit",
+                "linkedinUrl": "https://www.linkedin.com/in/jernejpeternel/"
             },
             {
                 "name": "Jernej Peternel",
                 "title": "Razvijalec",
-                "handle": "Jernej.fit"
+                "handle": "Jernej.fit",
+                "linkedinUrl": "https://www.linkedin.com/in/jernejpeternel/"
             }
         ]
     },

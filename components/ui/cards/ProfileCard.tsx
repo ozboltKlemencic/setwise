@@ -2,6 +2,7 @@ import React from 'react';
 
 interface ProfileCardProps {
     avatarUrl?: string;
+    linkedinUrl?: string; // Added prop
     miniAvatarUrl?: string;
     name?: string;
     title?: string;
@@ -19,6 +20,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     name = 'Javi A. Torres',
     title = 'Software Engineer',
     handle = 'javicodes',
+    linkedinUrl,
     status = 'Online',
     contactText = 'Contact',
     showUserInfo = true,
@@ -73,8 +75,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
                     {/* Bottom User Info Card */}
                     {showUserInfo && (
-                        <div className="absolute bottom-(--space-4) left-(--space-4) right-(--space-4) z-(--z-dropdown) flex items-center justify-between backdrop-blur-(--blur-ultra) bg-surface-950/20 dark:bg-surface-50/15 border border-white/10 dark:border-surface-50/10 rounded-lg p-(--space-2\.5)">
-                            <div className="flex items-center gap-(--space-2\.5)">
+                        <div className="absolute bottom-(--space-4) left-(--space-4) right-(--space-4) z-(--z-dropdown) flex items-center justify-between backdrop-blur-(--blur-ultra) bg-surface-950/20 dark:bg-surface-50/15 border border-white/10 dark:border-surface-50/10 rounded-lg p-(--space-2\.5) gap-2">
+                            <div className="flex items-center gap-(--space-2\.5) min-w-0 overflow-hidden">
                                 <div className="size-9 rounded-full overflow-hidden border border-white/10 dark:border-surface-50/10 shrink-0">
                                     <img
                                         className="w-full h-full bg-brand-600/60 dark:bg-brand-400/40 object-cover"
@@ -82,18 +84,30 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                                         alt={`${handle} avatar`}
                                     />
                                 </div>
-                                <div className="flex flex-col items-start gap-0.5">
-                                    <span className="text-caption-1 font-medium text-white/90 leading-none">@{handle}</span>
-                                    <span className="text-caption-2 text-white/70 leading-none">{status}</span>
+                                <div className="flex flex-col items-start gap-0.5 min-w-0 overflow-hidden">
+                                    <span className="text-caption-1 font-medium text-white/90 leading-none truncate w-full">@{handle}</span>
+                                    <span className="text-caption-2 text-white/70 leading-none truncate w-full">{status}</span>
                                 </div>
                             </div>
-                            <button
-                                type="button"
-                                onClick={onContactClick}
-                                className="border border-white/10 rounded-md px-(--space-3) py-(--space-1\.5) text-caption-2 font-semibold text-white/90 backdrop-blur-(--blur-medium) hover:bg-white/10 transition-colors duration-(--duration-fast) ease-(--ease-apple) min-h-8 cursor-pointer"
-                            >
-                                {contactText}
-                            </button>
+
+                            {linkedinUrl ? (
+                                <a
+                                    href={linkedinUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="border border-white/10 rounded-md px-(--space-3) py-(--space-1\.5) text-caption-2 font-semibold text-white/90 backdrop-blur-(--blur-medium) hover:bg-white/10 transition-colors duration-(--duration-fast) ease-(--ease-apple) min-h-8 flex items-center justify-center shrink-0 cursor-pointer text-center whitespace-nowrap"
+                                >
+                                    {contactText}
+                                </a>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={onContactClick}
+                                    className="border border-white/10 rounded-md px-(--space-3) py-(--space-1\.5) text-caption-2 font-semibold text-white/90 backdrop-blur-(--blur-medium) hover:bg-white/10 transition-colors duration-(--duration-fast) ease-(--ease-apple) min-h-8 shrink-0 cursor-pointer whitespace-nowrap"
+                                >
+                                    {contactText}
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>
