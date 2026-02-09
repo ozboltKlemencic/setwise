@@ -44,16 +44,16 @@ function DynamicOrbitingCircles() {
                 speed={1.5}
                 pathClassName={cn("origin-center transition-all duration-700 ease-out delay-300", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
             >
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br from-brand-100/80 to-card shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br  from-brand-100/80 to-card dark:from-brand-200/40 backdrop-blur-(--blur-thin) shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
                     <Timer className="h-4 w-4 md:h-5 md:w-5 text-surface-400" />
                 </div>
                 <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tr from-brand-100/80  to-card shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
                     <Zap className="h-4 w-4 md:h-5 md:w-5 text-surface-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br from-brand-100/80 to-card shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-br from-brand-100/80 to-card dark:from-brand-200/40 backdrop-blur-(--blur-thin) shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
                     <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-surface-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tr from-brand-100/80 to-card shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tr from-brand-100/80 to-card dark:from-brand-200/40 backdrop-blur-(--blur-thin) shadow-(--shadow-sm) border border-surface-200 p-1.5 md:p-(--space-2)", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
                     <NotebookPen className="h-4 w-4 md:h-5 md:w-5 text-surface-400" />
                 </div>
             </OrbitingCircles>
@@ -64,13 +64,13 @@ function DynamicOrbitingCircles() {
                 speed={1}
                 pathClassName={cn("origin-center transition-all duration-700 ease-out delay-200", !isInView ? "scale-0 opacity-0" : "scale-100 opacity-100")}
             >
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-bl from-brand-100/80 to-card shadow-(--shadow-sm) border border-surface-200 p-(--space-1) md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-bl from-brand-100/80 to-card dark:from-brand-200/40 backdrop-blur-(--blur-thin) shadow-(--shadow-sm) border border-surface-200 p-(--space-1) md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.9s' }}>
                     <Ruler className="h-3 w-3 md:h-4 md:w-4 text-surface-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tl from-brand-100/80 to-card shadow-(--shadow-sm) border border-surface-200 p-(--space-1) md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-tl from-brand-100/80 to-card dark:from-brand-200/40 backdrop-blur-(--blur-thin) shadow-(--shadow-sm) border border-surface-200 p-(--space-1) md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '0.95s' }}>
                     <ArrowUpDown className="h-3 w-3 md:h-4 md:w-4 text-surface-400" />
                 </div>
-                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-bl from-brand-100/80 to-card shadow-(--shadow-sm) border border-surface-200 p-(--space-1) md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
+                <div className={cn("flex items-center justify-center rounded-full bg-linear-to-bl from-brand-100/80 to-card dark:from-brand-200/40 backdrop-blur-(--blur-thin) shadow-(--shadow-sm) border border-surface-200 p-(--space-1) md:p-1.5", !isInView && "opacity-0 scale-0", isInView && "animate-scale-in-bounce")} style={{ animationDelay: '1.0s' }}>
                     <Dumbbell className="h-3 w-3 md:h-4 md:w-4 text-surface-400" />
                 </div>
             </OrbitingCircles>
@@ -128,7 +128,7 @@ const WorkoutNotification = ({ name, date, duration, volume, status, highlight, 
                 "relative mx-auto min-h-fit w-full md:max-w-[400px] cursor-pointer rounded-xl md:rounded-2xl p-(--space-3) md:p-(--space-4)",
                 "transition-all duration-(--duration-fast) ease-(--ease-apple)",
                 "bg-card border border-surface-200 shadow-(--shadow-sm)",
-                highlight && "bg-linear-to-b from-brand-500/10 dark:from-brand-500/[0.05] to-card border-brand-500"
+                highlight && "bg-linear-to-b from-brand-500/10  to-card border-brand-500"
             )}
         >
             {highlight && (
@@ -288,7 +288,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="md:min-h-[550px] md:max-h-[550px] md:border-r border-border dark:border-border/40 flex flex-col overflow-hidden justify-start min-h-[380px] max-h-[380px] relative items-start">
+                    <div className="md:min-h-[550px] md:max-h-[550px] md:border-r border-border border-b md:border-b-0 dark:border-border/40 flex flex-col overflow-hidden justify-start min-h-[380px] max-h-[380px] relative items-start">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.details.title')}

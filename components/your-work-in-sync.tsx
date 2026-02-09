@@ -66,7 +66,7 @@ export default function YourWorkInSync({
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-surface-50 dark:bg-surface-100", className)}
+      className={cn("relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-background ", className)}
       style={{ width, height }}
     >
       {/* Dotted Background */}
@@ -84,8 +84,8 @@ export default function YourWorkInSync({
         {/* Left Card */}
         <MotionCard
           ref={leftRef}
-          className="size-12 sm:size-16 text-surface-500/70 opacity-60 border border-surface-300"
-          initial={{ opacity: 0.6, scale: 0.8 }}
+          className="size-12 sm:size-16 text-surface-500/70 opacity-60 dark:opacity-90 border border-surface-300"
+          initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
         >
@@ -95,7 +95,7 @@ export default function YourWorkInSync({
         <MotionCard
           ref={centerRef}
           className="size-16 sm:size-24 bg-linear-to-tr from-brand-500/10 via-brand-100/5 to-brand-500/10 text-surface-400 overflow-hidden p-0 relative"
-          initial={{ opacity: 1, scale: 0.8 }}
+          initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
         >
@@ -118,7 +118,7 @@ export default function YourWorkInSync({
         {/* Right Card */}
         <MotionCard
           ref={rightRef}
-          className="size-12 sm:size-16 text-surface-500/70 opacity-60 border border-surface-300"
+          className="size-12 sm:size-16 text-surface-500/70 opacity-60 dark:opacity-90 border border-surface-300"
           initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
@@ -130,7 +130,7 @@ export default function YourWorkInSync({
       {/* Connected Badge */}
       <motion.div
         ref={bottomRef}
-        className="z-(--z-raised) bg-card border opacity-60 border-success/20 text-surface-600/80 text-caption-1 font-medium px-(--space-4) py-1.5 rounded-md flex items-center justify-center shadow-(--shadow-md)"
+        className="z-(--z-raised) bg-card border opacity-60 dark:opacity-90 border-success/20 text-surface-600/80 text-caption-1 font-medium px-(--space-4) py-1.5 rounded-md flex items-center justify-center shadow-(--shadow-md)"
         initial={{ scale: 0.8 }}
         animate={{ scale: isInView ? 1 : 0.9 }}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
