@@ -19,7 +19,19 @@ interface Particle {
     speed: number
 }
 
-export function ParticleText({ text, className, fontSize: manualFontSize, fontSizeMobile: manualFontSizeMobile }: ParticleTextProps) {
+export function ParticleText({
+    text,
+    className,
+    fontSize: manualFontSize,
+    fontSizeMobile: manualFontSizeMobile,
+    size: manualParticleSize,
+    textBrightness,
+    backgroundBrightness
+}: ParticleTextProps & {
+    size?: number
+    textBrightness?: { dark: number; light: number }
+    backgroundBrightness?: { dark: number; light: number }
+}) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
 
@@ -115,6 +127,12 @@ export function ParticleText({ text, className, fontSize: manualFontSize, fontSi
 
             const dark = isDarkMode()
 
+            // Default values
+            const txtBrightDark = textBrightness?.dark ?? 130
+            const txtBrightLight = textBrightness?.light ?? 200
+            const bgBrightDark = backgroundBrightness?.dark ?? 160
+            const bgBrightLight = backgroundBrightness?.light ?? 200
+
             particles.forEach(p => {
                 // Update phase
                 p.phase += p.speed
@@ -127,12 +145,20 @@ export function ParticleText({ text, className, fontSize: manualFontSize, fontSi
 
                 // Dark mode: lighter particles for visibility on dark background
                 // Light mode: darker particles for visibility on light background
-                ctx.fillStyle = p.isActive
-                    ? (dark ? `rgba(130, 130, 130, ${alpha})` : `rgba(200, 200, 200, ${alpha})`)
-                    : (dark ? `rgba(160, 160, 160, ${alpha})` : `rgba(200, 200, 200, ${alpha})`)
+
+                const val = p.isActive
+                    ? (dark ? txtBrightDark : txtBrightLight)
+                    : (dark ? bgBrightDark : bgBrightLight)
+
+                ctx.fillStyle = `rgba(${val}, ${val}, ${val}, ${alpha})`
 
                 // Draw particle (square) - smaller on mobile
-                const particleSize = canvas.width < 768 * (window.devicePixelRatio || 1) ? 2 : 3
+                // Use manual size if provided, else responsive logic
+                let particleSize = manualParticleSize
+                if (particleSize === undefined) {
+                    particleSize = canvas.width < 768 * (window.devicePixelRatio || 1) ? 2 : 3
+                }
+
                 ctx.fillRect(p.x, p.y, particleSize, particleSize)
             })
 
@@ -152,7 +178,7 @@ export function ParticleText({ text, className, fontSize: manualFontSize, fontSi
             window.removeEventListener("resize", handleResize)
             cancelAnimationFrame(animationFrameId)
         }
-    }, [text, manualFontSize, manualFontSizeMobile])
+    }, [text, manualFontSize, manualFontSizeMobile, manualParticleSize, textBrightness, backgroundBrightness])
 
     return (
         <div ref={containerRef} className={`w-full h-full min-h-[150px] ${className}`}>

@@ -1314,3 +1314,57 @@ body::-webkit-scrollbar {
    └─────────────────────────┴──────────────────────────────────────┘
 
    ============================================================ */
+
+/* ============================================================
+   4. UTILITIES
+   ───────────────────────────────────────────────────────────── */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Thin Scrollbar - Elegant custom scrollbar */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-300) transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--surface-300);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--surface-400);
+}
+
+.dark .thin-scrollbar {
+  scrollbar-color: var(--surface-600) transparent;
+}
+
+.dark .thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--surface-600);
+}
+
+.dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--surface-500);
+}

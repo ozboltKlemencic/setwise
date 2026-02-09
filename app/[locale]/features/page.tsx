@@ -1,5 +1,5 @@
-import ComingSoon from '@/components/coming-soon';
+
 
 export default function FeaturesPage() {
-    return <ComingSoon />;
+    return <></>;
 }
