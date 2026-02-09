@@ -224,6 +224,19 @@
             "cookies": "Cookies"
         }
     },
+    "BetaSignup": {
+        "title": "Get Early Access",
+        "description": "Join our exclusive beta program and be among the first to experience the future of workout tracking. Get early access to features, provide feedback, and help shape the app.",
+        "emailLabel": "Email",
+        "emailPlaceholder": "you@example.com",
+        "platformLabel": "Platform",
+        "ios": "iOS",
+        "android": "Android",
+        "both": "Both",
+        "trainerLabel": "I'm a trainer or coach",
+        "submitButton": "Get Beta Access",
+        "privacyNote": "We'll notify you when your spot is ready. No spam."
+    },
     "CTA": {
         "title": "Make your next session count.",
         "subtitle": "Log smarter, compare sets, and see progress clearly. Download now and train with purpose.",

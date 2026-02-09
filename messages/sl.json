@@ -224,6 +224,19 @@
             "cookies": "Piškotki"
         }
     },
+    "BetaSignup": {
+        "title": "Pridobite zgodnji dostop",
+        "description": "Pridružite se našemu ekskluzivnemu beta programu in bodite med prvimi, ki bodo preizkusili prihodnost sledenja vadbam. Pridobite zgodnji dostop do funkcij, podajte povratne informacije in pomagajte oblikovati aplikacijo.",
+        "emailLabel": "E-pošta",
+        "emailPlaceholder": "ti@primer.com",
+        "platformLabel": "Platforma",
+        "ios": "iOS",
+        "android": "Android",
+        "both": "Oba",
+        "trainerLabel": "Sem trener ali inštruktor",
+        "submitButton": "Pridobi beta dostop",
+        "privacyNote": "Obvestili vas bomo, ko bo vaše mesto pripravljeno. Brez nezaželene pošte."
+    },
     "CTA": {
         "title": "Naredi naslednji trening pomemben.",
         "subtitle": "Beleži pametneje, primerjaj sete in jasno vidi napredek. Prenesi zdaj in treniraj pametno.",
