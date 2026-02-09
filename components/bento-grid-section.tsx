@@ -9,7 +9,7 @@ import SmartSimpleBrilliant from "./smart-simple-brilliant"
 import YourWorkInSync from "./your-work-in-sync"
 import NumbersThatSpeak from "./numbers-that-speak"
 import { OrbitingCircles } from "@/components/ui/orbiting-circles"
-import { AnimatedList } from "@/components/ui/animated-list"
+import { AnimatedList, WorkoutNotification, WorkoutItem } from "@/components/ui/animated-list"
 import { cn } from "@/lib/utils"
 import { Dumbbell, Timer, Zap, TrendingUp, NotebookPen, Ruler, ArrowUpDown, ChevronRight, Calendar, CalendarDays, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -85,17 +85,16 @@ function DynamicOrbitingCircles() {
 
 
 // Workout notification item interface
-interface WorkoutItem {
-    name: string
-    date: string
-    duration: string
-    volume: string
-    status: string
-    highlight?: boolean
-    isTrending?: boolean
-}
+
 
 const notifications: WorkoutItem[] = [
+    {
+        name: "Chest ",
+        date: "Fri, Mar 2 • 06:12 PM",
+        duration: "75 min",
+        volume: "1.1k kg",
+        status: "HIGH VOL",
+    },
     {
         name: "Chest & Triceps",
         date: "Mon, Feb 2 • 05:12 PM",
@@ -121,78 +120,16 @@ const notifications: WorkoutItem[] = [
     },
 ]
 
-const WorkoutNotification = ({ name, date, duration, volume, status, highlight, isTrending }: WorkoutItem) => {
-    const Content = (
-        <figure
-            className={cn(
-                "relative mx-auto min-h-fit w-full md:max-w-[400px] cursor-pointer rounded-xl md:rounded-2xl p-(--space-3) md:p-(--space-4)",
-                "transition-all duration-(--duration-fast) ease-(--ease-apple)",
-                "bg-card border border-surface-200 shadow-(--shadow-sm)",
-                highlight && "bg-linear-to-b from-brand-500/10  to-card border-brand-500"
-            )}
-        >
-            {highlight && (
-                <div className="absolute -top-2.5 right-(--space-8) md:right-(--space-10) border border-brand-500 bg-card text-surface-800 text-[8px] font-bold px-(--space-2) py-0.5 z-(--z-raised) tracking-wider rounded-full shadow-(--shadow-xs) antialiased">
-                    Click
-                </div>
-            )}
-            <div className="flex flex-col gap-(--space-2) md:gap-(--space-3)">
-                {/* Header */}
-                <div className="flex flex-row items-center justify-between">
-                    <span className="text-subheadline font-semibold text-surface-900">{name}</span>
-                    <ChevronRight className="h-3.5 w-3.5 md:h-4 md:w-4 text-surface-400" />
-                </div>
 
-                {/* Date */}
-                <div className="flex flex-row items-center gap-1.5 text-caption-2 md:text-caption-1 text-surface-500">
-                    <CalendarDays className="h-3 w-3 md:h-3.5 md:w-3.5" />
-                    <span>{date}</span>
-                </div>
-
-                {/* Stats & Status */}
-                <div className="flex flex-row items-end justify-between mt-(--space-1)">
-                    <div className="flex flex-row">
-                        <div className="flex flex-col gap-0.5">
-                            <span className="text-caption-2 font-bold text-surface-500 tracking-wider uppercase">DURATION</span>
-                            <span className="text-caption-1 md:text-subheadline font-medium text-surface-900">{duration}</span>
-                        </div>
-                        <div className="h-auto w-px bg-surface-300/60 mx-(--space-2) md:mx-(--space-4)"></div>
-                        <div className="flex flex-col gap-0.5">
-                            <span className="text-caption-2 font-bold text-surface-500 tracking-wider uppercase">VOLUME</span>
-                            <span className="text-caption-1 md:text-subheadline font-medium text-surface-900">{volume}</span>
-                        </div>
-                    </div>
-
-                    {isTrending ? (
-                        <div className="px-(--space-2) md:px-2.5 py-0.5 md:py-(--space-1) rounded-sm bg-success-light border border-success/20 text-success-dark flex items-center gap-(--space-1)">
-                            <TrendingUp className="h-2.5 w-2.5 md:h-3 md:w-3" />
-                            <span className="text-caption-2 font-bold">{status}</span>
-                        </div>
-                    ) : (
-                        <div className="px-(--space-2) md:px-2.5 py-0.5 md:py-(--space-1) rounded-sm bg-surface-100 dark:bg-surface-300 border border-surface-200 dark:border-surface-400 text-caption-2 font-bold text-surface-600 tracking-wider uppercase">
-                            {status}
-                        </div>
-                    )}
-                </div>
-            </div>
-        </figure>
-    )
-
-    if (highlight) {
-        return <DialogStickyFooterDemo trigger={Content} />
-    }
-
-    return Content
-}
 
 // Animated workout history list
 function WorkoutHistoryList() {
     const containerRef = useRef<HTMLDivElement>(null)
-    const isInView = useInView(containerRef, { once: true, margin: "-50px" })
+    const isInView = useInView(containerRef, { once: true, margin: "-80px" })
 
     return (
         <div ref={containerRef} className="relative flex h-full w-full flex-col">
-            <AnimatedList className="overflow-visible pt-(--space-4)" start={isInView}>
+            <AnimatedList className="overflow-visible pt-(--space-4)" start={isInView} initialItemCount={2}>
                 {notifications.map((item, idx) => (
                     <WorkoutNotification {...item} key={idx} />
                 ))}
