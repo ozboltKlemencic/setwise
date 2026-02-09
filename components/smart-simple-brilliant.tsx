@@ -121,9 +121,9 @@ export default function SmartSimpleBrilliant({
         className="w-full h-full absolute inset-0 pointer-events-none"
       >
         <defs>
-          <linearGradient id="blue-gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+          <linearGradient id="brand-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--brand-500)" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="var(--brand-500)" stopOpacity="0" />
           </linearGradient>
           <clipPath id="graph-line-clip">
             <motion.rect
@@ -141,7 +141,7 @@ export default function SmartSimpleBrilliant({
         {/* Area fill */}
         <motion.path
           d="M0,200 C80,180 120,190 180,140 S300,160 400,100 V300 H0 Z"
-          fill="url(#blue-gradient)"
+          fill="url(#brand-gradient)"
           initial={{ opacity: 0 }}
           animate={{ opacity: isInView ? 1 : 0 }}
           transition={{ duration: 0.3, delay: 0, ease: "easeOut" }}
@@ -151,7 +151,7 @@ export default function SmartSimpleBrilliant({
         <path
           d="M0,200 C80,180 120,190 180,140 S300,160 400,100"
           fill="none"
-          stroke="#3B82F6"
+          stroke="var(--brand-500)"
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -179,7 +179,7 @@ export default function SmartSimpleBrilliant({
           }}
         >
           {/* The vertical dashed line */}
-          <div className="w-px h-full border-l-[1.5px] border-blue-500 border-dashed opacity-50"></div>
+          <div className="w-px h-full border-l-[1.5px] border-brand-500 border-dashed opacity-50"></div>
         </div>
 
         {/* The Point and Tooltip Container */}
@@ -192,23 +192,23 @@ export default function SmartSimpleBrilliant({
           }}
 
         >
-          {/* Main Blue Dot */}
-          <div className="relative w-3 h-3 bg-blue-500 rounded-full ring-4 ring-blue-500/20 shadow-sm z-10 flex items-center justify-center">
-            <div className="w-1 h-1 bg-white rounded-full"></div>
+          {/* Main Dot */}
+          <div className="relative w-3 h-3 bg-brand-500 rounded-full ring-4 ring-brand-500/20 shadow-(--shadow-sm) z-(--z-raised) flex items-center justify-center">
+            <div className="w-1 h-1 bg-card rounded-full"></div>
             {/* Pulsating ring only when at default point */}
             {activePoint.x === 180 && (
-              <div className="absolute inset-0 w-full h-full rounded-full border border-blue-500/30 animate-ping opacity-75 sm:scale-150"></div>
+              <div className="absolute inset-0 w-full h-full rounded-full border border-brand-500/30 animate-ping opacity-75 sm:scale-150"></div>
             )}
           </div>
 
           {/* Tooltip */}
           <div
-            className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 whitespace-nowrap z-20"
+            className="absolute bottom-full mb-(--space-3) left-1/2 -translate-x-1/2 whitespace-nowrap z-(--z-dropdown)"
           >
-            <div className="bg-white text-neutral-700 border border-neutral-300/70 text-[10px] font-medium px-3 py-2 rounded-sm shadow-md flex flex-col gap-0.5 min-w-[100px] transition-all duration-75 text-left">
-              <div className="text-neutral-800  font-semibold mb-0.5 uppercase tracking-wider text-[9px]">Stats</div>
-              <div>Max lift: <span className="font-bold text-neutral-900 tabular-nums">{displayMaxLift} kg</span></div>
-              <div>Volume: <span className="font-bold text-neutral-900 tabular-nums">{displayVolume.toLocaleString()}</span></div>
+            <div className="bg-card/80 backdrop-blur-(--blur-thin) text-surface-700 border border-surface-300/70 text-caption-2 font-medium px-(--space-3) py-(--space-2) rounded-sm shadow-(--shadow-md) flex flex-col gap-0.5 min-w-[100px] transition-all duration-(--duration-instant) text-left">
+              <div className="text-surface-800 font-semibold mb-0.5 uppercase tracking-wider text-caption-2">Stats</div>
+              <div>Max lift: <span className="font-bold text-surface-900 tabular-nums">{displayMaxLift} kg</span></div>
+              <div>Volume: <span className="font-bold text-surface-900 tabular-nums">{displayVolume.toLocaleString()}</span></div>
             </div>
           </div>
         </div>

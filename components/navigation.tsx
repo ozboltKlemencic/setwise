@@ -102,7 +102,7 @@ export default function Navigation() {
                             key={link.href}
                             href={link.href}
                             onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
-                            className={`px-(--space-3) py-(--space-1\.5) duration-(--duration-normal) rounded-full text-footnote font-medium transition-colors ${activeSection === link.href
+                            className={`px-(--space-3) py-(--space-1) duration-(--duration-normal) rounded-full text-footnote font-medium transition-colors ${activeSection === link.href
                                 ? "bg-surface-100/90 border border-border/80 text-foreground"
                                 : "hover:bg-surface-200/60 text-muted-foreground hover:text-foreground"
                                 }`}
@@ -142,7 +142,7 @@ export default function Navigation() {
                             damping: 24,
                             mass: 0.9
                         }}
-                        className="hidden md:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/70 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
+                        className="hidden md:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/40 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
                     >
                         <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
                             <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
@@ -161,7 +161,7 @@ export default function Navigation() {
                                     {activeSection === link.href && (
                                         <motion.div
                                             layoutId="activeNavIndicator"
-                                            className="absolute inset-0 bg-surface-100/90 border border-border/80 rounded-full"
+                                            className="absolute inset-0 bg-surface-100/90 border border-surface-300/40 rounded-full"
                                             transition={{
                                                 type: "spring",
                                                 stiffness: 380,

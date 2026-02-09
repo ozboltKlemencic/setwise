@@ -23,7 +23,7 @@ const Card = forwardRef<HTMLDivElement, { className?: string; children?: React.R
       <div
         ref={ref}
         className={cn(
-          "z-10 flex items-center justify-center bg-white rounded-sm shadow-sm ",
+          "z-(--z-raised) flex items-center justify-center bg-card rounded-sm shadow-(--shadow-sm)",
           className
         )}
       >
@@ -66,13 +66,13 @@ export default function YourWorkInSync({
   return (
     <div
       ref={containerRef}
-      className={cn("relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-[#F7F5F3]", className)}
+      className={cn("relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-surface-50 dark:bg-surface-100", className)}
       style={{ width, height }}
     >
       {/* Dotted Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none"
+      <div className="absolute inset-0 z-(--z-base) pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(#e1e3e6 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(var(--surface-300) 1px, transparent 1px)',
           backgroundSize: '10px 10px',
           maskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)',
           WebkitMaskImage: 'radial-gradient(circle at center, black 25%, transparent 70%)'
@@ -80,11 +80,11 @@ export default function YourWorkInSync({
       </div>
 
       {/* Cards Row */}
-      <div className="flex items-center justify-center gap-12 sm:gap-20 mb-10">
+      <div className="flex items-center justify-center gap-(--space-12) sm:gap-(--space-20) mb-(--space-10)">
         {/* Left Card */}
         <MotionCard
           ref={leftRef}
-          className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300"
+          className="size-12 sm:size-16 text-surface-500/70 opacity-60 border border-surface-300"
           initial={{ opacity: 0.6, scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
@@ -92,10 +92,9 @@ export default function YourWorkInSync({
           <WifiOff className="size-4 sm:size-6" />
         </MotionCard>
 
-
         <MotionCard
           ref={centerRef}
-          className="size-16 sm:size-24 bg-linear-to-tr from-blue-500/10 via-blue-100/5 to-blue-500/10 text-neutral-400 overflow-hidden p-0 relative "
+          className="size-16 sm:size-24 bg-linear-to-tr from-brand-500/10 via-brand-100/5 to-brand-500/10 text-surface-400 overflow-hidden p-0 relative"
           initial={{ opacity: 1, scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
@@ -105,21 +104,21 @@ export default function YourWorkInSync({
             duration={2}
             borderWidth={1}
             size={50}
-            className="from-blue-500/10  via-blue-500 to-blue-500/10 md:from-blue-500/60 md:via-blue-500 md:to-blue-500/60"
+            className="from-brand-500/10 via-brand-500 to-brand-500/10 md:from-brand-500/60 md:via-brand-500 md:to-brand-500/60"
           />
           <BorderBeam
             duration={2}
             delay={1}
             size={50}
             borderWidth={1}
-            className="from-blue-500/10  via-blue-500 to-blue-500/10 md:from-blue-500/60 md:via-blue-500 md:to-blue-500/60"
+            className="from-brand-500/10 via-brand-500 to-brand-500/10 md:from-brand-500/60 md:via-brand-500 md:to-brand-500/60"
           />
         </MotionCard>
 
         {/* Right Card */}
         <MotionCard
           ref={rightRef}
-          className="size-12 sm:size-16 text-neutral-500/70 opacity-60  border border-neutral-300 "
+          className="size-12 sm:size-16 text-surface-500/70 opacity-60 border border-surface-300"
           initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
@@ -131,7 +130,7 @@ export default function YourWorkInSync({
       {/* Connected Badge */}
       <motion.div
         ref={bottomRef}
-        className="z-10 bg-white border opacity-60 border-emerald-200/70 text-neutral-600/80  text-xs font-medium px-4 py-1.5 rounded-md flex items-center justify-center shadow-md"
+        className="z-(--z-raised) bg-card border opacity-60 border-success/20 text-surface-600/80 text-caption-1 font-medium px-(--space-4) py-1.5 rounded-md flex items-center justify-center shadow-(--shadow-md)"
         initial={{ scale: 0.8 }}
         animate={{ scale: isInView ? 1 : 0.9 }}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
@@ -152,8 +151,8 @@ export default function YourWorkInSync({
         endXOffset={XOffset}
         duration={2}
         delay={0}
-        gradientStartColor="#828282"
-        gradientStopColor="#828282"
+        gradientStartColor="var(--surface-500)"
+        gradientStopColor="var(--surface-500)"
         gradientLength={gradientLength}
       />
 
@@ -168,8 +167,8 @@ export default function YourWorkInSync({
         endXOffset={XOffset}
         duration={2}
         delay={1}
-        gradientStartColor="#828282"
-        gradientStopColor="#828282"
+        gradientStartColor="var(--surface-500)"
+        gradientStopColor="var(--surface-500)"
         gradientLength={gradientLength}
       />
 
@@ -185,8 +184,8 @@ export default function YourWorkInSync({
         endXOffset={-XOffset}
         duration={2}
         delay={0}
-        gradientStartColor="#828282"
-        gradientStopColor="#828282"
+        gradientStartColor="var(--surface-500)"
+        gradientStopColor="var(--surface-500)"
         gradientLength={gradientLength}
       />
       <AnimatedBeam
@@ -200,8 +199,8 @@ export default function YourWorkInSync({
         endXOffset={-XOffset}
         duration={2}
         delay={1}
-        gradientStartColor="#828282"
-        gradientStopColor="#828282"
+        gradientStartColor="var(--surface-500)"
+        gradientStopColor="var(--surface-500)"
         gradientLength={gradientLength}
       />
 
@@ -217,8 +216,8 @@ export default function YourWorkInSync({
         endXOffset={0}
         duration={2}
         delay={0}
-        gradientStartColor="#828282"
-        gradientStopColor="#828282"
+        gradientStartColor="var(--surface-500)"
+        gradientStopColor="var(--surface-500)"
         gradientLength={gradientLength}
       />
       <AnimatedBeam
@@ -232,8 +231,8 @@ export default function YourWorkInSync({
         endXOffset={0}
         duration={2}
         delay={1}
-        gradientStartColor="#828282"
-        gradientStopColor="#828282"
+        gradientStartColor="var(--surface-500)"
+        gradientStopColor="var(--surface-500)"
         gradientLength={gradientLength}
       />
     </div >
