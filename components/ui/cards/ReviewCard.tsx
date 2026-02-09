@@ -1,11 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Star } from 'lucide-react';
-
-const DEFAULT_INNER_GRADIENT = 'linear-gradient(to bottom, #4c75fc, #2a52d9)';
 
 interface ReviewCardProps {
     avatarUrl?: string;
-    innerGradient?: string;
     className?: string;
     name?: string;
     role?: string;
@@ -16,7 +13,6 @@ interface ReviewCardProps {
 
 const ReviewCardComponent: React.FC<ReviewCardProps> = ({
     avatarUrl,
-    innerGradient,
     className = '',
     name = 'Jane Doe',
     role = 'CEO',
@@ -24,60 +20,40 @@ const ReviewCardComponent: React.FC<ReviewCardProps> = ({
     reviewText = "SetWise has completely transformed how we manage our business. The insights are invaluable and the automation saves us hours every week.",
     rating = 5,
 }) => {
-
-    const cardRadius = '12px';
-
-    const cardStyle = useMemo(
-        () => ({
-            '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
-            '--card-radius': cardRadius,
-        }),
-        [innerGradient, cardRadius]
-    );
-
     return (
-        <div
-            className={`relative touch-none ${className}`.trim()}
-            style={{ ...cardStyle } as React.CSSProperties}
-        >
-            <div className="relative z-1 group h-full cursor-pointer">
-                <section
-                    className="grid relative overflow-hidden h-full"
-                    style={{
-                        borderRadius: cardRadius,
-                        background: 'rgba(255, 255, 255, 1)', // White background for review card
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-                    }}
-                >
-                    <div className="p-5 flex flex-col justify-between h-full gap-4">
+        <div className={`relative touch-none ${className}`.trim()}>
+            <div className="relative z-(--z-base) group h-full cursor-pointer">
+                <section className="grid relative overflow-hidden h-full rounded-xl bg-card dark:bg-surface-200 border border-surface-200 dark:border-surface-300 shadow-(--shadow-sm)">
+                    <div className="p-(--space-5) flex flex-col justify-between h-full gap-(--space-4)">
 
                         {/* Rating */}
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-(--space-1)" role="img" aria-label={`Rated ${rating} out of 5 stars`}>
                             {Array.from({ length: 5 }).map((_, i) => (
                                 <Star
                                     key={i}
-                                    className={`size-3 ${i < rating ? 'fill-[#FFB800] text-[#FFB800]' : 'fill-gray-200 text-gray-200'}`}
+                                    aria-hidden="true"
+                                    className={`size-3 ${i < rating ? 'fill-star text-star' : 'fill-surface-200 dark:fill-surface-300 text-surface-200 dark:text-surface-300'}`}
                                 />
                             ))}
                         </div>
 
-                        {/* Review Text */}
-                        <p className="text-[#37322F] text-[13px] leading-relaxed font-medium">
-                            "{reviewText}"
+                        {/* Review Text — Apple HIG footnote */}
+                        <p className="text-surface-800 text-footnote leading-relaxed font-medium">
+                            &ldquo;{reviewText}&rdquo;
                         </p>
 
                         {/* User Info */}
-                        <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+                        <div className="flex items-center gap-(--space-3) mt-auto pt-(--space-4) border-t border-surface-200 dark:border-surface-300">
                             {avatarUrl && (
                                 <img
                                     src={avatarUrl}
                                     alt={name}
-                                    className="size-8 rounded-full object-cover bg-gray-100"
+                                    className="size-8 rounded-full object-cover bg-surface-200 dark:bg-surface-300"
                                 />
                             )}
                             <div className="flex flex-col">
-                                <span className="text-sm font-semibold text-[#1F2937]">{name}</span>
-                                <span className="text-xs text-[#6B7280]">{role}, {company}</span>
+                                <span className="text-subheadline font-semibold text-surface-900">{name}</span>
+                                <span className="text-caption-1 text-surface-500">{role}, {company}</span>
                             </div>
                         </div>
 

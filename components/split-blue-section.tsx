@@ -24,7 +24,6 @@ interface TeamMember {
 export default function SplitBlueSection() {
     const t = useTranslations('SplitBlue')
 
-    // Get team members from translations
     const translatedMembers = t.raw('teamMembers') as Array<{ name: string; title: string; handle: string }>
 
     const teamMembers: TeamMember[] = translatedMembers.map((member) => ({
@@ -35,23 +34,32 @@ export default function SplitBlueSection() {
     }))
 
     return (
-        <div className="w-full flex flex-col py-10 md:pt-20 md:pb-10 md:min-h-[600px] lg:flex-row justify-between items-center">
-            <div className="w-full lg:w-1/2 pt-6 md:pt-10 px-6 md:pl-20 pb-10 md:pb-28 md:pr-12 flex flex-col justify-start h-full items-center md:items-start gap-6">
-                <div className="self-stretch flex flex-col justify-start items-center md:items-start gap-3">
-                    <h3 className="text-center md:text-left text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight">
-                        {t('headline')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('headlineHighlight')}</span>{t('headlineRest')}
+        <div className="w-full flex flex-col py-(--space-10) md:pt-(--space-20) md:pb-(--space-10) md:min-h-150 lg:flex-row justify-between items-center">
+
+            {/* ── Text Section ── */}
+            <div className="w-full lg:w-1/2 pt-(--space-6) md:pt-(--space-10) px-(--space-6) md:pl-(--space-20) pb-(--space-10) md:pb-28 md:pr-(--space-12) flex flex-col justify-start h-full items-center md:items-start gap-(--space-6)">
+                <div className="self-stretch flex flex-col justify-start items-center md:items-start gap-(--space-3)">
+
+                    {/* Title — Apple HIG responsive typography */}
+                    <h3 className="text-center md:text-left text-surface-900 text-title-1 md:text-large-title lg:text-display font-semibold font-sans">
+                        {t('headline')} <span className="font-bold primaryGradient">{t('headlineHighlight')}</span>{t('headlineRest')}
                     </h3>
-                    <p className="self-stretch text-center md:text-left text-[#605A57] text-base leading-7 font-sans font-medium">
+
+                    {/* Description — Apple HIG subheadline/callout */}
+                    <p className="self-stretch text-center md:text-left text-surface-600 text-subheadline md:text-callout font-sans font-medium">
                         {t('description')}
                     </p>
                 </div>
-                <div className="w-full max-w-[497px] flex flex-col justify-start items-center md:items-start gap-12">
-                    <div className="flex justify-start items-center gap-4">
+
+                <div className="w-full max-w-124.25 flex flex-col justify-start items-center md:items-start gap-(--space-12)">
+                    <div className="flex justify-start items-center gap-(--space-4)">
                         <DownloadButton openBetaDialog={true} text={t('button')} />
                     </div>
                 </div>
             </div>
-            <div className="w-full lg:w-1/2 relative overflow-hidden mr-[2px]">
+
+            {/* ── Carousel Section ── */}
+            <div className="w-full lg:w-1/2 relative overflow-hidden mr-0.5">
                 <Carousel
                     opts={{
                         align: "start",
@@ -59,9 +67,9 @@ export default function SplitBlueSection() {
                     }}
                     className="w-full overflow-hidden"
                 >
-                    <CarouselContent className="px-2">
+                    <CarouselContent className="px-(--space-2)">
                         {teamMembers.map((member, index) => (
-                            <CarouselItem key={index} className="basis-[80%] md:basis-[55%] px-4 py-2">
+                            <CarouselItem key={index} className="basis-[80%] md:basis-[55%] px-(--space-4) py-(--space-2)">
                                 <ProfileCard
                                     avatarUrl={member.avatarUrl}
                                     miniAvatarUrl={member.miniAvatarUrl}
@@ -76,13 +84,14 @@ export default function SplitBlueSection() {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <div className="flex justify-end gap-2 mt-6 md:mt-8 pr-4">
-                        <CarouselPrevious className="static translate-y-0 rounded-xs cursor-pointer translate-x-0 h-10 w-10 border-gray-200 hover:bg-gray-50" />
-                        <CarouselNext className="static translate-y-0 rounded-xs cursor-pointer translate-x-0 h-10 w-10 border-gray-200 hover:bg-gray-50" />
+
+                    {/* Carousel controls */}
+                    <div className="flex justify-end gap-(--space-2) mt-(--space-6) md:mt-(--space-8) pr-(--space-4)">
+                        <CarouselPrevious className="static translate-y-0 rounded-xs cursor-pointer translate-x-0 size-10 border-surface-200 dark:border-surface-300 hover:bg-surface-50 dark:hover:bg-surface-200 transition-colors duration-(--duration-fast) ease-(--ease-apple)" />
+                        <CarouselNext className="static translate-y-0 rounded-xs cursor-pointer translate-x-0 size-10 border-surface-200 dark:border-surface-300 hover:bg-surface-50 dark:hover:bg-surface-200 transition-colors duration-(--duration-fast) ease-(--ease-apple)" />
                     </div>
                 </Carousel>
             </div>
-
         </div>
     );
 }

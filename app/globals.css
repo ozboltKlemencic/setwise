@@ -49,17 +49,28 @@
      Poimenovanje "brand" (ne "blue") = scalable za
      katerikoli projekt (zamenjaj z rdečo, zeleno...).
      ---------------------------------------------------------- */
-  --brand-50:  #E6F0FF;   /* Use: Light tinted bg (hover states, badge bg, selected rows) */
-  --brand-100: #CCE0FF;   /* Use: Soft bg (info panels, feature highlights, tag bg) */
-  --brand-200: #99C2FF;   /* Use: Light borders, focus ring bg, subtle accents */
-  --brand-300: #66A3FF;   /* Use: Secondary interactive, light links, progress bars */
-  --brand-400: #3385FF;   /* Use: Hover state na primary buttons, gradient start */
-  --brand-500: #0063FF;   /* Use: PRIMARY — buttons, links, active tabs, accent */
-  --brand-600: #0052D6;   /* Use: Hover on primary (darker), pressed state */
-  --brand-700: #0042AD;   /* Use: Active/pressed state, dark accents */
-  --brand-800: #003285;   /* Use: Dark brand surfaces, footer CTAs */
-  --brand-900: #00215C;   /* Use: Darkest brand — ultra emphasis only */
-  --brand-950: #001133;   /* Use: Near-black brand — extreme contrast needs */
+  --brand-50: #E6F0FF;
+  /* Use: Light tinted bg (hover states, badge bg, selected rows) */
+  --brand-100: #CCE0FF;
+  /* Use: Soft bg (info panels, feature highlights, tag bg) */
+  --brand-200: #99C2FF;
+  /* Use: Light borders, focus ring bg, subtle accents */
+  --brand-300: #66A3FF;
+  /* Use: Secondary interactive, light links, progress bars */
+  --brand-400: #3385FF;
+  /* Use: Hover state na primary buttons, gradient start */
+  --brand-500: #0063FF;
+  /* Use: PRIMARY — buttons, links, active tabs, accent */
+  --brand-600: #0052D6;
+  /* Use: Hover on primary (darker), pressed state */
+  --brand-700: #0042AD;
+  /* Use: Active/pressed state, dark accents */
+  --brand-800: #003285;
+  /* Use: Dark brand surfaces, footer CTAs */
+  --brand-900: #00215C;
+  /* Use: Darkest brand — ultra emphasis only */
+  --brand-950: #001133;
+  /* Use: Near-black brand — extreme contrast needs */
 
   /* ----------------------------------------------------------
      1B. SURFACE — Unified Gray Scale
@@ -75,17 +86,28 @@
        --brand-*   → interaktivno (buttons, links, accent)
        --surface-* → vse ostalo (bg, text, borders, UI)
      ---------------------------------------------------------- */
-  --surface-50:  #FAFAFA;  /* Use: Hover bg na white, subtle highlight, off-white */
-  --surface-100: #F5F5F5;  /* Use: MAIN APP BACKGROUND — default page canvas */
-  --surface-200: #E5E5E5;  /* Use: Input borders, dividers, shimmer bg, hover bg */
-  --surface-300: #D4D4D4;  /* Use: BORDERS — card borders, separators, disabled borders */
-  --surface-400: #A3A3A3;  /* Use: Placeholder text, disabled icons, muted dividers */
-  --surface-500: #737373;  /* Use: Secondary icons, helper text, footnotes */
-  --surface-600: #525252;  /* Use: Muted labels, captions, timestamps, form labels */
-  --surface-700: #404040;  /* Use: BODY TEXT — paragraphs, descriptions, footer text */
-  --surface-800: #262626;  /* Use: SECTION HEADINGS — h2, h3, emphasized text */
-  --surface-900: #171717;  /* Use: PRIMARY TEXT — h1, buttons, nav links, strong text */
-  --surface-950: #0A0A0A;  /* Use: Hover on surface-900, absolute maximum contrast */
+  --surface-50: #FAFAFA;
+  /* Use: Hover bg na white, subtle highlight, off-white */
+  --surface-100: #F5F5F5;
+  /* Use: MAIN APP BACKGROUND — default page canvas */
+  --surface-200: #E5E5E5;
+  /* Use: Input borders, dividers, shimmer bg, hover bg */
+  --surface-300: #D4D4D4;
+  /* Use: BORDERS — card borders, separators, disabled borders */
+  --surface-400: #A3A3A3;
+  /* Use: Placeholder text, disabled icons, muted dividers */
+  --surface-500: #737373;
+  /* Use: Secondary icons, helper text, footnotes */
+  --surface-600: #525252;
+  /* Use: Muted labels, captions, timestamps, form labels */
+  --surface-700: #404040;
+  /* Use: BODY TEXT — paragraphs, descriptions, footer text */
+  --surface-800: #262626;
+  /* Use: SECTION HEADINGS — h2, h3, emphasized text */
+  --surface-900: #171717;
+  /* Use: PRIMARY TEXT — h1, buttons, nav links, strong text */
+  --surface-950: #0A0A0A;
+  /* Use: Hover on surface-900, absolute maximum contrast */
 
   /* ----------------------------------------------------------
      1C. SEMANTIC COLORS — Success, Warning, Error, Info
@@ -93,23 +115,36 @@
      Temelji na Apple HIG system colors.
      VEDNO dodaj ikone poleg barv (accessibility — WCAG).
      ---------------------------------------------------------- */
-  --success:      #34C759;  /* Use: Success states, checkmarks, confirmed badges */
-  --success-light:#DCFCE7;  /* Use: Success bg (toast, alert, badge background) */
-  --success-dark: #166534;  /* Use: Success text na light bg */
+  --success: #34C759;
+  /* Use: Success states, checkmarks, confirmed badges */
+  --success-light:#DCFCE7;
+  /* Use: Success bg (toast, alert, badge background) */
+  --success-dark: #166534;
+  /* Use: Success text na light bg */
 
-  --warning:      #FF9500;  /* Use: Warning states, attention needed, pending */
-  --warning-light:#FFF7ED;  /* Use: Warning bg (alert, banner background) */
-  --warning-dark: #9A3412;  /* Use: Warning text na light bg */
+  --warning: #FF9500;
+  /* Use: Warning states, attention needed, pending */
+  --warning-light:#FFF7ED;
+  /* Use: Warning bg (alert, banner background) */
+  --warning-dark: #9A3412;
+  /* Use: Warning text na light bg */
 
-  --error:        #FF3B30;  /* Use: Error states, destructive actions, validation */
-  --error-light:  #FEF2F2;  /* Use: Error bg (form validation, alert background) */
-  --error-dark:   #991B1B;  /* Use: Error text na light bg */
+  --error: #FF3B30;
+  /* Use: Error states, destructive actions, validation */
+  --error-light: #FEF2F2;
+  /* Use: Error bg (form validation, alert background) */
+  --error-dark: #991B1B;
+  /* Use: Error text na light bg */
 
-  --info:         #007AFF;  /* Use: Info states, tips, help text, notifications */
-  --info-light:   #EFF6FF;  /* Use: Info bg (info panels, tooltips) */
-  --info-dark:    #1E40AF;  /* Use: Info text na light bg */
+  --info: #007AFF;
+  /* Use: Info states, tips, help text, notifications */
+  --info-light: #EFF6FF;
+  /* Use: Info bg (info panels, tooltips) */
+  --info-dark: #1E40AF;
+  /* Use: Info text na light bg */
 
-  --star:         #fce412;  /* Use: Star rating fill color */
+  --star: #fce412;
+  /* Use: Star rating fill color */
 
   /* ----------------------------------------------------------
      1D. SHADCN/UI COMPATIBILITY
@@ -118,25 +153,25 @@
      Preslikane na naše brand/surface tokene.
      NE spreminjaj imen — samo override vrednosti.
      ---------------------------------------------------------- */
-  --background:           var(--surface-100);
-  --foreground:           var(--surface-900);
-  --card:                 #FFFFFF;
-  --card-foreground:      var(--surface-900);
-  --popover:              #FFFFFF;
-  --popover-foreground:   var(--surface-900);
-  --primary:              var(--brand-500);
-  --primary-foreground:   #FFFFFF;
-  --secondary:            var(--surface-100);
+  --background: var(--surface-100);
+  --foreground: var(--surface-900);
+  --card: #FFFFFF;
+  --card-foreground: var(--surface-900);
+  --popover: #FFFFFF;
+  --popover-foreground: var(--surface-900);
+  --primary: var(--brand-500);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--surface-100);
   --secondary-foreground: var(--surface-900);
-  --muted:                var(--surface-100);
-  --muted-foreground:     var(--surface-700);
-  --accent:               var(--surface-100);
-  --accent-foreground:    var(--surface-900);
-  --destructive:          var(--error);
+  --muted: var(--surface-100);
+  --muted-foreground: var(--surface-700);
+  --accent: var(--surface-100);
+  --accent-foreground: var(--surface-900);
+  --destructive: var(--error);
   --destructive-foreground: #FFFFFF;
-  --border:               var(--surface-300);
-  --input:                var(--surface-200);
-  --ring:                 var(--brand-500);
+  --border: var(--surface-300);
+  --input: var(--surface-200);
+  --ring: var(--brand-500);
 
   /* Charts */
   --chart-1: var(--brand-500);
@@ -146,14 +181,14 @@
   --chart-5: var(--info);
 
   /* Sidebar */
-  --sidebar:                    var(--surface-50);
-  --sidebar-foreground:         var(--surface-900);
-  --sidebar-primary:            var(--brand-500);
+  --sidebar: var(--surface-50);
+  --sidebar-foreground: var(--surface-900);
+  --sidebar-primary: var(--brand-500);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent:             var(--surface-100);
-  --sidebar-accent-foreground:  var(--surface-900);
-  --sidebar-border:             var(--surface-300);
-  --sidebar-ring:               var(--brand-500);
+  --sidebar-accent: var(--surface-100);
+  --sidebar-accent-foreground: var(--surface-900);
+  --sidebar-border: var(--surface-300);
+  --sidebar-ring: var(--brand-500);
 
   /* ----------------------------------------------------------
      1E. BORDER RADIUS
@@ -168,7 +203,8 @@
      hero sections    → 2xl+ (18px+)
      pills/avatars    → full (9999px)
      ---------------------------------------------------------- */
-  --radius: 0.625rem;    /* 10px — base unit */
+  --radius: 0.625rem;
+  /* 10px — base unit */
 
   /* ----------------------------------------------------------
      1F. SHADOWS
@@ -184,11 +220,15 @@
      xl  → Hero elements, featured cards, dragged items
      2xl → Full-page overlays, dramatic depth
      ---------------------------------------------------------- */
-  --shadow-xs:  0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-sm:  0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
-  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08),
+  0 1px 2px -1px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08),
+  0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08),
+  0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08),
+  0 8px 10px -6px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 
   /* ----------------------------------------------------------
@@ -198,9 +238,22 @@
      --font-instrument-serif → Accent / editorial headings
      --font-mono             → Code blocks, technical data
      ---------------------------------------------------------- */
-  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-instrument-serif: "Instrument Serif", ui-serif, serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-inter: "Inter",
+  ui-sans-serif,
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  sans-serif;
+  --font-instrument-serif: "Instrument Serif",
+  ui-serif,
+  serif;
+  --font-mono: ui-monospace,
+  SFMono-Regular,
+  "SF Mono",
+  Consolas,
+  "Liberation Mono",
+  Menlo,
+  monospace;
 
   /* ----------------------------------------------------------
      1H. TRANSITIONS — Timing Tokens
@@ -214,12 +267,14 @@
      Apple HIG: 200ms = sweet spot za most transitions.
      ---------------------------------------------------------- */
   --duration-instant: 100ms;
-  --duration-fast:    150ms;
-  --duration-normal:  200ms;
-  --duration-smooth:  300ms;
-  --duration-slow:    500ms;
-  --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);         /* Standard Apple easing */
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bounce/spring feel */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-smooth: 300ms;
+  --duration-slow: 500ms;
+  --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Standard Apple easing */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Bounce/spring feel */
 
   /* ----------------------------------------------------------
      1I. Z-INDEX SCALE
@@ -227,16 +282,26 @@
      Poenotena z-index lestvica za predvidljivo layering.
      Uporabi var(--z-*) ali direktno Tailwind z-* utilities.
      ---------------------------------------------------------- */
-  --z-below:    -1;    /* Use: Background decorations, pseudo-elements behind */
-  --z-base:      0;    /* Use: Default stacking context */
-  --z-raised:   10;    /* Use: Cards, elevated surfaces, hover-lift */
-  --z-dropdown: 20;    /* Use: Dropdowns, tooltips, popovers */
-  --z-sticky:   30;    /* Use: Sticky headers, floating action buttons */
-  --z-fixed:    40;    /* Use: Fixed navigation, sidebars */
-  --z-overlay:  50;    /* Use: Modal overlays, backdrop dimming */
-  --z-modal:    60;    /* Use: Modal dialogs, sheets, drawers */
-  --z-toast:    70;    /* Use: Toast notifications, snackbars, alerts */
-  --z-max:      99;    /* Use: Loading screens, critical full-screen overlays */
+  --z-below: -1;
+  /* Use: Background decorations, pseudo-elements behind */
+  --z-base: 0;
+  /* Use: Default stacking context */
+  --z-raised: 10;
+  /* Use: Cards, elevated surfaces, hover-lift */
+  --z-dropdown: 20;
+  /* Use: Dropdowns, tooltips, popovers */
+  --z-sticky: 30;
+  /* Use: Sticky headers, floating action buttons */
+  --z-fixed: 40;
+  /* Use: Fixed navigation, sidebars */
+  --z-overlay: 50;
+  /* Use: Modal overlays, backdrop dimming */
+  --z-modal: 60;
+  /* Use: Modal dialogs, sheets, drawers */
+  --z-toast: 70;
+  /* Use: Toast notifications, snackbars, alerts */
+  --z-max: 99;
+  /* Use: Loading screens, critical full-screen overlays */
 
   /* ----------------------------------------------------------
      1J. SPACING TOKENS — 8pt Grid System (Apple HIG)
@@ -263,22 +328,38 @@
        Vertical:   py-12 → md:py-16 → lg:py-24
        Horizontal: px-4  → md:px-6  → lg:px-8
      ---------------------------------------------------------- */
-  --space-1:   0.25rem;  /*  4px — icon gaps, micro spacing */
-  --space-1\.5: 0.375rem; /*  6px — tight button py (Button SM), compact gaps */
-  --space-2:   0.5rem;   /*  8px — BASE UNIT, tight padding */
-  --space-2\.5: 0.625rem; /* 10px — input py, nav compact padding */
-  --space-3:   0.75rem;  /* 12px — small component gaps, button py */
-  --space-4:   1rem;     /* 16px — standard padding, mobile margins */
-  --space-5:   1.25rem;  /* 20px — medium gaps */
-  --space-6:   1.5rem;   /* 24px — card padding, section inner gaps */
-  --space-8:   2rem;     /* 32px — large gaps, tablet margins */
-  --space-9:   2.25rem;  /* 36px — compact buttons, close btn, small icon btn */
-  --space-10:  2.5rem;   /* 40px — between major components */
-  --space-12: 3rem;     /* 48px — mobile section padding (py-12) */
-  --space-16: 4rem;     /* 64px — tablet section padding (py-16) */
-  --space-20: 5rem;     /* 80px — major section divisions */
-  --space-24: 6rem;     /* 96px — desktop section padding (py-24) */
-  --space-32: 8rem;     /* 128px — jumbo spacing (landing hero) */
+  --space-1: 0.25rem;
+  /*  4px — icon gaps, micro spacing */
+  --space-1\.5: 0.375rem;
+  /*  6px — tight button py (Button SM), compact gaps */
+  --space-2: 0.5rem;
+  /*  8px — BASE UNIT, tight padding */
+  --space-2\.5: 0.625rem;
+  /* 10px — input py, nav compact padding */
+  --space-3: 0.75rem;
+  /* 12px — small component gaps, button py */
+  --space-4: 1rem;
+  /* 16px — standard padding, mobile margins */
+  --space-5: 1.25rem;
+  /* 20px — medium gaps */
+  --space-6: 1.5rem;
+  /* 24px — card padding, section inner gaps */
+  --space-8: 2rem;
+  /* 32px — large gaps, tablet margins */
+  --space-9: 2.25rem;
+  /* 36px — compact buttons, close btn, small icon btn */
+  --space-10: 2.5rem;
+  /* 40px — between major components */
+  --space-12: 3rem;
+  /* 48px — mobile section padding (py-12) */
+  --space-16: 4rem;
+  /* 64px — tablet section padding (py-16) */
+  --space-20: 5rem;
+  /* 80px — major section divisions */
+  --space-24: 6rem;
+  /* 96px — desktop section padding (py-24) */
+  --space-32: 8rem;
+  /* 128px — jumbo spacing (landing hero) */
 
   /* ----------------------------------------------------------
      1K. LINE HEIGHTS — Standalone Scale
@@ -292,13 +373,20 @@
      Uporaba: class="leading-[var(--leading-snug)]"
      ali pa Tailwind leading-tight, leading-normal itd.
      ---------------------------------------------------------- */
-  --leading-none:     1;      /* Use: Display text, hero headlines (48px+) */
-  --leading-tight:    1.15;   /* Use: Large titles, display-sm (36px) */
-  --leading-snug:     1.25;   /* Use: Title 1–3, section headings (20–34px) */
-  --leading-normal:   1.4;    /* Use: Body text, default paragraphs (15–17px) */
-  --leading-relaxed:  1.5;    /* Use: Subheadline, callout, captions */
-  --leading-loose:    1.625;  /* Use: Long-form reading, prose, articles */
-  --leading-spacious: 1.75;   /* Use: Large body text, accessibility mode */
+  --leading-none: 1;
+  /* Use: Display text, hero headlines (48px+) */
+  --leading-tight: 1.15;
+  /* Use: Large titles, display-sm (36px) */
+  --leading-snug: 1.25;
+  /* Use: Title 1–3, section headings (20–34px) */
+  --leading-normal: 1.4;
+  /* Use: Body text, default paragraphs (15–17px) */
+  --leading-relaxed: 1.5;
+  /* Use: Subheadline, callout, captions */
+  --leading-loose: 1.625;
+  /* Use: Long-form reading, prose, articles */
+  --leading-spacious: 1.75;
+  /* Use: Large body text, accessibility mode */
 
   /* ----------------------------------------------------------
      1L. LETTER SPACING — Standalone Scale
@@ -313,14 +401,22 @@
      Uporaba: class="tracking-[var(--tracking-tight)]"
      ali pa Tailwind tracking-tight, tracking-wide itd.
      ---------------------------------------------------------- */
-  --tracking-tightest: -0.05em;  /* Use: Display XL/LG (60–72px) */
-  --tracking-tighter:  -0.04em;  /* Use: Display, Large Title (34–48px) */
-  --tracking-tight:    -0.02em;  /* Use: Title 1–3 (20–28px) */
-  --tracking-snug:     -0.01em;  /* Use: Headline (17px semibold) */
-  --tracking-normal:    0em;     /* Use: Body, Callout, Subheadline (15–17px) */
-  --tracking-wide:      0.01em;  /* Use: Captions, Footnotes (11–13px) */
-  --tracking-wider:     0.05em;  /* Use: ALL CAPS labels, overline text */
-  --tracking-widest:    0.1em;   /* Use: ALL CAPS large, spaced-out headings */
+  --tracking-tightest: -0.05em;
+  /* Use: Display XL/LG (60–72px) */
+  --tracking-tighter: -0.04em;
+  /* Use: Display, Large Title (34–48px) */
+  --tracking-tight: -0.02em;
+  /* Use: Title 1–3 (20–28px) */
+  --tracking-snug: -0.01em;
+  /* Use: Headline (17px semibold) */
+  --tracking-normal: 0em;
+  /* Use: Body, Callout, Subheadline (15–17px) */
+  --tracking-wide: 0.01em;
+  /* Use: Captions, Footnotes (11–13px) */
+  --tracking-wider: 0.05em;
+  /* Use: ALL CAPS labels, overline text */
+  --tracking-widest: 0.1em;
+  /* Use: ALL CAPS large, spaced-out headings */
 
   /* ----------------------------------------------------------
      1M. CONTAINER MAX-WIDTHS
@@ -329,20 +425,30 @@
      Uporaba: class="max-w-[var(--container-lg)] mx-auto"
      ali Tailwind max-w-screen-lg, max-w-prose itd.
      ---------------------------------------------------------- */
-  --container-sm:    640px;   /* Use: Narrow content (login, settings, forms) */
-  --container-md:    768px;   /* Use: Medium content (blog posts, docs) */
-  --container-lg:    1152px;  /* Use: Standard content area (most pages) 6xl = 1152px */
-  --container-xl:    1280px;  /* Use: Wide content (dashboards, galleries) */
-  --container-2xl:   1536px;  /* Use: Extra wide (admin panels, data tables) */
-  --container-prose: 65ch;    /* Use: Optimal reading width for text blocks */
+  --container-sm: 640px;
+  /* Use: Narrow content (login, settings, forms) */
+  --container-md: 768px;
+  /* Use: Medium content (blog posts, docs) */
+  --container-lg: 1152px;
+  /* Use: Standard content area (most pages) 6xl = 1152px */
+  --container-xl: 1280px;
+  /* Use: Wide content (dashboards, galleries) */
+  --container-2xl: 1536px;
+  /* Use: Extra wide (admin panels, data tables) */
+  --container-prose: 65ch;
+  /* Use: Optimal reading width for text blocks */
 
   /* ----------------------------------------------------------
      1N. OPACITY SCALE
      ───────────────────────────────────────────────────────── */
-  --opacity-disabled: 0.5;   /* Use: Disabled buttons, inputs, inactive elements */
-  --opacity-muted:    0.7;   /* Use: Muted icons, secondary images */
-  --opacity-overlay:  0.4;   /* Use: Modal backdrop overlay (bg-black/40) */
-  --opacity-hover:    0.8;   /* Use: Hover dimming/fading effect */
+  --opacity-disabled: 0.5;
+  /* Use: Disabled buttons, inputs, inactive elements */
+  --opacity-muted: 0.7;
+  /* Use: Muted icons, secondary images */
+  --opacity-overlay: 0.4;
+  /* Use: Modal backdrop overlay (bg-black/40) */
+  --opacity-hover: 0.8;
+  /* Use: Hover dimming/fading effect */
 
   /* ----------------------------------------------------------
      1O. BLUR / MATERIAL TOKENS — Apple HIG Materials
@@ -364,13 +470,20 @@
      │ blur-(--blur-ultra)          → Heavy ambient glow        │
      └──────────────────────────────────────────────────────────┘
      ---------------------------------------------------------- */
-  --blur-thin:    4px;   /* Use: Ultra-thin material — subtle mobile nav frost, light overlay */
-  --blur-regular: 8px;   /* Use: Regular material — standard backdrop, btn blur */
-  --blur-medium:  12px;  /* Use: Medium material — decorative glow, card overlay */
-  --blur-thick:   16px;  /* Use: Thick material — floating nav bg, elevated overlay */
-  --blur-ultra:   24px;  /* Use: Ultra-thick — heavy ambient glow, dramatic blur */
-  --blur-heavy:   40px;  /* Use: Extreme decorative — feature section glow, hero ambient */
-  --blur-glass:   64px;  /* Use: Glass effect — CTA button inner glass, frosted panel */
+  --blur-thin: 4px;
+  /* Use: Ultra-thin material — subtle mobile nav frost, light overlay */
+  --blur-regular: 8px;
+  /* Use: Regular material — standard backdrop, btn blur */
+  --blur-medium: 12px;
+  /* Use: Medium material — decorative glow, card overlay */
+  --blur-thick: 16px;
+  /* Use: Thick material — floating nav bg, elevated overlay */
+  --blur-ultra: 24px;
+  /* Use: Ultra-thick — heavy ambient glow, dramatic blur */
+  --blur-heavy: 40px;
+  /* Use: Extreme decorative — feature section glow, hero ambient */
+  --blur-glass: 64px;
+  /* Use: Glass effect — CTA button inner glass, frosted panel */
 }
 
 
@@ -388,6 +501,7 @@
    ============================================================ */
 
 .dark {
+
   /* Gradient utility */
   .primaryGradient {
     background: linear-gradient(to right, var(--brand-400), var(--brand-600));
@@ -397,12 +511,13 @@
   }
 
   /* Brand — bolj vibrantne v dark mode (Apple HIG princip) */
-  --brand-50:  #001A42;
+  --brand-50: #001A42;
   --brand-100: #002266;
   --brand-200: #003399;
   --brand-300: #0044CC;
   --brand-400: #0055E6;
-  --brand-500: #0063FF;   /* ← vibrant primary v dark mode */
+  --brand-500: #0063FF;
+  /* ← vibrant primary v dark mode */
   --brand-600: #66A3FF;
   --brand-700: #99C2FF;
   --brand-800: #CCE0FF;
@@ -418,76 +533,91 @@
 
      Apple HIG princip: "elevated = lighter"
      ---------------------------------------------------------- */
-  --surface-50:  #0A0A0A;  /* Use: Elevated sidebar bg, darkest surface */
-  --surface-100: #171717;  /* Use: DARK BG — main app background */
-  --surface-200: #262626;  /* Use: Card bg, elevated surface level 1 */
-  --surface-300: #404040;  /* Use: BORDERS — dividers, separators */
-  --surface-400: #525252;  /* Use: Subtle borders, muted dividers */
-  --surface-500: #737373;  /* Use: Placeholder, disabled text */
-  --surface-600: #A3A3A3;  /* Use: Muted labels, captions, meta info */
-  --surface-700: #D4D4D4;  /* Use: BODY TEXT — paragraphs, descriptions */
-  --surface-800: #E5E5E5;  /* Use: SECTION HEADINGS — h2, h3 */
-  --surface-900: #F5F5F5;  /* Use: PRIMARY TEXT — h1, buttons, navigation */
-  --surface-950: #FAFAFA;  /* Use: Highest contrast text, pure white text */
+  --surface-50: #0A0A0A;
+  /* Use: Elevated sidebar bg, darkest surface */
+  --surface-100: #171717;
+  /* Use: DARK BG — main app background */
+  --surface-200: #262626;
+  /* Use: Card bg, elevated surface level 1 */
+  --surface-300: #404040;
+  /* Use: BORDERS — dividers, separators */
+  --surface-400: #525252;
+  /* Use: Subtle borders, muted dividers */
+  --surface-500: #737373;
+  /* Use: Placeholder, disabled text */
+  --surface-600: #A3A3A3;
+  /* Use: Muted labels, captions, meta info */
+  --surface-700: #D4D4D4;
+  /* Use: BODY TEXT — paragraphs, descriptions */
+  --surface-800: #E5E5E5;
+  /* Use: SECTION HEADINGS — h2, h3 */
+  --surface-900: #F5F5F5;
+  /* Use: PRIMARY TEXT — h1, buttons, navigation */
+  --surface-950: #FAFAFA;
+  /* Use: Highest contrast text, pure white text */
 
   /* Semantic — vibrant za dark mode (Apple HIG) */
-  --success:      #30D158;
+  --success: #30D158;
   --success-light: #052E16;
-  --success-dark:  #BBF7D0;
+  --success-dark: #BBF7D0;
 
-  --warning:      #FF9F0A;
+  --warning: #FF9F0A;
   --warning-light: #431407;
-  --warning-dark:  #FED7AA;
+  --warning-dark: #FED7AA;
 
-  --error:        #FF453A;
-  --error-light:  #450A0A;
-  --error-dark:   #FECACA;
+  --error: #FF453A;
+  --error-light: #450A0A;
+  --error-dark: #FECACA;
 
-  --info:         #0A84FF;
-  --info-light:   #172554;
-  --info-dark:    #BFDBFE;
+  --info: #0A84FF;
+  --info-light: #172554;
+  --info-dark: #BFDBFE;
 
-  --star:         #FFD60A;
+  --star: #FFD60A;
 
   /* shadcn/ui preslikava za dark mode */
-  --background:           var(--surface-100);
-  --foreground:           var(--surface-900);
-  --card:                 var(--surface-200);
-  --card-foreground:      var(--surface-900);
-  --popover:              var(--surface-200);
-  --popover-foreground:   var(--surface-900);
-  --primary:              var(--brand-500);
-  --primary-foreground:   #FFFFFF;
-  --secondary:            var(--surface-200);
+  --background: var(--surface-100);
+  --foreground: var(--surface-900);
+  --card: var(--surface-200);
+  --card-foreground: var(--surface-900);
+  --popover: var(--surface-200);
+  --popover-foreground: var(--surface-900);
+  --primary: var(--brand-500);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--surface-200);
   --secondary-foreground: var(--surface-900);
-  --muted:                var(--surface-200);
-  --muted-foreground:     var(--surface-600);
-  --accent:               var(--surface-200);
-  --accent-foreground:    var(--surface-900);
-  --destructive:          var(--error);
+  --muted: var(--surface-200);
+  --muted-foreground: var(--surface-600);
+  --accent: var(--surface-200);
+  --accent-foreground: var(--surface-900);
+  --destructive: var(--error);
   --destructive-foreground: #FFFFFF;
-  --border:               var(--surface-300);
-  --input:                var(--surface-300);
-  --ring:                 var(--brand-500);
+  --border: var(--surface-300);
+  --input: var(--surface-300);
+  --ring: var(--brand-500);
 
   /* Sidebar dark */
-  --sidebar:                    var(--surface-50);
-  --sidebar-foreground:         var(--surface-900);
-  --sidebar-primary:            var(--brand-500);
+  --sidebar: var(--surface-50);
+  --sidebar-foreground: var(--surface-900);
+  --sidebar-primary: var(--brand-500);
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent:             var(--surface-200);
-  --sidebar-accent-foreground:  var(--surface-900);
-  --sidebar-border:             var(--surface-300);
-  --sidebar-ring:               var(--brand-500);
+  --sidebar-accent: var(--surface-200);
+  --sidebar-accent-foreground: var(--surface-900);
+  --sidebar-border: var(--surface-300);
+  --sidebar-ring: var(--brand-500);
 
   /* Shadows — večja opacity v dark mode
      V dark mode shadows so manj vidni zato uporabi bg elevation
      namesto shadow-sm uporabi bg-surface-200 za depth efekt */
-  --shadow-xs:  0 1px 2px 0 rgba(0, 0, 0, 0.15);
-  --shadow-sm:  0 1px 3px 0 rgba(0, 0, 0, 0.25), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
-  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
-  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
-  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.25),
+  0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+  0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35),
+  0 4px 6px -4px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
+  0 8px 10px -6px rgba(0, 0, 0, 0.25);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
@@ -618,7 +748,7 @@
   --font-size-display-xl--letter-spacing: -0.05em;
 
   /* ---- Brand Colors ---- */
-  --color-brand-50:  var(--brand-50);
+  --color-brand-50: var(--brand-50);
   --color-brand-100: var(--brand-100);
   --color-brand-200: var(--brand-200);
   --color-brand-300: var(--brand-300);
@@ -631,7 +761,7 @@
   --color-brand-950: var(--brand-950);
 
   /* ---- Surface Scale (unified gray) ---- */
-  --color-surface-50:  var(--surface-50);
+  --color-surface-50: var(--surface-50);
   --color-surface-100: var(--surface-100);
   --color-surface-200: var(--surface-200);
   --color-surface-300: var(--surface-300);
@@ -644,19 +774,19 @@
   --color-surface-950: var(--surface-950);
 
   /* ---- Semantic Colors ---- */
-  --color-success:       var(--success);
+  --color-success: var(--success);
   --color-success-light: var(--success-light);
-  --color-success-dark:  var(--success-dark);
-  --color-warning:       var(--warning);
+  --color-success-dark: var(--success-dark);
+  --color-warning: var(--warning);
   --color-warning-light: var(--warning-light);
-  --color-warning-dark:  var(--warning-dark);
-  --color-error:         var(--error);
-  --color-error-light:   var(--error-light);
-  --color-error-dark:    var(--error-dark);
-  --color-info:          var(--info);
-  --color-info-light:    var(--info-light);
-  --color-info-dark:     var(--info-dark);
-  --color-star:          var(--star);
+  --color-warning-dark: var(--warning-dark);
+  --color-error: var(--error);
+  --color-error-light: var(--error-light);
+  --color-error-dark: var(--error-dark);
+  --color-info: var(--info);
+  --color-info-light: var(--info-light);
+  --color-info-dark: var(--info-dark);
+  --color-star: var(--star);
 
   /* ---- shadcn/ui Compatibility ---- */
   --color-background: var(--background);
@@ -721,40 +851,84 @@
   }
 
   @keyframes spin-around {
-    0% { transform: translateZ(0) rotate(0); }
-    15%, 35% { transform: translateZ(0) rotate(90deg); }
-    65%, 85% { transform: translateZ(0) rotate(270deg); }
-    100% { transform: translateZ(0) rotate(360deg); }
+    0% {
+      transform: translateZ(0) rotate(0);
+    }
+
+    15%,
+    35% {
+      transform: translateZ(0) rotate(90deg);
+    }
+
+    65%,
+    85% {
+      transform: translateZ(0) rotate(270deg);
+    }
+
+    100% {
+      transform: translateZ(0) rotate(360deg);
+    }
   }
 
   @keyframes orbit {
     0% {
       transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
     }
+
     100% {
       transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg));
     }
   }
 
   @keyframes scale-in-bounce {
-    0% { transform: scale(0); opacity: 0; }
-    80% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    80% {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
   @keyframes fade-in {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
   }
 
   @keyframes slide-up {
-    0% { transform: translateY(8px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+    0% {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
   @keyframes scale-in {
-    0% { transform: scale(0.95); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 }
 
@@ -793,6 +967,7 @@
 
   /* Respect reduced motion (Apple HIG + WCAG) */
   @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

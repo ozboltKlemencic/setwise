@@ -14,7 +14,7 @@ interface ProfileCardProps {
 }
 
 const ProfileCardComponent: React.FC<ProfileCardProps> = ({
-    avatarUrl = 'https://ferf1mheo22r9ira.public.blob.vercel-storage.com/avatar-04-zm6M8gEw8b8V8h8k8k8k8k8k8k8k8k.png', // Fallback or placeholder
+    avatarUrl = '/jernej.png',
     miniAvatarUrl,
     name = 'Javi A. Torres',
     title = 'Software Engineer',
@@ -26,34 +26,32 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
     className = ''
 }) => {
     return (
-        <div className={`relative touch-none pointer-events-none md:pointer-events-auto w-full h-full max-h-[380px] border border-neutral-200/80   aspect-[0.718] group ${className}`}>
+        <div className={`relative touch-none pointer-events-none md:pointer-events-auto w-full h-full max-h-95 border border-surface-200 dark:border-surface-300 aspect-[0.718] group ${className}`}>
+
             {/* Behind Glow */}
-            <div
-                className="absolute inset-0 z-0 pointer-events-none bg-linear-to-tr  from-neutral-100 to-white saturate-[1.1] "
+            <div className="absolute inset-0 z-(--z-base) pointer-events-none bg-linear-to-tr from-surface-100 to-card saturate-[1.1]" />
 
-            />
+            <div className="relative z-(--z-raised) w-full h-full overflow-hidden border border-white/10 dark:border-surface-400/20 bg-surface-950/5 dark:bg-surface-200/40">
 
-            <div className="relative z-[1] w-full h-full  overflow-hidden border border-white/10  bg-black/5">
-                {/* Background Gradient & Pattern */}
-                <div className="absolute inset-0 z-0">
-                    <div className="w-full h-full relative bg-blue-500/10 [mask-image:radial-gradient(200px_circle_at_center,white,transparent)]">
-
+                {/* Background Pattern */}
+                <div className="absolute inset-0 z-(--z-base)">
+                    <div className="w-full h-full relative bg-brand-500/10 dark:bg-brand-400/15 mask-[radial-gradient(200px_circle_at_center,white,transparent)]">
                         {Array.from({ length: 300 }).map((_, i) => (
                             <div
                                 key={i}
-                                className="absolute h-4 w-full rotate-[-45deg] origin-top-left outline outline-[0.5px] outline-[rgba(0,0,0,0.15)] outline-offset-[-0.25px]"
+                                className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-950/15 dark:outline-surface-600/20 outline-offset-[-0.25px]"
                                 style={{
                                     top: `${i * 16 - 120}px`,
                                     left: "-100%",
                                     width: "300%",
                                 }}
-                            ></div>
+                            />
                         ))}
                     </div>
                 </div>
 
                 {/* Main Content */}
-                <div className="relative z-10 w-full h-full grid place-items-center">
+                <div className="relative z-(--z-raised) w-full h-full grid place-items-center">
 
                     {/* Main Avatar Image */}
                     <img
@@ -64,34 +62,35 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                     />
 
                     {/* Top Info (Name/Title) */}
-                    <div className="absolute top-[8%] w-full flex flex-col items-center text-center z-20">
-                        <h3 className="text-2xl font-semibold text-neutral-900 tracking-tight ">
+                    <div className="absolute top-[8%] w-full flex flex-col items-center text-center z-(--z-dropdown)">
+                        <h3 className="text-title-2 font-semibold text-surface-900">
                             {name}
                         </h3>
-                        <p className="text-[13px] font-medium text-neutral-700/90  tracking-wide">
+                        <p className="text-footnote font-medium text-surface-700/90 dark:text-surface-600">
                             {title}
                         </p>
                     </div>
 
                     {/* Bottom User Info Card */}
                     {showUserInfo && (
-                        <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between backdrop-blur-xl bg-black/20 border border-white/10 rounded-md p-2.5">
-                            <div className="flex items-center gap-2.5">
-                                <div className="w-9 h-9 rounded-full overflow-hidden border border-white/10 shrink-0">
+                        <div className="absolute bottom-(--space-4) left-(--space-4) right-(--space-4) z-(--z-dropdown) flex items-center justify-between backdrop-blur-(--blur-ultra) bg-surface-950/20 dark:bg-surface-50/15 border border-white/10 dark:border-surface-50/10 rounded-lg p-(--space-2\.5)">
+                            <div className="flex items-center gap-(--space-2\.5)">
+                                <div className="size-9 rounded-full overflow-hidden border border-white/10 dark:border-surface-50/10 shrink-0">
                                     <img
-                                        className="w-full h-full bg-blue-600/60 object-cover"
+                                        className="w-full h-full bg-brand-600/60 dark:bg-brand-400/40 object-cover"
                                         src={miniAvatarUrl || avatarUrl}
-                                        alt="mini avatar"
+                                        alt={`${handle} avatar`}
                                     />
                                 </div>
                                 <div className="flex flex-col items-start gap-0.5">
-                                    <div className="text-xs font-medium text-white/90 leading-none">@{handle}</div>
-                                    <div className="text-[10px] text-white/70 leading-none">{status}</div>
+                                    <span className="text-caption-1 font-medium text-white/90 leading-none">@{handle}</span>
+                                    <span className="text-caption-2 text-white/70 leading-none">{status}</span>
                                 </div>
                             </div>
                             <button
+                                type="button"
                                 onClick={onContactClick}
-                                className="border border-white/10 rounded px-3 py-1.5 text-[10px] font-semibold text-white/90 backdrop-blur-md hover:bg-white/10 transition-colors"
+                                className="border border-white/10 rounded-md px-(--space-3) py-(--space-1\.5) text-caption-2 font-semibold text-white/90 backdrop-blur-(--blur-medium) hover:bg-white/10 transition-colors duration-(--duration-fast) ease-(--ease-apple) min-h-8 cursor-pointer"
                             >
                                 {contactText}
                             </button>

@@ -1,6 +1,7 @@
 import { type HTMLAttributes, useId } from "react"
 
 import Image from "next/image"
+import { useTheme } from "next-themes"
 
 const PHONE_WIDTH = 433
 const PHONE_HEIGHT = 882
@@ -20,12 +21,14 @@ const RADIUS_V = (SCREEN_RADIUS / SCREEN_HEIGHT) * 100
 
 export interface IphoneProps extends HTMLAttributes<HTMLDivElement> {
     src?: string
+    darkSrc?: string
     videoSrc?: string
     priority?: boolean
 }
 
 export function Iphone({
     src,
+    darkSrc,
     videoSrc,
     className,
     style,
@@ -35,9 +38,11 @@ export function Iphone({
 }: IphoneProps) {
     const id = useId()
     const maskId = `phone-mask-${id.replace(/:/g, "")}`
+    const { resolvedTheme } = useTheme()
 
     const hasVideo = !!videoSrc
     const hasMedia = hasVideo || !!src || !!children
+    const imageSrc = resolvedTheme === "dark" && darkSrc ? darkSrc : src
 
     return (
         <div
@@ -72,7 +77,7 @@ export function Iphone({
                 </div>
             )}
 
-            {!hasVideo && src && (
+            {!hasVideo && imageSrc && (
                 <div
                     className="pointer-events-none absolute z-0 overflow-hidden"
                     style={{
@@ -84,7 +89,7 @@ export function Iphone({
                     }}
                 >
                     <Image
-                        src={src}
+                        src={imageSrc}
                         alt="App Screenshot"
                         fill
                         className="object-cover object-top"

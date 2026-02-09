@@ -189,6 +189,8 @@
         "followUs": "Sledi nam",
         "sections": {
             "products": "Izdelki",
+            "features": "Funkcije",
+            "guides": "Vodiči",
             "company": "Podjetje",
             "resources": "Viri",
             "legal": "Pravno"
@@ -196,6 +198,18 @@
         "links": {
             "setwise": "SetWise",
             "coachwise": "CoachWise",
+            "workoutLogging": "Beleženje vadbe",
+            "progressTracking": "Sledenje napredku",
+            "exerciseLibrary": "Knjižnica vaj",
+            "customRoutines": "Rutine po meri",
+            "restTimer": "Časovnik počitka",
+            "workoutHistory": "Zgodovina vadb",
+            "gettingStarted": "Začni tukaj",
+            "logFirstWorkout": "Zabeleži prvo vadbo",
+            "trackProgress": "Sledi napredku",
+            "createRoutine": "Ustvari rutino",
+            "exportData": "Izvoz podatkov",
+            "advancedTips": "Napredni nasveti",
             "aboutUs": "O nas",
             "ourTeam": "Naša ekipa",
             "contact": "Kontakt",

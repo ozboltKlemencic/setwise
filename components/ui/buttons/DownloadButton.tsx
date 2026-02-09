@@ -3,7 +3,6 @@
 import BetaSignupDialog from "@/components/beta-signup-dialog"
 import { forwardRef, useState } from "react"
 
-
 interface DownloadButtonProps {
     text?: string
     openBetaDialog?: boolean
@@ -11,7 +10,7 @@ interface DownloadButtonProps {
     onClick?: () => void
 }
 
-const DownloadButton = forwardRef<HTMLDivElement, DownloadButtonProps>(
+const DownloadButton = forwardRef<HTMLButtonElement, DownloadButtonProps>(
     ({ text = "Download for free", openBetaDialog = false, className = "", onClick }, ref) => {
         const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -23,16 +22,29 @@ const DownloadButton = forwardRef<HTMLDivElement, DownloadButtonProps>(
         }
 
         const buttonContent = (
-            <div
+            <button
                 ref={ref}
+                type="button"
                 onClick={handleClick}
-                className={`h-10 px-12 py-[6px] relative bg-[#37322F] shadow-[0px_0px_0px_2.5px_rgba(255,255,255,0.08)_inset] overflow-hidden rounded-full flex justify-center items-center cursor-pointer hover:bg-[#2A2520] transition-colors ${className}`}
+                className={`
+                    relative min-h-11 px-(--space-6) py-(--space-1\.5) overflow-hidden rounded-full
+                    inline-flex justify-center items-center cursor-pointer
+                    bg-surface-900 hover:bg-surface-950 active:scale-[0.97]
+                    shadow-[inset_0_0_0_2.5px_rgba(255,255,255,0.08)]
+                    dark:shadow-[inset_0_0_0_2.5px_rgba(0,0,0,0.06)]
+                    transition-all duration-(--duration-fast) ease-(--ease-apple)
+                    focus-visible:ring-2 focus-visible:ring-brand-500/50 focus-visible:outline-none
+                    ${className}
+                `}
             >
-                <div className="w-44 h-[41px] absolute left-0 top-0 bg-linear-to-b from-[rgba(255,255,255,0)] to-[rgba(0,0,0,0.10)] mix-blend-multiply"></div>
-                <div className="flex flex-col justify-center text-white text-[13px] font-medium leading-5 font-sans">
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-linear-to-b from-transparent to-black/10 dark:to-white/5 mix-blend-multiply dark:mix-blend-screen pointer-events-none" />
+
+                {/* Label — Apple HIG footnote (13px) + semibold */}
+                <span className="relative z-(--z-raised) text-footnote font-semibold text-surface-50 font-sans antialiased">
                     {text}
-                </div>
-            </div>
+                </span>
+            </button>
         )
 
         if (openBetaDialog) {

@@ -123,9 +123,9 @@ export default function Navigation() {
                     className="md:hidden flex flex-col justify-center items-center size-(--space-10) gap-(--space-1)"
                     aria-label="Open menu"
                 >
-                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
-                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
-                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 rounded-full"></span>
+                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 dark:bg-surface-600 rounded-full"></span>
+                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 dark:bg-surface-600 rounded-full"></span>
+                    <span aria-hidden="true" className="w-(--space-5) h-0.5 bg-surface-500 dark:bg-surface-600 rounded-full"></span>
                 </button>
             </nav>
 

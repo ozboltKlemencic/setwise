@@ -32,42 +32,49 @@ export default function FAQSection() {
 
   return (
     <div className="w-full flex justify-center items-start">
-      <div className="flex-1 px-4 md:px-12 py-10 md:py-16 lg:py-20 flex flex-col lg:flex-row justify-start items-start gap-6 lg:gap-12">
-        {/* Left Column - Header */}
-        <div className="w-full lg:flex-1 flex flex-col justify-center items-center md:items-start gap-3 md:gap-4 lg:py-5">
-          <div className="w-full flex flex-col justify-center text-center md:text-left text-[#49423D] font-semibold leading-tight md:leading-[44px] font-sans text-3xl md:text-4xl tracking-tight">
+      <div className="flex-1 px-(--space-4) md:px-(--space-12) py-(--space-10) md:py-(--space-16) lg:py-(--space-20) flex flex-col lg:flex-row justify-start items-start gap-(--space-6) lg:gap-(--space-12)">
+
+        {/* Left Column — Header */}
+        <div className="w-full lg:flex-1 flex flex-col justify-center items-center md:items-start gap-(--space-3) md:gap-(--space-4) lg:py-(--space-5)">
+          {/* Title — Apple HIG responsive typography */}
+          <h2 className="w-full text-center md:text-left text-surface-900 text-title-1 md:text-large-title font-semibold font-sans">
             {t('title')}
-          </div>
-          <div className="w-full text-center md:text-left text-[#605A57] text-sm md:text-base font-normal leading-6 md:leading-7 font-sans">
+          </h2>
+          {/* Subtitle — Apple HIG subheadline/callout */}
+          <p className="w-full text-center md:text-left text-surface-600 text-subheadline md:text-callout font-normal font-sans">
             {t('subtitle')}
-          </div>
+          </p>
         </div>
 
-        {/* Right Column - FAQ Items */}
+        {/* Right Column — FAQ Items */}
         <div className="w-full lg:flex-1 flex flex-col justify-center items-center">
           <div className="w-full flex flex-col">
             {faqItems.map((item, index) => {
               const isOpen = openIndex === index
 
               return (
-                <div key={index} className="w-full border-b border-[rgba(73,66,61,0.16)] overflow-hidden">
+                <div key={index} className="w-full  overflow-hidden">
                   <button
                     onClick={() => toggleItem(index)}
-                    className="w-full px-3 md:px-5 py-3 md:py-[18px] flex justify-between items-center gap-3 md:gap-5 text-left hover:bg-[rgba(73,66,61,0.02)] transition-colors duration-200 cursor-pointer"
+                    className="w-full px-(--space-3) md:px-(--space-5) py-(--space-3) md:py-(--space-4) flex justify-between items-center gap-(--space-3) md:gap-(--space-5) text-left hover:bg-surface-200/70 dark:hover:bg-surface-200 transition-colors duration-(--duration-fast) ease-(--ease-apple) cursor-pointer rounded-2xl "
                     aria-expanded={isOpen}
                   >
-                    <div className="flex-1 text-[#49423D] text-sm md:text-base font-medium leading-5 md:leading-6 font-sans">
+                    {/* Question — Apple HIG headline style */}
+                    <div className="flex-1 text-surface-900 text-subheadline md:text-callout font-medium font-sans">
                       {item.question}
                     </div>
                     <motion.div
                       className="flex justify-center items-center"
                       animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                     >
-                      <ChevronDownIcon className="w-5 h-5 md:w-6 md:h-6 text-[rgba(73,66,61,0.60)]" />
+                      <ChevronDownIcon className="size-5 md:size-6 text-surface-500" />
                     </motion.div>
-                  </button>
 
+                  </button>
+                  {index < faqItems.length - 1 && (
+                    <div role="separator" className="h-px  bg-border mx-(--space-3)"></div>
+                  )}
                   <AnimatePresence initial={false}>
                     {isOpen && (
                       <motion.div
@@ -80,7 +87,8 @@ export default function FAQSection() {
                         }}
                         className="overflow-hidden"
                       >
-                        <div className="px-3 md:px-5 pb-3 md:pb-[18px] text-[#605A57] text-xs md:text-sm font-normal leading-5 md:leading-6 font-sans">
+                        {/* Answer — Apple HIG footnote/subheadline */}
+                        <div className="px-(--space-3) md:px-(--space-5) pb-(--space-3) md:pb-(--space-4) text-surface-600 text-footnote md:text-subheadline font-normal font-sans">
                           {item.answer}
                         </div>
                       </motion.div>
@@ -95,4 +103,3 @@ export default function FAQSection() {
     </div>
   )
 }
-

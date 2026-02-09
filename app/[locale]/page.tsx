@@ -33,11 +33,12 @@ export default function LandingPage() {
 
                     <Feature2
                         isReverse={false}
+                        imageSrcDark="/dark/dark-workouts.png"
                         title={
-                            <h2 className="">
+                            <span className="">
                                 {t('feature1.title')}
-                                <span className="inline-block font-bold px-0.5 bg-linear-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">{t('feature1.titleHighlight')}</span> {t('feature1.titleEnd')}
-                            </h2>
+                                <span className="inline-block font-bold px-0.5 primaryGradientDark">{t('feature1.titleHighlight')}</span> {t('feature1.titleEnd')}
+                            </span>
                         }
                         description={<>{t('feature1.description')}</>}
                         buttonText={t('feature1.button')}
@@ -51,10 +52,11 @@ export default function LandingPage() {
                     <section id="features" className="w-full">
                         <Feature
                             isReverse={true}
+                            imageSrcDark="/dark/dark-workouts.png"
                             title={
-                                <h2>
-                                    {t('feature2.title')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('feature2.titleHighlight')}</span> {t('feature2.titleEnd')}
-                                </h2>
+                                <span>
+                                    {t('feature2.title')} <span className="font-bold px-1 pl-1 primaryGradient">{t('feature2.titleHighlight')}</span> {t('feature2.titleEnd')}
+                                </span>
                             }
                             description={<>{t('feature2.description')}</>}
                             buttonText={t('feature2.button')}
@@ -64,10 +66,11 @@ export default function LandingPage() {
 
                     <Feature
                         isReverse={false}
+                        imageSrcDark="/dark/dark-workouts.png"
                         title={
-                            <h2>
-                                {t('feature3.title')} <span className="font-bold px-1 pl-1 bg-linear-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent">{t('feature3.titleHighlight')}</span> {t('feature3.titleEnd')}
-                            </h2>
+                            <span>
+                                {t('feature3.title')} <span className="font-bold px-1 pl-1 primaryGradient">{t('feature3.titleHighlight')}</span> {t('feature3.titleEnd')}
+                            </span>
                         }
                         description={<>{t('feature3.description')}</>}
                         buttonText={t('feature3.button')}

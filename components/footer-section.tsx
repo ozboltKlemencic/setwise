@@ -1,97 +1,135 @@
 import { useTranslations } from "next-intl"
 import { ParticleText } from "@/components/ui/particle-text"
-import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import { Instagram, Linkedin } from "lucide-react"
 
 export default function FooterSection() {
   const t = useTranslations('Footer')
 
-  // Footer navigation links data with translations
-  const FOOTER_LINKS = [
+  // Footer navigation columns data with translations
+  const FOOTER_COLUMNS = [
     {
-      title: t('sections.products'),
-      links: [
-        { label: t('links.setwise'), href: "/" },
-        { label: t('links.coachwise'), href: "/coachwise" },
+      sections: [
+        {
+          title: t('sections.features'),
+          links: [
+            { label: t('links.workoutLogging'), href: "#" },
+            { label: t('links.progressTracking'), href: "#" },
+            { label: t('links.exerciseLibrary'), href: "#" },
+            { label: t('links.customRoutines'), href: "#" },
+            { label: t('links.restTimer'), href: "#" },
+            { label: t('links.workoutHistory'), href: "#" },
+          ],
+        },
       ],
     },
     {
-      title: t('sections.company'),
-      links: [
-        { label: t('links.aboutUs'), href: "#" },
-        { label: t('links.ourTeam'), href: "#" },
-        { label: t('links.contact'), href: "#" },
+      sections: [
+        {
+          title: t('sections.guides'),
+          links: [
+            { label: t('links.gettingStarted'), href: "#" },
+            { label: t('links.logFirstWorkout'), href: "#" },
+            { label: t('links.trackProgress'), href: "#" },
+            { label: t('links.createRoutine'), href: "#" },
+            { label: t('links.exportData'), href: "#" },
+            { label: t('links.advancedTips'), href: "#" },
+          ],
+        },
       ],
     },
     {
-      title: t('sections.resources'),
-      links: [
-        { label: t('links.community'), href: "#" },
-        { label: t('links.documentation'), href: "#" },
-        { label: t('links.changelog'), href: "#" },
-        { label: t('links.support'), href: "#" },
+      sections: [
+        {
+          title: t('sections.products'),
+          links: [
+            { label: t('links.setwise'), href: "/" },
+            { label: t('links.coachwise'), href: "/coachwise" },
+          ],
+        },
+        {
+          title: t('sections.resources'),
+          links: [
+            { label: t('links.community'), href: "#" },
+            { label: t('links.documentation'), href: "#" },
+            { label: t('links.changelog'), href: "#" },
+            { label: t('links.support'), href: "#" },
+          ],
+        },
       ],
     },
     {
-      title: t('sections.legal'),
-      links: [
-        { label: t('links.privacyPolicy'), href: "#" },
-        { label: t('links.termsOfUse'), href: "#" },
-        { label: t('links.cookies'), href: "#" },
+      sections: [
+        {
+          title: t('sections.company'),
+          links: [
+            { label: t('links.aboutUs'), href: "#" },
+            { label: t('links.ourTeam'), href: "#" },
+            { label: t('links.contact'), href: "#" },
+          ],
+        },
+        {
+          title: t('sections.legal'),
+          links: [
+            { label: t('links.privacyPolicy'), href: "#" },
+            { label: t('links.termsOfUse'), href: "#" },
+            { label: t('links.cookies'), href: "#" },
+          ],
+        },
       ],
     },
   ]
 
   return (
-    <div className="w-full pt-10 flex flex-col justify-start items-start">
+    <div className="w-full pt-(--space-10) flex bg-background flex-col justify-start items-start">
       {/* Main Footer Content */}
-      <div className="self-stretch h-auto flex flex-col md:flex-row justify-between items-stretch pr-0 gap-y-8 pt-0">
-        <div className="h-auto w-full  max-w-[380px] p-4 md:p-8 pb-0 flex flex-col justify-start items-start gap-y-5">
+      <div className="self-stretch h-auto flex flex-col md:flex-row justify-between items-stretch pr-0 gap-y-(--space-8) pt-0">
+        {/* Brand col */}
+        <div className="h-auto w-full md:min-w-[380px] max-w-[380px] md:mr-(--space-16) p-(--space-4) md:p-(--space-8) pb-0 flex flex-col justify-start items-start gap-y-(--space-3)">
           {/* Brand & Description */}
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2  ">
+          <div className="flex flex-col gap-(--space-3)">
+            <div className="flex items-center gap-(--space-2)">
               <img src="/setwise-logo.png" alt="SetWise" className="size-6 rounded-sm" />
-              <span className="text-lg font-bold text-neutral-700 font-sans">SetWise</span>
+              <span className="text-footnote font-bold text-surface-800 dark:text-surface-800 font-sans">SetWise</span>
             </div>
 
-            <p className="text-neutral-500 text-sm font-normal leading-relaxed font-sans">
+            <p className="text-surface-500 dark:text-surface-500 text-footnote font-normal leading-relaxed font-sans">
               {t('description')}
             </p>
           </div>
 
           {/* Newsletter Section */}
-          <div className="flex flex-col gap-y-2 w-full">
-            <div className="text-neutral-700 text-sm font-medium leading-5 font-sans">
+          <div className="flex flex-col gap-y-(--space-2) w-full">
+            <div className="text-surface-700  text-footnote font-medium font-sans">
               {t('joinWaitlist')}
             </div>
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-(--space-2) w-full">
               <input
                 type="email"
                 id="footer-email"
                 placeholder={t('emailPlaceholder')}
-                className="flex-1 min-w-0 px-3 md:px-4 py-2 h-10 rounded-lg border border-neutral-200 bg-white text-neutral-900 text-sm placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                className="flex-1 min-w-0 px-(--space-3) md:px-(--space-4) py-(--space-2) h-10 dark:text-surface-100 text-footnote placeholder-surface-400 dark:placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors duration-(--duration-fast) ease-(--ease-apple) rounded-lg border border-surface-200 dark:border-surface-300 bg-card dark:bg-surface-200/80 text-surface-900"
               />
-              <button className="px-3 md:px-5 py-2 relative h-10 shrink-0 whitespace-nowrap rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition-colors duration-200">
+              <button className="px-(--space-3) overflow-hidden md:px-(--space-5) py-(--space-2) relative h-10 shrink-0 whitespace-nowrap rounded-lg bg-brand-500 hover:bg-brand-600 dark:hover:bg-brand-500/80 cursor-pointer text-white text-footnote font-medium transition-colors duration-(--duration-fast) ease-(--ease-apple)">
                 {t('join')}
-                <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/50 md:bg-white/30 blur-md rounded-full"></div>
-                <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/50 md:bg-white/30 blur-md rounded-full"></div>
+                <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/50 md:bg-white/30 blur-(--blur-regular) rounded-full" />
+                <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/50 md:bg-white/30 blur-(--blur-regular) rounded-full" />
               </button>
             </div>
           </div>
 
           {/* Social Links Section */}
-          <div className="flex flex-col gap-y-2">
-            <div className="text-neutral-700 text-sm font-medium leading-5 font-sans">
+          <div className="flex flex-col gap-y-(--space-2)">
+            <div className="text-surface-700  text-footnote font-medium font-sans">
               {t('followUs')}
             </div>
-            <div className="flex items-center md:gap-x-3 gap-x-4">
-              <a href="#" className="  ">
-                <Instagram className="size-4 font-thin text-neutral-500  hover:text-neutral-800 transition-colors duration-200" />
+            <div className="flex items-center md:gap-x-(--space-3) gap-x-(--space-4)">
+              <a href="#" className="text-surface-500  hover:text-surface-800 transition-colors duration-(--duration-fast) ease-(--ease-apple)">
+                <Instagram className="size-4 font-thin" />
               </a>
-              <a href="#" className="  h">
-                <Linkedin className="size-4 font-thin text-neutral-500 hover:text-neutral-800 transition-colors duration-200" />
+              <a href="#" className="text-surface-500  hover:text-surface-800 0 transition-colors duration-(--duration-fast) ease-(--ease-apple)">
+                <Linkedin className="size-4 font-thin" />
               </a>
-              <a href="#" className=" size-4 text-neutral-500 hover:text-neutral-800 flex items-center justify-center">
+              <a href="#" className="size-4 text-surface-500 hover:text-surface-800  flex items-center justify-center transition-colors duration-(--duration-fast) ease-(--ease-apple)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16">
                   <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
                 </svg>
@@ -101,35 +139,40 @@ export default function FooterSection() {
         </div>
 
         {/* Navigation Links */}
-        <div className="self-stretch p-4 md:p-8 flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-6 md:gap-8">
-          {FOOTER_LINKS.map((column) => (
-            <div key={column.title} className="flex flex-col justify-start items-start gap-3 flex-1 min-w-[120px]">
-              <div className="self-stretch text-neutral-700 text-sm font-medium leading-5 font-sans">
-                {column.title}
-              </div>
-              <div className="flex flex-col justify-end items-start gap-2">
-                {column.links.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="text-neutral-500 text-sm font-normal leading-5 font-sans cursor-pointer duration-300 hover:text-neutral-900 transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
+        <div className="self-stretch p-(--space-4) md:p-(--space-8) flex flex-col sm:flex-row flex-wrap justify-start sm:justify-between items-start gap-(--space-6) md:gap-(--space-8)">
+          {FOOTER_COLUMNS.map((column, colIndex) => (
+            <div key={colIndex} className="flex flex-col justify-start items-start gap-(--space-8) flex-1 min-w-[120px]">
+              {column.sections.map((section) => (
+                <div key={section.title} className="flex flex-col justify-start items-start gap-(--space-3) w-full">
+                  {/* Column title — strong contrast */}
+                  <div className="self-stretch text-surface-700 text-footnote font-medium font-sans">
+                    {section.title}
+                  </div>
+                  <div className="flex flex-col justify-end items-start gap-(--space-2)">
+                    {section.links.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        className="text-surface-500 text-footnote font-normal font-sans cursor-pointer hover:text-surface-900 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
       </div>
+
       {/* Particle Text Section */}
       <div className="w-full relative overflow-hidden">
         {/* SetWise text made of particles */}
-        <div className="relative flex justify-center items-center  w-full h-[180px] md:h-[300px]">
+        <div className="relative flex justify-center items-center w-full h-[180px] md:h-[300px]">
           <ParticleText text="SetWise" className="w-full h-full" />
         </div>
       </div>
     </div>
   )
 }
-

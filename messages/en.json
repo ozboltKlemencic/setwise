@@ -188,6 +188,8 @@
         "followUs": "Follow us",
         "sections": {
             "products": "Products",
+            "features": "Features",
+            "guides": "Guides",
             "company": "Company",
             "resources": "Resources",
             "legal": "Legal"
@@ -195,6 +197,18 @@
         "links": {
             "setwise": "SetWise",
             "coachwise": "CoachWise",
+            "workoutLogging": "Workout Logging",
+            "progressTracking": "Progress Tracking",
+            "exerciseLibrary": "Exercise Library",
+            "customRoutines": "Custom Routines",
+            "restTimer": "Rest Timer",
+            "workoutHistory": "Workout History",
+            "gettingStarted": "Getting Started",
+            "logFirstWorkout": "Log First Workout",
+            "trackProgress": "Track Progress",
+            "createRoutine": "Create Routine",
+            "exportData": "Export Data",
+            "advancedTips": "Advanced Tips",
             "aboutUs": "About us",
             "ourTeam": "Our team",
             "contact": "Contact",

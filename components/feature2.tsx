@@ -11,6 +11,8 @@ interface FeatureProps {
     description?: React.ReactNode
     buttonText?: string
     imageSrc?: string
+    /** Dark mode image source (optional — falls back to imageSrc) */
+    imageSrcDark?: string
 }
 
 export default function Feature2({
@@ -24,86 +26,109 @@ export default function Feature2({
         </>
     ),
     buttonText = "Start for free",
-    imageSrc = "/workout.png"
+    imageSrc = "/workout.png",
+    imageSrcDark,
 }: FeatureProps) {
     const phoneRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(phoneRef, { once: true, margin: "-100px" })
     const [isHovered, setIsHovered] = useState(false)
 
     return (
-        <div className="w-full relative  group flex flex-col justify-center items-center   overflow-hidden">
-
+        <div className="w-full relative group flex flex-col justify-center items-center overflow-hidden">
 
             {/* Content */}
-            <div className={`self-stretch ${isReverse ? 'md:flex-row-reverse flex-col-reverse' : 'md:flex-row flex-col'}   flex justify-start items-center relative z-10 md:h-[600px] md:max-h-[600px]`}>
+            <div className={`self-stretch ${isReverse ? 'md:flex-row-reverse flex-col-reverse' : 'md:flex-row flex-col'} flex justify-start items-center relative z-(--z-raised) md:h-150 md:max-h-150`}>
 
-                <div className="w-full p-6  md:max-w-[586px] py-12 md:w-1/2 md:pl-12 pr-16 border-r md:py-8  overflow-hidden rgounded-br-lg flex flex-col justify-center items-center gap-6 relative z-20 h-full border-b border-[rgba(55,50,47,0.12)]">
-                    <div className="self-stretch flex flex-col justify-start items-start gap-3">
-                        <div className="self-stretch text-left flex justify-center flex-col text-[#49423D] text-3xl md:text-5xl font-semibold leading-tight md:leading-[56px] font-sans tracking-tight ">
+                {/* ── Text Section ── */}
+                <div className="w-full p-(--space-8) md:max-w-146.5 py-(--space-12) md:w-1/2 md:pl-(--space-12) md:pr-(--space-16) border-r md:py-(--space-8) overflow-hidden flex flex-col justify-center  items-center gap-(--space-6) relative z-(--z-dropdown) h-full border-b border-border dark:border-border/40">
+                    <div className="self-stretch flex flex-col justify-start items-start gap-(--space-3)">
+
+                        {/* Title — Apple HIG responsive typography */}
+                        <h2 className="self-stretch  text-center md:text-left text-surface-900 text-title-1 md:text-large-title lg:text-display font-semibold font-sans">
                             {title}
-                        </div>
-                        <div className="self-stretch text-left text-[#605A57] text-sm leading-7 font-sans font-medium">
+                        </h2>
+
+                        {/* Description — Apple HIG body/subheadline */}
+                        <p className="self-stretch text-center md:text-left text-surface-600 text-subheadline md:text-callout font-sans font-medium">
                             {description}
-                        </div>
+                        </p>
                     </div>
-                    <div className="w-full max-w-[497px] flex flex-col justify-start items-start gap-12">
-                        <div className="flex justify-start items-center gap-4">
+
+                    <div className="w-full max-w-124.25 flex flex-col justify-center items-center md:items-start gap-(--space-12)">
+                        <div className="flex justify-start items-center gap-(--space-4)">
                             <DownloadButton openBetaDialog={true} text={buttonText} />
                         </div>
                     </div>
                 </div>
 
+                {/* ── Phone / Visual Section ── */}
                 <div
-                    className="w-full h-[400px] md:w-1/2 relative md:h-full   overflow-hidden group/phone border-b border-[rgba(55,50,47,0.12)]"
+                    className="w-full h-100 md:w-1/2 relative md:h-full overflow-hidden group/phone border-b border-border dark:border-border/40"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
-                    <div className="w-full h-full relative opacity-80">
+                    {/* Background diagonal pattern */}
+                    <div className="w-full h-full relative opacity-(--opacity-hover)">
                         {Array.from({ length: 300 }).map((_, i) => (
                             <div
                                 key={i}
-                                className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.08)] outline-offset-[-0.25px]"
+                                className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-border/30 outline-offset-[-0.25px]"
                                 style={{
                                     top: `${i * 16 - 120}px`,
                                     left: "-100%",
                                     width: "300%",
                                 }}
-                            ></div>
+                            />
                         ))}
                     </div>
-                    <div className="absolute top-2 left-2 right-2 bottom-2  overflow-hidden bg-blue-500  rounded-lg shadow-[0px_0px_3px_3px_rgba(60,60,60,0.2)] ">
-                        {/* Background Pattern */}
-                        {/* iPhone Container */}
-                        <div className="w-full h-full relative  [mask-image:radial-gradient(300px_circle_at_center,white,transparent)]">
+
+                    {/* Brand accent card with phone */}
+                    <div className="absolute top-(--space-2) left-(--space-2) right-(--space-2) bottom-(--space-2) overflow-hidden bg-brand-500 dark:bg-brand-500/60 rounded-lg shadow-(--shadow-lg)">
+
+                        {/* Inner diagonal pattern (masked) */}
+                        <div className="w-full h-full relative mask-[radial-gradient(300px_circle_at_center,white,transparent)]">
                             {Array.from({ length: 300 }).map((_, i) => (
                                 <div
                                     key={i}
-                                    className="absolute h-4 w-full -rotate-45 origin-top-left outline outline-[0.5px] outline-[rgba(3,7,18,0.4)] outline-offset-[-0.25px]"
+                                    className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-950/40 dark:outline-surface-50/20 outline-offset-[-0.25px]"
                                     style={{
                                         top: `${i * 16 - 120}px`,
                                         left: "-100%",
                                         width: "300%",
                                     }}
-                                ></div>
+                                />
                             ))}
                         </div>
+
+                        {/* iPhone — animated on scroll + hover */}
                         <motion.div
                             ref={phoneRef}
                             initial={{ y: "-80%" }}
                             animate={{ y: isHovered ? "-35%" : isInView ? "25%" : "-50%" }}
                             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-1/2 md:w-[300px] w-[75%] transform-gpu will-change-transform"
+                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-1/2 md:w-75 w-[75%] transform-gpu will-change-transform"
                         >
-                            <Iphone src={imageSrc} />
+                            {imageSrcDark ? (
+                                <>
+                                    <div className="dark:hidden">
+                                        <Iphone src={imageSrc} />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src={imageSrcDark} />
+                                    </div>
+                                </>
+                            ) : (
+                                <Iphone src={imageSrc} />
+                            )}
                         </motion.div>
-                        <div className="absolute top-0 right-0 w-3/5 -translate-y-1/2 translate-x-1/2 h-full bg-white/20 blur-2xl rounded-full"></div>
-                        <div className="absolute bottom-0 left-0 w-2/5 translate-y-1/2 -translate-x-1/2 h-3/4 bg-white/10 blur-xl rounded-full"></div>
+
+                        {/* Ambient glow — top right */}
+                        <div className="absolute top-0 right-0 w-3/5 -translate-y-1/2 translate-x-1/2 h-full bg-white/20 dark:bg-white/10 blur-(--blur-heavy) rounded-full pointer-events-none" />
+                        {/* Ambient glow — bottom left */}
+                        <div className="absolute bottom-0 left-0 w-2/5 translate-y-1/2 -translate-x-1/2 h-3/4 bg-white/10 dark:bg-white/5 blur-(--blur-ultra) rounded-full pointer-events-none" />
                     </div>
-
-
                 </div>
             </div>
-
         </div>
     )
 }

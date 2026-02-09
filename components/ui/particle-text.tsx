@@ -34,6 +34,11 @@ export function ParticleText({ text, className, fontSize: manualFontSize, fontSi
         let animationFrameId: number
         let particles: Particle[] = []
 
+        // Detect dark mode (check CSS class set by next-themes)
+        const isDarkMode = () => {
+            return document.documentElement.classList.contains('dark')
+        }
+
         const init = () => {
             const width = container.clientWidth
             const height = container.clientHeight
@@ -108,6 +113,8 @@ export function ParticleText({ text, className, fontSize: manualFontSize, fontSi
 
             ctx.clearRect(0, 0, width, height)
 
+            const dark = isDarkMode()
+
             particles.forEach(p => {
                 // Update phase
                 p.phase += p.speed
@@ -118,9 +125,11 @@ export function ParticleText({ text, className, fontSize: manualFontSize, fontSi
                 const opacityRange = Math.abs(p.baseAlpha - p.targetAlpha)
                 const alpha = Math.min(p.baseAlpha, p.targetAlpha) + (Math.sin(p.phase) + 1) / 2 * opacityRange
 
+                // Dark mode: lighter particles for visibility on dark background
+                // Light mode: darker particles for visibility on light background
                 ctx.fillStyle = p.isActive
-                    ? `rgba(180, 180, 180, ${alpha})` // Lighter grey for text blue je 194, 215, 255
-                    : `rgba(200, 200, 200, ${alpha})` // Light grey for background
+                    ? (dark ? `rgba(130, 130, 130, ${alpha})` : `rgba(200, 200, 200, ${alpha})`)
+                    : (dark ? `rgba(160, 160, 160, ${alpha})` : `rgba(200, 200, 200, ${alpha})`)
 
                 // Draw particle (square) - smaller on mobile
                 const particleSize = canvas.width < 768 * (window.devicePixelRatio || 1) ? 2 : 3
