@@ -12,7 +12,10 @@ import {
     Flame,
     GitCompare,
     WifiOff,
-    ChevronDown
+    ChevronDown,
+    Sparkles,
+    Home,
+    Info
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
@@ -24,11 +27,11 @@ const sidebarItems = [
     {
         title: "Intro",
         href: "/features",
-        icon: Zap,
+        icon: Info,
         subItems: [
-            { title: "Live Session", href: "#live-session" },
-            { title: "Log Manually", href: "#log-manually" },
-            { title: "Rest Timer", href: "#rest-timer" },
+            { title: "Overview", href: "#overview" },
+            { title: "Key Features", href: "#key-features" },
+            { title: "Get Started", href: "#get-started" }, // ali "Download"
         ]
     },
     {
@@ -134,9 +137,10 @@ export function FeaturesSidebar() {
     }
 
     return (
-        <aside className="w-full md:w-64 shrink-0 border-r border-border/40 bg-background dark:bg-surface-100/10 md:min-h-[calc(100vh-4rem)]">
-            <div className="p-2 py-4 sticky top-0 flex flex-col h-[calc(100vh-1rem)] md:h-[calc(100vh-5rem)]">
-                <nav className="flex flex-col gap-2 flex-1 overflow-y-auto thin-scrollbar">
+        <aside className="w-full md:w-64 shrink-0 border-r border-border/40 bg-background dark:bg-surface-100/10 md:min-h-[calc(100vh-2rem)]">
+            <div className="p-2 sticky top-0 flex flex-col h-[calc(100vh-1rem)] md:h-[calc(100vh-5rem)]">
+
+                <nav className="flex flex-col gap-2 flex-1 overflow-y-auto thin-scrollbar ">
                     {sidebarItems.map((item) => {
                         const isOpen = openItem === item.title
                         const Icon = item.icon

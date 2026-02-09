@@ -32,7 +32,7 @@ export default function FeaturesLayout({
                 border-border/50 dark:border-border/40">
                         <FeaturesSidebar />
 
-                        <div className="flex-1 w-full min-h-[150vh]">
+                        <div className="flex-1 w-full min-h-screen">
                             {children}
                         </div>
                     </div>
