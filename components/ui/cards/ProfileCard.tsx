@@ -75,7 +75,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
                     {/* Bottom User Info Card */}
                     {showUserInfo && (
-                        <div className="absolute bottom-(--space-4) left-(--space-4) right-(--space-4) z-(--z-dropdown) flex items-center justify-between backdrop-blur-(--blur-ultra) bg-surface-950/20 dark:bg-surface-50/15 border border-white/10 dark:border-surface-50/10 rounded-lg p-(--space-2\.5) gap-2">
+                        <div className="absolute bottom-(--space-4) left-(--space-4) right-(--space-4) z-(--z-dropdown) flex items-center justify-between backdrop-blur-(--blur-ultra) bg-surface-950/20 dark:bg-surface-50/15 border border-white/10 dark:border-surface-50/10 rounded-lg p-(--space-2\.5) gap-2 pointer-events-auto">
                             <div className="flex items-center gap-(--space-2\.5) min-w-0 overflow-hidden">
                                 <div className="size-9 rounded-full overflow-hidden border border-white/10 dark:border-surface-50/10 shrink-0">
                                     <img
