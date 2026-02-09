@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl"
+import { Link } from "@/i18n/navigation"
 import { ParticleText } from "@/components/ui/particle-text"
 import { Instagram, Linkedin } from "lucide-react"
 
@@ -12,12 +13,12 @@ export default function FooterSection() {
         {
           title: t('sections.features'),
           links: [
-            { label: t('links.workoutLogging'), href: "#" },
-            { label: t('links.progressTracking'), href: "#" },
-            { label: t('links.exerciseLibrary'), href: "#" },
-            { label: t('links.customRoutines'), href: "#" },
-            { label: t('links.restTimer'), href: "#" },
-            { label: t('links.workoutHistory'), href: "#" },
+            { label: t('links.workoutLogging'), href: "/features" },
+            { label: t('links.progressTracking'), href: "/features" },
+            { label: t('links.exerciseLibrary'), href: "/features" },
+            { label: t('links.customRoutines'), href: "/features" },
+            { label: t('links.restTimer'), href: "/features" },
+            { label: t('links.workoutHistory'), href: "/features" },
           ],
         },
       ],
@@ -27,12 +28,12 @@ export default function FooterSection() {
         {
           title: t('sections.guides'),
           links: [
-            { label: t('links.gettingStarted'), href: "#" },
-            { label: t('links.logFirstWorkout'), href: "#" },
-            { label: t('links.trackProgress'), href: "#" },
-            { label: t('links.createRoutine'), href: "#" },
-            { label: t('links.exportData'), href: "#" },
-            { label: t('links.advancedTips'), href: "#" },
+            { label: t('links.gettingStarted'), href: "/features" },
+            { label: t('links.logFirstWorkout'), href: "/features" },
+            { label: t('links.trackProgress'), href: "/features" },
+            { label: t('links.createRoutine'), href: "/features" },
+            { label: t('links.exportData'), href: "/features" },
+            { label: t('links.advancedTips'), href: "/features" },
           ],
         },
       ],
@@ -43,7 +44,7 @@ export default function FooterSection() {
           title: t('sections.products'),
           links: [
             { label: t('links.setwise'), href: "/" },
-            { label: t('links.coachwise'), href: "/coachwise" },
+            { label: t('links.coachwise'), href: "/products/coachwise" },
           ],
         },
         {
@@ -56,10 +57,9 @@ export default function FooterSection() {
         {
           title: t('sections.resources'),
           links: [
-            { label: t('links.community'), href: "#" },
-            { label: t('links.documentation'), href: "#" },
-            { label: t('links.changelog'), href: "#" },
-            { label: t('links.support'), href: "#" },
+            { label: t('links.community'), href: "/community" },
+            { label: t('links.changelog'), href: "/changelog" },
+            { label: t('links.support'), href: "/support" },
           ],
         },
       ],
@@ -69,17 +69,17 @@ export default function FooterSection() {
         {
           title: t('sections.company'),
           links: [
-            { label: t('links.aboutUs'), href: "#" },
-            { label: t('links.ourTeam'), href: "#" },
-            { label: t('links.contact'), href: "#" },
+            { label: t('links.aboutUs'), href: "/about" },
+            { label: t('links.ourTeam'), href: "/our-team" },
+            { label: t('links.contact'), href: "/contact" },
           ],
         },
         {
           title: t('sections.legal'),
           links: [
-            { label: t('links.privacyPolicy'), href: "#" },
-            { label: t('links.termsOfUse'), href: "#" },
-            { label: t('links.cookies'), href: "#" },
+            { label: t('links.privacyPolicy'), href: "/privacy-policy" },
+            { label: t('links.termsOfUse'), href: "/terms-of-use" },
+            { label: t('links.cookies'), href: "/cookies" },
           ],
         },
       ],
@@ -157,13 +157,13 @@ export default function FooterSection() {
                   </div>
                   <div className="flex flex-col justify-end items-start gap-(--space-2)">
                     {section.links.map((link) => (
-                      <a
+                      <Link
                         key={link.label}
-                        href={link.href}
+                        href={link.href as any}
                         className="text-surface-500 text-footnote font-normal font-sans cursor-pointer hover:text-surface-900 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
                       >
                         {link.label}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

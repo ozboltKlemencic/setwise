@@ -53,6 +53,50 @@ export const routing = defineRouting({
             sl: '/orodja',
             en: '/tools',
         },
+        '/products/coachwise': {
+            sl: '/izdelki/coachwise',
+            en: '/products/coachwise',
+        },
+        '/tools/bmr-calculator': {
+            sl: '/orodja/bmr-kalkulator',
+            en: '/tools/bmr-calculator',
+        },
+        '/tools/body-fat-calculator': {
+            sl: '/orodja/body-fat-kalkulator',
+            en: '/tools/body-fat-calculator',
+        },
+        '/community': {
+            sl: '/skupnost',
+            en: '/community',
+        },
+        '/changelog': {
+            sl: '/dnevnik-sprememb',
+            en: '/changelog',
+        },
+        '/support': {
+            sl: '/podpora',
+            en: '/support',
+        },
+        '/about': {
+            sl: '/o-nas',
+            en: '/about',
+        },
+        '/our-team': {
+            sl: '/nasa-ekipa',
+            en: '/our-team',
+        },
+        '/privacy-policy': {
+            sl: '/politika-zasebnosti',
+            en: '/privacy-policy',
+        },
+        '/terms-of-use': {
+            sl: '/pogoji-uporabe',
+            en: '/terms-of-use',
+        },
+        '/cookies': {
+            sl: '/piskotki',
+            en: '/cookies',
+        },
     },
 });
 
