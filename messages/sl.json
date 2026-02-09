@@ -247,8 +247,8 @@
     },
     "NotFound": {
         "title": "Stran ni najdena",
-        "description": "Stran, ki jo iščeš, ne obstaja.",
-        "backHome": "Nazaj na domov"
+        "description": "Stran, ki jo iščeš, ne obstaja ali pa je bila premaknjena.",
+        "backHome": "Nazaj domov"
     },
     "FeaturesPage": {
         "title": "Funkcije",

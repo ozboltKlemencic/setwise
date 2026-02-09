@@ -2,10 +2,13 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import ButtonRotatingGradient from '@/components/ui/buttons/ButtonRotatingGradient'
 import { ParticleText } from '@/components/ui/particle-text'
 
 export default function NotFoundContent() {
+    const t = useTranslations('NotFound')
+
     return (
         <div className="w-full h-dvh md:h-screen relative bg-surface-50 mask-[radial-gradient(500px_circle_at_center,white,transparent)] md:mask-[radial-gradient(560px_circle_at_center,white,transparent)] overflow-x-hidden flex flex-col justify-start items-center transition-colors duration-normal">
             <div className="relative flex flex-col justify-start items-center w-full h-full min-h-screen">
@@ -13,22 +16,35 @@ export default function NotFoundContent() {
                 {/* Main container with side borders matching Home Page */}
                 <div className="md:px-8 lg:px-0 md:w-6xl max-w-6xl relative flex flex-col justify-center items-center grow border-l border-r border-border bg-surface-50 transition-colors duration-normal">
                     <div className='border-b py-24 md:py-32 border-t flex items-center justify-center border-border w-full z-20 transition-colors duration-normal'>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="flex flex-col items-center justify-center z-10 w-[94vw] text-center"
-                        >
-                            <h1 className="text-[100px] md:text-[200px] font-bold text-surface-900 leading-none tracking-tighter select-none">404</h1>
-                            <h2 className="text-xl md:text-2xl font-semibold text-surface-700 mt-3 md:mt-4">Stran ni najdena</h2>
-                            <p className="text-surface-600 mb-5 max-w-md text-base md:text-lg text-center mt-1 px-8 leading-relaxed">Stran, ki jo iščeš, ne obstaja ali pa je bila premaknjena.</p>
+                        <div className="flex flex-col items-center justify-center z-10 w-[94vw] text-center">
+                            <motion.h1
+                                initial={{ opacity: 0, y: 20, }}
+                                animate={{ opacity: 1, y: 0, }}
+                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                className="text-[100px] md:text-[200px] font-bold text-surface-900 leading-none tracking-tighter select-none"
+                            >
+                                404
+                            </motion.h1>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20, }}
+                                animate={{ opacity: 1, y: 0, }}
+                                transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+                                className="flex flex-col items-center"
+                            >
+                                <h2 className="text-xl md:text-2xl font-semibold text-surface-700 mt-3 md:mt-4">
+                                    {t('title')}
+                                </h2>
+                                <p className="text-surface-600 mb-5 max-w-md text-base md:text-lg text-center mt-1 px-8 leading-relaxed">
+                                    {t('description')}
+                                </p>
+                            </motion.div>
 
                             <Link href="/">
                                 <ButtonRotatingGradient onClick={() => { window.location.href = "/" }}>
-                                    Nazaj domov
+                                    {t('backHome')}
                                 </ButtonRotatingGradient>
                             </Link>
-                        </motion.div>
+                        </div>
                     </div>
                 </div>
             </div>
