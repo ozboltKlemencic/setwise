@@ -277,13 +277,13 @@ export default function FeaturesPage() {
                         </div>
 
                         {/* CTA Card */}
-                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-200 relative rounded-lg md:rounded-xl overflow-hidden shadow-(--shadow-sm) ">
+                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-200 relative rounded-md overflow-hidden shadow-(--shadow-sm) ">
                             {/* Decorative lines — behind content */}
                             <div className="absolute inset-0 overflow-hidden pointer-events-none mask-[radial-gradient(300px_circle_at_center,white,transparent)]">
                                 {Array.from({ length: 300 }).map((_, i) => (
                                     <div
                                         key={i}
-                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-300/80 dark:outline-surface-400/30 outline-offset-[-0.25px]"
+                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-300/90 dark:outline-surface-400/30 outline-offset-[-0.25px]"
                                         style={{
                                             top: `${i * 16 - 120}px`,
                                             left: "-100%",
