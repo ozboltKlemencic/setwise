@@ -227,56 +227,57 @@ export function FeaturesSidebar() {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     // ── Scroll Spy ─────────────────────────────────────────────
-    // Observe each section on the current page and update activeHash
-    // as the user scrolls past them.
+    // On scroll, check each section's position and activate the one
+    // whose top edge is closest to (but above) the detection line.
+    // This is more reliable than IntersectionObserver for tall sections
+    // that may never fully leave the viewport.
     useEffect(() => {
-        const activeItem = sidebarItems.find((item) => item.title === activeTitle)
-        if (!activeItem) return
+        const currentItem = sidebarItems.find((item) => item.title === activeTitle)
+        if (!currentItem) return
 
-        // Collect section IDs from the active item's sub-items
-        const sectionIds = activeItem.subItems
+        // Build a list of { id, href, element } for each section
+        const sections = currentItem.subItems
             .map((sub) => {
                 const hashIdx = sub.href.indexOf("#")
-                return hashIdx !== -1 ? sub.href.substring(hashIdx + 1) : null
+                if (hashIdx === -1) return null
+                const id = sub.href.substring(hashIdx + 1)
+                const el = document.getElementById(id)
+                return el ? { id, href: sub.href, el } : null
             })
-            .filter(Boolean) as string[]
+            .filter(Boolean) as { id: string; href: string; el: HTMLElement }[]
 
-        const elements = sectionIds
-            .map((id) => document.getElementById(id))
-            .filter(Boolean) as HTMLElement[]
+        if (sections.length === 0) return
 
-        if (elements.length === 0) return
+        let ticking = false
+        const handleScroll = () => {
+            if (ticking || isClickScrolling.current) return
+            ticking = true
+            requestAnimationFrame(() => {
+                // Detection line at 25% from top of viewport
+                const detectionY = window.innerHeight * 0.25
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                // Skip updates during click-initiated scrolls
-                if (isClickScrolling.current) return
-
-                // Find entries that are entering the detection zone
-                const visible = entries
-                    .filter((e) => e.isIntersecting)
-                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-
-                if (visible.length > 0) {
-                    const id = visible[0].target.id
-                    const subItem = activeItem.subItems.find((sub) =>
-                        sub.href.endsWith("#" + id)
-                    )
-                    if (subItem) {
-                        setActiveHash(subItem.href)
-                        window.history.replaceState(null, "", "#" + id)
+                // Walk through sections in DOM order.
+                // The last section whose top is above the detection line is the active one.
+                let active = sections[0]
+                for (const section of sections) {
+                    if (section.el.getBoundingClientRect().top <= detectionY) {
+                        active = section
                     }
                 }
-            },
-            {
-                // Detection zone = top 35% of viewport
-                rootMargin: "0px 0px -65% 0px",
-                threshold: 0,
-            }
-        )
 
-        elements.forEach((el) => observer.observe(el))
-        return () => observer.disconnect()
+                if (active) {
+                    setActiveHash(active.href)
+                    window.history.replaceState(null, "", "#" + active.id)
+                }
+                ticking = false
+            })
+        }
+
+        window.addEventListener("scroll", handleScroll, { passive: true })
+        // Run once on mount to set initial active section
+        handleScroll()
+
+        return () => window.removeEventListener("scroll", handleScroll)
     }, [activeTitle, pathname])
 
     // Toggle accordion — but never close the active (URL-matched) item

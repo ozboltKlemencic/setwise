@@ -21,7 +21,7 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
     return (
-        <div className="group p-(--space-8) bg-surface-100  border border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 transition-shadow duration-200 hover:shadow-(--shadow-md)">
+        <div className="group p-(--space-8) bg-surface-100  border border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 ">
             <div className="flex items-center gap-(--space-2) mb-(--space-3)">
                 <div className="flex items-center justify-center size-9 rounded-xl bg-brand-500/5">
                     <Icon className="size-4.5 text-brand-500" />

@@ -92,9 +92,11 @@ export default function FeaturesPage() {
 
                 {/* ── Page Header ────────────────────────────── */}
                 <header className="pt-(--space-12) pb-(--space-8) md:pt-(--space-16) md:pb-(--space-10)">
-                    <p className="text-caption-1 uppercase tracking-wider font-semibold text-brand-500 mb-(--space-3)">
-                        Funkcije
-                    </p>
+                    <div className="flex items-center justify-center bg-brand-500  "       >
+                        <p className="text-caption-1 uppercase tracking-wider font-semibold text-brand-500 mb-(--space-3)">
+                            Funkcije
+                        </p>
+                    </div>
                     <h1 className="text-large-title md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         Vse kar potrebujete v{" "}
                         <span className="primaryGradient">SetWise</span>{" "}
