@@ -273,7 +273,7 @@ export function MobileSidebar({ items, title }: { items: SidebarItem[]; title?: 
             {/* ── Floating trigger button ── */}
             <motion.button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-5 right-5 z-40 md:hidden flex items-center gap-2 px-4 py-3 bg-card/70 backdrop-blur-(--blur-thick) border border-border/60 rounded-2xl shadow-(--shadow-lg) cursor-pointer"
+                className="fixed bottom-5 right-5 z-40 lg:hidden flex items-center gap-2 px-4 py-3 bg-card/70 backdrop-blur-(--blur-thick) border border-border/60 rounded-2xl shadow-(--shadow-lg) cursor-pointer"
                 whileTap={{ scale: 0.95 }}
                 whileHover={{ scale: 1.02 }}
             >
@@ -294,7 +294,7 @@ export function MobileSidebar({ items, title }: { items: SidebarItem[]; title?: 
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="fixed inset-0 bg-black/60 backdrop-blur-(--blur-thin) z-(--z-modal) md:hidden"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-(--blur-thin) z-(--z-modal) lg:hidden"
                             onClick={() => setIsOpen(false)}
                         />
 
@@ -312,7 +312,7 @@ export function MobileSidebar({ items, title }: { items: SidebarItem[]; title?: 
                                 damping: 22,
                                 mass: 0.9
                             }}
-                            className="fixed bottom-0 left-0 right-0 z-(--z-toast) md:hidden"
+                            className="fixed bottom-0 md:bottom-[8%] left-0 right-0 z-(--z-toast) lg:hidden max-w-md mx-auto"
                         >
                             <motion.div
                                 initial={{ scale: 0.92 }}
@@ -394,7 +394,7 @@ export function MobileSidebar({ items, title }: { items: SidebarItem[]; title?: 
                                         )
                                     })}
                                 </nav>
-                                 
+
                                 {/* Bottom padding */}
                                 <div className="h-(--space-4)" />
                             </motion.div>

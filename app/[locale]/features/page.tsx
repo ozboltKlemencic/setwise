@@ -48,16 +48,16 @@ export default async function FeaturesPage() {
     const t = await getTranslations('FeaturesPage')
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl">
 
                 {/* ── Page Header ────────────────────────────── */}
                 <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10)">
-                 
-                        <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
-                            {t('badge')}
-                        </p>
-                  
+
+                    <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
+                        {t('badge')}
+                    </p>
+
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t.rich('heading', richTextComponents)}
                     </h1>
@@ -72,7 +72,7 @@ export default async function FeaturesPage() {
                             <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('overview.title')}
                             </h2>
-                           
+
                             <p className="text-footnote md:text-body text-surface-700 leading-relaxed max-w-prose">
                                 {t.rich('overview.description', richTextComponents)}
                             </p>
@@ -107,7 +107,7 @@ export default async function FeaturesPage() {
                                 ))}
                             </div>
                         </div>
-                    </section>      
+                    </section>
 
                     {/* KEY FEATURES Section */}
                     <section id="key-features" className="scroll-mt-32 space-y-(--space-8) md:space-y-(--space-16)">
@@ -269,7 +269,7 @@ export default async function FeaturesPage() {
                         </div>
                     </section>
 
-                   
+
 
                     {/* SECURITY & PRIVACY Section */}
                     <section className="scroll-mt-32 relative  ">
