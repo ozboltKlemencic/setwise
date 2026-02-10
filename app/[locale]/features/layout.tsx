@@ -30,12 +30,14 @@ export default function FeaturesLayout({
                 <main className="w-[94vw] md:w-6xl relative flex flex-col border-l border-r 
                 border-border/50 dark:border-border/40 bg-background">
 
-                    <Navigation />
+                    <div className="md:sticky md:top-0 md:z-(--z-fixed) md:bg-background md:border-b md:border-border/50 md:dark:border-border/40">
+                        <Navigation />
+                    </div>
 
-                    <div className="flex flex-1 border-t border-border/50 dark:border-border/40 relative">
+                    <div className="flex flex-1 border-t border-border/50 dark:border-border/40 md:border-t-0 relative">
                         {/* Sidebar - Sticky */}
                         <aside className="hidden md:block w-64 shrink-0 border-r border-border/40 relative">
-                            <div className="sticky top-1 h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto thin-scrollbar">
+                            <div className="sticky top-[4.5rem] h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto no-scrollbar">
                                 <FeaturesSidebar />
                             </div>
                         </aside>

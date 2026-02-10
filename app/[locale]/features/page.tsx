@@ -92,11 +92,11 @@ export default function FeaturesPage() {
 
                 {/* ── Page Header ────────────────────────────── */}
                 <header className="pt-(--space-12) pb-(--space-8) md:pt-(--space-16) md:pb-(--space-10)">
-                    <div className="flex items-center justify-center bg-brand-500  "       >
-                        <p className="text-caption-1 uppercase tracking-wider font-semibold text-brand-500 mb-(--space-3)">
+                 
+                        <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
                             Funkcije
                         </p>
-                    </div>
+                  
                     <h1 className="text-large-title md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         Vse kar potrebujete v{" "}
                         <span className="primaryGradient">SetWise</span>{" "}
@@ -110,7 +110,7 @@ export default function FeaturesPage() {
                     {/* OVERVIEW Section */}
                     <section id="overview" className="scroll-mt-32  space-y-(--space-8)">
                         <div className="space-y-(--space-3)">
-                            <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                            <h2 className="text-title-1 md:text-large-title font-bold text-surface-900 tracking-tight">
                                 Overview
                             </h2>
                            
@@ -155,14 +155,12 @@ export default function FeaturesPage() {
                                 ))}
                             </div>
                         </div>
-                    </section>
-
-                   
+                    </section>      
 
                     {/* KEY FEATURES Section */}
                     <section id="key-features" className="scroll-mt-32 space-y-(--space-16)">
                         <div className="space-y-(--space-2)">
-                            <p className="text-caption-1 uppercase tracking-wider font-semibold text-brand-500">
+                            <p className="text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
                                 Podrobnosti
                             </p>
                             <h2 className="text-title-1 md:text-large-title font-bold text-surface-900 tracking-tight">
@@ -235,7 +233,7 @@ export default function FeaturesPage() {
                                     { lead: "RPE/RIR Tracking", text: "Beleženje Rate of Perceived Exertion (1-10 scale)." },
                                 ].map((item) => (
                                     <li key={item.lead} className="flex gap-(--space-3) text-callout md:text-body text-surface-700 leading-relaxed">
-                                        <span className="mt-1.5 size-1.5 rounded-full bg-brand-500 shrink-0" />
+                                        <span className="mt-1.5 size-1.5 rounded-full bg-surface-900 shrink-0" />
                                         <span>
                                             <strong className="text-surface-900 font-semibold">{item.lead}:</strong>{" "}
                                             {item.text}
@@ -247,53 +245,82 @@ export default function FeaturesPage() {
 
                         {/* Feature 5 — Advanced Features */}
                         <KeyFeatureSection icon={Zap} title="Advanced Features">
-                            <div className="grid md:grid-cols-2 gap-(--space-4)">
-                                {advancedCards.map((card) => (
-                                    <MiniFeatureCard
-                                        key={card.title}
-                                        title={card.title}
-                                        description={card.description}
-                                    />
-                                ))}
+                            <div className="relative py-(--space-4) md:py-(--space-6)">
+                                {/* Decorative lines — breaks out of all parent padding to span full width */}
+                                <div className="absolute inset-0 -mx-(--space-6) md:-ml-25 md:-mr-(--space-12) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
+                                    {Array.from({ length: 300 }).map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-200/70 outline-offset-[-0.25px]"
+                                            style={{
+                                                top: `${i * 16 - 120}px`,
+                                                left: "-100%",
+                                                width: "300%",
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Cards grid — on top of decorative background */}
+                                <div className="grid md:grid-cols-2 gap-(--space-2) relative z-10">
+                                    {advancedCards.map((card) => (
+                                        <MiniFeatureCard
+                                            key={card.title}
+                                            title={card.title}
+                                            description={card.description}
+                                        />
+                                    ))}
+                                </div>
                             </div>
                         </KeyFeatureSection>
                     </section>
 
-                    <SectionDivider />
-
                     {/* GET STARTED Section */}
                     <section id="get-started" className="scroll-mt-32 space-y-(--space-12)">
                         <div className="space-y-(--space-2)">
-                            <p className="text-caption-1 uppercase tracking-wider font-semibold text-brand-500">
+                            <p className="text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
                                 Začnite
                             </p>
                             <h2 className="text-title-1 md:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-3)">
                                 Get Started
-                                <span className="text-caption-1 font-semibold text-brand-500 bg-brand-500/10 px-3 py-1 rounded-full uppercase tracking-wider">
-                                    Beta
-                                </span>
                             </h2>
                         </div>
 
                         {/* CTA Card */}
-                        <div className="bg-brand-500/5 border border-brand-500/20 rounded-2xl p-(--space-6) md:p-(--space-8) shadow-(--shadow-sm)">
-                            <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 mb-(--space-2)">
-                                Beta Access – Brezplačno za Zgodnje Uporabnike
-                            </h3>
-                            <p className="text-callout md:text-body text-surface-700 mb-(--space-8) max-w-prose">
-                                SetWise je v <strong className="text-surface-900 font-semibold">closed beta</strong>.
-                                Beta testerji obdržijo <strong className="text-surface-900 font-semibold">lifetime free access</strong> po izidu.
-                            </p>
-
-                            <div className="grid gap-(--space-4) sm:grid-cols-2 lg:grid-cols-4 mb-(--space-8)">
-                                {benefits.map((label) => (
-                                    <BenefitBadge key={label} icon={Check} label={label} />
+                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-300 relative rounded-xl overflow-hidden shadow-(--shadow-sm)">
+                            {/* Decorative lines — behind content */}
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                                {Array.from({ length: 300 }).map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-300/80 outline-offset-[-0.25px]"
+                                        style={{
+                                            top: `${i * 16 - 120}px`,
+                                            left: "-100%",
+                                            width: "300%",
+                                        }}
+                                    />
                                 ))}
                             </div>
 
-                           
-                            <BetaSignupDialog trigger={<ButtonRotatingGradient >Pridruži se Beta Programu</ButtonRotatingGradient>} />
-                              
+                            {/* Content — on top of decorative lines */}
+                            <div className="relative z-10 p-(--space-6) md:p-(--space-8) ">
+                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 mb-(--space-2)">
+                                    Beta Access – Brezplačno za Zgodnje Uporabnike
+                                </h3>
+                                <p className="text-callout md:text-body text-surface-700 mb-(--space-8) max-w-prose">
+                                    SetWise je v <strong className="text-surface-900 font-semibold">closed beta</strong>.
+                                    Beta testerji obdržijo <strong className="text-surface-900 font-semibold">lifetime free access</strong> po izidu.
+                                </p>
+
+                                <div className="grid gap-(--space-4) sm:grid-cols-2 lg:grid-cols-4 mb-(--space-8)">
+                                    {benefits.map((label) => (
+                                        <BenefitBadge key={label} icon={Check} label={label} />
+                                    ))}
+                                </div>
+
+                                <BetaSignupDialog trigger={<ButtonRotatingGradient>Pridruži se Beta Programu</ButtonRotatingGradient>} />
+                            </div>
                         </div>
 
                         {/* Steps */}

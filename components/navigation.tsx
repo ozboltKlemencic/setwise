@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslations } from "next-intl"
+import { usePathname } from "@/i18n/navigation"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import Blur from "./ui/Blur"
 import BetaSignupDialog from "./beta-signup-dialog"
@@ -16,6 +17,10 @@ export default function Navigation() {
     const [activeSection, setActiveSection] = useState("#")
     const t = useTranslations('Navigation')
     const tCommon = useTranslations('Common')
+    const pathname = usePathname()
+
+    // Features pages have their own sidebar navigation — hide floating nav
+    const isFeaturePage = pathname === "/features" || pathname.startsWith("/features/")
 
     const navLinks = [
         { href: "#how-it-works", label: t('howItWorks'), sectionId: "how-it-works" },
@@ -130,7 +135,7 @@ export default function Navigation() {
             </nav>
 
             <AnimatePresence>
-                {isScrolled && (
+                {isScrolled && !isFeaturePage && (
                     <motion.nav
                         aria-label="Primary"
                         initial={{ y: -100, opacity: 0, scale: 0.9 }}

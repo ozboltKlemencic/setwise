@@ -23,8 +23,8 @@ export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps
     return (
         <div className="group p-(--space-8) bg-surface-100  border border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 ">
             <div className="flex items-center gap-(--space-2) mb-(--space-3)">
-                <div className="flex items-center justify-center size-9 rounded-xl bg-brand-500/5">
-                    <Icon className="size-4.5 text-brand-500" />
+                <div className="flex items-center justify-center size-9 rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
+                    <Icon className="size-4.5 text-brand-500/80" />
                 </div>
                 <h4 className="text-headline font-semibold text-surface-900/80">
                     {title}
@@ -52,8 +52,8 @@ export function KeyFeatureSection({ icon: Icon, title, children }: KeyFeatureSec
     return (
         <div className="space-y-(--space-5)">
             <div className="flex items-center gap-(--space-3)">
-                <div className="flex items-center justify-center size-10 rounded-xl bg-brand-500/10">
-                    <Icon className="size-5 text-brand-500" />
+                <div className="flex items-center justify-center size-10 rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
+                    <Icon className="size-5 text-brand-500/80" />
                 </div>
                 <h3 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
                     {title}
@@ -78,7 +78,7 @@ interface MiniFeatureCardProps {
 
 export function MiniFeatureCard({ title, description }: MiniFeatureCardProps) {
     return (
-        <div className="p-(--space-5) bg-surface-50 dark:bg-surface-200/10 rounded-2xl border border-surface-200 dark:border-surface-300/40 shadow-(--shadow-xs) transition-shadow duration-200 hover:shadow-(--shadow-sm)">
+        <div className="p-(--space-6) bg-surface-50 dark:bg-surface-200/10  border border-surface-200 dark:border-surface-300/40 shadow-(--shadow-xs) transition-shadow duration-200 hover:shadow-(--shadow-sm)">
             <strong className="block text-headline font-semibold text-surface-900 mb-(--space-1)">
                 {title}
             </strong>
@@ -189,6 +189,6 @@ export function FeatureTextBlock({ lead, children }: FeatureTextBlockProps) {
 
 export function SectionDivider() {
     return (
-        <hr className="border-surface-200/80 dark:border-surface-300/60" />
+        <hr className="border-surface-200/80 dark:border-surface-300/60 -mx-(--space-6) md:-mx-(--space-12)" />
     )
 }
