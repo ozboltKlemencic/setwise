@@ -20,7 +20,7 @@ export default function Navigation() {
     const pathname = usePathname()
 
     // Features pages have their own sidebar navigation — hide floating nav
-    const isFeaturePage = pathname === "/features" || pathname.startsWith("/features/")
+    const isFeaturePage = pathname === "/features" || pathname.startsWith("/features/") || pathname.startsWith("/guides/")
 
     const navLinks = [
         { href: "#how-it-works", label: t('howItWorks'), sectionId: "how-it-works" },

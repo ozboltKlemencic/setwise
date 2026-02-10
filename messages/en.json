@@ -471,5 +471,343 @@
         "description": "This feature is currently under development. Stay tuned for updates!",
         "backHome": "Back to home",
         "particleText": "SOON"
+    },
+    "Guides": {
+        "Sidebar": {
+            "mobileTitle": "Guides",
+            "betaTitle": "Get Beta Access",
+            "betaDescription": "Download the app and start your journey.",
+            "betaButton": "Try for Free",
+            "intro": {
+                "title": "Intro",
+                "welcome": "Welcome",
+                "installation": "Installation",
+                "createWorkout": "Create Workout"
+            },
+            "installation": {
+                "title": "Installation",
+                "overview": "Overview",
+                "requirements": "Requirements",
+                "steps": "Steps"
+            },
+            "createWorkout": {
+                "title": "Create Workout",
+                "overview": "Overview",
+                "methods": "Methods",
+                "tips": "Pro Tips"
+            }
+        },
+        "InstallationPage": {
+            "title": "Installation",
+            "description": "How to install SetWise on your device.",
+            "badge": "Guides",
+            "heading": "Install <brand>SetWise</brand> in seconds",
+            "overview": {
+                "title": "Installation Overview",
+                "description": "SetWise is a Progressive Web App (PWA) that can be installed directly from your browser. It works offline and behaves just like a native app.",
+                "cards": {
+                    "ios": {
+                        "title": "iOS",
+                        "description": "Install via Safari Share menu."
+                    },
+                    "android": {
+                        "title": "Android",
+                        "description": "Install via Chrome menu."
+                    },
+                    "desktop": {
+                        "title": "Desktop",
+                        "description": "Install via Chrome address bar."
+                    },
+                    "updates": {
+                        "title": "Auto Updates",
+                        "description": "Always have the latest version."
+                    }
+                }
+            },
+            "keyFeatures": {
+                "badge": "Details",
+                "title": "Installation Steps",
+                "ios": {
+                    "title": "iOS Installation",
+                    "step1": {
+                        "lead": "Open in Safari",
+                        "text": "Navigate to app.setwise.com in Safari."
+                    },
+                    "step2": {
+                        "lead": "Tap Share",
+                        "text": "Tap the Share button in the toolbar."
+                    },
+                    "step3": {
+                        "lead": "Add to Home Screen",
+                        "text": "Scroll down and tap 'Add to Home Screen'."
+                    }
+                },
+                "android": {
+                    "title": "Android Installation",
+                    "step1": {
+                        "lead": "Open in Chrome",
+                        "text": "Navigate to app.setwise.com in Chrome."
+                    },
+                    "step2": {
+                        "lead": "Tap Menu",
+                        "text": "Tap the three dots menu."
+                    },
+                    "step3": {
+                        "lead": "Install App",
+                        "text": "Tap 'Install App' or 'Add to Home Screen'."
+                    }
+                },
+                "desktop": {
+                    "title": "Desktop Installation",
+                    "step1": {
+                        "lead": "Open in Chrome/Edge",
+                        "text": "Navigate to app.setwise.com."
+                    },
+                    "step2": {
+                        "lead": "Click Install",
+                        "text": "Click the install icon in the address bar."
+                    },
+                    "step3": {
+                        "lead": "Launch",
+                        "text": "Launch from your desktop or applications folder."
+                    }
+                },
+                "troubleshooting": {
+                    "title": "Troubleshooting",
+                    "clearCache": {
+                        "lead": "Clear Cache",
+                        "text": "If you have issues, try clearing your browser cache."
+                    },
+                    "updateBrowser": {
+                        "lead": "Update Browser",
+                        "text": "Ensure you are using the latest version of your browser."
+                    },
+                    "contactSupport": {
+                        "lead": "Contact Support",
+                        "text": "Reach out if you need help."
+                    },
+                    "checkConnection": {
+                        "lead": "Check Connection",
+                        "text": "Ensure you have an active internet connection for first install."
+                    }
+                },
+                "benefits": {
+                    "title": "Why Install?",
+                    "offline": {
+                        "title": "Offline Access",
+                        "description": "Works without internet."
+                    },
+                    "fullscreen": {
+                        "title": "Full Screen",
+                        "description": "No browser bars."
+                    },
+                    "notifications": {
+                        "title": "Notifications",
+                        "description": "Get important updates."
+                    },
+                    "performance": {
+                        "title": "Better Performance",
+                        "description": "More responsive experience."
+                    }
+                }
+            },
+            "getStarted": {
+                "badge": "Start Now",
+                "title": "Ready to install?",
+                "beta": {
+                    "title": "Get the App",
+                    "description": "Install SetWise now and start tracking.",
+                    "button": "Open App"
+                },
+                "benefits": {
+                    "fast": "Fast",
+                    "simple": "Simple",
+                    "secure": "Secure",
+                    "free": "Free"
+                },
+                "steps": {
+                    "step1": {
+                        "title": "Open Browser",
+                        "description": "Go to the app URL."
+                    },
+                    "step2": {
+                        "title": "Install",
+                        "description": "Follow instructions."
+                    },
+                    "step3": {
+                        "title": "Login",
+                        "description": "Create account."
+                    }
+                }
+            },
+            "security": {
+                "badge": "Privacy",
+                "title": "Safe & Secure",
+                "encryption": {
+                    "title": "Secure",
+                    "description": "Your installation is secure."
+                },
+                "localStorage": {
+                    "title": "Private",
+                    "description": "Your data is private."
+                }
+            }
+        },
+        "CreateWorkoutPage": {
+            "title": "Create Workout",
+            "description": "How to create workouts in SetWise.",
+            "badge": "Guides",
+            "heading": "Create your <brand>perfect</brand> workout",
+            "overview": {
+                "title": "Workout Creation",
+                "description": "SetWise offers flexible ways to create workouts, from simple lists to complex programs.",
+                "cards": {
+                    "scratch": {
+                        "title": "From Scratch",
+                        "description": "Build exercise by exercise."
+                    },
+                    "template": {
+                        "title": "From Template",
+                        "description": "Use a pre-made template."
+                    },
+                    "paste": {
+                        "title": "Paste Import",
+                        "description": "Paste text from notes."
+                    },
+                    "ai": {
+                        "title": "AI Generator",
+                        "description": "Let AI build it for you."
+                    }
+                }
+            },
+            "keyFeatures": {
+                "badge": "Methods",
+                "title": "Creation Methods",
+                "scratch": {
+                    "title": "From Scratch",
+                    "step1": {
+                        "lead": "New Workout",
+                        "text": "Tap 'Plus' button."
+                    },
+                    "step2": {
+                        "lead": "Add Exercises",
+                        "text": "Search and add exercises."
+                    },
+                    "step3": {
+                        "lead": "Save",
+                        "text": "Save as template for later."
+                    }
+                },
+                "paste": {
+                    "title": "Paste Import",
+                    "step1": {
+                        "lead": "Copy Text",
+                        "text": "Copy workout from anywhere."
+                    },
+                    "step2": {
+                        "lead": "Paste",
+                        "text": "Paste into SetWise."
+                    },
+                    "step3": {
+                        "lead": "Review",
+                        "text": "Check parsed exercises."
+                    }
+                },
+                "template": {
+                    "title": "Using Templates",
+                    "step1": {
+                        "lead": "Select Template",
+                        "text": "Choose from your library."
+                    },
+                    "step2": {
+                        "lead": "Edit",
+                        "text": "Adjust if needed."
+                    },
+                    "step3": {
+                        "lead": "Start",
+                        "text": "Begin your session."
+                    }
+                },
+                "structure": {
+                    "title": "Structuring",
+                    "supersets": {
+                        "lead": "Supersets",
+                        "text": "Group exercises together."
+                    },
+                    "warmup": {
+                        "lead": "Warmup Sets",
+                        "text": "Tag sets as warmup."
+                    },
+                    "notes": {
+                        "lead": "Notes",
+                        "text": "Add instructions."
+                    },
+                    "rest": {
+                        "lead": "Rest Times",
+                        "text": "Set target rest times."
+                    }
+                },
+                "tips": {
+                    "title": "Pro Tips",
+                    "tagging": {
+                        "title": "Tagging",
+                        "description": "Organize your workouts."
+                    },
+                    "duplicating": {
+                        "title": "Duplicating",
+                        "description": "Copy existing workouts."
+                    },
+                    "sharing": {
+                        "title": "Sharing",
+                        "description": "Share with friends."
+                    },
+                    "scheduling": {
+                        "title": "Scheduling",
+                        "description": "Plan ahead."
+                    }
+                }
+            },
+            "getStarted": {
+                "badge": "Action",
+                "title": "Start Creating",
+                "beta": {
+                    "title": "Try It Now",
+                    "description": "Create your first workout in seconds.",
+                    "button": "Create Workout"
+                },
+                "benefits": {
+                    "fast": "Fast",
+                    "flexible": "Flexible",
+                    "smart": "Smart",
+                    "easy": "Easy"
+                },
+                "steps": {
+                    "step1": {
+                        "title": "Open App",
+                        "description": "Launch SetWise."
+                    },
+                    "step2": {
+                        "title": "Tap Create",
+                        "description": "Hit the + button."
+                    },
+                    "step3": {
+                        "title": "Save",
+                        "description": "Save your routine."
+                    }
+                }
+            },
+            "security": {
+                "badge": "Data",
+                "title": "Your Workouts",
+                "encryption": {
+                    "title": "Backed Up",
+                    "description": "Safe in the cloud."
+                },
+                "localStorage": {
+                    "title": "Exportable",
+                    "description": "Export as text/JSON."
+                }
+            }
+        }
     }
 }
