@@ -44,7 +44,7 @@ export default function FeaturesLayout({
 
                         {/* Content Area */}
                         <div id="features-content" className="flex-1 flex flex-col min-w-0">
-                            <div className="flex-1 flex flex-col items-center pb-20">
+                            <div className="flex-1 flex flex-col items-center ">
                                 {/* Persistent Header Area */}
                                 <div className="h-[80px] w-full relative mask-[linear-gradient(to_bottom,white,transparent)] shrink-0">
                                     <ParticleText text="" backgroundBrightness={{ dark: 160, light: 185 }} reverse={true} className="h-full opacity-80 w-full z-20" />

@@ -13,17 +13,7 @@ import {
 import BetaSignupDialog from "@/components/beta-signup-dialog"
 import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
 
-/* ============================================================
-   FEATURES PAGE — /features
-   ─────────────────────────────────────────────────────────────
-   Heading hierarchy (Apple HIG):
-     h1  → Page title (display)
-     h2  → Section titles (title-1)
-     h3  → Sub-section titles / feature names (title-2)
-     h4  → Card titles (headline)
 
-   Spacing follows 8pt grid system.
-   ============================================================ */
 
 // -- Data Arrays --------------------------------------------------
 
@@ -105,7 +95,7 @@ export default function FeaturesPage() {
                 </header>
 
                 {/* ── Sections ───────────────────────────────── */}
-                <div className="space-y-(--space-16) lg:space-y-(--space-20) pb-(--space-16)">
+                <div className="space-y-(--space-16) lg:space-y-(--space-20) ">
 
                     {/* OVERVIEW Section */}
                     <section id="overview" className="scroll-mt-32  space-y-(--space-8)">
@@ -276,7 +266,7 @@ export default function FeaturesPage() {
                     </section>
 
                     {/* GET STARTED Section */}
-                    <section id="get-started" className="scroll-mt-32 space-y-(--space-12)">
+                    <section id="get-started" className="scroll-mt-32 space-y-(--space-12) mb-(--space-16) md:mb-(--space-20)">
                         <div className="space-y-(--space-2)">
                             <p className="text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
                                 Začnite
@@ -287,13 +277,13 @@ export default function FeaturesPage() {
                         </div>
 
                         {/* CTA Card */}
-                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-300 relative rounded-xl overflow-hidden shadow-(--shadow-sm)">
+                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-200 relative rounded-xl overflow-hidden shadow-(--shadow-sm) ">
                             {/* Decorative lines — behind content */}
-                            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div className="absolute inset-0 overflow-hidden pointer-events-none mask-[radial-gradient(300px_circle_at_center,white,transparent)]">
                                 {Array.from({ length: 300 }).map((_, i) => (
                                     <div
                                         key={i}
-                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-300/80 outline-offset-[-0.25px]"
+                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-300/80 dark:outline-surface-400/30 outline-offset-[-0.25px]"
                                         style={{
                                             top: `${i * 16 - 120}px`,
                                             left: "-100%",
@@ -336,27 +326,45 @@ export default function FeaturesPage() {
                         </div>
                     </section>
 
-                    <SectionDivider />
+                   
 
                     {/* SECURITY & PRIVACY Section */}
-                    <section className="scroll-mt-32 space-y-(--space-8)">
-                        <div className="space-y-(--space-2)">
-                            <p className="text-caption-1 uppercase tracking-wider font-semibold text-surface-500">
-                                Varnost
-                            </p>
-                            <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
-                                Security & Privacy
-                            </h2>
-                        </div>
-                        <div className="grid md:grid-cols-2 gap-(--space-6) md:gap-(--space-8)">
-                            {securityItems.map((item) => (
-                                <SecurityItem
-                                    key={item.title}
-                                    icon={item.icon}
-                                    title={item.title}
-                                    description={item.description}
+                    <section className="scroll-mt-32 relative  ">
+                        {/* Decorative lines — behind content, full width */}
+                        <div className="absolute inset-0 -mx-(--space-6) md:-mx-(--space-12) border-t border-surface-200/80 dark:border-surface-300/60 overflow-hidden pointer-events-none">
+                            {Array.from({ length: 300 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-200/70 outline-offset-[-0.25px]"
+                                    style={{
+                                        top: `${i * 16 - 120}px`,
+                                        left: "-100%",
+                                        width: "300%",
+                                    }}
                                 />
                             ))}
+                        </div>
+
+                        {/* Content — on top */}
+                        <div className="relative z-10 space-y-(--space-8) p-(--space-6) md:py-(--space-20)">
+                            <div className="space-y-(--space-2)">
+                                <p className="text-caption-1 uppercase tracking-wider font-semibold text-surface-500">
+                                    Varnost
+                                </p>
+                                <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                                    Security & Privacy
+                                </h2>
+                            </div>
+                            <div className="grid md:grid-cols-2 gap-(--space-6) md:gap-(--space-8)">
+                                {securityItems.map((item) => (
+                                    <SecurityItem
+                                        key={item.title}
+                                        icon={item.icon}
+                                        title={item.title}
+                                        description={item.description}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </section>
 
