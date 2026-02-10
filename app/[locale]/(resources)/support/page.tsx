@@ -15,7 +15,7 @@ export default async function SupportPage() {
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
-            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
+            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl ">
 
                 {/* ── Page Header & Search ────────────────────────────── */}
                 <header className="pt-(--space-8) pb-(--space-10) md:pt-(--space-16) md:pb-(--space-20) flex flex-col items-center text-center space-y-(--space-8)">
@@ -25,9 +25,7 @@ export default async function SupportPage() {
                     </h1>
 
                     <div className="w-full max-w-xl space-y-(--space-3)">
-                        <label htmlFor="support-search" className="text-title-3 font-semibold text-surface-800">
-                            {t('search.title')}
-                        </label>
+
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <Search className="size-5 text-surface-400 group-focus-within:text-brand-500 transition-colors" />
