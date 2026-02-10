@@ -52,7 +52,7 @@ export default async function FeaturesPage() {
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
 
                 {/* ── Page Header ────────────────────────────── */}
-                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10)">
+                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10) min-[1152px]:max-w-5/6">
 
                     <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
                         {t('badge')}
