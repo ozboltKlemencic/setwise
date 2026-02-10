@@ -78,16 +78,16 @@ const securityItems = [
 export default function FeaturesPage() {
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans">
-            <div className="w-full px-(--space-6) md:px-(--space-12) max-w-5xl">
+            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl">
 
                 {/* ── Page Header ────────────────────────────── */}
-                <header className="pt-(--space-12) pb-(--space-8) md:pt-(--space-16) md:pb-(--space-10)">
+                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10)">
                  
                         <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
                             Funkcije
                         </p>
                   
-                    <h1 className="text-large-title md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
+                    <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         Vse kar potrebujete v{" "}
                         <span className="primaryGradient">SetWise</span>{" "}
                         appu
@@ -95,16 +95,16 @@ export default function FeaturesPage() {
                 </header>
 
                 {/* ── Sections ───────────────────────────────── */}
-                <div className="space-y-(--space-16) lg:space-y-(--space-20) ">
+                <div className="space-y-(--space-10) md:space-y-(--space-16) lg:space-y-(--space-20) ">
 
                     {/* OVERVIEW Section */}
-                    <section id="overview" className="scroll-mt-32  space-y-(--space-8)">
-                        <div className="space-y-(--space-3)">
-                            <h2 className="text-title-1 md:text-large-title font-bold text-surface-900 tracking-tight">
+                    <section id="overview" className="scroll-mt-32  space-y-(--space-5) md:space-y-(--space-8)">
+                        <div className="space-y-(--space-2) md:space-y-(--space-3)">
+                            <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight">
                                 Overview
                             </h2>
                            
-                            <p className="text-callout md:text-body text-surface-700 leading-relaxed max-w-prose">
+                            <p className="text-footnote md:text-body text-surface-700 leading-relaxed max-w-prose">
                                 SetWise je{" "}
                                 <strong className="text-surface-900 font-semibold">workout tracker aplikacija</strong>{" "}
                                 za iPhone, zasnovana okoli enega preprostega principa:{" "}
@@ -119,7 +119,7 @@ export default function FeaturesPage() {
                         {/* Cards with full-bleed decorative background */}
                         <div className="relative">
                             {/* Decorative lines — breaks out of parent padding to span full width */}
-                            <div className="absolute inset-0 -mx-(--space-6) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
+                            <div className="absolute inset-0 -mx-(--space-5) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
                                 {Array.from({ length: 300 }).map((_, i) => (
                                     <div
                                         key={i}
@@ -134,7 +134,7 @@ export default function FeaturesPage() {
                             </div>
 
                             {/* Cards grid — on top of decorative background */}
-                            <div className="grid md:grid-cols-2 gap-(--space-4) py-(--space-4) md:py-(--space-6)  md:gap-(--space-2) w-full relative z-10">
+                            <div className="grid md:grid-cols-2 gap-(--space-2) py-(--space-3) md:py-(--space-6)  md:gap-(--space-2) w-full relative z-10">
                                 {overviewCards.map((card) => (
                                     <FeatureCard
                                         key={card.title}
@@ -148,19 +148,19 @@ export default function FeaturesPage() {
                     </section>      
 
                     {/* KEY FEATURES Section */}
-                    <section id="key-features" className="scroll-mt-32 space-y-(--space-16)">
+                    <section id="key-features" className="scroll-mt-32 space-y-(--space-8) md:space-y-(--space-16)">
                         <div className="space-y-(--space-2)">
-                            <p className="text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
+                            <p className="text-caption-2 md:text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
                                 Podrobnosti
                             </p>
-                            <h2 className="text-title-1 md:text-large-title font-bold text-surface-900 tracking-tight">
+                            <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight">
                                 Key Features
                             </h2>
                         </div>
 
                         {/* Feature 1 — Quick Logging */}
                         <KeyFeatureSection icon={Zap} title="Quick Logging">
-                            <div className="space-y-(--space-4) max-w-prose">
+                            <div className="space-y-(--space-3) md:space-y-(--space-4) max-w-prose">
                                 <FeatureTextBlock lead="Live Session Mode">
                                     omogoča beleženje vsake serije brez preklapljanja med ekrani.
                                     Odprete trening, vidite zgodovino in PR za vsako vajo, vnesete težo in repse, tapnete{" "}
@@ -183,7 +183,7 @@ export default function FeaturesPage() {
 
                         {/* Feature 2 — Templates & Programs */}
                         <KeyFeatureSection icon={LayoutTemplate} title="Templates & Programs">
-                            <div className="space-y-(--space-4) max-w-prose">
+                            <div className="space-y-(--space-3) md:space-y-(--space-4) max-w-prose">
                                 <FeatureTextBlock lead="My Templates">
                                     so vaši shranjeni workouts. Ustvarite &quot;Push Day&quot; predlogo z vsemi vajami,
                                     in vsak teden jo odprete – vse vaje so tam z zgodovino in PR-ji.
@@ -198,7 +198,7 @@ export default function FeaturesPage() {
 
                         {/* Feature 3 — History & Personal Records */}
                         <KeyFeatureSection icon={History} title="History & Personal Records">
-                            <div className="space-y-(--space-4) max-w-prose">
+                            <div className="space-y-(--space-3) md:space-y-(--space-4) max-w-prose">
                                 <FeatureTextBlock lead="Workout Log">
                                     shranjuje vse vaše treninge z datumom, volumnom, trajanjem in hitrim predogledom.
                                 </FeatureTextBlock>
@@ -215,14 +215,14 @@ export default function FeaturesPage() {
 
                         {/* Feature 4 — Progress & Analytics */}
                         <KeyFeatureSection icon={TrendingUp} title="Progress & Analytics">
-                            <ul className="list-none space-y-(--space-3) max-w-prose">
+                            <ul className="list-none space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 {[
                                     { lead: "Volume Charts", text: "Prikazujejo celoten volumen. Linearno povečanje pomeni napredek." },
                                     { lead: "Strength Curves", text: "Izračunajo estimated 1RM (Epley & Brzycki) in prikažejo rast." },
                                     { lead: "Muscle Heatmap", text: "3D vizualizacija mišičnih skupin in intenzivnosti." },
                                     { lead: "RPE/RIR Tracking", text: "Beleženje Rate of Perceived Exertion (1-10 scale)." },
                                 ].map((item) => (
-                                    <li key={item.lead} className="flex gap-(--space-3) text-callout md:text-body text-surface-700 leading-relaxed">
+                                    <li key={item.lead} className="flex gap-(--space-2) md:gap-(--space-3) text-footnote md:text-body text-surface-700 leading-relaxed">
                                         <span className="mt-1.5 size-1.5 rounded-full bg-surface-900 shrink-0" />
                                         <span>
                                             <strong className="text-surface-900 font-semibold">{item.lead}:</strong>{" "}
@@ -235,9 +235,9 @@ export default function FeaturesPage() {
 
                         {/* Feature 5 — Advanced Features */}
                         <KeyFeatureSection icon={Zap} title="Advanced Features">
-                            <div className="relative py-(--space-4) md:py-(--space-6)">
+                            <div className="relative py-(--space-3) md:py-(--space-6)">
                                 {/* Decorative lines — breaks out of all parent padding to span full width */}
-                                <div className="absolute inset-0 -mx-(--space-6) md:-ml-25 md:-mr-(--space-12) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
+                                <div className="absolute inset-0 -mx-(--space-5) md:-ml-25 md:-mr-(--space-12) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
                                     {Array.from({ length: 300 }).map((_, i) => (
                                         <div
                                             key={i}
@@ -266,18 +266,18 @@ export default function FeaturesPage() {
                     </section>
 
                     {/* GET STARTED Section */}
-                    <section id="get-started" className="scroll-mt-32 space-y-(--space-12) mb-(--space-16) md:mb-(--space-20)">
+                    <section id="get-started" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12) mb-(--space-10) md:mb-(--space-20)">
                         <div className="space-y-(--space-2)">
-                            <p className="text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
+                            <p className="text-caption-2 md:text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
                                 Začnite
                             </p>
-                            <h2 className="text-title-1 md:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-3)">
+                            <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-2) md:gap-(--space-3)">
                                 Get Started
                             </h2>
                         </div>
 
                         {/* CTA Card */}
-                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-200 relative rounded-xl overflow-hidden shadow-(--shadow-sm) ">
+                        <div className="bg-linear-to-tr from-brand-500/15 to-brand-500/5 border border-brand-200 relative rounded-lg md:rounded-xl overflow-hidden shadow-(--shadow-sm) ">
                             {/* Decorative lines — behind content */}
                             <div className="absolute inset-0 overflow-hidden pointer-events-none mask-[radial-gradient(300px_circle_at_center,white,transparent)]">
                                 {Array.from({ length: 300 }).map((_, i) => (
@@ -294,16 +294,16 @@ export default function FeaturesPage() {
                             </div>
 
                             {/* Content — on top of decorative lines */}
-                            <div className="relative z-10 p-(--space-6) md:p-(--space-8) ">
-                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 mb-(--space-2)">
+                            <div className="relative z-10 p-(--space-4) md:p-(--space-8) ">
+                                <h3 className="text-headline md:text-title-2 font-bold text-surface-900 mb-(--space-1) md:mb-(--space-2)">
                                     Beta Access
                                 </h3>
-                                <p className="text-callout md:text-body text-surface-700 mb-(--space-8) max-w-prose">
+                                <p className="text-footnote md:text-body text-surface-700 mb-(--space-5) md:mb-(--space-8) max-w-prose">
                                     SetWise je v <strong className="text-surface-900 font-semibold">closed beta</strong>.
                                     Beta testerji obdržijo <strong className="text-surface-900 font-semibold">lifetime free access</strong> po izidu.
                                 </p>
 
-                                <div className="grid gap-(--space-4) sm:grid-cols-2 lg:grid-cols-4 mb-(--space-8)">
+                                <div className="grid gap-(--space-2) sm:grid-cols-2 lg:grid-cols-4 mb-(--space-5) md:mb-(--space-8)">
                                     {benefits.map((label) => (
                                         <BenefitBadge key={label} icon={Check} label={label} />
                                     ))}
@@ -314,7 +314,7 @@ export default function FeaturesPage() {
                         </div>
 
                         {/* Steps */}
-                        <div className="grid md:grid-cols-3 gap-(--space-8) md:gap-(--space-10)">
+                        <div className="grid md:grid-cols-3 gap-(--space-5) md:gap-(--space-10)">
                             {steps.map((step, i) => (
                                 <StepCard
                                     key={step.title}
@@ -331,7 +331,7 @@ export default function FeaturesPage() {
                     {/* SECURITY & PRIVACY Section */}
                     <section className="scroll-mt-32 relative  ">
                         {/* Decorative lines — behind content, full width */}
-                        <div className="absolute inset-0 -mx-(--space-6) md:-mx-(--space-12) border-t border-surface-200/80 dark:border-surface-300/60 overflow-hidden pointer-events-none">
+                        <div className="absolute inset-0 -mx-(--space-5) md:-mx-(--space-12) border-t border-surface-200/80 dark:border-surface-300/60 overflow-hidden pointer-events-none">
                             {Array.from({ length: 300 }).map((_, i) => (
                                 <div
                                     key={i}
@@ -346,16 +346,16 @@ export default function FeaturesPage() {
                         </div>
 
                         {/* Content — on top */}
-                        <div className="relative z-10 space-y-(--space-8) p-(--space-6) md:py-(--space-20)">
-                            <div className="space-y-(--space-2)">
-                                <p className="text-caption-1 uppercase tracking-wider font-semibold text-surface-500">
+                        <div className="relative z-10 space-y-(--space-5) md:space-y-(--space-8) p-(--space-3) py-(--space-6) md:p-(--space-6) md:py-(--space-20)">
+                            <div className="space-y-(--space-1) md:space-y-(--space-2)">
+                                <p className="text-caption-2 md:text-caption-1 uppercase tracking-wider font-semibold text-surface-500">
                                     Varnost
                                 </p>
-                                <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                                <h2 className="text-title-3 md:text-title-1 font-bold text-surface-900 tracking-tight">
                                     Security & Privacy
                                 </h2>
                             </div>
-                            <div className="grid md:grid-cols-2 gap-(--space-6) md:gap-(--space-8)">
+                            <div className="grid md:grid-cols-2 gap-(--space-4) md:gap-(--space-8)">
                                 {securityItems.map((item) => (
                                     <SecurityItem
                                         key={item.title}

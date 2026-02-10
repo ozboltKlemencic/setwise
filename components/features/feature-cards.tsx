@@ -21,16 +21,16 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
     return (
-        <div className="group p-(--space-8) bg-surface-100  border border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 ">
-            <div className="flex items-center gap-(--space-2) mb-(--space-3)">
-                <div className="flex items-center justify-center size-9 rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
-                    <Icon className="size-4.5 text-brand-500/80" />
+        <div className="group p-(--space-4) md:p-(--space-8) bg-surface-100  border border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 ">
+            <div className="flex items-center gap-(--space-2) mb-(--space-2) md:mb-(--space-3)">
+                <div className="flex items-center justify-center size-7 md:size-9 rounded-lg md:rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
+                    <Icon className="size-3.5 md:size-4.5 text-brand-500/80" />
                 </div>
-                <h4 className="text-headline font-semibold text-surface-900/80">
+                <h4 className="text-subheadline md:text-headline font-semibold text-surface-900/80">
                     {title}
                 </h4>
             </div>
-            <p className="text-subheadline text-surface-600 leading-relaxed">
+            <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed">
                 {description}
             </p>
         </div>
@@ -50,12 +50,12 @@ interface KeyFeatureSectionProps {
 
 export function KeyFeatureSection({ icon: Icon, title, children }: KeyFeatureSectionProps) {
     return (
-        <div className="space-y-(--space-5)">
-            <div className="flex items-center gap-(--space-3)">
-                <div className="flex items-center justify-center size-10 rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
-                    <Icon className="size-5 text-brand-500/80" />
+        <div className="space-y-(--space-3) md:space-y-(--space-5)">
+            <div className="flex items-center gap-(--space-2) md:gap-(--space-3)">
+                <div className="flex items-center justify-center size-8 md:size-10 rounded-lg md:rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
+                    <Icon className="size-4 md:size-5 text-brand-500/80" />
                 </div>
-                <h3 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                <h3 className="text-title-3 md:text-title-1 font-bold text-surface-900 tracking-tight">
                     {title}
                 </h3>
             </div>
@@ -78,11 +78,11 @@ interface MiniFeatureCardProps {
 
 export function MiniFeatureCard({ title, description }: MiniFeatureCardProps) {
     return (
-        <div className="p-(--space-6) bg-surface-50 dark:bg-surface-200/10  border border-surface-200 dark:border-surface-300/40 shadow-(--shadow-xs) transition-shadow duration-200 hover:shadow-(--shadow-sm)">
-            <strong className="block text-headline font-semibold text-surface-900 mb-(--space-1)">
+        <div className="p-(--space-3) md:p-(--space-6) bg-surface-50 dark:bg-surface-200/10  border border-surface-200 dark:border-surface-300/40 shadow-(--shadow-xs) transition-shadow duration-200 hover:shadow-(--shadow-sm)">
+            <strong className="block text-subheadline md:text-headline font-semibold text-surface-900 mb-(--space-1)">
                 {title}
             </strong>
-            <p className="text-subheadline text-surface-600 leading-relaxed">
+            <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed">
                 {description}
             </p>
         </div>
@@ -102,14 +102,14 @@ interface StepCardProps {
 
 export function StepCard({ step, title, description }: StepCardProps) {
     return (
-        <div className="space-y-(--space-3)">
-            <div className="size-10 rounded-full bg-linear-to-bl  from-surface-200/30 to-surface-300 border border-surface-200/80 dark:border-surface-300/60 text-surface-700 flex items-center justify-center font-bold text-callout">
+        <div className="space-y-(--space-2) md:space-y-(--space-3)">
+            <div className="size-8 md:size-10 rounded-full bg-linear-to-bl  from-surface-200/30 to-surface-300 border border-surface-200/80 dark:border-surface-300/60 text-surface-700 flex items-center justify-center font-bold text-footnote md:text-callout">
                 {step}
             </div>
-            <h4 className="text-headline font-semibold text-surface-900">
+            <h4 className="text-subheadline md:text-headline font-semibold text-surface-900">
                 {title}
             </h4>
-            <p className="text-subheadline text-surface-600 leading-relaxed">
+            <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed">
                 {description}
             </p>
         </div>
@@ -129,15 +129,15 @@ interface SecurityItemProps {
 
 export function SecurityItem({ icon: Icon, title, description }: SecurityItemProps) {
     return (
-        <div className="flex gap-(--space-4) items-start">
-            <div className="flex items-center justify-center size-10 rounded-xl bg-surface-200/60 dark:bg-surface-300/20 shrink-0">
-                <Icon className="size-5 text-surface-500" />
+        <div className="flex gap-(--space-2) md:gap-(--space-4) items-start">
+            <div className="flex items-center justify-center size-8 md:size-10 rounded-lg md:rounded-xl bg-surface-200/60 dark:bg-surface-300/20 shrink-0">
+                <Icon className="size-4 md:size-5 text-surface-500" />
             </div>
-            <div className="space-y-(--space-1)">
-                <h4 className="text-headline font-semibold text-surface-900">
+            <div className="space-y-(--space-0.5) md:space-y-(--space-1)">
+                <h4 className="text-subheadline md:text-headline font-semibold text-surface-900">
                     {title}
                 </h4>
-                <p className="text-subheadline text-surface-600 leading-relaxed">
+                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed">
                     {description}
                 </p>
             </div>
@@ -157,8 +157,8 @@ interface BenefitBadgeProps {
 
 export function BenefitBadge({ icon: Icon, label }: BenefitBadgeProps) {
     return (
-        <div className="flex items-center gap-(--space-2) text-subheadline font-medium text-surface-800">
-            <Icon className="size-4 text-success shrink-0" />
+        <div className="flex items-center gap-(--space-1.5) md:gap-(--space-2) text-footnote md:text-subheadline font-medium text-surface-800">
+            <Icon className="size-3.5 md:size-4 text-success shrink-0" />
             <span>{label}</span>
         </div>
     )
@@ -176,7 +176,7 @@ interface FeatureTextBlockProps {
 
 export function FeatureTextBlock({ lead, children }: FeatureTextBlockProps) {
     return (
-        <p className="text-callout md:text-body text-surface-700 leading-relaxed">
+        <p className="text-footnote md:text-body text-surface-700 leading-relaxed">
             <strong className="text-surface-900 font-semibold">{lead}</strong>{" "}
             {children}
         </p>
@@ -189,6 +189,6 @@ export function FeatureTextBlock({ lead, children }: FeatureTextBlockProps) {
 
 export function SectionDivider() {
     return (
-        <hr className="border-surface-200/80 dark:border-surface-300/60 -mx-(--space-6) md:-mx-(--space-12)" />
+        <hr className="border-surface-200/80 dark:border-surface-300/60 -mx-(--space-3) md:-mx-(--space-12)" />
     )
 }
