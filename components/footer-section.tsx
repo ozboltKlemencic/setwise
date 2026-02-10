@@ -5,6 +5,7 @@ import { Instagram, Linkedin } from "lucide-react"
 
 export default function FooterSection() {
   const t = useTranslations('Footer')
+  const tFeatures = useTranslations('FeaturesSidebar')
 
   // Footer navigation columns data with translations
   const FOOTER_COLUMNS = [
@@ -13,12 +14,15 @@ export default function FooterSection() {
         {
           title: t('sections.features'),
           links: [
-            { label: t('links.workoutLogging'), href: "/features" },
-            { label: t('links.progressTracking'), href: "/features" },
-            { label: t('links.exerciseLibrary'), href: "/features" },
-            { label: t('links.customRoutines'), href: "/features" },
-            { label: t('links.restTimer'), href: "/features" },
-            { label: t('links.workoutHistory'), href: "/features" },
+            { label: tFeatures('intro.title'), href: "/features" },
+            { label: tFeatures('quickLogging.title'), href: "/features/quick-logging" },
+            { label: tFeatures('templates.title'), href: "/features/templates-programs" },
+            { label: tFeatures('history.title'), href: "/features/history" },
+            { label: tFeatures('progressAnalytics.title'), href: "/features/progress-analytics" },
+            { label: tFeatures('advancedMetrics.title'), href: "/features/advanced-metrics" },
+            { label: tFeatures('intensifiers.title'), href: "/features/intensifiers" },
+            { label: tFeatures('autoCompare.title'), href: "/features/auto-compare" },
+            { label: tFeatures('offlineSync.title'), href: "/features/offline-sync" },
           ],
         },
       ],
