@@ -296,7 +296,7 @@ export default function FeaturesPage() {
                             {/* Content — on top of decorative lines */}
                             <div className="relative z-10 p-(--space-6) md:p-(--space-8) ">
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 mb-(--space-2)">
-                                    Beta Access – Brezplačno za Zgodnje Uporabnike
+                                    Beta Access
                                 </h3>
                                 <p className="text-callout md:text-body text-surface-700 mb-(--space-8) max-w-prose">
                                     SetWise je v <strong className="text-surface-900 font-semibold">closed beta</strong>.

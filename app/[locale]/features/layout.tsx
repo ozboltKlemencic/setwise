@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Navigation from "@/components/navigation"
 import FooterSection from "@/components/footer-section"
-import { FeaturesSidebar } from "@/components/features/features-sidebar"
+import { FeaturesSidebar } from "./features-sidebar"
 import { getTranslations } from "next-intl/server"
 
 import { ParticleText } from "@/components/ui/particle-text"
