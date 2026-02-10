@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/navigation"
+import { getTranslations } from "next-intl/server"
 import { Check, Zap, LayoutTemplate, History, TrendingUp, ShieldCheck } from "lucide-react"
 import {
     FeatureCard,
@@ -8,74 +8,45 @@ import {
     SecurityItem,
     BenefitBadge,
     FeatureTextBlock,
-    SectionDivider,
 } from "@/components/features/feature-cards"
 import BetaSignupDialog from "@/components/beta-signup-dialog"
 import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
+import type { ReactNode } from "react"
 
 
+// -- Icon Maps (icons can't live in JSON) --------------------------------
 
-// -- Data Arrays --------------------------------------------------
+const overviewCardIcons = {
+    fast: Zap,
+    offline: ShieldCheck,
+    compare: TrendingUp,
+    analytics: History,
+} as const
 
-const overviewCards = [
-    {
-        icon: Zap,
-        title: "Bliskovito Hitro",
-        description: "Dodajte serijo z le 2 klikoma. Med seti ste manj na telefonu in več skoncentrirani na dvigovanje.",
-    },
-    {
-        icon: ShieldCheck,
-        title: "Offline-First Pristop",
-        description: "Trenirate v fitnesu brez signala? SetWise deluje popolnoma offline. Vaš trening se nikoli ne ustavi.",
-    },
-    {
-        icon: TrendingUp,
-        title: "Auto-Compare",
-        description: "Vsaka vaja prikaže vašo prejšnjo izvedbo in all-time rekord. Veste točno, kaj morate preseči.",
-    },
-    {
-        icon: History,
-        title: "Napredna Analitika",
-        description: "Volume charts, strength curves, muscle heatmap in RPE tracking za resen napredek.",
-    },
-]
+const overviewCardKeys = Object.keys(overviewCardIcons) as (keyof typeof overviewCardIcons)[]
+const advancedCardKeys = ['dropSupersets', 'autoCompare', 'cloudSync', 'exerciseLibrary'] as const
+const analyticsKeys = ['volumeCharts', 'strengthCurves', 'muscleHeatmap', 'rpeTracking'] as const
+const stepKeys = ['step1', 'step2', 'step3'] as const
+const benefitKeys = ['lifetimeFree', 'premiumFeatures', 'directFeedback', 'earlyAccess'] as const
+const securityKeys = ['encryption', 'localStorage'] as const
 
-const advancedCards = [
-    { title: "Drop & Supersets", description: "Sistem avtomatsko poveže sete ter spremlja total volume." },
-    { title: "Auto-Compare", description: "Real-time feedback med live sessionom (\"+5kg več kot prejšnjič\")." },
-    { title: "Cloud Sync", description: "End-to-end enkripcija, multi-device support in backup." },
-    { title: "Exercise Library", description: "800+ vaj z video demonstracijami." },
-]
+// -- Rich text renderers ------------------------------------------------
 
-const steps = [
-    { title: "Start Workout", description: "Tapnite gumb na domačem ekranu, izberite template ali empty workout." },
-    { title: "Dodajte vaje", description: "Izberite vajo (npr. Bench Press), vidite zgodovino in PR." },
-    { title: "Beležite sete", description: "Vnesite težo in repse. Rest timer začne odštevati avtomatsko." },
-]
-
-const benefits = [
-    "Lifetime Free",
-    "Premium Features",
-    "Direct Feedback",
-    "Early Access",
-]
-
-const securityItems = [
-    {
-        icon: ShieldCheck,
-        title: "End-to-End Enkripcija",
-        description: "Vsi podatki so šifrirani pri sinhronizaciji (256-bit).",
-    },
-    {
-        icon: ShieldCheck,
-        title: "Local-First Storage",
-        description: "Podatki so na vaši napravi. Account ni obvezen.",
-    },
-]
+const richTextComponents = {
+    strong: (chunks: ReactNode) => <strong className="text-surface-900 font-semibold">{chunks}</strong>,
+    check: (chunks: ReactNode) => (
+        <span className="inline-flex px-1.5 py-0.5 rounded-md bg-surface-200/80 dark:bg-surface-300/30 text-surface-900 text-caption-1 font-mono">
+            {chunks}
+        </span>
+    ),
+    brand: (chunks: ReactNode) => <span className="primaryGradient">{chunks}</span>,
+}
 
 // -- Page Component -----------------------------------------------
 
-export default function FeaturesPage() {
+export default async function FeaturesPage() {
+    const t = await getTranslations('FeaturesPage')
+
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl">
@@ -84,13 +55,11 @@ export default function FeaturesPage() {
                 <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10)">
                  
                         <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
-                            Funkcije
+                            {t('badge')}
                         </p>
                   
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
-                        Vse kar potrebujete v{" "}
-                        <span className="primaryGradient">SetWise</span>{" "}
-                        appu
+                        {t.rich('heading', richTextComponents)}
                     </h1>
                 </header>
 
@@ -101,18 +70,11 @@ export default function FeaturesPage() {
                     <section id="overview" className="scroll-mt-32  space-y-(--space-5) md:space-y-(--space-8)">
                         <div className="space-y-(--space-2) md:space-y-(--space-3)">
                             <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight">
-                                Overview
+                                {t('overview.title')}
                             </h2>
                            
                             <p className="text-footnote md:text-body text-surface-700 leading-relaxed max-w-prose">
-                                SetWise je{" "}
-                                <strong className="text-surface-900 font-semibold">workout tracker aplikacija</strong>{" "}
-                                za iPhone, zasnovana okoli enega preprostega principa:{" "}
-                                <strong className="text-surface-900 font-semibold">hitro beleženje, pametna analitika, realen napredek</strong>.
-                                Trenutno v <strong className="text-surface-900 font-semibold">beta fazi</strong>,
-                                SetWise že zdaj ponuja najbolj intuitivno izkušnjo beleženja treninga –
-                                prilagojeno za atlete, bodybuilderje in fitness navdušence,
-                                ki želijo maksimalno izkoristiti vsak trening.
+                                {t.rich('overview.description', richTextComponents)}
                             </p>
                         </div>
 
@@ -135,12 +97,12 @@ export default function FeaturesPage() {
 
                             {/* Cards grid — on top of decorative background */}
                             <div className="grid md:grid-cols-2 gap-(--space-2) py-(--space-3) md:py-(--space-6)  md:gap-(--space-2) w-full relative z-10">
-                                {overviewCards.map((card) => (
+                                {overviewCardKeys.map((key) => (
                                     <FeatureCard
-                                        key={card.title}
-                                        icon={card.icon}
-                                        title={card.title}
-                                        description={card.description}
+                                        key={key}
+                                        icon={overviewCardIcons[key]}
+                                        title={t(`overview.cards.${key}.title`)}
+                                        description={t(`overview.cards.${key}.description`)}
                                     />
                                 ))}
                             </div>
@@ -151,82 +113,64 @@ export default function FeaturesPage() {
                     <section id="key-features" className="scroll-mt-32 space-y-(--space-8) md:space-y-(--space-16)">
                         <div className="space-y-(--space-2)">
                             <p className="text-caption-2 md:text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
-                                Podrobnosti
+                                {t('keyFeatures.badge')}
                             </p>
                             <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight">
-                                Key Features
+                                {t('keyFeatures.title')}
                             </h2>
                         </div>
 
                         {/* Feature 1 — Quick Logging */}
-                        <KeyFeatureSection icon={Zap} title="Quick Logging">
+                        <KeyFeatureSection icon={Zap} title={t('keyFeatures.quickLogging.title')}>
                             <div className="space-y-(--space-3) md:space-y-(--space-4) max-w-prose">
-                                <FeatureTextBlock lead="Live Session Mode">
-                                    omogoča beleženje vsake serije brez preklapljanja med ekrani.
-                                    Odprete trening, vidite zgodovino in PR za vsako vajo, vnesete težo in repse, tapnete{" "}
-                                    <span className="inline-flex px-1.5 py-0.5 rounded-md bg-surface-200/80 dark:bg-surface-300/30 text-surface-900 text-caption-1 font-mono">
-                                        ✓
-                                    </span>.
-                                    Med seti vas <strong className="text-surface-900 font-semibold">vgrajen rest timer</strong>{" "}
-                                    opozori, ko je čas za naslednjo serijo.
+                                <FeatureTextBlock lead={t('keyFeatures.quickLogging.liveSession.lead')}>
+                                    {t.rich('keyFeatures.quickLogging.liveSession.text', richTextComponents)}
                                 </FeatureTextBlock>
-                                <FeatureTextBlock lead="Manual Log Entry">
-                                    omogoča dodajanje preteklih treningov. Pozabili ste zabeleži včeraj?
-                                    Enostavno dodate datum, vaje in serije – sistem posodobi vse statistike.
+                                <FeatureTextBlock lead={t('keyFeatures.quickLogging.manualLog.lead')}>
+                                    {t.rich('keyFeatures.quickLogging.manualLog.text', richTextComponents)}
                                 </FeatureTextBlock>
-                                <FeatureTextBlock lead="Smart Plates Calculator">
-                                    izračuna točno kombinacijo plošč za ciljno težo
-                                    (npr. &quot;2× 20kg + 2× 15kg + 2× 2.5kg = 95kg&quot;).
+                                <FeatureTextBlock lead={t('keyFeatures.quickLogging.platesCalc.lead')}>
+                                    {t.rich('keyFeatures.quickLogging.platesCalc.text', richTextComponents)}
                                 </FeatureTextBlock>
                             </div>
                         </KeyFeatureSection>
 
                         {/* Feature 2 — Templates & Programs */}
-                        <KeyFeatureSection icon={LayoutTemplate} title="Templates & Programs">
+                        <KeyFeatureSection icon={LayoutTemplate} title={t('keyFeatures.templates.title')}>
                             <div className="space-y-(--space-3) md:space-y-(--space-4) max-w-prose">
-                                <FeatureTextBlock lead="My Templates">
-                                    so vaši shranjeni workouts. Ustvarite &quot;Push Day&quot; predlogo z vsemi vajami,
-                                    in vsak teden jo odprete – vse vaje so tam z zgodovino in PR-ji.
+                                <FeatureTextBlock lead={t('keyFeatures.templates.myTemplates.lead')}>
+                                    {t.rich('keyFeatures.templates.myTemplates.text', richTextComponents)}
                                 </FeatureTextBlock>
-                                <FeatureTextBlock lead="Public Programs">
-                                    vključujejo preizkušene programe: Starting Strength, StrongLifts 5×5,
-                                    PPL Split, Upper/Lower Split. Vsak program ima navodila, set/rep schemes
-                                    in avtomatsko progresijo.
+                                <FeatureTextBlock lead={t('keyFeatures.templates.publicPrograms.lead')}>
+                                    {t.rich('keyFeatures.templates.publicPrograms.text', richTextComponents)}
                                 </FeatureTextBlock>
                             </div>
                         </KeyFeatureSection>
 
                         {/* Feature 3 — History & Personal Records */}
-                        <KeyFeatureSection icon={History} title="History & Personal Records">
+                        <KeyFeatureSection icon={History} title={t('keyFeatures.history.title')}>
                             <div className="space-y-(--space-3) md:space-y-(--space-4) max-w-prose">
-                                <FeatureTextBlock lead="Workout Log">
-                                    shranjuje vse vaše treninge z datumom, volumnom, trajanjem in hitrim predogledom.
+                                <FeatureTextBlock lead={t('keyFeatures.history.workoutLog.lead')}>
+                                    {t.rich('keyFeatures.history.workoutLog.text', richTextComponents)}
                                 </FeatureTextBlock>
-                                <FeatureTextBlock lead="Personal Records">
-                                    avtomatsko zaznava PR-je: 1RM (one rep max), Volume PR, Total Weight PR.
-                                    Ob novem rekordu vas SetWise čestita.
+                                <FeatureTextBlock lead={t('keyFeatures.history.personalRecords.lead')}>
+                                    {t.rich('keyFeatures.history.personalRecords.text', richTextComponents)}
                                 </FeatureTextBlock>
-                                <FeatureTextBlock lead="Calendar View">
-                                    prikazuje mesečni koledar treningov z barvnimi oznakami
-                                    (zelena = visok volumen, rumena = krajši workout, siva = rest day).
+                                <FeatureTextBlock lead={t('keyFeatures.history.calendarView.lead')}>
+                                    {t.rich('keyFeatures.history.calendarView.text', richTextComponents)}
                                 </FeatureTextBlock>
                             </div>
                         </KeyFeatureSection>
 
                         {/* Feature 4 — Progress & Analytics */}
-                        <KeyFeatureSection icon={TrendingUp} title="Progress & Analytics">
+                        <KeyFeatureSection icon={TrendingUp} title={t('keyFeatures.analytics.title')}>
                             <ul className="list-none space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
-                                {[
-                                    { lead: "Volume Charts", text: "Prikazujejo celoten volumen. Linearno povečanje pomeni napredek." },
-                                    { lead: "Strength Curves", text: "Izračunajo estimated 1RM (Epley & Brzycki) in prikažejo rast." },
-                                    { lead: "Muscle Heatmap", text: "3D vizualizacija mišičnih skupin in intenzivnosti." },
-                                    { lead: "RPE/RIR Tracking", text: "Beleženje Rate of Perceived Exertion (1-10 scale)." },
-                                ].map((item) => (
-                                    <li key={item.lead} className="flex gap-(--space-2) md:gap-(--space-3) text-footnote md:text-body text-surface-700 leading-relaxed">
+                                {analyticsKeys.map((key) => (
+                                    <li key={key} className="flex gap-(--space-2) md:gap-(--space-3) text-footnote md:text-body text-surface-700 leading-relaxed">
                                         <span className="mt-1.5 size-1.5 rounded-full bg-surface-900 shrink-0" />
                                         <span>
-                                            <strong className="text-surface-900 font-semibold">{item.lead}:</strong>{" "}
-                                            {item.text}
+                                            <strong className="text-surface-900 font-semibold">{t(`keyFeatures.analytics.${key}.lead`)}:</strong>{" "}
+                                            {t(`keyFeatures.analytics.${key}.text`)}
                                         </span>
                                     </li>
                                 ))}
@@ -234,7 +178,7 @@ export default function FeaturesPage() {
                         </KeyFeatureSection>
 
                         {/* Feature 5 — Advanced Features */}
-                        <KeyFeatureSection icon={Zap} title="Advanced Features">
+                        <KeyFeatureSection icon={Zap} title={t('keyFeatures.advanced.title')}>
                             <div className="relative py-(--space-3) md:py-(--space-6)">
                                 {/* Decorative lines — breaks out of all parent padding to span full width */}
                                 <div className="absolute inset-0 -mx-(--space-5) md:-ml-25 md:-mr-(--space-12) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
@@ -253,11 +197,11 @@ export default function FeaturesPage() {
 
                                 {/* Cards grid — on top of decorative background */}
                                 <div className="grid md:grid-cols-2 gap-(--space-2) relative z-10">
-                                    {advancedCards.map((card) => (
+                                    {advancedCardKeys.map((key) => (
                                         <MiniFeatureCard
-                                            key={card.title}
-                                            title={card.title}
-                                            description={card.description}
+                                            key={key}
+                                            title={t(`keyFeatures.advanced.${key}.title`)}
+                                            description={t(`keyFeatures.advanced.${key}.description`)}
                                         />
                                     ))}
                                 </div>
@@ -269,10 +213,10 @@ export default function FeaturesPage() {
                     <section id="get-started" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12) mb-(--space-10) md:mb-(--space-20)">
                         <div className="space-y-(--space-2)">
                             <p className="text-caption-2 md:text-caption-1 uppercase tracking-wider font-semibold primaryGradient">
-                                Začnite
+                                {t('getStarted.badge')}
                             </p>
                             <h2 className="text-title-2 md:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-2) md:gap-(--space-3)">
-                                Get Started
+                                {t('getStarted.title')}
                             </h2>
                         </div>
 
@@ -296,31 +240,30 @@ export default function FeaturesPage() {
                             {/* Content — on top of decorative lines */}
                             <div className="relative z-10 p-(--space-4) md:p-(--space-8) ">
                                 <h3 className="text-headline md:text-title-2 font-bold text-surface-900 mb-(--space-1) md:mb-(--space-2)">
-                                    Beta Access
+                                    {t('getStarted.beta.title')}
                                 </h3>
                                 <p className="text-footnote md:text-body text-surface-700 mb-(--space-5) md:mb-(--space-8) max-w-prose">
-                                    SetWise je v <strong className="text-surface-900 font-semibold">closed beta</strong>.
-                                    Beta testerji obdržijo <strong className="text-surface-900 font-semibold">lifetime free access</strong> po izidu.
+                                    {t.rich('getStarted.beta.description', richTextComponents)}
                                 </p>
 
                                 <div className="grid gap-(--space-2) sm:grid-cols-2 lg:grid-cols-4 mb-(--space-5) md:mb-(--space-8)">
-                                    {benefits.map((label) => (
-                                        <BenefitBadge key={label} icon={Check} label={label} />
+                                    {benefitKeys.map((key) => (
+                                        <BenefitBadge key={key} icon={Check} label={t(`getStarted.benefits.${key}`)} />
                                     ))}
                                 </div>
 
-                                <BetaSignupDialog trigger={<ButtonRotatingGradient>Pridruži se Beta Programu</ButtonRotatingGradient>} />
+                                <BetaSignupDialog trigger={<ButtonRotatingGradient>{t('getStarted.beta.button')}</ButtonRotatingGradient>} />
                             </div>
                         </div>
 
                         {/* Steps */}
                         <div className="grid md:grid-cols-3 gap-(--space-5) md:gap-(--space-10)">
-                            {steps.map((step, i) => (
+                            {stepKeys.map((key, i) => (
                                 <StepCard
-                                    key={step.title}
+                                    key={key}
                                     step={i + 1}
-                                    title={step.title}
-                                    description={step.description}
+                                    title={t(`getStarted.steps.${key}.title`)}
+                                    description={t(`getStarted.steps.${key}.description`)}
                                 />
                             ))}
                         </div>
@@ -349,19 +292,19 @@ export default function FeaturesPage() {
                         <div className="relative z-10 space-y-(--space-5) md:space-y-(--space-8) p-(--space-3) py-(--space-6) md:p-(--space-6) md:py-(--space-20)">
                             <div className="space-y-(--space-1) md:space-y-(--space-2)">
                                 <p className="text-caption-2 md:text-caption-1 uppercase tracking-wider font-semibold text-surface-500">
-                                    Varnost
+                                    {t('security.badge')}
                                 </p>
                                 <h2 className="text-title-3 md:text-title-1 font-bold text-surface-900 tracking-tight">
-                                    Security & Privacy
+                                    {t('security.title')}
                                 </h2>
                             </div>
                             <div className="grid md:grid-cols-2 gap-(--space-4) md:gap-(--space-8)">
-                                {securityItems.map((item) => (
+                                {securityKeys.map((key) => (
                                     <SecurityItem
-                                        key={item.title}
-                                        icon={item.icon}
-                                        title={item.title}
-                                        description={item.description}
+                                        key={key}
+                                        icon={ShieldCheck}
+                                        title={t(`security.${key}.title`)}
+                                        description={t(`security.${key}.description`)}
                                     />
                                 ))}
                             </div>

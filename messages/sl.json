@@ -252,7 +252,214 @@
     },
     "FeaturesPage": {
         "title": "Funkcije",
-        "description": "Odkrij vse močne funkcije, ki jih SetWise ponuja za dosego tvojih ciljev."
+        "description": "Odkrij vse močne funkcije, ki jih SetWise ponuja za dosego tvojih ciljev.",
+        "badge": "Funkcije",
+        "heading": "Vse kar potrebujete v <brand>SetWise</brand> appu",
+        "overview": {
+            "title": "Pregled",
+            "description": "SetWise je <strong>workout tracker aplikacija</strong> za iPhone, zasnovana okoli enega preprostega principa: <strong>hitro beleženje, pametna analitika, realen napredek</strong>. Trenutno v <strong>beta fazi</strong>, SetWise že zdaj ponuja najbolj intuitivno izkušnjo beleženja treninga – prilagojeno za atlete, bodybuilderje in fitness navdušence, ki želijo maksimalno izkoristiti vsak trening.",
+            "cards": {
+                "fast": {
+                    "title": "Bliskovito Hitro",
+                    "description": "Dodajte serijo z le 2 klikoma. Med seti ste manj na telefonu in več skoncentrirani na dvigovanje."
+                },
+                "offline": {
+                    "title": "Offline-First Pristop",
+                    "description": "Trenirate v fitnesu brez signala? SetWise deluje popolnoma offline. Vaš trening se nikoli ne ustavi."
+                },
+                "compare": {
+                    "title": "Auto-Compare",
+                    "description": "Vsaka vaja prikaže vašo prejšnjo izvedbo in all-time rekord. Veste točno, kaj morate preseči."
+                },
+                "analytics": {
+                    "title": "Napredna Analitika",
+                    "description": "Volume charts, strength curves, muscle heatmap in RPE tracking za resen napredek."
+                }
+            }
+        },
+        "keyFeatures": {
+            "badge": "Podrobnosti",
+            "title": "Ključne Funkcije",
+            "quickLogging": {
+                "title": "Hitro Beleženje",
+                "liveSession": {
+                    "lead": "Live Session Mode",
+                    "text": "omogoča beleženje vsake serije brez preklapljanja med ekrani. Odprete trening, vidite zgodovino in PR za vsako vajo, vnesete težo in repse, tapnete <check>✓</check>. Med seti vas <strong>vgrajen rest timer</strong> opozori, ko je čas za naslednjo serijo."
+                },
+                "manualLog": {
+                    "lead": "Manual Log Entry",
+                    "text": "omogoča dodajanje preteklih treningov. Pozabili ste zabeleži včeraj? Enostavno dodate datum, vaje in serije – sistem posodobi vse statistike."
+                },
+                "platesCalc": {
+                    "lead": "Smart Plates Calculator",
+                    "text": "izračuna točno kombinacijo plošč za ciljno težo (npr. \"2× 20kg + 2× 15kg + 2× 2.5kg = 95kg\")."
+                }
+            },
+            "templates": {
+                "title": "Predloge & Programi",
+                "myTemplates": {
+                    "lead": "My Templates",
+                    "text": "so vaši shranjeni workouts. Ustvarite \"Push Day\" predlogo z vsemi vajami, in vsak teden jo odprete – vse vaje so tam z zgodovino in PR-ji."
+                },
+                "publicPrograms": {
+                    "lead": "Public Programs",
+                    "text": "vključujejo preizkušene programe: Starting Strength, StrongLifts 5×5, PPL Split, Upper/Lower Split. Vsak program ima navodila, set/rep schemes in avtomatsko progresijo."
+                }
+            },
+            "history": {
+                "title": "Zgodovina & Osebni Rekordi",
+                "workoutLog": {
+                    "lead": "Workout Log",
+                    "text": "shranjuje vse vaše treninge z datumom, volumnom, trajanjem in hitrim predogledom."
+                },
+                "personalRecords": {
+                    "lead": "Personal Records",
+                    "text": "avtomatsko zaznava PR-je: 1RM (one rep max), Volume PR, Total Weight PR. Ob novem rekordu vas SetWise čestita."
+                },
+                "calendarView": {
+                    "lead": "Calendar View",
+                    "text": "prikazuje mesečni koledar treningov z barvnimi oznakami (zelena = visok volumen, rumena = krajši workout, siva = rest day)."
+                }
+            },
+            "analytics": {
+                "title": "Napredek & Analitika",
+                "volumeCharts": {
+                    "lead": "Volume Charts",
+                    "text": "Prikazujejo celoten volumen. Linearno povečanje pomeni napredek."
+                },
+                "strengthCurves": {
+                    "lead": "Strength Curves",
+                    "text": "Izračunajo estimated 1RM (Epley & Brzycki) in prikažejo rast."
+                },
+                "muscleHeatmap": {
+                    "lead": "Muscle Heatmap",
+                    "text": "3D vizualizacija mišičnih skupin in intenzivnosti."
+                },
+                "rpeTracking": {
+                    "lead": "RPE/RIR Tracking",
+                    "text": "Beleženje Rate of Perceived Exertion (1-10 scale)."
+                }
+            },
+            "advanced": {
+                "title": "Napredne Funkcije",
+                "dropSupersets": {
+                    "title": "Drop & Supersets",
+                    "description": "Sistem avtomatsko poveže sete ter spremlja total volume."
+                },
+                "autoCompare": {
+                    "title": "Auto-Compare",
+                    "description": "Real-time feedback med live sessionom (\"+5kg več kot prejšnjič\")."
+                },
+                "cloudSync": {
+                    "title": "Cloud Sync",
+                    "description": "End-to-end enkripcija, multi-device support in backup."
+                },
+                "exerciseLibrary": {
+                    "title": "Exercise Library",
+                    "description": "800+ vaj z video demonstracijami."
+                }
+            }
+        },
+        "getStarted": {
+            "badge": "Začnite",
+            "title": "Začnite",
+            "beta": {
+                "title": "Beta Dostop",
+                "description": "SetWise je v <strong>closed beta</strong>. Beta testerji obdržijo <strong>lifetime free access</strong> po izidu.",
+                "button": "Pridruži se Beta Programu"
+            },
+            "benefits": {
+                "lifetimeFree": "Lifetime Free",
+                "premiumFeatures": "Premium Features",
+                "directFeedback": "Direct Feedback",
+                "earlyAccess": "Early Access"
+            },
+            "steps": {
+                "step1": {
+                    "title": "Začni Trening",
+                    "description": "Tapnite gumb na domačem ekranu, izberite template ali empty workout."
+                },
+                "step2": {
+                    "title": "Dodajte vaje",
+                    "description": "Izberite vajo (npr. Bench Press), vidite zgodovino in PR."
+                },
+                "step3": {
+                    "title": "Beležite sete",
+                    "description": "Vnesite težo in repse. Rest timer začne odštevati avtomatsko."
+                }
+            }
+        },
+        "security": {
+            "badge": "Varnost",
+            "title": "Varnost & Zasebnost",
+            "encryption": {
+                "title": "End-to-End Enkripcija",
+                "description": "Vsi podatki so šifrirani pri sinhronizaciji (256-bit)."
+            },
+            "localStorage": {
+                "title": "Local-First Storage",
+                "description": "Podatki so na vaši napravi. Account ni obvezen."
+            }
+        }
+    },
+    "FeaturesSidebar": {
+        "mobileTitle": "Funkcije",
+        "betaTitle": "Pridobi Beta Dostop",
+        "betaDescription": "Prenesi aplikacijo in sledi svojemu napredku z natančnostjo.",
+        "betaButton": "Preizkusi Brezplačno",
+        "intro": {
+            "title": "Uvod",
+            "overview": "Pregled",
+            "keyFeatures": "Ključne Funkcije",
+            "getStarted": "Začnite"
+        },
+        "quickLogging": {
+            "title": "Hitro Beleženje",
+            "liveSession": "Živa Seja",
+            "logManually": "Ročno Beleženje",
+            "restTimer": "Časovnik Počitka"
+        },
+        "templates": {
+            "title": "Predloge & Programi",
+            "myTemplates": "Moje Predloge",
+            "publicPrograms": "Javni Programi",
+            "createNew": "Ustvari Novo"
+        },
+        "history": {
+            "title": "Zgodovina",
+            "workoutLog": "Dnevnik Treningov",
+            "personalRecords": "Osebni Rekordi",
+            "calendar": "Koledar"
+        },
+        "progressAnalytics": {
+            "title": "Napredek & Analitika",
+            "volumeCharts": "Grafi Volumna",
+            "strengthCurves": "Krivulje Moči",
+            "muscleHeatmap": "Mišični Heatmap"
+        },
+        "advancedMetrics": {
+            "title": "RPE/RIR, Tempo/ROM",
+            "exertionScale": "Lestvica Napora",
+            "repQuality": "Kakovost Ponovitev",
+            "advancedMetrics": "Napredne Metrike"
+        },
+        "intensifiers": {
+            "title": "Intenzifikatorji",
+            "dropSets": "Drop Seti",
+            "supersets": "Superseti",
+            "clusterSets": "Cluster Seti"
+        },
+        "autoCompare": {
+            "title": "Samodejna Primerjava",
+            "vsLastSession": "vs Zadnji Trening",
+            "vsBestAllTime": "vs Najboljši Rezultat"
+        },
+        "offlineSync": {
+            "title": "Offline + Sinhronizacija",
+            "offlineMode": "Offline Način",
+            "cloudSync": "Cloud Sync",
+            "dataExport": "Izvoz Podatkov"
+        }
     },
     "ToolsPage": {
         "title": "Orodja",

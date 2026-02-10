@@ -240,7 +240,7 @@ export function Sidebar({ items, children }: { items: SidebarItem[]; children?: 
 }
 
 // ── Mobile Sidebar (bottom sheet — matches navigation mobile menu) ──
-export function MobileSidebar({ items }: { items: SidebarItem[] }) {
+export function MobileSidebar({ items, title }: { items: SidebarItem[]; title?: string }) {
     const [isOpen, setIsOpen] = useState(false)
     const pathname = usePathname()
 
@@ -329,7 +329,7 @@ export function MobileSidebar({ items }: { items: SidebarItem[] }) {
                                 <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
                                     <div className="flex items-center gap-(--space-2)">
                                         <AlignLeft className="size-4 text-muted-foreground" />
-                                        <span className="text-callout font-bold text-foreground">Features</span>
+                                        <span className="text-callout font-bold text-foreground">{title ?? "Menu"}</span>
                                     </div>
                                     <motion.button
                                         onClick={() => setIsOpen(false)}

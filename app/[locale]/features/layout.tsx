@@ -8,10 +8,10 @@ import { ParticleText } from "@/components/ui/particle-text"
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params
-    const t = await getTranslations({ locale, namespace: 'Metadata' })
+    const t = await getTranslations({ locale, namespace: 'FeaturesPage' })
 
     return {
-        title: `Features - SetWise`,
+        title: `${t('title')} - SetWise`,
     }
 }
 

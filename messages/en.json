@@ -252,7 +252,214 @@
     },
     "FeaturesPage": {
         "title": "Features",
-        "description": "Discover all the powerful features SetWise offers to help you reach your fitness goals."
+        "description": "Discover all the powerful features SetWise offers to help you reach your fitness goals.",
+        "badge": "Features",
+        "heading": "Everything you need in the <brand>SetWise</brand> app",
+        "overview": {
+            "title": "Overview",
+            "description": "SetWise is a <strong>workout tracker app</strong> for iPhone, designed around one simple principle: <strong>fast logging, smart analytics, real progress</strong>. Currently in <strong>beta</strong>, SetWise already offers the most intuitive workout logging experience — tailored for athletes, bodybuilders, and fitness enthusiasts who want to maximize every workout.",
+            "cards": {
+                "fast": {
+                    "title": "Lightning Fast",
+                    "description": "Add a set with just 2 taps. Between sets, spend less time on your phone and more focused on lifting."
+                },
+                "offline": {
+                    "title": "Offline-First Approach",
+                    "description": "Training in the gym with no signal? SetWise works completely offline. Your workout never stops."
+                },
+                "compare": {
+                    "title": "Auto-Compare",
+                    "description": "Every exercise shows your previous performance and all-time record. You know exactly what to beat."
+                },
+                "analytics": {
+                    "title": "Advanced Analytics",
+                    "description": "Volume charts, strength curves, muscle heatmap and RPE tracking for serious progress."
+                }
+            }
+        },
+        "keyFeatures": {
+            "badge": "Details",
+            "title": "Key Features",
+            "quickLogging": {
+                "title": "Quick Logging",
+                "liveSession": {
+                    "lead": "Live Session Mode",
+                    "text": "allows logging every set without switching screens. Open a workout, see history and PRs for each exercise, enter weight and reps, tap <check>✓</check>. Between sets, a <strong>built-in rest timer</strong> alerts you when it's time for the next set."
+                },
+                "manualLog": {
+                    "lead": "Manual Log Entry",
+                    "text": "allows adding past workouts. Forgot to log yesterday? Simply add the date, exercises and sets — the system updates all stats."
+                },
+                "platesCalc": {
+                    "lead": "Smart Plates Calculator",
+                    "text": "calculates the exact plate combination for your target weight (e.g. \"2× 20kg + 2× 15kg + 2× 2.5kg = 95kg\")."
+                }
+            },
+            "templates": {
+                "title": "Templates & Programs",
+                "myTemplates": {
+                    "lead": "My Templates",
+                    "text": "are your saved workouts. Create a \"Push Day\" template with all exercises, and open it every week — all exercises are there with history and PRs."
+                },
+                "publicPrograms": {
+                    "lead": "Public Programs",
+                    "text": "include proven programs: Starting Strength, StrongLifts 5×5, PPL Split, Upper/Lower Split. Each program has instructions, set/rep schemes and automatic progression."
+                }
+            },
+            "history": {
+                "title": "History & Personal Records",
+                "workoutLog": {
+                    "lead": "Workout Log",
+                    "text": "stores all your workouts with date, volume, duration, and quick preview."
+                },
+                "personalRecords": {
+                    "lead": "Personal Records",
+                    "text": "automatically detects PRs: 1RM (one rep max), Volume PR, Total Weight PR. When you set a new record, SetWise congratulates you."
+                },
+                "calendarView": {
+                    "lead": "Calendar View",
+                    "text": "shows a monthly training calendar with color indicators (green = high volume, yellow = shorter workout, gray = rest day)."
+                }
+            },
+            "analytics": {
+                "title": "Progress & Analytics",
+                "volumeCharts": {
+                    "lead": "Volume Charts",
+                    "text": "Show total volume. Linear increase means progress."
+                },
+                "strengthCurves": {
+                    "lead": "Strength Curves",
+                    "text": "Calculate estimated 1RM (Epley & Brzycki) and show growth."
+                },
+                "muscleHeatmap": {
+                    "lead": "Muscle Heatmap",
+                    "text": "3D visualization of muscle groups and intensity."
+                },
+                "rpeTracking": {
+                    "lead": "RPE/RIR Tracking",
+                    "text": "Record Rate of Perceived Exertion (1-10 scale)."
+                }
+            },
+            "advanced": {
+                "title": "Advanced Features",
+                "dropSupersets": {
+                    "title": "Drop & Supersets",
+                    "description": "The system automatically links sets and tracks total volume."
+                },
+                "autoCompare": {
+                    "title": "Auto-Compare",
+                    "description": "Real-time feedback during live session (\"+5kg more than last time\")."
+                },
+                "cloudSync": {
+                    "title": "Cloud Sync",
+                    "description": "End-to-end encryption, multi-device support and backup."
+                },
+                "exerciseLibrary": {
+                    "title": "Exercise Library",
+                    "description": "800+ exercises with video demonstrations."
+                }
+            }
+        },
+        "getStarted": {
+            "badge": "Get Started",
+            "title": "Get Started",
+            "beta": {
+                "title": "Beta Access",
+                "description": "SetWise is in <strong>closed beta</strong>. Beta testers keep <strong>lifetime free access</strong> after launch.",
+                "button": "Join the Beta Program"
+            },
+            "benefits": {
+                "lifetimeFree": "Lifetime Free",
+                "premiumFeatures": "Premium Features",
+                "directFeedback": "Direct Feedback",
+                "earlyAccess": "Early Access"
+            },
+            "steps": {
+                "step1": {
+                    "title": "Start Workout",
+                    "description": "Tap the button on the home screen, choose a template or empty workout."
+                },
+                "step2": {
+                    "title": "Add Exercises",
+                    "description": "Select an exercise (e.g. Bench Press), see history and PR."
+                },
+                "step3": {
+                    "title": "Log Sets",
+                    "description": "Enter weight and reps. Rest timer starts counting down automatically."
+                }
+            }
+        },
+        "security": {
+            "badge": "Security",
+            "title": "Security & Privacy",
+            "encryption": {
+                "title": "End-to-End Encryption",
+                "description": "All data is encrypted during sync (256-bit)."
+            },
+            "localStorage": {
+                "title": "Local-First Storage",
+                "description": "Data stays on your device. No account required."
+            }
+        }
+    },
+    "FeaturesSidebar": {
+        "mobileTitle": "Features",
+        "betaTitle": "Get Beta Access",
+        "betaDescription": "Download the app and track your progress with precision.",
+        "betaButton": "Try for Free",
+        "intro": {
+            "title": "Intro",
+            "overview": "Overview",
+            "keyFeatures": "Key Features",
+            "getStarted": "Get Started"
+        },
+        "quickLogging": {
+            "title": "Quick Logging",
+            "liveSession": "Live Session",
+            "logManually": "Log Manually",
+            "restTimer": "Rest Timer"
+        },
+        "templates": {
+            "title": "Templates & Programs",
+            "myTemplates": "My Templates",
+            "publicPrograms": "Public Programs",
+            "createNew": "Create New"
+        },
+        "history": {
+            "title": "History",
+            "workoutLog": "Workout Log",
+            "personalRecords": "Personal Records",
+            "calendar": "Calendar"
+        },
+        "progressAnalytics": {
+            "title": "Progress & Analytics",
+            "volumeCharts": "Volume Charts",
+            "strengthCurves": "Strength Curves",
+            "muscleHeatmap": "Muscle Heatmap"
+        },
+        "advancedMetrics": {
+            "title": "RPE/RIR, Tempo/ROM",
+            "exertionScale": "Exertion Scale",
+            "repQuality": "Rep Quality",
+            "advancedMetrics": "Advanced Metrics"
+        },
+        "intensifiers": {
+            "title": "Intensifiers",
+            "dropSets": "Drop Sets",
+            "supersets": "Supersets",
+            "clusterSets": "Cluster Sets"
+        },
+        "autoCompare": {
+            "title": "Auto-compare",
+            "vsLastSession": "vs Last Session",
+            "vsBestAllTime": "vs Best All-Time"
+        },
+        "offlineSync": {
+            "title": "Offline-first + Sync",
+            "offlineMode": "Offline Mode",
+            "cloudSync": "Cloud Sync",
+            "dataExport": "Data Export"
+        }
     },
     "ToolsPage": {
         "title": "Tools",
