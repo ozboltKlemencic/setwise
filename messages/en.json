@@ -15,6 +15,77 @@
             "cancel": "Cancel"
         }
     },
+    "About": {
+        "title": "About Setwise",
+        "intro": "Setwise is an app for lifters who want to log their workouts smarter – not just \"weight × reps\".",
+        "sections": {
+            "focus": {
+                "title": "We focus on:",
+                "content": "• advanced set logging (RIR/RPE, tempo, range of motion, intensifiers)\n• clear progress analytics over time\n• reliable performance even when the signal at the gym is poor."
+            },
+            "developer": {
+                "title": "Independent Development",
+                "content": "Setwise is being developed as an independent project by Jernej Peternel – an enthusiast of strength training and mobile app development."
+            },
+            "goal": {
+                "title": "The app's goal is simple:",
+                "content": "less time typing on your phone, more focus on training."
+            }
+        }
+    },
+    "Contact": {
+        "title": "Contact Us",
+        "intro": "Have questions or feedback? We'd love to hear from you.",
+        "sections": {
+            "general": {
+                "title": "General Inquiries",
+                "content": "For general questions about SetWise, partnerships, or press, please email us at:\njernejsdev@gmail.com"
+            },
+            "support": {
+                "title": "Support",
+                "content": "Need help with the app? Check our guides or email our support team directly."
+            }
+        }
+    },
+    "OurTeam": {
+        "title": "Our Team",
+        "intro": "Meet the people behind SetWise.",
+        "sections": {
+            "jernej": {
+                "title": "Jernej Peternel",
+                "content": "Founder & Lead Developer. Passionate about strength training and building great software."
+            },
+            "ozbolt": {
+                "title": "Ožbolt Klemenčič",
+                "content": "Co-Founder & Developer."
+            }
+        }
+    },
+    "Support": {
+        "title": "Support Center",
+        "search": {
+            "title": "How can we help?",
+            "placeholder": "Search for help..."
+        },
+        "cards": {
+            "installation": {
+                "title": "Installation",
+                "description": "How to install SetWise on iOS and Android."
+            },
+            "createWorkout": {
+                "title": "Create Workout",
+                "description": "Learn how to create and customize your workouts."
+            },
+            "account": {
+                "title": "My Account",
+                "description": "Manage your account settings and preferences."
+            },
+            "general": {
+                "title": "General",
+                "description": "General questions and information about SetWise."
+            }
+        }
+    },
     "TermsOfUse": {
         "title": "Terms of Use",
         "lastUpdated": "Last updated: November 25, 2025",

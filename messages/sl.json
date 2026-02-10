@@ -15,6 +15,77 @@
             "cancel": "Prekliči"
         }
     },
+    "About": {
+        "title": "O Setwise",
+        "intro": "Setwise je aplikacija za dvigovalce uteži, ki želijo pametneje beležiti svoje treninge – ne le \"teža × ponovitve\".",
+        "sections": {
+            "focus": {
+                "title": "Osredotočamo se na:",
+                "content": "• napredno beleženje serij (RIR/RPE, tempo, obseg giba, intenzifikatorji)\n• jasno analitiko napredka skozi čas\n• zanesljivo delovanje tudi, ko je signal v fitnesu slab."
+            },
+            "developer": {
+                "title": "Neodvisen razvoj",
+                "content": "Setwise razvija kot neodvisen projekt Jernej Peternel – navdušenec nad treningom moči in razvojem mobilnih aplikacij."
+            },
+            "goal": {
+                "title": "Cilj aplikacije je preprost:",
+                "content": "manj časa za tipkanje po telefonu, več fokusa na trening."
+            }
+        }
+    },
+    "Contact": {
+        "title": "Kontakt",
+        "intro": "Imate vprašanja ali povratne informacije? Veseli bomo vašega sporočila.",
+        "sections": {
+            "general": {
+                "title": "Splošna poizvedovanja",
+                "content": "Za splošna vprašanja o SetWise, partnerstvih ali novinarska vprašanja nam pišite na:\njernejsdev@gmail.com"
+            },
+            "support": {
+                "title": "Podpora",
+                "content": "Potrebujete pomoč z aplikacijo? Preverite naše vodiče ali pišite neposredno naši podporni ekipi."
+            }
+        }
+    },
+    "OurTeam": {
+        "title": "Naša ekipa",
+        "intro": "Spoznajte ljudi, ki stojijo za SetWise.",
+        "sections": {
+            "jernej": {
+                "title": "Jernej Peternel",
+                "content": "Ustanovitelj in glavni razvijalec. Navdušen nad treningom moči in ustvarjanjem odlične programske opreme."
+            },
+            "ozbolt": {
+                "title": "Ožbolt Klemenčič",
+                "content": "Soustanovitelj in razvijalec."
+            }
+        }
+    },
+    "Support": {
+        "title": "Center za pomoč",
+        "search": {
+            "title": "Kako vam lahko pomagamo?",
+            "placeholder": "Išči pomoč..."
+        },
+        "cards": {
+            "installation": {
+                "title": "Namestitev",
+                "description": "Kako namestiti SetWise na iOS in Android."
+            },
+            "createWorkout": {
+                "title": "Ustvari trening",
+                "description": "Naučite se ustvariti in prilagoditi svoje treninge."
+            },
+            "account": {
+                "title": "Moj račun",
+                "description": "Upravljajte nastavitve računa in preference."
+            },
+            "general": {
+                "title": "Splošno",
+                "description": "Splošna vprašanja in informacije o SetWise."
+            }
+        }
+    },
     "TermsOfUse": {
         "title": "Pogoji uporabe",
         "lastUpdated": "Zadnja posodobitev: 25. 11. 2025",

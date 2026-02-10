@@ -21,15 +21,12 @@ export const routing = defineRouting({
     // Add new routes here as the project grows
     pathnames: {
         '/': '/',
-        '/o-nas': {
-            sl: '/o-nas',
-            en: '/about',
-        },
+
         '/storitve': {
             sl: '/storitve',
             en: '/services',
         },
-        '/kontakt': {
+        '/contact': {
             sl: '/kontakt',
             en: '/contact',
         },
