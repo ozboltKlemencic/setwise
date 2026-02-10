@@ -49,6 +49,38 @@ export const routing = defineRouting({
             sl: '/funkcije',
             en: '/features',
         },
+        '/features/quick-logging': {
+            sl: '/funkcije/hitro-belezenje',
+            en: '/features/quick-logging',
+        },
+        '/features/templates-programs': {
+            sl: '/funkcije/predloge-in-programi',
+            en: '/features/templates-programs',
+        },
+        '/features/history': {
+            sl: '/funkcije/zgodovina',
+            en: '/features/history',
+        },
+        '/features/progress-analytics': {
+            sl: '/funkcije/napredek-in-analitika',
+            en: '/features/progress-analytics',
+        },
+        '/features/advanced-metrics': {
+            sl: '/funkcije/napredne-metrike',
+            en: '/features/advanced-metrics',
+        },
+        '/features/intensifiers': {
+            sl: '/funkcije/intenzifikatorji',
+            en: '/features/intensifiers',
+        },
+        '/features/auto-compare': {
+            sl: '/funkcije/samodejna-primerjava',
+            en: '/features/auto-compare',
+        },
+        '/features/offline-sync': {
+            sl: '/funkcije/brez-povezave-in-sinhronizacija',
+            en: '/features/offline-sync',
+        },
         '/tools': {
             sl: '/orodja',
             en: '/tools',

@@ -138,33 +138,38 @@ export function ParticleText({
             const bgBrightDark = backgroundBrightness?.dark ?? 160
             const bgBrightLight = backgroundBrightness?.light ?? 200
 
-            particles.forEach(p => {
-                // Update phase
-                p.phase += p.speed
+            // Grouping by color to minimize fillStyle calls
+            // Using a Map to group by the color value (val) and alpha (rounded for grouping)
+            const groups = new Map<string, Particle[]>()
 
-                // Calculate dynamic alpha using sine wave
-                // Map sine [-1, 1] to [minAlpha, maxAlpha]
-                // Actually, just oscillate between base and target
+            particles.forEach(p => {
+                p.phase += p.speed
                 const opacityRange = Math.abs(p.baseAlpha - p.targetAlpha)
                 const alpha = Math.min(p.baseAlpha, p.targetAlpha) + (Math.sin(p.phase) + 1) / 2 * opacityRange
-
-                // Dark mode: lighter particles for visibility on dark background
-                // Light mode: darker particles for visibility on light background
 
                 const val = p.isActive
                     ? (dark ? txtBrightDark : txtBrightLight)
                     : (dark ? bgBrightDark : bgBrightLight)
 
+                // Round alpha to 2 decimal places to allow grouping while maintaining quality
+                const roundedAlpha = Math.round(alpha * 20) / 20
+                const key = `${val},${roundedAlpha}`
+
+                if (!groups.has(key)) groups.set(key, [])
+                groups.get(key)!.push(p)
+            })
+
+            let particleSize = manualParticleSize
+            if (particleSize === undefined) {
+                particleSize = canvas.width < 768 * (window.devicePixelRatio || 1) ? 2 : 3
+            }
+
+            groups.forEach((groupParticles, key) => {
+                const [val, alpha] = key.split(",")
                 ctx.fillStyle = `rgba(${val}, ${val}, ${val}, ${alpha})`
-
-                // Draw particle (square) - smaller on mobile
-                // Use manual size if provided, else responsive logic
-                let particleSize = manualParticleSize
-                if (particleSize === undefined) {
-                    particleSize = canvas.width < 768 * (window.devicePixelRatio || 1) ? 2 : 3
-                }
-
-                ctx.fillRect(p.x, p.y, particleSize, particleSize)
+                groupParticles.forEach(p => {
+                    ctx.fillRect(p.x, p.y, particleSize!, particleSize!)
+                })
             })
 
             animationFrameId = requestAnimationFrame(animate)
