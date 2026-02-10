@@ -111,9 +111,7 @@ export default function FeaturesPage() {
                             <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
                                 Overview
                             </h2>
-                            <h3 className="text-title-3 text-surface-600 font-semibold">
-                                Vaš Pametni Trening Partner
-                            </h3>
+                           
                             <p className="text-callout md:text-body text-surface-700 leading-relaxed max-w-prose">
                                 SetWise je{" "}
                                 <strong className="text-surface-900 font-semibold">workout tracker aplikacija</strong>{" "}
