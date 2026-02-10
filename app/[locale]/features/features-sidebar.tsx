@@ -11,7 +11,7 @@ import {
     WifiOff,
     Info
 } from "lucide-react"
-import { Sidebar, type SidebarItem } from "@/components/sidebar"
+import { Sidebar, MobileSidebar, type SidebarItem } from "@/components/sidebar"
 import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
 import BetaSignupDialog from "@/components/beta-signup-dialog"
 import { ParticleText } from "@/components/ui/particle-text"
@@ -110,32 +110,42 @@ const featuresSidebarItems: SidebarItem[] = [
 
 export function FeaturesSidebar() {
     return (
-        <Sidebar items={featuresSidebarItems}>
-            {/* Beta CTA Card */}
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 dark:border-border/40 bg-backgorund ">
-                <div className="absolute inset-0 z-0 pointer-events-none">
-                    <ParticleText text=" " backgroundBrightness={{ dark: 190, light: 100 }} className="h-full w-full" />
-                </div>
+        <>
+            {/* Desktop sidebar */}
+            <aside className="hidden md:block w-64 shrink-0 border-r border-border/40 relative">
+                <div className="sticky top-[4.5rem] h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto no-scrollbar">
+                    <Sidebar items={featuresSidebarItems}>
+                        {/* Beta CTA Card */}
+                        <div className="relative overflow-hidden rounded-2xl border border-border/60 dark:border-border/40 bg-backgorund ">
+                            <div className="absolute inset-0 z-0 pointer-events-none">
+                                <ParticleText text=" " backgroundBrightness={{ dark: 190, light: 100 }} className="h-full w-full" />
+                            </div>
 
-                <div className="relative z-10 p-5 flex flex-col items-start gap-4">
-                    <div className="space-y-1">
-                        <h3 className="text-lg font-bold text-surface-700 tracking-tight">
-                            Get Beta Access
-                        </h3>
-                        <p className="text-sm text-surface-600 dark:text-surface-600 leading-relaxed font-sans">
-                            Download app and track your progress with precision.
-                        </p>
-                    </div>
+                            <div className="relative z-10 p-5 flex flex-col items-start gap-4">
+                                <div className="space-y-1">
+                                    <h3 className="text-lg font-bold text-surface-700 tracking-tight">
+                                        Get Beta Access
+                                    </h3>
+                                    <p className="text-sm text-surface-600 dark:text-surface-600 leading-relaxed font-sans">
+                                        Download app and track your progress with precision.
+                                    </p>
+                                </div>
 
-                    <BetaSignupDialog
-                        trigger={
-                            <ButtonRotatingGradient className="w-full text-base font-semibold">
-                                Try for Free
-                            </ButtonRotatingGradient>
-                        }
-                    />
+                                <BetaSignupDialog
+                                    trigger={
+                                        <ButtonRotatingGradient className="w-full text-base font-semibold">
+                                            Try for Free
+                                        </ButtonRotatingGradient>
+                                    }
+                                />
+                            </div>
+                        </div>
+                    </Sidebar>
                 </div>
-            </div>
-        </Sidebar>
+            </aside>
+
+            {/* Mobile sidebar (floating button + bottom sheet) */}
+            <MobileSidebar items={featuresSidebarItems} />
+        </>
     )
 }

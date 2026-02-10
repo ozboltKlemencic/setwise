@@ -56,6 +56,7 @@ export function ParticleText({
         const init = () => {
             const width = container.clientWidth
             const height = container.clientHeight
+            if (width === 0 || height === 0) return
             // Responsive density - larger gap on mobile = fewer particles
             const isMobile = width < 768
             const density = isMobile ? 3 : 5 // Gap between particles. Smaller = more particles.

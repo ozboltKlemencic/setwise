@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo, memo, useEffect, useCallback } from "react"
 import { Link, usePathname } from "@/i18n/navigation"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, AlignLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -236,5 +236,172 @@ export function Sidebar({ items, children }: { items: SidebarItem[]; children?: 
                 )}
             </div>
         </div>
+    )
+}
+
+// ── Mobile Sidebar (bottom sheet — matches navigation mobile menu) ──
+export function MobileSidebar({ items }: { items: SidebarItem[] }) {
+    const [isOpen, setIsOpen] = useState(false)
+    const pathname = usePathname()
+
+    // Derive active item for the floating button label
+    const activeItem = useMemo(() => {
+        const firstItem = items[0]
+        if (firstItem && (pathname === firstItem.href || pathname.endsWith(firstItem.href))) return firstItem
+        return items.find(
+            (item, idx) => idx !== 0 && (pathname === item.href || pathname.endsWith(item.href))
+        ) ?? null
+    }, [pathname, items])
+
+    // Close sheet on page navigation
+    useEffect(() => {
+        setIsOpen(false)
+    }, [pathname])
+
+    // Lock body scroll when open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden"
+        } else {
+            document.body.style.overflow = ""
+        }
+        return () => { document.body.style.overflow = "" }
+    }, [isOpen])
+
+    return (
+        <>
+            {/* ── Floating trigger button ── */}
+            <motion.button
+                onClick={() => setIsOpen(true)}
+                className="fixed bottom-5 right-5 z-40 md:hidden flex items-center gap-2 px-4 py-3 bg-card/70 backdrop-blur-(--blur-thick) border border-border/60 rounded-2xl shadow-(--shadow-lg) cursor-pointer"
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+            >
+                <AlignLeft className="size-4 text-foreground" />
+                <span className="text-footnote font-medium text-foreground">
+                    {activeItem?.title ?? "Menu"}
+                </span>
+            </motion.button>
+
+            {/* ── Bottom sheet overlay ── */}
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            aria-hidden="true"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="fixed inset-0 bg-black/60 backdrop-blur-(--blur-thin) z-(--z-modal) md:hidden"
+                            onClick={() => setIsOpen(false)}
+                        />
+
+                        {/* Sheet */}
+                        <motion.div
+                            role="dialog"
+                            aria-label="Sidebar navigation"
+                            aria-modal="true"
+                            initial={{ y: "100%", opacity: 0, scale: 0.9 }}
+                            animate={{ y: 0, opacity: 1, scale: 1 }}
+                            exit={{ y: "100%", opacity: 0, scale: 0.9 }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 260,
+                                damping: 22,
+                                mass: 0.9
+                            }}
+                            className="fixed bottom-0 left-0 right-0 z-(--z-toast) md:hidden"
+                        >
+                            <motion.div
+                                initial={{ scale: 0.92 }}
+                                animate={{ scale: 1 }}
+                                exit={{ scale: 0.92 }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 350,
+                                    damping: 20
+                                }}
+                                className="mx-(--space-4) mb-(--space-4) bg-card/95 rounded-3xl shadow-(--shadow-2xl) overflow-hidden border border-border/60 relative"
+                            >
+                                {/* Header */}
+                                <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
+                                    <div className="flex items-center gap-(--space-2)">
+                                        <AlignLeft className="size-4 text-muted-foreground" />
+                                        <span className="text-callout font-bold text-foreground">Features</span>
+                                    </div>
+                                    <motion.button
+                                        onClick={() => setIsOpen(false)}
+                                        className="size-(--space-9) flex items-center justify-center rounded-full hover:bg-surface-100 transition-colors duration-(--duration-normal) text-foreground cursor-pointer"
+                                        aria-label="Close menu"
+                                        whileTap={{ scale: 0.9 }}
+                                        whileHover={{ scale: 1.05 }}
+                                    >
+                                        <svg
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </motion.button>
+                                </div>
+
+                                {/* Links */}
+                                <nav aria-label="Mobile sidebar" className="px-(--space-4) max-h-[60vh] overflow-y-auto thin-scrollbar">
+                                    {items.map((item, index) => {
+                                        const Icon = item.icon
+                                        const isActive = activeItem?.title === item.title
+                                        return (
+                                            <motion.div
+                                                key={item.title}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 300,
+                                                    damping: 24,
+                                                    delay: index * 0.04
+                                                }}
+                                            >
+                                                <Link
+                                                    href={item.href as any}
+                                                    prefetch={true}
+                                                    onClick={() => setIsOpen(false)}
+                                                    className={cn(
+                                                        "flex items-center gap-3 px-(--space-3) py-(--space-4) text-callout font-medium rounded-xl transition-colors",
+                                                        isActive
+                                                            ? "text-foreground dark:bg-surface-300/30 bg-surface-300/25"
+                                                            : "text-muted-foreground hover:text-foreground hover:bg-surface-50"
+                                                    )}
+                                                >
+                                                    <Icon className={cn("size-4 shrink-0", isActive ? "text-foreground" : "text-muted-foreground")} />
+                                                    {item.title}
+                                                </Link>
+                                                {index < items.length - 1 && (
+                                                    <div role="separator" className="h-px bg-border mx-(--space-3)" />
+                                                )}
+                                            </motion.div>
+                                        )
+                                    })}
+                                </nav>
+                                 
+                                {/* Bottom padding */}
+                                <div className="h-(--space-4)" />
+                            </motion.div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     )
 }

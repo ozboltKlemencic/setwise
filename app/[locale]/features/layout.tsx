@@ -30,28 +30,24 @@ export default function FeaturesLayout({
                 <main className="w-[94vw] md:w-6xl relative flex flex-col border-l border-r 
                 border-border/50 dark:border-border/40 bg-background">
 
-                    <div className="md:sticky md:top-0 md:z-(--z-fixed) md:bg-background md:border-b md:border-border/50 md:dark:border-border/40">
+                    <div className="min-h-14 md:min-h-0 md:sticky md:top-0 md:z-(--z-fixed) md:bg-background md:border-b md:border-border/50 md:dark:border-border/40">
                         <Navigation />
                     </div>
 
                     <div className="flex flex-1 border-t border-border/50 dark:border-border/40 md:border-t-0 relative">
-                        {/* Sidebar - Sticky */}
-                        <aside className="hidden md:block w-64 shrink-0 border-r border-border/40 relative">
-                            <div className="sticky top-[4.5rem] h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto no-scrollbar">
-                                <FeaturesSidebar />
-                            </div>
-                        </aside>
+                        {/* Sidebar — desktop: aside, mobile: floating button + bottom sheet */}
+                        <FeaturesSidebar />
 
                         {/* Content Area */}
                         <div id="features-content" className="flex-1 flex flex-col min-w-0">
                             <div className="flex-1 flex flex-col items-center ">
                                 {/* Persistent Header Area */}
                                 <div className="h-[80px] w-full relative mask-[linear-gradient(to_bottom,white,transparent)] shrink-0">
-                                    <ParticleText text="" backgroundBrightness={{ dark: 160, light: 185 }} reverse={true} className="h-full opacity-80 w-full z-20" />
+                                    <ParticleText text="" backgroundBrightness={{ dark: 160, light: 185 }} reverse={true} className="h-full min-h-0 opacity-80 w-full z-20" />
                                     <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b to-transparent from-brand-500/5 z-10"></div>
                                 </div>
 
-                                <div className="flex-1 w-full max-w-4xl -mt-[80px]">
+                                <div className="flex-1 w-full max-w-4xl pt-(--space-8) md:pt-0 -mt-[120px] md:-mt-[100px]">
                                     {children}
                                 </div>
                             </div>
