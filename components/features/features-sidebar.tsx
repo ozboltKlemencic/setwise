@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useRef, useMemo, memo } from "react"
-import { usePathname } from "next/navigation"
-import { Link } from "@/i18n/navigation"
+import { useState, useRef, useMemo, memo, useEffect, useCallback } from "react"
+import { Link, usePathname } from "@/i18n/navigation"
 import {
     Zap,
     LayoutTemplate,
@@ -13,8 +12,6 @@ import {
     GitCompare,
     WifiOff,
     ChevronDown,
-    Sparkles,
-    Home,
     Info
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -115,7 +112,7 @@ const sidebarItems = [
     },
 ]
 
-const SidebarLinkItem = memo(({ item, isOpen, activeHash, handleLinkClick, toggleItem, pathname }: any) => {
+const SidebarLinkItem = memo(({ item, isOpen, isActive, activeHash, handleSubItemClick, toggleItem, pathname }: any) => {
     const Icon = item.icon
     return (
         <div className="w-full">
@@ -126,13 +123,13 @@ const SidebarLinkItem = memo(({ item, isOpen, activeHash, handleLinkClick, toggl
                     onClick={() => toggleItem(item.title)}
                     className={cn(
                         "w-full px-4 py-3 flex justify-between items-center text-left transition-colors duration-200 rounded-2xl group cursor-pointer",
-                        isOpen
+                        isActive
                             ? "bg-surface-200/80 border border-border dark:bg-surface-300/40 text-foreground"
-                            : "hover:bg-surface-200 dark:hover:bg-surface-300/20 text-muted-foreground hover:text-foreground"
+                            : "hover:bg-surface-200 border border-border/0 dark:hover:bg-surface-300/20 text-muted-foreground hover:text-foreground"
                     )}
                 >
                     <div className="flex items-center gap-3">
-                        <Icon className={cn("size-4", isOpen ? "text-foreground" : "text-muted-foreground group-hover:text-foreground")} />
+                        <Icon className={cn("size-4", isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground")} />
                         <span className="text-[13px] font-medium font-sans">
                             {item.title}
                         </span>
@@ -163,27 +160,24 @@ const SidebarLinkItem = memo(({ item, isOpen, activeHash, handleLinkClick, toggl
                             {item.subItems.map((subItem: any) => {
                                 const isActive = activeHash === subItem.href || (pathname + activeHash === subItem.href)
                                 return (
-                                    <div key={subItem.title} className="relative py-0.5">
-                                        {isActive && (
-                                            <motion.div
-                                                layoutId="active-nav-line"
-                                                className="absolute -left-[16px] top-1.5 bottom-1.5 w-px bg-surface-500 "
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                            />
-                                        )}
-                                        <Link
-                                            href={subItem.href as any}
-                                            prefetch={true}
-                                            onClick={() => handleLinkClick(subItem.href)}
+                                    <div key={subItem.title} className="py-0.5">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleSubItemClick(subItem.href)}
                                             className={cn(
-                                                "block px-4 py-2 text-[13px] text-muted-foreground hover:text-foreground hover:bg-surface-200/80 dark:hover:bg-surface-300/20 rounded-lg transition-colors",
+                                                "relative block w-full text-left px-4 py-2 text-[13px] text-muted-foreground hover:text-foreground hover:bg-surface-200/80 dark:hover:bg-surface-300/20 rounded-lg transition-colors cursor-pointer",
                                                 isActive && "bg-surface-200/50 dark:bg-surface-300/20 text-foreground font-medium"
                                             )}
                                         >
+                                            {isActive && (
+                                                <motion.div
+                                                    layoutId="active-nav-line"
+                                                    className="absolute -left-4 top-1 bottom-1 w-0.5 rounded-full bg-surface-500"
+                                                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                                />
+                                            )}
                                             {subItem.title}
-                                        </Link>
+                                        </button>
                                     </div>
                                 )
                             })}
@@ -198,36 +192,145 @@ SidebarLinkItem.displayName = "SidebarLinkItem"
 
 export function FeaturesSidebar() {
     const pathname = usePathname()
-    // State to track open accordions. Defaulting to the first item open.
-    const [openItem, setOpenItem] = useState<string | null>("Quick logging")
+
+    // Derive which sidebar item is active based on URL (stable, no flicker)
+    const activeTitle = useMemo(() => {
+        // Exact match for /features (Intro)
+        if (pathname === "/features" || pathname.endsWith("/features")) return "Intro"
+        // Match other items by path prefix
+        const found = sidebarItems.find(
+            (item) => item.href !== "/features" && (pathname === item.href || pathname.endsWith(item.href))
+        )
+        return found?.title ?? null
+    }, [pathname])
+
+    // Accordion open/close state — defaults to the active item
+    const [openItem, setOpenItem] = useState<string | null>(activeTitle)
     const [activeHash, setActiveHash] = useState("")
 
-    // Set initial active hash on mount
-    useState(() => {
-        if (typeof window !== "undefined") {
-            setActiveHash(window.location.hash)
+    // When pathname changes (page navigation), open the new active item
+    useEffect(() => {
+        if (activeTitle) {
+            setOpenItem(activeTitle)
         }
-    })
+    }, [activeTitle])
 
-    const toggleItem = (title: string) => {
-        setOpenItem(prev => (prev === title ? null : title))
-    }
+    // Guard ref — prevents scroll-spy from fighting with click-initiated scrolls
+    const isClickScrolling = useRef(false)
 
-    const handleLinkClick = (href: string) => {
+    // Read initial hash on mount
+    useEffect(() => {
+        const hash = window.location.hash
+        if (hash) {
+            setActiveHash(pathname + hash)
+        }
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    // ── Scroll Spy ─────────────────────────────────────────────
+    // Observe each section on the current page and update activeHash
+    // as the user scrolls past them.
+    useEffect(() => {
+        const activeItem = sidebarItems.find((item) => item.title === activeTitle)
+        if (!activeItem) return
+
+        // Collect section IDs from the active item's sub-items
+        const sectionIds = activeItem.subItems
+            .map((sub) => {
+                const hashIdx = sub.href.indexOf("#")
+                return hashIdx !== -1 ? sub.href.substring(hashIdx + 1) : null
+            })
+            .filter(Boolean) as string[]
+
+        const elements = sectionIds
+            .map((id) => document.getElementById(id))
+            .filter(Boolean) as HTMLElement[]
+
+        if (elements.length === 0) return
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                // Skip updates during click-initiated scrolls
+                if (isClickScrolling.current) return
+
+                // Find entries that are entering the detection zone
+                const visible = entries
+                    .filter((e) => e.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+
+                if (visible.length > 0) {
+                    const id = visible[0].target.id
+                    const subItem = activeItem.subItems.find((sub) =>
+                        sub.href.endsWith("#" + id)
+                    )
+                    if (subItem) {
+                        setActiveHash(subItem.href)
+                        window.history.replaceState(null, "", "#" + id)
+                    }
+                }
+            },
+            {
+                // Detection zone = top 35% of viewport
+                rootMargin: "0px 0px -65% 0px",
+                threshold: 0,
+            }
+        )
+
+        elements.forEach((el) => observer.observe(el))
+        return () => observer.disconnect()
+    }, [activeTitle, pathname])
+
+    // Toggle accordion — but never close the active (URL-matched) item
+    const toggleItem = useCallback((title: string) => {
+        setOpenItem((prev) => {
+            if (prev === title && title === activeTitle) return prev // keep active open
+            return prev === title ? null : title
+        })
+    }, [activeTitle])
+
+    // Handle sub-item click without triggering Next.js navigation.
+    // Separates state update (indicator animation) from scroll.
+    const handleSubItemClick = useCallback((href: string) => {
+        // 1. Guard — block scroll-spy during click-scroll animation
+        isClickScrolling.current = true
+
+        // 2. Update active state — triggers the indicator animation
         setActiveHash(href)
-    }
+
+        // 3. Extract the hash and scroll to the target element
+        const hashIndex = href.indexOf("#")
+        if (hashIndex !== -1) {
+            const hash = href.substring(hashIndex)
+
+            // Update URL without triggering navigation/re-render
+            window.history.replaceState(null, "", hash)
+
+            // Scroll after micro-delay so indicator animation starts first
+            requestAnimationFrame(() => {
+                const el = document.querySelector(hash)
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth" })
+                }
+            })
+        }
+
+        // 4. Release guard after smooth scroll completes (~800ms)
+        setTimeout(() => {
+            isClickScrolling.current = false
+        }, 800)
+    }, [])
 
     return (
         <div className="w-full h-full flex flex-col">
             <div className="p-2 flex flex-col flex-1">
-                <nav className="flex flex-col gap-2 flex-1 bg-red-400 thin-scrollbar">
+                <nav className="flex flex-col gap-2 flex-1 thin-scrollbar">
                     {sidebarItems.map((item) => (
                         <SidebarLinkItem
                             key={item.title}
                             item={item}
                             isOpen={openItem === item.title}
+                            isActive={activeTitle === item.title}
                             activeHash={activeHash}
-                            handleLinkClick={handleLinkClick}
+                            handleSubItemClick={handleSubItemClick}
                             toggleItem={toggleItem}
                             pathname={pathname}
                         />

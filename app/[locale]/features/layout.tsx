@@ -35,7 +35,7 @@ export default function FeaturesLayout({
                     <div className="flex flex-1 border-t border-border/50 dark:border-border/40 relative">
                         {/* Sidebar - Sticky */}
                         <aside className="hidden md:block w-64 shrink-0 border-r border-border/40 relative">
-                            <div className="sticky top-0 h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto thin-scrollbar">
+                            <div className="sticky top-1 h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto thin-scrollbar">
                                 <FeaturesSidebar />
                             </div>
                         </aside>
@@ -49,7 +49,7 @@ export default function FeaturesLayout({
                                     <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b to-transparent from-brand-500/5 z-10"></div>
                                 </div>
 
-                                <div className="flex-1 w-full max-w-4xl">
+                                <div className="flex-1 w-full max-w-4xl -mt-[80px]">
                                     {children}
                                 </div>
                             </div>
