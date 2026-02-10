@@ -103,7 +103,7 @@ interface StepCardProps {
 export function StepCard({ step, title, description }: StepCardProps) {
     return (
         <div className="space-y-(--space-2) md:space-y-(--space-3)">
-            <div className="size-8 md:size-10 rounded-full bg-linear-to-bl  from-surface-200/30 to-surface-300 border border-surface-200/80 dark:border-surface-300/60 text-surface-700 flex items-center justify-center font-bold text-footnote md:text-callout">
+            <div className="flex items-center justify-center size-8 md:size-10 rounded-lg md:rounded-xl bg-surface-200/60 dark:bg-surface-300/20 shrink-0">
                 {step}
             </div>
             <h4 className="text-subheadline md:text-headline font-semibold text-surface-900">
