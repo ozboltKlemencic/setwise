@@ -116,7 +116,7 @@ export function FeaturesSidebar() {
     return (
         <>
             {/* Desktop sidebar */}
-            <aside className="hidden lg:block w-64 shrink-0 border-r border-border/40 relative">
+            <aside className="hidden min-[1152px]:block w-64 shrink-0 border-r border-border/40 relative">
                 <div className="sticky top-[4.5rem] h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto no-scrollbar">
                     <Sidebar items={featuresSidebarItems}>
                         {/* Beta CTA Card */}

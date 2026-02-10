@@ -49,7 +49,7 @@ export default async function FeaturesPage() {
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
-            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl">
+            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
 
                 {/* ── Page Header ────────────────────────────── */}
                 <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10)">
