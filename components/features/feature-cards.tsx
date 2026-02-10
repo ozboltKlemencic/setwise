@@ -157,7 +157,7 @@ interface BenefitBadgeProps {
 
 export function BenefitBadge({ icon: Icon, label }: BenefitBadgeProps) {
     return (
-        <div className="flex items-center gap-(--space-1.5) md:gap-(--space-2) text-footnote md:text-subheadline font-medium text-surface-800">
+        <div className="flex items-center gap-(--space-2) md:gap-(--space-2) text-footnote md:text-subheadline font-medium text-surface-800">
             <Icon className="size-3.5 md:size-4 text-success shrink-0" />
             <span>{label}</span>
         </div>
