@@ -6,6 +6,7 @@ import { Instagram, Linkedin } from "lucide-react"
 export default function FooterSection() {
   const t = useTranslations('Footer')
   const tFeatures = useTranslations('FeaturesSidebar')
+  const tGuides = useTranslations('Guides.Sidebar')
 
   // Footer navigation columns data with translations
   const FOOTER_COLUMNS = [
@@ -31,14 +32,13 @@ export default function FooterSection() {
       sections: [
         {
           title: t('sections.guides'),
+
           links: [
-            { label: t('links.gettingStarted'), href: "/guides" },
-            { label: t('links.logFirstWorkout'), href: "/guides" },
-            { label: t('links.trackProgress'), href: "/guides" },
-            { label: t('links.createRoutine'), href: "/guides" },
-            { label: t('links.exportData'), href: "/guides" },
-            { label: t('links.advancedTips'), href: "/guides" },
+            { label: tGuides('intro.title'), href: "/guides" },
+            { label: tGuides('installation.title'), href: "/guides/installation" },
+            { label: tGuides('createWorkout.title'), href: "/guides/create-workout" },
           ],
+
         },
       ],
     },

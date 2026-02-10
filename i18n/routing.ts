@@ -133,6 +133,14 @@ export const routing = defineRouting({
             sl: '/vodici',
             en: '/guides',
         },
+        '/guides/installation': {
+            sl: '/vodici/namestitev',
+            en: '/guides/installation',
+        },
+        '/guides/create-workout': {
+            sl: '/vodici/ustvari-trening',
+            en: '/guides/create-workout',
+        },
     },
 });
 
