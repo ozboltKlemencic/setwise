@@ -15,6 +15,95 @@
             "cancel": "Prekliči"
         }
     },
+    "TermsOfUse": {
+        "title": "Pogoji uporabe",
+        "lastUpdated": "Zadnja posodobitev: 25. 11. 2025",
+        "intro": "Ti pogoji uporabe urejajo uporabo spletne strani setwise.app in mobilne aplikacije Setwise.\n\nZ uporabo spletne strani, prijavo na čakalno listo ali ustvarjanjem računa v aplikaciji potrjujete, da se strinjate s temi pogoji.",
+        "sections": {
+            "whoIsBehind": {
+                "title": "1. Kdo stoji za Setwisom",
+                "content": "Setwise upravlja:\n\nSetwise (upravljalec: Jernej Peternel)\njernejsdev@gmail.com"
+            },
+            "purpose": {
+                "title": "2. Namen aplikacije",
+                "content": "Setwise je aplikacija za beleženje vadbe in osnovno analitiko napredka.\n\nAplikacija ne predstavlja zdravstvenega nasveta in ne nadomešča posveta z zdravnikom, fizioterapevtom ali strokovnjakom za vadbo. Vse vadbe izvajate na lastno odgovornost."
+            },
+            "beta": {
+                "title": "3. Beta verzija",
+                "content": "Setwise je trenutno v beta fazi. To pomeni, da:\n\n• se lahko pojavijo napake, nekatere funkcije morda ne bodo delovale ali pa se podatki lahko izgubijo\n• se funkcije lahko spremenijo ali odstranijo\n• lahko kadarkoli spremenimo ali ukinemo dostop do aplikacije ali delov aplikacije\n\nNe moremo prevzeti odgovornosti za izgubo podatkov ali druge posledice, povezane z uporabo beta verzije, razen v obsegu, ki ga izrecno zahteva veljavna zakonodaja."
+            },
+            "accountUsage": {
+                "title": "4. Uporaba računa",
+                "content": "Kot uporabnik se strinjate, da boste:\n\n• po potrebi zagotovili točne osnovne podatke\n• varovali dostop do svojega računa in ga ne boste delili z drugimi\n• aplikacijo uporabljali v skladu z veljavno zakonodajo in temi pogoji\n\nVaš račun ali dostop do aplikacije lahko omejimo ali ukinemo, če:\n\n• uporabljate aplikacijo na način, ki škoduje nam ali drugim uporabnikom\n• poskušate izkoristiti varnostne ranljivosti\n• kršite veljavno zakonodajo ali te pogoje uporabe"
+            },
+            "content": {
+                "title": "5. Vsebina, ki jo vnesete v aplikacijo",
+                "content": "Vsi podatki, ki jih vnesete v aplikacijo (npr. vadbe, vaje, serije, teže, opombe), ostanejo vaši podatki.\n\nZ njihovim vnosom nam dovoljujete, da jih obdelujemo kot del delovanja aplikacije, vključno z:\n\n• shranjevanjem in varnostnimi kopijami\n• prikazom znotraj aplikacije (npr. statistika, analitika)\n• tehničnimi postopki za vzdrževanje in izboljšanje storitve\n\nObdelava vaših podatkov je podrobneje opisana v Politiki zasebnosti."
+            },
+            "aiFeatures": {
+                "title": "6. AI funkcije",
+                "content": "Nekatere funkcije Setwise lahko uporabljajo modele umetne inteligence (npr. za pretvorbo besedilnih opisov vadbe v strukturiran načrt).\n\n• vsebina, ki jo vnesete v AI funkcije, se pošlje izbranemu ponudniku (trenutno Google AI Studio), ki vrne rezultat\n• ne jamčimo, da bodo rezultati vedno popolni, točni ali primerni za vaš specifičen primer\n• rezultati AI ne predstavljajo strokovnega ali zdravstvenega nasveta\n\nUporaba AI funkcij je prostovoljna – če jih ne želite uporabljati, jih preprosto ne uporabljajte."
+            },
+            "liability": {
+                "title": "7. Omejitev odgovornosti",
+                "content": "Trudimo se, da bi bila aplikacija čim bolj stabilna, vendar:\n\n• ne jamčimo, da bo aplikacija vedno na voljo ali brez napak\n• ne jamčimo, da bodo vsi podatki vedno pravilno shranjeni ali sinhronizirani\n• nismo odgovorni za posredno škodo (npr. izgubljeni podatki o vadbi, izgubljen napredek, motnje pri uporabi aplikacije), razen kjer to izrecno zahteva zakonodaja\n\nVedno ste sami odgovorni za svojo vadbo, izbiro tež, tehniko in pogostost vadbe."
+            },
+            "privacyConnection": {
+                "title": "8. Povezava s Politiko zasebnosti",
+                "content": "Ti pogoji uporabe so tesno povezani z našo Politiko zasebnosti, ki opisuje, kako obdelujemo vaše osebne podatke.\n\nOba dokumenta sta na voljo na:\nsetwise.app/terms\nsetwise.app/privacy\n\nZ uporabo aplikacije potrjujete, da ste se seznanili z obema dokumentoma."
+            },
+            "changes": {
+                "title": "9. Spremembe pogojev",
+                "content": "Te pogoje uporabe lahko občasno posodobimo. Posodobljena različica bo vedno objavljena na setwise.app/terms z datumom zadnje posodobitve.\n\nČe pride do bistvenih sprememb, vas bomo poskušali obvestiti prek aplikacije ali e-pošte (če je primerno)."
+            },
+            "contact": {
+                "title": "10. Kontakt",
+                "content": "Za vprašanja v zvezi s temi pogoji uporabe se lahko obrnete na:\n\nSetwise (upravljalec: Jernej Peternel)\nE-pošta: jernejsdev@gmail.com"
+            }
+        }
+    },
+    "PrivacyPolicy": {
+        "title": "Politika zasebnosti",
+        "lastUpdated": "Zadnja posodobitev: 10. februar 2026",
+        "intro": "Vaša zasebnost nam je pomembna. Politika SetWise je spoštovanje vaše zasebnosti glede kakršnih koli informacij, ki jih lahko zberemo od vas na naši spletni strani in v aplikacijah.",
+        "sections": {
+            "overview": {
+                "title": "1. Pregled",
+                "content": "Osebne podatke zahtevamo le, ko jih resnično potrebujemo za zagotavljanje storitve. Zbiramo jih na pošten in zakonit način, z vašo vednostjo in soglasjem."
+            },
+            "dataCollection": {
+                "title": "2. Zbiranje podatkov",
+                "content": "Podatke o vas lahko zbiramo na različne načine. Informacije, ki jih lahko zbiramo v aplikaciji, vključujejo: osebne podatke in izpeljane podatke."
+            },
+            "usage": {
+                "title": "3. Uporaba vaših informacij",
+                "content": "Točne informacije o vas nam omogočajo, da vam zagotovimo nemoteno, učinkovito in prilagojeno izkušnjo. Natančneje, informacije, zbrane o vas prek aplikacije, uporabljamo za ustvarjanje in upravljanje vašega računa."
+            },
+            "dataProtection": {
+                "title": "4. Varstvo podatkov",
+                "content": "Uporabljamo administrativne, tehnične in fizične varnostne ukrepe za zaščito vaših osebnih podatkov. Čeprav smo sprejeli razumne ukrepe za zavarovanje osebnih podatkov, ki nam jih posredujete, se zavedajte, da kljub našim prizadevanjem nobeni varnostni ukrepi niso popolni ali neprebojni."
+            }
+        }
+    },
+    "Cookies": {
+        "title": "Politika piškotkov",
+        "lastUpdated": "Zadnja posodobitev: 10. februar 2026",
+        "intro": "Ta politika piškotkov pojasnjuje, kako SetWise uporablja piškotke in podobne tehnologije, da vas prepozna ob obisku naše spletne strani.",
+        "sections": {
+            "whatAreCookies": {
+                "title": "1. Kaj so piškotki?",
+                "content": "Piškotki so majhne podatkovne datoteke, ki se shranijo na vaš računalnik ali mobilno napravo, ko obiščete spletno stran. Lastniki spletnih mest jih pogosto uporabljajo za delovanje svojih spletnih mest ali za učinkovitejše delovanje ter za zagotavljanje poročil."
+            },
+            "howWeUse": {
+                "title": "2. Kako uporabljamo piškotke",
+                "content": "Piškotke uporabljamo iz več razlogov. Nekateri piškotki so potrebni iz tehničnih razlogov za delovanje naše spletne strani in jih imenujemo 'nujni' ali 'strogo potrebni' piškotki."
+            },
+            "managingCookies": {
+                "title": "3. Upravljanje piškotkov",
+                "content": "Imate pravico odločiti, ali sprejmete ali zavrnete piškotke. Svoje pravice do piškotkov lahko uveljavljate z nastavitvijo svojih preferenc v upravitelju soglasij za piškotke."
+            }
+        }
+    },
     "Navigation": {
         "home": "Domov",
         "howItWorks": "Kako deluje",

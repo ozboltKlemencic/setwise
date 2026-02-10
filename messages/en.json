@@ -15,6 +15,95 @@
             "cancel": "Cancel"
         }
     },
+    "TermsOfUse": {
+        "title": "Terms of Use",
+        "lastUpdated": "Last updated: November 25, 2025",
+        "intro": "These terms of use govern the use of the website setwise.app and the mobile application Setwise.\n\nBy using the website, signing up for the waitlist, or creating an account in the app, you confirm that you agree to these terms.",
+        "sections": {
+            "whoIsBehind": {
+                "title": "1. Who is Behind Setwise",
+                "content": "Setwise is operated by:\n\nSetwise (operator: Jernej Peternel)\njernejsdev@gmail.com"
+            },
+            "purpose": {
+                "title": "2. Purpose of the App",
+                "content": "Setwise is an app for logging workouts and basic progress analytics.\n\nThe app does not constitute health advice and does not replace consultation with a doctor, physiotherapist, or exercise specialist. All workouts are performed at your own risk."
+            },
+            "beta": {
+                "title": "3. Beta Version",
+                "content": "Setwise is currently in beta phase. This means that:\n\n• errors may occur, some features may not work, or data may be lost\n• features may change or be removed\n• we may change or terminate access to the app or parts of the app at any time\n\nWe cannot accept responsibility for data loss or other consequences related to the use of the beta version, except to the extent expressly required by applicable law."
+            },
+            "accountUsage": {
+                "title": "4. Account Usage",
+                "content": "As a user, you agree to:\n\n• provide accurate basic information where required\n• protect your account access and not share it with others\n• use the app in accordance with applicable law and these terms\n\nWe may limit or terminate your account or access to the app if you:\n\n• use the app in a way that harms us or other users\n• attempt to exploit security vulnerabilities\n• violate applicable law or these terms of use"
+            },
+            "content": {
+                "title": "5. Content You Enter into the App",
+                "content": "All data you enter into the app (e.g., workouts, exercises, sets, weights, notes) remain your data.\n\nBy entering them, you give us permission to process them as part of the app's operation, including:\n\n• storage and backups\n• display within the app (e.g., statistics, analytics)\n• technical processes for maintaining and improving the service\n\nProcessing of your data is described in more detail in the Privacy Policy."
+            },
+            "aiFeatures": {
+                "title": "6. AI Features",
+                "content": "Some Setwise features may use artificial intelligence models (e.g., for converting text workout descriptions into a structured plan).\n\n• content you enter into AI features is sent to a selected provider (currently Google AI Studio), which returns the result\n• we do not guarantee that results will always be complete, accurate, or suitable for your specific case\n• AI results do not constitute professional or health advice\n\nUse of AI features is voluntary – if you don't want to use them, simply don't use them."
+            },
+            "liability": {
+                "title": "7. Limitation of Liability",
+                "content": "We strive to keep the app as stable as possible, however:\n\n• we do not guarantee that the app will always be available or error-free\n• we do not guarantee that all data will always be correctly saved or synchronized\n• we are not liable for indirect damages (e.g., lost workout data, lost progress, disruptions in app use), except where expressly required by law\n\nYou are always responsible for your own training, choice of weights, techniques, and training frequency."
+            },
+            "privacyConnection": {
+                "title": "8. Connection to Privacy Policy",
+                "content": "These terms of use are closely linked to our Privacy Policy, which describes how we process your personal data.\n\nBoth documents are available at:\nsetwise.app/terms\nsetwise.app/privacy\n\nBy using the app, you confirm that you have familiarized yourself with both documents."
+            },
+            "changes": {
+                "title": "9. Changes to Terms",
+                "content": "We may update these terms of use from time to time. The updated version will always be published at setwise.app/terms with the date of the last update.\n\nIf there are significant changes, we will try to notify you through the app or email (if appropriate)."
+            },
+            "contact": {
+                "title": "10. Contact",
+                "content": "For questions regarding these terms of use, you can contact:\n\nSetwise (operator: Jernej Peternel)\nEmail: jernejsdev@gmail.com"
+            }
+        }
+    },
+    "PrivacyPolicy": {
+        "title": "Privacy Policy",
+        "lastUpdated": "Last updated: February 10, 2026",
+        "intro": "Your privacy is important to us. It is SetWise's policy to respect your privacy regarding any information we may collect from you across our website and applications.",
+        "sections": {
+            "overview": {
+                "title": "1. Overview",
+                "content": "We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent."
+            },
+            "dataCollection": {
+                "title": "2. Data Collection",
+                "content": "We may collect information about you in a variety of ways. The information we may collect on the App includes: Personal Data and Derivative Data."
+            },
+            "usage": {
+                "title": "3. Use of Your Information",
+                "content": "Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we use information collected about you via the App to create and manage your account."
+            },
+            "dataProtection": {
+                "title": "4. Data Protection",
+                "content": "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable."
+            }
+        }
+    },
+    "Cookies": {
+        "title": "Cookie Policy",
+        "lastUpdated": "Last updated: February 10, 2026",
+        "intro": "This Cookie Policy explains how SetWise uses cookies and similar technologies to recognize you when you visit our website.",
+        "sections": {
+            "whatAreCookies": {
+                "title": "1. What are cookies?",
+                "content": "Cookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners in order to make their websites work, or to work more efficiently, as well as to provide reporting information."
+            },
+            "howWeUse": {
+                "title": "2. How we use cookies",
+                "content": "We use cookies for several reasons. Some cookies are required for technical reasons in order for our Website to operate, and we refer to these as 'essential' or 'strictly necessary' cookies."
+            },
+            "managingCookies": {
+                "title": "3. Managing cookies",
+                "content": "You have the right to decide whether to accept or reject cookies. You can exercise your cookie rights by setting your preferences in the Cookie Consent Manager."
+            }
+        }
+    },
     "Navigation": {
         "home": "Home",
         "howItWorks": "How it Works",
