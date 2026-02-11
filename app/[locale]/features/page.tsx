@@ -304,8 +304,8 @@ export default async function FeaturesPage() {
                         </div>
 
                         {/* Content — on top */}
-                        <div className="relative z-10 space-y-(--space-4) md:space-y-(--space-7) p-(--space-4) py-(--space-6) md:p-(--space-6) md:py-(--space-16)">
-                            <div className="space-y-(--space-1) md:space-y-(--space-1.5)">
+                        <div className="relative z-10 space-y-(--space-4) md:space-y-(--space-4) p-(--space-4) py-(--space-6) md:p-(--space-6) md:py-(--space-16)">
+                            <div className="">
                                 <p className="text-caption-2 md:text-caption-1  tracking-wider font-semibold text-surface-500">
                                     {t('security.badge')}
                                 </p>

@@ -135,10 +135,10 @@ interface SecurityItemProps {
 export function SecurityItem({ icon: Icon, title, description, compact = false }: SecurityItemProps) {
     return (
         <div className={compact ? "flex gap-(--space-2) md:gap-(--space-3) items-start" : "flex gap-(--space-2) md:gap-(--space-4) items-start"}>
-            <div className={`flex items-center justify-center rounded-lg md:rounded-xl bg-surface-200/60 dark:bg-surface-300/20 shrink-0 ${compact ? "size-7 md:size-8" : "size-8 md:size-10"}`}>
+            <div className={`flex items-center justify-center rounded-lg  bg-linear-to-tr from-surface-200/70 to-surface-300/70 dark:bg-surface-300/20 shrink-0 ${compact ? "size-7 md:size-8" : "size-8 md:size-10"}`}>
                 <Icon className={compact ? "size-3.5 md:size-4 text-surface-500" : "size-4 md:size-5 text-surface-500"} />
             </div>
-            <div className={compact ? "space-y-(--space-0.5)" : "space-y-(--space-0.5) md:space-y-(--space-1)"}>
+            <div className={compact ? "space-y-(--space-1)" : "space-y-(--space-1) md:space-y-(--space-1)"}>
                 <h4 className={compact ? "text-subheadline md:text-callout font-semibold text-surface-900" : "text-subheadline md:text-headline font-semibold text-surface-900"}>
                     {title}
                 </h4>
