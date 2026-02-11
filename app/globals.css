@@ -1368,3 +1368,19 @@ body::-webkit-scrollbar {
 .dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: var(--surface-500);
 }
+
+@utility test-responsive {
+  @apply bg-yellow-200;
+
+  @media (width >= 40rem) { /* sm */
+    @apply bg-green-200;
+  }
+
+  @media (width >= 48rem) { /* md */
+    @apply bg-red-300;
+  }
+
+  @media (width >= 72rem) { /* 1152px */
+    @apply bg-green-700;
+  }
+}
