@@ -5,7 +5,7 @@ export default async function CookiesPage() {
     const sections = ['whatAreCookies', 'howWeUse', 'managingCookies'] as const
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-8 md:pt-0">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-6xl ">
 
                 {/* ── Page Header ────────────────────────────── */}

@@ -16,11 +16,11 @@ export default async function SupportPage() {
     const t = await getTranslations('Support')
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans md:pt-0 pt-12">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl ">
 
                 {/* ── Page Header & Search ────────────────────────────── */}
-                <header className="pt-(--space-8) pb-(--space-10) md:pt-(--space-16) md:pb-(--space-20) flex flex-col items-center text-center space-y-(--space-8)">
+                <header className="pt-(--space-8) pb-(--space-10) md:pt-(--space-16) md:pb-(--space-20) flex flex-col items-center text-center space-y-(--space-4)">
 
                     <h1 className="text-display-sm md:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t('title')}
