@@ -11,8 +11,8 @@ export default function ResourcesLayout({
     children: React.ReactNode
 }) {
     const pathname = usePathname()
-    const isGuidesRoute = /\/guides(?:\/|$)/.test(pathname) || /\/vodici(?:\/|$)/.test(pathname) 
 
+const isGuidesRoute = pathname === "/guides" || pathname.startsWith("/guides/") || pathname.startsWith("/sl/vodici/") || pathname === "/sl/vodici"
     if (isGuidesRoute) {
         return <>{children}</>
     }
