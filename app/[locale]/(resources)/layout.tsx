@@ -1,17 +1,26 @@
+"use client"
 
 import Navigation from "@/components/navigation"
 import FooterSection from "@/components/footer-section"
 import { ParticleText } from "@/components/ui/particle-text"
+import { usePathname } from "next/navigation"
 
 export default function ResourcesLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const pathname = usePathname()
+    const isGuidesRoute = /\/guides(?:\/|$)/.test(pathname) 
+
+    if (isGuidesRoute) {
+        return <>{children}</>
+    }
+
     return (
         <div className="w-full min-h-screen relative bg-background flex flex-col items-center">
             <div className="w-full flex justify-center flex-1">
-                <main className="w-[94vw] md:w-6xl relative flex flex-col border-l border-r 
+                <main className="w-[94vw] md:w-6xl  flex flex-col relative overflow-hidden border-l border-r 
                 border-border/50 dark:border-border/40 bg-background">
 
 
@@ -26,7 +35,7 @@ export default function ResourcesLayout({
                         </div>
 
                         {/* Content Area */}
-                        <div className="w-full relative z-10 max-w-3xl -mt-[60px]">
+                        <div className="w-full relative z-10  -mt-[60px]">
                             {children}
                         </div>
                     </div>
