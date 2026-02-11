@@ -20,7 +20,7 @@ export default function LandingPage() {
         <div className="w-full min-h-screen relative bg-background overflow-x-hidden flex flex-col items-center">
             <div className="relative flex flex-col items-center w-full">
                 <Navigation />
-                <main className="   w-[94vw] md:w-6xl  relative flex flex-col items-center  min-h-screen border-l border-r border-border dark:border-border/40 " aria-label="Main content">
+                <main className="   w-[94vw] md:w-6xl md:bg-red-1d00  relative flex flex-col items-center  min-h-screen border-l border-r border-border dark:border-border/40 " aria-label="Main content">
 
                     <section id="hero" className="w-auto  px-1">
                         <HeroSection />

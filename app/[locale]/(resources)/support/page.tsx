@@ -16,7 +16,7 @@ export default async function SupportPage() {
     const t = await getTranslations('Support')
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans md:pt-0 pt-12">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans md:pt-0 pt-8">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl ">
 
                 {/* ── Page Header & Search ────────────────────────────── */}
