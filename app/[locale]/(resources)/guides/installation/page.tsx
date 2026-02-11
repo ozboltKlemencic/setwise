@@ -110,7 +110,7 @@ export default async function InstallationPage() {
 
                     {/* KEY FEATURES Section */}
                     <section id="steps" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
-                        <div className="space-y-(--space-1.5) md:space-y-(--space-2)">
+                        <div className="space-y-(--space-1) md:space-y-(--space-2)">
                             <p className="text-caption-2 md:text-caption-1 tracking-wider font-semibold primaryGradient">
                                 {t('keyFeatures.badge')}
                             </p>
@@ -121,7 +121,7 @@ export default async function InstallationPage() {
 
                         {/* Feature 1 — iOS */}
                         <KeyFeatureSection compact icon={Smartphone} title={t('keyFeatures.ios.title')}>
-                            <div className="space-y-(--space-2.5) md:space-y-(--space-3) max-w-prose">
+                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 <FeatureTextBlock compact lead={t('keyFeatures.ios.step1.lead')}>
                                     {t.rich('keyFeatures.ios.step1.text', richTextComponents)}
                                 </FeatureTextBlock>
@@ -136,7 +136,7 @@ export default async function InstallationPage() {
 
                         {/* Feature 2 — Android */}
                         <KeyFeatureSection compact icon={Smartphone} title={t('keyFeatures.android.title')}>
-                            <div className="space-y-(--space-2.5) md:space-y-(--space-3) max-w-prose">
+                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 <FeatureTextBlock compact lead={t('keyFeatures.android.step1.lead')}>
                                     {t.rich('keyFeatures.android.step1.text', richTextComponents)}
                                 </FeatureTextBlock>
@@ -151,7 +151,7 @@ export default async function InstallationPage() {
 
                         {/* Feature 3 — Desktop */}
                         <KeyFeatureSection compact icon={Laptop} title={t('keyFeatures.desktop.title')}>
-                            <div className="space-y-(--space-2.5) md:space-y-(--space-3) max-w-prose">
+                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 <FeatureTextBlock compact lead={t('keyFeatures.desktop.step1.lead')}>
                                     {t.rich('keyFeatures.desktop.step1.text', richTextComponents)}
                                 </FeatureTextBlock>
@@ -196,7 +196,7 @@ export default async function InstallationPage() {
 
                     {/* GET STARTED Section */}
                     <section id="requirements" className="scroll-mt-32 space-y-(--space-5) md:space-y-(--space-10) pb-(--space-10) md:pb-(--space-18)">
-                        <div className="space-y-(--space-1.5) md:space-y-(--space-2)">
+                        <div className="space-y-(--space-1) md:space-y-(--space-2)">
                             <p className="text-caption-2 md:text-caption-1 tracking-wider font-semibold primaryGradient">
                                 {t('getStarted.badge')}
                             </p>

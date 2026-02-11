@@ -52,8 +52,8 @@ interface KeyFeatureSectionProps {
 
 export function KeyFeatureSection({ icon: Icon, title, children, compact = false }: KeyFeatureSectionProps) {
     return (
-        <div className={compact ? "space-y-(--space-2.5) md:space-y-(--space-4)" : "space-y-(--space-3) md:space-y-(--space-5)"}>
-            <div className={compact ? "flex items-center gap-(--space-2) md:gap-(--space-2.5)" : "flex items-center gap-(--space-2) md:gap-(--space-3)"}>
+        <div className={compact ? "space-y-(--space-2) md:space-y-(--space-4)" : "space-y-(--space-3) md:space-y-(--space-5)"}>
+            <div className={compact ? "flex items-center gap-(--space-2) md:gap-(--space-2)" : "flex items-center gap-(--space-2) md:gap-(--space-3)"}>
                 <div className={`flex items-center justify-center rounded-lg bg-linear-to-tr from-brand-500/5 to-brand-500/15 ${compact ? "size-7 md:size-8" : "size-8 md:size-10"}`}>
                     <Icon className={compact ? "size-3.5 md:size-4 text-brand-500/80" : "size-4 md:size-5 text-brand-500/80"} />
                 </div>
@@ -163,7 +163,7 @@ interface BenefitBadgeProps {
 
 export function BenefitBadge({ icon: Icon, label, compact = false }: BenefitBadgeProps) {
     return (
-        <div className={compact ? "flex items-center gap-(--space-1.5) md:gap-(--space-2) text-footnote md:text-footnote font-medium text-surface-800" : "flex items-center gap-(--space-2) md:gap-(--space-2) text-footnote md:text-subheadline font-medium text-surface-800"}>
+        <div className={compact ? "flex items-center gap-(--space-1) md:gap-(--space-2) text-footnote md:text-footnote font-medium text-surface-800" : "flex items-center gap-(--space-2) md:gap-(--space-2) text-footnote md:text-subheadline font-medium text-surface-800"}>
             
                 <Icon className={compact ? "size-3 md:size-3.5 text-success shrink-0" : "size-3.5 md:size-4 text-success shrink-0"} />
             
