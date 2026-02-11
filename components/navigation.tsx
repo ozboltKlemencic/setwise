@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslations } from "next-intl"
-import { usePathname } from "@/i18n/navigation"
+import { isPathActive, usePathname } from "@/i18n/navigation"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import Blur from "./ui/Blur"
 import BetaSignupDialog from "./beta-signup-dialog"
@@ -15,7 +15,6 @@ export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isBetaDialogOpen, setIsBetaDialogOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
-    const [activeSection, setActiveSection] = useState("#")
     const t = useTranslations('Navigation')
     const tCommon = useTranslations('Common')
     const pathname = usePathname()
@@ -109,7 +108,7 @@ export default function Navigation() {
                             key={link.href}
                             href={link.href}
                             //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
-                            className={`px-(--space-3) py-(--space-1) duration-(--duration-normal) rounded-full text-footnote font-medium transition-colors ${activeSection === link.href
+                            className={`px-(--space-3) py-(--space-1) duration-(--duration-normal) rounded-full text-footnote font-medium transition-colors ${isPathActive(pathname, link.href)
                                 ? "bg-surface-100/90 border border-border/80 text-foreground"
                                 : "hover:bg-surface-200/60 text-muted-foreground hover:text-foreground"
                                 }`}
@@ -167,9 +166,9 @@ export default function Navigation() {
                                     href={link.href}
                                     //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
                                     className="relative px-(--space-3) py-(--space-1\.5) rounded-full text-footnote font-medium transition-colors duration-(--duration-normal)"
-                                    style={{ color: activeSection === link.href ? 'var(--foreground)' : 'var(--muted-foreground)' }}
+                                    style={{ color: isPathActive(pathname, link.href) ? 'var(--foreground)' : 'var(--muted-foreground)' }}
                                 >
-                                    {activeSection === link.href && (
+                                    {isPathActive(pathname, link.href) && (
                                         <motion.div
                                             layoutId="activeNavIndicator"
                                             className="absolute inset-0 bg-surface-200/70 border border-surface-300/40 rounded-full"
@@ -286,7 +285,7 @@ export default function Navigation() {
                                             <Link
                                                 href={link.href}
                                                 //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
-                                                className={`block px-(--space-3) py-(--space-4) text-callout font-medium rounded-xl transition-colors ${activeSection === link.href
+                                                className={`block px-(--space-3) py-(--space-4) text-callout font-medium rounded-xl transition-colors ${isPathActive(pathname, link.href)
                                                     ? "text-foreground dark:bg-surface-300/30 bg-surface-300/25"
                                                     : "text-muted-foreground hover:text-foreground hover:bg-surface-50"
                                                     }`}
