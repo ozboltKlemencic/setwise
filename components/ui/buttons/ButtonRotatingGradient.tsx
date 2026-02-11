@@ -7,6 +7,7 @@ const ButtonRotatingGradient = forwardRef<HTMLButtonElement, React.ButtonHTMLAtt
         return (
             <button
                 ref={ref}
+                
                 {...props}
                 className={cn(
                     'relative inline-flex overflow-hidden rounded-full p-[2px] ease-in-out duration-(--duration-smooth) focus:scale-95',

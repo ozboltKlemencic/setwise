@@ -109,7 +109,7 @@ export default function Navigation() {
                             href={link.href}
                             //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
                             className={`px-(--space-3) py-(--space-1) duration-(--duration-normal) rounded-full text-footnote font-medium transition-colors ${isPathActive(pathname, link.href)
-                                ? "bg-surface-100/90 border border-border/80 text-foreground"
+                                ? "bg-surface-200/70 border border-border/80 text-foreground"
                                 : "hover:bg-surface-200/60 text-muted-foreground hover:text-foreground"
                                 }`}
                         >

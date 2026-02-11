@@ -1,3 +1,5 @@
+"use client"
+
 import { type HTMLAttributes, useId } from "react"
 
 import Image from "next/image"
