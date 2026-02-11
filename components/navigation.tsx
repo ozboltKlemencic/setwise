@@ -9,6 +9,7 @@ import Blur from "./ui/Blur"
 import BetaSignupDialog from "./beta-signup-dialog"
 import LanguageSwitcher from "./layout/LanguageSwitcher"
 import ThemeToggler from "./layout/ThemeToggler"
+import Link from "next/link"
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -23,10 +24,9 @@ export default function Navigation() {
     const isFeaturePage = pathname === "/features" || pathname.startsWith("/features/") || pathname.startsWith("/guides/") || pathname === "/guides"
 
     const navLinks = [
-        { href: "#how-it-works", label: t('howItWorks'), sectionId: "how-it-works" },
-        { href: "#testimonials", label: t('testimonials'), sectionId: "testimonials" },
-        { href: "#features", label: t('features'), sectionId: "features" },
-        { href: "#faq", label: t('faq'), sectionId: "faq" },
+        { href: "/guides", label: t('guides'),  },
+        { href: "/features", label: t('features'), },
+        { href: "/faq", label: t('faq'),  },
     ]
 
     const scrollToTop = () => {
@@ -43,7 +43,7 @@ export default function Navigation() {
 
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
-
+{/*
     useEffect(() => {
         const handleScrollActive = () => {
             const scrollPosition = window.scrollY + 150
@@ -87,7 +87,7 @@ export default function Navigation() {
             }
         }
     }
-
+*/}
     return (
         <>
             <nav aria-label="Primary" className="fixed lg:backdrop-blur-none backdrop-blur-(--blur-thin) lg:relative top-0 left-0 w-screen lg:w-full lg:max-w-6xl px-(--space-6) md:px-(--space-8) py-(--space-2\.5) md:py-(--space-3) flex justify-between border-b border-border/60 md:border-0 items-center z-(--z-overlay) overflow-hidden bg-background/60 md:bg-transparent">
@@ -96,24 +96,26 @@ export default function Navigation() {
                 <Blur className="md:hidden top-0 left-0 w-3/5 h-full translate-x-1/3 translate-y-1/3 bg-brand-500/5" />
                 <Blur className="md:hidden top-0 left-0 w-2/5 h-full -translate-y-1/3 -translate-x-1/2 bg-brand-500/5" />
 
-                <button onClick={scrollToTop} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
+                <Link href="/" 
+                //onClick={scrollToTop}
+                aria-label="SetWise – home page" className="flex items-center gap-(--space-2) cursor-pointer">
                     <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) md:size-(--space-8) rounded-sm" />
                     <span className="text-callout md:text-body font-bold text-foreground font-sans">SetWise</span>
-                </button>
+                </Link>
 
                 <div className="hidden md:flex items-center gap-(--space-2) px-(--space-8) py-(--space-2\.5) rounded-full">
                     {navLinks.map((link) => (
-                        <a
+                        <Link
                             key={link.href}
                             href={link.href}
-                            onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                            //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
                             className={`px-(--space-3) py-(--space-1) duration-(--duration-normal) rounded-full text-footnote font-medium transition-colors ${activeSection === link.href
                                 ? "bg-surface-100/90 border border-border/80 text-foreground"
                                 : "hover:bg-surface-200/60 text-muted-foreground hover:text-foreground"
                                 }`}
                         >
                             {link.label}
-                        </a>
+                        </Link>
                     ))}
                 </div>
 
@@ -149,17 +151,21 @@ export default function Navigation() {
                         }}
                         className="hidden md:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/40 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
                     >
-                        <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
+                        <Link
+                         href="/" 
+                         //onClick={(e) => handleNavClick(e, "/", "hero")}
+                        
+                         aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
                             <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
                             <span className="text-footnote font-bold text-foreground font-sans">SetWise</span>
-                        </a>
+                        </Link>
 
                         <div className="flex items-center gap-(--space-1)">
                             {navLinks.map((link) => (
-                                <a
+                                <Link   
                                     key={link.href}
                                     href={link.href}
-                                    onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                                    //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
                                     className="relative px-(--space-3) py-(--space-1\.5) rounded-full text-footnote font-medium transition-colors duration-(--duration-normal)"
                                     style={{ color: activeSection === link.href ? 'var(--foreground)' : 'var(--muted-foreground)' }}
                                 >
@@ -175,7 +181,7 @@ export default function Navigation() {
                                         />
                                     )}
                                     <span className="relative z-(--z-raised) hover:text-foreground transition-colors duration-(--duration-normal)">{link.label}</span>
-                                </a>
+                                </Link>
                             ))}
                         </div>
 
@@ -228,10 +234,13 @@ export default function Navigation() {
                                 className="mx-(--space-4) mb-(--space-4) bg-card/95 rounded-3xl shadow-(--shadow-2xl) overflow-hidden border border-border/60"
                             >
                                 <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
-                                    <a href="/" onClick={(e) => handleNavClick(e, "/", "hero")} aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
+                                    <Link 
+                                    href="/" 
+                                    //onClick={(e) => handleNavClick(e, "/", "hero")}
+                                     aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
                                         <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
                                         <span className="text-callout font-bold text-foreground">SetWise</span>
-                                    </a>
+                                    </Link>
                                     <div className="flex items-center gap-(--space-1)">
                                         <ThemeToggler />
                                         <LanguageSwitcher />
@@ -274,16 +283,16 @@ export default function Navigation() {
                                                 delay: index * 0.05
                                             }}
                                         >
-                                            <a
+                                            <Link
                                                 href={link.href}
-                                                onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                                                //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
                                                 className={`block px-(--space-3) py-(--space-4) text-callout font-medium rounded-xl transition-colors ${activeSection === link.href
                                                     ? "text-foreground dark:bg-surface-300/30 bg-surface-300/25"
                                                     : "text-muted-foreground hover:text-foreground hover:bg-surface-50"
                                                     }`}
                                             >
                                                 {link.label}
-                                            </a>
+                                            </Link>
                                             {index < navLinks.length - 1 && (
                                                 <div role="separator" className="h-px bg-border mx-(--space-3)"></div>
                                             )}
