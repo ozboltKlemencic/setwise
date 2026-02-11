@@ -65,6 +65,7 @@ export default function FooterSection() {
             { label: t('links.changelog'), href: "/changelog" },
             { label: t('links.support'), href: "/support" },
             { label: t('sections.guides'), href: "/guides" },
+            { label: t('sections.faq'), href: "/faq" },
           ],
         },
       ],
