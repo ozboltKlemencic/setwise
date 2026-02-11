@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/navigation"
 import { ParticleText } from "@/components/ui/particle-text"
-import { Instagram, Linkedin } from "lucide-react"
+import { Facebook, Instagram, Linkedin } from "lucide-react"
 
 export default function FooterSection() {
   const t = useTranslations('Footer')
@@ -141,6 +141,9 @@ export default function FooterSection() {
               </a>
               <a href="#" target="_blank" className="text-surface-500  hover:text-surface-800 0 transition-colors duration-(--duration-fast) ease-(--ease-apple)">
                 <Linkedin className="size-3.5 md:size-4 font-thin" />
+              </a>
+              <a href="#" target="_blank" className="text-surface-500  hover:text-surface-800 0 transition-colors duration-(--duration-fast) ease-(--ease-apple)">
+                <Facebook className="size-3.5 md:size-4 font-thin" />
               </a>
               <a href="#" target="_blank" className="size-3.5 md:size-4 text-surface-500 hover:text-surface-800  flex items-center justify-center transition-colors duration-(--duration-fast) ease-(--ease-apple)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" className="bi bi-tiktok" viewBox="0 0 16 16">

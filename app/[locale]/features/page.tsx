@@ -49,7 +49,7 @@ export default async function FeaturesPage() {
     const t = await getTranslations('FeaturesPage')
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-12 md:pt-0">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
 
                 {/* ── Page Header ────────────────────────────── */}
