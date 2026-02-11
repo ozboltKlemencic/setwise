@@ -30,7 +30,7 @@ export default function FeaturesLayout({
                 <main className="w-[94vw] md:w-6xl relative flex flex-col border-l border-r 
                 border-border/50 dark:border-border/40 bg-background">
 
-                    <div className="min-h-14 md:min-h-0 md:sticky md:top-0 md:z-(--z-fixed) md:bg-background md:border-b md:border-border/50 md:dark:border-border/40">
+                    <div className="min-h-1 md:sticky md:top-0 md:z-(--z-fixed) md:bg-background  border-b border-border/50 dark:border-border/40">
                         <Navigation />
                     </div>
 
