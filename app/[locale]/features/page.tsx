@@ -112,7 +112,7 @@ export default async function FeaturesPage() {
 
                     {/* KEY FEATURES Section */}
                     <section id="key-features" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
-                        <div className="space-y-(--space-1.5) md:space-y-(--space-2)">
+                        <div className="space-y-(--space-1) md:space-y-(--space-2)">
                             <p className="text-caption-2 md:text-caption-1  tracking-wider font-semibold primaryGradient">
                                 {t('keyFeatures.badge')}
                             </p>
@@ -123,7 +123,7 @@ export default async function FeaturesPage() {
 
                         {/* Feature 1 — Quick Logging */}
                         <KeyFeatureSection compact icon={Zap} title={t('keyFeatures.quickLogging.title')}>
-                            <div className="space-y-(--space-2.5) md:space-y-(--space-3) max-w-prose">
+                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 <FeatureTextBlock compact lead={t('keyFeatures.quickLogging.liveSession.lead')}>
                                     {t.rich('keyFeatures.quickLogging.liveSession.text', richTextComponents)}
                                 </FeatureTextBlock>
@@ -138,7 +138,7 @@ export default async function FeaturesPage() {
 
                         {/* Feature 2 — Templates & Programs */}
                         <KeyFeatureSection compact icon={LayoutTemplate} title={t('keyFeatures.templates.title')}>
-                            <div className="space-y-(--space-2.5) md:space-y-(--space-3) max-w-prose">
+                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 <FeatureTextBlock compact lead={t('keyFeatures.templates.myTemplates.lead')}>
                                     {t.rich('keyFeatures.templates.myTemplates.text', richTextComponents)}
                                 </FeatureTextBlock>
@@ -150,7 +150,7 @@ export default async function FeaturesPage() {
 
                         {/* Feature 3 — History & Personal Records */}
                         <KeyFeatureSection compact icon={History} title={t('keyFeatures.history.title')}>
-                            <div className="space-y-(--space-2.5) md:space-y-(--space-3) max-w-prose">
+                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
                                 <FeatureTextBlock compact lead={t('keyFeatures.history.workoutLog.lead')}>
                                     {t.rich('keyFeatures.history.workoutLog.text', richTextComponents)}
                                 </FeatureTextBlock>
@@ -165,9 +165,9 @@ export default async function FeaturesPage() {
 
                         {/* Feature 4 — Progress & Analytics */}
                         <KeyFeatureSection compact icon={TrendingUp} title={t('keyFeatures.analytics.title')}>
-                            <ul className="list-none space-y-(--space-2) md:space-y-(--space-2.5) max-w-prose">
+                            <ul className="list-none space-y-(--space-2) md:space-y-(--space-2) max-w-prose">
                                 {analyticsKeys.map((key) => (
-                                    <li key={key} className="flex gap-(--space-2) md:gap-(--space-2.5) text-footnote md:text-subheadline text-surface-700 leading-relaxed">
+                                    <li key={key} className="flex gap-(--space-2) md:gap-(--space-2) text-footnote md:text-subheadline text-surface-700 leading-relaxed">
                                         <span className="mt-1.5 size-1.25 rounded-full bg-surface-900 shrink-0" />
                                         <span>
                                             <strong className="text-surface-900 font-semibold">{t(`keyFeatures.analytics.${key}.lead`)}:</strong>{" "}
@@ -213,7 +213,7 @@ export default async function FeaturesPage() {
 
                     {/* GET STARTED Section */}
                     <section id="get-started" className="scroll-mt-32 space-y-(--space-5) md:space-y-(--space-10) pb-(--space-10) md:pb-(--space-18)">
-                        <div className="space-y-(--space-1.5) md:space-y-(--space-2)">
+                        <div className="space-y-(--space-1) md:space-y-(--space-2)">
                             <p className="text-caption-2 md:text-caption-1  tracking-wider font-semibold primaryGradient">
                                 {t('getStarted.badge')}
                             </p>

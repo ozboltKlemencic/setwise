@@ -48,7 +48,7 @@ export default function FAQPage() {
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-12 md:pt-12 lg:pt-0">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl ">
                 <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-8) text-center flex flex-col items-center justify-center">
-                    <p className="text-caption-2 uppercase tracking-wider font-semibold primaryGradient mb-1">
+                    <p className="text-caption-2  tracking-wider font-semibold primaryGradient mb-1">
                         {t("badge")}
                     </p>
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-center text-surface-900 tracking-tight text-balance md:max-w-[400px] ">

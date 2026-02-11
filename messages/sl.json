@@ -315,7 +315,7 @@
         ]
     },
     "FAQPage": {
-        "badge": "FAQ",
+        "badge": "Faq",
         "heading": "Odgovori na vaša <primary>vprašanja</primary>",
         "description": "Vse pomembno na enem mestu. Brez accordionov, samo jasni odgovori, ki jih lahko hitro preletiš.",
         "filters": {

@@ -316,7 +316,7 @@
         ]
     },
     "FAQPage": {
-        "badge": "FAQ",
+        "badge": "Faq",
         "heading": "Answers to your <primary>questions</primary>",
         "description": "Everything important in one place. No hidden accordion content, just clear answers you can skim quickly.",
         "filters": {
