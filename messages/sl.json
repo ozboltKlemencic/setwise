@@ -314,6 +314,66 @@
             }
         ]
     },
+    "FAQPage": {
+        "badge": "FAQ",
+        "heading": "Odgovori na vaša <primary>vprašanja</primary>",
+        "description": "Vse pomembno na enem mestu. Brez accordionov, samo jasni odgovori, ki jih lahko hitro preletiš.",
+        "filters": {
+            "all": "Vse",
+            "installation": "Namestitev",
+            "guides": "Vodiči",
+            "features": "Funkcije",
+            "account": "Račun"
+        },
+        "resultsLabel": "{count} vprašanj",
+        "items": {
+            "installIos": {
+                "category": "installation",
+                "question": "Kako namestim SetWise na iPhone?",
+                "answer": "Odpri URL aplikacije v Safariju, tapni Deli in izberi 'Dodaj na začetni zaslon'. Tako dobiš ikono aplikacije in hitrejši dostop."
+            },
+            "installAndroid": {
+                "category": "installation",
+                "question": "Kako namestim SetWise na Android?",
+                "answer": "Odpri URL aplikacije v Chromu, tapni meni s tremi pikami in izberi 'Namesti aplikacijo' (ali 'Dodaj na začetni zaslon' na nekaterih napravah)."
+            },
+            "guideFirstWorkout": {
+                "category": "guides",
+                "question": "Kje naj začnem, če sem nov v SetWise?",
+                "answer": "Začni z vodičem za namestitev, nato nadaljuj z vodičem 'Ustvari trening'. Za začetek je dovolj preprost plan, napredno beleženje pa dodaš kasneje."
+            },
+            "guidePasteImport": {
+                "category": "guides",
+                "question": "Ali lahko uvozim trening iz zapiskov ali sporočil?",
+                "answer": "Da. S funkcijo Paste Import pretvoriš navadno besedilo v strukturiran trening. Razčlenjevalnik podpira večino običajnih zapisov treningov."
+            },
+            "featuresOffline": {
+                "category": "features",
+                "question": "Ali SetWise deluje brez interneta v fitnesu?",
+                "answer": "Da. SetWise je offline-first. Trening beležiš tudi brez signala, sinhronizacija pa se izvede, ko je povezava spet na voljo."
+            },
+            "featuresAnalytics": {
+                "category": "features",
+                "question": "Katero analitiko lahko spremljam v SetWise?",
+                "answer": "Spremljaš lahko trend volumna, ocenjen napredek moči in zgodovino po posamezni vaji, z uporabnimi filtri po obdobju in uspešnosti."
+            },
+            "featuresAdvanced": {
+                "category": "features",
+                "question": "Ali lahko beležim napredne metrike kot RPE ali tempo?",
+                "answer": "Da. Beleženje lahko ostane preprosto, po potrebi pa dodaš RPE/RIR, tempo, opombe in druge podrobnosti treninga."
+            },
+            "accountBeta": {
+                "category": "account",
+                "question": "Ali potrebujem račun za uporabo aplikacije?",
+                "answer": "Osnovna uporaba je zasnovana za hiter začetek in praktično beleženje. Funkcije povezane z računom so na voljo tam, kjer so potrebne za sync, posodobitve in beta dostop."
+            },
+            "accountData": {
+                "category": "account",
+                "question": "Ali lahko izvozim svoje podatke o treningih?",
+                "answer": "Da. SetWise podpira izvoz podatkov, da imaš zgodovino treningov vedno pod nadzorom in si jo lahko varnostno shraniš."
+            }
+        }
+    },
     "SplitBlue": {
         "headline": "Zgrajeno s strani",
         "headlineHighlight": "fitneserjev",

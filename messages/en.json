@@ -315,6 +315,66 @@
             }
         ]
     },
+    "FAQPage": {
+        "badge": "FAQ",
+        "heading": "Answers to your <primary>questions</primary>",
+        "description": "Everything important in one place. No hidden accordion content, just clear answers you can skim quickly.",
+        "filters": {
+            "all": "All",
+            "installation": "Installation",
+            "guides": "Guides",
+            "features": "Features",
+            "account": "Account"
+        },
+        "resultsLabel": "{count} questions",
+        "items": {
+            "installIos": {
+                "category": "installation",
+                "question": "How do I install SetWise on iPhone?",
+                "answer": "Open the app URL in Safari, tap Share, then choose 'Add to Home Screen'. This gives you a full-screen app icon and faster access."
+            },
+            "installAndroid": {
+                "category": "installation",
+                "question": "How do I install SetWise on Android?",
+                "answer": "Open the app URL in Chrome, tap the three-dot menu, then choose 'Install App' (or 'Add to Home Screen' on some devices)."
+            },
+            "guideFirstWorkout": {
+                "category": "guides",
+                "question": "Where should I start if I am new to SetWise?",
+                "answer": "Start with the installation guide, then follow the 'Create Workout' guide. You can begin with a simple routine and add advanced tracking later."
+            },
+            "guidePasteImport": {
+                "category": "guides",
+                "question": "Can I import a workout from notes or messages?",
+                "answer": "Yes. Use Paste Import to convert plain text plans into structured workouts. The parser understands most common lifting formats."
+            },
+            "featuresOffline": {
+                "category": "features",
+                "question": "Does SetWise work without internet in the gym?",
+                "answer": "Yes. SetWise is offline-first. You can log workouts without signal and sync when your connection is available again."
+            },
+            "featuresAnalytics": {
+                "category": "features",
+                "question": "What analytics can I track in SetWise?",
+                "answer": "You can track volume trends, estimated strength progress, and exercise history with practical filters for date range and performance."
+            },
+            "featuresAdvanced": {
+                "category": "features",
+                "question": "Can I log advanced set details like RPE or tempo?",
+                "answer": "Yes. You can keep logging simple or add advanced fields like RPE/RIR, tempo, notes, and other workout context when needed."
+            },
+            "accountBeta": {
+                "category": "account",
+                "question": "Do I need an account to use the app?",
+                "answer": "Core usage is focused on fast start and practical logging. Account-related flows are available where needed for sync, updates, and beta access."
+            },
+            "accountData": {
+                "category": "account",
+                "question": "Can I export my workout data?",
+                "answer": "Yes. SetWise supports data export so you can keep control of your training history and backup your progress."
+            }
+        }
+    },
     "SplitBlue": {
         "headline": "Built by",
         "headlineHighlight": "lifters",
