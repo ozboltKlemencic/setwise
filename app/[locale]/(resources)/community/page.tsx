@@ -55,7 +55,7 @@ export default function CommunityPage() {
                 </header>
 
                 <section className="">
-                    <div className="relative py-(--space-2) md:py-(--space-6)">
+                    <div className="relative py-(--space-2) sm:py-(--space-6)">
                         <div className="absolute inset-y-0 left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] border-b border-surface-200/90 border-t overflow-hidden pointer-events-none">
                             {Array.from({ length: 300 }).map((_, i) => (
                                 <div
@@ -70,7 +70,7 @@ export default function CommunityPage() {
                             ))}
                         </div>
 
-                        <div className="grid gap-(--space-3) py-(--space-0) md:py-(--space-6) md:grid-cols-2 relative z-10 -mx-(--space-3) md:-mx-(--space-8) justify-center items-center">
+                        <div className="grid gap-(--space-2) sm:gap-(--space-3) py-(--space-0) md:py-(--space-6) md:grid-cols-2 relative z-10 -mx-(--space-3) md:-mx-(--space-8) justify-center items-center">
                             {communityCards.map(({ key, icon: Icon, cardClassName, link }) => (
                                 <a
                                     key={key}
