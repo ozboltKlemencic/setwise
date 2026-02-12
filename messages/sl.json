@@ -156,6 +156,29 @@
             }
         }
     },
+    "Changelog": {
+        "title": "Dnevnik sprememb",
+        "lastUpdated": "Zadnja posodobitev: 12. februar 2026",
+        "intro": "Jasen pregled posodobitev, izboljšav in popravkov, ki smo jih izdali v SetWise.",
+        "sections": {
+            "v0_3_0": {
+                "title": "v0.3.0 - Izboljšan dashboard in analitika",
+                "content": "- Dodane bolj pregledne kartice napredka in boljši razmiki na grafih.\n- Izboljšana hitrost nalaganja na ključnih analitičnih zaslonih.\n- Popravljene manjše vizualne nedoslednosti v povzetkih."
+            },
+            "v0_2_2": {
+                "title": "v0.2.2 - Izboljšan potek treninga",
+                "content": "- Hitrejše beleženje setov in manj trenja med vajami.\n- Posodobljene interakcije časovnika odmora za bolj tekoč trening.\n- Popravljeni robni primeri, kjer se prejšnje vrednosti niso vedno pravilno predizpolnile."
+            },
+            "v0_2_0": {
+                "title": "v0.2.0 - Programi in predloge",
+                "content": "- Dodane ponovno uporabne predloge treningov in osnovna struktura programov.\n- Izboljšano urejanje obstoječih trening planov.\n- Dodane izboljšave za hitrejšo pripravo treninga."
+            },
+            "v0_1_0": {
+                "title": "v0.1.0 - Prva beta izdaja",
+                "content": "- Prva javna beta različica SetWise.\n- Osnovno beleženje treningov, zgodovina vaj in sledenje seji.\n- Pripravljena osnova za prihodnjo analitiko, primerjave in coach funkcije."
+            }
+        }
+    },
     "Cookies": {
         "title": "Politika piškotkov",
         "lastUpdated": "Zadnja posodobitev: 10. februar 2026",
