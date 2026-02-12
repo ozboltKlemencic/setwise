@@ -412,6 +412,23 @@
             }
         }
     },
+    "CommunityPage": {
+        "badge": "Skupnost",
+        "heading": "Pridruzi se <primary>SetWise</primary> skupnosti",
+        "description": "Povezi se z drugimi, postavljaj vprasanja, deli napredek in spremljaj novosti ekipe.",
+        "cards": {
+            "discord": {
+                "title": "Discord server",
+                "description": "Klepetaj s clani, dobi hitro pomoc in spremljaj nova obvestila.",
+                "href": "https://discord.gg/setwise"
+            },
+            "facebook": {
+                "title": "Facebook grupa",
+                "description": "Pridruzi se grupi, deli svoj trening napredek in se povezi s skupnostjo.",
+                "href": "https://www.facebook.com/groups/setwise"
+            }
+        }
+    },
     "SplitBlue": {
         "headline": "Zgrajeno s strani",
         "headlineHighlight": "fitneserjev",

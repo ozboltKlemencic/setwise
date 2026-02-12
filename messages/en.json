@@ -413,6 +413,23 @@
             }
         }
     },
+    "CommunityPage": {
+        "badge": "Community",
+        "heading": "Join the <primary>SetWise</primary> community",
+        "description": "Connect with lifters, ask questions, share progress, and get updates from the team.",
+        "cards": {
+            "discord": {
+                "title": "Discord Server",
+                "description": "Chat with members, get quick help, and stay updated with announcements.",
+                "href": "https://discord.gg/setwise"
+            },
+            "facebook": {
+                "title": "Facebook Group",
+                "description": "Join the group, share your training journey, and connect with the community.",
+                "href": "https://www.facebook.com/groups/setwise"
+            }
+        }
+    },
     "SplitBlue": {
         "headline": "Built by",
         "headlineHighlight": "lifters",
