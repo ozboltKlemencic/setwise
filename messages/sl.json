@@ -39,11 +39,15 @@
         "sections": {
             "general": {
                 "title": "Splošna poizvedovanja",
-                "content": "Za splošna vprašanja o SetWise, partnerstvih ali novinarska vprašanja nam pišite na:\njernejsdev@gmail.com"
+                "content": "Za splošna vprašanja o SetWise, partnerstvih ali novinarska vprašanja."
+            },
+            "team": {
+                "title": "Kontaktirajte ekipo",
+                "content": "Pišite neposredno ustanoviteljema za sodelovanje ali tehnična vprašanja."
             },
             "support": {
                 "title": "Podpora",
-                "content": "Potrebujete pomoč z aplikacijo? Preverite naše vodiče ali pišite neposredno naši podporni ekipi."
+                "content": "Potrebujete pomoč z aplikacijo? Preverite naše vodiče ali se obrnite na podporno ekipo."
             }
         }
     },

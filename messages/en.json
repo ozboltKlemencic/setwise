@@ -39,11 +39,15 @@
         "sections": {
             "general": {
                 "title": "General Inquiries",
-                "content": "For general questions about SetWise, partnerships, or press, please email us at:\njernejsdev@gmail.com"
+                "content": "For general questions about SetWise, partnerships, or press inquiries."
+            },
+            "team": {
+                "title": "Reach the Team",
+                "content": "Contact our founders directly for collaboration or technical questions."
             },
             "support": {
                 "title": "Support",
-                "content": "Need help with the app? Check our guides or email our support team directly."
+                "content": "Need help with the app? Check our guides or reach out to the support team."
             }
         }
     },
