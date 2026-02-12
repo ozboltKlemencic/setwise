@@ -159,23 +159,25 @@
     "Changelog": {
         "title": "Changelog",
         "lastUpdated": "Last updated: February 12, 2026",
-        "intro": "A clear overview of product updates, improvements, and fixes we shipped in SetWise.",
-        "sections": {
-            "v0_3_0": {
-                "title": "v0.3.0 - Dashboard & analytics polish",
-                "content": "- Added clearer progress cards and cleaner chart spacing.\n- Improved loading performance on key analytics screens.\n- Fixed smaller visual inconsistencies across summary widgets."
+        "intro": "Track product updates by year.",
+        "years": {
+            "2026": {
+                "title": "2026",
+                "updates": {
+                    "v1_0_1": {
+                        "title": "v1.0.1 - February update",
+                        "content": "- Improved app stability and small UI polish.\n- Fixed minor issues reported after first release."
+                    }
+                }
             },
-            "v0_2_2": {
-                "title": "v0.2.2 - Workout flow improvements",
-                "content": "- Improved set logging speed and reduced friction between exercises.\n- Updated rest-timer interactions for a smoother in-session flow.\n- Fixed edge cases where previous set values did not always prefill."
-            },
-            "v0_2_0": {
-                "title": "v0.2.0 - Programs & templates",
-                "content": "- Introduced reusable workout templates and basic program structure.\n- Improved editing for existing workout plans.\n- Added quality-of-life updates for quick workout setup."
-            },
-            "v0_1_0": {
-                "title": "v0.1.0 - Initial beta release",
-                "content": "- First public beta for SetWise.\n- Core workout logging, exercise history, and session tracking.\n- Foundation for upcoming analytics, comparisons, and coaching tools."
+            "2025": {
+                "title": "2025",
+                "updates": {
+                    "first_release": {
+                        "title": "First release - December 2025",
+                        "content": "- Initial SetWise release.\n- Core workout logging and session tracking features available."
+                    }
+                }
             }
         }
     },
