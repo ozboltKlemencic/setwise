@@ -23,12 +23,14 @@ const communityCards = [
     {
         key: "discord",
         icon: DiscordIcon,
-        cardClassName: "bg-linear-to-tr from-[#5865f2] to-[#737fff] hover:from-[#4e5bdf] hover:to-[#646fdf] border-[#5865f2]/90 hover:border-[#4e5bdf]/90",
+        cardClassName: "bg-linear-to-tr from-[#5865f2] to-[#737fff] hover:from-[#4e5bdf] hover:to-[#646fdf] border-[#5865f2]/90 hover:border-[#646fdf]/90",
+        link: "https://discord.gg/HauXt8tE",
     },
     {
         key: "facebook",
         icon: FacebookIcon,
-        cardClassName: "bg-linear-to-tr from-[#1773ea] to-[#549fff]  hover:from-[#1567d2] hover:to-[#4a89df] border-[#1773ea]/90 hover:border-[#1567d2]/90",
+        cardClassName: "bg-linear-to-tr from-[#1773ea] to-[#549fff]  hover:from-[#1567d2] hover:to-[#4a89df] border-[#549fff]/90 hover:border-[#4a89df]/90",
+        link: "https://www.facebook.com/groups/1962082657986893/",
     },
 ] as const
 
@@ -69,10 +71,10 @@ export default function CommunityPage() {
                         </div>
 
                         <div className="grid gap-(--space-3) py-(--space-6) md:py-(--space-6) md:grid-cols-2 relative z-10 -mx-(--space-3) md:-mx-(--space-8)">
-                            {communityCards.map(({ key, icon: Icon, cardClassName }) => (
+                            {communityCards.map(({ key, icon: Icon, cardClassName, link }) => (
                                 <a
                                     key={key}
-                                    href={t(`cards.${key}.href`)}
+                                    href={link}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={`group rounded- border p-(--space-5) md:p-(--space-6) min-h-40 md:min-h-52 flex flex-col justify-between transition-colors duration-(--duration-normal) ${cardClassName}`}
