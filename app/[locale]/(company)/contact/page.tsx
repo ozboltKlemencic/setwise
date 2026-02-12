@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
-import { Mail, Linkedin, ArrowRight } from "lucide-react"
+import { Mail, Linkedin, Info, Users, LifeBuoy, UserRoundCog } from "lucide-react"
 
 /* ── Static contact data ─────────────────────────────────── */
 const generalEmail = 'info@setwise.app'
@@ -97,25 +97,38 @@ export default async function ContactPage() {
                             </div>
                         </div>
 
-                        <div className="h-px w-full bg-surface-200 dark:bg-surface-300" />
+                    </div>
 
-                        {/* ── Support ────────────────────────── */}
-                        <div>
-                            <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
-                                {t('sections.support.title')}
-                            </h2>
-                            <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mt-(--space-2)">
-                                {t('sections.support.content')}
-                            </p>
+                    {/* ── Quick Links ────────────────────────── */}
+                    <div className="h-px w-full bg-surface-200 dark:bg-surface-300" />
+
+                    <div>
+                        <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
+                            {t('links.title')}
+                        </h2>
+                        <div className="flex flex-col gap-(--space-2\.5) mt-(--space-3)">
+                            <Link
+                                href="/about"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
+                            >
+                                <Info className="size-3.5 shrink-0" />
+                                <span>{t('links.about')}</span>
+                            </Link>
+                            <Link
+                                href="/our-team"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
+                            >
+                                <Users className="size-3.5 shrink-0" />
+                                <span>{t('links.team')}</span>
+                            </Link>
                             <Link
                                 href="/support"
-                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium primaryGradient  transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-2\.5)"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
                             >
-                                <ArrowRight className="size-3.5 shrink-0 text-brand-500 dark:text-brand-400" />
-                                <span>{t('sections.support.title')}</span>
+                                <UserRoundCog className="size-3.5 shrink-0" />
+                                <span>{t('links.support')}</span>
                             </Link>
                         </div>
-
                     </div>
                 </div>
             </div>

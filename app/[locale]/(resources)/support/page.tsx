@@ -46,7 +46,7 @@ export default async function SupportPage() {
                 <div className="min-h-[600px] relative overflow-hidden -mx-(--space-5) md:-mx-(--space-32) px-(--space-5) md:px-(--space-12) ">
                     {/* Decorative background behind cards */}
                     <div className=" pb-(--space-6)  flex flex-col items-center justify-center">
-                    <div className="absolute inset-0  -mx-(--space-5) md:-mx-(--space-32) border-t border-surface-200/80 dark:border-surface-300/60  pointer-events-none">
+                    <div className="absolute inset-0  -mx-(--space-5) md:-mx-(--space-42) border-t border-surface-200/80 dark:border-surface-300/60  pointer-events-none">
                             {Array.from({ length: 300 }).map((_, i) => (
                                 <div
                                     key={i}

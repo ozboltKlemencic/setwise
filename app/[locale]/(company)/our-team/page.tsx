@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server"
 import Image from "next/image"
-import { Mail, Linkedin } from "lucide-react"
+import { Link } from "@/i18n/navigation"
+import { Mail, Linkedin, Info, LifeBuoy, UserRoundCog } from "lucide-react"
 
 /* ── Static team member data (non-translatable) ──────────── */
 const teamMembers = [
@@ -102,6 +103,38 @@ export default async function OurTeamPage() {
                             )}
                             </div>
                         ))}
+                    </div>
+
+                    {/* ── Quick Links ────────────────────────── */}
+                    <div className="h-px w-full bg-surface-200 dark:bg-surface-300" />
+
+                    <div>
+                        <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
+                            {t('links.title')}
+                        </h2>
+                        <div className="flex flex-col gap-(--space-2\.5) mt-(--space-3)">
+                            <Link
+                                href="/about"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
+                            >
+                                <Info className="size-3.5 shrink-0" />
+                                <span>{t('links.about')}</span>
+                            </Link>
+                            <Link
+                                href="/contact"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
+                            >
+                                <Mail className="size-3.5 shrink-0" />
+                                <span>{t('links.contact')}</span>
+                            </Link>
+                            <Link
+                                href="/support"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
+                            >
+                                <UserRoundCog className="size-3.5 shrink-0" />
+                                <span>{t('links.support')}</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

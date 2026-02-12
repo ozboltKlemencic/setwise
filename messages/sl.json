@@ -31,6 +31,12 @@
                 "title": "Cilj aplikacije je preprost:",
                 "content": "manj časa za tipkanje po telefonu, več fokusa na trening."
             }
+        },
+        "links": {
+            "title": "Več informacij",
+            "team": "Spoznajte ekipo",
+            "contact": "Kontaktirajte nas",
+            "support": "Obiščite center za pomoč"
         }
     },
     "Contact": {
@@ -49,6 +55,12 @@
                 "title": "Podpora",
                 "content": "Potrebujete pomoč z aplikacijo? Preverite naše vodiče ali se obrnite na podporno ekipo."
             }
+        },
+        "links": {
+            "title": "Več informacij",
+            "about": "O SetWise",
+            "team": "Spoznajte ekipo",
+            "support": "Obiščite center za pomoč"
         }
     },
     "OurTeam": {
@@ -65,6 +77,12 @@
                 "role": "Soustanovitelj in razvijalec",
                 "content": "Osredotočen na ustvarjanje intuitivnih uporabniških izkušenj in razširljivih rešitev."
             }
+        },
+        "links": {
+            "title": "Več informacij",
+            "about": "O SetWise",
+            "contact": "Kontaktirajte nas",
+            "support": "Obiščite center za pomoč"
         }
     },
     "Support": {

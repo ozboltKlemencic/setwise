@@ -31,6 +31,12 @@
                 "title": "The app's goal is simple:",
                 "content": "less time typing on your phone, more focus on training."
             }
+        },
+        "links": {
+            "title": "Learn More",
+            "team": "Meet our team",
+            "contact": "Get in touch",
+            "support": "Visit support center"
         }
     },
     "Contact": {
@@ -49,6 +55,12 @@
                 "title": "Support",
                 "content": "Need help with the app? Check our guides or reach out to the support team."
             }
+        },
+        "links": {
+            "title": "Learn More",
+            "about": "About SetWise",
+            "team": "Meet our team",
+            "support": "Visit support center"
         }
     },
     "OurTeam": {
@@ -65,6 +77,12 @@
                 "role": "Co-Founder & Developer",
                 "content": "Focused on creating intuitive user experiences and scalable solutions."
             }
+        },
+        "links": {
+            "title": "Learn More",
+            "about": "About SetWise",
+            "contact": "Get in touch",
+            "support": "Visit support center"
         }
     },
     "Support": {
