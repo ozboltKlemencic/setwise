@@ -53,11 +53,13 @@
         "sections": {
             "jernej": {
                 "title": "Jernej Peternel",
-                "content": "Founder & Lead Developer. Passionate about strength training and building great software."
+                "role": "Founder & Developer",
+                "content": "Passionate about strength training and building great software."
             },
             "ozbolt": {
                 "title": "Ožbolt Klemenčič",
-                "content": "Co-Founder & Developer."
+                "role": "Co-Founder & Developer",
+                "content": "Focused on creating intuitive user experiences and scalable solutions."
             }
         }
     },

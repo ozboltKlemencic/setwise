@@ -53,11 +53,13 @@
         "sections": {
             "jernej": {
                 "title": "Jernej Peternel",
-                "content": "Ustanovitelj in glavni razvijalec. Navdušen nad treningom moči in ustvarjanjem odlične programske opreme."
+                "role": "Ustanovitelj in razvijalec",
+                "content": "Navdušen nad treningom moči in ustvarjanjem odlične programske opreme."
             },
             "ozbolt": {
                 "title": "Ožbolt Klemenčič",
-                "content": "Soustanovitelj in razvijalec."
+                "role": "Soustanovitelj in razvijalec",
+                "content": "Osredotočen na ustvarjanje intuitivnih uporabniških izkušenj in razširljivih rešitev."
             }
         }
     },

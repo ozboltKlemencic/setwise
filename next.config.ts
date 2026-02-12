@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'framerusercontent.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+            },
         ],
     },
 };
