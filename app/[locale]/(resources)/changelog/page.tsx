@@ -168,7 +168,7 @@ export default function ChangelogPage() {
                                                                     {t(`years.${group.key}.updates.${update.key}.date`)}
                                                                 </span>
                                                                 <span
-                                                                    className={`text-caption-1 uppercase tracking-wide px-(--space-2) py-0.5 rounded-md border ${toneStyles[update.tone] ?? toneStyles.update}`}
+                                                                    className={`text-[10px] uppercase tracking-wide px-(--space-2) py-0.5 rounded-sm border  ${toneStyles[update.tone] ?? toneStyles.update}`}
                                                                 >
                                                                     {t(`years.${group.key}.updates.${update.key}.badge`)}
                                                                 </span>
