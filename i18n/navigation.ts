@@ -10,6 +10,9 @@ export const {
     getPathname,
 } = createNavigation(routing);
 
+export const primaryNavigationHrefs = ['/guides', '/features', '/faq', '/community'] as const;
+export type PrimaryNavigationHref = (typeof primaryNavigationHrefs)[number];
+
 function normalizePathname(pathname: string): string {
     if (!pathname) {
         return '/';

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslations } from "next-intl"
-import { isPathActive, usePathname } from "@/i18n/navigation"
+import { isPathActive, primaryNavigationHrefs, usePathname } from "@/i18n/navigation"
 import ButtonRotatingGradient from "./ui/buttons/ButtonRotatingGradient"
 import Blur from "./ui/Blur"
 import BetaSignupDialog from "./beta-signup-dialog"
@@ -22,11 +22,17 @@ export default function Navigation() {
     // Features pages have their own sidebar navigation — hide floating nav
     const isFeaturePage = pathname === "/features" || pathname.startsWith("/features/") || pathname.startsWith("/guides/") || pathname === "/guides"
     const isHomePage = pathname === "/" 
-    const navLinks = [
-        { href: "/guides", label: t('guides'),  },
-        { href: "/features", label: t('features'), },
-        { href: "/faq", label: t('faq'),  },
-    ]
+    const navLinkLabels = {
+        "/guides": t("guides"),
+        "/features": t("features"),
+        "/faq": t("faq"),
+        "/community": t("community"),
+    } as const
+
+    const navLinks = primaryNavigationHrefs.map((href) => ({
+        href,
+        label: navLinkLabels[href],
+    }))
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" })
