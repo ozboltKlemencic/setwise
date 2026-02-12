@@ -34,13 +34,13 @@ export default function Feature2({
     const [isHovered, setIsHovered] = useState(false)
 
     return (
-        <div className="w-full relative group flex flex-col justify-center items-center overflow-hidden">
+        <div className="w-full relative group md:max-h-[480px] lg:max-h-[560px] flex flex-col justify-center items-center overflow-hidden">
 
             {/* Content */}
             <div className={`self-stretch ${isReverse ? 'md:flex-row-reverse flex-col-reverse' : 'md:flex-row flex-col'} flex justify-start items-center relative z-(--z-raised) md:h-150 md:max-h-150`}>
 
                 {/* ── Text Section ── */}
-                <div className="w-full p-(--space-8) md:max-w-146.5 py-(--space-12) md:w-1/2 md:pl-(--space-12) md:pr-(--space-16) border-r md:py-(--space-8) overflow-hidden flex flex-col justify-center  items-center gap-(--space-6) relative z-(--z-dropdown) h-full border-b border-border dark:border-border/40">
+                <div className="w-full p-(--space-8) md:max-w-146.5 py-(--space-12) md:w-1/2 md:pl-(--space-8) lg:pl-(--space-12) md:pr-(--space-8) lg:pr-(--space-16) border-r md:py-(--space-6) lg:py-(--space-8) overflow-hidden flex flex-col justify-center  items-center gap-(--space-6) relative z-(--z-dropdown) h-full border-b border-border dark:border-border/40">
                     <div className="self-stretch flex flex-col justify-start items-start gap-(--space-3)">
 
                         {/* Title — Apple HIG responsive typography */}
@@ -106,7 +106,7 @@ export default function Feature2({
                             initial={{ y: "-80%" }}
                             animate={{ y: isHovered ? "-35%" : isInView ? "25%" : "-50%" }}
                             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-1/2 md:w-75 w-[75%] transform-gpu will-change-transform"
+                            className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] md:w-[55%] lg:w-75 transform-gpu will-change-transform"
                         >
                             {imageSrcDark ? (
                                 <>

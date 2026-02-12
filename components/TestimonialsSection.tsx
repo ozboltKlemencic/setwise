@@ -126,7 +126,7 @@ export default function TestimonialsSection() {
             </div>
 
             {/* ── Main section ── */}
-            <div className="w-full flex flex-col md:h-160 lg:flex-row justify-center items-center relative">
+            <div className="w-full flex flex-col lg:h-160 lg:flex-row justify-center items-center relative">
 
                 {/* Left decorative column */}
                 <div className="absolute left-0 top-0 w-(--space-2) md:w-(--space-6) h-full overflow-hidden z-(--z-raised) border-r border-border dark:border-border/40">
@@ -139,19 +139,19 @@ export default function TestimonialsSection() {
                 </div>
 
                 {/* ── Content ── */}
-                <div className="flex-1 flex flex-col md:flex-row justify-center items-center md:py-(--space-12) h-full gap-y-(--space-6) px-(--space-4) md:px-0 pb-(--space-6) md:pb-0">
+                <div className="flex-1 flex flex-col lg:flex-row justify-center items-center lg:py-(--space-12) h-full gap-y-(--space-6) px-(--space-4) md:px-(--space-6) lg:px-0 pb-(--space-6) lg:pb-0">
 
                     {/* ── Text Section ── */}
-                    <div className="md:max-w-146.5 md:ml-(--space-6) w-full md:w-1/2 md:px-(--space-10) md:pl-(--space-12) md:py-(--space-8) overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-(--z-dropdown) p-(--space-6) gap-y-(--space-4) py-(--space-8)">
-                        <div className="w-full h-full flex flex-col justify-center items-center md:items-start gap-(--space-3) md:pb-(--space-8)">
+                    <div className="lg:max-w-146.5 lg:ml-(--space-6) w-full lg:w-1/2 md:px-(--space-8) lg:px-(--space-10) lg:pl-(--space-12) lg:py-(--space-8) overflow-hidden rounded-lg flex flex-col justify-start items-center h-full relative z-(--z-dropdown) p-(--space-6) gap-y-(--space-4) py-(--space-12)">
+                        <div className="w-full h-full flex flex-col justify-center items-center lg:items-start gap-(--space-3) lg:pb-(--space-8)">
 
                             {/* Title — Apple HIG responsive typography */}
-                            <h2 className="self-stretch text-center md:text-left text-surface-900 text-title-1 md:text-large-title lg:text-display font-semibold font-sans">
+                            <h2 className="self-stretch text-center lg:text-left text-surface-900 text-title-1 md:text-large-title lg:text-display font-semibold font-sans">
                                 <SparklesText shapes={['heart', 'star']} colors={{ first: "var(--star)", second: "var(--warning)" }}>{t('headline')}</SparklesText> {t('headlineRest')}
                             </h2>
 
                             {/* Description — Apple HIG subheadline/callout */}
-                            <p className="self-stretch text-center md:text-left text-surface-600 text-subheadline md:text-callout font-sans font-medium">
+                            <p className="self-stretch text-center lg:text-left  text-surface-600 max-w-[500px] lg:max-w-none  text-subheadline md:text-callout font-sans font-medium">
                                 {t('description')}
                             </p>
 
@@ -162,7 +162,7 @@ export default function TestimonialsSection() {
                     {/* ── Scrolling Reviews Column ── */}
                     <div
                         ref={containerRef}
-                        className="md:w-1/2 md:mr-(--space-6) relative overflow-hidden md:h-full h-100 flex flex-col md:pl-(--space-6) md:my-(--space-6) py-(--space-4)"
+                        className="lg:w-1/2 lg:mr-(--space-6) relative overflow-hidden lg:h-full h-100 md:h-120 flex flex-col lg:pl-(--space-6) lg:my-(--space-6) py-(--space-4)"
                         onMouseEnter={() => animationRef.current?.pause()}
                         onMouseLeave={() => animationRef.current?.play()}
                     >
@@ -172,7 +172,7 @@ export default function TestimonialsSection() {
 
                         <motion.div
                             ref={scope}
-                            className="flex flex-col px-(--space-2) md:pl-(--space-8) md:pr-(--space-6) pointer-events-none md:pointer-events-auto"
+                            className="flex flex-col px-(--space-2) md:px-(--space-4) lg:pl-(--space-8) lg:pr-(--space-6) pointer-events-none md:pointer-events-auto"
                             style={{
                                 willChange: "transform",
                                 transform: "translateZ(0)"
@@ -187,7 +187,7 @@ export default function TestimonialsSection() {
                                         reviewText={review.reviewText}
                                         rating={review.rating || 5}
                                         avatarUrl={review.avatarUrl || "/jernej.png"}
-                                        className="w-full shrink-0 md:my-(--space-3)"
+                                        className="w-full shrink-0 md:my-(--space-2) lg:my-(--space-3)"
                                     />
                                 </ScaledCard>
                             ))}

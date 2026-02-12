@@ -87,10 +87,10 @@ export default function BlueCTASection() {
                         </div>
 
                         {/* iPhones — hidden on mobile, with Apple-style animations */}
-                        <div className="absolute right-[-50px] md:right-[-30px] top-[20px] z-20 w-40 md:w-56 lg:w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
+                        <div className="absolute right-[-50px] md:right-[-20px] lg:right-[-30px] top-[20px] z-20 w-40 md:w-40 lg:w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
                             <Iphone src="/home.png" darkSrc="/dark/dark-workouts.png" />
                         </div>
-                        <div className="absolute left-[-50px] md:left-[-30px] top-[40px] z-20 w-40 md:w-56 lg:w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
+                        <div className="absolute left-[-50px] md:left-[-20px] lg:left-[-30px] top-[40px] z-20 w-40 md:w-40 lg:w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
                             <Iphone src="/workout-in-progres.png" darkSrc="/dark/dark-workouts.png" />
                         </div>
                     </div>

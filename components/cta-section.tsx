@@ -17,7 +17,7 @@ export default function CTASection() {
       {/* Content */}
       <div
         ref={containerRef}
-        className="self-stretch flex-col md:flex-row min-h-[380px] md:min-h-[500px] px-(--space-4) md:px-(--space-24) py-(--space-10) md:py-(--space-12) border-t border-b border-surface-200 flex justify-center md:justify-start items-center gap-(--space-6) relative z-10"
+        className="self-stretch flex-col md:flex-row min-h-[380px] md:min-h-[420px] lg:min-h-[500px] px-(--space-4) md:px-(--space-10) lg:px-(--space-24) py-(--space-10) md:py-(--space-10) lg:py-(--space-12) border-t border-b border-surface-200 flex justify-center md:justify-start items-center gap-(--space-6) relative z-10"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -39,7 +39,7 @@ export default function CTASection() {
         </div>
 
         {/* Text content */}
-        <div className="w-full md:max-w-[586px] pb-(--space-20) md:pb-0 md:w-1/2 px-(--space-4) md:px-(--space-6) py-(--space-5) md:py-(--space-8) overflow-hidden rounded-lg flex flex-col justify-start items-center md:items-start gap-(--space-4) md:gap-(--space-6) relative z-20">
+        <div className="w-full md:max-w-[586px] pb-(--space-20) md:pb-0 md:w-1/2 px-(--space-4) md:px-(--space-4) lg:px-(--space-6) py-(--space-5) md:py-(--space-6) lg:py-(--space-8) overflow-hidden rounded-lg flex flex-col justify-start items-center md:items-start gap-(--space-4) md:gap-(--space-4) lg:gap-(--space-6) relative z-20">
           <div className="self-stretch flex flex-col justify-start items-center md:items-start gap-(--space-2) md:gap-(--space-3)">
             {/* Title — Apple HIG responsive typography */}
             <h2 className="self-stretch text-center md:text-left text-surface-900 text-title-2 md:text-title-1 lg:text-display-sm font-semibold font-sans">
@@ -62,13 +62,13 @@ export default function CTASection() {
           initial={{ y: "-80%" }}
           animate={{ y: isHovered ? "-35%" : isInView ? "25%" : "-50%" }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[40%] right-12 md:right-[6rem] transform-gpu will-change-transform hidden md:block"
+          className="w-[250px] md:w-[240px] lg:w-[334px] absolute md:top-[-2rem] lg:top-[-4rem] top-[40%] right-12 md:right-[3rem] lg:right-[6rem] transform-gpu will-change-transform hidden md:block"
         >
           <Iphone src="/home.png" darkSrc="/dark/dark-workouts.png" />
         </motion.div>
 
         {/* iPhone — mobile static */}
-        <div className="w-[250px] md:w-[334px] absolute md:top-[-4rem] top-[75%] right-12 md:right-[6rem] transform-gpu will-change-transform block md:hidden">
+        <div className="w-[250px] absolute top-[75%] right-12 transform-gpu will-change-transform block md:hidden">
           <Iphone src="/home.png" darkSrc="/dark/dark-workouts.png" />
         </div>
       </div>

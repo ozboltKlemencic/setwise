@@ -34,13 +34,13 @@ export default function Feature({
     const [isHovered, setIsHovered] = useState(false)
 
     return (
-        <div className="w-full relative group flex flex-col justify-center items-center gap-(--space-2) overflow-hidden">
+        <div className="w-full relative group  md:max-h-[480px] lg:max-h-[560px] flex flex-col justify-center items-center gap-(--space-2) overflow-hidden">
 
             {/* Content */}
             <div className={`self-stretch ${isReverse ? 'md:flex-row-reverse flex-col' : 'md:flex-row flex-col'} border-b border-border dark:border-border/40 flex justify-center items-center relative z-(--z-raised) md:h-145 md:max-h-145`}>
 
                 {/* ── Text Section ── */}
-                <div className="w-full p-(--space-8) md:max-w-146.5 md:w-1/2 h-full md:px-(--space-16) md:py-(--space-8) overflow-hidden rounded-lg flex flex-col justify-center items-center gap-(--space-6) relative z-(--z-dropdown)">
+                <div className="w-full p-(--space-8) md:max-w-146.5 md:w-1/2 h-full md:px-(--space-8) lg:px-(--space-16) md:py-(--space-6) lg:py-(--space-8) overflow-hidden rounded-lg flex flex-col justify-center items-center gap-(--space-6) relative z-(--z-dropdown)">
                     <div className="self-stretch flex flex-col justify-start items-start gap-(--space-3)">
 
                         {/* Title — Apple HIG responsive typography */}
@@ -94,9 +94,9 @@ export default function Feature({
                         {/* iPhone — animated on scroll + hover */}
                         <motion.div
                             initial={{ y: "70%" }}
-                            animate={{ y: isHovered ? "15%" : isInView ? "-25%" : "-5%" }}
+                            animate={{ y: isHovered ? "15%" : isInView ? "-35%" : "-5%" }}
                             transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                            className="absolute top-0 left-0 translate-x-[17%] md:translate-x-2/5 w-[75%] md:w-75 transform-gpu will-change-transform"
+                            className="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] md:w-[55%] lg:w-75 transform-gpu will-change-transform"
                         >
                             {imageSrcDark ? (
                                 <>

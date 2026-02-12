@@ -21,7 +21,7 @@ const ReviewCardComponent: React.FC<ReviewCardProps> = ({
     rating = 5,
 }) => {
     return (
-        <div className={`relative touch-none ${className}`.trim()}>
+        <div className={`relative touch-none max-w-[500px] lg:max-w-none ${className}`.trim()}>
             <div className="relative z-(--z-base) group h-full cursor-pointer">
                 <section className="grid relative overflow-hidden h-full rounded-xl bg-card dark:bg-surface-200 border border-surface-200 dark:border-surface-300 shadow-(--shadow-sm)">
                     <div className="p-(--space-5) flex flex-col justify-between h-full gap-(--space-4)">

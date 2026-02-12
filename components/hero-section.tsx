@@ -12,13 +12,13 @@ export default function HeroSection() {
   const t = useTranslations('HomePage')
 
   return (
-    <div className="relative w-full self-stretch">
+    <div className="relative w-full  self-stretch">
 
-      <div className="absolute top-0 -left-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent dark:to-background/20" />
+      <div className="absolute top-0  -left-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent dark:to-background/20" />
       <div className="absolute top-0 -right-(--space-3) w-(--space-3) h-full bg-linear-to-b from-background to-transparent dark:to-background/20" />
 
       <div className="w-full m-(--space-1) rounded-b-lg px-(--space-4) md:px-(--space-8) lg:px-(--space-16) py-(--space-4) md:py-(--space-6) bg-linear-to-t from-brand-500/20 to-transparent mx-auto flex flex-col lg:flex-row justify-between gap-y-(--space-8) lg:gap-x-(--space-12) items-center relative z-(--z-raised)">
-       <div className="">
+       <div className=")">
         <Blur
           className="inset-0 -z-1 rounded-none opacity-(--opacity-hover)"
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
@@ -32,7 +32,7 @@ export default function HeroSection() {
           style={{ background: 'radial-gradient(circle at center, var(--background) 0%, transparent 80%)' }}
         />
        </div>
-        <div className="flex w-full lg:w-1/2 lg:pb-(--space-8) pt-(--space-20) min-[1152px]:pt-0 py-(--space-4) gap-y-(--space-5) flex-col items-center lg:items-start text-center lg:text-left px-(--space-2) md:px-0">
+        <div className="flex w-full lg:w-1/2 lg:pb-(--space-8) pt-(--space-10) min-[1152px]:pt-0 py-(--space-4) lg:py-(--space-4) gap-y-(--space-5) flex-col items-center lg:items-start text-center lg:text-left px-(--space-2) md:px-0">
 
           <ShimmerButton
             className="border border-border"
