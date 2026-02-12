@@ -24,15 +24,20 @@ export default async function TermsOfUsePage() {
                         {t('intro')}
                     </p>
 
-                    <div className="space-y-(--space-6) md:space-y-(--space-8)">
-                        {sections.map((section) => (
-                            <div key={section} className="space-y-(--space-2) md:space-y-(--space-3)">
-                                <h2 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
-                                    {t(`sections.${section}.title`)}
-                                </h2>
-                                <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 leading-relaxed whitespace-pre-line max-w-prose">
-                                    {t(`sections.${section}.content`)}
-                                </p>
+                    <div className="space-y-(--space-5) md:space-y-(--space-6)">
+                        {sections.map((section, sectionIndex) => (
+                            <div key={section}>
+                                <div>
+                                    <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
+                                        {t(`sections.${section}.title`)}
+                                    </h2>
+                                    <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line max-w-prose mt-(--space-2)">
+                                        {t(`sections.${section}.content`)}
+                                    </p>
+                                </div>
+                                {sectionIndex < sections.length - 1 && (
+                                    <div className="h-px w-full bg-surface-200 dark:bg-surface-300 mt-(--space-5) md:mt-(--space-6)" />
+                                )}
                             </div>
                         ))}
                     </div>

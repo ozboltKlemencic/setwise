@@ -117,7 +117,7 @@
         "sections": {
             "whoIsBehind": {
                 "title": "1. Kdo stoji za Setwisom",
-                "content": "Setwise upravlja:\n\nSetwise (upravljalec: Jernej Peternel)\njernejsdev@gmail.com"
+                "content": "Setwise upravljata:\n\nJernej Peternel — Ustanovitelj in razvijalec\njernej.peternel@setwise.app\n\nOžbolt Klemenčič — Soustanovitelj in razvijalec\nozbolt.klemencic@setwise.app"
             },
             "purpose": {
                 "title": "2. Namen aplikacije",
@@ -153,7 +153,7 @@
             },
             "contact": {
                 "title": "10. Kontakt",
-                "content": "Za vprašanja v zvezi s temi pogoji uporabe se lahko obrnete na:\n\nSetwise (upravljalec: Jernej Peternel)\nE-pošta: jernejsdev@gmail.com"
+                "content": "Za vprašanja v zvezi s temi pogoji uporabe se lahko obrnete na:\n\nJernej Peternel\nE-pošta: jernej.peternel@setwise.app\n\nOžbolt Klemenčič\nE-pošta: ozbolt.klemencic@setwise.app\n\nSplošno: info@setwise.app"
             }
         }
     },
