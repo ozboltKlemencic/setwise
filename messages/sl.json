@@ -160,12 +160,19 @@
         "title": "Dnevnik sprememb",
         "lastUpdated": "Zadnja posodobitev: 12. februar 2026",
         "intro": "Spremljaj posodobitve aplikacije po letih.",
+        "filters": {
+            "all": "Vse",
+            "improvements": "Izboljsave",
+            "updates": "Posodobitve",
+            "releases": "Izdaje"
+        },
+        "noResults": "Za ta filter ni najdenih posodobitev.",
         "years": {
             "2026": {
                 "title": "2026",
                 "updates": {
                     "v1_0_1": {
-                        "date": "Feb 2026",
+                        "date": "Feb.12",
                         "badge": "Update",
                         "area": "Produkt",
                         "title": "v1.0.1 februarska posodobitev",
