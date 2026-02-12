@@ -49,18 +49,25 @@ export default function YourWorkInSync({
   const rightRef = useRef<HTMLDivElement>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  // Detect mobile screen
-  const [isMobile, setIsMobile] = useState(false)
+  // Detect screen size tiers
+  const [screenTier, setScreenTier] = useState<'mobile' | 'medium' | 'large'>('large')
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
+    const checkScreen = () => {
+      const w = window.innerWidth
+      if (w < 768) setScreenTier('mobile')
+      else if (w < 1024) setScreenTier('medium')
+      else setScreenTier('large')
+    }
+    checkScreen()
+    window.addEventListener('resize', checkScreen)
+    return () => window.removeEventListener('resize', checkScreen)
   }, [])
 
-  const gradientLength = isMobile ? 8 : 16
-  const XOffset = isMobile ? 24 : 32
+  const isMobile = screenTier === 'mobile'
+  const isMedium = screenTier === 'medium'
+  const gradientLength = isMobile ? 8 : isMedium ? 12 : 16
+  const XOffset = isMobile ? 24 : isMedium ? 20 : 32
 
 
   return (
@@ -80,26 +87,26 @@ export default function YourWorkInSync({
       </div>
 
       {/* Cards Row */}
-      <div className="flex items-center justify-center gap-(--space-12) sm:gap-(--space-20) mb-(--space-10)">
+      <div className={cn("flex items-center justify-center mb-(--space-10)", isMedium ? "gap-(--space-8)" : "gap-(--space-12) sm:gap-(--space-20)")}>
         {/* Left Card */}
         <MotionCard
           ref={leftRef}
-          className="size-12 sm:size-16 text-surface-500/70 opacity-60 dark:opacity-90 border border-surface-300"
+          className={cn("text-surface-500/70 opacity-60 dark:opacity-90 border border-surface-300", isMedium ? "size-10" : "size-12 sm:size-16")}
           initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
         >
-          <WifiOff className="size-4 sm:size-6" />
+          <WifiOff className={cn(isMedium ? "size-4" : "size-4 sm:size-6")} />
         </MotionCard>
 
         <MotionCard
           ref={centerRef}
-          className="size-16 sm:size-24 bg-linear-to-tr from-brand-500/10 via-brand-100/5 to-brand-500/10 text-surface-400 overflow-hidden p-0 relative"
+          className={cn("bg-linear-to-tr from-brand-500/10 via-brand-100/5 to-brand-500/10 text-surface-400 overflow-hidden p-0 relative", isMedium ? "size-14" : "size-16 sm:size-24")}
           initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
         >
-          <Smartphone className="size-8 sm:size-10" />
+          <Smartphone className={cn(isMedium ? "size-7" : "size-8 sm:size-10")} />
           <BorderBeam
             duration={2}
             borderWidth={1}
@@ -118,12 +125,12 @@ export default function YourWorkInSync({
         {/* Right Card */}
         <MotionCard
           ref={rightRef}
-          className="size-12 sm:size-16 text-surface-500/70 opacity-60 dark:opacity-90 border border-surface-300"
+          className={cn("text-surface-500/70 opacity-60 dark:opacity-90 border border-surface-300", isMedium ? "size-10" : "size-12 sm:size-16")}
           initial={{ scale: 0.8 }}
           animate={{ scale: isInView ? 1 : 0.9 }}
           transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
         >
-          <Database className="size-4 sm:size-6" />
+          <Database className={cn(isMedium ? "size-4" : "size-4 sm:size-6")} />
         </MotionCard>
       </div>
 

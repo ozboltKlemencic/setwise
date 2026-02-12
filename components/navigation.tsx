@@ -95,7 +95,7 @@ export default function Navigation() {
 */}
     return (
         <>
-            <nav aria-label="Primary" className={`fixed lg:backdrop-blur-none backdrop-blur-(--blur-thin) lg:relative top-0 left-0 w-screen lg:w-full lg:max-w-6xl px-(--space-6) md:px-(--space-8) py-(--space-2) md:py-(--space-3) flex justify-between ${isHomePage ? "border-b border-border/60 md:border-0" : "border-b border-border/40 "} items-center z-(--z-overlay) overflow-hidden bg-background/60 md:bg-transparent`}>
+            <nav aria-label="Primary" className={`fixed lg:backdrop-blur-none backdrop-blur-(--blur-thin) lg:relative top-0 left-0 w-screen lg:w-full lg:max-w-6xl px-(--space-6) md:px-(--space-8) py-(--space-2) md:py-(--space-3) flex justify-between ${isHomePage ? "border-b border-border/60 lg:border-0" : "border-b border-border/40 "} items-center z-(--z-overlay) overflow-hidden bg-background/60 lg:bg-transparent`}>
 
                 <Blur className="md:hidden top-0 right-0 w-2/5 h-full translate-y-1/3 translate-x-1/2 bg-brand-500/5" />
                 <Blur className="md:hidden top-0 left-0 w-3/5 h-full translate-x-1/3 translate-y-1/3 bg-brand-500/5" />
@@ -154,7 +154,7 @@ export default function Navigation() {
                             damping: 24,
                             mass: 0.9
                         }}
-                        className="hidden md:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/40 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
+                        className="hidden lg:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/40 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
                     >
                         <Link
                          href="/" 

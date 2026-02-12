@@ -21,20 +21,27 @@ function DynamicOrbitingCircles() {
     const containerRef = useRef<HTMLDivElement>(null)
     const isInView = useInView(containerRef, { once: true, margin: "-100px" })
 
-    // Detect mobile screen
-    const [isMobile, setIsMobile] = React.useState(false)
+    // Detect screen size tiers
+    const [screenTier, setScreenTier] = React.useState<'mobile' | 'medium' | 'large'>('large')
 
     React.useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768)
-        checkMobile()
-        window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
+        const checkScreen = () => {
+            const w = window.innerWidth
+            if (w < 768) setScreenTier('mobile')
+            else if (w < 1024) setScreenTier('medium')
+            else setScreenTier('large')
+        }
+        checkScreen()
+        window.addEventListener('resize', checkScreen)
+        return () => window.removeEventListener('resize', checkScreen)
     }, [])
 
-    const radius = isMobile ? 145 : 200
-    const innerRadius = isMobile ? 85 : 120
-    const outerIconSize = isMobile ? 52 : 64
-    const innerIconSize = isMobile ? 42 : 48
+    const isMobile = screenTier === 'mobile'
+    const isMedium = screenTier === 'medium'
+    const radius = isMobile ? 145 : isMedium ? 150 : 200
+    const innerRadius = isMobile ? 85 : isMedium ? 95 : 120
+    const outerIconSize = isMobile ? 52 : isMedium ? 44 : 64
+    const innerIconSize = isMobile ? 42 : isMedium ? 36 : 48
 
     return (
         <div ref={containerRef} className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden">
@@ -185,7 +192,7 @@ export default function BentoGridSection() {
 
                 <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-0 border-l border-r border-border dark:border-border/40">
                     {/* Top Left - Smart. Simple. Brilliant. */}
-                    <div className="border-b border-r-0 md:border-r border-border dark:border-border/40 flex flex-col justify-start items-start min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px]">
+                    <div className="border-b border-r-0 md:border-r border-border dark:border-border/40 flex flex-col justify-start items-start min-h-[380px] max-h-[380px] lg:min-h-[550px] lg:max-h-[550px]">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.trackAnalyze.title')}
@@ -205,7 +212,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Top Right - Your work, in sync */}
-                    <div className="border-b border-border dark:border-border/40 flex flex-col justify-start items-start md:min-h-[550px] md:max-h-[550px] max-h-[380px] min-h-[380px]">
+                    <div className="border-b border-border dark:border-border/40 flex flex-col justify-start items-start lg:min-h-[550px] lg:max-h-[550px] max-h-[380px] min-h-[380px]">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.offline.title')}
@@ -225,7 +232,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Left - Effortless integration */}
-                    <div className="md:min-h-[550px] md:max-h-[550px] md:border-r border-border border-b md:border-b-0 dark:border-border/40 flex flex-col overflow-hidden justify-start min-h-[380px] max-h-[380px] relative items-start">
+                    <div className="lg:min-h-[550px] lg:max-h-[550px] md:border-r border-border border-b md:border-b-0 dark:border-border/40 flex flex-col overflow-hidden justify-start min-h-[380px] max-h-[380px] relative items-start">
                         <div className="flex flex-col gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.details.title')}
@@ -242,7 +249,7 @@ export default function BentoGridSection() {
                     </div>
 
                     {/* Bottom Right - Workout History */}
-                    <div className="flex flex-col min-h-[380px] max-h-[380px] md:min-h-[550px] md:max-h-[550px] justify-start items-start">
+                    <div className="flex flex-col min-h-[380px] max-h-[380px] lg:min-h-[550px] lg:max-h-[550px] justify-start items-start">
                         <div className="flex flex-col w-full gap-(--space-3) p-(--space-6) md:p-(--space-8) pb-0">
                             <h3 className="text-surface-800 text-title-3 font-semibold">
                                 {t('cards.progress.title')}
@@ -251,7 +258,7 @@ export default function BentoGridSection() {
                                 {t('cards.progress.description')}
                             </p>
                         </div>
-                        <div className="w-full h-full rounded-lg pt-(--space-4) md:pt-(--space-6) px-(--space-4) flex overflow-hidden items-center justify-center relative">
+                        <div className="w-full h-full rounded-lg pt-(--space-4) lg:pt-(--space-6) px-(--space-3) md:px-(--space-3) lg:px-(--space-4) flex overflow-hidden items-center justify-center relative">
                             <WorkoutHistoryList />
                         </div>
                     </div>
