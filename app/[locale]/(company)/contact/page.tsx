@@ -68,13 +68,13 @@ export default async function ContactPage() {
                                 {t('sections.team.content')}
                             </p>
 
-                            <div className="space-y-(--space-3) mt-(--space-3)">
+                            <div className="space-y-(--space-4) mt-(--space-3)">
                                 {teamContacts.map((person) => (
                                     <div key={person.email}>
                                         <p className="text-footnote md:text-subheadline font-semibold text-surface-900">
                                             {person.name}
                                         </p>
-                                        <div className="flex flex-wrap items-center gap-(--space-3) mt-(--space-1)">
+                                        <div className="flex flex-wrap flex-col gap-y-1 items-start gap-(--space-3) mt-(--space-1)">
                                             <a
                                                 href={`mailto:${person.email}`}
                                                 className="inline-flex items-center gap-(--space-1\.5) text-footnote text-surface-600 hover:text-brand-500 dark:hover:text-brand-400 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
@@ -109,9 +109,9 @@ export default async function ContactPage() {
                             </p>
                             <Link
                                 href="/support"
-                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium text-brand-500 dark:text-brand-400 hover:text-brand-600 dark:hover:text-brand-300 transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-2\.5)"
+                                className="inline-flex items-center gap-(--space-1\.5) text-footnote font-medium primaryGradient  transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-2\.5)"
                             >
-                                <ArrowRight className="size-3.5 shrink-0" />
+                                <ArrowRight className="size-3.5 shrink-0 text-brand-500 dark:text-brand-400" />
                                 <span>{t('sections.support.title')}</span>
                             </Link>
                         </div>
