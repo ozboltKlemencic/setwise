@@ -21,7 +21,7 @@ export default function LandingPage() {
             <div className="relative flex flex-col items-center w-full">
                 <Navigation />
                 {/*test-responsive  class za testiranje*/} 
-                <main className="   w-[94vw] md:w-6xl   relative flex flex-col items-center  min-h-screen border-l border-r border-border dark:border-border/40 " aria-label="Main content">
+                <main className="w-[94vw] md:max-w-6xl  relative flex flex-col items-center  min-h-screen border-l border-r border-border dark:border-border/40 " aria-label="Main content">
 
                     <section id="hero" className="w-auto  px-1">
                         <HeroSection />
@@ -45,10 +45,6 @@ export default function LandingPage() {
                         buttonText={t('feature1.button')}
                         imageSrc="/workout.png"
                     />
-
-
-
-
                     {/* Features Section */}
                     <section id="features" className="w-full">
                         <Feature

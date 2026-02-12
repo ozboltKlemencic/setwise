@@ -70,14 +70,14 @@ export default function CommunityPage() {
                             ))}
                         </div>
 
-                        <div className="grid gap-(--space-3) py-(--space-6) md:py-(--space-6) md:grid-cols-2 relative z-10 -mx-(--space-3) md:-mx-(--space-8)">
+                        <div className="grid gap-(--space-3) py-(--space-6) md:py-(--space-6) md:grid-cols-2 relative z-10 -mx-(--space-3) md:-mx-(--space-8) justify-center items-center">
                             {communityCards.map(({ key, icon: Icon, cardClassName, link }) => (
                                 <a
                                     key={key}
                                     href={link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`group rounded- border p-(--space-5) md:p-(--space-6) min-h-40 md:min-h-52 flex flex-col justify-between transition-colors duration-(--duration-normal) ${cardClassName}`}
+                                    className={`group rounded- border p-(--space-5) md:p-(--space-6) min-h-40 md:min-h-52 max-w-md flex flex-col justify-between transition-colors duration-(--duration-normal) ${cardClassName}`}
                                 >
                                     <div className="flex items-start justify-between gap-(--space-3)">
                                         <div className="flex items-center gap-(--space-2)">
