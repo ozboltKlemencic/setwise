@@ -2,7 +2,7 @@
 
 import Navigation from "@/components/navigation"
 import FooterSection from "@/components/footer-section"
-import { ParticleText } from "@/components/ui/particle-text"
+import { ParticleText } from "@/components/ui/particle-text" 
 import { usePathname } from "next/navigation"
 
 export default function ResourcesLayout({
@@ -35,7 +35,7 @@ const isGuidesRoute = pathname === "/guides" || pathname.startsWith("/guides/") 
                         </div>
 
                         {/* Content Area */}
-                        <div className="w-full relative z-10  -mt-[60px]">
+                        <div className="w-full relative z-10 max-w-3xl -mt-[60px]">
                             {children}
                         </div>
                     </div>

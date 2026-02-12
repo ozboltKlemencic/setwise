@@ -8,7 +8,7 @@ import { ParticleText } from "@/components/ui/particle-text"
 
 export default function LegalLayout({
     children,
-}: {
+}: { 
     children: React.ReactNode
 }) {
     return (
