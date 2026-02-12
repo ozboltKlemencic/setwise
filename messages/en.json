@@ -165,8 +165,11 @@
                 "title": "2026",
                 "updates": {
                     "v1_0_1": {
-                        "title": "v1.0.1 - February update",
-                        "content": "- Improved app stability and small UI polish.\n- Fixed minor issues reported after first release."
+                        "date": "Feb 2026",
+                        "badge": "Update",
+                        "area": "Product",
+                        "title": "v1.0.1 February update",
+                        "content": "- Improved app stability and visual polish.\n- Fixed minor issues reported after first release."
                     }
                 }
             },
@@ -174,7 +177,10 @@
                 "title": "2025",
                 "updates": {
                     "first_release": {
-                        "title": "First release - December 2025",
+                        "date": "Dec 2025",
+                        "badge": "Release",
+                        "area": "First Launch",
+                        "title": "First release",
                         "content": "- Initial SetWise release.\n- Core workout logging and session tracking features available."
                     }
                 }

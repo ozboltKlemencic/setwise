@@ -3,6 +3,11 @@ import { ChevronDown } from "lucide-react"
 
 export default async function ChangelogPage() {
     const t = await getTranslations("Changelog")
+    const toneStyles: Record<string, string> = {
+        release: "text-brand-700 dark:text-brand-300 border-brand-300/80 dark:border-brand-400/40 bg-brand-500/8 dark:bg-brand-500/15",
+        improvement: "text-amber-700 dark:text-amber-300 border-amber-300/80 dark:border-amber-400/40 bg-amber-500/8 dark:bg-amber-500/15",
+        update: "text-sky-700 dark:text-sky-300 border-sky-300/80 dark:border-sky-400/40 bg-sky-500/8 dark:bg-sky-500/15",
+    }
     const yearGroups = [
         {
             key: "2026",
@@ -17,7 +22,7 @@ export default async function ChangelogPage() {
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-8 md:pt-0">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-6xl border-surface-200">
-                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10) min-[1152px]:pr-(--space-8)">
+                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-6) min-[1152px]:pr-(--space-8)">
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t("title")}
                     </h1>
@@ -26,12 +31,10 @@ export default async function ChangelogPage() {
                     </p>
                 </header>
 
-                <div className="space-y-(--space-6) md:space-y-(--space-8) pb-(--space-10) md:pb-(--space-16)">
-                    <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 leading-relaxed max-w-prose">
-                        {t("intro")}
-                    </p>
+                <div className="space-y-(--space-6) md:space-y-(--space-8) pb-(--space-10) md:pb-(--space-8)">
+                   
 
-                    <div className="border-t border-border/60">
+                    <div className="">
                         {yearGroups.map((group, index) => (
                             <details
                                 key={group.key}
@@ -55,12 +58,7 @@ export default async function ChangelogPage() {
                                                         {t(`years.${group.key}.updates.${update.key}.date`)}
                                                     </span>
                                                     <span
-                                                        className={`text-caption-1 uppercase tracking-wide px-(--space-2) py-0.5 rounded-md border ${update.tone === "release"
-                                                            ? "text-brand-700 dark:text-brand-300 border-brand-300/80 dark:border-brand-400/40 bg-brand-500/8 dark:bg-brand-500/15"
-                                                            : update.tone === "improvement"
-                                                                ? "text-amber-700 dark:text-amber-300 border-amber-300/80 dark:border-amber-400/40 bg-amber-500/8 dark:bg-amber-500/15"
-                                                                : "text-sky-700 dark:text-sky-300 border-sky-300/80 dark:border-sky-400/40 bg-sky-500/8 dark:bg-sky-500/15"
-                                                            }`}
+                                                        className={`text-caption-1 uppercase tracking-wide px-(--space-2) py-0.5 rounded-md border ${toneStyles[update.tone] ?? toneStyles.update}`}
                                                     >
                                                         {t(`years.${group.key}.updates.${update.key}.badge`)}
                                                     </span>

@@ -165,8 +165,11 @@
                 "title": "2026",
                 "updates": {
                     "v1_0_1": {
-                        "title": "v1.0.1 - Februarska posodobitev",
-                        "content": "- Izboljšana stabilnost aplikacije in manjši UI popravki.\n- Odpravljene manjše napake po prvi izdaji."
+                        "date": "Feb 2026",
+                        "badge": "Update",
+                        "area": "Produkt",
+                        "title": "v1.0.1 februarska posodobitev",
+                        "content": "- Izboljšana stabilnost aplikacije in vizualni popravki.\n- Odpravljene manjše napake po prvi izdaji."
                     }
                 }
             },
@@ -174,7 +177,10 @@
                 "title": "2025",
                 "updates": {
                     "first_release": {
-                        "title": "First release - december 2025",
+                        "date": "Dec 2025",
+                        "badge": "Release",
+                        "area": "Prvi zagon",
+                        "title": "First release",
                         "content": "- Začetna izdaja SetWise.\n- Na voljo osnovno beleženje treningov in sledenje seji."
                     }
                 }
