@@ -94,7 +94,7 @@ export default function FAQPage() {
                         {t("resultsLabel", { count: filteredEntries.length })}
                     </p>
 
-                    <div className="mt-(--space-5) md:mt-(--space-7) space-y-(--space-3) md:space-y-(--space-4) md:-mx-(--space-8)">
+                    <div className="mt-(--space-5) md:mt-(--space-7) space-y-(--space-3) md:space-y-(--space-4) md:mx-(--space-8) lg:-mx-(--space-10)">
                         {filteredEntries.map(([key, item]) => (
                             <article
                                 key={key}
