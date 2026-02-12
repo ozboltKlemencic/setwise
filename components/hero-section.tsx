@@ -112,7 +112,8 @@ export default function HeroSection() {
         </div>
 
         <figure aria-label="App preview screenshots" className="relative h-[458px] md:h-[520px] w-full lg:w-1/2 min-[1152px]:h-[540px] flex items-center justify-center lg:justify-end perspective-1000">
-          <div className="absolute top-(--space-10) md:top-(--space-8) lg:top-(--space-12) right-[calc(50%-150px)] sm:right-[calc(50%-210px)] md:right-[calc(50%-220px)] lg:right-(--space-2) w-[200px] md:w-[220px] min-[1152px]:w-[230px] transform-gpu will-change-transform z-(--z-raised)">
+          {/* Right phone */}
+          <div className="absolute top-(--space-10) md:top-(--space-10) lg:top-(--space-12) right-[calc(50%-150px)] sm:right-[calc(50%-210px)] md:right-[calc(50%-280px)] lg:right-(--space-2) w-[200px] md:w-[175px] lg:w-[220px] min-[1152px]:w-[230px] transform-gpu will-change-transform z-(--z-raised)">
             <div className="dark:hidden">
               <Iphone src="/workout.png" priority />
             </div>
@@ -120,7 +121,17 @@ export default function HeroSection() {
               <Iphone src="/home-dark.png" priority />
             </div>
           </div>
-          <div className="absolute top-0 md:top-(--space-4) lg:top-(--space-8) left-[calc(50%-150px)] sm:left-[calc(50%-210px)] md:left-[calc(50%-220px)] lg:left-(--space-12) w-[200px] md:w-[220px] min-[1152px]:w-[230px] transform-gpu will-change-transform">
+          {/* Center phone — md only */}
+          <div className="absolute top-(--space-4) left-1/2 -translate-x-1/2 w-[175px] transform-gpu will-change-transform z-(--z-dropdown) hidden md:block lg:hidden">
+            <div className="dark:hidden">
+              <Iphone src="/workout-in-progres.png" priority />
+            </div>
+            <div className="hidden dark:block">
+              <Iphone src="/home-dark.png" priority />
+            </div>
+          </div>
+          {/* Left phone */}
+          <div className="absolute top-0 md:top-0 lg:top-(--space-8) left-[calc(50%-150px)] sm:left-[calc(50%-210px)] md:left-[calc(50%-280px)] lg:left-(--space-12) w-[200px] md:w-[175px] lg:w-[220px] min-[1152px]:w-[230px] transform-gpu will-change-transform">
             <div className="dark:hidden">
               <Iphone src="/home.png" priority />
             </div>
