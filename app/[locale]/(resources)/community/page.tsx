@@ -23,12 +23,12 @@ const communityCards = [
     {
         key: "discord",
         icon: DiscordIcon,
-        cardClassName: "bg-[#5865f2] hover:bg-[#4e5bdf] border-[#5865f2]/90 hover:border-[#4e5bdf]",
+        cardClassName: "bg-linear-to-tr from-[#5865f2] to-[#737fff] hover:from-[#4e5bdf] hover:to-[#646fdf] border-[#5865f2]/90 hover:border-[#4e5bdf]/90",
     },
     {
         key: "facebook",
         icon: FacebookIcon,
-        cardClassName: "bg-[#1773ea] hover:bg-[#1567d2] border-[#1773ea]/90 hover:border-[#1567d2]",
+        cardClassName: "bg-linear-to-tr from-[#1773ea] to-[#549fff]  hover:from-[#1567d2] hover:to-[#4a89df] border-[#1773ea]/90 hover:border-[#1567d2]/90",
     },
 ] as const
 
