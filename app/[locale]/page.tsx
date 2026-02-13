@@ -20,7 +20,8 @@ export default function LandingPage() {
         <div className="w-full min-h-screen relative bg-background overflow-x-hidden flex flex-col items-center">
             <div className="relative flex flex-col items-center w-full">
                 <Navigation />
-                {/*test-responsive  class za testiranje*/} 
+                <img src="/email-phone.png" alt="" />
+                {/*test-responsive  class za testiranje*/}
                 <main className="w-[94vw] md:max-w-6xl  relative flex flex-col items-center  min-h-screen border-l border-r border-border dark:border-border/40 " aria-label="Main content">
 
                     <section id="hero" className="w-auto  px-1">
