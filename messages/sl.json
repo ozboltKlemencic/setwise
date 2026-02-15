@@ -539,6 +539,11 @@
         "both": "Oba",
         "trainerLabel": "Sem trener ali inštruktor",
         "submitButton": "Pridobi beta dostop",
+        "sending": "Pošiljanje...",
+        "successMessage": "Hvala! Obvestili vas bomo, ko bo vaše mesto pripravljeno.",
+        "errorGeneral": "Prišlo je do napake. Prosim poskusite ponovno.",
+        "errorRateLimit": "Preveč poskusov. Prosim poskusite kasneje.",
+        "errorEmail": "Prosim vnesite veljaven e-mail naslov.",
         "privacyNote": "Obvestili vas bomo, ko bo vaše mesto pripravljeno. Brez nezaželene pošte."
     },
     "CTA": {

@@ -540,6 +540,11 @@
         "both": "Both",
         "trainerLabel": "I'm a trainer or coach",
         "submitButton": "Get Beta Access",
+        "sending": "Sending...",
+        "successMessage": "Thank you! We'll notify you when your spot is ready.",
+        "errorGeneral": "Something went wrong. Please try again.",
+        "errorRateLimit": "Too many attempts. Please try again later.",
+        "errorEmail": "Please use a valid email address.",
         "privacyNote": "We'll notify you when your spot is ready. No spam."
     },
     "CTA": {

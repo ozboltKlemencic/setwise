@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
+import { useFormStatus } from "react-dom"
 import { X } from "lucide-react"
 import {
     Dialog,
@@ -11,6 +12,18 @@ import {
 } from "@/components/ui/dialog"
 import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
 import { useTranslations } from "next-intl"
+import { sendBetaSignupEmail } from "@/app/actions/beta-signup"
+import type { FormState } from "@/lib/validations"
+
+// ── Submit button with pending state via useFormStatus ───────────────────────
+function SubmitButton({ label, sendingLabel }: { label: string; sendingLabel: string }) {
+    const { pending } = useFormStatus()
+    return (
+        <ButtonRotatingGradient type="submit" className="w-full h-11" disabled={pending}>
+            {pending ? sendingLabel : label}
+        </ButtonRotatingGradient>
+    )
+}
 
 interface BetaSignupDialogProps {
     trigger?: React.ReactNode
@@ -21,18 +34,21 @@ interface BetaSignupDialogProps {
 
 export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }: BetaSignupDialogProps) {
     const t = useTranslations("BetaSignup")
-    const [email, setEmail] = useState("")
+    const [state, formAction] = useActionState<FormState, FormData>(sendBetaSignupEmail, null)
+    const formRef = useRef<HTMLFormElement>(null)
+
+    // Local state for controlled UI elements (platform buttons + trainer toggle)
     const [platform, setPlatform] = useState<"ios" | "android" | "both" | null>(null)
     const [isTrainer, setIsTrainer] = useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        console.log({
-            email,
-            platform,
-            isTrainer
-        })
-    }
+    // Reset form on success
+    useEffect(() => {
+        if (state?.success) {
+            formRef.current?.reset()
+            setPlatform(null)
+            setIsTrainer(false)
+        }
+    }, [state])
 
     const handleOpenChange = (isOpen: boolean) => {
         if (isOpen && onOpen) onOpen()
@@ -84,8 +100,38 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                         {t('description')}
                     </p>
 
+                    {/* Success message */}
+                    {state?.success && (
+                        <div className="mb-(--space-4) rounded-lg bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 px-(--space-3) py-(--space-2) text-center">
+                            <p className="text-subheadline text-green-700 dark:text-green-400 font-medium">
+                                {state.message ?? t('successMessage')}
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Global form errors */}
+                    {state?.errors?._form && (
+                        <div className="mb-(--space-4) rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 px-(--space-3) py-(--space-2) text-center">
+                            {state.errors._form.map((msg, i) => (
+                                <p key={i} className="text-subheadline text-red-600 dark:text-red-400 font-medium">
+                                    {msg}
+                                </p>
+                            ))}
+                        </div>
+                    )}
+
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-(--space-4)">
+                    <form ref={formRef} action={formAction} className="space-y-(--space-4)">
+                        {/* Honeypot — hidden from humans, traps bots */}
+                        <div className="absolute opacity-0 -z-10 pointer-events-none" aria-hidden="true">
+                            <label htmlFor="website">Website</label>
+                            <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+                        </div>
+
+                        {/* Hidden inputs for platform and isTrainer (controlled by buttons) */}
+                        <input type="hidden" name="platform" value={platform ?? ""} />
+                        <input type="hidden" name="isTrainer" value={isTrainer ? "true" : "false"} />
+
                         {/* Email Input */}
                         <div>
                             <label htmlFor="email" className="block text-caption-1 font-medium text-surface-600 mb-(--space-1)">
@@ -94,12 +140,14 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                             <input
                                 type="email"
                                 id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                name="email"
                                 placeholder={t('emailPlaceholder')}
                                 required
                                 className="w-full px-(--space-3) py-(--space-2) rounded-lg border border-surface-200 dark:border-surface-300 bg-card dark:bg-surface-100 text-surface-900 text-subheadline placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors duration-(--duration-fast) ease-(--ease-apple)"
                             />
+                            {state?.errors?.email && (
+                                <p className="mt-1 text-caption-2 text-red-500">{state.errors.email[0]}</p>
+                            )}
                         </div>
 
                         {/* Platform Selection */}
@@ -146,6 +194,9 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                                     </button>
                                 ))}
                             </div>
+                            {state?.errors?.platform && (
+                                <p className="mt-1 text-caption-2 text-red-500">{state.errors.platform[0]}</p>
+                            )}
                         </div>
 
                         {/* Trainer Checkbox */}
@@ -172,10 +223,8 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                             </label>
                         </div>
 
-                        {/* Submit Button */}
-                        <ButtonRotatingGradient type="submit" className="w-full h-11">
-                            {t('submitButton')}
-                        </ButtonRotatingGradient>
+                        {/* Submit Button — pending state via useFormStatus */}
+                        <SubmitButton label={t('submitButton')} sendingLabel={t('sending')} />
                     </form>
 
                     {/* Privacy Note */}
@@ -187,4 +236,3 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
         </Dialog>
     )
 }
-
