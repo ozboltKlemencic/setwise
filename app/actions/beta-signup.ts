@@ -94,7 +94,7 @@ export async function sendBetaSignupEmail(
             from: 'SetWise <info@tapetnistvo-dem-tap.com>',
             to: [data.email],
             subject: 'Welcome to SetWise Beta!',
-            html: welcomeHtml,
+            html: welcomeHtml ,
         });
 
         if (error || userError) {
