@@ -59,10 +59,9 @@
         }
 
         /* Responsive */
-        @media only screen and (max-width: 620px) {
+        @media only screen and (max-width: 600px) {
             .email-wrapper {
                 width: 100% !important;
-                max-width: 100% !important;
             }
 
             .hero-title {
@@ -70,36 +69,30 @@
                 letter-spacing: -2px !important;
             }
 
-            .hero-section-td {
-                padding: 40px 20px 0 !important;
-            }
-
-            .hero-subtitle {
-                font-size: 15px !important;
-            }
-
             .nav-links-cell {
                 display: none !important;
             }
 
-            .nav-outer-td {
-                padding: 0 !important;
+            /* Navigation - center on mobile */
+            .nav-outer-cell {
+                padding: 0 10px !important;
             }
 
-            .nav-bar {
-                border-radius: 0 !important;
+            .nav-inner-table {
+                width: 100% !important;
             }
 
-            .install-section-td {
-                padding: 16px 16px 0 !important;
-                text-align: center !important;
-            }
-
+            /* Installation cards - full width and centered */
             .install-card {
                 width: 100% !important;
                 max-width: 100% !important;
             }
 
+            .install-section-cell {
+                padding: 16px 16px 0 !important;
+            }
+
+            /* Footer - center everything */
             .footer-nav-table {
                 width: 100% !important;
             }
@@ -108,127 +101,83 @@
                 display: block !important;
                 width: 100% !important;
                 text-align: center !important;
-                padding-bottom: 20px !important;
+                padding: 0 0 20px 0 !important;
             }
 
+            .footer-td {
+                padding: 48px 16px 32px !important;
+            }
+
+            /* Community cards - stack on mobile */
             .community-card {
                 display: block !important;
                 width: 100% !important;
                 padding: 0 0 8px 0 !important;
             }
 
+            /* Store buttons - center when stacked */
             .store-btn {
                 display: block !important;
-                text-align: center !important;
                 padding: 0 0 8px 0 !important;
+                text-align: center !important;
             }
 
-            .store-btn-img {
-                width: 160px !important;
-                height: auto !important;
+            .store-btn a {
+                display: inline-block !important;
+            }
+
+            .store-btn img {
                 margin: 0 auto !important;
+                height: 34px !important;
+                width: auto !important;
             }
 
-            .footer-td {
-                padding: 40px 16px 24px !important;
-            }
-
-            .footer-outer-td {
-                padding: 0 !important;
+            /* Social icons - center */
+            .social-icons-table {
+                margin: 0 auto 24px !important;
             }
         }
 
-        /* ═══ DARK MODE ═══ */
+        /* Dark mode - phone image swap */
+        .dark-phone-img {
+            display: none !important;
+            mso-hide: all;
+        }
 
         @media (prefers-color-scheme: dark) {
-
-            /* Body & outer wrapper */
-            .dark-bg {
-                background-color: #1a1a1a !important;
+            .light-phone-img {
+                display: none !important;
+                mso-hide: all;
             }
 
-            .dark-wrapper-bg {
-                background-color: #111111 !important;
-            }
-
-            /* Navigation */
-            .dark-nav-bg {
-                background-color: #1e1e1e !important;
-            }
-
-            .dark-nav-link {
-                color: #a3a3a3 !important;
-            }
-
-            /* Text colors */
-            .dark-text {
-                color: #f5f5f5 !important;
-            }
-
-            .dark-text-secondary {
-                color: #a3a3a3 !important;
-            }
-
-            /* Cards */
-            .dark-card-bg {
-                background-color: #1e1e1e !important;
-            }
-
-            .dark-card-border {
-                border-color: #2a2a2a !important;
-            }
-
-            /* Badge */
-            .dark-badge-bg {
-                background-color: #0a1f3f !important;
-            }
-
-            .dark-badge-border {
-                border-color: #0d3266 !important;
-            }
-
-            .dark-badge-text {
-                color: #4d9fff !important;
-            }
-
-            /* Dividers */
-            .dark-divider {
-                border-color: #2a2a2a !important;
-            }
-
-            .dark-community-divider {
-                border-top-color: #2a2a2a !important;
+            .dark-phone-img {
+                display: block !important;
             }
         }
     </style>
-    <!--[if mso]>
-    <style type="text/css">
-        .dark-bg, .dark-wrapper-bg, .dark-nav-bg, .dark-card-bg, .dark-badge-bg { background-color: inherit !important; }
-    </style>
-    <![endif]-->
 </head>
 
-<body id="body" class="body"
+<body id="body"
     style="margin: 0; padding: 0; background-color: #E5E5E5; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
 
     <!-- Outer wrapper for background color -->
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="dark-bg"
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
         style="background-color: #E5E5E5;">
         <tr>
             <td align="center" style="padding: 0;">
 
                 <!-- Email wrapper - 640px max -->
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640"
-                    class="email-wrapper dark-wrapper-bg" style="max-width: 640px; background-color: #F5F5F5;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="640" class="email-wrapper"
+                    style="max-width: 640px; background-color: #F5F5F5;">
                     <tr>
                         <td style="padding-top: 10px;">
 
                             <!-- ═══ NAVIGATION ═══ -->
                             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr>
-                                    <td class="nav-outer-td" style="padding: 0 24px;">
+                                    <td class="nav-outer-cell" style="padding: 0 24px;">
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-                                            width="100%" class="nav-bar dark-nav-bg"
+                                            width="100%" class="nav-inner-table"
                                             style="background-color: #ffffff; border-radius: 28px;">
                                             <tr>
                                                 <!-- Logo -->
@@ -243,7 +192,7 @@
                                                                         alt="SetWise logo" width="30" height="30"
                                                                         style="display: block; border-radius: 6px;">
                                                                 </td>
-                                                                <td class="dark-text"
+                                                                <td
                                                                     style="vertical-align: middle; font-size: 18px; font-weight: 700; color: #171717; letter-spacing: -0.4px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;text-align: left;">
                                                                     SetWise
                                                                 </td>
@@ -254,9 +203,9 @@
                                                 <!-- Nav links -->
                                                 <td class="nav-links-cell"
                                                     style="vertical-align: middle; text-align: right; padding-right: 8px;">
-                                                    <a href="https://setwise.app/features" class="dark-nav-link"
+                                                    <a href="https://setwise.app/features"
                                                         style="font-size: 14px; font-weight: 500; color: #404040; text-decoration: none; padding: 0 9px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">Features</a>
-                                                    <a href="https://setwise.app/guides" class="dark-nav-link"
+                                                    <a href="https://setwise.app/guides"
                                                         style="font-size: 14px; font-weight: 500; color: #404040; text-decoration: none; padding: 0 9px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">Guides</a>
                                                 </td>
                                                 <!-- CTA button -->
@@ -281,14 +230,13 @@
                             <!-- ═══ HERO SECTION ═══ -->
                             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr>
-                                    <td align="center" class="hero-section-td"
-                                        style="padding: 56px 32px 0; text-align: center;">
+                                    <td align="center" style="padding: 56px 32px 0; text-align: center;">
 
                                         <!-- Badge -->
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0"
                                             align="center" style="margin: 0 auto 28px;">
                                             <tr>
-                                                <td class="dark-badge-bg dark-badge-border dark-badge-text"
+                                                <td
                                                     style="background-color: #E6F0FF; border: 1px solid #CCE0FF; border-radius: 50px; padding: 6px 14px 6px 6px; font-size: 12px; font-weight: 600; color: #0042AD; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
                                                     <table role="presentation" cellpadding="0" cellspacing="0"
                                                         border="0">
@@ -308,7 +256,7 @@
                                                                 </table>
                                                             </td>
                                                             <td style="width: 8px;"></td>
-                                                            <td class="dark-badge-text"
+                                                            <td
                                                                 style="vertical-align: middle; font-size: 12px; font-weight: 600; color: #0042AD; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
                                                                 Early Beta Access
                                                             </td>
@@ -319,13 +267,13 @@
                                         </table>
 
                                         <!-- Heading -->
-                                        <h1 class="hero-title dark-text"
+                                        <h1 class="hero-title"
                                             style="font-size: 72px; font-weight: 800; color: #171717; line-height: 1.0; letter-spacing: -3px; margin: 0 0 20px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
                                             Welcome to<br>SetWise
                                         </h1>
 
                                         <!-- Subtitle -->
-                                        <p class="hero-subtitle dark-text-secondary"
+                                        <p
                                             style="font-size: 16px; line-height: 1.7; color: #525252; max-width: 420px; margin: 0 auto 20px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">
                                             You've been granted early access to SetWise - the smarter way for
                                             teams to organize sets, manage workflows, and stay in sync across every
@@ -339,12 +287,11 @@
                             <!-- ═══ INSTALLATION ═══ -->
                             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr>
-                                    <td class="install-section-td" style="padding: 16px 32px 0;">
+                                    <td class="install-section-cell" style="padding: 16px 32px 0;">
 
                                         <!-- Android Card -->
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-                                            width="100%" align="center"
-                                            class="install-card dark-card-bg dark-card-border"
+                                            width="472" align="center" class="install-card"
                                             style="max-width: 472px; margin: 0 auto 16px; background-color: #ffffff; border: 1px solid #E5E5E5; border-radius: 12px;">
                                             <tr>
                                                 <td style="padding: 16px;">
@@ -355,7 +302,7 @@
                                                             <tr>
                                                                 <td width="48"
                                                                     style="vertical-align: middle; width: 48px;">
-                                                                    <div class="dark-wrapper-bg"
+                                                                    <div
                                                                         style="width: 48px; height: 48px; background-color: #F5F5F5; border-radius: 6px; text-align: center; line-height: 48px;">
                                                                         <img src="https://img.icons8.com/color/96/android-os.png"
                                                                             alt="Android" width="28" height="28"
@@ -363,7 +310,7 @@
                                                                     </div>
                                                                 </td>
                                                                 <td style="vertical-align: middle; padding-left: 16px;">
-                                                                    <span class="dark-text"
+                                                                    <span
                                                                         style="display: block; font-size: 16px; font-weight: 700; color: #171717; line-height: 1.2; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">Android
                                                                         Installation</span>
                                                                     <span
@@ -379,8 +326,7 @@
 
                                         <!-- iOS Card -->
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-                                            width="100%" align="center"
-                                            class="install-card dark-card-bg dark-card-border"
+                                            width="472" align="center" class="install-card"
                                             style="max-width: 472px; margin: 0 auto 0; background-color: #ffffff; border: 1px solid #E5E5E5; border-radius: 12px;">
                                             <tr>
                                                 <td style="padding: 16px;">
@@ -391,7 +337,7 @@
                                                             <tr>
                                                                 <td width="48"
                                                                     style="vertical-align: middle; width: 48px;">
-                                                                    <div class="dark-wrapper-bg"
+                                                                    <div
                                                                         style="width: 48px; height: 48px; background-color: #F5F5F5; border-radius: 6px; text-align: center; line-height: 48px;">
                                                                         <img src="https://img.icons8.com/ios-filled/100/000000/mac-os.png"
                                                                             alt="Apple" width="24" height="24"
@@ -399,7 +345,7 @@
                                                                     </div>
                                                                 </td>
                                                                 <td style="vertical-align: middle; padding-left: 16px;">
-                                                                    <span class="dark-text"
+                                                                    <span
                                                                         style="display: block; font-size: 16px; font-weight: 700; color: #171717; line-height: 1.2; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;">iOS
                                                                         Installation</span>
                                                                     <span
@@ -421,16 +367,21 @@
                             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tr>
                                     <td align="center" style="padding-top: 62px;">
+                                        <!-- Light mode phone -->
                                         <img src="https://setwise-sigma.vercel.app/email-phone.png"
-                                            alt="SetWise App Preview" width="640"
+                                            alt="SetWise App Preview" width="640" class="light-phone-img"
                                             style="width: 100%; max-width: 640px; height: auto; display: block;">
+                                        <!-- Dark mode phone -->
+                                        <img src="https://setwise-sigma.vercel.app/email-phone.png"
+                                            alt="SetWise App Preview" width="640" class="dark-phone-img"
+                                            style="width: 100%; max-width: 640px; height: auto; display: none;">
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- ═══ COMMUNITY ═══ -->
                             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
-                                class="dark-community-divider" style="border-top: 1px solid #E5E5E5;">
+                                style="border-top: 1px solid #E5E5E5;">
                                 <tr>
                                     <td style="padding: 8px;">
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0"
@@ -561,7 +512,7 @@
                             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
                                 style="background-color: #111111;">
                                 <tr>
-                                    <td align="center" class="footer-td footer-outer-td"
+                                    <td align="center" class="footer-td"
                                         style="padding: 48px 32px 32px; text-align: center;">
 
                                         <!-- Footer Logo -->
@@ -659,7 +610,6 @@
                                                         style="text-decoration: none;">
                                                         <img src="https://setwise-sigma.vercel.app/_next/image?url=%2Fapple.png&w=128&q=75"
                                                             alt="Download on App Store" height="40"
-                                                            class="store-btn-img"
                                                             style="height: 40px; width: auto; display: block;">
                                                     </a>
                                                 </td>
@@ -668,7 +618,6 @@
                                                         style="text-decoration: none;">
                                                         <img src="https://setwise-sigma.vercel.app/_next/image?url=%2Fgoogle.png&w=128&q=75"
                                                             alt="Get it on Google Play" height="40"
-                                                            class="store-btn-img"
                                                             style="height: 40px; width: auto; display: block;">
                                                     </a>
                                                 </td>
@@ -677,7 +626,7 @@
 
                                         <!-- Social Icons -->
                                         <table role="presentation" cellpadding="0" cellspacing="0" border="0"
-                                            align="center" style="margin-bottom: 24px;">
+                                            align="center" class="social-icons-table" style="margin-bottom: 24px;">
                                             <tr>
                                                 <td style="padding: 0 4px;">
                                                     <a href="#" style="text-decoration: none;">
