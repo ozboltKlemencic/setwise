@@ -4,6 +4,7 @@ import { useActionState, useEffect, useRef, useState } from "react"
 import { useFormStatus } from "react-dom"
 import { X } from "lucide-react"
 import { toast } from "sonner"
+import Script from "next/script"
 import {
     Dialog,
     DialogClose,
@@ -33,12 +34,24 @@ interface BetaSignupDialogProps {
     onOpenChange?: (open: boolean) => void
 }
 
+declare global {
+    interface Window {
+        grecaptcha?: {
+            ready: (cb: () => void) => void
+            execute: (siteKey: string, options: { action: string }) => Promise<string>
+        }
+    }
+}
+
 export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }: BetaSignupDialogProps) {
     const t = useTranslations("BetaSignup")
     const locale = useLocale()
     const [state, formAction] = useActionState<FormState, FormData>(sendBetaSignupEmail, null)
     const formRef = useRef<HTMLFormElement>(null)
+    const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? process.env.RECAPTCHA_SITE_KEY
+    const programmaticSubmitRef = useRef(false)
     const [internalOpen, setInternalOpen] = useState(false)
+    const [recaptchaToken, setRecaptchaToken] = useState("")
 
     // Local state for controlled UI elements (platform buttons + trainer toggle)
     const [platform, setPlatform] = useState<"ios" | "android" | "both" | null>(null)
@@ -68,11 +81,56 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
     // If open prop is provided, use controlled mode; otherwise uncontrolled
     const isControlled = open !== undefined
 
+    const runRecaptcha = async (): Promise<string | null> => {
+        if (!recaptchaSiteKey) return null
+        if (!window.grecaptcha) return null
+
+        return await new Promise((resolve) => {
+            window.grecaptcha!.ready(async () => {
+                try {
+                    const token = await window.grecaptcha!.execute(recaptchaSiteKey, { action: "beta_signup" })
+                    resolve(token)
+                } catch {
+                    resolve(null)
+                }
+            })
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        if (programmaticSubmitRef.current) {
+            programmaticSubmitRef.current = false
+            return
+        }
+
+        e.preventDefault()
+
+        const token = await runRecaptcha()
+        if (!token) {
+            toast.error(t("errorGeneral"))
+            return
+        }
+
+        setRecaptchaToken(token)
+        handleOpenChange(false)
+
+        requestAnimationFrame(() => {
+            programmaticSubmitRef.current = true
+            formRef.current?.requestSubmit()
+        })
+    }
+
     return (
         <Dialog
             open={isControlled ? open : internalOpen}
             onOpenChange={handleOpenChange}
         >
+            {recaptchaSiteKey && (
+                <Script
+                    src={`https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`}
+                    strategy="afterInteractive"
+                />
+            )}
             {trigger && (
                 <DialogTrigger asChild>
                     {trigger}
@@ -115,7 +173,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                     <form
                         ref={formRef}
                         action={formAction}
-                        onSubmit={() => handleOpenChange(false)}
+                        onSubmit={handleSubmit}
                         className="space-y-(--space-4)"
                     >
                         {/* Honeypot — hidden from humans, traps bots */}
@@ -128,6 +186,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                         <input type="hidden" name="platform" value={platform ?? ""} />
                         <input type="hidden" name="isTrainer" value={isTrainer ? "true" : "false"} />
                         <input type="hidden" name="locale" value={locale} />
+                        <input type="hidden" name="recaptchaToken" value={recaptchaToken} />
 
                         {/* Email Input */}
                         <div>

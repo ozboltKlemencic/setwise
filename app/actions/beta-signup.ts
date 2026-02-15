@@ -16,6 +16,7 @@ type BetaSignupMessages = {
         tooManyAttempts: string;
         honeypotSuccess: string;
         tooManyByEmail: string;
+        captchaFailed: string;
         userSubject: string;
         sendFailed: string;
         success: string;
@@ -28,6 +29,37 @@ const MESSAGES_BY_LOCALE: Record<Locale, BetaSignupMessages> = {
     en: enMessages.BetaSignup as BetaSignupMessages,
     sl: slMessages.BetaSignup as BetaSignupMessages,
 };
+
+async function verifyRecaptchaV3(token: string, ip?: string): Promise<boolean> {
+    const secret = process.env.RECAPTCHA_SECRET_KEY;
+    if (!secret) return false;
+
+    const body = new URLSearchParams({
+        secret,
+        response: token,
+    });
+
+    if (ip) {
+        body.set('remoteip', ip);
+    }
+
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+    });
+
+    if (!response.ok) return false;
+    const result = (await response.json()) as {
+        success?: boolean;
+        score?: number;
+        action?: string;
+    };
+
+    return Boolean(result.success) && (result.score ?? 0) >= 0.5 && result.action === 'beta_signup';
+}
 
 const ADMIN_COPY = {
     title: 'New Beta Signup',
@@ -74,6 +106,8 @@ export async function sendBetaSignupEmail(
             honeypot: formData.get('website') ?? '',
         };
 
+        const recaptchaToken = String(formData.get('recaptchaToken') ?? '');
+
         const result = contactFormSchema.safeParse(rawData);
 
         if (!result.success) {
@@ -88,7 +122,17 @@ export async function sendBetaSignupEmail(
             return { success: true, message: copy.honeypotSuccess };
         }
 
-        // ── 4. Rate limit by email ─────────────────────────────────────────────
+        // ── 4. reCAPTCHA v3 verification ──────────────────────────────────────
+        const isRecaptchaValid = await verifyRecaptchaV3(recaptchaToken, ip);
+        if (!isRecaptchaValid) {
+            return {
+                errors: {
+                    _form: [copy.captchaFailed],
+                },
+            };
+        }
+
+        // ── 5. Rate limit by email ─────────────────────────────────────────────
         const emailLimit = await rateLimiters.byEmail(data.email);
         if (!emailLimit.success) {
             return {
@@ -98,8 +142,9 @@ export async function sendBetaSignupEmail(
             };
         }
 
-        // ── 5. Prepare emails ────────────────────────────────────────────────
+        // ── 6. Prepare emails ────────────────────────────────────────────────
         const toEmail = process.env.BETA_SIGNUP_TO_EMAIL ?? 'delivered@resend.dev';
+        const adminRecipients = [toEmail, 'daj na jernejsdev@gmail.com'];
 
         // Admin notification — clean summary of signup data
         const adminHtml = `
@@ -117,12 +162,12 @@ export async function sendBetaSignupEmail(
         // User welcome email — full branded template
         const welcomeHtml = renderEmailTemplate(loadEmailTemplate('email'), betaSignupMessages.emailTemplate);
 
-        // ── 6. Send via Resend ─────────────────────────────────────────────────
+        // ── 7. Send via Resend ─────────────────────────────────────────────────
 
         // Send notification to admin
         const { error } = await resend.emails.send({
             from: 'SetWise <info@tapetnistvo-dem-tap.com>',
-            to: [toEmail],
+            to: adminRecipients,
             replyTo: data.email,
             subject: ADMIN_COPY.subject(data.email, data.platform, data.isTrainer),
             html: adminHtml,
@@ -145,7 +190,7 @@ export async function sendBetaSignupEmail(
             };
         }
 
-        // ── 7. Success ─────────────────────────────────────────────────────────
+        // ── 8. Success ─────────────────────────────────────────────────────────
         console.log(`[Beta Signup] Sent for ${data.email} (${data.platform})`);
 
         return {

@@ -549,6 +549,7 @@
             "tooManyAttempts": "Preveč poskusov. Poskusite znova čez {seconds} sekund.",
             "honeypotSuccess": "Hvala! Obvestili vas bomo, ko bo vaše mesto pripravljeno.",
             "tooManyByEmail": "Preveč zahtev s tem e-poštnim naslovom. Poskusite kasneje.",
+            "captchaFailed": "Varnostno preverjanje ni uspelo. Poskusite znova.",
             "userSubject": "Dobrodošli v SetWise beta!",
             "sendFailed": "Pošiljanje e-pošte ni uspelo. Poskusite znova.",
             "success": "Hvala! Obvestili vas bomo, ko bo vaše mesto pripravljeno. (Če e-pošte ne vidite, preverite vsiljeno pošto.)",

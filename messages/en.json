@@ -550,6 +550,7 @@
             "tooManyAttempts": "Too many attempts. Please try again in {seconds} seconds.",
             "honeypotSuccess": "Thank you! We'll notify you when your spot is ready.",
             "tooManyByEmail": "Too many requests with this email. Please try later.",
+            "captchaFailed": "Security check failed. Please try again.",
             "userSubject": "Welcome to SetWise Beta!",
             "sendFailed": "Failed to send email. Please try again.",
             "success": "Thank you! We'll notify you when your spot is ready. (Check your spam folder if you don't see it.)",
