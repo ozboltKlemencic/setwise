@@ -5,109 +5,28 @@ import { Resend } from 'resend';
 import { contactFormSchema, type FormState } from '@/lib/validations';
 import { rateLimiters, getClientIP } from '@/lib/rate-limit';
 import { loadEmailTemplate, renderEmailTemplate, escapeHtml } from '@/lib/email-template';
+import enMessages from '@/messages/en.json';
+import slMessages from '@/messages/sl.json';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 type Locale = 'sl' | 'en';
 
-const COPY: Record<
-    Locale,
-    {
-        tooManyAttempts: (waitSeconds: number) => string;
+type BetaSignupMessages = {
+    server: {
+        tooManyAttempts: string;
         honeypotSuccess: string;
         tooManyByEmail: string;
         userSubject: string;
         sendFailed: string;
         success: string;
         unexpected: string;
-    }
-> = {
-    en: {
-        tooManyAttempts: (waitSeconds) => `Too many attempts. Please try again in ${waitSeconds} seconds.`,
-        honeypotSuccess: "Thank you! We'll notify you when your spot is ready.",
-        tooManyByEmail: 'Too many requests with this email. Please try later.',
-        userSubject: 'Welcome to SetWise Beta!',
-        sendFailed: 'Failed to send email. Please try again.',
-        success: "Thank you! We'll notify you when your spot is ready. (Check your spam folder if you don't see it.)",
-        unexpected: 'An unexpected error occurred. Please try again.',
-    },
-    sl: {
-        tooManyAttempts: (waitSeconds) => `Preveč poskusov. Poskusite znova čez ${waitSeconds} sekund.`,
-        honeypotSuccess: 'Hvala! Obvestili vas bomo, ko bo vaše mesto pripravljeno.',
-        tooManyByEmail: 'Preveč zahtev s tem e-poštnim naslovom. Poskusite kasneje.',
-        userSubject: 'Dobrodošli v SetWise beta!',
-        sendFailed: 'Pošiljanje e-pošte ni uspelo. Poskusite znova.',
-        success: 'Hvala! Obvestili vas bomo, ko bo vaše mesto pripravljeno. (Če e-pošte ne vidite, preverite vsiljeno pošto.)',
-        unexpected: 'Prišlo je do nepričakovane napake. Poskusite znova.',
-    },
+    };
+    emailTemplate: Record<string, string>;
 };
 
-const EMAIL_TEMPLATE_COPY: Record<Locale, Record<string, string>> = {
-    en: {
-        NAV_FEATURES: 'Features',
-        NAV_GUIDES: 'Guides',
-        NAV_WEBSITE: 'Website',
-        HERO_BADGE: 'Early Beta Access',
-        HERO_TITLE_LINE1: 'Welcome to',
-        HERO_TITLE_LINE2: 'SetWise',
-        HERO_SUBTITLE:
-            "You’ve been granted access to SetWise.Choose your device below to install and get started.",
-        INSTALL_ANDROID_TITLE: 'Android Installation',
-        INSTALL_ANDROID_LINK: 'Link to install on Android',
-        INSTALL_IOS_TITLE: 'iOS Installation',
-        INSTALL_IOS_LINK: 'Link to install on iOS',
-        COMMUNITY_DISCORD_TITLE: 'Discord Server',
-        COMMUNITY_DISCORD_DESC: 'Chat with members, get quick help, and stay updated with announcements.',
-        COMMUNITY_FACEBOOK_TITLE: 'Facebook Group',
-        COMMUNITY_FACEBOOK_DESC: 'Join the group, share your training journey, and connect with the community.',
-        FOOTER_TAGLINE: 'Organize smarter. Ship faster. Stay in sync.',
-        FOOTER_RESOURCES: 'Resources',
-        FOOTER_COMMUNITY: 'Community',
-        FOOTER_CHANGELOG: 'Changelog',
-        FOOTER_SUPPORT: 'Support',
-        FOOTER_GUIDES: 'Guides',
-        FOOTER_FAQ: 'FAQ',
-        FOOTER_COMPANY: 'Company',
-        FOOTER_ABOUT_US: 'About Us',
-        FOOTER_OUR_TEAM: 'Our Team',
-        FOOTER_CONTACT: 'Contact',
-        FOOTER_LEGAL: 'Legal',
-        FOOTER_PRIVACY_POLICY: 'Privacy Policy',
-        FOOTER_TERMS_OF_USE: 'Terms of Use',
-        FOOTER_COOKIES: 'Cookies',
-    },
-    sl: {
-        NAV_FEATURES: 'Funkcije',
-        NAV_GUIDES: 'Vodiči',
-        NAV_WEBSITE: 'Spletna stran',
-        HERO_BADGE: 'Zgodnji beta dostop',
-        HERO_TITLE_LINE1: 'Dobrodošli v',
-        HERO_TITLE_LINE2: 'SetWise',
-        HERO_SUBTITLE:
-            'Dobili ste dostop do SetWise. Izberite svojo napravo spodaj za namestitev in začetek.',
-        INSTALL_ANDROID_TITLE: 'Namestitev za Android',
-        INSTALL_ANDROID_LINK: 'Povezava za namestitev na Android',
-        INSTALL_IOS_TITLE: 'Namestitev za iOS',
-        INSTALL_IOS_LINK: 'Povezava za namestitev na iOS',
-        COMMUNITY_DISCORD_TITLE: 'Discord strežnik',
-        COMMUNITY_DISCORD_DESC: 'Klepetajte s člani, hitro dobite pomoč in spremljajte nova obvestila.',
-        COMMUNITY_FACEBOOK_TITLE: 'Facebook skupina',
-        COMMUNITY_FACEBOOK_DESC: 'Pridružite se skupini, delite svoj napredek in se povežite s skupnostjo.',
-        FOOTER_TAGLINE: 'Organizirajte pametneje. Objavljajte hitreje. Ostanite usklajeni.',
-        FOOTER_RESOURCES: 'Viri',
-        FOOTER_COMMUNITY: 'Skupnost',
-        FOOTER_CHANGELOG: 'Dnevnik sprememb',
-        FOOTER_SUPPORT: 'Podpora',
-        FOOTER_GUIDES: 'Vodiči',
-        FOOTER_FAQ: 'Pogosta vprašanja',
-        FOOTER_COMPANY: 'Podjetje',
-        FOOTER_ABOUT_US: 'O nas',
-        FOOTER_OUR_TEAM: 'Naša ekipa',
-        FOOTER_CONTACT: 'Kontakt',
-        FOOTER_LEGAL: 'Pravno',
-        FOOTER_PRIVACY_POLICY: 'Politika zasebnosti',
-        FOOTER_TERMS_OF_USE: 'Pogoji uporabe',
-        FOOTER_COOKIES: 'Piškotki',
-    },
+const MESSAGES_BY_LOCALE: Record<Locale, BetaSignupMessages> = {
+    en: enMessages.BetaSignup as BetaSignupMessages,
+    sl: slMessages.BetaSignup as BetaSignupMessages,
 };
 
 const ADMIN_COPY = {
@@ -129,7 +48,8 @@ export async function sendBetaSignupEmail(
     formData: FormData,
 ): Promise<FormState> {
     const locale = formData.get('locale') === 'sl' ? 'sl' : 'en';
-    const copy = COPY[locale];
+    const betaSignupMessages = MESSAGES_BY_LOCALE[locale];
+    const copy = betaSignupMessages.server;
 
     try {
         // ── 1. Rate limit by IP ────────────────────────────────────────────────
@@ -141,7 +61,7 @@ export async function sendBetaSignupEmail(
             const waitSeconds = Math.ceil((ipLimit.reset - Date.now()) / 1000);
             return {
                 errors: {
-                    _form: [copy.tooManyAttempts(waitSeconds)],
+                    _form: [copy.tooManyAttempts.replace('{seconds}', String(waitSeconds))],
                 },
             };
         }
@@ -195,7 +115,7 @@ export async function sendBetaSignupEmail(
         `;
 
         // User welcome email — full branded template
-        const welcomeHtml = renderEmailTemplate(loadEmailTemplate('email'), EMAIL_TEMPLATE_COPY[locale]);
+        const welcomeHtml = renderEmailTemplate(loadEmailTemplate('email'), betaSignupMessages.emailTemplate);
 
         // ── 6. Send via Resend ─────────────────────────────────────────────────
 
