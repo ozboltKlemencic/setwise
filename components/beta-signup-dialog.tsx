@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react"
 import { useFormStatus } from "react-dom"
 import { X } from "lucide-react"
+import { toast } from "sonner"
 import {
     Dialog,
     DialogClose,
@@ -41,14 +42,19 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
     const [platform, setPlatform] = useState<"ios" | "android" | "both" | null>(null)
     const [isTrainer, setIsTrainer] = useState(false)
 
-    // Reset form on success
+    // Show toast and reset form when server action returns
     useEffect(() => {
-        if (state?.success) {
+        if (!state) return
+
+        if (state.success) {
+            toast.success(state.message ?? t('successMessage'))
             formRef.current?.reset()
             setPlatform(null)
             setIsTrainer(false)
+        } else if (state.errors?._form) {
+            state.errors._form.forEach((msg) => toast.error(msg))
         }
-    }, [state])
+    }, [state, t])
 
     const handleOpenChange = (isOpen: boolean) => {
         if (isOpen && onOpen) onOpen()
@@ -99,26 +105,6 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                     <p className="text-center text-surface-500 text-footnote mb-(--space-5) leading-relaxed">
                         {t('description')}
                     </p>
-
-                    {/* Success message */}
-                    {state?.success && (
-                        <div className="mb-(--space-4) rounded-lg bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 px-(--space-3) py-(--space-2) text-center">
-                            <p className="text-subheadline text-green-700 dark:text-green-400 font-medium">
-                                {state.message ?? t('successMessage')}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Global form errors */}
-                    {state?.errors?._form && (
-                        <div className="mb-(--space-4) rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 px-(--space-3) py-(--space-2) text-center">
-                            {state.errors._form.map((msg, i) => (
-                                <p key={i} className="text-subheadline text-red-600 dark:text-red-400 font-medium">
-                                    {msg}
-                                </p>
-                            ))}
-                        </div>
-                    )}
 
                     {/* Form */}
                     <form ref={formRef} action={formAction} className="space-y-(--space-4)">

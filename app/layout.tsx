@@ -1,6 +1,7 @@
 import type React from "react"
 import { Inter, Instrument_Serif } from "next/font/google"
 import { ThemeProvider } from "@/components/providers/ThemeProvider"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
 const inter = Inter({
@@ -35,6 +36,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>
