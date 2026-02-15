@@ -1385,7 +1385,5 @@ body::-webkit-scrollbar {
   }
 }
 
-.grecaptcha-badge{
-  scale: 0.5;
-  /* display: none !important; */
-}
+/*.grecaptcha-badge{ */
+
