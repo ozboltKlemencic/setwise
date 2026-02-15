@@ -1384,3 +1384,8 @@ body::-webkit-scrollbar {
     @apply bg-green-700;
   }
 }
+
+.grecaptcha-badge{
+  scale: 0.5;
+  /* display: none !important; */
+}
