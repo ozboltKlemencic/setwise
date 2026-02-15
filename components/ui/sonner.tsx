@@ -24,20 +24,20 @@ const Toaster = ({ ...props }: ToasterProps) => {
         error: <OctagonXIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
+      toastOptions={{
+        classNames: {
+          success:
+            "!bg-gradient-to-tr !from-white !to-green-50 !text-green-900 !border-green-200 dark:!from-green-950 dark:!to-green-900/80 dark:!text-green-100 dark:!border-green-800",
+          error:
+            "!bg-gradient-to-tr !from-white !to-red-50 !text-red-900 !border-red-200 dark:!from-red-950 dark:!to-red-900/80 dark:!text-red-100 dark:!border-red-800",
+        },
+      }}
       style={
         {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
           "--border-radius": "var(--radius)",
-          // ── Success toast ──
-          "--success-bg": "#f7fef9",
-          "--success-text": "#86efac",
-          "--success-border": "#86efac",
-          // ── Error toast ──
-          "--error-bg": "#fff5f5",
-          "--error-text": "#fca5a5",
-          "--error-border": "#fca5a5",
         } as React.CSSProperties
       }
       {...props}

@@ -12,7 +12,7 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog"
 import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import { sendBetaSignupEmail } from "@/app/actions/beta-signup"
 import type { FormState } from "@/lib/validations"
 
@@ -35,8 +35,10 @@ interface BetaSignupDialogProps {
 
 export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }: BetaSignupDialogProps) {
     const t = useTranslations("BetaSignup")
+    const locale = useLocale()
     const [state, formAction] = useActionState<FormState, FormData>(sendBetaSignupEmail, null)
     const formRef = useRef<HTMLFormElement>(null)
+    const [internalOpen, setInternalOpen] = useState(false)
 
     // Local state for controlled UI elements (platform buttons + trainer toggle)
     const [platform, setPlatform] = useState<"ios" | "android" | "both" | null>(null)
@@ -57,6 +59,9 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
     }, [state, t])
 
     const handleOpenChange = (isOpen: boolean) => {
+        if (open === undefined) {
+            setInternalOpen(isOpen)
+        }
         if (isOpen && onOpen) onOpen()
         if (onOpenChange) onOpenChange(isOpen)
     }
@@ -65,7 +70,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
 
     return (
         <Dialog
-            open={isControlled ? open : undefined}
+            open={isControlled ? open : internalOpen}
             onOpenChange={handleOpenChange}
         >
             {trigger && (
@@ -107,7 +112,12 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                     </p>
 
                     {/* Form */}
-                    <form ref={formRef} action={formAction} className="space-y-(--space-4)">
+                    <form
+                        ref={formRef}
+                        action={formAction}
+                        onSubmit={() => handleOpenChange(false)}
+                        className="space-y-(--space-4)"
+                    >
                         {/* Honeypot — hidden from humans, traps bots */}
                         <div className="absolute opacity-0 -z-10 pointer-events-none" aria-hidden="true">
                             <label htmlFor="website">Website</label>
@@ -117,6 +127,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                         {/* Hidden inputs for platform and isTrainer (controlled by buttons) */}
                         <input type="hidden" name="platform" value={platform ?? ""} />
                         <input type="hidden" name="isTrainer" value={isTrainer ? "true" : "false"} />
+                        <input type="hidden" name="locale" value={locale} />
 
                         {/* Email Input */}
                         <div>
