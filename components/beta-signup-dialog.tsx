@@ -48,10 +48,10 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
     const locale = useLocale()
     const [state, formAction] = useActionState<FormState, FormData>(sendBetaSignupEmail, null)
     const formRef = useRef<HTMLFormElement>(null)
+    const recaptchaTokenInputRef = useRef<HTMLInputElement>(null)
     const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? process.env.RECAPTCHA_SITE_KEY
     const programmaticSubmitRef = useRef(false)
     const [internalOpen, setInternalOpen] = useState(false)
-    const [recaptchaToken, setRecaptchaToken] = useState("")
 
     // Local state for controlled UI elements (platform buttons + trainer toggle)
     const [platform, setPlatform] = useState<"ios" | "android" | "both" | null>(null)
@@ -111,7 +111,9 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
             return
         }
 
-        setRecaptchaToken(token)
+        if (recaptchaTokenInputRef.current) {
+            recaptchaTokenInputRef.current.value = token
+        }
         handleOpenChange(false)
 
         requestAnimationFrame(() => {
@@ -186,7 +188,7 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
                         <input type="hidden" name="platform" value={platform ?? ""} />
                         <input type="hidden" name="isTrainer" value={isTrainer ? "true" : "false"} />
                         <input type="hidden" name="locale" value={locale} />
-                        <input type="hidden" name="recaptchaToken" value={recaptchaToken} />
+                        <input ref={recaptchaTokenInputRef} type="hidden" name="recaptchaToken" defaultValue="" />
 
                         {/* Email Input */}
                         <div>

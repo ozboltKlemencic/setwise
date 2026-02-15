@@ -58,7 +58,9 @@ async function verifyRecaptchaV3(token: string, ip?: string): Promise<boolean> {
         action?: string;
     };
 
-    return Boolean(result.success) && (result.score ?? 0) >= 0.5 && result.action === 'beta_signup';
+    const scorePass = typeof result.score === 'number' ? result.score >= 0.5 : true;
+    const actionPass = result.action ? result.action === 'beta_signup' : true;
+    return Boolean(result.success) && scorePass && actionPass;
 }
 
 const ADMIN_COPY = {
@@ -144,7 +146,9 @@ export async function sendBetaSignupEmail(
 
         // ── 6. Prepare emails ────────────────────────────────────────────────
         const toEmail = process.env.BETA_SIGNUP_TO_EMAIL ?? 'delivered@resend.dev';
-        const adminRecipients = [toEmail, 'daj na jernejsdev@gmail.com'];
+        const adminRecipients = [toEmail, 'jernejsdev@gmail.com']
+            .map((email) => email.trim())
+            .filter((email) => email.length > 0);
 
         // Admin notification — clean summary of signup data
         const adminHtml = `
@@ -191,7 +195,7 @@ export async function sendBetaSignupEmail(
         }
 
         // ── 8. Success ─────────────────────────────────────────────────────────
-        console.log(`[Beta Signup] Sent for ${data.email} (${data.platform})`);
+        console.log(`[Beta Signup] Sent for ${data.email}  (${data.platform})`);
 
         return {
             success: true,
