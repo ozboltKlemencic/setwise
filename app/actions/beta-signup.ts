@@ -35,22 +35,19 @@ type RecaptchaVerificationResult = {
     success: boolean;
     score: number | null;
     action: string | null;
+    errorCodes: string[];
 };
 
 async function verifyRecaptchaV3(token: string, ip?: string): Promise<RecaptchaVerificationResult> {
     const secret = process.env.RECAPTCHA_SECRET_KEY;
     if (!secret) {
-        return { valid: false, success: false, score: null, action: null };
+        return { valid: false, success: false, score: null, action: null, errorCodes: ['missing-secret'] };
     }
 
     const body = new URLSearchParams({
         secret,
         response: token,
     });
-
-    if (ip) {
-        body.set('remoteip', ip);
-    }
 
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
         method: 'POST',
@@ -61,12 +58,13 @@ async function verifyRecaptchaV3(token: string, ip?: string): Promise<RecaptchaV
     });
 
     if (!response.ok) {
-        return { valid: false, success: false, score: null, action: null };
+        return { valid: false, success: false, score: null, action: null, errorCodes: [`http-${response.status}`] };
     }
     const result = (await response.json()) as {
         success?: boolean;
         score?: number;
         action?: string;
+        'error-codes'?: string[];
     };
 
     const scorePass = typeof result.score === 'number' ? result.score >= 0.5 : true;
@@ -76,6 +74,7 @@ async function verifyRecaptchaV3(token: string, ip?: string): Promise<RecaptchaV
         success: Boolean(result.success),
         score: typeof result.score === 'number' ? result.score : null,
         action: result.action ?? null,
+        errorCodes: result['error-codes'] ?? [],
     };
 }
 
@@ -125,6 +124,7 @@ export async function sendBetaSignupEmail(
         };
 
         const recaptchaToken = String(formData.get('recaptchaToken') ?? '');
+        console.log(`[reCAPTCHA] tokenLength=${recaptchaToken.length}`);
 
         const result = contactFormSchema.safeParse(rawData);
 
@@ -143,7 +143,7 @@ export async function sendBetaSignupEmail(
         // ── 4. reCAPTCHA v3 verification ──────────────────────────────────────
         const recaptchaResult = await verifyRecaptchaV3(recaptchaToken, ip);
         console.log(
-            `[reCAPTCHA] success=${recaptchaResult.success} score=${recaptchaResult.score ?? 'n/a'} action=${recaptchaResult.action ?? 'n/a'} ip=${ip}`,
+            `[reCAPTCHA] success=${recaptchaResult.success} score=${recaptchaResult.score ?? 'n/a'} action=${recaptchaResult.action ?? 'n/a'} errors=${recaptchaResult.errorCodes.join(',') || 'none'} ip=${ip}`,
         );
 
         if (!recaptchaResult.valid) {

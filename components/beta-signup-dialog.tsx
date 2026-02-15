@@ -114,12 +114,9 @@ export default function BetaSignupDialog({ trigger, onOpen, open, onOpenChange }
         if (recaptchaTokenInputRef.current) {
             recaptchaTokenInputRef.current.value = token
         }
+        programmaticSubmitRef.current = true
+        formRef.current?.requestSubmit()
         handleOpenChange(false)
-
-        requestAnimationFrame(() => {
-            programmaticSubmitRef.current = true
-            formRef.current?.requestSubmit()
-        })
     }
 
     return (
