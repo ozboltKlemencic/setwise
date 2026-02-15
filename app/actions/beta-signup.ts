@@ -30,9 +30,18 @@ const MESSAGES_BY_LOCALE: Record<Locale, BetaSignupMessages> = {
     sl: slMessages.BetaSignup as BetaSignupMessages,
 };
 
-async function verifyRecaptchaV3(token: string, ip?: string): Promise<boolean> {
+type RecaptchaVerificationResult = {
+    valid: boolean;
+    success: boolean;
+    score: number | null;
+    action: string | null;
+};
+
+async function verifyRecaptchaV3(token: string, ip?: string): Promise<RecaptchaVerificationResult> {
     const secret = process.env.RECAPTCHA_SECRET_KEY;
-    if (!secret) return false;
+    if (!secret) {
+        return { valid: false, success: false, score: null, action: null };
+    }
 
     const body = new URLSearchParams({
         secret,
@@ -51,7 +60,9 @@ async function verifyRecaptchaV3(token: string, ip?: string): Promise<boolean> {
         body: body.toString(),
     });
 
-    if (!response.ok) return false;
+    if (!response.ok) {
+        return { valid: false, success: false, score: null, action: null };
+    }
     const result = (await response.json()) as {
         success?: boolean;
         score?: number;
@@ -60,7 +71,12 @@ async function verifyRecaptchaV3(token: string, ip?: string): Promise<boolean> {
 
     const scorePass = typeof result.score === 'number' ? result.score >= 0.5 : true;
     const actionPass = result.action ? result.action === 'beta_signup' : true;
-    return Boolean(result.success) && scorePass && actionPass;
+    return {
+        valid: Boolean(result.success) && scorePass && actionPass,
+        success: Boolean(result.success),
+        score: typeof result.score === 'number' ? result.score : null,
+        action: result.action ?? null,
+    };
 }
 
 const ADMIN_COPY = {
@@ -125,8 +141,12 @@ export async function sendBetaSignupEmail(
         }
 
         // ── 4. reCAPTCHA v3 verification ──────────────────────────────────────
-        const isRecaptchaValid = await verifyRecaptchaV3(recaptchaToken, ip);
-        if (!isRecaptchaValid) {
+        const recaptchaResult = await verifyRecaptchaV3(recaptchaToken, ip);
+        console.log(
+            `[reCAPTCHA] success=${recaptchaResult.success} score=${recaptchaResult.score ?? 'n/a'} action=${recaptchaResult.action ?? 'n/a'} ip=${ip}`,
+        );
+
+        if (!recaptchaResult.valid) {
             return {
                 errors: {
                     _form: [copy.captchaFailed],
