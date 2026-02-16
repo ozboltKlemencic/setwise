@@ -603,26 +603,27 @@
         "title": "Features",
         "description": "Discover all the powerful features SetWise offers to help you reach your fitness goals.",
         "badge": "Features",
-        "heading": "Everything you need in the <brand>SetWise</brand> app",
+        "heading": "Intro",
+        "subHeading": "Everything you need in the <brand>SetWise</brand> app",
         "overview": {
             "title": "Overview",
-            "description": "SetWise is a <strong>workout tracker app</strong> for iPhone, designed around one simple principle: <strong>fast logging, smart analytics, real progress</strong>. Currently in <strong>beta</strong>, SetWise already offers the most intuitive workout logging experience — tailored for athletes, bodybuilders, and fitness enthusiasts who want to maximize every workout.",
+            "description": "SetWise is an iOS and Android workout tracker built for lifters who want to log fast and understand progress at a glance. Track every set, keep your full training history in one place, and see the numbers that matter, without getting in the way of your workout. SetWise works offline by default, with optional sync when you want it.",
             "cards": {
                 "fast": {
-                    "title": "Lightning Fast",
-                    "description": "Add a set with just 2 taps. Between sets, spend less time on your phone and more focused on lifting."
+                    "title": "Fast logging",
+                    "description": "Log a set in seconds - weight, reps, done. Less time on your phone between sets."
                 },
                 "offline": {
-                    "title": "Offline-First Approach",
-                    "description": "Training in the gym with no signal? SetWise works completely offline. Your workout never stops."
+                    "title": "Offline-first",
+                    "description": "No signal required. Your workouts are saved on your device and stay available in the gym."
                 },
                 "compare": {
-                    "title": "Auto-Compare",
-                    "description": "Every exercise shows your previous performance and all-time record. You know exactly what to beat."
+                    "title": "Auto-compare",
+                    "description": "See your last performance and bests next to each exercise, so you always know what to beat."
                 },
                 "analytics": {
-                    "title": "Advanced Analytics",
-                    "description": "Volume charts, strength curves, muscle heatmap and RPE tracking for serious progress."
+                    "title": "Analytics that stay clear",
+                    "description": "Track volume, strength estimates, and training consistency with clean, readable charts."
                 }
             }
         },
@@ -633,79 +634,75 @@
                 "title": "Quick Logging",
                 "liveSession": {
                     "lead": "Live Session Mode",
-                    "text": "allows logging every set without switching screens. Open a workout, see history and PRs for each exercise, enter weight and reps, tap <check>✓</check>. Between sets, a <strong>built-in rest timer</strong> alerts you when it's time for the next set."
+                    "text": "keeps you on one screen while you train. Add sets fast, check history and PRs per exercise."
                 },
-                "manualLog": {
-                    "lead": "Manual Log Entry",
-                    "text": "allows adding past workouts. Forgot to log yesterday? Simply add the date, exercises and sets — the system updates all stats."
-                },
-                "platesCalc": {
-                    "lead": "Smart Plates Calculator",
-                    "text": "calculates the exact plate combination for your target weight (e.g. \"2× 20kg + 2× 15kg + 2× 2.5kg = 95kg\")."
+                "historyPrs": {
+                    "lead": "History & PRs built-in",
+                    "text": "For every exercise, see recent performance and personal records right where you log."
                 }
             },
             "templates": {
                 "title": "Templates & Programs",
                 "myTemplates": {
-                    "lead": "My Templates",
-                    "text": "are your saved workouts. Create a \"Push Day\" template with all exercises, and open it every week — all exercises are there with history and PRs."
+                    "lead": "Templates",
+                    "text": "are your saved workouts - build a session once, then reuse it anytime with all exercises ready to go."
                 },
                 "publicPrograms": {
-                    "lead": "Public Programs",
-                    "text": "include proven programs: Starting Strength, StrongLifts 5×5, PPL Split, Upper/Lower Split. Each program has instructions, set/rep schemes and automatic progression."
+                    "lead": "Programs (Splits)",
+                    "text": "Programs organize your training week into a split (e.g. Push/Pull/Legs). Inside each program, you’ll find your workout templates for each day - ready to repeat, track, and improve over time."
                 }
             },
             "history": {
                 "title": "History & Personal Records",
                 "workoutLog": {
-                    "lead": "Workout Log",
-                    "text": "stores all your workouts with date, volume, duration, and quick preview."
+                    "lead": "Workout History",
+                    "text": "keeps every session with date, duration, and key stats for quick review."
                 },
                 "personalRecords": {
                     "lead": "Personal Records",
-                    "text": "automatically detects PRs: 1RM (one rep max), Volume PR, Total Weight PR. When you set a new record, SetWise congratulates you."
+                    "text": "are detected automatically (volume PR, total weight PR) so you can spot progress instantly."
                 },
                 "calendarView": {
                     "lead": "Calendar View",
-                    "text": "shows a monthly training calendar with color indicators (green = high volume, yellow = shorter workout, gray = rest day)."
+                    "text": "gives you a simple monthly overview of training frequency and workload."
                 }
             },
             "analytics": {
                 "title": "Progress & Analytics",
                 "volumeCharts": {
-                    "lead": "Volume Charts",
-                    "text": "Show total volume. Linear increase means progress."
+                    "lead": "Volume Trends",
+                    "text": "show workload over time, per workout and per exercise."
                 },
-                "strengthCurves": {
-                    "lead": "Strength Curves",
-                    "text": "Calculate estimated 1RM (Epley & Brzycki) and show growth."
+                "strengthEstimates": {
+                    "lead": "Strength Estimates",
+                    "text": "help you track performance trends without guessing."
                 },
-                "muscleHeatmap": {
-                    "lead": "Muscle Heatmap",
-                    "text": "3D visualization of muscle groups and intensity."
+                "visualWeb": {
+                    "lead": "Visual comparisons",
+                    "text": "make it easy to compare sessions and see what’s improving at a glance."
                 },
                 "rpeTracking": {
-                    "lead": "RPE/RIR Tracking",
-                    "text": "Record Rate of Perceived Exertion (1-10 scale)."
+                    "lead": "RPE / RIR Tracking",
+                    "text": "lets you record effort and manage intensity week to week."
                 }
             },
             "advanced": {
                 "title": "Advanced Features",
                 "dropSupersets": {
-                    "title": "Drop & Supersets",
-                    "description": "The system automatically links sets and tracks total volume."
+                    "title": "Intensifiers",
+                    "description": "Drop sets, rest-pause, cluster sets and more - track advanced set styles while the app keeps the session structured."
                 },
                 "autoCompare": {
                     "title": "Auto-Compare",
-                    "description": "Real-time feedback during live session (\"+5kg more than last time\")."
+                    "description": "See last time and bests during a live session so you always know what to beat."
                 },
-                "cloudSync": {
-                    "title": "Cloud Sync",
-                    "description": "End-to-end encryption, multi-device support and backup."
+                "rpeTempoRom": {
+                    "title": "RPE / RIR, Tempo & ROM",
+                    "description": "Log effort, tempo, and range of motion per set to capture training quality and not just numbers."
                 },
-                "exerciseLibrary": {
-                    "title": "Exercise Library",
-                    "description": "800+ exercises with video demonstrations."
+                "setNotes": {
+                    "title": "Set Notes",
+                    "description": "Add notes on the set level for cues, form feedback, pain flags, or anything you want to remember next time."
                 }
             }
         },
@@ -714,40 +711,39 @@
             "title": "Get Started",
             "beta": {
                 "title": "Beta Access",
-                "description": "SetWise is in <strong>closed beta</strong>. Beta testers keep <strong>lifetime free access</strong> after launch.",
-                "button": "Join the Beta Program"
+                "description": "SetWise is currently in closed beta. Join to get early access and help shape the product with direct feedback.",
+                "button": "Get Early Access"
             },
             "benefits": {
-                "lifetimeFree": "Lifetime Free",
                 "premiumFeatures": "Premium Features",
                 "directFeedback": "Direct Feedback",
                 "earlyAccess": "Early Access"
             },
             "steps": {
                 "step1": {
-                    "title": "Start Workout",
-                    "description": "Tap the button on the home screen, choose a template or empty workout."
+                    "title": "Choose a Program Day",
+                    "description": "Start from a program day (template) or open an empty session."
                 },
                 "step2": {
                     "title": "Add Exercises",
-                    "description": "Select an exercise (e.g. Bench Press), see history and PR."
+                    "description": "Add movements and instantly see your last session and personal bests."
                 },
                 "step3": {
                     "title": "Log Sets",
-                    "description": "Enter weight and reps. Rest timer starts counting down automatically."
+                    "description": "Enter weight and reps, tap ✓, and keep lifting - SetWise handles the flow between sets."
                 }
             }
         },
         "security": {
             "badge": "Security",
             "title": "Security & Privacy",
-            "encryption": {
-                "title": "End-to-End Encryption",
-                "description": "All data is encrypted during sync (256-bit)."
-            },
             "localStorage": {
-                "title": "Local-First Storage",
-                "description": "Data stays on your device. No account required."
+                "title": "Data stays on your device",
+                "description": "Your workouts are stored locally by default."
+            },
+            "encryption": {
+                "title": "Secure sync (when enabled)",
+                "description": "If you turn on sync, data is transmitted securely and stored encrypted."
             }
         }
     },
@@ -760,54 +756,120 @@
             "title": "Intro",
             "overview": "Overview",
             "keyFeatures": "Key Features",
-            "getStarted": "Get Started"
+            "getStarted": "Get Started",
+            "security": "Security"
         },
         "quickLogging": {
             "title": "Quick Logging",
             "liveSession": "Live Session",
-            "logManually": "Log Manually",
-            "restTimer": "Rest Timer"
+            "quickWorkout": "Quick Workout",
+            "setNotes": "Set Notes",
+            "workoutDuration": "Workout Duration"
         },
         "templates": {
             "title": "Templates & Programs",
+            "heading": "Templates & Programs",
+            "subHeading": "Build your training structure once, then repeat it with confidence. Programs act as your split, and each program contains templates for your training days—so logging stays fast and progress stays consistent.",
+            "importPlan": {
+                "title": "Import a Plan (Parser)",
+                "description": "Already have a training plan written in notes, a message, or a document? Paste it in and SetWise will parse it into a structured program with days, exercises, and sets. We built this because creating plans manually can take 20–30 minutes - now it takes a fraction of that, so “setting up a plan” doesn’t have to be an excuse anymore."
+            },
+            "createNew": {
+                "title": "Create New",
+                "description": "Create your own split from scratch. Add training days as templates, set up exercises, and make a structure you can repeat week after week."
+            },
             "myTemplates": "My Templates",
-            "publicPrograms": "Public Programs",
-            "createNew": "Create New"
-        },
-        "history": {
-            "title": "History",
-            "workoutLog": "Workout Log",
-            "personalRecords": "Personal Records",
-            "calendar": "Calendar"
+            "publicPrograms": "Public Programs"
         },
         "progressAnalytics": {
             "title": "Progress & Analytics",
-            "volumeCharts": "Volume Charts",
-            "strengthCurves": "Strength Curves",
-            "muscleHeatmap": "Muscle Heatmap"
+            "heading": "Progress & Analytics",
+            "subHeading": "See your training at a glance - how often you train, what you’ve been doing, and how your performance is moving over time. SetWise combines a clean calendar view with workout summaries and exercise-level comparisons, so progress is easy to understand.",
+            "progress": {
+                "title": "Progress",
+                "description": "A calendar view of your workouts, plus a weekly snapshot with active days and average training frequency - so you can track consistency, not just single sessions."
+            },
+            "workoutDetails": {
+                "title": "Workout Details",
+                "description": "Open any past workout to see a clear summary: total volume, duration, and key highlights like new PRs, your heaviest set, and biggest improvements.",
+                "exercisesSets": {
+                    "title": "Exercises & Sets",
+                    "description": "Review every exercise and set from the session - including notes - with automatic comparisons to your previous workout so you can instantly see changes in reps and weight."
+                }
+            },
+            "analytics": {
+                "title": "Analytics",
+                "description": "Turn your workouts into clear trends. SetWise keeps charts simple and useful - so you can spot progress without digging through numbers.",
+                "volumeChart": {
+                    "title": "Workout Volume Chart",
+                    "description": "See total volume for the session and compare it in context: against workouts from the same template (to track how a specific day is progressing), or against all workouts (to see where this session sits overall)."
+                },
+                "exerciseChart": {
+                    "title": "Exercise Progress Chart",
+                    "description": "Track an exercise across time to see how performance evolves. Compare sessions and quickly spot whether you’re moving more weight, getting more reps, or trending in the right direction."
+                }
+            }
         },
         "advancedMetrics": {
-            "title": "RPE/RIR, Tempo/ROM",
-            "exertionScale": "Exertion Scale",
-            "repQuality": "Rep Quality",
-            "advancedMetrics": "Advanced Metrics"
-        },
-        "intensifiers": {
-            "title": "Intensifiers",
-            "dropSets": "Drop Sets",
-            "supersets": "Supersets",
-            "clusterSets": "Cluster Sets"
-        },
-        "autoCompare": {
-            "title": "Auto-compare",
-            "vsLastSession": "vs Last Session",
-            "vsBestAllTime": "vs Best All-Time"
+            "title": "Advanced Metrics",
+            "heading": "Advanced Metrics",
+            "subHeading": "Progress isn’t just weight and reps. The same numbers can feel completely different if you change tempo, range of motion, or effort. SetWise lets you track these details per set - so your progress stays honest, comparable, and repeatable.",
+            "optionalNote": {
+                "title": "Optional for advanced users",
+                "description": "Advanced Metrics can be enabled in Settings, so you can keep logging simple - or turn on deeper tracking when you want it."
+            },
+            "rpeRir": {
+                "title": "RPE / RIR",
+                "description": "Log effort per set to track intensity over time. It helps you compare sessions more accurately than weight and reps alone."
+            },
+            "tempoRom": {
+                "title": "Tempo & ROM",
+                "description": "Set tempo and range of motion per set, so you can keep form and execution consistent - and avoid “fake progress” from shorter reps or faster tempo."
+            },
+            "intensifiers": {
+                "title": "Intensifiers",
+                "description": "Track advanced set styles like drop sets and supersets while keeping your workout history clear and comparable."
+            }
         },
         "offlineSync": {
-            "title": "Offline-first + Sync",
-            "offlineMode": "Offline Mode",
-            "cloudSync": "Cloud Sync",
-            "dataExport": "Data Export"
+            "title": "Offline-first & Sync",
+            "heading": "Offline-first & Sync",
+            "subHeading": "SetWise is designed to stay reliable in the gym. Core workout logging works without depending on a connection, and sync (when enabled) keeps your data backed up and available across devices.",
+            "worksOffline": {
+                "title": "Works offline",
+                "description": "Log sets, review recent workouts, and keep your session moving - even with no signal."
+            },
+            "sync": {
+                "title": "Sync",
+                "description": "When you’re online, sync keeps your data safe and consistent across devices."
+            },
+            "connectionRequired": {
+                "title": "Connection required for",
+                "description": "Some features - like multi-device sync, backups - require an internet connection."
+            }
+        }
+    },
+    "QuickLoggingPage": {
+        "title": "Quick Logging",
+        "description": "In the gym, focus is everything. SetWise is built to keep you locked in with a fast logging flow - minimal taps, no unnecessary screens, and only what you need between sets.",
+        "badge": "Feature",
+        "heading": "Quick Logging",
+        "subHeading": "Focus is everything",
+        "liveSession": {
+            "title": "Live Session",
+            "description": "Log sets as you lift on a single screen. Enter weight and reps, tap <check>✓</check>, and keep moving - everything stays quick and distraction-free."
+        },
+        "quickWorkout": {
+            "title": "Quick Workout",
+            "description": "No plan today? Start an empty workout and build it as you go. Add exercises on the fly, log sets in seconds, and keep the session moving - perfect for “go with the flow” training."
+        },
+        "setNotes": {
+            "title": "Set Notes",
+            "description": "Add notes to any set to capture cues, form feedback, or anything you want to remember for next time."
+        },
+        "workoutDuration": {
+            "title": "Workout Duration",
+            "description": "SetWise tracks your workout duration from start to finish, so you can review how long sessions take and spot changes over time."
         }
     },
     "ToolsPage": {

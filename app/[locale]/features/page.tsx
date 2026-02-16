@@ -25,11 +25,11 @@ const overviewCardIcons = {
 } as const
 
 const overviewCardKeys = Object.keys(overviewCardIcons) as (keyof typeof overviewCardIcons)[]
-const advancedCardKeys = ['dropSupersets', 'autoCompare', 'cloudSync', 'exerciseLibrary'] as const
-const analyticsKeys = ['volumeCharts', 'strengthCurves', 'muscleHeatmap', 'rpeTracking'] as const
+const advancedCardKeys = ['dropSupersets', 'autoCompare', 'rpeTempoRom', 'setNotes'] as const
+const analyticsKeys = ['volumeCharts', 'strengthEstimates', 'visualWeb', 'rpeTracking'] as const
 const stepKeys = ['step1', 'step2', 'step3'] as const
-const benefitKeys = ['lifetimeFree', 'premiumFeatures', 'directFeedback', 'earlyAccess'] as const
-const securityKeys = ['encryption', 'localStorage'] as const
+const benefitKeys = ['premiumFeatures', 'directFeedback', 'earlyAccess'] as const
+const securityKeys = ['localStorage', 'encryption'] as const
 
 // -- Rich text renderers ------------------------------------------------
 
@@ -62,6 +62,9 @@ export default async function FeaturesPage() {
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t.rich('heading', richTextComponents)}
                     </h1>
+                    <p className="mt-1 text-footnote md:text-subheadline lg:text-callout text-surface-700 leading-relaxed max-w-prose">
+                        {t.rich('subHeading', richTextComponents)}
+                    </p>
                 </header>
 
                 {/* ── Sections ───────────────────────────────── */}
@@ -127,11 +130,8 @@ export default async function FeaturesPage() {
                                 <FeatureTextBlock compact lead={t('keyFeatures.quickLogging.liveSession.lead')}>
                                     {t.rich('keyFeatures.quickLogging.liveSession.text', richTextComponents)}
                                 </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.quickLogging.manualLog.lead')}>
-                                    {t.rich('keyFeatures.quickLogging.manualLog.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.quickLogging.platesCalc.lead')}>
-                                    {t.rich('keyFeatures.quickLogging.platesCalc.text', richTextComponents)}
+                                <FeatureTextBlock compact lead={t('keyFeatures.quickLogging.historyPrs.lead')}>
+                                    {t.rich('keyFeatures.quickLogging.historyPrs.text', richTextComponents)}
                                 </FeatureTextBlock>
                             </div>
                         </KeyFeatureSection>
@@ -287,7 +287,7 @@ export default async function FeaturesPage() {
 
 
                     {/* SECURITY & PRIVACY Section */}
-                    <section className="scroll-mt-32 relative">
+                    <section id="security" className="scroll-mt-32 relative">
                         {/* Decorative lines — behind content, full width */}
                         <div className="absolute inset-0 -mx-(--space-5) md:-mx-(--space-12) border-t border-surface-200/80 dark:border-surface-300/60 overflow-hidden pointer-events-none">
                             {Array.from({ length: 300 }).map((_, i) => (

@@ -30,6 +30,7 @@ export function FeaturesSidebar() {
                 { title: t('intro.overview'), href: "/features#overview" },
                 { title: t('intro.keyFeatures'), href: "/features#key-features" },
                 { title: t('intro.getStarted'), href: "/features#get-started" },
+                { title: t('intro.security'), href: "/features#security" },
             ]
         },
         {
@@ -38,8 +39,9 @@ export function FeaturesSidebar() {
             icon: Zap,
             subItems: [
                 { title: t('quickLogging.liveSession'), href: "/features/quick-logging#live-session" },
-                { title: t('quickLogging.logManually'), href: "/features/quick-logging#log-manually" },
-                { title: t('quickLogging.restTimer'), href: "/features/quick-logging#rest-timer" },
+                { title: t('quickLogging.quickWorkout'), href: "/features/quick-logging#quick-workout" },
+                { title: t('quickLogging.setNotes'), href: "/features/quick-logging#set-notes" },
+                { title: t('quickLogging.workoutDuration'), href: "/features/quick-logging#workout-duration" },
             ]
         },
         {
@@ -47,19 +49,8 @@ export function FeaturesSidebar() {
             href: "/features/templates-programs",
             icon: LayoutTemplate,
             subItems: [
-                { title: t('templates.myTemplates'), href: "/features/templates-programs#my-templates" },
-                { title: t('templates.publicPrograms'), href: "/features/templates-programs#public-programs" },
-                { title: t('templates.createNew'), href: "/features/templates-programs#create-new" },
-            ]
-        },
-        {
-            title: t('history.title'),
-            href: "/features/history",
-            icon: History,
-            subItems: [
-                { title: t('history.workoutLog'), href: "/features/history#workout-log" },
-                { title: t('history.personalRecords'), href: "/features/history#personal-records" },
-                { title: t('history.calendar'), href: "/features/history#calendar" },
+                { title: t('templates.importPlan.title'), href: "/features/templates-programs#import-plan" },
+                { title: t('templates.createNew.title'), href: "/features/templates-programs#create-new" },
             ]
         },
         {
@@ -67,9 +58,9 @@ export function FeaturesSidebar() {
             href: "/features/progress-analytics",
             icon: TrendingUp,
             subItems: [
-                { title: t('progressAnalytics.volumeCharts'), href: "/features/progress-analytics#volume-charts" },
-                { title: t('progressAnalytics.strengthCurves'), href: "/features/progress-analytics#strength-curves" },
-                { title: t('progressAnalytics.muscleHeatmap'), href: "/features/progress-analytics#muscle-heatmap" },
+                { title: t('progressAnalytics.progress.title'), href: "/features/progress-analytics#progress" },
+                { title: t('progressAnalytics.workoutDetails.title'), href: "/features/progress-analytics#workout-details" },
+                { title: t('progressAnalytics.analytics.title'), href: "/features/progress-analytics#analytics" },
             ]
         },
         {
@@ -77,28 +68,9 @@ export function FeaturesSidebar() {
             href: "/features/advanced-metrics",
             icon: Gauge,
             subItems: [
-                { title: t('advancedMetrics.exertionScale'), href: "/features/advanced-metrics#exertion-scale" },
-                { title: t('advancedMetrics.repQuality'), href: "/features/advanced-metrics#rep-quality" },
-                { title: t('advancedMetrics.advancedMetrics'), href: "/features/advanced-metrics#advanced-metrics" },
-            ]
-        },
-        {
-            title: t('intensifiers.title'),
-            href: "/features/intensifiers",
-            icon: Flame,
-            subItems: [
-                { title: t('intensifiers.dropSets'), href: "/features/intensifiers#drop-sets" },
-                { title: t('intensifiers.supersets'), href: "/features/intensifiers#supersets" },
-                { title: t('intensifiers.clusterSets'), href: "/features/intensifiers#cluster-sets" },
-            ]
-        },
-        {
-            title: t('autoCompare.title'),
-            href: "/features/auto-compare",
-            icon: GitCompare,
-            subItems: [
-                { title: t('autoCompare.vsLastSession'), href: "/features/auto-compare#vs-last-session" },
-                { title: t('autoCompare.vsBestAllTime'), href: "/features/auto-compare#vs-best-all-time" },
+                { title: t('advancedMetrics.rpeRir.title'), href: "/features/advanced-metrics#rpe-rir" },
+                { title: t('advancedMetrics.tempoRom.title'), href: "/features/advanced-metrics#tempo-rom" },
+                { title: t('advancedMetrics.intensifiers.title'), href: "/features/advanced-metrics#intensifiers" },
             ]
         },
         {
@@ -106,9 +78,9 @@ export function FeaturesSidebar() {
             href: "/features/offline-sync",
             icon: WifiOff,
             subItems: [
-                { title: t('offlineSync.offlineMode'), href: "/features/offline-sync#offline-mode" },
-                { title: t('offlineSync.cloudSync'), href: "/features/offline-sync#cloud-sync" },
-                { title: t('offlineSync.dataExport'), href: "/features/offline-sync#data-export" },
+                { title: t('offlineSync.worksOffline.title'), href: "/features/offline-sync#works-offline" },
+                { title: t('offlineSync.sync.title'), href: "/features/offline-sync#sync" },
+                { title: t('offlineSync.connectionRequired.title'), href: "/features/offline-sync#connection-required" },
             ]
         },
     ], [t])
