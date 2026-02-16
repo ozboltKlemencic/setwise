@@ -22,7 +22,7 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon: Icon, title, description, compact = false }: FeatureCardProps) {
     return (
-        <div className={`group bg-surface-100 border border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 ${compact ? "p-(--space-4) md:p-(--space-6)" : "p-(--space-4) md:p-(--space-8)"}`}>
+        <div className={`group bg-surface-100 border  border-surface-200 dark:bg-surface-100 shadow-(--shadow-sm)/80 ${compact ? "p-(--space-4) md:p-(--space-6)" : "p-(--space-4) md:p-(--space-8)"}`}>
             <div className={`flex items-center gap-(--space-2) ${compact ? "mb-(--space-2)" : "mb-(--space-2) md:mb-(--space-3)"}`}>
                 <div className={`flex items-center justify-center rounded-lg  bg-linear-to-tr from-brand-500/5 to-brand-500/15 ${compact ? "size-7 md:size-8" : "size-7 md:size-9"}`}>
                     <Icon className={`text-brand-500/80 ${compact ? "size-3.5 md:size-4" : "size-3.5 md:size-4.5"}`} />
@@ -164,9 +164,9 @@ interface BenefitBadgeProps {
 export function BenefitBadge({ icon: Icon, label, compact = false }: BenefitBadgeProps) {
     return (
         <div className={compact ? "flex items-center gap-(--space-1) md:gap-(--space-2) text-footnote md:text-footnote font-medium text-surface-800" : "flex items-center gap-(--space-2) md:gap-(--space-2) text-footnote md:text-subheadline font-medium text-surface-800"}>
-            
-                <Icon className={compact ? "size-3 md:size-3.5 text-success shrink-0" : "size-3.5 md:size-4 text-success shrink-0"} />
-            
+
+            <Icon className={compact ? "size-3 md:size-3.5 text-success shrink-0" : "size-3.5 md:size-4 text-success shrink-0"} />
+
             <span>{label}</span>
         </div>
     )

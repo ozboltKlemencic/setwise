@@ -1,8 +1,6 @@
 import { getTranslations } from "next-intl/server"
-
-const richTextComponents = {
-    brand: (children: React.ReactNode) => <span className="text-brand-500 font-bold">{children}</span>,
-}
+import { WifiOff, RefreshCw, Wifi } from "lucide-react"
+import { KeyFeatureSection } from "@/components/features/feature-cards"
 
 export default async function OfflineSyncPage() {
     const t = await getTranslations('FeaturesSidebar.offlineSync')
@@ -26,24 +24,35 @@ export default async function OfflineSyncPage() {
                     </p>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                    {/* Works Offline Card */}
-                    <div id="works-offline" className="p-6 rounded-2xl bg-surface-100 dark:bg-surface-100/5 border border-surface-200/60 flex flex-col gap-3 scroll-mt-32">
-                        <h3 className="text-subheadline font-semibold text-surface-900">{t('worksOffline.title')}</h3>
-                        <p className="text-footnote text-surface-600 leading-relaxed">{t('worksOffline.description')}</p>
+                <div className="flex flex-col gap-(--space-8) md:gap-(--space-12) pb-20">
+
+                    {/* Works Offline Section */}
+                    <div id="works-offline" className="scroll-mt-32">
+                        <KeyFeatureSection compact icon={WifiOff} title={t('worksOffline.title')}>
+                            <p className="text-body text-surface-700 leading-relaxed max-w-prose">
+                                {t('worksOffline.description')}
+                            </p>
+                        </KeyFeatureSection>
                     </div>
 
-                    {/* Sync Card */}
-                    <div id="sync" className="p-6 rounded-2xl bg-surface-100 dark:bg-surface-100/5 border border-surface-200/60 flex flex-col gap-3 scroll-mt-32">
-                        <h3 className="text-subheadline font-semibold text-surface-900">{t('sync.title')}</h3>
-                        <p className="text-footnote text-surface-600 leading-relaxed">{t('sync.description')}</p>
+                    {/* Sync Section */}
+                    <div id="sync" className="scroll-mt-32">
+                        <KeyFeatureSection compact icon={RefreshCw} title={t('sync.title')}>
+                            <p className="text-body text-surface-700 leading-relaxed max-w-prose">
+                                {t('sync.description')}
+                            </p>
+                        </KeyFeatureSection>
                     </div>
 
-                    {/* Connection Required Card */}
-                    <div id="connection-required" className="p-6 rounded-2xl bg-surface-100 dark:bg-surface-100/5 border border-surface-200/60 flex flex-col gap-3 scroll-mt-32">
-                        <h3 className="text-subheadline font-semibold text-surface-900">{t('connectionRequired.title')}</h3>
-                        <p className="text-footnote text-surface-600 leading-relaxed">{t('connectionRequired.description')}</p>
+                    {/* Connection Required Section */}
+                    <div id="connection-required" className="scroll-mt-32">
+                        <KeyFeatureSection compact icon={Wifi} title={t('connectionRequired.title')}>
+                            <p className="text-body text-surface-700 leading-relaxed max-w-prose">
+                                {t('connectionRequired.description')}
+                            </p>
+                        </KeyFeatureSection>
                     </div>
+
                 </div>
             </div>
         </div>
