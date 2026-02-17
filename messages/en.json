@@ -754,6 +754,8 @@
         "betaButton": "Try for Free",
         "intro": {
             "title": "Intro",
+            "welcome": "Welcome",
+            "howTo": "How to get the most",
             "overview": "Overview",
             "keyFeatures": "Key Features",
             "getStarted": "Get Started",
@@ -892,8 +894,7 @@
             "intro": {
                 "title": "Intro",
                 "welcome": "Welcome",
-                "installation": "Installation",
-                "createWorkout": "Create Workout"
+                "howTo": "How to get the most"
             },
             "installation": {
                 "title": "Installation",
@@ -906,6 +907,74 @@
                 "overview": "Overview",
                 "methods": "Methods",
                 "tips": "Pro Tips"
+            }
+        },
+        "Page": {
+            "badge": "Guides",
+            "title": "Welcome",
+            "subtitle": "SetWise is built to make training simple, consistent, and measurable.",
+            "intro": {
+                "title": "In these guides you’ll learn how to:",
+                "list": {
+                    "install": "install SetWise on any mobile device",
+                    "create": "create a program and templates",
+                    "log": "log workouts (sets, reps, weight, notes)",
+                    "review": "review progress and analytics",
+                    "features": "use key features effectively"
+                },
+                "footer": "Use the menu on the left to follow step by step, or jump to the topic you need."
+            },
+            "howTo": {
+                "title": "How to get the most out of SetWise",
+                "description": "SetWise works best when you log consistently and review your progress with intent.",
+                "points": {
+                    "1": {
+                        "title": "1) Use Templates for consistency",
+                        "description": "If you follow a split, build a <strong >Program</strong> and train from <strong >Days (Templates)</strong>.\nThis makes comparisons meaningful (Upper A vs Upper A)."
+                    },
+                    "2": {
+                        "title": "2) Start fast with “Last”",
+                        "description": "During workouts, SetWise pre-fills values based on your previous session.\nUse <strong >Last</strong> as your baseline, then adjust up/down."
+                    },
+                    "3": {
+                        "title": "3) Keep notes short (but useful)",
+                        "description": "Add quick notes for context:",
+                        "list": {
+                            "pain": "pain / discomfort",
+                            "technique": "technique cues",
+                            "setup": "machine setup"
+                        },
+                        "footer": "This makes your next session smarter."
+                    },
+                    "4": {
+                        "title": "4) Use Quick Start when you need flexibility",
+                        "description": "No plan today? Use <strong >Quick Start</strong> and build the session as you go.\nYou can still track everything and review it in Progress."
+                    },
+                    "5": {
+                        "title": "5) Review Progress weekly",
+                        "description": "Use the <strong >Progress</strong> screen to:",
+                        "list": {
+                            "past": "open past workouts",
+                            "details": "review set-by-set details",
+                            "trends": "check volume trends and Exercise Explorer"
+                        }
+                    }
+                }
+            },
+            "tips": {
+                "title": "Tips",
+                "list": {
+                    "consistency": "Consistency beats perfection. A clean log and a quick weekly review is enough to see progress over time.",
+                    "quality": "Only count progress if the quality stays the same.",
+                    "form": "Keep your form, <strong >ROM</strong>, and <strong >tempo</strong> consistent - adding reps/weight by shortening range of motion or changing tempo isn’t real progressive overload (you changed the conditions)."
+                }
+            },
+            "learnMore": {
+                "title": "Learn More",
+                "contact": "Contact Us",
+                "contactDesc": "Get in touch with the team",
+                "support": "Support Center",
+                "supportDesc": "Find help and answers"
             }
         },
         "InstallationPage": {

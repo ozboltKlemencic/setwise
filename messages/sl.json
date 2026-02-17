@@ -891,8 +891,7 @@
             "intro": {
                 "title": "Uvod",
                 "welcome": "Dobrodošli",
-                "installation": "Namestitev",
-                "createWorkout": "Ustvari Trening"
+                "howTo": "Kako izkoristiti SetWise"
             },
             "installation": {
                 "title": "Namestitev",
@@ -905,6 +904,74 @@
                 "overview": "Pregled",
                 "methods": "Metode",
                 "tips": "Pro Nasveti"
+            }
+        },
+        "Page": {
+            "badge": "Vodiči",
+            "title": "Dobrodošli",
+            "subtitle": "SetWise je ustvarjen za preprosto, dosledno in merljivo treniranje.",
+            "intro": {
+                "title": "V teh vodičih se boste naučili:",
+                "list": {
+                    "install": "namestiti SetWise na katerokoli mobilno napravo",
+                    "create": "ustvariti program in predloge",
+                    "log": "beležiti treninge (serije, ponovitve, teža, opombe)",
+                    "review": "pregledovati napredek in analitiko",
+                    "features": "učinkovito uporabljati ključne funkcije"
+                },
+                "footer": "Uporabite meni na levi za sledenje korak za korakom ali skočite na želeno temo."
+            },
+            "howTo": {
+                "title": "Kako kar najbolje izkoristiti SetWise",
+                "description": "SetWise deluje najbolje, če redno beležite in načrtno spremljate svoj napredek.",
+                "points": {
+                    "1": {
+                        "title": "1) Uporabljajte Predloge za doslednost",
+                        "description": "Če sledite split programu, zgradite <strong >Program</strong> in trenirajte iz <strong >Dni (Predlog)</strong>.\nTo omogoča smiselne primerjave (Upper A proti Upper A)."
+                    },
+                    "2": {
+                        "title": "2) Začnite hitro z “Last”",
+                        "description": "Med treningom SetWise predizpolni vrednosti na podlagi vaše prejšnje seje.\nUporabite <strong >Last</strong> (Zadnje) kot izhodišče, nato prilagodite gor/dol."
+                    },
+                    "3": {
+                        "title": "3) Naj bodo opombe kratke (a uporabne)",
+                        "description": "Dodajte hitre opombe za kontekst:",
+                        "list": {
+                            "pain": "bolečina / nelagodje",
+                            "technique": "napotki za tehniko",
+                            "setup": "nastavitev naprave"
+                        },
+                        "footer": "To naredi vašo naslednjo sejo pametnejšo."
+                    },
+                    "4": {
+                        "title": "4) Uporabite Hiter Start za fleksibilnost",
+                        "description": "Danes brez plana? Uporabite <strong >Hiter Start</strong> in gradite sejo sproti.\nŠe vedno lahko sledite vsemu in pregledujete v Napredku."
+                    },
+                    "5": {
+                        "title": "5) Tedensko pregledujte Napredek",
+                        "description": "Uporabite zaslon <strong >Napredek</strong> za:",
+                        "list": {
+                            "past": "odpiranje preteklih treningov",
+                            "details": "pregled podrobnosti serij",
+                            "trends": "preverjanje trendov volumna in Raziskovalca vaj"
+                        }
+                    }
+                }
+            },
+            "tips": {
+                "title": "Nasveti",
+                "list": {
+                    "consistency": "Doslednost premaga popolnost. Čist dnevnik in hiter tedenski pregled sta dovolj za opazovanje napredka skozi čas.",
+                    "quality": "Napredek štejte le, če kakovost ostane enaka.",
+                    "form": "Ohranite formo, <strong >ROM</strong> in <strong >tempo</strong> konsistentne - dodajanje ponovitev/teže s krajšanjem giba ali spreminjanjem tempa ni prava progresivna obremenitev (spremenili ste pogoje)."
+                }
+            },
+            "learnMore": {
+                "title": "Več informacij",
+                "contact": "Kontaktirajte nas",
+                "contactDesc": "Stopite v stik z ekipo",
+                "support": "Center za pomoč",
+                "supportDesc": "Poiščite pomoč in odgovore"
             }
         },
         "InstallationPage": {

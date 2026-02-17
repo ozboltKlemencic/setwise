@@ -100,7 +100,7 @@ export function MiniFeatureCard({ title, description, compact = false }: MiniFea
 interface StepCardProps {
     step: number
     title: string
-    description: string
+    description: ReactNode
     compact?: boolean
 }
 
@@ -113,9 +113,9 @@ export function StepCard({ step, title, description, compact = false }: StepCard
             <h4 className={compact ? "text-subheadline md:text-callout font-semibold text-surface-900" : "text-subheadline md:text-headline font-semibold text-surface-900"}>
                 {title}
             </h4>
-            <p className={compact ? "text-footnote md:text-footnote text-surface-600 leading-relaxed" : "text-footnote md:text-subheadline text-surface-600 leading-relaxed"}>
+            <div className={compact ? "text-footnote md:text-footnote text-surface-600 leading-relaxed" : "text-footnote md:text-subheadline text-surface-600 leading-relaxed"}>
                 {description}
-            </p>
+            </div>
         </div>
     )
 }

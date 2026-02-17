@@ -21,7 +21,8 @@ export function GuidesSidebar() {
             href: "/guides",
             icon: Info,
             subItems: [
-                { title: t('intro.welcome'), href: "/guides" },
+                { title: t('intro.welcome'), href: "/guides#welcome" },
+                { title: t('intro.howTo'), href: "/guides#how-to-get-the-most" },
             ]
         },
         {
@@ -50,7 +51,7 @@ export function GuidesSidebar() {
         <>
             {/* Desktop sidebar */}
             <aside className="hidden min-[1152px]:block w-64 shrink-0 border-r border-border/40 relative">
-                <div className="sticky top-[4.5rem] h-[calc(100vh_-_theme(spacing.20))] overflow-y-auto no-scrollbar">
+                <div className="sticky top-18 h-[calc(100vh-(--spacing(20)))] overflow-y-auto no-scrollbar">
                     <Sidebar items={guidesSidebarItems}>
                         {/* Beta CTA Card */}
                         <div className="relative overflow-hidden rounded-2xl border border-border/60 dark:border-border/40 bg-backgorund ">
