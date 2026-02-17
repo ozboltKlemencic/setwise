@@ -1372,18 +1372,24 @@ body::-webkit-scrollbar {
 @utility test-responsive {
   @apply bg-yellow-200;
 
-  @media (width >= 40rem) { /* sm */
+  @media (width >=40rem) {
+    /* sm */
     @apply bg-green-200;
   }
 
-  @media (width >= 48rem) { /* md */
+  @media (width >=48rem) {
+    /* md */
     @apply bg-red-300;
   }
 
-  @media (width >= 72rem) { /* 1152px */
+  @media (width >=72rem) {
+    /* 1152px */
     @apply bg-green-700;
   }
 }
 
 /*.grecaptcha-badge{ */
 
+.grecaptcha-badge {
+  display: none !important;
+}
