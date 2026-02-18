@@ -88,7 +88,6 @@ export function GuidesSidebar() {
             subItems: [
                 { title: t('profileSettings.preferences'), href: "/guides/profile-settings#preferences" },
                 { title: t('profileSettings.training'), href: "/guides/profile-settings#training" },
-                { title: t('profileSettings.support'), href: "/guides/profile-settings#support" },
                 { title: t('profileSettings.account'), href: "/guides/profile-settings#account" },
             ]
         },

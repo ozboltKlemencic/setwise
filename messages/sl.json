@@ -926,17 +926,1002 @@
                 "importPlan": "Uvoz Plana (Parser)"
             },
             "profileSettings": {
-                "title": "Profil & Nastavitve",
+                "title": "Profil in nastavitve",
                 "preferences": "Nastavitve",
                 "training": "Trening",
-                "support": "Podpora & Povratne informacije",
                 "account": "Račun"
             }
         },
-        "ProfileSettingsPage": {
-            "title": "Profil & Nastavitve",
+        "ProgressPage": {
+            "title": "Napredek",
             "badge": "Vodiči",
-            "heading": "Prilagodi svojo <brand>Izkušnjo</brand>",
+            "heading": "Spremljaj svoj <brand>napredek</brand>",
+            "subHeading": "Poglej statistiko, analiziraj trende in vizualiziraj svoj napredek skozi čas.",
+            "overview": {
+                "title": "Pregled Napredka",
+                "description": "<strong >Zaslon Napredek</strong> ti da jasen pregled tvoje zgodovine treningov in trendov.\n\nVključuje:",
+                "list": {
+                    "1": "drsni <strong >seznam preteklih vadb</strong>",
+                    "2": "hitra <strong >tedenska statistika</strong> (vadbe, aktivni dnevi, povpr. trajanje)",
+                    "3": "hiter dostop do <strong >podrobnosti vadbe</strong>"
+                },
+                "imageAlt": "Pregled zaslona napredka",
+                "calendar": {
+                    "title": "1) Koledarski filter",
+                    "description": "Na vrhu najdeš koledarski trak, po katerem lahko drsaš <strong >levo / desno</strong>.",
+                    "list": {
+                        "1": "Tapni na določen dan za prikaz vadb tistega dne",
+                        "2": "Dnevi z vadbo so označeni z <strong >modro piko</strong>"
+                    },
+                    "footer": "Za vrnitev na celoten seznam klikni na izbiro (ali izberi drug dan).",
+                    "imageAlt": "Koledarski trak z modro piko + izbran dan"
+                },
+                "history": {
+                    "title": "2) Seznam zgodovine vadb",
+                    "description": "Vsaka vadba je prikazana kot kartica s ključnimi informacijami, kot so:",
+                    "list": {
+                        "1": "ime vadbe (program/dan)",
+                        "2": "datum & čas",
+                        "3": "trajanje in skupni volumen",
+                        "4": "hitra <strong >značka primerjave</strong> glede na tvojo zadnjo vadbo iste predloge"
+                    },
+                    "scrollNote": "Podrsajte navzdol za brskanje po starejših vadbah.",
+                    "footer": "SetWise naloži <strong >20 vadb naenkrat</strong> in bo samodejno naložil več, ko prideš do konca seznama.",
+                    "imageAlt": "Seznam kartic vadb + značka primerjave"
+                },
+                "details": {
+                    "title": "3) Odpri podrobnosti vadbe",
+                    "description": "Tapni katerokoli kartico vadbe za odprtje zaslona s podrobnostmi.\n\nZnotraj zaslona s podrobnostmi najdeš:",
+                    "list": {
+                        "1": "<strong >Povzetek</strong> (pregled + dosežki)",
+                        "2": "<strong >Vaje</strong> (vsaka serija + primerjave)",
+                        "3": "<strong >Analiza</strong> (trend volumna + analitika vaj)"
+                    },
+                    "imageAlt": "Tapni kartico → odpre podrobnosti vadbe"
+                },
+                "tip": {
+                    "title": "Nasvet",
+                    "description": "Uporabi značko primerjave, da hitro vidiš, ali je bila tvoja seja boljša ali slabša v primerjavi z zadnjo vadbo iste predloge."
+                }
+            },
+            "workoutDetails": {
+                "title": "Podrobnosti Vadbe",
+                "intro": {
+                    "text": "Tapni katerokoli kartico vadbe v <strong >Napredku</strong>, da odpreš zaslon Podrobnosti Vadbe.\n\nNa vrhu lahko preklapljaš med tremi zavihki:",
+                    "list": {
+                        "1": "<strong >Povzetek</strong> - hiter pregled celotne seje",
+                        "2": "<strong >Vaje</strong> - vsaka vaja in serija, podrobno razčlenjeno",
+                        "3": "<strong >Analiza</strong> - trendi in globlji vpogledi"
+                    },
+                    "imageAlt": "Zaslon s podrobnostmi vadbe z zavihki"
+                },
+                "summary": {
+                    "title": "1) Zavihek Povzetek",
+                    "description": "Zavihek <strong >Povzetek</strong> prikaže najpomembnejšo statistiko seje na prvi pogled:",
+                    "list": {
+                        "1": "<strong >Skupni Volumen</strong> (z značko primerjave glede na zadnjo vadbo iste predloge)",
+                        "2": "<strong >Trajanje</strong>",
+                        "3": "<strong >Skupno serij</strong> in <strong >število vaj</strong>",
+                        "4": "<strong >Opombe vadbe</strong> (če ste jih dodali)"
+                    },
+                    "achievements": {
+                        "title": "Poudari tudi dosežke, kot so:",
+                        "list": {
+                            "1": "<strong >Novi osebni rekordi</strong>",
+                            "2": "<strong >Največji napredek</strong>",
+                            "3": "<strong >Najtežja serija</strong>"
+                        }
+                    },
+                    "imageAlt": "Zavihek Povzetek s volumnom + značko + dosežki + opombami"
+                },
+                "exercises": {
+                    "title": "2) Zavihek Vaje",
+                    "description": "Zavihek <strong >Vaje</strong> prikaže vaš celoten dnevnik vadbe:",
+                    "list": {
+                        "1": "Vsaka vaja vključuje hitro primerjavo z zadnjo vadbo iste predloge",
+                        "2": "Volumen je prikazan na ravni vaje",
+                        "3": "Vsaka serija je navedena s <strong >težo × ponovitvami</strong>",
+                        "4": "Tukaj so vidne vse <strong >opombe vaj</strong>, dodane med treningom"
+                    },
+                    "note": "To je najboljš tab za pregledovanje točno tega, kar ste naredili serijo za serijo.",
+                    "imageAlt": "Zavihek Vaje s seznamom serij + primerjavami + opombami"
+                },
+                "analysis": {
+                    "title": "3) Zavihek Analiza",
+                    "description": "Zavihek <strong >Analiza</strong> vključuje:",
+                    "list": {
+                        "1": "<strong >Trend Volumna</strong> graf (kako se vaš volumen vadbe spreminja skozi čas)",
+                        "2": "<strong >Raziskovalec Vaj</strong> (izberite vajo in preglejte napredek skozi čas)"
+                    },
+                    "filters": {
+                        "title": "Filtrirate lahko:",
+                        "list": {
+                            "1": "<strong >Vse vadbe</strong> vs <strong >Ista predloga</strong>",
+                            "2": "časovni okvir: <strong >30d / 90d / Vse</strong>"
+                        }
+                    },
+                    "imageAlt": "Zavihek Analiza s filtri + trendom volumna + raziskovalcem vaj"
+                },
+                "tip": {
+                    "title": "Nasvet",
+                    "description": "Uporabite <strong >Ista predloga</strong>, ko želite najbolj smiselno primerjavo (npr. Upper A vs vaš prejšnji Upper A)."
+                }
+            },
+            "volumeTrend": {
+                "title": "Analiza (Trend Volumna)",
+                "description": "Graf Trenda Volumna prikazuje, kako se vaš <strong >volumen treninga</strong> spreminja skozi čas.\n\nPomaga vam opaziti doslednost, konice in ali se vaše zadnje seje gibljejo navzgor ali navzdol.",
+                "imageAlt": "Sekcija Trenda Volumna",
+                "chartShows": {
+                    "title": "1) Kaj graf prikazuje",
+                    "list": {
+                        "1": "Vsaka točka predstavlja <strong >skupni volumen</strong> vadbe",
+                        "2": "“Današnji volumen” prikazuje volumen vadbe, ki si jo trenutno ogledujete",
+                        "3": "Besedilo z % primerja danes z vašo zadnjo ustrezno vadbo (na podlagi izbranega filtra)"
+                    },
+                    "imageAlt": "Današnji volumen + % vs zadnji"
+                },
+                "compare": {
+                    "title": "2) Primerjajte prave vadbe",
+                    "description": "Uporabite zgornji filter, da izberete, kaj želite primerjati:",
+                    "list": {
+                        "1": "<strong >Vse vadbe</strong> — splošni trend skozi vse, kar počnete",
+                        "2": "<strong >Ista predloga</strong> — primerja samo vadbe iz iste predloge/dneva (priporočeno)"
+                    },
+                    "note": "Ista predloga je običajno najbolj uporaben pogled (Upper A vs Upper A, Lower vs Lower).",
+                    "imageAlt": "Preklop Vse vadbe / Ista predloga"
+                },
+                "timeframe": {
+                    "title": "3) Izberite časovni okvir",
+                    "description": "Uporabite filter časovnega okvira za spremembo razpona:",
+                    "list": {
+                        "1": "<strong >30d</strong> — kratkoročni trend",
+                        "2": "<strong >90d</strong> — srednjeročni trend",
+                        "3": "<strong >Vse</strong> — celotna zgodovina"
+                    },
+                    "imageAlt": "Preklop 30d / 90d / Vse"
+                },
+                "howTo": {
+                    "title": "Kako ga uporabljati",
+                    "description": "Če trend volumna pada <strong >navzdol</strong> za isto predlogo, to lahko nakazuje utrujenost, manjši trud ali spremembo izbora vaj.",
+                    "tip": {
+                        "title": "Nasvet",
+                        "text": "Višji volumen ne pomeni vedno boljšega napredka — volumen se lahko poveča samo z dodajanjem več serij.\n\nZa jasnejši signal preverite tudi <link >exercise explorer</link> (top set, ponovitve in teža skozi čas)."
+                    }
+                }
+            },
+            "exerciseExplorer": {
+                "title": "Analiza (Raziskovalec Vaj)",
+                "description": "Raziskovalec vaj vam omogoča sledenje napredku za <strong >določeno vajo</strong> skozi čas.\n\nJe najboljše mesto za potrditev dejanskega napredka onkraj le skupnega volumna.",
+                "imageAlt": "Sekcija Raziskovalec Vaj",
+                "pickExercise": {
+                    "title": "1) Izberi vajo",
+                    "list": {
+                        "1": "Odpri zavihek <strong >Analiza</strong>",
+                        "2": "Podrsaj do <strong >Raziskovalec Vaj</strong>",
+                        "3": "Uporabi izbirnik vaj za izbiro vaje"
+                    },
+                    "imageAlt": "Spustni seznam z vajami"
+                },
+                "whatToTrack": {
+                    "title": "2) Kaj lahko spremljaš",
+                    "description": "Za izbrano vajo lahko pregledaš trende skozi čas, vključno z:",
+                    "list": {
+                        "1": "<strong >Volumen</strong> (skupni volumen za to vajo na trening)",
+                        "2": "<strong >Ponovitve</strong> (kako se tvoje ponovitve spreminjajo skozi čas)",
+                        "3": "<strong >Top set</strong> (trend tvoje najtežje / najboljše serije)"
+                    },
+                    "imageAlt": "Grafi vaj za volumen/ponovitve/top set"
+                },
+                "filters": {
+                    "title": "3) Uporabi iste filtre (priporočeno)",
+                    "description": "Za najjasnejši signal kombiniraj Raziskovalec vaj s filtri:",
+                    "list": {
+                        "1": "<strong >Ista predloga</strong> (primerjaj isti dan/tip treninga)",
+                        "2": "časovni okvir: <strong >30d / 90d / Vse</strong>"
+                    },
+                    "note": "To prepreči mešanje različnih variacij iste vaje med različnimi dnevi.",
+                    "imageAlt": "Filtri Ista predloga + časovni okvir"
+                },
+                "howTo": {
+                    "title": "Kako ga uporabljati",
+                    "list": {
+                        "1": "Če se <strong >Top set</strong> izboljšuje, postajaš močnejši pri tem gibu.",
+                        "2": "Če se <strong >Ponovitve</strong> povečajo pri isti teži, je to tudi napredek.",
+                        "3": "Če <strong >Volumen</strong> raste, medtem ko top set ostaja raven, gre morda preprosto za več serij ali dodatnih vaj."
+                    }
+                },
+                "tip": {
+                    "title": "Nasvet",
+                    "description": "Uporabi opombe vaj iz svojih treningov (bolečina, nastavitve, napotki za tehniko) za razlago padcev ali vzponov - kontekst je pomemben."
+                }
+            }
+        },
+        "Page": {
+            "badge": "Vodiči",
+            "title": "Dobrodošli",
+            "subtitle": "SetWise je ustvarjen za preprosto, dosledno in merljivo treniranje.",
+            "intro": {
+                "title": "V teh vodičih se boste naučili:",
+                "list": {
+                    "install": "namestiti SetWise na katerokoli mobilno napravo",
+                    "create": "ustvariti program in predloge",
+                    "log": "beležiti treninge (serije, ponovitve, teža, opombe)",
+                    "review": "pregledovati napredek in analitiko",
+                    "features": "učinkovito uporabljati ključne funkcije"
+                },
+                "footer": "Uporabite meni na levi za sledenje korak za korakom ali skočite na želeno temo."
+            },
+            "howTo": {
+                "title": "Kako kar najbolje izkoristiti SetWise",
+                "description": "SetWise deluje najbolje, če redno beležite in načrtno spremljate svoj napredek.",
+                "points": {
+                    "1": {
+                        "title": "1) Uporabljajte Predloge za doslednost",
+                        "description": "Če sledite split programu, zgradite <strong >Program</strong> in trenirajte iz <strong >Dni (Predlog)</strong>.\nTo omogoča smiselne primerjave (Upper A proti Upper A)."
+                    },
+                    "2": {
+                        "title": "2) Začnite hitro z “Last”",
+                        "description": "Med treningom SetWise predizpolni vrednosti na podlagi vaše prejšnje seje.\nUporabite <strong >Last</strong> (Zadnje) kot izhodišče, nato prilagodite gor/dol."
+                    },
+                    "3": {
+                        "title": "3) Naj bodo opombe kratke (a uporabne)",
+                        "description": "Dodajte hitre opombe za kontekst:",
+                        "list": {
+                            "pain": "bolečina / nelagodje",
+                            "technique": "napotki za tehniko",
+                            "setup": "nastavitev naprave"
+                        },
+                        "footer": "To naredi vašo naslednjo sejo pametnejšo."
+                    },
+                    "4": {
+                        "title": "4) Uporabite Hiter Start za fleksibilnost",
+                        "description": "Danes brez plana? Uporabite <strong >Hiter Start</strong> in gradite sejo sproti.\nŠe vedno lahko sledite vsemu in pregledujete v Napredku."
+                    },
+                    "5": {
+                        "title": "5) Tedensko pregledujte Napredek",
+                        "description": "Uporabite zaslon <strong >Napredek</strong> za:",
+                        "list": {
+                            "past": "odpiranje preteklih treningov",
+                            "details": "pregled podrobnosti serij",
+                            "trends": "preverjanje trendov volumna in Raziskovalca vaj"
+                        }
+                    }
+                }
+            },
+            "tips": {
+                "title": "Nasveti",
+                "list": {
+                    "consistency": "Doslednost premaga popolnost. Čist dnevnik in hiter tedenski pregled sta dovolj za opazovanje napredka skozi čas.",
+                    "quality": "Napredek štejte le, če kakovost ostane enaka.",
+                    "form": "Ohranite formo, <strong >ROM</strong> in <strong >tempo</strong> konsistentne - dodajanje ponovitev/teže s krajšanjem giba ali spreminjanjem tempa ni prava progresivna obremenitev (spremenili ste pogoje)."
+                }
+            },
+            "learnMore": {
+                "title": "Več informacij",
+                "contact": "Kontaktirajte nas",
+                "contactDesc": "Stopite v stik z ekipo",
+                "support": "Center za pomoč",
+                "supportDesc": "Poiščite pomoč in odgovore"
+            }
+        },
+        "InstallationPage": {
+            "title": "Namestitev",
+            "description": "Kako namestiti SetWise na svojo napravo.",
+            "badge": "Vodiči",
+            "heading": "Namesti <brand>SetWise</brand> v nekaj sekundah",
+            "ios": {
+                "title": "SetWise za iOS",
+                "subtitle": "Distribuirano prek <strong >TestFlight</strong> med zgodnjim dostopom.",
+                "description": "<strong >TestFlight</strong> je uradna Applova aplikacija za testiranje beta različic - omogoča varno namestitev SetWise, prejemanje posodobitev in pošiljanje povratnih informacij pred javno izdajo v App Store.\n\nKo prejmete povabilo po e-pošti, namestitev traja približno minuto.",
+                "steps": {
+                    "1": {
+                        "title": "1) Zahtevaj zgodnji dostop",
+                        "list": {
+                            "1": "Odpri obrazec za <strong >Zgodnji dostop</strong>.",
+                            "2": "Vnesi svoj e-poštni naslov.",
+                            "3": "Izberi <strong >iOS</strong> (ali <strong >Oba</strong>).",
+                            "4": "Tapni <strong >Pridobi beta dostop</strong>."
+                        },
+                        "note": "Uporabi isti e-poštni naslov, ki ga uporabljaš na svojem iPhoneu (priporočeno), da bo pridružitev brezhibna."
+                    },
+                    "2": {
+                        "title": "2) Preveri svojo mapo prejeto",
+                        "description": "V nekaj minutah boš prejel e-pošto s <strong >TestFlight povabilom</strong>.",
+                        "list": {
+                            "1": "Če je ne vidiš, preveri <strong >Vsiljeno pošto / Promocije</strong>",
+                            "2": "Išči: <strong >SetWise</strong>"
+                        }
+                    },
+                    "3": {
+                        "title": "3) Namesti TestFlight",
+                        "description": "TestFlight je uradna Applova aplikacija za beta testiranje.",
+                        "list": {
+                            "1": "Odpri App Store",
+                            "2": "Išči <strong >TestFlight</strong>",
+                            "3": "Namesti jo"
+                        }
+                    },
+                    "4": {
+                        "title": "4) Pridruži se beti + namesti SetWise",
+                        "list": {
+                            "1": "Na iPhoneu odpri povabilo v e-pošti",
+                            "2": "Tapni povezavo povabila",
+                            "3": "TestFlight se bo odprl",
+                            "4": "Tapni <strong >Sprejmi</strong> (če je prikazano)",
+                            "5": "Tapni <strong >Namesti</strong>"
+                        }
+                    },
+                    "5": {
+                        "title": "5) Odpri SetWise",
+                        "description": "Po namestitvi lahko odpreš SetWise:",
+                        "list": {
+                            "1": "neposredno iz <strong >TestFlight</strong>, ali",
+                            "2": "iz svojega <strong >Domačega zaslona</strong>"
+                        }
+                    }
+                },
+                "updates": {
+                    "title": "Posodobitve (pomembno)",
+                    "description": "Nove beta različice so na voljo prek TestFlight.",
+                    "list": {
+                        "1": "Odpri TestFlight za ogled razpoložljivih posodobitev",
+                        "2": "Vklopi samodejne posodobitve, če želiš najnovejšo različico samodejno"
+                    }
+                },
+                "troubleshooting": {
+                    "title": "Odpravljanje težav",
+                    "items": {
+                        "1": {
+                            "title": "Ne morem odpreti povezave povabila",
+                            "list": {
+                                "1": "Prepričaj se, da jo odpreš <strong >na iPhoneu</strong> (ne na računalniku)",
+                                "2": "Poskusi kopirati povezavo v Safari"
+                            }
+                        },
+                        "2": {
+                            "title": "E-pošta nikoli ne prispe",
+                            "list": {
+                                "1": "Dvakrat preveri e-poštni naslov, ki si ga vnesel v obrazec",
+                                "2": "Preveri Vsiljeno pošto/Promocije",
+                                "3": "Poskusi znova z drugim e-poštnim naslovom"
+                            }
+                        },
+                        "3": {
+                            "title": "TestFlight pravi, da je beta polna",
+                            "description": "Mesta so omejena. Če se to zgodi, zahtevaj dostop kasneje - redno povečujemo kapacitete."
+                        }
+                    }
+                }
+            },
+            "android": {
+                "title": "Android (Google Play)",
+                "subtitle": "Na voljo prek <strong >Google Play Open Testing</strong>.",
+                "description": "Po zahtevi za zgodnji dostop boš prejel e-pošto s povezavo, ki odpre Play Store, kjer lahko namestiš beta različico kot običajno aplikacijo.",
+                "steps": {
+                    "1": {
+                        "title": "1) Zahtevaj zgodnji dostop",
+                        "list": {
+                            "1": "Odpri obrazec za <strong >Zgodnji dostop</strong>",
+                            "2": "Vnesi svojo e-pošto",
+                            "3": "Izberi <strong >Android</strong> (ali <strong >Oba</strong>)",
+                            "4": "Tapni <strong >Pridobi beta dostop</strong>"
+                        }
+                    },
+                    "2": {
+                        "title": "2) Preveri svojo mapo prejeto",
+                        "description": "Prejel boš e-pošto s svojo <strong >Google Play beta povezavo</strong>.",
+                        "list": {
+                            "1": "Če je ne vidiš, preveri <strong >Vsiljeno pošto / Promocije</strong>",
+                            "2": "Išči: <strong >SetWise</strong>"
+                        }
+                    },
+                    "3": {
+                        "title": "3) Odpri povezavo Play Store",
+                        "list": {
+                            "1": "Odpri e-pošto <strong >na svojem Android telefonu</strong>",
+                            "2": "Tapni povezavo - odprl se bo <strong >Google Play</strong>",
+                            "3": "Tapni <strong >Namesti</strong>"
+                        },
+                        "note": "Če vidiš korak kot <strong >Pridruži se / Postani preizkuševalec</strong>, ga potrdi in nato namesti."
+                    },
+                    "4": {
+                        "title": "4) Odpri SetWise",
+                        "description": "Po namestitvi odpri SetWise:",
+                        "list": {
+                            "1": "iz strani <strong >Play Store</strong>, ali",
+                            "2": "iz svojega <strong >Domačega zaslona / Predala aplikacij</strong>"
+                        }
+                    }
+                },
+                "updates": {
+                    "title": "Posodobitve (pomembno)",
+                    "description": "Beta posodobitve prihajajo prek Google Play.",
+                    "list": {
+                        "1": "Odpri Play Store → SetWise → <strong >Posodobi</strong> (če je na voljo)",
+                        "2": "Opcijsko: omogoči <strong >Samodejno posodabljanje</strong> za SetWise v Play Store"
+                    }
+                },
+                "troubleshooting": {
+                    "title": "Odpravljanje težav",
+                    "items": {
+                        "1": {
+                            "title": "Povezava se odpre na računalniku, ne na telefonu",
+                            "description": "Odpri e-pošto na svoji Android napravi (ali jo posreduj na račun, ki ga uporabljaš na telefonu)."
+                        },
+                        "2": {
+                            "title": "“Ta aplikacija ni na voljo za vašo napravo”",
+                            "description": "Tvoja Android različica je morda pre stara ali pa naprava ni podprta za to izdajo. Za več informacij o tem preveri <strong >ZAHTEVE</strong>."
+                        },
+                        "3": {
+                            "title": "Ne vidim e-pošte",
+                            "list": {
+                                "1": "Preveri Vsiljeno pošto/Promocije",
+                                "2": "Išči “SetWise”",
+                                "3": "Zahtevaj dostop znova in dvakrat preveri vneseni e-poštni naslov"
+                            }
+                        }
+                    }
+                }
+            },
+            "requirements": {
+                "title": "ZAHTEVE",
+                "ios": {
+                    "title": "iOS",
+                    "list": {
+                        "1": "iPhone ali iPad z <strong >iOS 15.1 ali novejšim</strong>",
+                        "2": "<strong >TestFlight</strong> nameščen",
+                        "3": "Apple ID prijavljen"
+                    }
+                },
+                "android": {
+                    "title": "Android",
+                    "list": {
+                        "1": "Android naprava z dostopom do <strong >Google Play Store</strong>",
+                        "2": "Google račun prijavljen"
+                    },
+                    "compatibility": "<strong >Opomba o združljivosti:</strong> SetWise je potrjen, da deluje na <strong >Android 8+</strong>. Prejšnje različice uradno niso podprte."
+                },
+                "internet": {
+                    "title": "Internet",
+                    "list": {
+                        "1": "Internet je potreben za namestitev, prijavo, ustvarjanje predlog in funkcije, ki jih poganja umetna inteligenca.",
+                        "2": "Po namestitvi osnovno beleženje deluje brez povezave"
+                    }
+                },
+                "notCompatible": "Če Google Play prikaže “Ni združljivo”, naprava ne izpolnjuje trenutnih minimalnih zahtev."
+            }
+        },
+        "CreateWorkoutPage": {
+            "title": "Ustvari Trening",
+            "description": "Kako ustvariti treninge v SetWise.",
+            "badge": "Vodiči",
+            "heading": "Ustvari svoj <brand>popoln</brand> trening",
+            "overview": {
+                "title": "Ustvarjanje Treninga",
+                "description": "SetWise ponuja prilagodljive načine za ustvarjanje treningov, od preprostih seznamov do kompleksnih programov.",
+                "cards": {
+                    "scratch": {
+                        "title": "Iz Nič",
+                        "description": "Zgradi vajo po vajo."
+                    },
+                    "template": {
+                        "title": "Iz Predloge",
+                        "description": "Uporabi že narejeno predlogo."
+                    },
+                    "paste": {
+                        "title": "Prilepi Uvoz",
+                        "description": "Prilepi besedilo iz zapiskov."
+                    },
+                    "ai": {
+                        "title": "AI Generator",
+                        "description": "Naj ga AI zgradi zate."
+                    }
+                }
+            },
+            "keyFeatures": {
+                "badge": "Metode",
+                "title": "Metode Ustvarjanja",
+                "scratch": {
+                    "title": "Iz Nič",
+                    "step1": {
+                        "lead": "Nov Trening",
+                        "text": "Tapni gumb 'Plus'."
+                    },
+                    "step2": {
+                        "lead": "Dodaj Vaje",
+                        "text": "Poišči in dodaj vaje."
+                    },
+                    "step3": {
+                        "lead": "Shrani",
+                        "text": "Shrani kot predlogo za kasneje."
+                    }
+                },
+                "paste": {
+                    "title": "Prilepi Uvoz",
+                    "step1": {
+                        "lead": "Kopiraj Besedilo",
+                        "text": "Kopiraj trening od kjerkoli."
+                    },
+                    "step2": {
+                        "lead": "Prilepi",
+                        "text": "Prilepi v SetWise."
+                    },
+                    "step3": {
+                        "lead": "Preglej",
+                        "text": "Preveri prepoznane vaje."
+                    }
+                },
+                "template": {
+                    "title": "Uporaba Predlog",
+                    "step1": {
+                        "lead": "Izberi Predlogo",
+                        "text": "Izberi iz svoje knjižnice."
+                    },
+                    "step2": {
+                        "lead": "Uredi",
+                        "text": "Prilagodi, če je potrebno."
+                    },
+                    "step3": {
+                        "lead": "Začni",
+                        "text": "Začni svojo sejo."
+                    }
+                },
+                "structure": {
+                    "title": "Strukturiranje",
+                    "supersets": {
+                        "lead": "Superseti",
+                        "text": "Združi vaje skupaj."
+                    },
+                    "warmup": {
+                        "lead": "Ogrevalni Seti",
+                        "text": "Označi sete kot ogrevanje."
+                    },
+                    "notes": {
+                        "lead": "Opombe",
+                        "text": "Dodaj navodila."
+                    },
+                    "rest": {
+                        "lead": "Čas Počitka",
+                        "text": "Nastavi ciljni čas počitka."
+                    }
+                },
+                "tips": {
+                    "title": "Pro Nasveti",
+                    "tagging": {
+                        "title": "Označevanje",
+                        "description": "Organiziraj svoje treninge."
+                    },
+                    "duplicating": {
+                        "title": "Podvajanje",
+                        "description": "Kopiraj obstoječe treninge."
+                    },
+                    "sharing": {
+                        "title": "Deljenje",
+                        "description": "Deli s prijatelji."
+                    },
+                    "scheduling": {
+                        "title": "Urnik",
+                        "description": "Načrtuj vnaprej."
+                    }
+                }
+            },
+            "getStarted": {
+                "badge": "Akcija",
+                "title": "Začni Ustvarjati",
+                "beta": {
+                    "title": "Poskusi Zdaj",
+                    "description": "Ustvari svoj prvi trening v sekundah.",
+                    "button": "Ustvari Trening"
+                },
+                "benefits": {
+                    "fast": "Hitro",
+                    "flexible": "Prilagodljivo",
+                    "smart": "Pametno",
+                    "easy": "Lahko"
+                },
+                "steps": {
+                    "step1": {
+                        "title": "Odpri Aplikacijo",
+                        "description": "Zaženi SetWise."
+                    },
+                    "step2": {
+                        "title": "Tapni Ustvari",
+                        "description": "Pritisni + gumb."
+                    },
+                    "step3": {
+                        "title": "Shrani",
+                        "description": "Shrani svojo rutino."
+                    }
+                }
+            },
+            "security": {
+                "badge": "Podatki",
+                "title": "Tvoji Treningi",
+                "encryption": {
+                    "title": "Varnostna Kopija",
+                    "description": "Varno v oblaku."
+                },
+                "localStorage": {
+                    "title": "Izvozljivo",
+                    "description": "Izvozi kot tekst/JSON."
+                }
+            }
+        },
+        "WorkoutsPage": {
+            "title": "Workouts",
+            "description": "Programs, templates, and logging.",
+            "badge": "Guides",
+            "heading": "Master your <brand>training</brand>",
+            "createProgram": {
+                "title": "Create a Program & Templates",
+                "subtitle": "A <strong >Program</strong> is your training structure over time.",
+                "description": "Inside a program you create <strong >Days</strong> (e.g. Upper A, Upper B, Lower), and each day contains your exercises and set details.\n\nTemplates let you reuse the same day or workout structure anytime.",
+                "whatYouWillDo": {
+                    "title": "What you’ll do",
+                    "list": {
+                        "1": "Create a program",
+                        "2": "Add training days (Upper A / Upper B / …)",
+                        "3": "Build each day by adding exercises and setting targets",
+                        "4": "Edit everything later (any time)"
+                    }
+                },
+                "steps": {
+                    "1": {
+                        "title": "1) Create a Program",
+                        "list": {
+                            "1": "Open <strong >Programs tab</strong>",
+                            "2": "Tap <strong >Create Program</strong>",
+                            "3": "Give it a name (e.g. “Upper/Lower Split”)",
+                            "4": "Save"
+                        },
+                        "imageAlt": "Programs screen + Create Program"
+                    },
+                    "2": {
+                        "title": "2) Add Days inside the Program",
+                        "list": {
+                            "1": "Open your program",
+                            "2": "Tap Create Template",
+                            "3": "Name the day (e.g. “Upper A”, “Upper B”)",
+                            "4": "Repeat for as many days as you need"
+                        },
+                        "imageAlt": "Program detail + list of days"
+                    },
+                    "3": {
+                        "title": "3) Build a Day (add exercises)",
+                        "list": {
+                            "1": "Open a day (e.g. “Upper A”)",
+                            "2": "Tap Edit",
+                            "3": "Click “add exercise”"
+                        },
+                        "subDescription": "For each exercise, you can configure:",
+                        "subList": {
+                            "1": "<strong >Rep range</strong> (target range per set)",
+                            "2": "<strong >RPE / RIR</strong> (optional)",
+                            "3": "<strong >Advanced</strong> (optional): intensifiers, ROM, tempo, and other details"
+                        },
+                        "imageAlt": "Day builder + Add Exercise"
+                    },
+                    "4": {
+                        "title": "4) Add notes (per exercise)",
+                        "description": "You can add <strong >notes on the exercise level</strong> (e.g. cues, setup, technique reminders).\n\nNotes will stay attached to that exercise in the day and can be changed anytime.",
+                        "imageAlt": "Exercise notes field"
+                    },
+                    "5": {
+                        "title": "5) Edit anytime (non-destructive)",
+                        "description": "Programs and days are designed to be flexible:",
+                        "list": {
+                            "1": "Rename program or days",
+                            "2": "Reorder exercises",
+                            "3": "Update rep ranges, RPE/RIR, or Advanced settings",
+                            "4": "Add/remove exercises",
+                            "5": "Update exercise notes"
+                        },
+                        "footer": "Everything can be adjusted later from the <strong >Edit</strong> screen.",
+                        "imageAlt": "Edit day / Edit program entry point"
+                    }
+                },
+                "search": {
+                    "title": "Exercise search (and creating your own)",
+                    "description": "When adding an exercise, use the search bar:",
+                    "list": {
+                        "1": "If the exercise exists, select it.",
+                        "2": "If it <strong >doesn’t exist</strong>, just type the name and create it instantly — no extra steps."
+                    },
+                    "footer": "This makes it easy to log any variation or custom movement.",
+                    "imageAlt": "Search bar + “Create new exercise” state"
+                },
+                "tips": {
+                    "title": "Tips",
+                    "list": {
+                        "1": "Use consistent day naming: <strong >Upper A / Upper B / Lower A / Lower B</strong>",
+                        "2": "Keep <strong >RPE/RIR optional</strong> - add it only if you actively use it",
+                        "3": "Use notes for cues you often forget (setup, tempo, depth, grip)"
+                    }
+                }
+            },
+            "startTemplate": {
+                "title": "Start from a Template",
+                "subtitle": "Templates are your planned workouts inside a program (e.g. Upper A, Upper B).",
+                "description": "They already include your exercises and targets (rep ranges, optional RPE/RIR, etc.).",
+                "steps": {
+                    "1": {
+                        "title": "1) Start the workout",
+                        "list": {
+                            "1": "Open the <strong >Start</strong> tab",
+                            "2": "Find your <strong >Day (Template)</strong> in the list",
+                            "3": "Tap the <strong >Start</strong> icon next to the day name"
+                        },
+                        "imageAlt": "Program → Day → Start"
+                    },
+                    "2": {
+                        "title": "2) What you see during the workout",
+                        "description": "Each exercise card shows:",
+                        "list": {
+                            "1": "<strong >Target reps / rep range</strong> (planned)",
+                            "2": "<strong >Last</strong> (what you did last time)",
+                            "3": "<strong >Today</strong> (what you’ve logged in this session)"
+                        },
+                        "imageAlt": "Exercise card highlighting Last / Today"
+                    },
+                    "3": {
+                        "title": "3) Template actions (during the workout)",
+                        "description": "On template-based workouts you can:",
+                        "list": {
+                            "1": "Add extra set",
+                            "2": "<strong >Skip a set</strong>",
+                            "3": "<strong >Delete last logged set</strong>"
+                        },
+                        "footer": "Use these when something changes mid-session.",
+                        "imageAlt": "Skip set UI"
+                    },
+                    "4": {
+                        "title": "4) Finish the workout",
+                        "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
+                        "list": {
+                            "1": "review your <strong >workout total volume</strong>",
+                            "2": "optionally add <strong >workout notes</strong> (for the entire session)"
+                        },
+                        "footer": "Tap <strong >Confirm</strong> to save and finish.",
+                        "imageAlt": "Finish flow"
+                    },
+                    "5": {
+                        "title": "5) Resume a workout (if you close the app)",
+                        "description": "If you close SetWise by accident or switch apps, your active workout is kept.\n\nWhen you open the app again, you’ll see a prompt on the <strong >Programs</strong> screen that lets you:",
+                        "list": {
+                            "1": "<strong >Continue workout</strong>, or",
+                            "2": "<strong >Discard</strong> it (if you don’t need it)"
+                        },
+                        "imageAlt": "Programs screen resume prompt"
+                    }
+                }
+            },
+            "quickStart": {
+                "title": "Quick Start",
+                "subtitle": "Quick Start is for flexible training days - you don’t need a fixed plan.",
+                "description": "Start the workout immediately and add exercises as you go.",
+                "steps": {
+                    "1": {
+                        "title": "1) Start Quick Start",
+                        "list": {
+                            "1": "Open the <strong >Start</strong> tab",
+                            "2": "Tap <strong >Quick Start</strong>"
+                        },
+                        "imageAlt": "Start tab + Quick Start button"
+                    },
+                    "2": {
+                        "title": "2) Add exercises during the workout",
+                        "list": {
+                            "1": "Tap <strong >Add Exercise</strong>",
+                            "2": "Search for an exercise and tap to add it"
+                        },
+                        "subTitle": "Create your own exercise (instantly)",
+                        "subDescription": "If you can’t find an exercise:\n\nType the name and create it instantly - no extra setup required.",
+                        "imageAlt": "Add Exercise search + Create new exercise"
+                    },
+                    "3": {
+                        "title": "3) Log sets (same as templates)",
+                        "list": {
+                            "1": "Adjust weight/reps using <strong >+ / −</strong> or tap to type",
+                            "2": "Tap <strong >✓</strong> to log a set",
+                            "3": "Use the <strong >note</strong> icon to add exercise notes (optional)"
+                        },
+                        "imageAlt": "Quick Start logging UI"
+                    },
+                    "4": {
+                        "title": "4) Exercise options (⋯)",
+                        "description": "Tap the <strong >⋯</strong> menu on an exercise to:",
+                        "list": {
+                            "1": "<strong >Remove exercise</strong> (if you added it by mistake)",
+                            "2": "<strong >Delete last logged set</strong> (undo)",
+                            "3": "<strong >Finish exercise</strong> (mark it as done for a cleaner view)"
+                        },
+                        "footer": "Finishing an exercise helps keep your session organized, especially in longer workouts.",
+                        "imageAlt": "⋯ menu options"
+                    },
+                    "5": {
+                        "title": "5) Finish the workout",
+                        "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
+                        "list": {
+                            "1": "review your <strong >workout total volume</strong>",
+                            "2": "optionally add <strong >workout notes</strong>"
+                        },
+                        "footer": "Tap <strong >Confirm</strong> to save and finish.",
+                        "imageAlt": "Finish summary sheet"
+                    }
+                },
+                "resume": {
+                    "title": "Resume a workout",
+                    "description": "If you leave the app mid-workout, SetWise keeps it active.\n\nNext time you open the app, you can <strong >Continue</strong> from the prompt on the <strong >Programs</strong> screen.",
+                    "imageAlt": "Resume prompt"
+                }
+            },
+            "logging": {
+                "title": "Logging sets & notes",
+                "subtitle": "Logging works the same whether you start from a <strong >Template</strong> or use <strong >Quick Start</strong>.",
+                "steps": {
+                    "1": {
+                        "title": "1) Adjust weight & reps",
+                        "list": {
+                            "1": "Tap <strong >+ / −</strong> for quick adjustments",
+                            "2": "Tap the value field to <strong >type</strong> an exact number"
+                        },
+                        "imageAlt": "+/- controls + tap-to-type fields"
+                    },
+                    "2": {
+                        "title": "2) Log a set (✓)",
+                        "description": "When the numbers are correct, tap <strong >✓</strong> to log the set.\n\nLogged sets appear under <strong >Today</strong> for that exercise.",
+                        "imageAlt": "✓ button + “Today” list"
+                    },
+                    "3": {
+                        "title": "3) Edit a logged set (pencil)",
+                        "description": "If you need to correct something after logging:",
+                        "list": {
+                            "1": "Tap the <strong >pencil</strong> icon",
+                            "2": "Update the set values",
+                            "3": "Save"
+                        },
+                        "imageAlt": "Pencil edit flow"
+                    },
+                    "4": {
+                        "title": "4) Undo mistakes (Delete last logged set)",
+                        "description": "If you log a set by accident, use:",
+                        "list": {
+                            "1": "<strong >Delete last logged set</strong> (undo)"
+                        },
+                        "subDescription": "This removes the most recent set you logged for that exercise.",
+                        "imageAlt": "Delete last logged set action"
+                    },
+                    "5": {
+                        "title": "5) Skip a set (Templates)",
+                        "description": "When training from a template, you can also <strong >Skip</strong> a set if needed.",
+                        "imageAlt": "Skip set UI"
+                    },
+                    "6": {
+                        "title": "6) Add exercise notes (note icon)",
+                        "description": "Tap the <strong >note</strong> icon to add notes on the exercise level, for example:",
+                        "list": {
+                            "1": "pain / discomfort",
+                            "2": "technique cues",
+                            "3": "machine setup",
+                            "4": "“form felt off” / “reduce load next time”"
+                        },
+                        "footer": "These notes help you remember context next session.",
+                        "imageAlt": "Exercise note input"
+                    }
+                },
+                "tip": {
+                    "title": "Tip: Use “Last” to start fast",
+                    "description": "Fields are pre-filled automatically based on your previous session.\n\nUse <strong >Last</strong> as a quick reference so you immediately know what weight/reps to aim for today."
+                }
+            }
+        },
+        "AiFeaturesPage": {
+            "title": "AI Funkcije",
+            "badge": "Vodiči",
+            "heading": "Nadgradi z <brand>AI</brand>",
+            "overview": {
+                "title": "Pregled",
+                "description": "SetWise vključuje orodja z umetno inteligenco, ki vam pomagajo prihraniti čas.\n\nTrenutno je glavna AI funkcija <strong >Uvoz Plana</strong> - prilepite načrt vadbe od koderkoli in ga pretvorite v strukturiran program s predlogami (dnevi).",
+                "imageAlt": "Vstopna točka za AI funkcije",
+                "whenToUse": {
+                    "title": "Kdaj uporabiti AI",
+                    "list": {
+                        "1": "Že imate načrt zapisan v zapiskih / dokumentu",
+                        "2": "Prejeli ste načrt od trenerja",
+                        "3": "Želite hitro prenesti načrt v SetWise brez ročnega nastavljanja"
+                    }
+                },
+                "requirements": {
+                    "title": "Zahteve",
+                    "description": "AI funkcije zahtevajo internetno povezavo."
+                }
+            },
+            "importPlan": {
+                "title": "Uvoz Plana (Parser)",
+                "description": "Uvoz plana vam omogoča, da prilepite načrt vadbe in ga takoj pretvorite v <strong >Program</strong> z <strong >Dnevi (Predlogami)</strong>.",
+                "imageAlt": "Zaslon za uvoz plana",
+                "pastePlan": {
+                    "title": "1) Prilepi svoj načrt",
+                    "list": {
+                        "1": "Odpri <strong >Uvoz treninga na zavihku Programi</strong>",
+                        "2": "Prilepi svoj načrt v besedilno polje",
+                        "3": "Pritisni <strong >Analiziraj</strong>"
+                    },
+                    "note": "Večji načrti lahko trajajo do minute.",
+                    "imageAlt": "Stanje “Analiziranje plana...”"
+                },
+                "preview": {
+                    "title": "2) Predogled ustvarjenega",
+                    "description": "Po razčlenjevanju boste videli predogled končnega rezultata:",
+                    "list": {
+                        "1": "Ime programa (uredljivo)",
+                        "2": "Skupaj <strong >Dni</strong>, <strong >Vaj</strong> in <strong >Serij</strong>",
+                        "3": "Popolna razčlenitev po dnevih (predlogah)"
+                    },
+                    "imageAlt1": "Glava predogleda z Dnevi / Vajami / Serijami",
+                    "imageAlt2": "Razširjena sekcija dneva"
+                },
+                "confidence": {
+                    "title": "3) Ocena zanesljivosti (%)",
+                    "description": "Vsaka vaja prikazuje <strong >% zanesljivosti</strong>:",
+                    "list": {
+                        "1": "Višji % = SetWise je bolj prepričan, da je pravilno interpretiral vrstico",
+                        "2": "Nižji % = hitro preverite ime vaje in cilje serij"
+                    },
+                    "imageAlt": "Značka za zanesljivost"
+                },
+                "edit": {
+                    "title": "4) Uredi pred shranjevanjem",
+                    "description": "Uvožen rezultat lahko prilagodite neposredno v predogledu:",
+                    "chips": {
+                        "title": "Uredi cilje preko čipov",
+                        "description": "Pritisni na čip za urejanje vrednosti, na primer:",
+                        "list": {
+                            "1": "<strong >razpon ponovitev</strong>",
+                            "2": "<strong >tempo</strong>",
+                            "3": "<strong >intenzifikator</strong>"
+                        },
+                        "imageAlt": "Čipi za urejanje s pritiskom"
+                    },
+                    "sets": {
+                        "title": "Prilagodi serije",
+                        "list": {
+                            "1": "Odstrani serijo (✕)",
+                            "2": "Dodaj novo serijo (<strong >Dodaj Serijo</strong>)"
+                        },
+                        "imageAlt": "Kontrole za dodajanje/odstranjevanje serij"
+                    },
+                    "instructions": {
+                        "title": "Dodaj navodila za vajo (neobvezno)",
+                        "description": "Uporabi <strong >Navodila</strong> za shranjevanje napotkov ali opomb za nastavitev te vaje.",
+                        "imageAlt": "Vrstica z navodili"
+                    }
+                },
+                "save": {
+                    "title": "5) Shrani predloge",
+                    "description": "Ko ste zadovoljni s predogledom:",
+                    "list": {
+                        "1": "Potrdi <strong >Ime programa</strong>",
+                        "2": "Pritisni <strong >Shrani predloge</strong>"
+                    },
+                    "footer": "Vaš program in dnevi (predloge) bodo ustvarjeni in pripravljeni za začetek.",
+                    "imageAlt": "Gumb za shranjevanje predlog"
+                },
+                "tips": {
+                    "title": "Nasveti za najboljše rezultate",
+                    "list": {
+                        "1": "Vsako vajo imejte v svoji vrstici",
+                        "2": "Jasno vključite serije in razpone ponovitev (npr. <code>3 x 8–10</code>)",
+                        "3": "Če uporabljate opombe, kot je “drop set”, jih vključite v isto vrstico — preverite lahko v predogledu"
+                    },
+                    "note": "<strong >Opomba:</strong> Uvoz deluje najbolje z jasno oblikovanimi načrti.\n\nČe predogled izgleda bistveno drugače, čeprav je vaš načrt jasno napisan, se obrnite na podporo - to nam pomaga izboljšati parser."
+                }
+            }
+        },
+        "ProfileSettingsPage": {
+            "title": "Profil in nastavitve",
+            "badge": "Vodiči",
+            "heading": "Prilagodi svojo <brand>izkušnjo</brand>",
             "intro": {
                 "description": "Zavihek <strong >Profil</strong> je mesto, kjer prilagodite SetWise in upravljate svoj račun.\n\nSpremenite lahko videz, jezik, nastavitve treninga in pošljete povratne informacije.",
                 "imageAlt": "Pregled zaslona profila"
@@ -945,12 +1930,12 @@
                 "title": "Nastavitve",
                 "appearance": {
                     "title": "Videz",
-                    "description": "Izberite videz aplikacije SetWise:",
+                    "description": "Izberite, kako izgleda SetWise:",
                     "list": {
                         "1": "<strong >Svetlo</strong>",
                         "2": "<strong >Temno</strong>",
-                        "3": "<strong >Popolna črnina</strong>",
-                        "4": "Ali uporabite <strong >Sistem / Samodejno</strong>, da sledi nastavitvam naprave"
+                        "3": "<strong >Prava črna</strong>",
+                        "4": "Ali uporabite <strong >Sistem / Samodejno</strong>, da sledite nastavitvam naprave"
                     },
                     "imageAlt": "Izbirnik videza"
                 },
@@ -968,11 +1953,11 @@
             "training": {
                 "title": "Trening",
                 "advancedAnalytics": {
-                    "title": "Napredna Analitika",
-                    "description": "Če je omogočeno, bo SetWise prikazal napredne možnosti treninga, kot so:",
+                    "title": "Napredna analitika",
+                    "description": "Če je omogočeno, bo SetWise pokazal napredne možnosti treninga, kot so:",
                     "list": {
                         "1": "<strong >Tempo</strong>",
-                        "2": "<strong >ROM</strong>",
+                        "2": "<strong >ROM (Obseg giba)</strong>",
                         "3": "<strong >Intenzifikatorji</strong>"
                     },
                     "footer": "Če imate raje preprostejšo izkušnjo, lahko to kadarkoli izklopite.",
@@ -980,7 +1965,7 @@
                 },
                 "autoAdvance": {
                     "title": "Samodejno napredovanje",
-                    "description": "Ko je omogočeno, lahko SetWise samodejno premakne na naslednjo vajo, ko končate zadnjo serijo.\n\nIzklopite, če imate raje ročni nadzor.",
+                    "description": "Ko je omogočeno, se lahko SetWise samodejno premakne na naslednjo vajo, ko končate zadnjo serijo.\n\nIzklopite, če imate raje ročni nadzor.",
                     "imageAlt": "Stikalo za samodejno napredovanje"
                 }
             },
@@ -990,7 +1975,7 @@
                 "list": {
                     "1": "Odpri <strong >Pošlji povratne informacije</strong>",
                     "2": "Izberi kategorijo: <strong >Hrošč</strong>, <strong >Vprašanje</strong> ali <strong >Ideja</strong>",
-                    "3": "Dodaj kratek naslov + podrobnosti",
+                    "3": "Dodaj kratek predmet + podrobnosti",
                     "4": "(Neobvezno) priloži do <strong >5 slik</strong>",
                     "5": "Pritisni <strong >Pošlji</strong>"
                 },
@@ -1004,995 +1989,9 @@
             "tips": {
                 "title": "Nasveti",
                 "list": {
-                    "1": "Če trenirate v slabši svetlobi (ali želite najčistejši OLED videz), poskusite <strong >Popolna črnina</strong>.",
-                    "2": "Če ne uporabljate tempa/ROM/intenzifikatorjev, izklopite <strong >Napredna Analitika</strong> za preprostejši pogled treninga."
+                    "1": "Če trenirate v mraku (ali želite najbolj čist OLED videz), poskusite <strong >Pravo črno</strong>.",
+                    "2": "Če ne uporabljate tempa/ROM-a/intenzifikatorjev, izklopite <strong >Napredno analitiko</strong> za preprostejši pogled vadbe."
                 }
-            }
-        }
-    },
-    "ProgressPage": {
-        "title": "Napredek",
-        "badge": "Vodiči",
-        "heading": "Spremljaj svoj <brand>napredek</brand>",
-        "subHeading": "Poglej statistiko, analiziraj trende in vizualiziraj svoj napredek skozi čas.",
-        "overview": {
-            "title": "Pregled Napredka",
-            "description": "<strong >Zaslon Napredek</strong> ti da jasen pregled tvoje zgodovine treningov in trendov.\n\nVključuje:",
-            "list": {
-                "1": "drsni <strong >seznam preteklih vadb</strong>",
-                "2": "hitra <strong >tedenska statistika</strong> (vadbe, aktivni dnevi, povpr. trajanje)",
-                "3": "hiter dostop do <strong >podrobnosti vadbe</strong>"
-            },
-            "imageAlt": "Pregled zaslona napredka",
-            "calendar": {
-                "title": "1) Koledarski filter",
-                "description": "Na vrhu najdeš koledarski trak, po katerem lahko drsaš <strong >levo / desno</strong>.",
-                "list": {
-                    "1": "Tapni na določen dan za prikaz vadb tistega dne",
-                    "2": "Dnevi z vadbo so označeni z <strong >modro piko</strong>"
-                },
-                "footer": "Za vrnitev na celoten seznam klikni na izbiro (ali izberi drug dan).",
-                "imageAlt": "Koledarski trak z modro piko + izbran dan"
-            },
-            "history": {
-                "title": "2) Seznam zgodovine vadb",
-                "description": "Vsaka vadba je prikazana kot kartica s ključnimi informacijami, kot so:",
-                "list": {
-                    "1": "ime vadbe (program/dan)",
-                    "2": "datum & čas",
-                    "3": "trajanje in skupni volumen",
-                    "4": "hitra <strong >značka primerjave</strong> glede na tvojo zadnjo vadbo iste predloge"
-                },
-                "scrollNote": "Podrsajte navzdol za brskanje po starejših vadbah.",
-                "footer": "SetWise naloži <strong >20 vadb naenkrat</strong> in bo samodejno naložil več, ko prideš do konca seznama.",
-                "imageAlt": "Seznam kartic vadb + značka primerjave"
-            },
-            "details": {
-                "title": "3) Odpri podrobnosti vadbe",
-                "description": "Tapni katerokoli kartico vadbe za odprtje zaslona s podrobnostmi.\n\nZnotraj zaslona s podrobnostmi najdeš:",
-                "list": {
-                    "1": "<strong >Povzetek</strong> (pregled + dosežki)",
-                    "2": "<strong >Vaje</strong> (vsaka serija + primerjave)",
-                    "3": "<strong >Analiza</strong> (trend volumna + analitika vaj)"
-                },
-                "imageAlt": "Tapni kartico → odpre podrobnosti vadbe"
-            },
-            "tip": {
-                "title": "Nasvet",
-                "description": "Uporabi značko primerjave, da hitro vidiš, ali je bila tvoja seja boljša ali slabša v primerjavi z zadnjo vadbo iste predloge."
-            }
-        },
-        "workoutDetails": {
-            "title": "Podrobnosti Vadbe",
-            "intro": {
-                "text": "Tapni katerokoli kartico vadbe v <strong >Napredku</strong>, da odpreš zaslon Podrobnosti Vadbe.\n\nNa vrhu lahko preklapljaš med tremi zavihki:",
-                "list": {
-                    "1": "<strong >Povzetek</strong> - hiter pregled celotne seje",
-                    "2": "<strong >Vaje</strong> - vsaka vaja in serija, podrobno razčlenjeno",
-                    "3": "<strong >Analiza</strong> - trendi in globlji vpogledi"
-                },
-                "imageAlt": "Zaslon s podrobnostmi vadbe z zavihki"
-            },
-            "summary": {
-                "title": "1) Zavihek Povzetek",
-                "description": "Zavihek <strong >Povzetek</strong> prikaže najpomembnejšo statistiko seje na prvi pogled:",
-                "list": {
-                    "1": "<strong >Skupni Volumen</strong> (z značko primerjave glede na zadnjo vadbo iste predloge)",
-                    "2": "<strong >Trajanje</strong>",
-                    "3": "<strong >Skupno serij</strong> in <strong >število vaj</strong>",
-                    "4": "<strong >Opombe vadbe</strong> (če ste jih dodali)"
-                },
-                "achievements": {
-                    "title": "Poudari tudi dosežke, kot so:",
-                    "list": {
-                        "1": "<strong >Novi osebni rekordi</strong>",
-                        "2": "<strong >Največji napredek</strong>",
-                        "3": "<strong >Najtežja serija</strong>"
-                    }
-                },
-                "imageAlt": "Zavihek Povzetek s volumnom + značko + dosežki + opombami"
-            },
-            "exercises": {
-                "title": "2) Zavihek Vaje",
-                "description": "Zavihek <strong >Vaje</strong> prikaže vaš celoten dnevnik vadbe:",
-                "list": {
-                    "1": "Vsaka vaja vključuje hitro primerjavo z zadnjo vadbo iste predloge",
-                    "2": "Volumen je prikazan na ravni vaje",
-                    "3": "Vsaka serija je navedena s <strong >težo × ponovitvami</strong>",
-                    "4": "Tukaj so vidne vse <strong >opombe vaj</strong>, dodane med treningom"
-                },
-                "note": "To je najboljš tab za pregledovanje točno tega, kar ste naredili serijo za serijo.",
-                "imageAlt": "Zavihek Vaje s seznamom serij + primerjavami + opombami"
-            },
-            "analysis": {
-                "title": "3) Zavihek Analiza",
-                "description": "Zavihek <strong >Analiza</strong> vključuje:",
-                "list": {
-                    "1": "<strong >Trend Volumna</strong> graf (kako se vaš volumen vadbe spreminja skozi čas)",
-                    "2": "<strong >Raziskovalec Vaj</strong> (izberite vajo in preglejte napredek skozi čas)"
-                },
-                "filters": {
-                    "title": "Filtrirate lahko:",
-                    "list": {
-                        "1": "<strong >Vse vadbe</strong> vs <strong >Ista predloga</strong>",
-                        "2": "časovni okvir: <strong >30d / 90d / Vse</strong>"
-                    }
-                },
-                "imageAlt": "Zavihek Analiza s filtri + trendom volumna + raziskovalcem vaj"
-            },
-            "tip": {
-                "title": "Nasvet",
-                "description": "Uporabite <strong >Ista predloga</strong>, ko želite najbolj smiselno primerjavo (npr. Upper A vs vaš prejšnji Upper A)."
-            }
-        },
-        "volumeTrend": {
-            "title": "Analiza (Trend Volumna)",
-            "description": "Graf Trenda Volumna prikazuje, kako se vaš <strong >volumen treninga</strong> spreminja skozi čas.\n\nPomaga vam opaziti doslednost, konice in ali se vaše zadnje seje gibljejo navzgor ali navzdol.",
-            "imageAlt": "Sekcija Trenda Volumna",
-            "chartShows": {
-                "title": "1) Kaj graf prikazuje",
-                "list": {
-                    "1": "Vsaka točka predstavlja <strong >skupni volumen</strong> vadbe",
-                    "2": "“Današnji volumen” prikazuje volumen vadbe, ki si jo trenutno ogledujete",
-                    "3": "Besedilo z % primerja danes z vašo zadnjo ustrezno vadbo (na podlagi izbranega filtra)"
-                },
-                "imageAlt": "Današnji volumen + % vs zadnji"
-            },
-            "compare": {
-                "title": "2) Primerjajte prave vadbe",
-                "description": "Uporabite zgornji filter, da izberete, kaj želite primerjati:",
-                "list": {
-                    "1": "<strong >Vse vadbe</strong> — splošni trend skozi vse, kar počnete",
-                    "2": "<strong >Ista predloga</strong> — primerja samo vadbe iz iste predloge/dneva (priporočeno)"
-                },
-                "note": "Ista predloga je običajno najbolj uporaben pogled (Upper A vs Upper A, Lower vs Lower).",
-                "imageAlt": "Preklop Vse vadbe / Ista predloga"
-            },
-            "timeframe": {
-                "title": "3) Izberite časovni okvir",
-                "description": "Uporabite filter časovnega okvira za spremembo razpona:",
-                "list": {
-                    "1": "<strong >30d</strong> — kratkoročni trend",
-                    "2": "<strong >90d</strong> — srednjeročni trend",
-                    "3": "<strong >Vse</strong> — celotna zgodovina"
-                },
-                "imageAlt": "Preklop 30d / 90d / Vse"
-            },
-            "howTo": {
-                "title": "Kako ga uporabljati",
-                "description": "Če trend volumna pada <strong >navzdol</strong> za isto predlogo, to lahko nakazuje utrujenost, manjši trud ali spremembo izbora vaj.",
-                "tip": {
-                    "title": "Nasvet",
-                    "text": "Višji volumen ne pomeni vedno boljšega napredka — volumen se lahko poveča samo z dodajanjem več serij.\n\nZa jasnejši signal preverite tudi <link >exercise explorer</link> (top set, ponovitve in teža skozi čas)."
-                }
-            }
-        },
-        "exerciseExplorer": {
-            "title": "Analiza (Raziskovalec Vaj)",
-            "description": "Raziskovalec vaj vam omogoča sledenje napredku za <strong >določeno vajo</strong> skozi čas.\n\nJe najboljše mesto za potrditev dejanskega napredka onkraj le skupnega volumna.",
-            "imageAlt": "Sekcija Raziskovalec Vaj",
-            "pickExercise": {
-                "title": "1) Izberi vajo",
-                "list": {
-                    "1": "Odpri zavihek <strong >Analiza</strong>",
-                    "2": "Podrsaj do <strong >Raziskovalec Vaj</strong>",
-                    "3": "Uporabi izbirnik vaj za izbiro vaje"
-                },
-                "imageAlt": "Spustni seznam z vajami"
-            },
-            "whatToTrack": {
-                "title": "2) Kaj lahko spremljaš",
-                "description": "Za izbrano vajo lahko pregledaš trende skozi čas, vključno z:",
-                "list": {
-                    "1": "<strong >Volumen</strong> (skupni volumen za to vajo na trening)",
-                    "2": "<strong >Ponovitve</strong> (kako se tvoje ponovitve spreminjajo skozi čas)",
-                    "3": "<strong >Top set</strong> (trend tvoje najtežje / najboljše serije)"
-                },
-                "imageAlt": "Grafi vaj za volumen/ponovitve/top set"
-            },
-            "filters": {
-                "title": "3) Uporabi iste filtre (priporočeno)",
-                "description": "Za najjasnejši signal kombiniraj Raziskovalec vaj s filtri:",
-                "list": {
-                    "1": "<strong >Ista predloga</strong> (primerjaj isti dan/tip treninga)",
-                    "2": "časovni okvir: <strong >30d / 90d / Vse</strong>"
-                },
-                "note": "To prepreči mešanje različnih variacij iste vaje med različnimi dnevi.",
-                "imageAlt": "Filtri Ista predloga + časovni okvir"
-            },
-            "howTo": {
-                "title": "Kako ga uporabljati",
-                "list": {
-                    "1": "Če se <strong >Top set</strong> izboljšuje, postajaš močnejši pri tem gibu.",
-                    "2": "Če se <strong >Ponovitve</strong> povečajo pri isti teži, je to tudi napredek.",
-                    "3": "Če <strong >Volumen</strong> raste, medtem ko top set ostaja raven, gre morda preprosto za več serij ali dodatnih vaj."
-                }
-            },
-            "tip": {
-                "title": "Nasvet",
-                "description": "Uporabi opombe vaj iz svojih treningov (bolečina, nastavitve, napotki za tehniko) za razlago padcev ali vzponov - kontekst je pomemben."
-            }
-        }
-    },
-    "Page": {
-        "badge": "Vodiči",
-        "title": "Dobrodošli",
-        "subtitle": "SetWise je ustvarjen za preprosto, dosledno in merljivo treniranje.",
-        "intro": {
-            "title": "V teh vodičih se boste naučili:",
-            "list": {
-                "install": "namestiti SetWise na katerokoli mobilno napravo",
-                "create": "ustvariti program in predloge",
-                "log": "beležiti treninge (serije, ponovitve, teža, opombe)",
-                "review": "pregledovati napredek in analitiko",
-                "features": "učinkovito uporabljati ključne funkcije"
-            },
-            "footer": "Uporabite meni na levi za sledenje korak za korakom ali skočite na želeno temo."
-        },
-        "howTo": {
-            "title": "Kako kar najbolje izkoristiti SetWise",
-            "description": "SetWise deluje najbolje, če redno beležite in načrtno spremljate svoj napredek.",
-            "points": {
-                "1": {
-                    "title": "1) Uporabljajte Predloge za doslednost",
-                    "description": "Če sledite split programu, zgradite <strong >Program</strong> in trenirajte iz <strong >Dni (Predlog)</strong>.\nTo omogoča smiselne primerjave (Upper A proti Upper A)."
-                },
-                "2": {
-                    "title": "2) Začnite hitro z “Last”",
-                    "description": "Med treningom SetWise predizpolni vrednosti na podlagi vaše prejšnje seje.\nUporabite <strong >Last</strong> (Zadnje) kot izhodišče, nato prilagodite gor/dol."
-                },
-                "3": {
-                    "title": "3) Naj bodo opombe kratke (a uporabne)",
-                    "description": "Dodajte hitre opombe za kontekst:",
-                    "list": {
-                        "pain": "bolečina / nelagodje",
-                        "technique": "napotki za tehniko",
-                        "setup": "nastavitev naprave"
-                    },
-                    "footer": "To naredi vašo naslednjo sejo pametnejšo."
-                },
-                "4": {
-                    "title": "4) Uporabite Hiter Start za fleksibilnost",
-                    "description": "Danes brez plana? Uporabite <strong >Hiter Start</strong> in gradite sejo sproti.\nŠe vedno lahko sledite vsemu in pregledujete v Napredku."
-                },
-                "5": {
-                    "title": "5) Tedensko pregledujte Napredek",
-                    "description": "Uporabite zaslon <strong >Napredek</strong> za:",
-                    "list": {
-                        "past": "odpiranje preteklih treningov",
-                        "details": "pregled podrobnosti serij",
-                        "trends": "preverjanje trendov volumna in Raziskovalca vaj"
-                    }
-                }
-            }
-        },
-        "tips": {
-            "title": "Nasveti",
-            "list": {
-                "consistency": "Doslednost premaga popolnost. Čist dnevnik in hiter tedenski pregled sta dovolj za opazovanje napredka skozi čas.",
-                "quality": "Napredek štejte le, če kakovost ostane enaka.",
-                "form": "Ohranite formo, <strong >ROM</strong> in <strong >tempo</strong> konsistentne - dodajanje ponovitev/teže s krajšanjem giba ali spreminjanjem tempa ni prava progresivna obremenitev (spremenili ste pogoje)."
-            }
-        },
-        "learnMore": {
-            "title": "Več informacij",
-            "contact": "Kontaktirajte nas",
-            "contactDesc": "Stopite v stik z ekipo",
-            "support": "Center za pomoč",
-            "supportDesc": "Poiščite pomoč in odgovore"
-        }
-    },
-    "InstallationPage": {
-        "title": "Namestitev",
-        "description": "Kako namestiti SetWise na svojo napravo.",
-        "badge": "Vodiči",
-        "heading": "Namesti <brand>SetWise</brand> v nekaj sekundah",
-        "ios": {
-            "title": "SetWise za iOS",
-            "subtitle": "Distribuirano prek <strong >TestFlight</strong> med zgodnjim dostopom.",
-            "description": "<strong >TestFlight</strong> je uradna Applova aplikacija za testiranje beta različic - omogoča varno namestitev SetWise, prejemanje posodobitev in pošiljanje povratnih informacij pred javno izdajo v App Store.\n\nKo prejmete povabilo po e-pošti, namestitev traja približno minuto.",
-            "steps": {
-                "1": {
-                    "title": "1) Zahtevaj zgodnji dostop",
-                    "list": {
-                        "1": "Odpri obrazec za <strong >Zgodnji dostop</strong>.",
-                        "2": "Vnesi svoj e-poštni naslov.",
-                        "3": "Izberi <strong >iOS</strong> (ali <strong >Oba</strong>).",
-                        "4": "Tapni <strong >Pridobi beta dostop</strong>."
-                    },
-                    "note": "Uporabi isti e-poštni naslov, ki ga uporabljaš na svojem iPhoneu (priporočeno), da bo pridružitev brezhibna."
-                },
-                "2": {
-                    "title": "2) Preveri svojo mapo prejeto",
-                    "description": "V nekaj minutah boš prejel e-pošto s <strong >TestFlight povabilom</strong>.",
-                    "list": {
-                        "1": "Če je ne vidiš, preveri <strong >Vsiljeno pošto / Promocije</strong>",
-                        "2": "Išči: <strong >SetWise</strong>"
-                    }
-                },
-                "3": {
-                    "title": "3) Namesti TestFlight",
-                    "description": "TestFlight je uradna Applova aplikacija za beta testiranje.",
-                    "list": {
-                        "1": "Odpri App Store",
-                        "2": "Išči <strong >TestFlight</strong>",
-                        "3": "Namesti jo"
-                    }
-                },
-                "4": {
-                    "title": "4) Pridruži se beti + namesti SetWise",
-                    "list": {
-                        "1": "Na iPhoneu odpri povabilo v e-pošti",
-                        "2": "Tapni povezavo povabila",
-                        "3": "TestFlight se bo odprl",
-                        "4": "Tapni <strong >Sprejmi</strong> (če je prikazano)",
-                        "5": "Tapni <strong >Namesti</strong>"
-                    }
-                },
-                "5": {
-                    "title": "5) Odpri SetWise",
-                    "description": "Po namestitvi lahko odpreš SetWise:",
-                    "list": {
-                        "1": "neposredno iz <strong >TestFlight</strong>, ali",
-                        "2": "iz svojega <strong >Domačega zaslona</strong>"
-                    }
-                }
-            },
-            "updates": {
-                "title": "Posodobitve (pomembno)",
-                "description": "Nove beta različice so na voljo prek TestFlight.",
-                "list": {
-                    "1": "Odpri TestFlight za ogled razpoložljivih posodobitev",
-                    "2": "Vklopi samodejne posodobitve, če želiš najnovejšo različico samodejno"
-                }
-            },
-            "troubleshooting": {
-                "title": "Odpravljanje težav",
-                "items": {
-                    "1": {
-                        "title": "Ne morem odpreti povezave povabila",
-                        "list": {
-                            "1": "Prepričaj se, da jo odpreš <strong >na iPhoneu</strong> (ne na računalniku)",
-                            "2": "Poskusi kopirati povezavo v Safari"
-                        }
-                    },
-                    "2": {
-                        "title": "E-pošta nikoli ne prispe",
-                        "list": {
-                            "1": "Dvakrat preveri e-poštni naslov, ki si ga vnesel v obrazec",
-                            "2": "Preveri Vsiljeno pošto/Promocije",
-                            "3": "Poskusi znova z drugim e-poštnim naslovom"
-                        }
-                    },
-                    "3": {
-                        "title": "TestFlight pravi, da je beta polna",
-                        "description": "Mesta so omejena. Če se to zgodi, zahtevaj dostop kasneje - redno povečujemo kapacitete."
-                    }
-                }
-            }
-        },
-        "android": {
-            "title": "Android (Google Play)",
-            "subtitle": "Na voljo prek <strong >Google Play Open Testing</strong>.",
-            "description": "Po zahtevi za zgodnji dostop boš prejel e-pošto s povezavo, ki odpre Play Store, kjer lahko namestiš beta različico kot običajno aplikacijo.",
-            "steps": {
-                "1": {
-                    "title": "1) Zahtevaj zgodnji dostop",
-                    "list": {
-                        "1": "Odpri obrazec za <strong >Zgodnji dostop</strong>",
-                        "2": "Vnesi svojo e-pošto",
-                        "3": "Izberi <strong >Android</strong> (ali <strong >Oba</strong>)",
-                        "4": "Tapni <strong >Pridobi beta dostop</strong>"
-                    }
-                },
-                "2": {
-                    "title": "2) Preveri svojo mapo prejeto",
-                    "description": "Prejel boš e-pošto s svojo <strong >Google Play beta povezavo</strong>.",
-                    "list": {
-                        "1": "Če je ne vidiš, preveri <strong >Vsiljeno pošto / Promocije</strong>",
-                        "2": "Išči: <strong >SetWise</strong>"
-                    }
-                },
-                "3": {
-                    "title": "3) Odpri povezavo Play Store",
-                    "list": {
-                        "1": "Odpri e-pošto <strong >na svojem Android telefonu</strong>",
-                        "2": "Tapni povezavo - odprl se bo <strong >Google Play</strong>",
-                        "3": "Tapni <strong >Namesti</strong>"
-                    },
-                    "note": "Če vidiš korak kot <strong >Pridruži se / Postani preizkuševalec</strong>, ga potrdi in nato namesti."
-                },
-                "4": {
-                    "title": "4) Odpri SetWise",
-                    "description": "Po namestitvi odpri SetWise:",
-                    "list": {
-                        "1": "iz strani <strong >Play Store</strong>, ali",
-                        "2": "iz svojega <strong >Domačega zaslona / Predala aplikacij</strong>"
-                    }
-                }
-            },
-            "updates": {
-                "title": "Posodobitve (pomembno)",
-                "description": "Beta posodobitve prihajajo prek Google Play.",
-                "list": {
-                    "1": "Odpri Play Store → SetWise → <strong >Posodobi</strong> (če je na voljo)",
-                    "2": "Opcijsko: omogoči <strong >Samodejno posodabljanje</strong> za SetWise v Play Store"
-                }
-            },
-            "troubleshooting": {
-                "title": "Odpravljanje težav",
-                "items": {
-                    "1": {
-                        "title": "Povezava se odpre na računalniku, ne na telefonu",
-                        "description": "Odpri e-pošto na svoji Android napravi (ali jo posreduj na račun, ki ga uporabljaš na telefonu)."
-                    },
-                    "2": {
-                        "title": "“Ta aplikacija ni na voljo za vašo napravo”",
-                        "description": "Tvoja Android različica je morda pre stara ali pa naprava ni podprta za to izdajo. Za več informacij o tem preveri <strong >ZAHTEVE</strong>."
-                    },
-                    "3": {
-                        "title": "Ne vidim e-pošte",
-                        "list": {
-                            "1": "Preveri Vsiljeno pošto/Promocije",
-                            "2": "Išči “SetWise”",
-                            "3": "Zahtevaj dostop znova in dvakrat preveri vneseni e-poštni naslov"
-                        }
-                    }
-                }
-            }
-        },
-        "requirements": {
-            "title": "ZAHTEVE",
-            "ios": {
-                "title": "iOS",
-                "list": {
-                    "1": "iPhone ali iPad z <strong >iOS 15.1 ali novejšim</strong>",
-                    "2": "<strong >TestFlight</strong> nameščen",
-                    "3": "Apple ID prijavljen"
-                }
-            },
-            "android": {
-                "title": "Android",
-                "list": {
-                    "1": "Android naprava z dostopom do <strong >Google Play Store</strong>",
-                    "2": "Google račun prijavljen"
-                },
-                "compatibility": "<strong >Opomba o združljivosti:</strong> SetWise je potrjen, da deluje na <strong >Android 8+</strong>. Prejšnje različice uradno niso podprte."
-            },
-            "internet": {
-                "title": "Internet",
-                "list": {
-                    "1": "Internet je potreben za namestitev, prijavo, ustvarjanje predlog in funkcije, ki jih poganja umetna inteligenca.",
-                    "2": "Po namestitvi osnovno beleženje deluje brez povezave"
-                }
-            },
-            "notCompatible": "Če Google Play prikaže “Ni združljivo”, naprava ne izpolnjuje trenutnih minimalnih zahtev."
-        }
-    },
-    "CreateWorkoutPage": {
-        "title": "Ustvari Trening",
-        "description": "Kako ustvariti treninge v SetWise.",
-        "badge": "Vodiči",
-        "heading": "Ustvari svoj <brand>popoln</brand> trening",
-        "overview": {
-            "title": "Ustvarjanje Treninga",
-            "description": "SetWise ponuja prilagodljive načine za ustvarjanje treningov, od preprostih seznamov do kompleksnih programov.",
-            "cards": {
-                "scratch": {
-                    "title": "Iz Nič",
-                    "description": "Zgradi vajo po vajo."
-                },
-                "template": {
-                    "title": "Iz Predloge",
-                    "description": "Uporabi že narejeno predlogo."
-                },
-                "paste": {
-                    "title": "Prilepi Uvoz",
-                    "description": "Prilepi besedilo iz zapiskov."
-                },
-                "ai": {
-                    "title": "AI Generator",
-                    "description": "Naj ga AI zgradi zate."
-                }
-            }
-        },
-        "keyFeatures": {
-            "badge": "Metode",
-            "title": "Metode Ustvarjanja",
-            "scratch": {
-                "title": "Iz Nič",
-                "step1": {
-                    "lead": "Nov Trening",
-                    "text": "Tapni gumb 'Plus'."
-                },
-                "step2": {
-                    "lead": "Dodaj Vaje",
-                    "text": "Poišči in dodaj vaje."
-                },
-                "step3": {
-                    "lead": "Shrani",
-                    "text": "Shrani kot predlogo za kasneje."
-                }
-            },
-            "paste": {
-                "title": "Prilepi Uvoz",
-                "step1": {
-                    "lead": "Kopiraj Besedilo",
-                    "text": "Kopiraj trening od kjerkoli."
-                },
-                "step2": {
-                    "lead": "Prilepi",
-                    "text": "Prilepi v SetWise."
-                },
-                "step3": {
-                    "lead": "Preglej",
-                    "text": "Preveri prepoznane vaje."
-                }
-            },
-            "template": {
-                "title": "Uporaba Predlog",
-                "step1": {
-                    "lead": "Izberi Predlogo",
-                    "text": "Izberi iz svoje knjižnice."
-                },
-                "step2": {
-                    "lead": "Uredi",
-                    "text": "Prilagodi, če je potrebno."
-                },
-                "step3": {
-                    "lead": "Začni",
-                    "text": "Začni svojo sejo."
-                }
-            },
-            "structure": {
-                "title": "Strukturiranje",
-                "supersets": {
-                    "lead": "Superseti",
-                    "text": "Združi vaje skupaj."
-                },
-                "warmup": {
-                    "lead": "Ogrevalni Seti",
-                    "text": "Označi sete kot ogrevanje."
-                },
-                "notes": {
-                    "lead": "Opombe",
-                    "text": "Dodaj navodila."
-                },
-                "rest": {
-                    "lead": "Čas Počitka",
-                    "text": "Nastavi ciljni čas počitka."
-                }
-            },
-            "tips": {
-                "title": "Pro Nasveti",
-                "tagging": {
-                    "title": "Označevanje",
-                    "description": "Organiziraj svoje treninge."
-                },
-                "duplicating": {
-                    "title": "Podvajanje",
-                    "description": "Kopiraj obstoječe treninge."
-                },
-                "sharing": {
-                    "title": "Deljenje",
-                    "description": "Deli s prijatelji."
-                },
-                "scheduling": {
-                    "title": "Urnik",
-                    "description": "Načrtuj vnaprej."
-                }
-            }
-        },
-        "getStarted": {
-            "badge": "Akcija",
-            "title": "Začni Ustvarjati",
-            "beta": {
-                "title": "Poskusi Zdaj",
-                "description": "Ustvari svoj prvi trening v sekundah.",
-                "button": "Ustvari Trening"
-            },
-            "benefits": {
-                "fast": "Hitro",
-                "flexible": "Prilagodljivo",
-                "smart": "Pametno",
-                "easy": "Lahko"
-            },
-            "steps": {
-                "step1": {
-                    "title": "Odpri Aplikacijo",
-                    "description": "Zaženi SetWise."
-                },
-                "step2": {
-                    "title": "Tapni Ustvari",
-                    "description": "Pritisni + gumb."
-                },
-                "step3": {
-                    "title": "Shrani",
-                    "description": "Shrani svojo rutino."
-                }
-            }
-        },
-        "security": {
-            "badge": "Podatki",
-            "title": "Tvoji Treningi",
-            "encryption": {
-                "title": "Varnostna Kopija",
-                "description": "Varno v oblaku."
-            },
-            "localStorage": {
-                "title": "Izvozljivo",
-                "description": "Izvozi kot tekst/JSON."
-            }
-        }
-    },
-    "WorkoutsPage": {
-        "title": "Workouts",
-        "description": "Programs, templates, and logging.",
-        "badge": "Guides",
-        "heading": "Master your <brand>training</brand>",
-        "createProgram": {
-            "title": "Create a Program & Templates",
-            "subtitle": "A <strong >Program</strong> is your training structure over time.",
-            "description": "Inside a program you create <strong >Days</strong> (e.g. Upper A, Upper B, Lower), and each day contains your exercises and set details.\n\nTemplates let you reuse the same day or workout structure anytime.",
-            "whatYouWillDo": {
-                "title": "What you’ll do",
-                "list": {
-                    "1": "Create a program",
-                    "2": "Add training days (Upper A / Upper B / …)",
-                    "3": "Build each day by adding exercises and setting targets",
-                    "4": "Edit everything later (any time)"
-                }
-            },
-            "steps": {
-                "1": {
-                    "title": "1) Create a Program",
-                    "list": {
-                        "1": "Open <strong >Programs tab</strong>",
-                        "2": "Tap <strong >Create Program</strong>",
-                        "3": "Give it a name (e.g. “Upper/Lower Split”)",
-                        "4": "Save"
-                    },
-                    "imageAlt": "Programs screen + Create Program"
-                },
-                "2": {
-                    "title": "2) Add Days inside the Program",
-                    "list": {
-                        "1": "Open your program",
-                        "2": "Tap Create Template",
-                        "3": "Name the day (e.g. “Upper A”, “Upper B”)",
-                        "4": "Repeat for as many days as you need"
-                    },
-                    "imageAlt": "Program detail + list of days"
-                },
-                "3": {
-                    "title": "3) Build a Day (add exercises)",
-                    "list": {
-                        "1": "Open a day (e.g. “Upper A”)",
-                        "2": "Tap Edit",
-                        "3": "Click “add exercise”"
-                    },
-                    "subDescription": "For each exercise, you can configure:",
-                    "subList": {
-                        "1": "<strong >Rep range</strong> (target range per set)",
-                        "2": "<strong >RPE / RIR</strong> (optional)",
-                        "3": "<strong >Advanced</strong> (optional): intensifiers, ROM, tempo, and other details"
-                    },
-                    "imageAlt": "Day builder + Add Exercise"
-                },
-                "4": {
-                    "title": "4) Add notes (per exercise)",
-                    "description": "You can add <strong >notes on the exercise level</strong> (e.g. cues, setup, technique reminders).\n\nNotes will stay attached to that exercise in the day and can be changed anytime.",
-                    "imageAlt": "Exercise notes field"
-                },
-                "5": {
-                    "title": "5) Edit anytime (non-destructive)",
-                    "description": "Programs and days are designed to be flexible:",
-                    "list": {
-                        "1": "Rename program or days",
-                        "2": "Reorder exercises",
-                        "3": "Update rep ranges, RPE/RIR, or Advanced settings",
-                        "4": "Add/remove exercises",
-                        "5": "Update exercise notes"
-                    },
-                    "footer": "Everything can be adjusted later from the <strong >Edit</strong> screen.",
-                    "imageAlt": "Edit day / Edit program entry point"
-                }
-            },
-            "search": {
-                "title": "Exercise search (and creating your own)",
-                "description": "When adding an exercise, use the search bar:",
-                "list": {
-                    "1": "If the exercise exists, select it.",
-                    "2": "If it <strong >doesn’t exist</strong>, just type the name and create it instantly — no extra steps."
-                },
-                "footer": "This makes it easy to log any variation or custom movement.",
-                "imageAlt": "Search bar + “Create new exercise” state"
-            },
-            "tips": {
-                "title": "Tips",
-                "list": {
-                    "1": "Use consistent day naming: <strong >Upper A / Upper B / Lower A / Lower B</strong>",
-                    "2": "Keep <strong >RPE/RIR optional</strong> - add it only if you actively use it",
-                    "3": "Use notes for cues you often forget (setup, tempo, depth, grip)"
-                }
-            }
-        },
-        "startTemplate": {
-            "title": "Start from a Template",
-            "subtitle": "Templates are your planned workouts inside a program (e.g. Upper A, Upper B).",
-            "description": "They already include your exercises and targets (rep ranges, optional RPE/RIR, etc.).",
-            "steps": {
-                "1": {
-                    "title": "1) Start the workout",
-                    "list": {
-                        "1": "Open the <strong >Start</strong> tab",
-                        "2": "Find your <strong >Day (Template)</strong> in the list",
-                        "3": "Tap the <strong >Start</strong> icon next to the day name"
-                    },
-                    "imageAlt": "Program → Day → Start"
-                },
-                "2": {
-                    "title": "2) What you see during the workout",
-                    "description": "Each exercise card shows:",
-                    "list": {
-                        "1": "<strong >Target reps / rep range</strong> (planned)",
-                        "2": "<strong >Last</strong> (what you did last time)",
-                        "3": "<strong >Today</strong> (what you’ve logged in this session)"
-                    },
-                    "imageAlt": "Exercise card highlighting Last / Today"
-                },
-                "3": {
-                    "title": "3) Template actions (during the workout)",
-                    "description": "On template-based workouts you can:",
-                    "list": {
-                        "1": "Add extra set",
-                        "2": "<strong >Skip a set</strong>",
-                        "3": "<strong >Delete last logged set</strong>"
-                    },
-                    "footer": "Use these when something changes mid-session.",
-                    "imageAlt": "Skip set UI"
-                },
-                "4": {
-                    "title": "4) Finish the workout",
-                    "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
-                    "list": {
-                        "1": "review your <strong >workout total volume</strong>",
-                        "2": "optionally add <strong >workout notes</strong> (for the entire session)"
-                    },
-                    "footer": "Tap <strong >Confirm</strong> to save and finish.",
-                    "imageAlt": "Finish flow"
-                },
-                "5": {
-                    "title": "5) Resume a workout (if you close the app)",
-                    "description": "If you close SetWise by accident or switch apps, your active workout is kept.\n\nWhen you open the app again, you’ll see a prompt on the <strong >Programs</strong> screen that lets you:",
-                    "list": {
-                        "1": "<strong >Continue workout</strong>, or",
-                        "2": "<strong >Discard</strong> it (if you don’t need it)"
-                    },
-                    "imageAlt": "Programs screen resume prompt"
-                }
-            }
-        },
-        "quickStart": {
-            "title": "Quick Start",
-            "subtitle": "Quick Start is for flexible training days - you don’t need a fixed plan.",
-            "description": "Start the workout immediately and add exercises as you go.",
-            "steps": {
-                "1": {
-                    "title": "1) Start Quick Start",
-                    "list": {
-                        "1": "Open the <strong >Start</strong> tab",
-                        "2": "Tap <strong >Quick Start</strong>"
-                    },
-                    "imageAlt": "Start tab + Quick Start button"
-                },
-                "2": {
-                    "title": "2) Add exercises during the workout",
-                    "list": {
-                        "1": "Tap <strong >Add Exercise</strong>",
-                        "2": "Search for an exercise and tap to add it"
-                    },
-                    "subTitle": "Create your own exercise (instantly)",
-                    "subDescription": "If you can’t find an exercise:\n\nType the name and create it instantly - no extra setup required.",
-                    "imageAlt": "Add Exercise search + Create new exercise"
-                },
-                "3": {
-                    "title": "3) Log sets (same as templates)",
-                    "list": {
-                        "1": "Adjust weight/reps using <strong >+ / −</strong> or tap to type",
-                        "2": "Tap <strong >✓</strong> to log a set",
-                        "3": "Use the <strong >note</strong> icon to add exercise notes (optional)"
-                    },
-                    "imageAlt": "Quick Start logging UI"
-                },
-                "4": {
-                    "title": "4) Exercise options (⋯)",
-                    "description": "Tap the <strong >⋯</strong> menu on an exercise to:",
-                    "list": {
-                        "1": "<strong >Remove exercise</strong> (if you added it by mistake)",
-                        "2": "<strong >Delete last logged set</strong> (undo)",
-                        "3": "<strong >Finish exercise</strong> (mark it as done for a cleaner view)"
-                    },
-                    "footer": "Finishing an exercise helps keep your session organized, especially in longer workouts.",
-                    "imageAlt": "⋯ menu options"
-                },
-                "5": {
-                    "title": "5) Finish the workout",
-                    "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
-                    "list": {
-                        "1": "review your <strong >workout total volume</strong>",
-                        "2": "optionally add <strong >workout notes</strong>"
-                    },
-                    "footer": "Tap <strong >Confirm</strong> to save and finish.",
-                    "imageAlt": "Finish summary sheet"
-                }
-            },
-            "resume": {
-                "title": "Resume a workout",
-                "description": "If you leave the app mid-workout, SetWise keeps it active.\n\nNext time you open the app, you can <strong >Continue</strong> from the prompt on the <strong >Programs</strong> screen.",
-                "imageAlt": "Resume prompt"
-            }
-        },
-        "logging": {
-            "title": "Logging sets & notes",
-            "subtitle": "Logging works the same whether you start from a <strong >Template</strong> or use <strong >Quick Start</strong>.",
-            "steps": {
-                "1": {
-                    "title": "1) Adjust weight & reps",
-                    "list": {
-                        "1": "Tap <strong >+ / −</strong> for quick adjustments",
-                        "2": "Tap the value field to <strong >type</strong> an exact number"
-                    },
-                    "imageAlt": "+/- controls + tap-to-type fields"
-                },
-                "2": {
-                    "title": "2) Log a set (✓)",
-                    "description": "When the numbers are correct, tap <strong >✓</strong> to log the set.\n\nLogged sets appear under <strong >Today</strong> for that exercise.",
-                    "imageAlt": "✓ button + “Today” list"
-                },
-                "3": {
-                    "title": "3) Edit a logged set (pencil)",
-                    "description": "If you need to correct something after logging:",
-                    "list": {
-                        "1": "Tap the <strong >pencil</strong> icon",
-                        "2": "Update the set values",
-                        "3": "Save"
-                    },
-                    "imageAlt": "Pencil edit flow"
-                },
-                "4": {
-                    "title": "4) Undo mistakes (Delete last logged set)",
-                    "description": "If you log a set by accident, use:",
-                    "list": {
-                        "1": "<strong >Delete last logged set</strong> (undo)"
-                    },
-                    "subDescription": "This removes the most recent set you logged for that exercise.",
-                    "imageAlt": "Delete last logged set action"
-                },
-                "5": {
-                    "title": "5) Skip a set (Templates)",
-                    "description": "When training from a template, you can also <strong >Skip</strong> a set if needed.",
-                    "imageAlt": "Skip set UI"
-                },
-                "6": {
-                    "title": "6) Add exercise notes (note icon)",
-                    "description": "Tap the <strong >note</strong> icon to add notes on the exercise level, for example:",
-                    "list": {
-                        "1": "pain / discomfort",
-                        "2": "technique cues",
-                        "3": "machine setup",
-                        "4": "“form felt off” / “reduce load next time”"
-                    },
-                    "footer": "These notes help you remember context next session.",
-                    "imageAlt": "Exercise note input"
-                }
-            },
-            "tip": {
-                "title": "Tip: Use “Last” to start fast",
-                "description": "Fields are pre-filled automatically based on your previous session.\n\nUse <strong >Last</strong> as a quick reference so you immediately know what weight/reps to aim for today."
-            }
-        }
-    },
-    "AiFeaturesPage": {
-        "title": "AI Funkcije",
-        "badge": "Vodiči",
-        "heading": "Nadgradi z <brand>AI</brand>",
-        "overview": {
-            "title": "Pregled",
-            "description": "SetWise vključuje orodja z umetno inteligenco, ki vam pomagajo prihraniti čas.\n\nTrenutno je glavna AI funkcija <strong >Uvoz Plana</strong> - prilepite načrt vadbe od koderkoli in ga pretvorite v strukturiran program s predlogami (dnevi).",
-            "imageAlt": "Vstopna točka za AI funkcije",
-            "whenToUse": {
-                "title": "Kdaj uporabiti AI",
-                "list": {
-                    "1": "Že imate načrt zapisan v zapiskih / dokumentu",
-                    "2": "Prejeli ste načrt od trenerja",
-                    "3": "Želite hitro prenesti načrt v SetWise brez ročnega nastavljanja"
-                }
-            },
-            "requirements": {
-                "title": "Zahteve",
-                "description": "AI funkcije zahtevajo internetno povezavo."
-            }
-        },
-        "importPlan": {
-            "title": "Uvoz Plana (Parser)",
-            "description": "Uvoz plana vam omogoča, da prilepite načrt vadbe in ga takoj pretvorite v <strong >Program</strong> z <strong >Dnevi (Predlogami)</strong>.",
-            "imageAlt": "Zaslon za uvoz plana",
-            "pastePlan": {
-                "title": "1) Prilepi svoj načrt",
-                "list": {
-                    "1": "Odpri <strong >Uvoz treninga na zavihku Programi</strong>",
-                    "2": "Prilepi svoj načrt v besedilno polje",
-                    "3": "Pritisni <strong >Analiziraj</strong>"
-                },
-                "note": "Večji načrti lahko trajajo do minute.",
-                "imageAlt": "Stanje “Analiziranje plana...”"
-            },
-            "preview": {
-                "title": "2) Predogled ustvarjenega",
-                "description": "Po razčlenjevanju boste videli predogled končnega rezultata:",
-                "list": {
-                    "1": "Ime programa (uredljivo)",
-                    "2": "Skupaj <strong >Dni</strong>, <strong >Vaj</strong> in <strong >Serij</strong>",
-                    "3": "Popolna razčlenitev po dnevih (predlogah)"
-                },
-                "imageAlt1": "Glava predogleda z Dnevi / Vajami / Serijami",
-                "imageAlt2": "Razširjena sekcija dneva"
-            },
-            "confidence": {
-                "title": "3) Ocena zanesljivosti (%)",
-                "description": "Vsaka vaja prikazuje <strong >% zanesljivosti</strong>:",
-                "list": {
-                    "1": "Višji % = SetWise je bolj prepričan, da je pravilno interpretiral vrstico",
-                    "2": "Nižji % = hitro preverite ime vaje in cilje serij"
-                },
-                "imageAlt": "Značka za zanesljivost"
-            },
-            "edit": {
-                "title": "4) Uredi pred shranjevanjem",
-                "description": "Uvožen rezultat lahko prilagodite neposredno v predogledu:",
-                "chips": {
-                    "title": "Uredi cilje preko čipov",
-                    "description": "Pritisni na čip za urejanje vrednosti, na primer:",
-                    "list": {
-                        "1": "<strong >razpon ponovitev</strong>",
-                        "2": "<strong >tempo</strong>",
-                        "3": "<strong >intenzifikator</strong>"
-                    },
-                    "imageAlt": "Čipi za urejanje s pritiskom"
-                },
-                "sets": {
-                    "title": "Prilagodi serije",
-                    "list": {
-                        "1": "Odstrani serijo (✕)",
-                        "2": "Dodaj novo serijo (<strong >Dodaj Serijo</strong>)"
-                    },
-                    "imageAlt": "Kontrole za dodajanje/odstranjevanje serij"
-                },
-                "instructions": {
-                    "title": "Dodaj navodila za vajo (neobvezno)",
-                    "description": "Uporabi <strong >Navodila</strong> za shranjevanje napotkov ali opomb za nastavitev te vaje.",
-                    "imageAlt": "Vrstica z navodili"
-                }
-            },
-            "save": {
-                "title": "5) Shrani predloge",
-                "description": "Ko ste zadovoljni s predogledom:",
-                "list": {
-                    "1": "Potrdi <strong >Ime programa</strong>",
-                    "2": "Pritisni <strong >Shrani predloge</strong>"
-                },
-                "footer": "Vaš program in dnevi (predloge) bodo ustvarjeni in pripravljeni za začetek.",
-                "imageAlt": "Gumb za shranjevanje predlog"
-            },
-            "tips": {
-                "title": "Nasveti za najboljše rezultate",
-                "list": {
-                    "1": "Vsako vajo imejte v svoji vrstici",
-                    "2": "Jasno vključite serije in razpone ponovitev (npr. <code>3 x 8–10</code>)",
-                    "3": "Če uporabljate opombe, kot je “drop set”, jih vključite v isto vrstico — preverite lahko v predogledu"
-                },
-                "note": "<strong >Opomba:</strong> Uvoz deluje najbolje z jasno oblikovanimi načrti.\n\nČe predogled izgleda bistveno drugače, čeprav je vaš načrt jasno napisan, se obrnite na podporo - to nam pomaga izboljšati parser."
             }
         }
     }
