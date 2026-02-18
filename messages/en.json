@@ -1038,6 +1038,94 @@
                     "title": "Tip",
                     "description": "Use <strong >Same template</strong> when you want the most meaningful comparison (e.g. Upper A vs your previous Upper A)."
                 }
+            },
+            "volumeTrend": {
+                "title": "Analysis (Volume Trend)",
+                "description": "The Volume Trend chart shows how your <strong >training volume</strong> changes over time.\n\nIt helps you spot consistency, spikes, and whether your recent sessions are trending up or down.",
+                "imageAlt": "Volume Trend section",
+                "chartShows": {
+                    "title": "1) What the chart shows",
+                    "list": {
+                        "1": "Each point represents the <strong >total volume</strong> of a workout",
+                        "2": "“Today’s volume” shows the volume of the workout you’re currently viewing",
+                        "3": "The % text compares today vs your last relevant workout (based on the selected filter)"
+                    },
+                    "imageAlt": "Today’s volume + % vs last"
+                },
+                "compare": {
+                    "title": "2) Compare the right workouts",
+                    "description": "Use the top filter to choose what you want to compare:",
+                    "list": {
+                        "1": "<strong >All workouts</strong> — broad trend across everything you do",
+                        "2": "<strong >Same template</strong> — compares only workouts from the same template/day (recommended)"
+                    },
+                    "note": "Same template is usually the most useful view (Upper A vs Upper A, Lower vs Lower).",
+                    "imageAlt": "All workouts / Same template toggle"
+                },
+                "timeframe": {
+                    "title": "3) Choose the timeframe",
+                    "description": "Use the timeframe filter to change the range:",
+                    "list": {
+                        "1": "<strong >30d</strong> — short-term trend",
+                        "2": "<strong >90d</strong> — medium-term trend",
+                        "3": "<strong >All</strong> — full history"
+                    },
+                    "imageAlt": "30d / 90d / All toggle"
+                },
+                "howTo": {
+                    "title": "How to use it",
+                    "description": "If volume is trending <strong >down</strong> for the same template, it may signal fatigue, lower effort, or a change in exercise selection.",
+                    "tip": {
+                        "title": "Tip",
+                        "text": "Higher volume doesn’t always mean better progress — volume can increase just by adding more sets.\n\nFor a clearer signal, also check <link >exercise explorer</link> (top set, reps, and weight over time)."
+                    }
+                }
+            },
+            "exerciseExplorer": {
+                "title": "Analysis (Exercise Explorer)",
+                "description": "Exercise Explorer lets you track progress for a <strong >specific exercise</strong> over time.\n\nIt’s the best place to confirm real progress beyond just total volume.",
+                "imageAlt": "Exercise Explorer section",
+                "pickExercise": {
+                    "title": "1) Pick an exercise",
+                    "list": {
+                        "1": "Open the <strong >Analysis</strong> tab",
+                        "2": "Scroll to <strong >Exercise Explorer</strong>",
+                        "3": "Use the exercise selector to choose an exercise"
+                    },
+                    "imageAlt": "Exercise selector dropdown/list"
+                },
+                "whatToTrack": {
+                    "title": "2) What you can track",
+                    "description": "For the selected exercise you can review trends over time, including:",
+                    "list": {
+                        "1": "<strong >Volume</strong> (total volume for that exercise per workout)",
+                        "2": "<strong >Reps</strong> (how your reps change over time)",
+                        "3": "<strong >Top set</strong> (your heaviest / best set trend)"
+                    },
+                    "imageAlt": "Exercise charts for volume/reps/top set"
+                },
+                "filters": {
+                    "title": "3) Use the same filters (recommended)",
+                    "description": "For the clearest signal, combine Exercise Explorer with filters:",
+                    "list": {
+                        "1": "<strong >Same template</strong> (compare the same day/workout type)",
+                        "2": "timeframe: <strong >30d / 90d / All</strong>"
+                    },
+                    "note": "This avoids mixing different variations of the same exercise across different days.",
+                    "imageAlt": "Same template + timeframe filters"
+                },
+                "howTo": {
+                    "title": "How to use it",
+                    "list": {
+                        "1": "If <strong >Top set</strong> is improving, you’re getting stronger on that movement.",
+                        "2": "If <strong >Reps</strong> increase at the same weight, that’s also progress.",
+                        "3": "If <strong >Volume</strong> rises while top set stays flat, it may simply be more sets or accessories."
+                    }
+                },
+                "tip": {
+                    "title": "Tip",
+                    "description": "Use exercise notes from your workouts (pain, setup, technique cues) to explain dips or spikes - context matters."
+                }
             }
         },
         "Page": {

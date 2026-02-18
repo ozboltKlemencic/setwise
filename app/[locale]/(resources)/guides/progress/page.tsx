@@ -339,6 +339,291 @@ export default async function ProgressPage() {
                         </div>
 
                     </section>
+
+                    {/* VOLUME TREND Section */}
+                    <section id="volume-trend" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
+                        <div className="space-y-(--space-2)">
+                            <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                                {t('volumeTrend.title')}
+                            </h2>
+                            <div className="text-body text-surface-700 max-w-prose whitespace-pre-line">
+                                {t.rich('volumeTrend.description', richTextComponents)}
+                            </div>
+                        </div>
+
+                        {/* Main Image */}
+                        <div className="flex justify-center w-full py-8 bg-surface-50/50 dark:bg-surface-900/20 rounded-2xl border border-surface-200 dark:border-surface-800">
+                            <div className="w-[200px] md:w-[240px]">
+                                <Iphone>
+                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                        <span className="text-caption-1 text-surface-400 font-medium">
+                                            {t('volumeTrend.imageAlt')}
+                                        </span>
+                                    </div>
+                                </Iphone>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* 1) What Chart Shows */}
+                        <div className="flex flex-col gap-(--space-8)">
+                            <div className="space-y-(--space-4)">
+                                <h3 className="text-title-3 font-bold text-surface-900">
+                                    {t('volumeTrend.chartShows.title')}
+                                </h3>
+                                <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                    {[1, 2, 3].map((i) => (
+                                        <li key={i}>{t.rich(`volumeTrend.chartShows.list.${i}`, richTextComponents)}</li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="flex justify-center w-full">
+                                <div className="w-[200px] md:w-[240px]">
+                                    <Iphone>
+                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                            <span className="text-caption-1 text-surface-400 font-medium">
+                                                {t('volumeTrend.chartShows.imageAlt')}
+                                            </span>
+                                        </div>
+                                    </Iphone>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* 2) Compare */}
+                        <div className="flex flex-col gap-(--space-8)">
+                            <div className="space-y-(--space-4)">
+                                <h3 className="text-title-3 font-bold text-surface-900">
+                                    {t('volumeTrend.compare.title')}
+                                </h3>
+                                <div className="text-body text-surface-600 max-w-prose">
+                                    {t.rich('volumeTrend.compare.description', richTextComponents)}
+                                </div>
+                                <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                    {[1, 2].map((i) => (
+                                        <li key={i}>{t.rich(`volumeTrend.compare.list.${i}`, richTextComponents)}</li>
+                                    ))}
+                                </ul>
+                                <p className="text-body text-surface-600 italic">
+                                    {t('volumeTrend.compare.note')}
+                                </p>
+                            </div>
+
+                            <div className="flex justify-center w-full">
+                                <div className="w-[200px] md:w-[240px]">
+                                    <Iphone>
+                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                            <span className="text-caption-1 text-surface-400 font-medium">
+                                                {t('volumeTrend.compare.imageAlt')}
+                                            </span>
+                                        </div>
+                                    </Iphone>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* 3) Timeframe */}
+                        <div className="flex flex-col gap-(--space-8)">
+                            <div className="space-y-(--space-4)">
+                                <h3 className="text-title-3 font-bold text-surface-900">
+                                    {t('volumeTrend.timeframe.title')}
+                                </h3>
+                                <div className="text-body text-surface-600 max-w-prose">
+                                    {t.rich('volumeTrend.timeframe.description', richTextComponents)}
+                                </div>
+                                <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                    {[1, 2, 3].map((i) => (
+                                        <li key={i}>{t.rich(`volumeTrend.timeframe.list.${i}`, richTextComponents)}</li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="flex justify-center w-full">
+                                <div className="w-[200px] md:w-[240px]">
+                                    <Iphone>
+                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                            <span className="text-caption-1 text-surface-400 font-medium">
+                                                {t('volumeTrend.timeframe.imageAlt')}
+                                            </span>
+                                        </div>
+                                    </Iphone>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* How To & Tip */}
+                        <div className="space-y-(--space-6)">
+                            <h3 className="text-title-3 font-bold text-surface-900">
+                                {t('volumeTrend.howTo.title')}
+                            </h3>
+                            <p className="text-body text-surface-700">
+                                {t.rich('volumeTrend.howTo.description', richTextComponents)}
+                            </p>
+
+                            <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50/50 dark:bg-surface-900/20">
+                                <h3 className="text-headline font-bold text-surface-900 mb-2 flex items-center gap-2">
+                                    <Info className="size-5 text-brand-500" />
+                                    {t('volumeTrend.howTo.tip.title')}
+                                </h3>
+                                <p className="text-body text-surface-600 whitespace-pre-line">
+                                    {t.rich('volumeTrend.howTo.tip.text', {
+                                        ...richTextComponents,
+                                        link: (children) => <a href="#exercise-explorer" className="font-semibold text-brand-500 hover:text-brand-600 underline decoration-brand-500/30 underline-offset-4 transition-colors duration-200">{children}</a>
+                                    })}
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </section>
+
+                    {/* EXERCISE EXPLORER Section */}
+                    <section id="exercise-explorer" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
+                        <div className="space-y-(--space-2)">
+                            <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                                {t('exerciseExplorer.title')}
+                            </h2>
+                            <div className="text-body text-surface-700 max-w-prose whitespace-pre-line">
+                                {t.rich('exerciseExplorer.description', richTextComponents)}
+                            </div>
+                        </div>
+
+                        {/* Main Image */}
+                        <div className="flex justify-center w-full py-8 bg-surface-50/50 dark:bg-surface-900/20 rounded-2xl border border-surface-200 dark:border-surface-800">
+                            <div className="w-[200px] md:w-[240px]">
+                                <Iphone>
+                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                        <span className="text-caption-1 text-surface-400 font-medium">
+                                            {t('exerciseExplorer.imageAlt')}
+                                        </span>
+                                    </div>
+                                </Iphone>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* 1) Pick an exercise */}
+                        <div className="flex flex-col gap-(--space-8)">
+                            <div className="space-y-(--space-4)">
+                                <h3 className="text-title-3 font-bold text-surface-900">
+                                    {t('exerciseExplorer.pickExercise.title')}
+                                </h3>
+                                <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                    {[1, 2, 3].map((i) => (
+                                        <li key={i}>{t.rich(`exerciseExplorer.pickExercise.list.${i}`, richTextComponents)}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="flex justify-center w-full">
+                                <div className="w-[200px] md:w-[240px]">
+                                    <Iphone>
+                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                            <span className="text-caption-1 text-surface-400 font-medium">
+                                                {t('exerciseExplorer.pickExercise.imageAlt')}
+                                            </span>
+                                        </div>
+                                    </Iphone>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* 2) What to track */}
+                        <div className="flex flex-col gap-(--space-8)">
+                            <div className="space-y-(--space-4)">
+                                <h3 className="text-title-3 font-bold text-surface-900">
+                                    {t('exerciseExplorer.whatToTrack.title')}
+                                </h3>
+                                <div className="text-body text-surface-600 max-w-prose">
+                                    {t.rich('exerciseExplorer.whatToTrack.description', richTextComponents)}
+                                </div>
+                                <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                    {[1, 2, 3].map((i) => (
+                                        <li key={i}>{t.rich(`exerciseExplorer.whatToTrack.list.${i}`, richTextComponents)}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="flex justify-center w-full">
+                                <div className="w-[200px] md:w-[240px]">
+                                    <Iphone>
+                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                            <span className="text-caption-1 text-surface-400 font-medium">
+                                                {t('exerciseExplorer.whatToTrack.imageAlt')}
+                                            </span>
+                                        </div>
+                                    </Iphone>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* 3) Filters */}
+                        <div className="flex flex-col gap-(--space-8)">
+                            <div className="space-y-(--space-4)">
+                                <h3 className="text-title-3 font-bold text-surface-900">
+                                    {t('exerciseExplorer.filters.title')}
+                                </h3>
+                                <div className="text-body text-surface-600 max-w-prose">
+                                    {t.rich('exerciseExplorer.filters.description', richTextComponents)}
+                                </div>
+                                <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                    {[1, 2].map((i) => (
+                                        <li key={i}>{t.rich(`exerciseExplorer.filters.list.${i}`, richTextComponents)}</li>
+                                    ))}
+                                </ul>
+                                <p className="text-body text-surface-600 italic">
+                                    {t('exerciseExplorer.filters.note')}
+                                </p>
+                            </div>
+                            <div className="flex justify-center w-full">
+                                <div className="w-[200px] md:w-[240px]">
+                                    <Iphone>
+                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
+                                            <span className="text-caption-1 text-surface-400 font-medium">
+                                                {t('exerciseExplorer.filters.imageAlt')}
+                                            </span>
+                                        </div>
+                                    </Iphone>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full h-px bg-surface-200 dark:bg-surface-800 my-8" />
+
+                        {/* How To & Tip */}
+                        <div className="space-y-(--space-6)">
+                            <h3 className="text-title-3 font-bold text-surface-900">
+                                {t('exerciseExplorer.howTo.title')}
+                            </h3>
+                            <ul className="list-disc list-outside ml-4 space-y-2 text-body text-surface-700 marker:text-surface-400">
+                                {[1, 2, 3].map((i) => (
+                                    <li key={i}>{t.rich(`exerciseExplorer.howTo.list.${i}`, richTextComponents)}</li>
+                                ))}
+                            </ul>
+
+                            <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50/50 dark:bg-surface-900/20">
+                                <h3 className="text-headline font-bold text-surface-900 mb-2 flex items-center gap-2">
+                                    <Info className="size-5 text-brand-500" />
+                                    {t('exerciseExplorer.tip.title')}
+                                </h3>
+                                <p className="text-body text-surface-600">
+                                    {t.rich('exerciseExplorer.tip.description', richTextComponents)}
+                                </p>
+                            </div>
+                        </div>
+
+                    </section>
                 </div>
             </div>
         </div>

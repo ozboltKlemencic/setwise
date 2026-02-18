@@ -1035,6 +1035,94 @@
                     "title": "Nasvet",
                     "description": "Uporabite <strong >Ista predloga</strong>, ko želite najbolj smiselno primerjavo (npr. Upper A vs vaš prejšnji Upper A)."
                 }
+            },
+            "volumeTrend": {
+                "title": "Analiza (Trend Volumna)",
+                "description": "Graf Trenda Volumna prikazuje, kako se vaš <strong >volumen treninga</strong> spreminja skozi čas.\n\nPomaga vam opaziti doslednost, konice in ali se vaše zadnje seje gibljejo navzgor ali navzdol.",
+                "imageAlt": "Sekcija Trenda Volumna",
+                "chartShows": {
+                    "title": "1) Kaj graf prikazuje",
+                    "list": {
+                        "1": "Vsaka točka predstavlja <strong >skupni volumen</strong> vadbe",
+                        "2": "“Današnji volumen” prikazuje volumen vadbe, ki si jo trenutno ogledujete",
+                        "3": "Besedilo z % primerja danes z vašo zadnjo ustrezno vadbo (na podlagi izbranega filtra)"
+                    },
+                    "imageAlt": "Današnji volumen + % vs zadnji"
+                },
+                "compare": {
+                    "title": "2) Primerjajte prave vadbe",
+                    "description": "Uporabite zgornji filter, da izberete, kaj želite primerjati:",
+                    "list": {
+                        "1": "<strong >Vse vadbe</strong> — splošni trend skozi vse, kar počnete",
+                        "2": "<strong >Ista predloga</strong> — primerja samo vadbe iz iste predloge/dneva (priporočeno)"
+                    },
+                    "note": "Ista predloga je običajno najbolj uporaben pogled (Upper A vs Upper A, Lower vs Lower).",
+                    "imageAlt": "Preklop Vse vadbe / Ista predloga"
+                },
+                "timeframe": {
+                    "title": "3) Izberite časovni okvir",
+                    "description": "Uporabite filter časovnega okvira za spremembo razpona:",
+                    "list": {
+                        "1": "<strong >30d</strong> — kratkoročni trend",
+                        "2": "<strong >90d</strong> — srednjeročni trend",
+                        "3": "<strong >Vse</strong> — celotna zgodovina"
+                    },
+                    "imageAlt": "Preklop 30d / 90d / Vse"
+                },
+                "howTo": {
+                    "title": "Kako ga uporabljati",
+                    "description": "Če trend volumna pada <strong >navzdol</strong> za isto predlogo, to lahko nakazuje utrujenost, manjši trud ali spremembo izbora vaj.",
+                    "tip": {
+                        "title": "Nasvet",
+                        "text": "Višji volumen ne pomeni vedno boljšega napredka — volumen se lahko poveča samo z dodajanjem več serij.\n\nZa jasnejši signal preverite tudi <link >exercise explorer</link> (top set, ponovitve in teža skozi čas)."
+                    }
+                }
+            },
+            "exerciseExplorer": {
+                "title": "Analiza (Raziskovalec Vaj)",
+                "description": "Raziskovalec vaj vam omogoča sledenje napredku za <strong >določeno vajo</strong> skozi čas.\n\nJe najboljše mesto za potrditev dejanskega napredka onkraj le skupnega volumna.",
+                "imageAlt": "Sekcija Raziskovalec Vaj",
+                "pickExercise": {
+                    "title": "1) Izberi vajo",
+                    "list": {
+                        "1": "Odpri zavihek <strong >Analiza</strong>",
+                        "2": "Podrsaj do <strong >Raziskovalec Vaj</strong>",
+                        "3": "Uporabi izbirnik vaj za izbiro vaje"
+                    },
+                    "imageAlt": "Spustni seznam z vajami"
+                },
+                "whatToTrack": {
+                    "title": "2) Kaj lahko spremljaš",
+                    "description": "Za izbrano vajo lahko pregledaš trende skozi čas, vključno z:",
+                    "list": {
+                        "1": "<strong >Volumen</strong> (skupni volumen za to vajo na trening)",
+                        "2": "<strong >Ponovitve</strong> (kako se tvoje ponovitve spreminjajo skozi čas)",
+                        "3": "<strong >Top set</strong> (trend tvoje najtežje / najboljše serije)"
+                    },
+                    "imageAlt": "Grafi vaj za volumen/ponovitve/top set"
+                },
+                "filters": {
+                    "title": "3) Uporabi iste filtre (priporočeno)",
+                    "description": "Za najjasnejši signal kombiniraj Raziskovalec vaj s filtri:",
+                    "list": {
+                        "1": "<strong >Ista predloga</strong> (primerjaj isti dan/tip treninga)",
+                        "2": "časovni okvir: <strong >30d / 90d / Vse</strong>"
+                    },
+                    "note": "To prepreči mešanje različnih variacij iste vaje med različnimi dnevi.",
+                    "imageAlt": "Filtri Ista predloga + časovni okvir"
+                },
+                "howTo": {
+                    "title": "Kako ga uporabljati",
+                    "list": {
+                        "1": "Če se <strong >Top set</strong> izboljšuje, postajaš močnejši pri tem gibu.",
+                        "2": "Če se <strong >Ponovitve</strong> povečajo pri isti teži, je to tudi napredek.",
+                        "3": "Če <strong >Volumen</strong> raste, medtem ko top set ostaja raven, gre morda preprosto za več serij ali dodatnih vaj."
+                    }
+                },
+                "tip": {
+                    "title": "Nasvet",
+                    "description": "Uporabi opombe vaj iz svojih treningov (bolečina, nastavitve, napotki za tehniko) za razlago padcev ali vzponov - kontekst je pomemben."
+                }
             }
         },
         "Page": {
