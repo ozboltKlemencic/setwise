@@ -4,7 +4,8 @@ import { useMemo } from "react"
 import {
     Download,
     PlusCircle,
-    Info
+    Info,
+    Dumbbell
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Sidebar, MobileSidebar, type SidebarItem } from "@/components/sidebar"
@@ -44,6 +45,17 @@ export function GuidesSidebar() {
                 { title: t('createWorkout.overview'), href: "/guides/create-workout#overview" },
                 { title: t('createWorkout.methods'), href: "/guides/create-workout#methods" },
                 { title: t('createWorkout.tips'), href: "/guides/create-workout#tips" },
+            ]
+        },
+        {
+            title: t('workouts.title'),
+            href: "/guides/workouts",
+            icon: Dumbbell,
+            subItems: [
+                { title: t('workouts.createProgram'), href: "/guides/workouts#create-program" },
+                { title: t('workouts.startTemplate'), href: "/guides/workouts#start-template" },
+                { title: t('workouts.quickStart'), href: "/guides/workouts#quick-start" },
+                { title: t('workouts.logging'), href: "/guides/workouts#logging" },
             ]
         },
     ], [t])

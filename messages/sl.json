@@ -905,6 +905,13 @@
                 "overview": "Pregled",
                 "methods": "Metode",
                 "tips": "Pro Nasveti"
+            },
+            "workouts": {
+                "title": "Workouts",
+                "createProgram": "Create Program",
+                "startTemplate": "Start Template",
+                "quickStart": "Quick Start",
+                "logging": "Logging"
             }
         },
         "Page": {
@@ -1315,6 +1322,274 @@
                 "localStorage": {
                     "title": "Izvozljivo",
                     "description": "Izvozi kot tekst/JSON."
+                }
+            }
+        },
+        "WorkoutsPage": {
+            "title": "Workouts",
+            "description": "Programs, templates, and logging.",
+            "badge": "Guides",
+            "heading": "Master your <brand>training</brand>",
+            "createProgram": {
+                "title": "Create a Program & Templates",
+                "subtitle": "A <strong >Program</strong> is your training structure over time.",
+                "description": "Inside a program you create <strong >Days</strong> (e.g. Upper A, Upper B, Lower), and each day contains your exercises and set details.\n\nTemplates let you reuse the same day or workout structure anytime.",
+                "whatYouWillDo": {
+                    "title": "What you’ll do",
+                    "list": {
+                        "1": "Create a program",
+                        "2": "Add training days (Upper A / Upper B / …)",
+                        "3": "Build each day by adding exercises and setting targets",
+                        "4": "Edit everything later (any time)"
+                    }
+                },
+                "steps": {
+                    "1": {
+                        "title": "1) Create a Program",
+                        "list": {
+                            "1": "Open <strong >Programs tab</strong>",
+                            "2": "Tap <strong >Create Program</strong>",
+                            "3": "Give it a name (e.g. “Upper/Lower Split”)",
+                            "4": "Save"
+                        },
+                        "imageAlt": "Programs screen + Create Program"
+                    },
+                    "2": {
+                        "title": "2) Add Days inside the Program",
+                        "list": {
+                            "1": "Open your program",
+                            "2": "Tap Create Template",
+                            "3": "Name the day (e.g. “Upper A”, “Upper B”)",
+                            "4": "Repeat for as many days as you need"
+                        },
+                        "imageAlt": "Program detail + list of days"
+                    },
+                    "3": {
+                        "title": "3) Build a Day (add exercises)",
+                        "list": {
+                            "1": "Open a day (e.g. “Upper A”)",
+                            "2": "Tap Edit",
+                            "3": "Click “add exercise”"
+                        },
+                        "subDescription": "For each exercise, you can configure:",
+                        "subList": {
+                            "1": "<strong >Rep range</strong> (target range per set)",
+                            "2": "<strong >RPE / RIR</strong> (optional)",
+                            "3": "<strong >Advanced</strong> (optional): intensifiers, ROM, tempo, and other details"
+                        },
+                        "imageAlt": "Day builder + Add Exercise"
+                    },
+                    "4": {
+                        "title": "4) Add notes (per exercise)",
+                        "description": "You can add <strong >notes on the exercise level</strong> (e.g. cues, setup, technique reminders).\n\nNotes will stay attached to that exercise in the day and can be changed anytime.",
+                        "imageAlt": "Exercise notes field"
+                    },
+                    "5": {
+                        "title": "5) Edit anytime (non-destructive)",
+                        "description": "Programs and days are designed to be flexible:",
+                        "list": {
+                            "1": "Rename program or days",
+                            "2": "Reorder exercises",
+                            "3": "Update rep ranges, RPE/RIR, or Advanced settings",
+                            "4": "Add/remove exercises",
+                            "5": "Update exercise notes"
+                        },
+                        "footer": "Everything can be adjusted later from the <strong >Edit</strong> screen.",
+                        "imageAlt": "Edit day / Edit program entry point"
+                    }
+                },
+                "search": {
+                    "title": "Exercise search (and creating your own)",
+                    "description": "When adding an exercise, use the search bar:",
+                    "list": {
+                        "1": "If the exercise exists, select it.",
+                        "2": "If it <strong >doesn’t exist</strong>, just type the name and create it instantly — no extra steps."
+                    },
+                    "footer": "This makes it easy to log any variation or custom movement.",
+                    "imageAlt": "Search bar + “Create new exercise” state"
+                },
+                "tips": {
+                    "title": "Tips",
+                    "list": {
+                        "1": "Use consistent day naming: <strong >Upper A / Upper B / Lower A / Lower B</strong>",
+                        "2": "Keep <strong >RPE/RIR optional</strong> - add it only if you actively use it",
+                        "3": "Use notes for cues you often forget (setup, tempo, depth, grip)"
+                    }
+                }
+            },
+            "startTemplate": {
+                "title": "Start from a Template",
+                "subtitle": "Templates are your planned workouts inside a program (e.g. Upper A, Upper B).",
+                "description": "They already include your exercises and targets (rep ranges, optional RPE/RIR, etc.).",
+                "steps": {
+                    "1": {
+                        "title": "1) Start the workout",
+                        "list": {
+                            "1": "Open the <strong >Start</strong> tab",
+                            "2": "Find your <strong >Day (Template)</strong> in the list",
+                            "3": "Tap the <strong >Start</strong> icon next to the day name"
+                        },
+                        "imageAlt": "Program → Day → Start"
+                    },
+                    "2": {
+                        "title": "2) What you see during the workout",
+                        "description": "Each exercise card shows:",
+                        "list": {
+                            "1": "<strong >Target reps / rep range</strong> (planned)",
+                            "2": "<strong >Last</strong> (what you did last time)",
+                            "3": "<strong >Today</strong> (what you’ve logged in this session)"
+                        },
+                        "imageAlt": "Exercise card highlighting Last / Today"
+                    },
+                    "3": {
+                        "title": "3) Template actions (during the workout)",
+                        "description": "On template-based workouts you can:",
+                        "list": {
+                            "1": "Add extra set",
+                            "2": "<strong >Skip a set</strong>",
+                            "3": "<strong >Delete last logged set</strong>"
+                        },
+                        "footer": "Use these when something changes mid-session.",
+                        "imageAlt": "Skip set UI"
+                    },
+                    "4": {
+                        "title": "4) Finish the workout",
+                        "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
+                        "list": {
+                            "1": "review your <strong >workout total volume</strong>",
+                            "2": "optionally add <strong >workout notes</strong> (for the entire session)"
+                        },
+                        "footer": "Tap <strong >Confirm</strong> to save and finish.",
+                        "imageAlt": "Finish flow"
+                    },
+                    "5": {
+                        "title": "5) Resume a workout (if you close the app)",
+                        "description": "If you close SetWise by accident or switch apps, your active workout is kept.\n\nWhen you open the app again, you’ll see a prompt on the <strong >Programs</strong> screen that lets you:",
+                        "list": {
+                            "1": "<strong >Continue workout</strong>, or",
+                            "2": "<strong >Discard</strong> it (if you don’t need it)"
+                        },
+                        "imageAlt": "Programs screen resume prompt"
+                    }
+                }
+            },
+            "quickStart": {
+                "title": "Quick Start",
+                "subtitle": "Quick Start is for flexible training days - you don’t need a fixed plan.",
+                "description": "Start the workout immediately and add exercises as you go.",
+                "steps": {
+                    "1": {
+                        "title": "1) Start Quick Start",
+                        "list": {
+                            "1": "Open the <strong >Start</strong> tab",
+                            "2": "Tap <strong >Quick Start</strong>"
+                        },
+                        "imageAlt": "Start tab + Quick Start button"
+                    },
+                    "2": {
+                        "title": "2) Add exercises during the workout",
+                        "list": {
+                            "1": "Tap <strong >Add Exercise</strong>",
+                            "2": "Search for an exercise and tap to add it"
+                        },
+                        "subTitle": "Create your own exercise (instantly)",
+                        "subDescription": "If you can’t find an exercise:\n\nType the name and create it instantly - no extra setup required.",
+                        "imageAlt": "Add Exercise search + Create new exercise"
+                    },
+                    "3": {
+                        "title": "3) Log sets (same as templates)",
+                        "list": {
+                            "1": "Adjust weight/reps using <strong >+ / −</strong> or tap to type",
+                            "2": "Tap <strong >✓</strong> to log a set",
+                            "3": "Use the <strong >note</strong> icon to add exercise notes (optional)"
+                        },
+                        "imageAlt": "Quick Start logging UI"
+                    },
+                    "4": {
+                        "title": "4) Exercise options (⋯)",
+                        "description": "Tap the <strong >⋯</strong> menu on an exercise to:",
+                        "list": {
+                            "1": "<strong >Remove exercise</strong> (if you added it by mistake)",
+                            "2": "<strong >Delete last logged set</strong> (undo)",
+                            "3": "<strong >Finish exercise</strong> (mark it as done for a cleaner view)"
+                        },
+                        "footer": "Finishing an exercise helps keep your session organized, especially in longer workouts.",
+                        "imageAlt": "⋯ menu options"
+                    },
+                    "5": {
+                        "title": "5) Finish the workout",
+                        "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
+                        "list": {
+                            "1": "review your <strong >workout total volume</strong>",
+                            "2": "optionally add <strong >workout notes</strong>"
+                        },
+                        "footer": "Tap <strong >Confirm</strong> to save and finish.",
+                        "imageAlt": "Finish summary sheet"
+                    }
+                },
+                "resume": {
+                    "title": "Resume a workout",
+                    "description": "If you leave the app mid-workout, SetWise keeps it active.\n\nNext time you open the app, you can <strong >Continue</strong> from the prompt on the <strong >Programs</strong> screen.",
+                    "imageAlt": "Resume prompt"
+                }
+            },
+            "logging": {
+                "title": "Logging sets & notes",
+                "subtitle": "Logging works the same whether you start from a <strong >Template</strong> or use <strong >Quick Start</strong>.",
+                "steps": {
+                    "1": {
+                        "title": "1) Adjust weight & reps",
+                        "list": {
+                            "1": "Tap <strong >+ / −</strong> for quick adjustments",
+                            "2": "Tap the value field to <strong >type</strong> an exact number"
+                        },
+                        "imageAlt": "+/- controls + tap-to-type fields"
+                    },
+                    "2": {
+                        "title": "2) Log a set (✓)",
+                        "description": "When the numbers are correct, tap <strong >✓</strong> to log the set.\n\nLogged sets appear under <strong >Today</strong> for that exercise.",
+                        "imageAlt": "✓ button + “Today” list"
+                    },
+                    "3": {
+                        "title": "3) Edit a logged set (pencil)",
+                        "description": "If you need to correct something after logging:",
+                        "list": {
+                            "1": "Tap the <strong >pencil</strong> icon",
+                            "2": "Update the set values",
+                            "3": "Save"
+                        },
+                        "imageAlt": "Pencil edit flow"
+                    },
+                    "4": {
+                        "title": "4) Undo mistakes (Delete last logged set)",
+                        "description": "If you log a set by accident, use:",
+                        "list": {
+                            "1": "<strong >Delete last logged set</strong> (undo)"
+                        },
+                        "subDescription": "This removes the most recent set you logged for that exercise.",
+                        "imageAlt": "Delete last logged set action"
+                    },
+                    "5": {
+                        "title": "5) Skip a set (Templates)",
+                        "description": "When training from a template, you can also <strong >Skip</strong> a set if needed.",
+                        "imageAlt": "Skip set UI"
+                    },
+                    "6": {
+                        "title": "6) Add exercise notes (note icon)",
+                        "description": "Tap the <strong >note</strong> icon to add notes on the exercise level, for example:",
+                        "list": {
+                            "1": "pain / discomfort",
+                            "2": "technique cues",
+                            "3": "machine setup",
+                            "4": "“form felt off” / “reduce load next time”"
+                        },
+                        "footer": "These notes help you remember context next session.",
+                        "imageAlt": "Exercise note input"
+                    }
+                },
+                "tip": {
+                    "title": "Tip: Use “Last” to start fast",
+                    "description": "Fields are pre-filled automatically based on your previous session.\n\nUse <strong >Last</strong> as a quick reference so you immediately know what weight/reps to aim for today."
                 }
             }
         }
