@@ -911,10 +911,133 @@
             },
             "workouts": {
                 "title": "Workouts",
-                "createProgram": "Create Program",
-                "startTemplate": "Start Template",
+                "createProgram": "Create a Program",
+                "startTemplate": "Start from a Template",
                 "quickStart": "Quick Start",
-                "logging": "Logging"
+                "logging": "Logging sets & notes"
+            },
+            "progress": {
+                "title": "Progress",
+                "overview": "Progress Overview",
+                "workoutDetails": "Workout Details",
+                "volumeTrend": "Analysis (Volume Trend)",
+                "exerciseExplorer": "Analysis (Exercise Explorer)"
+            }
+        },
+        "ProgressPage": {
+            "title": "Progress",
+            "badge": "Guides",
+            "heading": "Track your <brand>gains</brand>",
+            "subHeading": "See your stats, analyze trends, and visualize your progress over time.",
+            "overview": {
+                "title": "Progress Overview",
+                "description": "The <strong >Progress screen</strong> gives you a clear overview of your training history and trends.\n\nIt includes:",
+                "list": {
+                    "1": "a scrollable <strong >list of past workouts</strong>",
+                    "2": "quick <strong >weekly stats</strong> (workouts, active days, avg duration)",
+                    "3": "fast access to <strong >full workout details</strong>"
+                },
+                "imageAlt": "Progress screen overview",
+                "calendar": {
+                    "title": "1) Calendar filter",
+                    "description": "At the top you’ll find a calendar strip you can swipe <strong >left / right</strong>.",
+                    "list": {
+                        "1": "Tap a specific day to show workouts from that day",
+                        "2": "Days with a workout are marked with a <strong >blue dot</strong>"
+                    },
+                    "footer": "To return to the full list, click the selection (or select another day).",
+                    "imageAlt": "Calendar strip with blue dot + selected day"
+                },
+                "history": {
+                    "title": "2) Workout history list",
+                    "description": "Each workout is shown as a card with key info like:",
+                    "list": {
+                        "1": "workout name (template/day)",
+                        "2": "date & time",
+                        "3": "duration and total volume",
+                        "4": "a quick <strong >comparison badge</strong> vs your last workout from the same template"
+                    },
+                    "scrollNote": "Scroll down to browse older workouts.",
+                    "footer": "SetWise loads <strong >20 workouts at a time</strong>, and will automatically load more as you reach the end of the list.",
+                    "imageAlt": "Workout cards list + comparison badge"
+                },
+                "details": {
+                    "title": "3) Open workout details",
+                    "description": "Tap any workout card to open the workout detail screen.\n\nInside the detail screen you’ll find:",
+                    "list": {
+                        "1": "<strong >Summary</strong> (overview + achievements)",
+                        "2": "<strong >Exercises</strong> (every set + comparisons)",
+                        "3": "<strong >Analysis</strong> (volume trend + exercise analytics)"
+                    },
+                    "imageAlt": "Tap card → opens workout detail"
+                },
+                "tip": {
+                    "title": "Tip",
+                    "description": "Use the comparison badge to quickly see whether your session was up or down compared to your last workout from the same template."
+                }
+            },
+            "workoutDetails": {
+                "title": "Workout Details",
+                "intro": {
+                    "text": "Tap any workout card in <strong >Progress</strong> to open the Workout Details screen.\n\nAt the top you can switch between three tabs:",
+                    "list": {
+                        "1": "<strong >Summary</strong> - a quick overview of the whole session",
+                        "2": "<strong >Exercises</strong> - every exercise and set, fully broken down",
+                        "3": "<strong >Analysis</strong> - trends and deeper insights"
+                    },
+                    "imageAlt": "Workout detail screen with tabs"
+                },
+                "summary": {
+                    "title": "1) Summary tab",
+                    "description": "The <strong >Summary</strong> tab shows the most important session stats at a glance:",
+                    "list": {
+                        "1": "<strong >Total Volume</strong> (with a badge comparing to your last workout from the same template)",
+                        "2": "<strong >Duration</strong>",
+                        "3": "<strong >Total sets</strong> and <strong >number of exercises</strong>",
+                        "4": "<strong >Workout notes</strong> (if you added any)"
+                    },
+                    "achievements": {
+                        "title": "It also highlights achievements such as:",
+                        "list": {
+                            "1": "<strong >New PRs</strong>",
+                            "2": "<strong >Biggest improvement</strong>",
+                            "3": "<strong >Hardest set</strong>"
+                        }
+                    },
+                    "imageAlt": "Summary tab showing volume + badge + achievements + notes"
+                },
+                "exercises": {
+                    "title": "2) Exercises tab",
+                    "description": "The <strong >Exercises</strong> tab shows your full workout log:",
+                    "list": {
+                        "1": "Each exercise includes a quick comparison vs your last workout from the same template",
+                        "2": "Volume is shown on the exercise level",
+                        "3": "Every set is listed with <strong >weight × reps</strong>",
+                        "4": "Any <strong >exercise notes</strong> added during the workout are visible here"
+                    },
+                    "note": "This is the best tab for reviewing exactly what you did set-by-set.",
+                    "imageAlt": "Exercises tab with set list + comparisons + notes"
+                },
+                "analysis": {
+                    "title": "3) Analysis tab",
+                    "description": "The <strong >Analysis</strong> tab includes:",
+                    "list": {
+                        "1": "<strong >Volume Trend</strong> graph (how your workout volume changes over time)",
+                        "2": "<strong >Exercise Explorer</strong> (pick an exercise and review progress over time)"
+                    },
+                    "filters": {
+                        "title": "You can filter:",
+                        "list": {
+                            "1": "<strong >All workouts</strong> vs <strong >Same template</strong>",
+                            "2": "timeframe: <strong >30d / 90d / All</strong>"
+                        }
+                    },
+                    "imageAlt": "Analysis tab showing filters + volume trend + exercise explorer"
+                },
+                "tip": {
+                    "title": "Tip",
+                    "description": "Use <strong >Same template</strong> when you want the most meaningful comparison (e.g. Upper A vs your previous Upper A)."
+                }
             }
         },
         "Page": {

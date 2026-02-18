@@ -5,7 +5,8 @@ import {
     Download,
     PlusCircle,
     Info,
-    Dumbbell
+    Dumbbell,
+    LineChart
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Sidebar, MobileSidebar, type SidebarItem } from "@/components/sidebar"
@@ -56,6 +57,17 @@ export function GuidesSidebar() {
                 { title: t('workouts.startTemplate'), href: "/guides/workouts#start-template" },
                 { title: t('workouts.quickStart'), href: "/guides/workouts#quick-start" },
                 { title: t('workouts.logging'), href: "/guides/workouts#logging" },
+            ]
+        },
+        {
+            title: t('progress.title'),
+            href: "/guides/progress",
+            icon: LineChart,
+            subItems: [
+                { title: t('progress.overview'), href: "/guides/progress#overview" },
+                { title: t('progress.workoutDetails'), href: "/guides/progress#workout-details" },
+                { title: t('progress.volumeTrend'), href: "/guides/progress#volume-trend" },
+                { title: t('progress.exerciseExplorer'), href: "/guides/progress#exercise-explorer" },
             ]
         },
     ], [t])

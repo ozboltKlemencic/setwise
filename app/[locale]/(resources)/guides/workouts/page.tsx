@@ -300,7 +300,7 @@ export default async function WorkoutsPage() {
 
                                         {/* SubTitle & SubDescription for Step 2 */}
                                         {t.has(`quickStart.steps.${step}.subTitle`) && (
-                                            <div className="mt-4 pt-4 border-t border-surface-200 dark:border-surface-800">
+                                            <div className="w-full h-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-surface-900/10">
                                                 <h4 className="text-headline font-semibold text-surface-900 mb-2">
                                                     {t(`quickStart.steps.${step}.subTitle`)}
                                                 </h4>

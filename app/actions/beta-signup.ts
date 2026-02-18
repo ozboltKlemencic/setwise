@@ -190,7 +190,7 @@ export async function sendBetaSignupEmail(
 
         // Send notification to admin
         const { error } = await resend.emails.send({
-            from: 'SetWise <info@tapetnistvo-dem-tap.com>',
+            from: 'SetWise <info@setwise.app>',
             to: adminRecipients,
             replyTo: data.email,
             subject: ADMIN_COPY.subject(data.email, data.platform, data.isTrainer),
@@ -199,10 +199,10 @@ export async function sendBetaSignupEmail(
 
         // Send welcome email to the user
         const { error: userError } = await resend.emails.send({
-            from: 'SetWise <info@tapetnistvo-dem-tap.com>',
+            from: 'SetWise <info@setwise.app>',
             to: [data.email],
             subject: copy.userSubject,
-            html: welcomeHtml ,
+            html: welcomeHtml,
         });
 
         if (error || userError) {

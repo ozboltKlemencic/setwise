@@ -907,11 +907,134 @@
                 "tips": "Pro Nasveti"
             },
             "workouts": {
-                "title": "Workouts",
-                "createProgram": "Create Program",
-                "startTemplate": "Start Template",
-                "quickStart": "Quick Start",
-                "logging": "Logging"
+                "title": "Vadbe",
+                "createProgram": "Ustvari program",
+                "startTemplate": "Začni iz predloge",
+                "quickStart": "Hitri začetek",
+                "logging": "Beleženje serij & opomb"
+            },
+            "progress": {
+                "title": "Napredek",
+                "overview": "Pregled napredka",
+                "workoutDetails": "Podrobnosti vadbe",
+                "volumeTrend": "Analiza (Trend volumna)",
+                "exerciseExplorer": "Analiza (Raziskovalec vaj)"
+            }
+        },
+        "ProgressPage": {
+            "title": "Napredek",
+            "badge": "Vodiči",
+            "heading": "Spremljaj svoj <brand>napredek</brand>",
+            "subHeading": "Poglej statistiko, analiziraj trende in vizualiziraj svoj napredek skozi čas.",
+            "overview": {
+                "title": "Pregled Napredka",
+                "description": "<strong >Zaslon Napredek</strong> ti da jasen pregled tvoje zgodovine treningov in trendov.\n\nVključuje:",
+                "list": {
+                    "1": "drsni <strong >seznam preteklih vadb</strong>",
+                    "2": "hitra <strong >tedenska statistika</strong> (vadbe, aktivni dnevi, povpr. trajanje)",
+                    "3": "hiter dostop do <strong >podrobnosti vadbe</strong>"
+                },
+                "imageAlt": "Pregled zaslona napredka",
+                "calendar": {
+                    "title": "1) Koledarski filter",
+                    "description": "Na vrhu najdeš koledarski trak, po katerem lahko drsaš <strong >levo / desno</strong>.",
+                    "list": {
+                        "1": "Tapni na določen dan za prikaz vadb tistega dne",
+                        "2": "Dnevi z vadbo so označeni z <strong >modro piko</strong>"
+                    },
+                    "footer": "Za vrnitev na celoten seznam klikni na izbiro (ali izberi drug dan).",
+                    "imageAlt": "Koledarski trak z modro piko + izbran dan"
+                },
+                "history": {
+                    "title": "2) Seznam zgodovine vadb",
+                    "description": "Vsaka vadba je prikazana kot kartica s ključnimi informacijami, kot so:",
+                    "list": {
+                        "1": "ime vadbe (program/dan)",
+                        "2": "datum & čas",
+                        "3": "trajanje in skupni volumen",
+                        "4": "hitra <strong >značka primerjave</strong> glede na tvojo zadnjo vadbo iste predloge"
+                    },
+                    "scrollNote": "Podrsajte navzdol za brskanje po starejših vadbah.",
+                    "footer": "SetWise naloži <strong >20 vadb naenkrat</strong> in bo samodejno naložil več, ko prideš do konca seznama.",
+                    "imageAlt": "Seznam kartic vadb + značka primerjave"
+                },
+                "details": {
+                    "title": "3) Odpri podrobnosti vadbe",
+                    "description": "Tapni katerokoli kartico vadbe za odprtje zaslona s podrobnostmi.\n\nZnotraj zaslona s podrobnostmi najdeš:",
+                    "list": {
+                        "1": "<strong >Povzetek</strong> (pregled + dosežki)",
+                        "2": "<strong >Vaje</strong> (vsaka serija + primerjave)",
+                        "3": "<strong >Analiza</strong> (trend volumna + analitika vaj)"
+                    },
+                    "imageAlt": "Tapni kartico → odpre podrobnosti vadbe"
+                },
+                "tip": {
+                    "title": "Nasvet",
+                    "description": "Uporabi značko primerjave, da hitro vidiš, ali je bila tvoja seja boljša ali slabša v primerjavi z zadnjo vadbo iste predloge."
+                }
+            },
+            "workoutDetails": {
+                "title": "Podrobnosti Vadbe",
+                "intro": {
+                    "text": "Tapni katerokoli kartico vadbe v <strong >Napredku</strong>, da odpreš zaslon Podrobnosti Vadbe.\n\nNa vrhu lahko preklapljaš med tremi zavihki:",
+                    "list": {
+                        "1": "<strong >Povzetek</strong> - hiter pregled celotne seje",
+                        "2": "<strong >Vaje</strong> - vsaka vaja in serija, podrobno razčlenjeno",
+                        "3": "<strong >Analiza</strong> - trendi in globlji vpogledi"
+                    },
+                    "imageAlt": "Zaslon s podrobnostmi vadbe z zavihki"
+                },
+                "summary": {
+                    "title": "1) Zavihek Povzetek",
+                    "description": "Zavihek <strong >Povzetek</strong> prikaže najpomembnejšo statistiko seje na prvi pogled:",
+                    "list": {
+                        "1": "<strong >Skupni Volumen</strong> (z značko primerjave glede na zadnjo vadbo iste predloge)",
+                        "2": "<strong >Trajanje</strong>",
+                        "3": "<strong >Skupno serij</strong> in <strong >število vaj</strong>",
+                        "4": "<strong >Opombe vadbe</strong> (če ste jih dodali)"
+                    },
+                    "achievements": {
+                        "title": "Poudari tudi dosežke, kot so:",
+                        "list": {
+                            "1": "<strong >Novi osebni rekordi</strong>",
+                            "2": "<strong >Največji napredek</strong>",
+                            "3": "<strong >Najtežja serija</strong>"
+                        }
+                    },
+                    "imageAlt": "Zavihek Povzetek s volumnom + značko + dosežki + opombami"
+                },
+                "exercises": {
+                    "title": "2) Zavihek Vaje",
+                    "description": "Zavihek <strong >Vaje</strong> prikaže vaš celoten dnevnik vadbe:",
+                    "list": {
+                        "1": "Vsaka vaja vključuje hitro primerjavo z zadnjo vadbo iste predloge",
+                        "2": "Volumen je prikazan na ravni vaje",
+                        "3": "Vsaka serija je navedena s <strong >težo × ponovitvami</strong>",
+                        "4": "Tukaj so vidne vse <strong >opombe vaj</strong>, dodane med treningom"
+                    },
+                    "note": "To je najboljš tab za pregledovanje točno tega, kar ste naredili serijo za serijo.",
+                    "imageAlt": "Zavihek Vaje s seznamom serij + primerjavami + opombami"
+                },
+                "analysis": {
+                    "title": "3) Zavihek Analiza",
+                    "description": "Zavihek <strong >Analiza</strong> vključuje:",
+                    "list": {
+                        "1": "<strong >Trend Volumna</strong> graf (kako se vaš volumen vadbe spreminja skozi čas)",
+                        "2": "<strong >Raziskovalec Vaj</strong> (izberite vajo in preglejte napredek skozi čas)"
+                    },
+                    "filters": {
+                        "title": "Filtrirate lahko:",
+                        "list": {
+                            "1": "<strong >Vse vadbe</strong> vs <strong >Ista predloga</strong>",
+                            "2": "časovni okvir: <strong >30d / 90d / Vse</strong>"
+                        }
+                    },
+                    "imageAlt": "Zavihek Analiza s filtri + trendom volumna + raziskovalcem vaj"
+                },
+                "tip": {
+                    "title": "Nasvet",
+                    "description": "Uporabite <strong >Ista predloga</strong>, ko želite najbolj smiselno primerjavo (npr. Upper A vs vaš prejšnji Upper A)."
+                }
             }
         },
         "Page": {
