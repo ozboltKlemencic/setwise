@@ -899,8 +899,9 @@
             "installation": {
                 "title": "Installation",
                 "overview": "Overview",
-                "requirements": "Requirements",
-                "steps": "Steps"
+                "ios": "iOS",
+                "android": "Android",
+                "requirements": "Requirements"
             },
             "createWorkout": {
                 "title": "Create Workout",
@@ -982,155 +983,186 @@
             "description": "How to install SetWise on your device.",
             "badge": "Guides",
             "heading": "Install <brand>SetWise</brand> in seconds",
-            "overview": {
-                "title": "Installation Overview",
-                "description": "SetWise is a Progressive Web App (PWA) that can be installed directly from your browser. It works offline and behaves just like a native app.",
-                "cards": {
-                    "ios": {
-                        "title": "iOS",
-                        "description": "Install via Safari Share menu."
+            "ios": {
+                "title": "SetWise for iOS",
+                "subtitle": "Distributed through <strong >TestFlight</strong> during Early Access.",
+                "description": "<strong >TestFlight</strong> is Apple’s official app for testing beta versions - it lets you install SetWise safely, receive updates, and send feedback, before the public App Store release.\n\nOnce you get the invite link by email, the setup takes about a minute.",
+                "steps": {
+                    "1": {
+                        "title": "1) Request Early Access",
+                        "list": {
+                            "1": "Open the <strong >Early Access</strong> form.",
+                            "2": "Enter your email.",
+                            "3": "Select <strong >iOS</strong> (or <strong >Both</strong>).",
+                            "4": "Tap <strong >Get Beta Access</strong>."
+                        },
+                        "note": "Use the same email you use on your iPhone (recommended), so joining is seamless."
                     },
-                    "android": {
-                        "title": "Android",
-                        "description": "Install via Chrome menu."
+                    "2": {
+                        "title": "2) Check your inbox",
+                        "description": "Within a few minutes, you’ll receive an email with a <strong >TestFlight invite link</strong>.",
+                        "list": {
+                            "1": "If you don’t see it, check <strong >Spam / Promotions</strong>",
+                            "2": "Search for: <strong >SetWise</strong>"
+                        }
                     },
-                    "desktop": {
-                        "title": "Desktop",
-                        "description": "Install via Chrome address bar."
+                    "3": {
+                        "title": "3) Install TestFlight",
+                        "description": "TestFlight is Apple’s official beta testing app.",
+                        "list": {
+                            "1": "Open the App Store",
+                            "2": "Search <strong >TestFlight</strong>",
+                            "3": "Install it"
+                        }
                     },
-                    "updates": {
-                        "title": "Auto Updates",
-                        "description": "Always have the latest version."
-                    }
-                }
-            },
-            "keyFeatures": {
-                "badge": "Details",
-                "title": "Installation Steps",
-                "ios": {
-                    "title": "iOS Installation",
-                    "step1": {
-                        "lead": "Open in Safari",
-                        "text": "Navigate to app.setwise.com in Safari."
+                    "4": {
+                        "title": "4) Join the beta + install SetWise",
+                        "list": {
+                            "1": "On your iPhone, open the invite email",
+                            "2": "Tap the invite link",
+                            "3": "TestFlight will open",
+                            "4": "Tap <strong >Accept</strong> (if shown)",
+                            "5": "Tap <strong >Install</strong>"
+                        }
                     },
-                    "step2": {
-                        "lead": "Tap Share",
-                        "text": "Tap the Share button in the toolbar."
-                    },
-                    "step3": {
-                        "lead": "Add to Home Screen",
-                        "text": "Scroll down and tap 'Add to Home Screen'."
-                    }
-                },
-                "android": {
-                    "title": "Android Installation",
-                    "step1": {
-                        "lead": "Open in Chrome",
-                        "text": "Navigate to app.setwise.com in Chrome."
-                    },
-                    "step2": {
-                        "lead": "Tap Menu",
-                        "text": "Tap the three dots menu."
-                    },
-                    "step3": {
-                        "lead": "Install App",
-                        "text": "Tap 'Install App' or 'Add to Home Screen'."
+                    "5": {
+                        "title": "5) Open SetWise",
+                        "description": "After installation, you can open SetWise:",
+                        "list": {
+                            "1": "directly from <strong >TestFlight</strong>, or",
+                            "2": "from your <strong >Home Screen</strong>"
+                        }
                     }
                 },
-                "desktop": {
-                    "title": "Desktop Installation",
-                    "step1": {
-                        "lead": "Open in Chrome/Edge",
-                        "text": "Navigate to app.setwise.com."
-                    },
-                    "step2": {
-                        "lead": "Click Install",
-                        "text": "Click the install icon in the address bar."
-                    },
-                    "step3": {
-                        "lead": "Launch",
-                        "text": "Launch from your desktop or applications folder."
+                "updates": {
+                    "title": "Updates (important)",
+                    "description": "New beta builds are delivered through TestFlight.",
+                    "list": {
+                        "1": "Open TestFlight to see available updates",
+                        "2": "Turn on auto-updates if you want the latest build automatically"
                     }
                 },
                 "troubleshooting": {
                     "title": "Troubleshooting",
-                    "clearCache": {
-                        "lead": "Clear Cache",
-                        "text": "If you have issues, try clearing your browser cache."
-                    },
-                    "updateBrowser": {
-                        "lead": "Update Browser",
-                        "text": "Ensure you are using the latest version of your browser."
-                    },
-                    "contactSupport": {
-                        "lead": "Contact Support",
-                        "text": "Reach out if you need help."
-                    },
-                    "checkConnection": {
-                        "lead": "Check Connection",
-                        "text": "Ensure you have an active internet connection for first install."
-                    }
-                },
-                "benefits": {
-                    "title": "Why Install?",
-                    "offline": {
-                        "title": "Offline Access",
-                        "description": "Works without internet."
-                    },
-                    "fullscreen": {
-                        "title": "Full Screen",
-                        "description": "No browser bars."
-                    },
-                    "notifications": {
-                        "title": "Notifications",
-                        "description": "Get important updates."
-                    },
-                    "performance": {
-                        "title": "Better Performance",
-                        "description": "More responsive experience."
+                    "items": {
+                        "1": {
+                            "title": "I can’t open the invite link",
+                            "list": {
+                                "1": "Make sure you open it <strong >on the iPhone</strong> (not desktop)",
+                                "2": "Try copying the link into Safari"
+                            }
+                        },
+                        "2": {
+                            "title": "The email never arrives",
+                            "list": {
+                                "1": "Double-check the email you entered in the form",
+                                "2": "Check Spam/Promotions",
+                                "3": "Try again with a different email address"
+                            }
+                        },
+                        "3": {
+                            "title": "TestFlight says the beta is full",
+                            "description": "Spots are limited. If this happens, request access again later - we expand capacity regularly."
+                        }
                     }
                 }
             },
-            "getStarted": {
-                "badge": "Start Now",
-                "title": "Ready to install?",
-                "beta": {
-                    "title": "Get the App",
-                    "description": "Install SetWise now and start tracking.",
-                    "button": "Open App"
-                },
-                "benefits": {
-                    "fast": "Fast",
-                    "simple": "Simple",
-                    "secure": "Secure",
-                    "free": "Free"
-                },
+            "android": {
+                "title": "Android (Google Play)",
+                "subtitle": "Available through <strong >Google Play Open Testing</strong>.",
+                "description": "After you request Early Access, you’ll get an email with a link that opens the Play Store, where you can install the beta like a normal app.",
                 "steps": {
-                    "step1": {
-                        "title": "Open Browser",
-                        "description": "Go to the app URL."
+                    "1": {
+                        "title": "1) Request Early Access",
+                        "list": {
+                            "1": "Open the <strong >Early Access</strong> form",
+                            "2": "Enter your email",
+                            "3": "Select <strong >Android</strong> (or <strong >Both</strong>)",
+                            "4": "Tap <strong >Get Beta Access</strong>"
+                        }
                     },
-                    "step2": {
-                        "title": "Install",
-                        "description": "Follow instructions."
+                    "2": {
+                        "title": "2) Check your inbox",
+                        "description": "You’ll receive an email with your <strong >Google Play beta link</strong>.",
+                        "list": {
+                            "1": "If you don’t see it, check <strong >Spam / Promotions</strong>",
+                            "2": "Search for: <strong >SetWise</strong>"
+                        }
                     },
-                    "step3": {
-                        "title": "Login",
-                        "description": "Create account."
+                    "3": {
+                        "title": "3) Open the Play Store link",
+                        "list": {
+                            "1": "Open the email <strong >on your Android phone</strong>",
+                            "2": "Tap the link - it will open <strong >Google Play</strong>",
+                            "3": "Tap <strong >Install</strong>"
+                        },
+                        "note": "If you see a step like <strong >Join / Become a tester</strong>, confirm it and then install."
+                    },
+                    "4": {
+                        "title": "4) Open SetWise",
+                        "description": "After installation, open SetWise:",
+                        "list": {
+                            "1": "from the <strong >Play Store</strong> page, or",
+                            "2": "from your <strong >Home Screen / App Drawer</strong>"
+                        }
+                    }
+                },
+                "updates": {
+                    "title": "Updates (important)",
+                    "description": "Beta updates arrive through Google Play.",
+                    "list": {
+                        "1": "Open Play Store → SetWise → <strong >Update</strong> (if available)",
+                        "2": "Optional: enable <strong >Auto-update</strong> for SetWise in the Play Store"
+                    }
+                },
+                "troubleshooting": {
+                    "title": "Troubleshooting",
+                    "items": {
+                        "1": {
+                            "title": "The link opens on my computer, not my phone",
+                            "description": "Open the email on your Android device (or forward it to an account you use on your phone)."
+                        },
+                        "2": {
+                            "title": "“This app is not available for your device”",
+                            "description": "Your Android version may be too old, or the device isn’t supported for this release. For more info about this check <strong >REQUIREMENTS</strong>."
+                        },
+                        "3": {
+                            "title": "I don’t see the email",
+                            "list": {
+                                "1": "Check Spam/Promotions",
+                                "2": "Search “SetWise”",
+                                "3": "Request access again and double-check the email you entered"
+                            }
+                        }
                     }
                 }
             },
-            "security": {
-                "badge": "Privacy",
-                "title": "Safe & Secure",
-                "encryption": {
-                    "title": "Secure",
-                    "description": "Your installation is secure."
+            "requirements": {
+                "title": "REQUIREMENTS",
+                "ios": {
+                    "title": "iOS",
+                    "list": {
+                        "1": "iPhone or iPad running <strong >iOS 15.1 or later</strong>",
+                        "2": "<strong >TestFlight</strong> installed",
+                        "3": "Apple ID signed in"
+                    }
                 },
-                "localStorage": {
-                    "title": "Private",
-                    "description": "Your data is private."
-                }
+                "android": {
+                    "title": "Android",
+                    "list": {
+                        "1": "Android device with <strong >Google Play Store</strong> access",
+                        "2": "Google account signed in"
+                    },
+                    "compatibility": "<strong >Compatibility note:</strong> SetWise is confirmed working on <strong >Android 8+</strong>. Earlier versions are not officially supported."
+                },
+                "internet": {
+                    "title": "Internet",
+                    "list": {
+                        "1": "Internet is required for installation, sign-in, template creation, and AI-powered features.",
+                        "2": "After setup, core logging works offline"
+                    }
+                },
+                "notCompatible": "If Google Play shows “Not compatible”, the device doesn’t meet the current minimum requirements."
             }
         },
         "CreateWorkoutPage": {

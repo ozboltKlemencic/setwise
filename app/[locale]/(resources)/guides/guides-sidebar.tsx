@@ -31,7 +31,8 @@ export function GuidesSidebar() {
             icon: Download,
             subItems: [
                 { title: t('installation.overview'), href: "/guides/installation#overview" },
-                { title: t('installation.steps'), href: "/guides/installation#steps" },
+                { title: t('installation.ios'), href: "/guides/installation#ios" },
+                { title: t('installation.android'), href: "/guides/installation#android" },
                 { title: t('installation.requirements'), href: "/guides/installation#requirements" },
             ]
         },

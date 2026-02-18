@@ -1,42 +1,15 @@
 import { getTranslations } from "next-intl/server"
-import { Check, Smartphone, Laptop, RefreshCw, ShieldCheck } from "lucide-react"
+import { Smartphone, RefreshCw, AlertCircle, CheckCircle, Info } from "lucide-react" // Added icons
 import {
-    FeatureCard,
     KeyFeatureSection,
-    MiniFeatureCard,
-    StepCard,
-    SecurityItem,
-    BenefitBadge,
     FeatureTextBlock,
 } from "@/components/features/feature-cards"
-import BetaSignupDialog from "@/components/beta-signup-dialog"
-import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
 import type { ReactNode } from "react"
-
-
-// -- Icon Maps (icons can't live in JSON) --------------------------------
-
-const overviewCardIcons = {
-    ios: Smartphone,
-    android: Smartphone,
-    desktop: Laptop,
-    updates: RefreshCw,
-} as const
-
-const overviewCardKeys = Object.keys(overviewCardIcons) as (keyof typeof overviewCardIcons)[]
-const benefitKeys = ['fast', 'simple', 'secure', 'free'] as const
-const securityKeys = ['encryption', 'localStorage'] as const
-const stepKeys = ['step1', 'step2', 'step3'] as const
 
 // -- Rich text renderers ------------------------------------------------
 
 const richTextComponents = {
     strong: (chunks: ReactNode) => <strong className="text-surface-900 font-semibold">{chunks}</strong>,
-    check: (chunks: ReactNode) => (
-        <span className="inline-flex px-1.5 py-0.5 rounded-md bg-surface-200/80 dark:bg-surface-300/30 text-surface-900 text-caption-1 font-mono">
-            {chunks}
-        </span>
-    ),
     brand: (chunks: ReactNode) => <span className="primaryGradient">{chunks}</span>,
 }
 
@@ -47,256 +20,262 @@ export default async function InstallationPage() {
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
-            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
+            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200 dark:border-surface-800">
 
                 {/* ── Page Header ────────────────────────────── */}
                 <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10) min-[1152px]:pr-(--space-8)">
-
                     <p className="text-caption-2 tracking-wider font-semibold primaryGradient mb-1">
                         {t('badge')}
                     </p>
-
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t.rich('heading', richTextComponents)}
                     </h1>
                 </header>
 
                 {/* ── Sections ───────────────────────────────── */}
-                <div className="space-y-(--space-10) md:space-y-(--space-16) lg:space-y-(--space-20) ">
+                <div className="space-y-(--space-16) md:space-y-(--space-24) pb-(--space-20)">
 
-                    {/* OVERVIEW Section */}
-                    <section id="overview" className="scroll-mt-32 space-y-(--space-4) md:space-y-(--space-6) lg:space-y-(--space-6)">
-                        <div className="grid md:grid-cols-1 md:gap-x-(--space-8) lg:gap-x-(--space-10) md:items-start">
-                            <h2 className="md:col-span-5 text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight text-balance">
-                                {t('overview.title')}
+                    {/* iOS Section */}
+                    <section id="ios" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-10)">
+                        <div className="space-y-(--space-2)">
+                            <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                                {t('ios.title')}
                             </h2>
-
-                            <p className="md:col-span-7 md:pt-1 text-footnote md:text-subheadline lg:text-callout text-surface-700 leading-relaxed max-w-prose">
-                                {t.rich('overview.description', richTextComponents)}
+                            <p className="text-subheadline md:text-body text-surface-600 max-w-prose">
+                                {t.rich('ios.subtitle', richTextComponents)}
                             </p>
-                        </div>
-
-                        {/* Cards with full-bleed decorative background */}
-                        <div className="relative">
-                            {/* Decorative lines — breaks out of parent padding to span full width */}
-                            <div className="absolute inset-0 -mx-(--space-5) border-b border-surface-200/90 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
-                                {Array.from({ length: 300 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-200/80 outline-offset-[-0.25px]"
-                                        style={{
-                                            top: `${i * 16 - 120}px`,
-                                            left: "-100%",
-                                            width: "300%",
-                                        }}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Cards grid — on top of decorative background */}
-                            <div className="grid md:grid-cols-2 gap-(--space-2) md:gap-(--space-3) py-(--space-3) md:py-(--space-5) w-full relative z-10">
-                                {overviewCardKeys.map((key) => (
-                                    <FeatureCard
-                                        key={key}
-                                        icon={overviewCardIcons[key]}
-                                        title={t(`overview.cards.${key}.title`)}
-                                        description={t(`overview.cards.${key}.description`)}
-                                        compact
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* KEY FEATURES Section */}
-                    <section id="steps" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
-                        <div className="space-y-(--space-1) md:space-y-(--space-2)">
-                            <p className="text-caption-2 md:text-caption-1 tracking-wider font-semibold primaryGradient">
-                                {t('keyFeatures.badge')}
+                            <p className="text-body text-surface-700 max-w-prose leading-relaxed pt-2">
+                                {t.rich('ios.description', richTextComponents)}
                             </p>
-                            <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
-                                {t('keyFeatures.title')}
-                            </h2>
-                        </div>
-
-                        {/* Feature 1 — iOS */}
-                        <KeyFeatureSection compact icon={Smartphone} title={t('keyFeatures.ios.title')}>
-                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
-                                <FeatureTextBlock compact lead={t('keyFeatures.ios.step1.lead')}>
-                                    {t.rich('keyFeatures.ios.step1.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.ios.step2.lead')}>
-                                    {t.rich('keyFeatures.ios.step2.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.ios.step3.lead')}>
-                                    {t.rich('keyFeatures.ios.step3.text', richTextComponents)}
-                                </FeatureTextBlock>
-                            </div>
-                        </KeyFeatureSection>
-
-                        {/* Feature 2 — Android */}
-                        <KeyFeatureSection compact icon={Smartphone} title={t('keyFeatures.android.title')}>
-                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
-                                <FeatureTextBlock compact lead={t('keyFeatures.android.step1.lead')}>
-                                    {t.rich('keyFeatures.android.step1.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.android.step2.lead')}>
-                                    {t.rich('keyFeatures.android.step2.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.android.step3.lead')}>
-                                    {t.rich('keyFeatures.android.step3.text', richTextComponents)}
-                                </FeatureTextBlock>
-                            </div>
-                        </KeyFeatureSection>
-
-                        {/* Feature 3 — Desktop */}
-                        <KeyFeatureSection compact icon={Laptop} title={t('keyFeatures.desktop.title')}>
-                            <div className="space-y-(--space-2) md:space-y-(--space-3) max-w-prose">
-                                <FeatureTextBlock compact lead={t('keyFeatures.desktop.step1.lead')}>
-                                    {t.rich('keyFeatures.desktop.step1.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.desktop.step2.lead')}>
-                                    {t.rich('keyFeatures.desktop.step2.text', richTextComponents)}
-                                </FeatureTextBlock>
-                                <FeatureTextBlock compact lead={t('keyFeatures.desktop.step3.lead')}>
-                                    {t.rich('keyFeatures.desktop.step3.text', richTextComponents)}
-                                </FeatureTextBlock>
-                            </div>
-                        </KeyFeatureSection>
-
-                        {/* Feature 4 — Troubleshooting */}
-                        <KeyFeatureSection compact icon={RefreshCw} title={t('keyFeatures.troubleshooting.title')}>
-                            <div className="relative py-(--space-3) md:py-(--space-5)">
-                                {/* Decorative lines — breaks out of all parent padding to span full width */}
-                                <div className="absolute inset-0 -mx-(--space-5) md:-ml-25 md:-mr-(--space-12) border-b border-surface-200 border-t md:-mx-(--space-12) overflow-hidden pointer-events-none">
-                                    {Array.from({ length: 300 }).map((_, i) => (
-                                        <div
-                                            key={i}
-                                            className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-200/70 outline-offset-[-0.25px]"
-                                            style={{
-                                                top: `${i * 16 - 120}px`,
-                                                left: "-100%",
-                                                width: "300%",
-                                            }}
-                                        />
-                                    ))}
-                                </div>
-
-                                {/* Cards grid — on top of decorative background */}
-                                <div className="grid md:grid-cols-2 gap-(--space-2) md:gap-(--space-3) relative z-10">
-                                    <MiniFeatureCard compact title={t('keyFeatures.troubleshooting.clearCache.lead')} description={t('keyFeatures.troubleshooting.clearCache.text')} />
-                                    <MiniFeatureCard compact title={t('keyFeatures.troubleshooting.updateBrowser.lead')} description={t('keyFeatures.troubleshooting.updateBrowser.text')} />
-                                    <MiniFeatureCard compact title={t('keyFeatures.troubleshooting.contactSupport.lead')} description={t('keyFeatures.troubleshooting.contactSupport.text')} />
-                                    <MiniFeatureCard compact title={t('keyFeatures.troubleshooting.checkConnection.lead')} description={t('keyFeatures.troubleshooting.checkConnection.text')} />
-                                </div>
-                            </div>
-                        </KeyFeatureSection>
-
-                    </section>
-
-                    {/* GET STARTED Section */}
-                    <section id="requirements" className="scroll-mt-32 space-y-(--space-5) md:space-y-(--space-10) pb-(--space-10) md:pb-(--space-18)">
-                        <div className="space-y-(--space-1) md:space-y-(--space-2)">
-                            <p className="text-caption-2 md:text-caption-1 tracking-wider font-semibold primaryGradient">
-                                {t('getStarted.badge')}
-                            </p>
-                            <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-2) md:gap-(--space-3)">
-                                {t('getStarted.title')}
-                            </h2>
-                        </div>
-
-                        {/* CTA Card */}
-                        <div className="relative isolate overflow-hidden rounded-2xl border border-brand-300/40 dark:border-brand-400/25 bg-linear-to-br from-brand-500/20 via-brand-500/8 to-brand-500/25 shadow-(--shadow-lg)">
-                            {/* Decorative lines — behind content */}
-                            <div className="absolute inset-0 overflow-hidden pointer-events-none mask-[radial-gradient(360px_circle_at_35%_40%,white,transparent)]">
-                                {Array.from({ length: 300 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-300/90 dark:outline-surface-400/30 outline-offset-[-0.25px]"
-                                        style={{
-                                            top: `${i * 16 - 120}px`,
-                                            left: "-100%",
-                                            width: "300%",
-                                        }}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Soft brand glows */}
-                            <div aria-hidden="true" className="absolute -top-20 -left-20 size-64 rounded-full bg-brand-500/15 blur-3xl pointer-events-none" />
-                            <div aria-hidden="true" className="absolute -bottom-24 right-12 size-72 rounded-full bg-brand-500/12 blur-3xl pointer-events-none" />
-
-                            {/* Content — on top of decorative lines */}
-                            <div className="relative z-20 p-(--space-5) md:p-(--space-8) lg:p-(--space-10) w-full md:max-w-xl lg:max-w-2xl flex flex-col items-start gap-(--space-4) md:gap-(--space-3)">
-                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
-                                    {t('getStarted.beta.title')}
-                                </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-800 max-w-prose leading-relaxed">
-                                    {t.rich('getStarted.beta.description', richTextComponents)}
-                                </p>
-
-                                <div className="grid gap-(--space-2) sm:grid-cols-2 mb-(--space-5)">
-                                    {benefitKeys.map((key) => (
-                                        <BenefitBadge compact key={key} icon={Check} label={t(`getStarted.benefits.${key}`)} />
-                                    ))}
-                                </div>
-
-                                <BetaSignupDialog trigger={<ButtonRotatingGradient>{t('getStarted.beta.button')}</ButtonRotatingGradient>} />
-                            </div>
                         </div>
 
                         {/* Steps */}
-                        <div className="grid md:grid-cols-3 gap-(--space-4) md:gap-(--space-6)">
-                            {stepKeys.map((key, i) => (
-                                <StepCard
-                                    compact
-                                    key={key}
-                                    step={i + 1}
-                                    title={t(`getStarted.steps.${key}.title`)}
-                                    description={t(`getStarted.steps.${key}.description`)}
-                                />
+                        <div className="space-y-(--space-8)">
+                            {[1, 2, 3, 4, 5].map((step) => (
+                                <div key={step} className="flex gap-(--space-4) md:gap-(--space-6)">
+                                    <div className="flex-none pt-1">
+                                        <div className="size-8 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center text-callout font-bold text-surface-900 border border-surface-200 dark:border-surface-700">
+                                            {step}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-(--space-2) max-w-prose">
+                                        <h3 className="text-title-3 font-bold text-surface-900">
+                                            {t(`ios.steps.${step}.title`)}
+                                        </h3>
+                                        {/* Description if present */}
+                                        {(step === 2 || step === 3 || step === 5) && (
+                                            <p className="text-body text-surface-600">
+                                                {t.rich(`ios.steps.${step}.description`, richTextComponents)}
+                                            </p>
+                                        )}
+                                        {/* List */}
+                                        <ul className="list-disc list-outside ml-4 space-y-1 text-body text-surface-700 marker:text-surface-400">
+                                            {/* We iterate blindly because we don't know list length easily, or we hardcode. 
+                                                Checking translations keys is safer but async. 
+                                                For now we assume list structure based on steps. 
+                                            */}
+                                            {/* Using a helper or fixed iteration based on known content. 
+                                                Step 1: 4 items, Step 2: 2 items, Step 3: 3 items, Step 4: 5 items, Step 5: 2 items
+                                            */}
+                                            {(step === 1 ? [1, 2, 3, 4] :
+                                                step === 2 ? [1, 2] :
+                                                    step === 3 ? [1, 2, 3] :
+                                                        step === 4 ? [1, 2, 3, 4, 5] :
+                                                            [1, 2]).map((i) => (
+                                                                <li key={i}>{t.rich(`ios.steps.${step}.list.${i}`, richTextComponents)}</li>
+                                                            ))}
+                                        </ul>
+                                        {/* Note if present */}
+                                        {step === 1 && (
+                                            <div className="flex gap-2 p-3 bg-surface-100/50 dark:bg-surface-800/50 rounded-lg text-footnote text-surface-600 mt-2">
+                                                <Info className="size-4 shrink-0 mt-0.5" />
+                                                <p>{t('ios.steps.1.note')}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             ))}
+                        </div>
+
+                        {/* Updates */}
+                        <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50/50 dark:bg-surface-900/20">
+                            <h3 className="text-headline font-bold text-surface-900 mb-2 flex items-center gap-2">
+                                <RefreshCw className="size-5 text-brand-500" />
+                                {t('ios.updates.title')}
+                            </h3>
+                            <p className="text-body text-surface-600 mb-4">{t('ios.updates.description')}</p>
+                            <ul className="list-disc list-outside ml-4 space-y-1 text-body text-surface-700 marker:text-surface-400">
+                                <li>{t('ios.updates.list.1')}</li>
+                                <li>{t('ios.updates.list.2')}</li>
+                            </ul>
+                        </div>
+
+                        {/* Troubleshooting */}
+                        <div>
+                            <h3 className="text-headline font-bold text-surface-900 mb-4">{t('ios.troubleshooting.title')}</h3>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                {[1, 2, 3].map((item) => (
+                                    <div key={item} className="p-4 rounded-xl border border-surface-200 dark:border-surface-800">
+                                        <h4 className="font-semibold text-surface-900 mb-2">{t(`ios.troubleshooting.items.${item}.title`)}</h4>
+                                        {item === 3 ? (
+                                            <p className="text-footnote text-surface-600">{t(`ios.troubleshooting.items.${item}.description`)}</p>
+                                        ) : (
+                                            <ul className="list-disc list-outside ml-4 space-y-1 text-footnote text-surface-600 marker:text-surface-400">
+                                                {(item === 1 ? [1, 2] : [1, 2, 3]).map((i) => (
+                                                    <li key={i}>{t.rich(`ios.troubleshooting.items.${item}.list.${i}`, richTextComponents)}</li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </section>
 
-                    {/* SECURITY & PRIVACY Section */}
-                    <section className="scroll-mt-32 relative  ">
-                        {/* Decorative lines — behind content, full width */}
-                        <div className="absolute inset-0 -mx-(--space-5) md:-mx-(--space-12) border-t border-surface-200/80 dark:border-surface-300/60 overflow-hidden pointer-events-none">
-                            {Array.from({ length: 300 }).map((_, i) => (
-                                <div
-                                    key={i}
-                                    className="absolute h-(--space-4) w-full -rotate-45 origin-top-left outline-[0.5px] outline-surface-200/70 outline-offset-[-0.25px]"
-                                    style={{
-                                        top: `${i * 16 - 120}px`,
-                                        left: "-100%",
-                                        width: "300%",
-                                    }}
-                                />
+                    {/* Android Section */}
+                    <section id="android" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-10) pt-(--space-8) border-t border-surface-200 dark:border-surface-800">
+                        <div className="space-y-(--space-2)">
+                            <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                                {t('android.title')}
+                            </h2>
+                            <p className="text-subheadline md:text-body text-surface-600 max-w-prose">
+                                {t.rich('android.subtitle', richTextComponents)}
+                            </p>
+                            <p className="text-body text-surface-700 max-w-prose leading-relaxed pt-2">
+                                {t.rich('android.description', richTextComponents)}
+                            </p>
+                        </div>
+
+                        {/* Steps */}
+                        <div className="space-y-(--space-8)">
+                            {[1, 2, 3, 4].map((step) => (
+                                <div key={step} className="flex gap-(--space-4) md:gap-(--space-6)">
+                                    <div className="flex-none pt-1">
+                                        <div className="size-8 rounded-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center text-callout font-bold text-surface-900 border border-surface-200 dark:border-surface-700">
+                                            {step}
+                                        </div>
+                                    </div>
+                                    <div className="space-y-(--space-2) max-w-prose">
+                                        <h3 className="text-title-3 font-bold text-surface-900">
+                                            {t(`android.steps.${step}.title`)}
+                                        </h3>
+                                        {/* Description if present */}
+                                        {(step === 2 || step === 4) && (
+                                            <p className="text-body text-surface-600">
+                                                {t.rich(`android.steps.${step}.description`, richTextComponents)}
+                                            </p>
+                                        )}
+                                        {/* List */}
+                                        <ul className="list-disc list-outside ml-4 space-y-1 text-body text-surface-700 marker:text-surface-400">
+                                            {(step === 1 ? [1, 2, 3, 4] :
+                                                step === 2 ? [1, 2] :
+                                                    step === 3 ? [1, 2, 3] :
+                                                        [1, 2]).map((i) => (
+                                                            <li key={i}>{t.rich(`android.steps.${step}.list.${i}`, richTextComponents)}</li>
+                                                        ))}
+                                        </ul>
+                                        {/* Note if present */}
+                                        {step === 3 && (
+                                            <div className="flex gap-2 p-3 bg-surface-100/50 dark:bg-surface-800/50 rounded-lg text-footnote text-surface-600 mt-2">
+                                                <Info className="size-4 shrink-0 mt-0.5" />
+                                                <p>{t.rich('android.steps.3.note', richTextComponents)}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             ))}
                         </div>
 
-                        {/* Content — on top */}
-                        <div className="relative z-10 space-y-(--space-4) md:space-y-(--space-4) p-(--space-4) py-(--space-6) md:p-(--space-6) md:py-(--space-16)">
-                            <div className="">
-                                <p className="text-caption-2 md:text-caption-1 tracking-wider font-semibold text-surface-500">
-                                    {t('security.badge')}
-                                </p>
-                                <h2 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
-                                    {t('security.title')}
-                                </h2>
-                            </div>
-                            <div className="grid md:grid-cols-2 gap-(--space-4) md:gap-(--space-6)">
-                                {securityKeys.map((key) => (
-                                    <SecurityItem
-                                        compact
-                                        key={key}
-                                        icon={ShieldCheck}
-                                        title={t(`security.${key}.title`)}
-                                        description={t(`security.${key}.description`)}
-                                    />
+                        {/* Updates */}
+                        <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50/50 dark:bg-surface-900/20">
+                            <h3 className="text-headline font-bold text-surface-900 mb-2 flex items-center gap-2">
+                                <RefreshCw className="size-5 text-brand-500" />
+                                {t('android.updates.title')}
+                            </h3>
+                            <p className="text-body text-surface-600 mb-4">{t('android.updates.description')}</p>
+                            <ul className="list-disc list-outside ml-4 space-y-1 text-body text-surface-700 marker:text-surface-400">
+                                <li>{t.rich('android.updates.list.1', richTextComponents)}</li>
+                                <li>{t.rich('android.updates.list.2', richTextComponents)}</li>
+                            </ul>
+                        </div>
+
+                        {/* Troubleshooting */}
+                        <div>
+                            <h3 className="text-headline font-bold text-surface-900 mb-4">{t('android.troubleshooting.title')}</h3>
+                            <div className="grid md:grid-cols-2 gap-4">
+                                {[1, 2, 3].map((item) => (
+                                    <div key={item} className="p-4 rounded-xl border border-surface-200 dark:border-surface-800">
+                                        <h4 className="font-semibold text-surface-900 mb-2">{t(`android.troubleshooting.items.${item}.title`)}</h4>
+                                        {item === 3 ? (
+                                            <ul className="list-disc list-outside ml-4 space-y-1 text-footnote text-surface-600 marker:text-surface-400">
+                                                {[1, 2, 3].map((i) => (
+                                                    <li key={i}>{t.rich(`android.troubleshooting.items.${item}.list.${i}`, richTextComponents)}</li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <p className="text-footnote text-surface-600">
+                                                {t.rich(`android.troubleshooting.items.${item}.description`, richTextComponents)}
+                                            </p>
+                                        )}
+                                    </div>
                                 ))}
                             </div>
+                        </div>
+                    </section>
+
+                    {/* Requirements Section */}
+                    <section id="requirements" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-8) pt-(--space-8) border-t border-surface-200 dark:border-surface-800">
+                        <h2 className="text-title-2 md:text-title-1 font-bold text-surface-900 tracking-tight">
+                            {t('requirements.title')}
+                        </h2>
+
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {/* iOS Req */}
+                            <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-900/40">
+                                <h3 className="text-headline font-bold text-surface-900 mb-4">{t('requirements.ios.title')}</h3>
+                                <ul className="space-y-3">
+                                    {[1, 2, 3].map(i => (
+                                        <li key={i} className="flex gap-2 text-body text-surface-700">
+                                            <CheckCircle className="size-5 text-brand-500 shrink-0" />
+                                            <span>{t.rich(`requirements.ios.list.${i}`, richTextComponents)}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* Android Req */}
+                            <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-900/40">
+                                <h3 className="text-headline font-bold text-surface-900 mb-4">{t('requirements.android.title')}</h3>
+                                <ul className="space-y-3 mb-4">
+                                    {[1, 2].map(i => (
+                                        <li key={i} className="flex gap-2 text-body text-surface-700">
+                                            <CheckCircle className="size-5 text-brand-500 shrink-0" />
+                                            <span>{t.rich(`requirements.android.list.${i}`, richTextComponents)}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p className="text-footnote text-surface-500 border-t border-surface-200 dark:border-surface-700 pt-3">
+                                    {t.rich('requirements.android.compatibility', richTextComponents)}
+                                </p>
+                            </div>
+
+                            {/* Internet Req */}
+                            <div className="p-6 rounded-2xl border border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-900/40">
+                                <h3 className="text-headline font-bold text-surface-900 mb-4">{t('requirements.internet.title')}</h3>
+                                <ul className="space-y-3">
+                                    {[1, 2].map(i => (
+                                        <li key={i} className="flex gap-2 text-body text-surface-700">
+                                            <Info className="size-5 text-surface-500 shrink-0" />
+                                            <span>{t.rich(`requirements.internet.list.${i}`, richTextComponents)}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-surface-100 dark:bg-surface-800/50 flex gap-3 text-subheadline text-surface-600">
+                            <AlertCircle className="size-5 shrink-0 mt-0.5" />
+                            <p>{t('requirements.notCompatible')}</p>
                         </div>
                     </section>
 

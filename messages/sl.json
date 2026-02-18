@@ -896,8 +896,9 @@
             "installation": {
                 "title": "Namestitev",
                 "overview": "Pregled",
-                "requirements": "Zahteve",
-                "steps": "Koraki"
+                "ios": "iOS",
+                "android": "Android",
+                "requirements": "Zahteve"
             },
             "createWorkout": {
                 "title": "Ustvari Trening",
@@ -978,156 +979,187 @@
             "title": "Namestitev",
             "description": "Kako namestiti SetWise na svojo napravo.",
             "badge": "Vodiči",
-            "heading": "Namesti <brand>SetWise</brand> v sekundah",
-            "overview": {
-                "title": "Pregled Namestitve",
-                "description": "SetWise je Progressive Web App (PWA), ki se namesti neposredno iz brskalnika. Deluje brez povezave in se obnaša kot native aplikacija.",
-                "cards": {
-                    "ios": {
-                        "title": "iOS",
-                        "description": "Namesti preko Safari Share menija."
+            "heading": "Namesti <brand>SetWise</brand> v nekaj sekundah",
+            "ios": {
+                "title": "SetWise za iOS",
+                "subtitle": "Distribuirano prek <strong >TestFlight</strong> med zgodnjim dostopom.",
+                "description": "<strong >TestFlight</strong> je uradna Applova aplikacija za testiranje beta različic - omogoča varno namestitev SetWise, prejemanje posodobitev in pošiljanje povratnih informacij pred javno izdajo v App Store.\n\nKo prejmete povabilo po e-pošti, namestitev traja približno minuto.",
+                "steps": {
+                    "1": {
+                        "title": "1) Zahtevaj zgodnji dostop",
+                        "list": {
+                            "1": "Odpri obrazec za <strong >Zgodnji dostop</strong>.",
+                            "2": "Vnesi svoj e-poštni naslov.",
+                            "3": "Izberi <strong >iOS</strong> (ali <strong >Oba</strong>).",
+                            "4": "Tapni <strong >Pridobi beta dostop</strong>."
+                        },
+                        "note": "Uporabi isti e-poštni naslov, ki ga uporabljaš na svojem iPhoneu (priporočeno), da bo pridružitev brezhibna."
                     },
-                    "android": {
-                        "title": "Android",
-                        "description": "Namesti preko Chrome menija."
+                    "2": {
+                        "title": "2) Preveri svojo mapo prejeto",
+                        "description": "V nekaj minutah boš prejel e-pošto s <strong >TestFlight povabilom</strong>.",
+                        "list": {
+                            "1": "Če je ne vidiš, preveri <strong >Vsiljeno pošto / Promocije</strong>",
+                            "2": "Išči: <strong >SetWise</strong>"
+                        }
                     },
-                    "desktop": {
-                        "title": "Namizje",
-                        "description": "Namesti preko Chrome naslovne vrstice."
+                    "3": {
+                        "title": "3) Namesti TestFlight",
+                        "description": "TestFlight je uradna Applova aplikacija za beta testiranje.",
+                        "list": {
+                            "1": "Odpri App Store",
+                            "2": "Išči <strong >TestFlight</strong>",
+                            "3": "Namesti jo"
+                        }
                     },
-                    "updates": {
-                        "title": "Samodejne Posodobitve",
-                        "description": "Vedno imej najnovejšo verzijo."
-                    }
-                }
-            },
-            "keyFeatures": {
-                "badge": "Podrobnosti",
-                "title": "Koraki Namestitve",
-                "ios": {
-                    "title": "iOS Namestitev",
-                    "step1": {
-                        "lead": "Odpri v Safariju",
-                        "text": "Pojdi na app.setwise.com v Safariju."
+                    "4": {
+                        "title": "4) Pridruži se beti + namesti SetWise",
+                        "list": {
+                            "1": "Na iPhoneu odpri povabilo v e-pošti",
+                            "2": "Tapni povezavo povabila",
+                            "3": "TestFlight se bo odprl",
+                            "4": "Tapni <strong >Sprejmi</strong> (če je prikazano)",
+                            "5": "Tapni <strong >Namesti</strong>"
+                        }
                     },
-                    "step2": {
-                        "lead": "Tapni Deli",
-                        "text": "Tapni gumb za deljenje v orodni vrstici."
-                    },
-                    "step3": {
-                        "lead": "Dodaj na Začetni Zaslon",
-                        "text": "Pomakni se dol in tapni 'Dodaj na Začetni Zaslon'."
-                    }
-                },
-                "android": {
-                    "title": "Android Namestitev",
-                    "step1": {
-                        "lead": "Odpri v Chromu",
-                        "text": "Pojdi na app.setwise.com v Chromu."
-                    },
-                    "step2": {
-                        "lead": "Tapni Meni",
-                        "text": "Tapni meni s tremi pikami."
-                    },
-                    "step3": {
-                        "lead": "Namesti Aplikacijo",
-                        "text": "Tapni 'Namesti aplikacijo' ali 'Dodaj na Začetni Zaslon'."
+                    "5": {
+                        "title": "5) Odpri SetWise",
+                        "description": "Po namestitvi lahko odpreš SetWise:",
+                        "list": {
+                            "1": "neposredno iz <strong >TestFlight</strong>, ali",
+                            "2": "iz svojega <strong >Domačega zaslona</strong>"
+                        }
                     }
                 },
-                "desktop": {
-                    "title": "Namizna Namestitev",
-                    "step1": {
-                        "lead": "Odpri v Chromu/Edgu",
-                        "text": "Pojdi na app.setwise.com."
-                    },
-                    "step2": {
-                        "lead": "Klikni Namesti",
-                        "text": "Klikni ikono za namestitev v naslovni vrstici."
-                    },
-                    "step3": {
-                        "lead": "Zaženi",
-                        "text": "Zaženi iz namizja ali mape aplikacij."
+                "updates": {
+                    "title": "Posodobitve (pomembno)",
+                    "description": "Nove beta različice so na voljo prek TestFlight.",
+                    "list": {
+                        "1": "Odpri TestFlight za ogled razpoložljivih posodobitev",
+                        "2": "Vklopi samodejne posodobitve, če želiš najnovejšo različico samodejno"
                     }
                 },
                 "troubleshooting": {
-                    "title": "Odpravljanje Težav",
-                    "clearCache": {
-                        "lead": "Počisti Predpomnilnik",
-                        "text": "Če imaš težave, poskusi počistiti predpomnilnik brskalnika."
-                    },
-                    "updateBrowser": {
-                        "lead": "Posodobi Brskalnik",
-                        "text": "Prepričaj se, da uporabljaš najnovejšo različico brskalnika."
-                    },
-                    "contactSupport": {
-                        "lead": "Kontaktiraj Podporo",
-                        "text": "Obrni se na nas, če potrebuješ pomoč."
-                    },
-                    "checkConnection": {
-                        "lead": "Preveri Povezavo",
-                        "text": "Za prvo namestitev potrebuješ internetno povezavo."
-                    }
-                },
-                "benefits": {
-                    "title": "Zakaj Namestiti?",
-                    "offline": {
-                        "title": "Dostop Brez Povezave",
-                        "description": "Deluje brez interneta."
-                    },
-                    "fullscreen": {
-                        "title": "Celozaslonski Način",
-                        "description": "Brez vrstic brskalnika."
-                    },
-                    "notifications": {
-                        "title": "Obvestila",
-                        "description": "Prejemaj pomembne posodobitve."
-                    },
-                    "performance": {
-                        "title": "Boljša Zmogljivost",
-                        "description": "Bolj odzivna izkušnja."
+                    "title": "Odpravljanje težav",
+                    "items": {
+                        "1": {
+                            "title": "Ne morem odpreti povezave povabila",
+                            "list": {
+                                "1": "Prepričaj se, da jo odpreš <strong >na iPhoneu</strong> (ne na računalniku)",
+                                "2": "Poskusi kopirati povezavo v Safari"
+                            }
+                        },
+                        "2": {
+                            "title": "E-pošta nikoli ne prispe",
+                            "list": {
+                                "1": "Dvakrat preveri e-poštni naslov, ki si ga vnesel v obrazec",
+                                "2": "Preveri Vsiljeno pošto/Promocije",
+                                "3": "Poskusi znova z drugim e-poštnim naslovom"
+                            }
+                        },
+                        "3": {
+                            "title": "TestFlight pravi, da je beta polna",
+                            "description": "Mesta so omejena. Če se to zgodi, zahtevaj dostop kasneje - redno povečujemo kapacitete."
+                        }
                     }
                 }
             },
-            "getStarted": {
-                "badge": "Začni Zdaj",
-                "title": "Pripravljen na namestitev?",
-                "beta": {
-                    "title": "Dobi Aplikacijo",
-                    "description": "Namesti SetWise zdaj in začni slediti.",
-                    "button": "Odpri Aplikacijo"
-                },
-                "benefits": {
-                    "fast": "Hitro",
-                    "simple": "Preprosto",
-                    "secure": "Varno",
-                    "free": "Brezplačno"
-                },
+            "android": {
+                "title": "Android (Google Play)",
+                "subtitle": "Na voljo prek <strong >Google Play Open Testing</strong>.",
+                "description": "Po zahtevi za zgodnji dostop boš prejel e-pošto s povezavo, ki odpre Play Store, kjer lahko namestiš beta različico kot običajno aplikacijo.",
                 "steps": {
-                    "step1": {
-                        "title": "Odpri Brskalnik",
-                        "description": "Pojdi na URL aplikacije."
+                    "1": {
+                        "title": "1) Zahtevaj zgodnji dostop",
+                        "list": {
+                            "1": "Odpri obrazec za <strong >Zgodnji dostop</strong>",
+                            "2": "Vnesi svojo e-pošto",
+                            "3": "Izberi <strong >Android</strong> (ali <strong >Oba</strong>)",
+                            "4": "Tapni <strong >Pridobi beta dostop</strong>"
+                        }
                     },
-                    "step2": {
-                        "title": "Namesti",
-                        "description": "Sledi navodilom."
+                    "2": {
+                        "title": "2) Preveri svojo mapo prejeto",
+                        "description": "Prejel boš e-pošto s svojo <strong >Google Play beta povezavo</strong>.",
+                        "list": {
+                            "1": "Če je ne vidiš, preveri <strong >Vsiljeno pošto / Promocije</strong>",
+                            "2": "Išči: <strong >SetWise</strong>"
+                        }
                     },
-                    "step3": {
-                        "title": "Prijavi se",
-                        "description": "Ustvari račun."
+                    "3": {
+                        "title": "3) Odpri povezavo Play Store",
+                        "list": {
+                            "1": "Odpri e-pošto <strong >na svojem Android telefonu</strong>",
+                            "2": "Tapni povezavo - odprl se bo <strong >Google Play</strong>",
+                            "3": "Tapni <strong >Namesti</strong>"
+                        },
+                        "note": "Če vidiš korak kot <strong >Pridruži se / Postani preizkuševalec</strong>, ga potrdi in nato namesti."
+                    },
+                    "4": {
+                        "title": "4) Odpri SetWise",
+                        "description": "Po namestitvi odpri SetWise:",
+                        "list": {
+                            "1": "iz strani <strong >Play Store</strong>, ali",
+                            "2": "iz svojega <strong >Domačega zaslona / Predala aplikacij</strong>"
+                        }
+                    }
+                },
+                "updates": {
+                    "title": "Posodobitve (pomembno)",
+                    "description": "Beta posodobitve prihajajo prek Google Play.",
+                    "list": {
+                        "1": "Odpri Play Store → SetWise → <strong >Posodobi</strong> (če je na voljo)",
+                        "2": "Opcijsko: omogoči <strong >Samodejno posodabljanje</strong> za SetWise v Play Store"
+                    }
+                },
+                "troubleshooting": {
+                    "title": "Odpravljanje težav",
+                    "items": {
+                        "1": {
+                            "title": "Povezava se odpre na računalniku, ne na telefonu",
+                            "description": "Odpri e-pošto na svoji Android napravi (ali jo posreduj na račun, ki ga uporabljaš na telefonu)."
+                        },
+                        "2": {
+                            "title": "“Ta aplikacija ni na voljo za vašo napravo”",
+                            "description": "Tvoja Android različica je morda pre stara ali pa naprava ni podprta za to izdajo. Za več informacij o tem preveri <strong >ZAHTEVE</strong>."
+                        },
+                        "3": {
+                            "title": "Ne vidim e-pošte",
+                            "list": {
+                                "1": "Preveri Vsiljeno pošto/Promocije",
+                                "2": "Išči “SetWise”",
+                                "3": "Zahtevaj dostop znova in dvakrat preveri vneseni e-poštni naslov"
+                            }
+                        }
                     }
                 }
             },
-            "security": {
-                "badge": "Zasebnost",
-                "title": "Varno & Zanesljivo",
-                "encryption": {
-                    "title": "Varno",
-                    "description": "Tvoja namestitev je varna."
+            "requirements": {
+                "title": "ZAHTEVE",
+                "ios": {
+                    "title": "iOS",
+                    "list": {
+                        "1": "iPhone ali iPad z <strong >iOS 15.1 ali novejšim</strong>",
+                        "2": "<strong >TestFlight</strong> nameščen",
+                        "3": "Apple ID prijavljen"
+                    }
                 },
-                "localStorage": {
-                    "title": "Zasebno",
-                    "description": "Tvoji podatki so zasebni."
-                }
+                "android": {
+                    "title": "Android",
+                    "list": {
+                        "1": "Android naprava z dostopom do <strong >Google Play Store</strong>",
+                        "2": "Google račun prijavljen"
+                    },
+                    "compatibility": "<strong >Opomba o združljivosti:</strong> SetWise je potrjen, da deluje na <strong >Android 8+</strong>. Prejšnje različice uradno niso podprte."
+                },
+                "internet": {
+                    "title": "Internet",
+                    "list": {
+                        "1": "Internet je potreben za namestitev, prijavo, ustvarjanje predlog in funkcije, ki jih poganja umetna inteligenca.",
+                        "2": "Po namestitvi osnovno beleženje deluje brez povezave"
+                    }
+                },
+                "notCompatible": "Če Google Play prikaže “Ni združljivo”, naprava ne izpolnjuje trenutnih minimalnih zahtev."
             }
         },
         "CreateWorkoutPage": {
