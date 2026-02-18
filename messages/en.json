@@ -922,890 +922,1082 @@
                 "workoutDetails": "Workout Details",
                 "volumeTrend": "Analysis (Volume Trend)",
                 "exerciseExplorer": "Analysis (Exercise Explorer)"
+            },
+            "aiFeatures": {
+                "title": "AI Features",
+                "overview": "Overview",
+                "importPlan": "Import Plan (Parser)"
+            },
+            "profileSettings": {
+                "title": "Profile & Settings",
+                "preferences": "Preferences",
+                "training": "Training",
+                "support": "Support & Feedback",
+                "account": "Account"
             }
         },
-        "ProgressPage": {
-            "title": "Progress",
+        "ProfileSettingsPage": {
+            "title": "Profile & Settings",
             "badge": "Guides",
-            "heading": "Track your <brand>gains</brand>",
-            "subHeading": "See your stats, analyze trends, and visualize your progress over time.",
-            "overview": {
-                "title": "Progress Overview",
-                "description": "The <strong >Progress screen</strong> gives you a clear overview of your training history and trends.\n\nIt includes:",
-                "list": {
-                    "1": "a scrollable <strong >list of past workouts</strong>",
-                    "2": "quick <strong >weekly stats</strong> (workouts, active days, avg duration)",
-                    "3": "fast access to <strong >full workout details</strong>"
-                },
-                "imageAlt": "Progress screen overview",
-                "calendar": {
-                    "title": "1) Calendar filter",
-                    "description": "At the top you’ll find a calendar strip you can swipe <strong >left / right</strong>.",
-                    "list": {
-                        "1": "Tap a specific day to show workouts from that day",
-                        "2": "Days with a workout are marked with a <strong >blue dot</strong>"
-                    },
-                    "footer": "To return to the full list, click the selection (or select another day).",
-                    "imageAlt": "Calendar strip with blue dot + selected day"
-                },
-                "history": {
-                    "title": "2) Workout history list",
-                    "description": "Each workout is shown as a card with key info like:",
-                    "list": {
-                        "1": "workout name (template/day)",
-                        "2": "date & time",
-                        "3": "duration and total volume",
-                        "4": "a quick <strong >comparison badge</strong> vs your last workout from the same template"
-                    },
-                    "scrollNote": "Scroll down to browse older workouts.",
-                    "footer": "SetWise loads <strong >20 workouts at a time</strong>, and will automatically load more as you reach the end of the list.",
-                    "imageAlt": "Workout cards list + comparison badge"
-                },
-                "details": {
-                    "title": "3) Open workout details",
-                    "description": "Tap any workout card to open the workout detail screen.\n\nInside the detail screen you’ll find:",
-                    "list": {
-                        "1": "<strong >Summary</strong> (overview + achievements)",
-                        "2": "<strong >Exercises</strong> (every set + comparisons)",
-                        "3": "<strong >Analysis</strong> (volume trend + exercise analytics)"
-                    },
-                    "imageAlt": "Tap card → opens workout detail"
-                },
-                "tip": {
-                    "title": "Tip",
-                    "description": "Use the comparison badge to quickly see whether your session was up or down compared to your last workout from the same template."
-                }
-            },
-            "workoutDetails": {
-                "title": "Workout Details",
-                "intro": {
-                    "text": "Tap any workout card in <strong >Progress</strong> to open the Workout Details screen.\n\nAt the top you can switch between three tabs:",
-                    "list": {
-                        "1": "<strong >Summary</strong> - a quick overview of the whole session",
-                        "2": "<strong >Exercises</strong> - every exercise and set, fully broken down",
-                        "3": "<strong >Analysis</strong> - trends and deeper insights"
-                    },
-                    "imageAlt": "Workout detail screen with tabs"
-                },
-                "summary": {
-                    "title": "1) Summary tab",
-                    "description": "The <strong >Summary</strong> tab shows the most important session stats at a glance:",
-                    "list": {
-                        "1": "<strong >Total Volume</strong> (with a badge comparing to your last workout from the same template)",
-                        "2": "<strong >Duration</strong>",
-                        "3": "<strong >Total sets</strong> and <strong >number of exercises</strong>",
-                        "4": "<strong >Workout notes</strong> (if you added any)"
-                    },
-                    "achievements": {
-                        "title": "It also highlights achievements such as:",
-                        "list": {
-                            "1": "<strong >New PRs</strong>",
-                            "2": "<strong >Biggest improvement</strong>",
-                            "3": "<strong >Hardest set</strong>"
-                        }
-                    },
-                    "imageAlt": "Summary tab showing volume + badge + achievements + notes"
-                },
-                "exercises": {
-                    "title": "2) Exercises tab",
-                    "description": "The <strong >Exercises</strong> tab shows your full workout log:",
-                    "list": {
-                        "1": "Each exercise includes a quick comparison vs your last workout from the same template",
-                        "2": "Volume is shown on the exercise level",
-                        "3": "Every set is listed with <strong >weight × reps</strong>",
-                        "4": "Any <strong >exercise notes</strong> added during the workout are visible here"
-                    },
-                    "note": "This is the best tab for reviewing exactly what you did set-by-set.",
-                    "imageAlt": "Exercises tab with set list + comparisons + notes"
-                },
-                "analysis": {
-                    "title": "3) Analysis tab",
-                    "description": "The <strong >Analysis</strong> tab includes:",
-                    "list": {
-                        "1": "<strong >Volume Trend</strong> graph (how your workout volume changes over time)",
-                        "2": "<strong >Exercise Explorer</strong> (pick an exercise and review progress over time)"
-                    },
-                    "filters": {
-                        "title": "You can filter:",
-                        "list": {
-                            "1": "<strong >All workouts</strong> vs <strong >Same template</strong>",
-                            "2": "timeframe: <strong >30d / 90d / All</strong>"
-                        }
-                    },
-                    "imageAlt": "Analysis tab showing filters + volume trend + exercise explorer"
-                },
-                "tip": {
-                    "title": "Tip",
-                    "description": "Use <strong >Same template</strong> when you want the most meaningful comparison (e.g. Upper A vs your previous Upper A)."
-                }
-            },
-            "volumeTrend": {
-                "title": "Analysis (Volume Trend)",
-                "description": "The Volume Trend chart shows how your <strong >training volume</strong> changes over time.\n\nIt helps you spot consistency, spikes, and whether your recent sessions are trending up or down.",
-                "imageAlt": "Volume Trend section",
-                "chartShows": {
-                    "title": "1) What the chart shows",
-                    "list": {
-                        "1": "Each point represents the <strong >total volume</strong> of a workout",
-                        "2": "“Today’s volume” shows the volume of the workout you’re currently viewing",
-                        "3": "The % text compares today vs your last relevant workout (based on the selected filter)"
-                    },
-                    "imageAlt": "Today’s volume + % vs last"
-                },
-                "compare": {
-                    "title": "2) Compare the right workouts",
-                    "description": "Use the top filter to choose what you want to compare:",
-                    "list": {
-                        "1": "<strong >All workouts</strong> — broad trend across everything you do",
-                        "2": "<strong >Same template</strong> — compares only workouts from the same template/day (recommended)"
-                    },
-                    "note": "Same template is usually the most useful view (Upper A vs Upper A, Lower vs Lower).",
-                    "imageAlt": "All workouts / Same template toggle"
-                },
-                "timeframe": {
-                    "title": "3) Choose the timeframe",
-                    "description": "Use the timeframe filter to change the range:",
-                    "list": {
-                        "1": "<strong >30d</strong> — short-term trend",
-                        "2": "<strong >90d</strong> — medium-term trend",
-                        "3": "<strong >All</strong> — full history"
-                    },
-                    "imageAlt": "30d / 90d / All toggle"
-                },
-                "howTo": {
-                    "title": "How to use it",
-                    "description": "If volume is trending <strong >down</strong> for the same template, it may signal fatigue, lower effort, or a change in exercise selection.",
-                    "tip": {
-                        "title": "Tip",
-                        "text": "Higher volume doesn’t always mean better progress — volume can increase just by adding more sets.\n\nFor a clearer signal, also check <link >exercise explorer</link> (top set, reps, and weight over time)."
-                    }
-                }
-            },
-            "exerciseExplorer": {
-                "title": "Analysis (Exercise Explorer)",
-                "description": "Exercise Explorer lets you track progress for a <strong >specific exercise</strong> over time.\n\nIt’s the best place to confirm real progress beyond just total volume.",
-                "imageAlt": "Exercise Explorer section",
-                "pickExercise": {
-                    "title": "1) Pick an exercise",
-                    "list": {
-                        "1": "Open the <strong >Analysis</strong> tab",
-                        "2": "Scroll to <strong >Exercise Explorer</strong>",
-                        "3": "Use the exercise selector to choose an exercise"
-                    },
-                    "imageAlt": "Exercise selector dropdown/list"
-                },
-                "whatToTrack": {
-                    "title": "2) What you can track",
-                    "description": "For the selected exercise you can review trends over time, including:",
-                    "list": {
-                        "1": "<strong >Volume</strong> (total volume for that exercise per workout)",
-                        "2": "<strong >Reps</strong> (how your reps change over time)",
-                        "3": "<strong >Top set</strong> (your heaviest / best set trend)"
-                    },
-                    "imageAlt": "Exercise charts for volume/reps/top set"
-                },
-                "filters": {
-                    "title": "3) Use the same filters (recommended)",
-                    "description": "For the clearest signal, combine Exercise Explorer with filters:",
-                    "list": {
-                        "1": "<strong >Same template</strong> (compare the same day/workout type)",
-                        "2": "timeframe: <strong >30d / 90d / All</strong>"
-                    },
-                    "note": "This avoids mixing different variations of the same exercise across different days.",
-                    "imageAlt": "Same template + timeframe filters"
-                },
-                "howTo": {
-                    "title": "How to use it",
-                    "list": {
-                        "1": "If <strong >Top set</strong> is improving, you’re getting stronger on that movement.",
-                        "2": "If <strong >Reps</strong> increase at the same weight, that’s also progress.",
-                        "3": "If <strong >Volume</strong> rises while top set stays flat, it may simply be more sets or accessories."
-                    }
-                },
-                "tip": {
-                    "title": "Tip",
-                    "description": "Use exercise notes from your workouts (pain, setup, technique cues) to explain dips or spikes - context matters."
-                }
-            }
-        },
-        "Page": {
-            "badge": "Guides",
-            "title": "Welcome",
-            "subtitle": "SetWise is built to make training simple, consistent, and measurable.",
+            "heading": "Customize your <brand>Experience</brand>",
             "intro": {
-                "title": "In these guides you’ll learn how to:",
-                "list": {
-                    "install": "install SetWise on any mobile device",
-                    "create": "create a program and templates",
-                    "log": "log workouts (sets, reps, weight, notes)",
-                    "review": "review progress and analytics",
-                    "features": "use key features effectively"
-                },
-                "footer": "Use the menu on the left to follow step by step, or jump to the topic you need."
+                "description": "The <strong >Profile</strong> tab is where you customize SetWise and manage your account.\n\nYou can change appearance, language, training preferences, and send feedback.",
+                "imageAlt": "Profile screen overview"
             },
-            "howTo": {
-                "title": "How to get the most out of SetWise",
-                "description": "SetWise works best when you log consistently and review your progress with intent.",
-                "points": {
-                    "1": {
-                        "title": "1) Use Templates for consistency",
-                        "description": "If you follow a split, build a <strong >Program</strong> and train from <strong >Days (Templates)</strong>.\nThis makes comparisons meaningful (Upper A vs Upper A)."
+            "preferences": {
+                "title": "Preferences",
+                "appearance": {
+                    "title": "Appearance",
+                    "description": "Choose how SetWise looks:",
+                    "list": {
+                        "1": "<strong >Light</strong>",
+                        "2": "<strong >Dark</strong>",
+                        "3": "<strong >True Black</strong>",
+                        "4": "Or use <strong >System / Automatic</strong> to follow your device setting"
                     },
-                    "2": {
-                        "title": "2) Start fast with “Last”",
-                        "description": "During workouts, SetWise pre-fills values based on your previous session.\nUse <strong >Last</strong> as your baseline, then adjust up/down."
+                    "imageAlt": "Appearance picker"
+                },
+                "language": {
+                    "title": "Language",
+                    "description": "Select your preferred language:",
+                    "list": {
+                        "1": "<strong >English</strong>",
+                        "2": "<strong >Slovenian</strong>",
+                        "3": "Or <strong >System / Automatic</strong>"
                     },
-                    "3": {
-                        "title": "3) Keep notes short (but useful)",
-                        "description": "Add quick notes for context:",
-                        "list": {
-                            "pain": "pain / discomfort",
-                            "technique": "technique cues",
-                            "setup": "machine setup"
-                        },
-                        "footer": "This makes your next session smarter."
-                    },
-                    "4": {
-                        "title": "4) Use Quick Start when you need flexibility",
-                        "description": "No plan today? Use <strong >Quick Start</strong> and build the session as you go.\nYou can still track everything and review it in Progress."
-                    },
-                    "5": {
-                        "title": "5) Review Progress weekly",
-                        "description": "Use the <strong >Progress</strong> screen to:",
-                        "list": {
-                            "past": "open past workouts",
-                            "details": "review set-by-set details",
-                            "trends": "check volume trends and Exercise Explorer"
-                        }
-                    }
+                    "imageAlt": "Language picker"
                 }
+            },
+            "training": {
+                "title": "Training",
+                "advancedAnalytics": {
+                    "title": "Advanced Analytics",
+                    "description": "If enabled, SetWise will show advanced training options like:",
+                    "list": {
+                        "1": "<strong >Tempo</strong>",
+                        "2": "<strong >ROM</strong>",
+                        "3": "<strong >Intensifiers</strong>"
+                    },
+                    "footer": "If you prefer a simpler experience, you can turn this off anytime.",
+                    "imageAlt": "Advanced Analytics toggle"
+                },
+                "autoAdvance": {
+                    "title": "Auto-advance",
+                    "description": "When enabled, SetWise can automatically move to the next exercise after you finish the last set.\n\nTurn it off if you prefer manual control.",
+                    "imageAlt": "Auto-advance toggle"
+                }
+            },
+            "support": {
+                "title": "Support — Send feedback",
+                "description": "You can send feedback directly from the app.",
+                "list": {
+                    "1": "Open <strong >Send feedback</strong>",
+                    "2": "Choose a category: <strong >Bug</strong>, <strong >Question</strong>, or <strong >Idea</strong>",
+                    "3": "Add a short subject + details",
+                    "4": "(Optional) attach up to <strong >5 images</strong>",
+                    "5": "Tap <strong >Send</strong>"
+                },
+                "imageAlt": "Send feedback screen"
+            },
+            "account": {
+                "title": "Account",
+                "description": "You can sign out anytime using <strong >Logout</strong> at the bottom of the Profile screen.",
+                "imageAlt": "Logout button"
             },
             "tips": {
                 "title": "Tips",
                 "list": {
-                    "consistency": "Consistency beats perfection. A clean log and a quick weekly review is enough to see progress over time.",
-                    "quality": "Only count progress if the quality stays the same.",
-                    "form": "Keep your form, <strong >ROM</strong>, and <strong >tempo</strong> consistent - adding reps/weight by shortening range of motion or changing tempo isn’t real progressive overload (you changed the conditions)."
-                }
-            },
-            "learnMore": {
-                "title": "Learn More",
-                "contact": "Contact Us",
-                "contactDesc": "Get in touch with the team",
-                "support": "Support Center",
-                "supportDesc": "Find help and answers"
-            }
-        },
-        "InstallationPage": {
-            "title": "Installation",
-            "description": "How to install SetWise on your device.",
-            "badge": "Guides",
-            "heading": "Install <brand>SetWise</brand> in seconds",
-            "ios": {
-                "title": "SetWise for iOS",
-                "subtitle": "Distributed through <strong >TestFlight</strong> during Early Access.",
-                "description": "<strong >TestFlight</strong> is Apple’s official app for testing beta versions - it lets you install SetWise safely, receive updates, and send feedback, before the public App Store release.\n\nOnce you get the invite link by email, the setup takes about a minute.",
-                "steps": {
-                    "1": {
-                        "title": "1) Request Early Access",
-                        "list": {
-                            "1": "Open the <strong >Early Access</strong> form.",
-                            "2": "Enter your email.",
-                            "3": "Select <strong >iOS</strong> (or <strong >Both</strong>).",
-                            "4": "Tap <strong >Get Beta Access</strong>."
-                        },
-                        "note": "Use the same email you use on your iPhone (recommended), so joining is seamless."
-                    },
-                    "2": {
-                        "title": "2) Check your inbox",
-                        "description": "Within a few minutes, you’ll receive an email with a <strong >TestFlight invite link</strong>.",
-                        "list": {
-                            "1": "If you don’t see it, check <strong >Spam / Promotions</strong>",
-                            "2": "Search for: <strong >SetWise</strong>"
-                        }
-                    },
-                    "3": {
-                        "title": "3) Install TestFlight",
-                        "description": "TestFlight is Apple’s official beta testing app.",
-                        "list": {
-                            "1": "Open the App Store",
-                            "2": "Search <strong >TestFlight</strong>",
-                            "3": "Install it"
-                        }
-                    },
-                    "4": {
-                        "title": "4) Join the beta + install SetWise",
-                        "list": {
-                            "1": "On your iPhone, open the invite email",
-                            "2": "Tap the invite link",
-                            "3": "TestFlight will open",
-                            "4": "Tap <strong >Accept</strong> (if shown)",
-                            "5": "Tap <strong >Install</strong>"
-                        }
-                    },
-                    "5": {
-                        "title": "5) Open SetWise",
-                        "description": "After installation, you can open SetWise:",
-                        "list": {
-                            "1": "directly from <strong >TestFlight</strong>, or",
-                            "2": "from your <strong >Home Screen</strong>"
-                        }
-                    }
-                },
-                "updates": {
-                    "title": "Updates (important)",
-                    "description": "New beta builds are delivered through TestFlight.",
-                    "list": {
-                        "1": "Open TestFlight to see available updates",
-                        "2": "Turn on auto-updates if you want the latest build automatically"
-                    }
-                },
-                "troubleshooting": {
-                    "title": "Troubleshooting",
-                    "items": {
-                        "1": {
-                            "title": "I can’t open the invite link",
-                            "list": {
-                                "1": "Make sure you open it <strong >on the iPhone</strong> (not desktop)",
-                                "2": "Try copying the link into Safari"
-                            }
-                        },
-                        "2": {
-                            "title": "The email never arrives",
-                            "list": {
-                                "1": "Double-check the email you entered in the form",
-                                "2": "Check Spam/Promotions",
-                                "3": "Try again with a different email address"
-                            }
-                        },
-                        "3": {
-                            "title": "TestFlight says the beta is full",
-                            "description": "Spots are limited. If this happens, request access again later - we expand capacity regularly."
-                        }
-                    }
-                }
-            },
-            "android": {
-                "title": "Android (Google Play)",
-                "subtitle": "Available through <strong >Google Play Open Testing</strong>.",
-                "description": "After you request Early Access, you’ll get an email with a link that opens the Play Store, where you can install the beta like a normal app.",
-                "steps": {
-                    "1": {
-                        "title": "1) Request Early Access",
-                        "list": {
-                            "1": "Open the <strong >Early Access</strong> form",
-                            "2": "Enter your email",
-                            "3": "Select <strong >Android</strong> (or <strong >Both</strong>)",
-                            "4": "Tap <strong >Get Beta Access</strong>"
-                        }
-                    },
-                    "2": {
-                        "title": "2) Check your inbox",
-                        "description": "You’ll receive an email with your <strong >Google Play beta link</strong>.",
-                        "list": {
-                            "1": "If you don’t see it, check <strong >Spam / Promotions</strong>",
-                            "2": "Search for: <strong >SetWise</strong>"
-                        }
-                    },
-                    "3": {
-                        "title": "3) Open the Play Store link",
-                        "list": {
-                            "1": "Open the email <strong >on your Android phone</strong>",
-                            "2": "Tap the link - it will open <strong >Google Play</strong>",
-                            "3": "Tap <strong >Install</strong>"
-                        },
-                        "note": "If you see a step like <strong >Join / Become a tester</strong>, confirm it and then install."
-                    },
-                    "4": {
-                        "title": "4) Open SetWise",
-                        "description": "After installation, open SetWise:",
-                        "list": {
-                            "1": "from the <strong >Play Store</strong> page, or",
-                            "2": "from your <strong >Home Screen / App Drawer</strong>"
-                        }
-                    }
-                },
-                "updates": {
-                    "title": "Updates (important)",
-                    "description": "Beta updates arrive through Google Play.",
-                    "list": {
-                        "1": "Open Play Store → SetWise → <strong >Update</strong> (if available)",
-                        "2": "Optional: enable <strong >Auto-update</strong> for SetWise in the Play Store"
-                    }
-                },
-                "troubleshooting": {
-                    "title": "Troubleshooting",
-                    "items": {
-                        "1": {
-                            "title": "The link opens on my computer, not my phone",
-                            "description": "Open the email on your Android device (or forward it to an account you use on your phone)."
-                        },
-                        "2": {
-                            "title": "“This app is not available for your device”",
-                            "description": "Your Android version may be too old, or the device isn’t supported for this release. For more info about this check <strong >REQUIREMENTS</strong>."
-                        },
-                        "3": {
-                            "title": "I don’t see the email",
-                            "list": {
-                                "1": "Check Spam/Promotions",
-                                "2": "Search “SetWise”",
-                                "3": "Request access again and double-check the email you entered"
-                            }
-                        }
-                    }
-                }
-            },
-            "requirements": {
-                "title": "REQUIREMENTS",
-                "ios": {
-                    "title": "iOS",
-                    "list": {
-                        "1": "iPhone or iPad running <strong >iOS 15.1 or later</strong>",
-                        "2": "<strong >TestFlight</strong> installed",
-                        "3": "Apple ID signed in"
-                    }
-                },
-                "android": {
-                    "title": "Android",
-                    "list": {
-                        "1": "Android device with <strong >Google Play Store</strong> access",
-                        "2": "Google account signed in"
-                    },
-                    "compatibility": "<strong >Compatibility note:</strong> SetWise is confirmed working on <strong >Android 8+</strong>. Earlier versions are not officially supported."
-                },
-                "internet": {
-                    "title": "Internet",
-                    "list": {
-                        "1": "Internet is required for installation, sign-in, template creation, and AI-powered features.",
-                        "2": "After setup, core logging works offline"
-                    }
-                },
-                "notCompatible": "If Google Play shows “Not compatible”, the device doesn’t meet the current minimum requirements."
-            }
-        },
-        "CreateWorkoutPage": {
-            "title": "Create Workout",
-            "description": "How to create workouts in SetWise.",
-            "badge": "Guides",
-            "heading": "Create your <brand>perfect</brand> workout",
-            "overview": {
-                "title": "Workout Creation",
-                "description": "SetWise offers flexible ways to create workouts, from simple lists to complex programs.",
-                "cards": {
-                    "scratch": {
-                        "title": "From Scratch",
-                        "description": "Build exercise by exercise."
-                    },
-                    "template": {
-                        "title": "From Template",
-                        "description": "Use a pre-made template."
-                    },
-                    "paste": {
-                        "title": "Paste Import",
-                        "description": "Paste text from notes."
-                    },
-                    "ai": {
-                        "title": "AI Generator",
-                        "description": "Let AI build it for you."
-                    }
-                }
-            },
-            "keyFeatures": {
-                "badge": "Methods",
-                "title": "Creation Methods",
-                "scratch": {
-                    "title": "From Scratch",
-                    "step1": {
-                        "lead": "New Workout",
-                        "text": "Tap 'Plus' button."
-                    },
-                    "step2": {
-                        "lead": "Add Exercises",
-                        "text": "Search and add exercises."
-                    },
-                    "step3": {
-                        "lead": "Save",
-                        "text": "Save as template for later."
-                    }
-                },
-                "paste": {
-                    "title": "Paste Import",
-                    "step1": {
-                        "lead": "Copy Text",
-                        "text": "Copy workout from anywhere."
-                    },
-                    "step2": {
-                        "lead": "Paste",
-                        "text": "Paste into SetWise."
-                    },
-                    "step3": {
-                        "lead": "Review",
-                        "text": "Check parsed exercises."
-                    }
-                },
-                "template": {
-                    "title": "Using Templates",
-                    "step1": {
-                        "lead": "Select Template",
-                        "text": "Choose from your library."
-                    },
-                    "step2": {
-                        "lead": "Edit",
-                        "text": "Adjust if needed."
-                    },
-                    "step3": {
-                        "lead": "Start",
-                        "text": "Begin your session."
-                    }
-                },
-                "structure": {
-                    "title": "Structuring",
-                    "supersets": {
-                        "lead": "Supersets",
-                        "text": "Group exercises together."
-                    },
-                    "warmup": {
-                        "lead": "Warmup Sets",
-                        "text": "Tag sets as warmup."
-                    },
-                    "notes": {
-                        "lead": "Notes",
-                        "text": "Add instructions."
-                    },
-                    "rest": {
-                        "lead": "Rest Times",
-                        "text": "Set target rest times."
-                    }
-                },
-                "tips": {
-                    "title": "Pro Tips",
-                    "tagging": {
-                        "title": "Tagging",
-                        "description": "Organize your workouts."
-                    },
-                    "duplicating": {
-                        "title": "Duplicating",
-                        "description": "Copy existing workouts."
-                    },
-                    "sharing": {
-                        "title": "Sharing",
-                        "description": "Share with friends."
-                    },
-                    "scheduling": {
-                        "title": "Scheduling",
-                        "description": "Plan ahead."
-                    }
-                }
-            },
-            "getStarted": {
-                "badge": "Action",
-                "title": "Start Creating",
-                "beta": {
-                    "title": "Try It Now",
-                    "description": "Create your first workout in seconds.",
-                    "button": "Create Workout"
-                },
-                "benefits": {
-                    "fast": "Fast",
-                    "flexible": "Flexible",
-                    "smart": "Smart",
-                    "easy": "Easy"
-                },
-                "steps": {
-                    "step1": {
-                        "title": "Open App",
-                        "description": "Launch SetWise."
-                    },
-                    "step2": {
-                        "title": "Tap Create",
-                        "description": "Hit the + button."
-                    },
-                    "step3": {
-                        "title": "Save",
-                        "description": "Save your routine."
-                    }
-                }
-            },
-            "security": {
-                "badge": "Data",
-                "title": "Your Workouts",
-                "encryption": {
-                    "title": "Backed Up",
-                    "description": "Safe in the cloud."
-                },
-                "localStorage": {
-                    "title": "Exportable",
-                    "description": "Export as text/JSON."
-                }
-            }
-        },
-        "WorkoutsPage": {
-            "title": "Workouts",
-            "description": "Programs, templates, and logging.",
-            "badge": "Guides",
-            "heading": "Master your <brand>training</brand>",
-            "createProgram": {
-                "title": "Create a Program & Templates",
-                "subtitle": "A <strong >Program</strong> is your training structure over time.",
-                "description": "Inside a program you create <strong >Days</strong> (e.g. Upper A, Upper B, Lower), and each day contains your exercises and set details.\n\nTemplates let you reuse the same day or workout structure anytime.",
-                "whatYouWillDo": {
-                    "title": "What you’ll do",
-                    "list": {
-                        "1": "Create a program",
-                        "2": "Add training days (Upper A / Upper B / …)",
-                        "3": "Build each day by adding exercises and setting targets",
-                        "4": "Edit everything later (any time)"
-                    }
-                },
-                "steps": {
-                    "1": {
-                        "title": "1) Create a Program",
-                        "list": {
-                            "1": "Open <strong >Programs tab</strong>",
-                            "2": "Tap <strong >Create Program</strong>",
-                            "3": "Give it a name (e.g. “Upper/Lower Split”)",
-                            "4": "Save"
-                        },
-                        "imageAlt": "Programs screen + Create Program"
-                    },
-                    "2": {
-                        "title": "2) Add Days inside the Program",
-                        "list": {
-                            "1": "Open your program",
-                            "2": "Tap Create Template",
-                            "3": "Name the day (e.g. “Upper A”, “Upper B”)",
-                            "4": "Repeat for as many days as you need"
-                        },
-                        "imageAlt": "Program detail + list of days"
-                    },
-                    "3": {
-                        "title": "3) Build a Day (add exercises)",
-                        "list": {
-                            "1": "Open a day (e.g. “Upper A”)",
-                            "2": "Tap Edit",
-                            "3": "Click “add exercise”"
-                        },
-                        "subDescription": "For each exercise, you can configure:",
-                        "subList": {
-                            "1": "<strong >Rep range</strong> (target range per set)",
-                            "2": "<strong >RPE / RIR</strong> (optional)",
-                            "3": "<strong >Advanced</strong> (optional): intensifiers, ROM, tempo, and other details"
-                        },
-                        "imageAlt": "Day builder + Add Exercise"
-                    },
-                    "4": {
-                        "title": "4) Add notes (per exercise)",
-                        "description": "You can add <strong >notes on the exercise level</strong> (e.g. cues, setup, technique reminders).\n\nNotes will stay attached to that exercise in the day and can be changed anytime.",
-                        "imageAlt": "Exercise notes field"
-                    },
-                    "5": {
-                        "title": "5) Edit anytime (non-destructive)",
-                        "description": "Programs and days are designed to be flexible:",
-                        "list": {
-                            "1": "Rename program or days",
-                            "2": "Reorder exercises",
-                            "3": "Update rep ranges, RPE/RIR, or Advanced settings",
-                            "4": "Add/remove exercises",
-                            "5": "Update exercise notes"
-                        },
-                        "footer": "Everything can be adjusted later from the <strong >Edit</strong> screen.",
-                        "imageAlt": "Edit day / Edit program entry point"
-                    }
-                },
-                "search": {
-                    "title": "Exercise search (and creating your own)",
-                    "description": "When adding an exercise, use the search bar:",
-                    "list": {
-                        "1": "If the exercise exists, select it.",
-                        "2": "If it <strong >doesn’t exist</strong>, just type the name and create it instantly — no extra steps."
-                    },
-                    "footer": "This makes it easy to log any variation or custom movement.",
-                    "imageAlt": "Search bar + “Create new exercise” state"
-                },
-                "tips": {
-                    "title": "Tips",
-                    "list": {
-                        "1": "Use consistent day naming: <strong >Upper A / Upper B / Lower A / Lower B</strong>",
-                        "2": "Keep <strong >RPE/RIR optional</strong> - add it only if you actively use it",
-                        "3": "Use notes for cues you often forget (setup, tempo, depth, grip)"
-                    }
-                }
-            },
-            "startTemplate": {
-                "title": "Start from a Template",
-                "subtitle": "Templates are your planned workouts inside a program (e.g. Upper A, Upper B).",
-                "description": "They already include your exercises and targets (rep ranges, optional RPE/RIR, etc.).",
-                "steps": {
-                    "1": {
-                        "title": "1) Start the workout",
-                        "list": {
-                            "1": "Open the <strong >Start</strong> tab",
-                            "2": "Find your <strong >Day (Template)</strong> in the list",
-                            "3": "Tap the <strong >Start</strong> icon next to the day name"
-                        },
-                        "imageAlt": "Program → Day → Start"
-                    },
-                    "2": {
-                        "title": "2) What you see during the workout",
-                        "description": "Each exercise card shows:",
-                        "list": {
-                            "1": "<strong >Target reps / rep range</strong> (planned)",
-                            "2": "<strong >Last</strong> (what you did last time)",
-                            "3": "<strong >Today</strong> (what you’ve logged in this session)"
-                        },
-                        "imageAlt": "Exercise card highlighting Last / Today"
-                    },
-                    "3": {
-                        "title": "3) Template actions (during the workout)",
-                        "description": "On template-based workouts you can:",
-                        "list": {
-                            "1": "Add extra set",
-                            "2": "<strong >Skip a set</strong>",
-                            "3": "<strong >Delete last logged set</strong>"
-                        },
-                        "footer": "Use these when something changes mid-session.",
-                        "imageAlt": "Skip set UI"
-                    },
-                    "4": {
-                        "title": "4) Finish the workout",
-                        "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
-                        "list": {
-                            "1": "review your <strong >workout total volume</strong>",
-                            "2": "optionally add <strong >workout notes</strong> (for the entire session)"
-                        },
-                        "footer": "Tap <strong >Confirm</strong> to save and finish.",
-                        "imageAlt": "Finish flow"
-                    },
-                    "5": {
-                        "title": "5) Resume a workout (if you close the app)",
-                        "description": "If you close SetWise by accident or switch apps, your active workout is kept.\n\nWhen you open the app again, you’ll see a prompt on the <strong >Programs</strong> screen that lets you:",
-                        "list": {
-                            "1": "<strong >Continue workout</strong>, or",
-                            "2": "<strong >Discard</strong> it (if you don’t need it)"
-                        },
-                        "imageAlt": "Programs screen resume prompt"
-                    }
-                }
-            },
-            "quickStart": {
-                "title": "Quick Start",
-                "subtitle": "Quick Start is for flexible training days - you don’t need a fixed plan.",
-                "description": "Start the workout immediately and add exercises as you go.",
-                "steps": {
-                    "1": {
-                        "title": "1) Start Quick Start",
-                        "list": {
-                            "1": "Open the <strong >Start</strong> tab",
-                            "2": "Tap <strong >Quick Start</strong>"
-                        },
-                        "imageAlt": "Start tab + Quick Start button"
-                    },
-                    "2": {
-                        "title": "2) Add exercises during the workout",
-                        "list": {
-                            "1": "Tap <strong >Add Exercise</strong>",
-                            "2": "Search for an exercise and tap to add it"
-                        },
-                        "subTitle": "Create your own exercise (instantly)",
-                        "subDescription": "If you can’t find an exercise:\n\nType the name and create it instantly - no extra setup required.",
-                        "imageAlt": "Add Exercise search + Create new exercise"
-                    },
-                    "3": {
-                        "title": "3) Log sets (same as templates)",
-                        "list": {
-                            "1": "Adjust weight/reps using <strong >+ / −</strong> or tap to type",
-                            "2": "Tap <strong >✓</strong> to log a set",
-                            "3": "Use the <strong >note</strong> icon to add exercise notes (optional)"
-                        },
-                        "imageAlt": "Quick Start logging UI"
-                    },
-                    "4": {
-                        "title": "4) Exercise options (⋯)",
-                        "description": "Tap the <strong >⋯</strong> menu on an exercise to:",
-                        "list": {
-                            "1": "<strong >Remove exercise</strong> (if you added it by mistake)",
-                            "2": "<strong >Delete last logged set</strong> (undo)",
-                            "3": "<strong >Finish exercise</strong> (mark it as done for a cleaner view)"
-                        },
-                        "footer": "Finishing an exercise helps keep your session organized, especially in longer workouts.",
-                        "imageAlt": "⋯ menu options"
-                    },
-                    "5": {
-                        "title": "5) Finish the workout",
-                        "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
-                        "list": {
-                            "1": "review your <strong >workout total volume</strong>",
-                            "2": "optionally add <strong >workout notes</strong>"
-                        },
-                        "footer": "Tap <strong >Confirm</strong> to save and finish.",
-                        "imageAlt": "Finish summary sheet"
-                    }
-                },
-                "resume": {
-                    "title": "Resume a workout",
-                    "description": "If you leave the app mid-workout, SetWise keeps it active.\n\nNext time you open the app, you can <strong >Continue</strong> from the prompt on the <strong >Programs</strong> screen.",
-                    "imageAlt": "Resume prompt"
-                }
-            },
-            "logging": {
-                "title": "Logging sets & notes",
-                "subtitle": "Logging works the same whether you start from a <strong >Template</strong> or use <strong >Quick Start</strong>.",
-                "steps": {
-                    "1": {
-                        "title": "1) Adjust weight & reps",
-                        "list": {
-                            "1": "Tap <strong >+ / −</strong> for quick adjustments",
-                            "2": "Tap the value field to <strong >type</strong> an exact number"
-                        },
-                        "imageAlt": "+/- controls + tap-to-type fields"
-                    },
-                    "2": {
-                        "title": "2) Log a set (✓)",
-                        "description": "When the numbers are correct, tap <strong >✓</strong> to log the set.\n\nLogged sets appear under <strong >Today</strong> for that exercise.",
-                        "imageAlt": "✓ button + “Today” list"
-                    },
-                    "3": {
-                        "title": "3) Edit a logged set (pencil)",
-                        "description": "If you need to correct something after logging:",
-                        "list": {
-                            "1": "Tap the <strong >pencil</strong> icon",
-                            "2": "Update the set values",
-                            "3": "Save"
-                        },
-                        "imageAlt": "Pencil edit flow"
-                    },
-                    "4": {
-                        "title": "4) Undo mistakes (Delete last logged set)",
-                        "description": "If you log a set by accident, use:",
-                        "list": {
-                            "1": "<strong >Delete last logged set</strong> (undo)"
-                        },
-                        "subDescription": "This removes the most recent set you logged for that exercise.",
-                        "imageAlt": "Delete last logged set action"
-                    },
-                    "5": {
-                        "title": "5) Skip a set (Templates)",
-                        "description": "When training from a template, you can also <strong >Skip</strong> a set if needed.",
-                        "imageAlt": "Skip set UI"
-                    },
-                    "6": {
-                        "title": "6) Add exercise notes (note icon)",
-                        "description": "Tap the <strong >note</strong> icon to add notes on the exercise level, for example:",
-                        "list": {
-                            "1": "pain / discomfort",
-                            "2": "technique cues",
-                            "3": "machine setup",
-                            "4": "“form felt off” / “reduce load next time”"
-                        },
-                        "footer": "These notes help you remember context next session.",
-                        "imageAlt": "Exercise note input"
-                    }
-                },
-                "tip": {
-                    "title": "Tip: Use “Last” to start fast",
-                    "description": "Fields are pre-filled automatically based on your previous session.\n\nUse <strong >Last</strong> as a quick reference so you immediately know what weight/reps to aim for today."
+                    "1": "If you train in low light (or want the cleanest OLED look), try <strong >True Black</strong>.",
+                    "2": "If you don’t use tempo/ROM/intensifiers, turn off <strong >Advanced Analytics</strong> for a simpler workout view."
                 }
             }
         }
+    },
+    "ProgressPage": {
+        "title": "Progress",
+        "badge": "Guides",
+        "heading": "Track your <brand>gains</brand>",
+        "subHeading": "See your stats, analyze trends, and visualize your progress over time.",
+        "overview": {
+            "title": "Progress Overview",
+            "description": "The <strong >Progress screen</strong> gives you a clear overview of your training history and trends.\n\nIt includes:",
+            "list": {
+                "1": "a scrollable <strong >list of past workouts</strong>",
+                "2": "quick <strong >weekly stats</strong> (workouts, active days, avg duration)",
+                "3": "fast access to <strong >full workout details</strong>"
+            },
+            "imageAlt": "Progress screen overview",
+            "calendar": {
+                "title": "1) Calendar filter",
+                "description": "At the top you’ll find a calendar strip you can swipe <strong >left / right</strong>.",
+                "list": {
+                    "1": "Tap a specific day to show workouts from that day",
+                    "2": "Days with a workout are marked with a <strong >blue dot</strong>"
+                },
+                "footer": "To return to the full list, click the selection (or select another day).",
+                "imageAlt": "Calendar strip with blue dot + selected day"
+            },
+            "history": {
+                "title": "2) Workout history list",
+                "description": "Each workout is shown as a card with key info like:",
+                "list": {
+                    "1": "workout name (template/day)",
+                    "2": "date & time",
+                    "3": "duration and total volume",
+                    "4": "a quick <strong >comparison badge</strong> vs your last workout from the same template"
+                },
+                "scrollNote": "Scroll down to browse older workouts.",
+                "footer": "SetWise loads <strong >20 workouts at a time</strong>, and will automatically load more as you reach the end of the list.",
+                "imageAlt": "Workout cards list + comparison badge"
+            },
+            "details": {
+                "title": "3) Open workout details",
+                "description": "Tap any workout card to open the workout detail screen.\n\nInside the detail screen you’ll find:",
+                "list": {
+                    "1": "<strong >Summary</strong> (overview + achievements)",
+                    "2": "<strong >Exercises</strong> (every set + comparisons)",
+                    "3": "<strong >Analysis</strong> (volume trend + exercise analytics)"
+                },
+                "imageAlt": "Tap card → opens workout detail"
+            },
+            "tip": {
+                "title": "Tip",
+                "description": "Use the comparison badge to quickly see whether your session was up or down compared to your last workout from the same template."
+            }
+        },
+        "workoutDetails": {
+            "title": "Workout Details",
+            "intro": {
+                "text": "Tap any workout card in <strong >Progress</strong> to open the Workout Details screen.\n\nAt the top you can switch between three tabs:",
+                "list": {
+                    "1": "<strong >Summary</strong> - a quick overview of the whole session",
+                    "2": "<strong >Exercises</strong> - every exercise and set, fully broken down",
+                    "3": "<strong >Analysis</strong> - trends and deeper insights"
+                },
+                "imageAlt": "Workout detail screen with tabs"
+            },
+            "summary": {
+                "title": "1) Summary tab",
+                "description": "The <strong >Summary</strong> tab shows the most important session stats at a glance:",
+                "list": {
+                    "1": "<strong >Total Volume</strong> (with a badge comparing to your last workout from the same template)",
+                    "2": "<strong >Duration</strong>",
+                    "3": "<strong >Total sets</strong> and <strong >number of exercises</strong>",
+                    "4": "<strong >Workout notes</strong> (if you added any)"
+                },
+                "achievements": {
+                    "title": "It also highlights achievements such as:",
+                    "list": {
+                        "1": "<strong >New PRs</strong>",
+                        "2": "<strong >Biggest improvement</strong>",
+                        "3": "<strong >Hardest set</strong>"
+                    }
+                },
+                "imageAlt": "Summary tab showing volume + badge + achievements + notes"
+            },
+            "exercises": {
+                "title": "2) Exercises tab",
+                "description": "The <strong >Exercises</strong> tab shows your full workout log:",
+                "list": {
+                    "1": "Each exercise includes a quick comparison vs your last workout from the same template",
+                    "2": "Volume is shown on the exercise level",
+                    "3": "Every set is listed with <strong >weight × reps</strong>",
+                    "4": "Any <strong >exercise notes</strong> added during the workout are visible here"
+                },
+                "note": "This is the best tab for reviewing exactly what you did set-by-set.",
+                "imageAlt": "Exercises tab with set list + comparisons + notes"
+            },
+            "analysis": {
+                "title": "3) Analysis tab",
+                "description": "The <strong >Analysis</strong> tab includes:",
+                "list": {
+                    "1": "<strong >Volume Trend</strong> graph (how your workout volume changes over time)",
+                    "2": "<strong >Exercise Explorer</strong> (pick an exercise and review progress over time)"
+                },
+                "filters": {
+                    "title": "You can filter:",
+                    "list": {
+                        "1": "<strong >All workouts</strong> vs <strong >Same template</strong>",
+                        "2": "timeframe: <strong >30d / 90d / All</strong>"
+                    }
+                },
+                "imageAlt": "Analysis tab showing filters + volume trend + exercise explorer"
+            },
+            "tip": {
+                "title": "Tip",
+                "description": "Use <strong >Same template</strong> when you want the most meaningful comparison (e.g. Upper A vs your previous Upper A)."
+            }
+        },
+        "volumeTrend": {
+            "title": "Analysis (Volume Trend)",
+            "description": "The Volume Trend chart shows how your <strong >training volume</strong> changes over time.\n\nIt helps you spot consistency, spikes, and whether your recent sessions are trending up or down.",
+            "imageAlt": "Volume Trend section",
+            "chartShows": {
+                "title": "1) What the chart shows",
+                "list": {
+                    "1": "Each point represents the <strong >total volume</strong> of a workout",
+                    "2": "“Today’s volume” shows the volume of the workout you’re currently viewing",
+                    "3": "The % text compares today vs your last relevant workout (based on the selected filter)"
+                },
+                "imageAlt": "Today’s volume + % vs last"
+            },
+            "compare": {
+                "title": "2) Compare the right workouts",
+                "description": "Use the top filter to choose what you want to compare:",
+                "list": {
+                    "1": "<strong >All workouts</strong> — broad trend across everything you do",
+                    "2": "<strong >Same template</strong> — compares only workouts from the same template/day (recommended)"
+                },
+                "note": "Same template is usually the most useful view (Upper A vs Upper A, Lower vs Lower).",
+                "imageAlt": "All workouts / Same template toggle"
+            },
+            "timeframe": {
+                "title": "3) Choose the timeframe",
+                "description": "Use the timeframe filter to change the range:",
+                "list": {
+                    "1": "<strong >30d</strong> — short-term trend",
+                    "2": "<strong >90d</strong> — medium-term trend",
+                    "3": "<strong >All</strong> — full history"
+                },
+                "imageAlt": "30d / 90d / All toggle"
+            },
+            "howTo": {
+                "title": "How to use it",
+                "description": "If volume is trending <strong >down</strong> for the same template, it may signal fatigue, lower effort, or a change in exercise selection.",
+                "tip": {
+                    "title": "Tip",
+                    "text": "Higher volume doesn’t always mean better progress — volume can increase just by adding more sets.\n\nFor a clearer signal, also check <link >exercise explorer</link> (top set, reps, and weight over time)."
+                }
+            }
+        },
+        "exerciseExplorer": {
+            "title": "Analysis (Exercise Explorer)",
+            "description": "Exercise Explorer lets you track progress for a <strong >specific exercise</strong> over time.\n\nIt’s the best place to confirm real progress beyond just total volume.",
+            "imageAlt": "Exercise Explorer section",
+            "pickExercise": {
+                "title": "1) Pick an exercise",
+                "list": {
+                    "1": "Open the <strong >Analysis</strong> tab",
+                    "2": "Scroll to <strong >Exercise Explorer</strong>",
+                    "3": "Use the exercise selector to choose an exercise"
+                },
+                "imageAlt": "Exercise selector dropdown/list"
+            },
+            "whatToTrack": {
+                "title": "2) What you can track",
+                "description": "For the selected exercise you can review trends over time, including:",
+                "list": {
+                    "1": "<strong >Volume</strong> (total volume for that exercise per workout)",
+                    "2": "<strong >Reps</strong> (how your reps change over time)",
+                    "3": "<strong >Top set</strong> (your heaviest / best set trend)"
+                },
+                "imageAlt": "Exercise charts for volume/reps/top set"
+            },
+            "filters": {
+                "title": "3) Use the same filters (recommended)",
+                "description": "For the clearest signal, combine Exercise Explorer with filters:",
+                "list": {
+                    "1": "<strong >Same template</strong> (compare the same day/workout type)",
+                    "2": "timeframe: <strong >30d / 90d / All</strong>"
+                },
+                "note": "This avoids mixing different variations of the same exercise across different days.",
+                "imageAlt": "Same template + timeframe filters"
+            },
+            "howTo": {
+                "title": "How to use it",
+                "list": {
+                    "1": "If <strong >Top set</strong> is improving, you’re getting stronger on that movement.",
+                    "2": "If <strong >Reps</strong> increase at the same weight, that’s also progress.",
+                    "3": "If <strong >Volume</strong> rises while top set stays flat, it may simply be more sets or accessories."
+                }
+            },
+            "tip": {
+                "title": "Tip",
+                "description": "Use exercise notes from your workouts (pain, setup, technique cues) to explain dips or spikes - context matters."
+            }
+        }
+    },
+    "Page": {
+        "badge": "Guides",
+        "title": "Welcome",
+        "subtitle": "SetWise is built to make training simple, consistent, and measurable.",
+        "intro": {
+            "title": "In these guides you’ll learn how to:",
+            "list": {
+                "install": "install SetWise on any mobile device",
+                "create": "create a program and templates",
+                "log": "log workouts (sets, reps, weight, notes)",
+                "review": "review progress and analytics",
+                "features": "use key features effectively"
+            },
+            "footer": "Use the menu on the left to follow step by step, or jump to the topic you need."
+        },
+        "howTo": {
+            "title": "How to get the most out of SetWise",
+            "description": "SetWise works best when you log consistently and review your progress with intent.",
+            "points": {
+                "1": {
+                    "title": "1) Use Templates for consistency",
+                    "description": "If you follow a split, build a <strong >Program</strong> and train from <strong >Days (Templates)</strong>.\nThis makes comparisons meaningful (Upper A vs Upper A)."
+                },
+                "2": {
+                    "title": "2) Start fast with “Last”",
+                    "description": "During workouts, SetWise pre-fills values based on your previous session.\nUse <strong >Last</strong> as your baseline, then adjust up/down."
+                },
+                "3": {
+                    "title": "3) Keep notes short (but useful)",
+                    "description": "Add quick notes for context:",
+                    "list": {
+                        "pain": "pain / discomfort",
+                        "technique": "technique cues",
+                        "setup": "machine setup"
+                    },
+                    "footer": "This makes your next session smarter."
+                },
+                "4": {
+                    "title": "4) Use Quick Start when you need flexibility",
+                    "description": "No plan today? Use <strong >Quick Start</strong> and build the session as you go.\nYou can still track everything and review it in Progress."
+                },
+                "5": {
+                    "title": "5) Review Progress weekly",
+                    "description": "Use the <strong >Progress</strong> screen to:",
+                    "list": {
+                        "past": "open past workouts",
+                        "details": "review set-by-set details",
+                        "trends": "check volume trends and Exercise Explorer"
+                    }
+                }
+            }
+        },
+        "tips": {
+            "title": "Tips",
+            "list": {
+                "consistency": "Consistency beats perfection. A clean log and a quick weekly review is enough to see progress over time.",
+                "quality": "Only count progress if the quality stays the same.",
+                "form": "Keep your form, <strong >ROM</strong>, and <strong >tempo</strong> consistent - adding reps/weight by shortening range of motion or changing tempo isn’t real progressive overload (you changed the conditions)."
+            }
+        },
+        "learnMore": {
+            "title": "Learn More",
+            "contact": "Contact Us",
+            "contactDesc": "Get in touch with the team",
+            "support": "Support Center",
+            "supportDesc": "Find help and answers"
+        }
+    },
+    "InstallationPage": {
+        "title": "Installation",
+        "description": "How to install SetWise on your device.",
+        "badge": "Guides",
+        "heading": "Install <brand>SetWise</brand> in seconds",
+        "ios": {
+            "title": "SetWise for iOS",
+            "subtitle": "Distributed through <strong >TestFlight</strong> during Early Access.",
+            "description": "<strong >TestFlight</strong> is Apple’s official app for testing beta versions - it lets you install SetWise safely, receive updates, and send feedback, before the public App Store release.\n\nOnce you get the invite link by email, the setup takes about a minute.",
+            "steps": {
+                "1": {
+                    "title": "1) Request Early Access",
+                    "list": {
+                        "1": "Open the <strong >Early Access</strong> form.",
+                        "2": "Enter your email.",
+                        "3": "Select <strong >iOS</strong> (or <strong >Both</strong>).",
+                        "4": "Tap <strong >Get Beta Access</strong>."
+                    },
+                    "note": "Use the same email you use on your iPhone (recommended), so joining is seamless."
+                },
+                "2": {
+                    "title": "2) Check your inbox",
+                    "description": "Within a few minutes, you’ll receive an email with a <strong >TestFlight invite link</strong>.",
+                    "list": {
+                        "1": "If you don’t see it, check <strong >Spam / Promotions</strong>",
+                        "2": "Search for: <strong >SetWise</strong>"
+                    }
+                },
+                "3": {
+                    "title": "3) Install TestFlight",
+                    "description": "TestFlight is Apple’s official beta testing app.",
+                    "list": {
+                        "1": "Open the App Store",
+                        "2": "Search <strong >TestFlight</strong>",
+                        "3": "Install it"
+                    }
+                },
+                "4": {
+                    "title": "4) Join the beta + install SetWise",
+                    "list": {
+                        "1": "On your iPhone, open the invite email",
+                        "2": "Tap the invite link",
+                        "3": "TestFlight will open",
+                        "4": "Tap <strong >Accept</strong> (if shown)",
+                        "5": "Tap <strong >Install</strong>"
+                    }
+                },
+                "5": {
+                    "title": "5) Open SetWise",
+                    "description": "After installation, you can open SetWise:",
+                    "list": {
+                        "1": "directly from <strong >TestFlight</strong>, or",
+                        "2": "from your <strong >Home Screen</strong>"
+                    }
+                }
+            },
+            "updates": {
+                "title": "Updates (important)",
+                "description": "New beta builds are delivered through TestFlight.",
+                "list": {
+                    "1": "Open TestFlight to see available updates",
+                    "2": "Turn on auto-updates if you want the latest build automatically"
+                }
+            },
+            "troubleshooting": {
+                "title": "Troubleshooting",
+                "items": {
+                    "1": {
+                        "title": "I can’t open the invite link",
+                        "list": {
+                            "1": "Make sure you open it <strong >on the iPhone</strong> (not desktop)",
+                            "2": "Try copying the link into Safari"
+                        }
+                    },
+                    "2": {
+                        "title": "The email never arrives",
+                        "list": {
+                            "1": "Double-check the email you entered in the form",
+                            "2": "Check Spam/Promotions",
+                            "3": "Try again with a different email address"
+                        }
+                    },
+                    "3": {
+                        "title": "TestFlight says the beta is full",
+                        "description": "Spots are limited. If this happens, request access again later - we expand capacity regularly."
+                    }
+                }
+            }
+        },
+        "android": {
+            "title": "Android (Google Play)",
+            "subtitle": "Available through <strong >Google Play Open Testing</strong>.",
+            "description": "After you request Early Access, you’ll get an email with a link that opens the Play Store, where you can install the beta like a normal app.",
+            "steps": {
+                "1": {
+                    "title": "1) Request Early Access",
+                    "list": {
+                        "1": "Open the <strong >Early Access</strong> form",
+                        "2": "Enter your email",
+                        "3": "Select <strong >Android</strong> (or <strong >Both</strong>)",
+                        "4": "Tap <strong >Get Beta Access</strong>"
+                    }
+                },
+                "2": {
+                    "title": "2) Check your inbox",
+                    "description": "You’ll receive an email with your <strong >Google Play beta link</strong>.",
+                    "list": {
+                        "1": "If you don’t see it, check <strong >Spam / Promotions</strong>",
+                        "2": "Search for: <strong >SetWise</strong>"
+                    }
+                },
+                "3": {
+                    "title": "3) Open the Play Store link",
+                    "list": {
+                        "1": "Open the email <strong >on your Android phone</strong>",
+                        "2": "Tap the link - it will open <strong >Google Play</strong>",
+                        "3": "Tap <strong >Install</strong>"
+                    },
+                    "note": "If you see a step like <strong >Join / Become a tester</strong>, confirm it and then install."
+                },
+                "4": {
+                    "title": "4) Open SetWise",
+                    "description": "After installation, open SetWise:",
+                    "list": {
+                        "1": "from the <strong >Play Store</strong> page, or",
+                        "2": "from your <strong >Home Screen / App Drawer</strong>"
+                    }
+                }
+            },
+            "updates": {
+                "title": "Updates (important)",
+                "description": "Beta updates arrive through Google Play.",
+                "list": {
+                    "1": "Open Play Store → SetWise → <strong >Update</strong> (if available)",
+                    "2": "Optional: enable <strong >Auto-update</strong> for SetWise in the Play Store"
+                }
+            },
+            "troubleshooting": {
+                "title": "Troubleshooting",
+                "items": {
+                    "1": {
+                        "title": "The link opens on my computer, not my phone",
+                        "description": "Open the email on your Android device (or forward it to an account you use on your phone)."
+                    },
+                    "2": {
+                        "title": "“This app is not available for your device”",
+                        "description": "Your Android version may be too old, or the device isn’t supported for this release. For more info about this check <strong >REQUIREMENTS</strong>."
+                    },
+                    "3": {
+                        "title": "I don’t see the email",
+                        "list": {
+                            "1": "Check Spam/Promotions",
+                            "2": "Search “SetWise”",
+                            "3": "Request access again and double-check the email you entered"
+                        }
+                    }
+                }
+            }
+        },
+        "requirements": {
+            "title": "REQUIREMENTS",
+            "ios": {
+                "title": "iOS",
+                "list": {
+                    "1": "iPhone or iPad running <strong >iOS 15.1 or later</strong>",
+                    "2": "<strong >TestFlight</strong> installed",
+                    "3": "Apple ID signed in"
+                }
+            },
+            "android": {
+                "title": "Android",
+                "list": {
+                    "1": "Android device with <strong >Google Play Store</strong> access",
+                    "2": "Google account signed in"
+                },
+                "compatibility": "<strong >Compatibility note:</strong> SetWise is confirmed working on <strong >Android 8+</strong>. Earlier versions are not officially supported."
+            },
+            "internet": {
+                "title": "Internet",
+                "list": {
+                    "1": "Internet is required for installation, sign-in, template creation, and AI-powered features.",
+                    "2": "After setup, core logging works offline"
+                }
+            },
+            "notCompatible": "If Google Play shows “Not compatible”, the device doesn’t meet the current minimum requirements."
+        }
+    },
+    "CreateWorkoutPage": {
+        "title": "Create Workout",
+        "description": "How to create workouts in SetWise.",
+        "badge": "Guides",
+        "heading": "Create your <brand>perfect</brand> workout",
+        "overview": {
+            "title": "Workout Creation",
+            "description": "SetWise offers flexible ways to create workouts, from simple lists to complex programs.",
+            "cards": {
+                "scratch": {
+                    "title": "From Scratch",
+                    "description": "Build exercise by exercise."
+                },
+                "template": {
+                    "title": "From Template",
+                    "description": "Use a pre-made template."
+                },
+                "paste": {
+                    "title": "Paste Import",
+                    "description": "Paste text from notes."
+                },
+                "ai": {
+                    "title": "AI Generator",
+                    "description": "Let AI build it for you."
+                }
+            }
+        },
+        "keyFeatures": {
+            "badge": "Methods",
+            "title": "Creation Methods",
+            "scratch": {
+                "title": "From Scratch",
+                "step1": {
+                    "lead": "New Workout",
+                    "text": "Tap 'Plus' button."
+                },
+                "step2": {
+                    "lead": "Add Exercises",
+                    "text": "Search and add exercises."
+                },
+                "step3": {
+                    "lead": "Save",
+                    "text": "Save as template for later."
+                }
+            },
+            "paste": {
+                "title": "Paste Import",
+                "step1": {
+                    "lead": "Copy Text",
+                    "text": "Copy workout from anywhere."
+                },
+                "step2": {
+                    "lead": "Paste",
+                    "text": "Paste into SetWise."
+                },
+                "step3": {
+                    "lead": "Review",
+                    "text": "Check parsed exercises."
+                }
+            },
+            "template": {
+                "title": "Using Templates",
+                "step1": {
+                    "lead": "Select Template",
+                    "text": "Choose from your library."
+                },
+                "step2": {
+                    "lead": "Edit",
+                    "text": "Adjust if needed."
+                },
+                "step3": {
+                    "lead": "Start",
+                    "text": "Begin your session."
+                }
+            },
+            "structure": {
+                "title": "Structuring",
+                "supersets": {
+                    "lead": "Supersets",
+                    "text": "Group exercises together."
+                },
+                "warmup": {
+                    "lead": "Warmup Sets",
+                    "text": "Tag sets as warmup."
+                },
+                "notes": {
+                    "lead": "Notes",
+                    "text": "Add instructions."
+                },
+                "rest": {
+                    "lead": "Rest Times",
+                    "text": "Set target rest times."
+                }
+            },
+            "tips": {
+                "title": "Pro Tips",
+                "tagging": {
+                    "title": "Tagging",
+                    "description": "Organize your workouts."
+                },
+                "duplicating": {
+                    "title": "Duplicating",
+                    "description": "Copy existing workouts."
+                },
+                "sharing": {
+                    "title": "Sharing",
+                    "description": "Share with friends."
+                },
+                "scheduling": {
+                    "title": "Scheduling",
+                    "description": "Plan ahead."
+                }
+            }
+        },
+        "getStarted": {
+            "badge": "Action",
+            "title": "Start Creating",
+            "beta": {
+                "title": "Try It Now",
+                "description": "Create your first workout in seconds.",
+                "button": "Create Workout"
+            },
+            "benefits": {
+                "fast": "Fast",
+                "flexible": "Flexible",
+                "smart": "Smart",
+                "easy": "Easy"
+            },
+            "steps": {
+                "step1": {
+                    "title": "Open App",
+                    "description": "Launch SetWise."
+                },
+                "step2": {
+                    "title": "Tap Create",
+                    "description": "Hit the + button."
+                },
+                "step3": {
+                    "title": "Save",
+                    "description": "Save your routine."
+                }
+            }
+        },
+        "security": {
+            "badge": "Data",
+            "title": "Your Workouts",
+            "encryption": {
+                "title": "Backed Up",
+                "description": "Safe in the cloud."
+            },
+            "localStorage": {
+                "title": "Exportable",
+                "description": "Export as text/JSON."
+            }
+        }
+    },
+    "WorkoutsPage": {
+        "title": "Workouts",
+        "description": "Programs, templates, and logging.",
+        "badge": "Guides",
+        "heading": "Master your <brand>training</brand>",
+        "createProgram": {
+            "title": "Create a Program & Templates",
+            "subtitle": "A <strong >Program</strong> is your training structure over time.",
+            "description": "Inside a program you create <strong >Days</strong> (e.g. Upper A, Upper B, Lower), and each day contains your exercises and set details.\n\nTemplates let you reuse the same day or workout structure anytime.",
+            "whatYouWillDo": {
+                "title": "What you’ll do",
+                "list": {
+                    "1": "Create a program",
+                    "2": "Add training days (Upper A / Upper B / …)",
+                    "3": "Build each day by adding exercises and setting targets",
+                    "4": "Edit everything later (any time)"
+                }
+            },
+            "steps": {
+                "1": {
+                    "title": "1) Create a Program",
+                    "list": {
+                        "1": "Open <strong >Programs tab</strong>",
+                        "2": "Tap <strong >Create Program</strong>",
+                        "3": "Give it a name (e.g. “Upper/Lower Split”)",
+                        "4": "Save"
+                    },
+                    "imageAlt": "Programs screen + Create Program"
+                },
+                "2": {
+                    "title": "2) Add Days inside the Program",
+                    "list": {
+                        "1": "Open your program",
+                        "2": "Tap Create Template",
+                        "3": "Name the day (e.g. “Upper A”, “Upper B”)",
+                        "4": "Repeat for as many days as you need"
+                    },
+                    "imageAlt": "Program detail + list of days"
+                },
+                "3": {
+                    "title": "3) Build a Day (add exercises)",
+                    "list": {
+                        "1": "Open a day (e.g. “Upper A”)",
+                        "2": "Tap Edit",
+                        "3": "Click “add exercise”"
+                    },
+                    "subDescription": "For each exercise, you can configure:",
+                    "subList": {
+                        "1": "<strong >Rep range</strong> (target range per set)",
+                        "2": "<strong >RPE / RIR</strong> (optional)",
+                        "3": "<strong >Advanced</strong> (optional): intensifiers, ROM, tempo, and other details"
+                    },
+                    "imageAlt": "Day builder + Add Exercise"
+                },
+                "4": {
+                    "title": "4) Add notes (per exercise)",
+                    "description": "You can add <strong >notes on the exercise level</strong> (e.g. cues, setup, technique reminders).\n\nNotes will stay attached to that exercise in the day and can be changed anytime.",
+                    "imageAlt": "Exercise notes field"
+                },
+                "5": {
+                    "title": "5) Edit anytime (non-destructive)",
+                    "description": "Programs and days are designed to be flexible:",
+                    "list": {
+                        "1": "Rename program or days",
+                        "2": "Reorder exercises",
+                        "3": "Update rep ranges, RPE/RIR, or Advanced settings",
+                        "4": "Add/remove exercises",
+                        "5": "Update exercise notes"
+                    },
+                    "footer": "Everything can be adjusted later from the <strong >Edit</strong> screen.",
+                    "imageAlt": "Edit day / Edit program entry point"
+                }
+            },
+            "search": {
+                "title": "Exercise search (and creating your own)",
+                "description": "When adding an exercise, use the search bar:",
+                "list": {
+                    "1": "If the exercise exists, select it.",
+                    "2": "If it <strong >doesn’t exist</strong>, just type the name and create it instantly — no extra steps."
+                },
+                "footer": "This makes it easy to log any variation or custom movement.",
+                "imageAlt": "Search bar + “Create new exercise” state"
+            },
+            "tips": {
+                "title": "Tips",
+                "list": {
+                    "1": "Use consistent day naming: <strong >Upper A / Upper B / Lower A / Lower B</strong>",
+                    "2": "Keep <strong >RPE/RIR optional</strong> - add it only if you actively use it",
+                    "3": "Use notes for cues you often forget (setup, tempo, depth, grip)"
+                }
+            }
+        },
+        "startTemplate": {
+            "title": "Start from a Template",
+            "subtitle": "Templates are your planned workouts inside a program (e.g. Upper A, Upper B).",
+            "description": "They already include your exercises and targets (rep ranges, optional RPE/RIR, etc.).",
+            "steps": {
+                "1": {
+                    "title": "1) Start the workout",
+                    "list": {
+                        "1": "Open the <strong >Start</strong> tab",
+                        "2": "Find your <strong >Day (Template)</strong> in the list",
+                        "3": "Tap the <strong >Start</strong> icon next to the day name"
+                    },
+                    "imageAlt": "Program → Day → Start"
+                },
+                "2": {
+                    "title": "2) What you see during the workout",
+                    "description": "Each exercise card shows:",
+                    "list": {
+                        "1": "<strong >Target reps / rep range</strong> (planned)",
+                        "2": "<strong >Last</strong> (what you did last time)",
+                        "3": "<strong >Today</strong> (what you’ve logged in this session)"
+                    },
+                    "imageAlt": "Exercise card highlighting Last / Today"
+                },
+                "3": {
+                    "title": "3) Template actions (during the workout)",
+                    "description": "On template-based workouts you can:",
+                    "list": {
+                        "1": "Add extra set",
+                        "2": "<strong >Skip a set</strong>",
+                        "3": "<strong >Delete last logged set</strong>"
+                    },
+                    "footer": "Use these when something changes mid-session.",
+                    "imageAlt": "Skip set UI"
+                },
+                "4": {
+                    "title": "4) Finish the workout",
+                    "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
+                    "list": {
+                        "1": "review your <strong >workout total volume</strong>",
+                        "2": "optionally add <strong >workout notes</strong> (for the entire session)"
+                    },
+                    "footer": "Tap <strong >Confirm</strong> to save and finish.",
+                    "imageAlt": "Finish flow"
+                },
+                "5": {
+                    "title": "5) Resume a workout (if you close the app)",
+                    "description": "If you close SetWise by accident or switch apps, your active workout is kept.\n\nWhen you open the app again, you’ll see a prompt on the <strong >Programs</strong> screen that lets you:",
+                    "list": {
+                        "1": "<strong >Continue workout</strong>, or",
+                        "2": "<strong >Discard</strong> it (if you don’t need it)"
+                    },
+                    "imageAlt": "Programs screen resume prompt"
+                }
+            }
+        },
+        "quickStart": {
+            "title": "Quick Start",
+            "subtitle": "Quick Start is for flexible training days - you don’t need a fixed plan.",
+            "description": "Start the workout immediately and add exercises as you go.",
+            "steps": {
+                "1": {
+                    "title": "1) Start Quick Start",
+                    "list": {
+                        "1": "Open the <strong >Start</strong> tab",
+                        "2": "Tap <strong >Quick Start</strong>"
+                    },
+                    "imageAlt": "Start tab + Quick Start button"
+                },
+                "2": {
+                    "title": "2) Add exercises during the workout",
+                    "list": {
+                        "1": "Tap <strong >Add Exercise</strong>",
+                        "2": "Search for an exercise and tap to add it"
+                    },
+                    "subTitle": "Create your own exercise (instantly)",
+                    "subDescription": "If you can’t find an exercise:\n\nType the name and create it instantly - no extra setup required.",
+                    "imageAlt": "Add Exercise search + Create new exercise"
+                },
+                "3": {
+                    "title": "3) Log sets (same as templates)",
+                    "list": {
+                        "1": "Adjust weight/reps using <strong >+ / −</strong> or tap to type",
+                        "2": "Tap <strong >✓</strong> to log a set",
+                        "3": "Use the <strong >note</strong> icon to add exercise notes (optional)"
+                    },
+                    "imageAlt": "Quick Start logging UI"
+                },
+                "4": {
+                    "title": "4) Exercise options (⋯)",
+                    "description": "Tap the <strong >⋯</strong> menu on an exercise to:",
+                    "list": {
+                        "1": "<strong >Remove exercise</strong> (if you added it by mistake)",
+                        "2": "<strong >Delete last logged set</strong> (undo)",
+                        "3": "<strong >Finish exercise</strong> (mark it as done for a cleaner view)"
+                    },
+                    "footer": "Finishing an exercise helps keep your session organized, especially in longer workouts.",
+                    "imageAlt": "⋯ menu options"
+                },
+                "5": {
+                    "title": "5) Finish the workout",
+                    "description": "When you’re done, tap <strong >Finish</strong> (top right corner).\n\nA summary sheet will open where you can:",
+                    "list": {
+                        "1": "review your <strong >workout total volume</strong>",
+                        "2": "optionally add <strong >workout notes</strong>"
+                    },
+                    "footer": "Tap <strong >Confirm</strong> to save and finish.",
+                    "imageAlt": "Finish summary sheet"
+                }
+            },
+            "resume": {
+                "title": "Resume a workout",
+                "description": "If you leave the app mid-workout, SetWise keeps it active.\n\nNext time you open the app, you can <strong >Continue</strong> from the prompt on the <strong >Programs</strong> screen.",
+                "imageAlt": "Resume prompt"
+            }
+        },
+        "logging": {
+            "title": "Logging sets & notes",
+            "subtitle": "Logging works the same whether you start from a <strong >Template</strong> or use <strong >Quick Start</strong>.",
+            "steps": {
+                "1": {
+                    "title": "1) Adjust weight & reps",
+                    "list": {
+                        "1": "Tap <strong >+ / −</strong> for quick adjustments",
+                        "2": "Tap the value field to <strong >type</strong> an exact number"
+                    },
+                    "imageAlt": "+/- controls + tap-to-type fields"
+                },
+                "2": {
+                    "title": "2) Log a set (✓)",
+                    "description": "When the numbers are correct, tap <strong >✓</strong> to log the set.\n\nLogged sets appear under <strong >Today</strong> for that exercise.",
+                    "imageAlt": "✓ button + “Today” list"
+                },
+                "3": {
+                    "title": "3) Edit a logged set (pencil)",
+                    "description": "If you need to correct something after logging:",
+                    "list": {
+                        "1": "Tap the <strong >pencil</strong> icon",
+                        "2": "Update the set values",
+                        "3": "Save"
+                    },
+                    "imageAlt": "Pencil edit flow"
+                },
+                "4": {
+                    "title": "4) Undo mistakes (Delete last logged set)",
+                    "description": "If you log a set by accident, use:",
+                    "list": {
+                        "1": "<strong >Delete last logged set</strong> (undo)"
+                    },
+                    "subDescription": "This removes the most recent set you logged for that exercise.",
+                    "imageAlt": "Delete last logged set action"
+                },
+                "5": {
+                    "title": "5) Skip a set (Templates)",
+                    "description": "When training from a template, you can also <strong >Skip</strong> a set if needed.",
+                    "imageAlt": "Skip set UI"
+                },
+                "6": {
+                    "title": "6) Add exercise notes (note icon)",
+                    "description": "Tap the <strong >note</strong> icon to add notes on the exercise level, for example:",
+                    "list": {
+                        "1": "pain / discomfort",
+                        "2": "technique cues",
+                        "3": "machine setup",
+                        "4": "“form felt off” / “reduce load next time”"
+                    },
+                    "footer": "These notes help you remember context next session.",
+                    "imageAlt": "Exercise note input"
+                }
+            },
+            "tip": {
+                "title": "Tip: Use “Last” to start fast",
+                "description": "Fields are pre-filled automatically based on your previous session.\n\nUse <strong >Last</strong> as a quick reference so you immediately know what weight/reps to aim for today."
+            }
+        }
+    },
+    "AiFeaturesPage": {
+        "title": "AI Features",
+        "badge": "Guides",
+        "heading": "Power up with <brand>AI</brand>",
+        "overview": {
+            "title": "Overview",
+            "description": "SetWise includes AI-powered tools that help you save time.\n\nRight now, the main AI feature is <strong >Import Plan</strong> - paste a workout plan from anywhere and convert it into a structured program with templates (days).",
+            "imageAlt": "AI features entry point",
+            "whenToUse": {
+                "title": "When to use AI",
+                "list": {
+                    "1": "You already have a plan written in notes / a document",
+                    "2": "You got a plan from a coach",
+                    "3": "You want to move a plan into SetWise quickly without manual setup"
+                }
+            },
+            "requirements": {
+                "title": "Requirements",
+                "description": "AI features require an internet connection."
+            }
+        },
+        "importPlan": {
+            "title": "Import Plan (Parser)",
+            "description": "Import Plan lets you paste a workout plan and instantly convert it into a <strong >Program</strong> with <strong >Days (Templates)</strong>.",
+            "imageAlt": "Import plan screen",
+            "pastePlan": {
+                "title": "1) Paste your plan",
+                "list": {
+                    "1": "Open <strong >Workout Import on Programs tab</strong>",
+                    "2": "Paste your plan into the text field",
+                    "3": "Tap <strong >Analyze</strong>"
+                },
+                "note": "Larger plans may take up to a minute.",
+                "imageAlt": "“Analyzing plan…” state"
+            },
+            "preview": {
+                "title": "2) Preview what will be created",
+                "description": "After parsing, you’ll see a preview of the final result:",
+                "list": {
+                    "1": "Program name (editable)",
+                    "2": "Total <strong >Days</strong>, <strong >Exercises</strong>, and <strong >Sets</strong>",
+                    "3": "A full breakdown per day (template)"
+                },
+                "imageAlt1": "Preview header with Days / Exercises / Sets",
+                "imageAlt2": "Day section expanded"
+            },
+            "confidence": {
+                "title": "3) Confidence score (%)",
+                "description": "Each exercise shows a <strong >confidence %</strong>:",
+                "list": {
+                    "1": "Higher % = SetWise is more confident it interpreted the line correctly",
+                    "2": "Lower % = quickly double-check the exercise name and set targets"
+                },
+                "imageAlt": "Confidence badge"
+            },
+            "edit": {
+                "title": "4) Edit before saving",
+                "description": "You can adjust the imported result directly in the preview:",
+                "chips": {
+                    "title": "Edit targets via chips",
+                    "description": "Tap a chip to edit values, for example:",
+                    "list": {
+                        "1": "<strong >rep range</strong>",
+                        "2": "<strong >tempo</strong>",
+                        "3": "<strong >intensifier</strong>"
+                    },
+                    "imageAlt": "Tap-to-edit chips"
+                },
+                "sets": {
+                    "title": "Adjust sets",
+                    "list": {
+                        "1": "Remove a set (✕)",
+                        "2": "Add a new set (<strong >Add Set</strong>)"
+                    },
+                    "imageAlt": "Add Set / remove set controls"
+                },
+                "instructions": {
+                    "title": "Add exercise instructions (optional)",
+                    "description": "Use <strong >Instructions</strong> to store cues or setup notes for that exercise.",
+                    "imageAlt": "Instructions row"
+                }
+            },
+            "save": {
+                "title": "5) Save templates",
+                "description": "When you’re happy with the preview:",
+                "list": {
+                    "1": "Confirm the <strong >Program name</strong>",
+                    "2": "Tap <strong >Save templates</strong>"
+                },
+                "footer": "Your program and days (templates) will be created and ready to start.",
+                "imageAlt": "Save templates button"
+            },
+            "tips": {
+                "title": "Tips for best results",
+                "list": {
+                    "1": "Keep each exercise on its own line",
+                    "2": "Include sets and rep ranges clearly (e.g. <code>3 x 8–10</code>)",
+                    "3": "If you use notes like “drop set”, include them on the same line — you can verify in preview"
+                },
+                "note": "<strong >Note:</strong> Import works best with clearly formatted plans.\n\nIf the preview looks significantly off even though your plan is written clearly, please contact support - it helps us improve the parser."
+            }
+        }
     }
+}
 }

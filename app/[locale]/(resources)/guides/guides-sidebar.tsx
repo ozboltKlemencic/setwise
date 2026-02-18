@@ -6,7 +6,9 @@ import {
     PlusCircle,
     Info,
     Dumbbell,
-    LineChart
+    LineChart,
+    BrainCircuit,
+    User
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Sidebar, MobileSidebar, type SidebarItem } from "@/components/sidebar"
@@ -68,6 +70,26 @@ export function GuidesSidebar() {
                 { title: t('progress.workoutDetails'), href: "/guides/progress#workout-details" },
                 { title: t('progress.volumeTrend'), href: "/guides/progress#volume-trend" },
                 { title: t('progress.exerciseExplorer'), href: "/guides/progress#exercise-explorer" },
+            ]
+        },
+        {
+            title: t('aiFeatures.title'),
+            href: "/guides/ai-features",
+            icon: BrainCircuit,
+            subItems: [
+                { title: t('aiFeatures.overview'), href: "/guides/ai-features#overview" },
+                { title: t('aiFeatures.importPlan'), href: "/guides/ai-features#import-plan" },
+            ]
+        },
+        {
+            title: t('profileSettings.title'),
+            href: "/guides/profile-settings",
+            icon: User,
+            subItems: [
+                { title: t('profileSettings.preferences'), href: "/guides/profile-settings#preferences" },
+                { title: t('profileSettings.training'), href: "/guides/profile-settings#training" },
+                { title: t('profileSettings.support'), href: "/guides/profile-settings#support" },
+                { title: t('profileSettings.account'), href: "/guides/profile-settings#account" },
             ]
         },
     ], [t])
