@@ -166,7 +166,7 @@ export default async function WorkoutsPage() {
                                 </h3>
                                 <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-600 marker:text-surface-400">
                                     {[1, 2, 3].map(i => (
-                                        <li key={i}>{t(`createProgram.tips.list.${i}`)}</li>
+                                        <li key={i}>{t.rich(`createProgram.tips.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
                             </div>
