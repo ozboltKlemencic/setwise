@@ -3,6 +3,8 @@ import { getTranslations } from "next-intl/server"
 import { Search, Smartphone, Dumbbell, User, HelpCircle } from "lucide-react"
 import Link from "next/link"
 
+export { generateMetadata } from './metadata'
+
 const supportCards = [
     { key: 'installation', icon: Smartphone, href: '/guides/installation' },
     { key: 'createWorkout', icon: Dumbbell, href: '/guides/create-workout' },

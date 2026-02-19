@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { ArrowUpRight } from "lucide-react"
 
+
 function DiscordIcon({ className }: { className?: string }) {
     return (
         <svg viewBox="0 -28.5 256 256" fill="currentColor" aria-hidden="true" className={className}>

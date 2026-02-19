@@ -9,6 +9,8 @@ import {
 import type { ReactNode } from "react"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 
+export { generateMetadata } from './metadata'
+
 const richTextComponents = {
     strong: (chunks: ReactNode) => <strong className="text-surface-900 font-semibold">{chunks}</strong>,
     brand: (chunks: ReactNode) => <span className="primaryGradient">{chunks}</span>,

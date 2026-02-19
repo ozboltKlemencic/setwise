@@ -6,6 +6,8 @@ import {
 } from "@/components/features/feature-cards"
 import type { ReactNode } from "react"
 
+export { generateMetadata } from './metadata'
+
 // -- Rich text renderers ------------------------------------------------
 
 const richTextComponents = {

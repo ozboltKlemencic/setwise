@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server"
 import { WifiOff, RefreshCw, Wifi } from "lucide-react"
 import { KeyFeatureSection } from "@/components/features/feature-cards"
 
+export { generateMetadata } from './metadata'
+
 export default async function OfflineSyncPage() {
     const t = await getTranslations('FeaturesSidebar.offlineSync')
 

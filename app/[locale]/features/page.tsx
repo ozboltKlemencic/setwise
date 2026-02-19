@@ -14,6 +14,8 @@ import BetaSignupDialog from "@/components/beta-signup-dialog"
 import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradient"
 import type { ReactNode } from "react"
 
+export { generateMetadata } from './metadata'
+
 
 // -- Icon Maps (icons can't live in JSON) --------------------------------
 

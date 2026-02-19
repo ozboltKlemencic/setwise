@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
 
+
 const filterOrder = ["all", "installation", "guides", "features", "account"] as const
 type FilterKey = (typeof filterOrder)[number]
 type FAQCategory = Exclude<FilterKey, "all">

@@ -3,6 +3,8 @@ import Image from "next/image"
 import { Link } from "@/i18n/navigation"
 import { Mail, Linkedin, Info, LifeBuoy, UserRoundCog } from "lucide-react"
 
+export { generateMetadata } from './metadata'
+
 /* ── Static team member data (non-translatable) ──────────── */
 const teamMembers = [
     {

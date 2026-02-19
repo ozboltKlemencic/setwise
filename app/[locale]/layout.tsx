@@ -23,7 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const meta = messages.Metadata
 
     return {
-        title: meta.title,
+        title: {
+            template: '%s | SetWise',
+            default: meta.title,
+        },
         description: meta.description,
         keywords: meta.keywords,
         alternates: {

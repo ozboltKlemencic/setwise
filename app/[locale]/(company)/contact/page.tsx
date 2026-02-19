@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { Mail, Linkedin, Info, Users, LifeBuoy, UserRoundCog } from "lucide-react"
 
+export { generateMetadata } from './metadata'
+
 /* ── Static contact data ─────────────────────────────────── */
 const generalEmail = 'info@setwise.app'
 

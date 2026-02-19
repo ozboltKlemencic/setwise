@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server"
 
+export { generateMetadata } from './metadata'
+
 export default async function PrivacyPolicyPage() {
     const t = await getTranslations('PrivacyPolicy')
     const sections = ['overview', 'dataCollection', 'usage', 'dataProtection'] as const

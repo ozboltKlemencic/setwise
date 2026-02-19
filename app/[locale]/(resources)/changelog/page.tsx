@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl"
 import { ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
+
 const filterOrder = ["all", "improvements", "updates", "releases"] as const
 type FilterKey = (typeof filterOrder)[number]
 type UpdateTone = "release" | "improvement" | "update"

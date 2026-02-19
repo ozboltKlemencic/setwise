@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/navigation"
 import { Users, Mail, UserRoundCog } from "lucide-react"
 
+export { generateMetadata } from './metadata'
+
 const quickLinks = [
     { href: '/our-team', icon: Users, translationKey: 'team' },
     { href: '/contact', icon: Mail, translationKey: 'contact' },

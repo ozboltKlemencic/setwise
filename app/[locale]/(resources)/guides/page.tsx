@@ -19,6 +19,8 @@ import { StepCard } from "@/components/features/feature-cards"
 import type { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
+export { generateMetadata } from './metadata'
+
 // -- Rich text renderers ------------------------------------------------
 
 const richTextComponents = {

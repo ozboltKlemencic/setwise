@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server"
 
+export { generateMetadata } from './metadata'
+
 export default async function TermsOfUsePage() {
     const t = await getTranslations('TermsOfUse')
     const sections = ['whoIsBehind', 'purpose', 'beta', 'accountUsage', 'content', 'aiFeatures', 'liability', 'privacyConnection', 'changes', 'contact'] as const

@@ -3,6 +3,8 @@ import { ArrowRight, Calendar, History, TrendingUp, Info } from "lucide-react"
 import type { ReactNode } from "react"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 
+export { generateMetadata } from './metadata'
+
 // -- Rich text renderers ------------------------------------------------
 const richTextComponents = {
     strong: (chunks: ReactNode) => <strong className="text-surface-900 font-semibold">{chunks}</strong>,

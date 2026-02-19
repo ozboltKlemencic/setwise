@@ -9,6 +9,8 @@ import ButtonRotatingGradient from "@/components/ui/buttons/ButtonRotatingGradie
 import BetaSignupDialog from "@/components/beta-signup-dialog"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 
+export { generateMetadata } from './metadata'
+
 // -- Rich text renderers ------------------------------------------------
 
 const richTextComponents = {

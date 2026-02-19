@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 import type { ReactNode } from "react"
 
+export { generateMetadata } from './metadata'
+
 const richTextComponents = {
     strong: (chunks: ReactNode) => <strong className="text-surface-900 font-semibold">{chunks}</strong>,
     check: (chunks: ReactNode) => (

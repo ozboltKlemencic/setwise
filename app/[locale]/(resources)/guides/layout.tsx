@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const t = await getTranslations({ locale, namespace: 'Guides.Sidebar' })
 
     return {
-        title: `${t('mobileTitle')} - SetWise`,
+        title: t('mobileTitle'),
     }
 }
 
