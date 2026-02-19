@@ -193,7 +193,39 @@ export function FeatureTextBlock({ lead, children, compact = false }: FeatureTex
 }
 
 // ─────────────────────────────────────────────────────────────
-// 8. SectionDivider — Consistent horizontal rule between sections
+// 8. TipCard — Info/note card for contextual tips
+//    Usage: Standalone tip or note alongside feature content
+// ─────────────────────────────────────────────────────────────
+
+interface TipCardProps {
+    icon?: LucideIcon
+    title: string
+    description: string
+    compact?: boolean
+}
+
+export function TipCard({ icon: Icon, title, description, compact = false }: TipCardProps) {
+    return (
+        <div className={`bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40 shadow-(--shadow-xs) ${compact ? "p-(--space-3) md:p-(--space-5)" : "p-(--space-4) md:p-(--space-6)"}`}>
+            <div className={`flex items-center gap-(--space-2) ${compact ? "mb-(--space-2)" : "mb-(--space-2) md:mb-(--space-3)"}`}>
+                {Icon && (
+                    <div className={`flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300/70 dark:bg-surface-300/20 shrink-0 ${compact ? "size-7 md:size-8" : "size-7 md:size-9"}`}>
+                        <Icon className={`text-surface-500 ${compact ? "size-3.5 md:size-4" : "size-3.5 md:size-4.5"}`} />
+                    </div>
+                )}
+                <h4 className={`font-semibold text-surface-900 ${compact ? "text-subheadline md:text-callout" : "text-subheadline md:text-headline"}`}>
+                    {title}
+                </h4>
+            </div>
+            <p className={`text-surface-600 leading-relaxed ${compact ? "text-footnote md:text-footnote" : "text-footnote md:text-subheadline"}`}>
+                {description}
+            </p>
+        </div>
+    )
+}
+
+// ─────────────────────────────────────────────────────────────
+// 9. SectionDivider — Consistent horizontal rule between sections
 // ─────────────────────────────────────────────────────────────
 
 export function SectionDivider() {

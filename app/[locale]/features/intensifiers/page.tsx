@@ -1,24 +1,34 @@
+import { MiniFeatureCard } from "@/components/features/feature-cards"
+
+const sections = [
+    { id: "drop-sets", title: "Drop Sets", description: "Push past failure with integrated drop set tracking." },
+    { id: "supersets", title: "Supersets", description: "Log paired exercises without switching screens." },
+    { id: "cluster-sets", title: "Cluster Sets", description: "Advanced set types for serious strength training." },
+] as const
+
 export default function IntensifiersPage() {
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start">
-            <div className="w-full px-6 md:px-12 space-y-12 pb-20">
-                <h1 className="text-large-title font-bold text-surface-800 w-full text-left -mt-12 ">Intensifiers</h1>
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-12 md:pt-0">
+            <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
 
-                <section id="drop-sets" className="scroll-mt-24">
-                    <h2 className="text-2xl font-bold mb-4">Drop Sets</h2>
-                    <p className="text-muted-foreground">Push past failure with integrated drop set tracking.</p>
-                </section>
+                {/* ── Page Header ────────────────────────────── */}
+                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-10) min-[1152px]:pr-(--space-8)">
+                    <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
+                        Intensifiers
+                    </h1>
+                </header>
 
-                <section id="supersets" className="scroll-mt-24">
-                    <h2 className="text-2xl font-bold mb-4">Supersets</h2>
-                    <p className="text-muted-foreground">Log paired exercises without switching screens.</p>
-                </section>
+                {/* ── Sections ───────────────────────────────── */}
+                <div className="space-y-(--space-10) md:space-y-(--space-16) lg:space-y-(--space-20) pb-(--space-10) md:pb-(--space-16)">
 
-                <section id="cluster-sets" className="scroll-mt-24">
-                    <h2 className="text-2xl font-bold mb-4">Cluster Sets</h2>
-                    <p className="text-muted-foreground">Advanced set types for serious strength training.</p>
-                </section>
+                    {sections.map(({ id, title, description }) => (
+                        <section key={id} id={id} className="scroll-mt-32">
+                            <MiniFeatureCard compact title={title} description={description} />
+                        </section>
+                    ))}
+
+                </div>
             </div>
         </div>
-    );
+    )
 }
