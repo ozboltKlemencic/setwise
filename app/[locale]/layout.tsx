@@ -1,8 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, setRequestLocale } from "next-intl/server"
 import { routing } from "@/i18n/routing"
+
+function isValidLocale(locale: string): locale is (typeof routing.locales)[number] {
+    return routing.locales.includes(locale as (typeof routing.locales)[number])
+}
 
 type Props = {
     children: React.ReactNode
@@ -19,6 +24,8 @@ const BASE_URL = 'https://setwise.app'
 // Generate metadata based on locale
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params
+
+    if (!isValidLocale(locale)) return {}
 
     const messages = (await import(`../../messages/${locale}.json`)).default
     const meta = messages.Metadata
@@ -81,14 +88,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function LocaleLayout({ children, params }: Props) {
     const { locale } = await params
 
-    // Enable static rendering
+    if (!isValidLocale(locale)) notFound()
+
     setRequestLocale(locale)
 
-    // Get messages for this locale
     const messages = await getMessages()
 
-    // The root layout provides html/body tags
-    // This layout just adds the i18n provider with locale
     return (
         <NextIntlClientProvider locale={locale} messages={messages}>
             {children}
