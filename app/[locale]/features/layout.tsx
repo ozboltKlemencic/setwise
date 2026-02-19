@@ -11,7 +11,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     const t = await getTranslations({ locale, namespace: 'FeaturesPage' })
 
     return {
-        title: t('title'),
+        title: {
+            template: '%s | SetWise',
+            default: t('title'),
+        },
     }
 }
 
