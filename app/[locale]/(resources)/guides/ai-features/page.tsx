@@ -11,6 +11,7 @@ export { generateMetadata } from './metadata'
 const richTextComponents = {
     strong: (chunks: ReactNode) => <strong className="text-surface-900 font-semibold">{chunks}</strong>,
     brand: (chunks: ReactNode) => <span className="primaryGradient">{chunks}</span>,
+    code: (chunks: ReactNode) => <code className="px-1.5 py-0.5 rounded-md bg-surface-200/80 dark:bg-surface-300/30 text-surface-900 text-caption-1 font-mono">{chunks}</code>,
 }
 
 export default async function AiFeaturesPage() {
