@@ -1,32 +1,25 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages, setRequestLocale } from "next-intl/server"
 import { routing } from "@/i18n/routing"
-
-function isValidLocale(locale: string): locale is (typeof routing.locales)[number] {
-    return routing.locales.includes(locale as (typeof routing.locales)[number])
-}
 
 type Props = {
     children: React.ReactNode
     params: Promise<{ locale: string }>
 }
 
-// Generate static params for all locales
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }))
 }
+
+export const dynamicParams = false
 
 const BASE_URL = 'https://setwise.app'
 
 // Generate metadata based on locale
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { locale } = await params
-
-    if (!isValidLocale(locale)) return {}
-
     const messages = (await import(`../../messages/${locale}.json`)).default
     const meta = messages.Metadata
     const url = locale === 'en' ? BASE_URL : `${BASE_URL}/${locale}`
@@ -87,9 +80,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LocaleLayout({ children, params }: Props) {
     const { locale } = await params
-
-    if (!isValidLocale(locale)) notFound()
-
     setRequestLocale(locale)
 
     const messages = await getMessages()
