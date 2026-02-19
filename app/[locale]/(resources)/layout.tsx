@@ -2,8 +2,8 @@
 
 import Navigation from "@/components/navigation"
 import FooterSection from "@/components/footer-section"
-import { ParticleText } from "@/components/ui/particle-text" 
-import { usePathname } from "next/navigation"
+import { ParticleText } from "@/components/ui/particle-text"
+import { usePathname } from "@/i18n/navigation"
 
 export default function ResourcesLayout({
     children,
@@ -12,7 +12,7 @@ export default function ResourcesLayout({
 }) {
     const pathname = usePathname()
 
-const isGuidesRoute = pathname === "/guides" || pathname.startsWith("/guides/") || pathname.startsWith("/sl/vodici/") || pathname === "/sl/vodici"
+    const isGuidesRoute = pathname === "/guides" || pathname.startsWith("/guides/")
     if (isGuidesRoute) {
         return <>{children}</>
     }
@@ -47,4 +47,4 @@ const isGuidesRoute = pathname === "/guides" || pathname.startsWith("/guides/") 
             </div>
         </div>
     )
-}
+} 
