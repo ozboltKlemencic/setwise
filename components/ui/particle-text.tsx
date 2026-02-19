@@ -47,13 +47,14 @@ export function ParticleText({
 
         let animationFrameId: number
         let particles: Particle[] = []
+        let isDestroyed = false
 
-        // Detect dark mode (check CSS class set by next-themes)
         const isDarkMode = () => {
             return document.documentElement.classList.contains('dark')
         }
 
         const init = () => {
+            if (isDestroyed) return
             const width = container.clientWidth
             const height = container.clientHeight
             if (width === 0 || height === 0) return
@@ -126,8 +127,13 @@ export function ParticleText({
         }
 
         const animate = () => {
+            if (isDestroyed) return
             const width = canvas.width / (window.devicePixelRatio || 1)
             const height = canvas.height / (window.devicePixelRatio || 1)
+            if (width === 0 || height === 0) {
+                animationFrameId = requestAnimationFrame(animate)
+                return
+            }
 
             ctx.clearRect(0, 0, width, height)
 
@@ -186,6 +192,7 @@ export function ParticleText({
         window.addEventListener("resize", handleResize)
 
         return () => {
+            isDestroyed = true
             window.removeEventListener("resize", handleResize)
             cancelAnimationFrame(animationFrameId)
         }
