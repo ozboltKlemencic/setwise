@@ -62,18 +62,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             locale: locale === 'sl' ? 'sl_SI' : 'en_US',
             alternateLocale: locale === 'sl' ? ['en_US'] : ['sl_SI'],
             type: 'website',
-            images: [{
-                url: '/og-image.png',
-                width: 1200,
-                height: 630,
-                alt: meta.title,
-            }],
         },
         twitter: {
             card: 'summary_large_image',
             title: meta.ogTitle,
             description: meta.ogDescription,
-            images: ['/og-image.png'],
         },
     }
 }
