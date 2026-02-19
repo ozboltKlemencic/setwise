@@ -44,7 +44,7 @@ export default async function GuidesPage() {
     ] as const
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-0 md:pt-12 lg:pt-0">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-12 md:pt-0">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl min-[1152px]:border-0 md:border-l md:border-r border-surface-200">
 
                 {/* ── Page Header: Welcome ────────────────────────────── */}
@@ -52,24 +52,24 @@ export default async function GuidesPage() {
                     <p className="text-caption-2 tracking-wider font-semibold primaryGradient mb-1">
                         {t('badge')}
                     </p>
-                    <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance mb-(--space-4)">
+                    <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t('title')}
                     </h1>
-                    <p className="text-subheadline md:text-title-3 text-surface-700 leading-relaxed max-w-prose mb-(--space-8)">
+                    <p className="mt-1 text-footnote md:text-subheadline lg:text-callout text-surface-700 leading-relaxed max-w-prose mb-(--space-6)">
                         {t('subtitle')}
                     </p>
 
                     <div className="mb-(--space-8)">
-                        <h2 className="text-headline md:text-title-3 font-bold text-surface-900 mb-(--space-4)">
+                        <h2 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-4)">
                             {t('intro.title')}
                         </h2>
                         <ul className="space-y-(--space-3) mb-(--space-6)">
                             {introPoints.map((point, index) => (
                                 <li key={index} className="flex items-start gap-(--space-3)">
                                     <div className="mt-0.5 p-1 rounded-md bg-brand-500/10 text-brand-600 dark:text-brand-400 shrink-0">
-                                        <point.icon className="size-4" />
+                                        <point.icon className="size-3.5" />
                                     </div>
-                                    <span className="text-body text-surface-700">{point.text}</span>
+                                    <span className="text-footnote md:text-subheadline text-surface-700">{point.text}</span>
                                 </li>
                             ))}
                         </ul>
@@ -79,7 +79,7 @@ export default async function GuidesPage() {
                     </div>
                 </header>
 
-                <div className="h-px w-full bg-surface-200 dark:bg-surface-300/50 mb-(--space-10) md:mb-(--space-16)" />
+                <div className="h-px w-full bg-surface-200/80 dark:bg-surface-300/60 mb-(--space-10) md:mb-(--space-16)" />
 
                 {/* ── Section: How to get the most ───────────────────── */}
                 <section id="how-to-get-the-most" className="scroll-mt-32 space-y-(--space-10) md:space-y-(--space-16) pb-(--space-10) md:pb-(--space-16)">
@@ -87,7 +87,7 @@ export default async function GuidesPage() {
                         <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight text-balance mb-(--space-2)">
                             {t('howTo.title')}
                         </h2>
-                        <p className="text-body md:text-subheadline text-surface-600 max-w-prose">
+                        <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 leading-relaxed max-w-prose">
                             {t('howTo.description')}
                         </p>
                     </div>
@@ -96,15 +96,15 @@ export default async function GuidesPage() {
                         {/* Point 1: Templates */}
                         <div className="flex flex-col md:flex-row gap-(--space-4) md:gap-(--space-8)">
                             <div className="flex-none">
-                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-10 md:size-12 text-title-3 font-bold text-surface-900 border border-transparent">
+                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-8 md:size-10 text-callout font-bold text-surface-900">
                                     1
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-title-3 font-bold text-surface-900 mb-(--space-2)">
+                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.1.title').replace('1) ', '')}
                                 </h3>
-                                <p className="text-body text-surface-600 leading-relaxed whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line">
                                     {t.rich('howTo.points.1.description', richTextComponents)}
                                 </p>
                             </div>
@@ -113,15 +113,15 @@ export default async function GuidesPage() {
                         {/* Point 2: Start fast with Last */}
                         <div className="flex flex-col md:flex-row gap-(--space-4) md:gap-(--space-8)">
                             <div className="flex-none">
-                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-10 md:size-12 text-title-3 font-bold text-surface-900 border border-transparent">
+                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-8 md:size-10 text-callout font-bold text-surface-900">
                                     2
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-title-3 font-bold text-surface-900 mb-(--space-2)">
+                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.2.title').replace('2) ', '')}
                                 </h3>
-                                <p className="text-body text-surface-600 leading-relaxed whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line">
                                     {t.rich('howTo.points.2.description', richTextComponents)}
                                 </p>
                             </div>
@@ -130,23 +130,23 @@ export default async function GuidesPage() {
                         {/* Point 3: Notes */}
                         <div className="flex flex-col md:flex-row gap-(--space-4) md:gap-(--space-8)">
                             <div className="flex-none">
-                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-10 md:size-12 text-title-3 font-bold text-surface-900 border border-transparent">
+                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-8 md:size-10 text-callout font-bold text-surface-900">
                                     3
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-title-3 font-bold text-surface-900 mb-(--space-2)">
+                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.3.title').replace('3) ', '')}
                                 </h3>
-                                <p className="text-body text-surface-600 leading-relaxed mb-(--space-3)">
+                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mb-(--space-3)">
                                     {t('howTo.points.3.description')}
                                 </p>
-                                <ul className="space-y-1 mb-(--space-3) list-disc list-inside text-body text-surface-600 marker:text-surface-400">
+                                <ul className="space-y-1 mb-(--space-3) list-disc list-inside text-footnote md:text-subheadline text-surface-600 marker:text-surface-400">
                                     <li>{t('howTo.points.3.list.pain')}</li>
                                     <li>{t('howTo.points.3.list.technique')}</li>
                                     <li>{t('howTo.points.3.list.setup')}</li>
                                 </ul>
-                                <p className="text-body text-surface-600 leading-relaxed">
+                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed">
                                     {t('howTo.points.3.footer')}
                                 </p>
                             </div>
@@ -155,15 +155,15 @@ export default async function GuidesPage() {
                         {/* Point 4: Quick Start */}
                         <div className="flex flex-col md:flex-row gap-(--space-4) md:gap-(--space-8)">
                             <div className="flex-none">
-                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-10 md:size-12 text-title-3 font-bold text-surface-900 border border-transparent">
+                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-8 md:size-10 text-callout font-bold text-surface-900">
                                     4
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-title-3 font-bold text-surface-900 mb-(--space-2)">
+                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.4.title').replace('4) ', '')}
                                 </h3>
-                                <p className="text-body text-surface-600 leading-relaxed whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line">
                                     {t.rich('howTo.points.4.description', richTextComponents)}
                                 </p>
                             </div>
@@ -172,18 +172,18 @@ export default async function GuidesPage() {
                         {/* Point 5: Progress */}
                         <div className="flex flex-col md:flex-row gap-(--space-4) md:gap-(--space-8)">
                             <div className="flex-none">
-                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-10 md:size-12 text-title-3 font-bold text-surface-900 border border-transparent">
+                                <div className="flex items-center justify-center rounded-lg bg-linear-to-tr from-surface-200/70 to-surface-300 dark:bg-surface-300/20 shrink-0 size-8 md:size-10 text-callout font-bold text-surface-900">
                                     5
                                 </div>
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-title-3 font-bold text-surface-900 mb-(--space-2)">
+                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.5.title').replace('5) ', '')}
                                 </h3>
-                                <p className="text-body text-surface-600 leading-relaxed mb-(--space-3)">
+                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mb-(--space-3)">
                                     {t.rich('howTo.points.5.description', richTextComponents)}
                                 </p>
-                                <ul className="space-y-1 list-disc list-inside text-body text-surface-600 marker:text-surface-400">
+                                <ul className="space-y-1 list-disc list-inside text-footnote md:text-subheadline text-surface-600 marker:text-surface-400">
                                     <li>{t('howTo.points.5.list.past')}</li>
                                     <li>{t('howTo.points.5.list.details')}</li>
                                     <li>{t('howTo.points.5.list.trends')}</li>
@@ -225,15 +225,15 @@ export default async function GuidesPage() {
                             </div>
 
                             <ul className="space-y-(--space-3) w-full">
-                                <li className="flex gap-(--space-3) text-body text-surface-800">
+                                <li className="flex gap-(--space-3) text-footnote md:text-subheadline text-surface-800">
                                     <span className="text-brand-600 dark:text-brand-400 font-bold mt-0.5">•</span>
                                     <span>{t('tips.list.consistency')}</span>
                                 </li>
-                                <li className="flex gap-(--space-3) text-body text-surface-800">
+                                <li className="flex gap-(--space-3) text-footnote md:text-subheadline text-surface-800">
                                     <span className="text-brand-600 dark:text-brand-400 font-bold mt-0.5">•</span>
                                     <span>{t('tips.list.quality')}</span>
                                 </li>
-                                <li className="flex gap-(--space-3) text-body text-surface-800">
+                                <li className="flex gap-(--space-3) text-footnote md:text-subheadline text-surface-800">
                                     <span className="text-brand-600 dark:text-brand-400 font-bold mt-0.5">•</span>
                                     <span>{t.rich('tips.list.form', richTextComponents)}</span>
                                 </li>
@@ -243,11 +243,11 @@ export default async function GuidesPage() {
                 </section>
 
                 {/* ── Section: Quick Links (About Page Style) ────────────────────────────── */}
-                <div className="h-px w-full bg-surface-200 dark:bg-surface-300 mb-(--space-10) md:mb-(--space-16)" />
+                <div className="h-px w-full bg-surface-200/80 dark:bg-surface-300/60 mb-(--space-10) md:mb-(--space-16)" />
 
-                <section id="learn-more" className="pb-(--space-12) md:pb-(--space-20)">
+                <section id="learn-more" className="pb-(--space-10) md:pb-(--space-16)">
                     <div>
-                        <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
+                        <h2 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                             {t('learnMore.title')}
                         </h2>
                         <div className="flex flex-col gap-(--space-2.5) mt-(--space-3)">
