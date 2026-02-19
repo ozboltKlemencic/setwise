@@ -48,6 +48,7 @@ export function ParticleText({
         let animationFrameId: number
         let particles: Particle[] = []
         let isDestroyed = false
+        let isVisible = false
 
         const isDarkMode = () => {
             return document.documentElement.classList.contains('dark')
@@ -58,11 +59,10 @@ export function ParticleText({
             const width = container.clientWidth
             const height = container.clientHeight
             if (width === 0 || height === 0) return
-            // Responsive density - larger gap on mobile = fewer particles
-            const isMobile = width < 768
-            const density = isMobile ? 3 : 5 // Gap between particles. Smaller = more particles.
 
-            // Set canvas resolution for high DPI displays
+            const isMobile = width < 768
+            const density = isMobile ? 3 : 5
+
             const dpr = window.devicePixelRatio || 1
             canvas.width = width * dpr
             canvas.height = height * dpr
@@ -70,7 +70,6 @@ export function ParticleText({
             canvas.style.height = `${height}px`
             ctx.scale(dpr, dpr)
 
-            // Create offscreen canvas for text analysis
             const offscreen = document.createElement("canvas")
             offscreen.width = width
             offscreen.height = height
@@ -78,9 +77,6 @@ export function ParticleText({
             if (!offCtx) return
 
             offCtx.fillStyle = "black"
-            // Use a bold sans-serif font - smaller on mobile
-            // Use manual font size if provided, otherwise default responsive sizes
-            // If manualFontSizeMobile is provided, use it for mobile. Otherwise fall back to manualFontSize (if provided) or default mobile size
             const fontSize = isMobile
                 ? (manualFontSizeMobile || (manualFontSize ? manualFontSize / 2 : 70))
                 : (manualFontSize || 160)
@@ -88,7 +84,6 @@ export function ParticleText({
             offCtx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`
             offCtx.textAlign = "center"
             offCtx.textBaseline = "bottom"
-            // Position text at the bottom with some padding
             offCtx.fillText(text, width / 2, height)
 
             const imageData = offCtx.getImageData(0, 0, width, height).data
@@ -100,9 +95,6 @@ export function ParticleText({
                     const alpha = imageData[index + 3]
                     const isActive = alpha > 128
 
-                    // Gradient for background particles
-                    // Default: Bottom (y=height) = more visible, Top (y=0) = less visible
-                    // Reverse: Top (y=0) = more visible, Bottom (y=height) = less visible
                     const normalizedY = y / height
                     const yRatio = reverse ? (1 - normalizedY) : normalizedY
 
@@ -120,33 +112,28 @@ export function ParticleText({
                         baseAlpha: gradientStats.base,
                         targetAlpha: gradientStats.target,
                         phase: Math.random() * Math.PI * 2,
-                        speed: 0.05 + Math.random() * 0.05 // Much faster animation
+                        speed: 0.05 + Math.random() * 0.05
                     })
                 }
             }
         }
 
         const animate = () => {
-            if (isDestroyed) return
+            if (isDestroyed || !isVisible) return
+
             const width = canvas.width / (window.devicePixelRatio || 1)
             const height = canvas.height / (window.devicePixelRatio || 1)
-            if (width === 0 || height === 0) {
-                animationFrameId = requestAnimationFrame(animate)
-                return
-            }
+            if (width === 0 || height === 0 || particles.length === 0) return
 
             ctx.clearRect(0, 0, width, height)
 
             const dark = isDarkMode()
 
-            // Default values
             const txtBrightDark = textBrightness?.dark ?? 130
             const txtBrightLight = textBrightness?.light ?? 200
             const bgBrightDark = backgroundBrightness?.dark ?? 160
             const bgBrightLight = backgroundBrightness?.light ?? 200
 
-            // Grouping by color to minimize fillStyle calls
-            // Using a Map to group by the color value (val) and alpha (rounded for grouping)
             const groups = new Map<string, Particle[]>()
 
             particles.forEach(p => {
@@ -158,7 +145,6 @@ export function ParticleText({
                     ? (dark ? txtBrightDark : txtBrightLight)
                     : (dark ? bgBrightDark : bgBrightLight)
 
-                // Round alpha to 2 decimal places to allow grouping while maintaining quality
                 const roundedAlpha = Math.round(alpha * 20) / 20
                 const key = `${val},${roundedAlpha}`
 
@@ -182,17 +168,39 @@ export function ParticleText({
             animationFrameId = requestAnimationFrame(animate)
         }
 
+        const startAnimation = () => {
+            if (!isDestroyed && isVisible && particles.length > 0) {
+                cancelAnimationFrame(animationFrameId)
+                animate()
+            }
+        }
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                isVisible = entry.isIntersecting
+                if (isVisible) {
+                    startAnimation()
+                }
+            },
+            { threshold: 0 }
+        )
+        observer.observe(container)
+
         init()
-        animate()
+        if (isVisible && particles.length > 0) {
+            animate()
+        }
 
         const handleResize = () => {
             init()
+            startAnimation()
         }
 
         window.addEventListener("resize", handleResize)
 
         return () => {
             isDestroyed = true
+            observer.disconnect()
             window.removeEventListener("resize", handleResize)
             cancelAnimationFrame(animationFrameId)
         }
