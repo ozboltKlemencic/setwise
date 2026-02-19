@@ -1,6 +1,6 @@
 import { MiniFeatureCard } from "@/components/features/feature-cards"
 
-export { metadata } from './metadata'
+export { generateMetadata } from './metadata'
 
 const sections = [
     { id: "drop-sets", title: "Drop Sets", description: "Push past failure with integrated drop set tracking." },

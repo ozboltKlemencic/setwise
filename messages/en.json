@@ -251,9 +251,118 @@
         "blog": "Blog"
     },
     "Metadata": {
-        "title": "SetWise - Workout Tracker for Serious Lifters",
-        "description": "SetWise is the ultimate workout tracker for serious lifters. Build routines, track progress, and reach your goals with AI-powered insights.",
-        "keywords": "workout tracker, fitness app, workout logging, progress tracking, strength"
+        "title": "SetWise – Workout Tracker for Serious Lifters",
+        "description": "Log workouts in seconds, track strength progress with clear analytics, and build training programs. SetWise is the offline-first workout tracker for iOS & Android.",
+        "keywords": "workout tracker, fitness app, workout logging, progress tracking, strength training, gym app, exercise tracker, workout planner, training log, SetWise, offline workout app, RPE tracker",
+        "ogTitle": "SetWise – Log Smarter. Get Stronger.",
+        "ogDescription": "The workout tracker built for serious lifters. Fast set logging, progress analytics, workout templates, and offline mode. Free on iOS & Android."
+    },
+    "PageMetadata": {
+        "features": {
+            "title": "Features",
+            "description": "Explore SetWise features: fast workout logging, templates & programs, progress analytics, advanced metrics like RPE and tempo, offline mode, and more.",
+            "keywords": "workout app features, exercise logging, progress analytics, workout templates, training programs, RPE tracking, offline workout tracker",
+            "ogTitle": "SetWise Features – Everything You Need to Train Smarter",
+            "ogDescription": "Fast logging, analytics, templates, advanced metrics, offline mode. Discover what makes SetWise the go-to tracker for serious lifters."
+        },
+        "quickLogging": {
+            "title": "Quick Logging",
+            "description": "Log sets in seconds with SetWise's live session mode. Minimal taps, no distractions – just weight, reps, and done. Built for speed between sets.",
+            "keywords": "quick workout logging, fast set tracking, live session mode, gym logging app, workout timer, set notes",
+            "ogTitle": "Quick Logging – Less Tapping, More Lifting",
+            "ogDescription": "Log sets in seconds during your workout. SetWise keeps you focused with a fast, distraction-free logging flow."
+        },
+        "templatesPrograms": {
+            "title": "Templates & Programs",
+            "description": "Build your training structure once and repeat it with confidence. Import plans via AI or create custom workout splits with templates for each training day.",
+            "keywords": "workout templates, training programs, workout splits, import workout plan, AI workout parser, custom routines, training schedule",
+            "ogTitle": "Templates & Programs – Build Once, Train Forever",
+            "ogDescription": "Create workout splits, import plans with AI, and reuse templates for consistent training. Structure your week in minutes."
+        },
+        "progressAnalytics": {
+            "title": "Progress & Analytics",
+            "description": "Track workout progress with calendar views, volume trends, strength estimates, and exercise-level comparisons. See your training clearly with SetWise analytics.",
+            "keywords": "workout analytics, progress tracking, volume trends, strength estimates, workout history, training calendar, exercise comparison",
+            "ogTitle": "Progress & Analytics – See Your Gains Clearly",
+            "ogDescription": "Volume trends, strength estimates, and exercise-level analytics. Track real progress without digging through spreadsheets."
+        },
+        "advancedMetrics": {
+            "title": "Advanced Metrics",
+            "description": "Track RPE, RIR, tempo, range of motion, and intensifiers per set. Keep your progress honest, comparable, and repeatable with SetWise advanced tracking.",
+            "keywords": "RPE tracking, RIR logging, tempo tracking, range of motion, training intensity, advanced workout metrics, set-level tracking",
+            "ogTitle": "Advanced Metrics – Progress Beyond Weight × Reps",
+            "ogDescription": "Log RPE, tempo, ROM, and intensifiers per set. Same numbers can feel different – track the details that matter."
+        },
+        "offlineSync": {
+            "title": "Offline-first & Sync",
+            "description": "Log workouts without internet. SetWise works offline by default – log sets, review history, and keep your session moving even with no signal. Sync when ready.",
+            "keywords": "offline workout app, gym no internet, offline fitness tracker, workout sync, data backup, cross-device sync",
+            "ogTitle": "Offline-First – Train Anywhere, Sync Anytime",
+            "ogDescription": "No signal? No problem. SetWise logs everything offline and syncs securely when you're back online."
+        },
+        "intensifiers": {
+            "title": "Intensifiers",
+            "description": "Track drop sets, supersets, cluster sets, rest-pause, myo-reps, and other advanced set types. Keep your workout history structured and comparable with SetWise.",
+            "keywords": "drop sets tracking, supersets, cluster sets, rest-pause, myo-reps, advanced set types, workout techniques",
+            "ogTitle": "Intensifiers – Track Every Advanced Set Type",
+            "ogDescription": "Drop sets, supersets, cluster sets and more. Log advanced techniques while keeping your training history clean and comparable."
+        },
+        "guides": {
+            "title": "Guides",
+            "description": "Step-by-step guides to get the most out of SetWise. Learn how to install, create workouts, track progress, use AI features, and customize your experience.",
+            "keywords": "SetWise guides, workout app tutorial, how to track workouts, fitness app guide, getting started, training guide",
+            "ogTitle": "SetWise Guides – Get Started in Minutes",
+            "ogDescription": "Step-by-step guides for installation, workouts, progress tracking, AI features, and settings. Start training smarter today."
+        },
+        "installation": {
+            "title": "Installation Guide",
+            "description": "Install SetWise on iPhone (iOS via TestFlight) or Android (Google Play) in minutes. Step-by-step guide with troubleshooting tips for a smooth setup.",
+            "keywords": "install SetWise, SetWise iOS, SetWise Android, TestFlight install, Google Play, workout app download, fitness app setup",
+            "ogTitle": "Install SetWise – iOS & Android in Minutes",
+            "ogDescription": "Get SetWise running on your phone in minutes. Step-by-step for iPhone (TestFlight) and Android (Google Play)."
+        },
+        "workouts": {
+            "title": "Workouts Guide",
+            "description": "Learn how to create workouts from templates, use Quick Start, log sets, add notes, and manage exercises in SetWise. Complete workout logging guide.",
+            "keywords": "create workout guide, log sets tutorial, workout templates how to, quick start workout, exercise logging, SetWise tutorial",
+            "ogTitle": "Workouts Guide – Create, Log, and Track",
+            "ogDescription": "Start from a template or go freestyle. Learn how to log sets, add notes, and manage your workout sessions effectively."
+        },
+        "progress": {
+            "title": "Progress Tracking Guide",
+            "description": "Learn to use SetWise analytics: calendar filters, workout history, volume trends, exercise explorer, and analysis tools to track your training progress over time.",
+            "keywords": "track workout progress, volume trend analysis, exercise analytics, workout history review, training calendar, progress tracking guide",
+            "ogTitle": "Progress Guide – Track Your Gains Over Time",
+            "ogDescription": "Calendar views, volume charts, exercise explorer – learn how to use SetWise analytics to see real, measurable progress."
+        },
+        "aiFeatures": {
+            "title": "AI Features Guide",
+            "description": "Use SetWise AI to import workout plans instantly. Paste any training plan and convert it into a structured program with exercises, sets, and training days.",
+            "keywords": "AI workout import, import training plan, AI workout parser, paste workout plan, automated program creation, SetWise AI",
+            "ogTitle": "AI Features – Import Any Workout Plan Instantly",
+            "ogDescription": "Paste a training plan from anywhere. SetWise AI converts it into a structured program with days, exercises, and sets in seconds."
+        },
+        "profileSettings": {
+            "title": "Profile & Settings Guide",
+            "description": "Customize SetWise: change appearance (light, dark, true black), language, training preferences, enable advanced analytics, and manage your account.",
+            "keywords": "SetWise settings, dark mode, app customization, training preferences, advanced analytics toggle, profile management",
+            "ogTitle": "Profile & Settings – Customize Your SetWise",
+            "ogDescription": "Appearance, language, training preferences, and feedback options. Make SetWise work exactly the way you train."
+        },
+        "community": {
+            "title": "Community",
+            "description": "Join the SetWise community on Discord and Facebook. Connect with lifters, share progress, ask questions, and get updates directly from the team.",
+            "keywords": "SetWise community, fitness community, Discord gym group, workout community, lifters group, training support, gym Discord",
+            "ogTitle": "Join the SetWise Community",
+            "ogDescription": "Connect with lifters on Discord and Facebook. Share progress, get help, and stay updated with the latest from SetWise."
+        },
+        "faq": {
+            "title": "FAQ",
+            "description": "Frequently asked questions about SetWise: installation, features, analytics, offline mode, data export, and account management. Clear answers, no fluff.",
+            "keywords": "SetWise FAQ, workout app questions, fitness tracker help, SetWise support, common questions, app troubleshooting",
+            "ogTitle": "SetWise FAQ – Quick Answers to Common Questions",
+            "ogDescription": "Installation, features, analytics, offline mode, data export – find clear answers to everything about SetWise."
+        }
     },
     "HomePage": {
         "badge": "Now accepting beta users",

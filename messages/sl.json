@@ -250,9 +250,118 @@
         "blog": "Blog"
     },
     "Metadata": {
-        "title": "SetWise - Sledilnik vadb za resne dvigovalce",
-        "description": "SetWise je ultimativni sledilnik vadb za resne dvigovalce. Ustvarjajte rutine, sledite napredku in dosezite cilje z AI-podprtimi vpogledi.",
-        "keywords": "sledilnik vadb, fitnes aplikacija, beleženje vadb, sledenje napredku, moč"
+        "title": "SetWise – Sledilnik treningov za resne dvigovalce",
+        "description": "Beležite treninge v sekundah, sledite napredku moči z jasno analitiko in gradite programe treningov. SetWise je offline-first sledilnik za iOS in Android.",
+        "keywords": "sledilnik treningov, fitnes aplikacija, beleženje vadb, sledenje napredku, trening moči, aplikacija za telovadnico, sledilnik vaj, načrtovalec treningov, dnevnik treningov, SetWise",
+        "ogTitle": "SetWise – Beležite pametneje. Postanite močnejši.",
+        "ogDescription": "Sledilnik treningov za resne dvigovalce. Hitro beleženje, analitika napredka, predloge treningov in offline način. Brezplačno za iOS in Android."
+    },
+    "PageMetadata": {
+        "features": {
+            "title": "Funkcije",
+            "description": "Raziščite funkcije SetWise: hitro beleženje treningov, predloge in programi, analitika napredka, napredne metrike kot RPE in tempo, offline način in več.",
+            "keywords": "funkcije aplikacije za vadbo, beleženje vaj, analitika napredka, predloge treningov, programi treningov, sledenje RPE, offline sledilnik",
+            "ogTitle": "SetWise funkcije – vse za pametnejši trening",
+            "ogDescription": "Hitro beleženje, analitika, predloge, napredne metrike, offline način. Odkrijte, zakaj je SetWise izbira resnih dvigovalcev."
+        },
+        "quickLogging": {
+            "title": "Hitro beleženje",
+            "description": "Beležite serije v sekundah z SetWise živo sejo. Minimalno dotikov, brez motenj – le teža, ponovitve in končano. Zgrajeno za hitrost med serijami.",
+            "keywords": "hitro beleženje treningov, sledenje serij, živa seja, aplikacija za telovadnico, opombe serij",
+            "ogTitle": "Hitro beleženje – manj tipkanja, več dvigovanja",
+            "ogDescription": "Beležite serije v sekundah med treningom. SetWise vas ohranja zbrane s hitrim tokom beleženja brez motenj."
+        },
+        "templatesPrograms": {
+            "title": "Predloge & programi",
+            "description": "Zgradite strukturo treninga enkrat in jo samozavestno ponavljajte. Uvozite načrte z AI parserjem ali ustvarite razporede treningov po meri za vsak dan.",
+            "keywords": "predloge treningov, programi treningov, razpored treningov, uvoz načrta treninga, AI parser, rutine po meri",
+            "ogTitle": "Predloge & programi – zgradite enkrat, trenirajte za vedno",
+            "ogDescription": "Ustvarite razporede, uvozite načrte z AI in ponovno uporabite predloge za dosleden trening. Strukturirajte teden v minutah."
+        },
+        "progressAnalytics": {
+            "title": "Napredek & analitika",
+            "description": "Sledite napredku treningov s koledarskimi pogledi, trendi volumna, ocenami moči in primerjavami na ravni vaj. Jasna analitika z SetWise.",
+            "keywords": "analitika treningov, sledenje napredku, trendi volumna, ocene moči, zgodovina treningov, koledar treningov, primerjava vaj",
+            "ogTitle": "Napredek & analitika – jasno vidite svoje dosežke",
+            "ogDescription": "Trendi volumna, ocene moči in analitika na ravni vaj. Sledite resničnemu napredku brez brskanja po številkah."
+        },
+        "advancedMetrics": {
+            "title": "Napredne metrike",
+            "description": "Sledite RPE, RIR, tempu, obsegu gibanja in intenzifikatorjem za vsako serijo. Ohranite napredek iskren, primerljiv in ponovljiv z SetWise.",
+            "keywords": "sledenje RPE, beleženje RIR, sledenje tempa, obseg gibanja, intenzivnost treninga, napredne metrike, sledenje na ravni serij",
+            "ogTitle": "Napredne metrike – napredek onkraj teže × ponovitev",
+            "ogDescription": "Beležite RPE, tempo, ROM in intenzifikatorje za vsako serijo. Enake številke se lahko zdijo drugačne – sledite podrobnostim."
+        },
+        "offlineSync": {
+            "title": "Brez povezave & sinhronizacija",
+            "description": "Beležite treninge brez interneta. SetWise privzeto deluje offline – beležite serije, pregledujte zgodovino in ohranjajte tok tudi brez signala.",
+            "keywords": "offline aplikacija za vadbo, telovadnica brez interneta, offline fitnes sledilnik, sinhronizacija treningov, varnostna kopija podatkov",
+            "ogTitle": "Offline-first – trenirajte kjerkoli, sinhronizirajte kadarkoli",
+            "ogDescription": "Brez signala? Ni problema. SetWise beleži vse offline in varno sinhronizira, ko ste spet povezani."
+        },
+        "intensifiers": {
+            "title": "Intenzifikatorji",
+            "description": "Sledite padajočim serijam, superserijam, cluster setom, rest-pause, myo-reps in drugim naprednim tipom serij. Ohranite zgodovino treningov strukturirano.",
+            "keywords": "sledenje padajočih serij, superserije, cluster seti, rest-pause, myo-reps, napredni tipi serij, tehnike treningov",
+            "ogTitle": "Intenzifikatorji – sledite vsakemu naprednem tipu serije",
+            "ogDescription": "Padajoče serije, superserije, cluster seti in več. Beležite napredne tehnike z jasno in primerljivo zgodovino treningov."
+        },
+        "guides": {
+            "title": "Vodiči",
+            "description": "Vodniki po korakih za največji izkoristek SetWise. Naučite se namestiti aplikacijo, ustvariti treninge, slediti napredku, uporabiti AI funkcije in prilagoditi izkušnjo.",
+            "keywords": "SetWise vodiči, vadnica za aplikacijo, kako slediti treningom, vodnik za fitnes aplikacijo, začetek uporabe, vodnik za trening",
+            "ogTitle": "SetWise vodiči – začnite v minutah",
+            "ogDescription": "Vodniki po korakih za namestitev, treninge, sledenje napredku, AI funkcije in nastavitve. Začnite pametneje trenirati še danes."
+        },
+        "installation": {
+            "title": "Vodnik za namestitev",
+            "description": "Namestite SetWise na iPhone (iOS prek TestFlight) ali Android (Google Play) v minutah. Vodnik po korakih z nasveti za odpravljanje težav.",
+            "keywords": "namestitev SetWise, SetWise iOS, SetWise Android, TestFlight namestitev, Google Play, prenos aplikacije za vadbo",
+            "ogTitle": "Namestitev SetWise – iOS & Android v minutah",
+            "ogDescription": "Namestite SetWise na telefon v minutah. Vodnik po korakih za iPhone (TestFlight) in Android (Google Play)."
+        },
+        "workouts": {
+            "title": "Vodnik za treninge",
+            "description": "Naučite se ustvariti treninge iz predlog, uporabiti Hiter začetek, beležiti serije, dodati opombe in upravljati vaje v SetWise. Celoten vodnik za beleženje.",
+            "keywords": "vodnik za ustvarjanje treningov, vadnica za beleženje serij, predloge treningov, hiter začetek, beleženje vaj, SetWise vadnica",
+            "ogTitle": "Vodnik za treninge – ustvarite, beležite in sledite",
+            "ogDescription": "Začnite iz predloge ali spontano s Hitrim začetkom. Naučite se beležiti serije, dodajati opombe in učinkovito upravljati treninge."
+        },
+        "progress": {
+            "title": "Vodnik za sledenje napredku",
+            "description": "Naučite se uporabljati SetWise analitiko: koledarski filtri, zgodovina treningov, trendi volumna, raziskovalec vaj in orodja za analizo napredka.",
+            "keywords": "sledenje napredku treningov, analiza trendov volumna, analitika vaj, pregled zgodovine treningov, koledar treningov, vodnik za napredek",
+            "ogTitle": "Vodnik za napredek – sledite dosežkom skozi čas",
+            "ogDescription": "Koledarski pogledi, grafi volumna, raziskovalec vaj – naučite se uporabljati SetWise analitiko za merljiv napredek."
+        },
+        "aiFeatures": {
+            "title": "Vodnik za AI funkcije",
+            "description": "Uporabite SetWise AI za takojšen uvoz načrtov treningov. Prilepite kateri koli plan treninga in ga pretvorite v strukturiran program z vajami, serijami in dnevi.",
+            "keywords": "AI uvoz treningov, uvoz načrta treninga, AI parser za vadbo, prilepite plan treninga, samodejno ustvarjanje programov, SetWise AI",
+            "ogTitle": "AI funkcije – uvozite kateri koli načrt treninga takoj",
+            "ogDescription": "Prilepite plan treninga od kjerkoli. SetWise AI ga v sekundah pretvori v strukturiran program z dnevi, vajami in serijami."
+        },
+        "profileSettings": {
+            "title": "Vodnik za profil & nastavitve",
+            "description": "Prilagodite SetWise: spremenite videz (svetlo, temno, čisto črno), jezik, nastavitve treninga, omogočite napredno analitiko in upravljajte račun.",
+            "keywords": "SetWise nastavitve, temni način, prilagoditev aplikacije, nastavitve treninga, preklop napredne analitike, upravljanje profila",
+            "ogTitle": "Profil & nastavitve – prilagodite SetWise sebi",
+            "ogDescription": "Videz, jezik, nastavitve treninga in povratne informacije. Prilagodite SetWise, da deluje točno tako, kot trenirate."
+        },
+        "community": {
+            "title": "Skupnost",
+            "description": "Pridružite se SetWise skupnosti na Discordu in Facebooku. Povežite se z dvigovalci, delite napredek, postavljajte vprašanja in spremljajte novice ekipe.",
+            "keywords": "SetWise skupnost, fitnes skupnost, Discord skupina za telovadnico, skupnost dvigovalcev, podpora za trening, Discord za fitnes",
+            "ogTitle": "Pridružite se SetWise skupnosti",
+            "ogDescription": "Povežite se z dvigovalci na Discordu in Facebooku. Delite napredek, dobite pomoč in spremljajte novosti o SetWise."
+        },
+        "faq": {
+            "title": "Pogosta vprašanja",
+            "description": "Pogosta vprašanja o SetWise: namestitev, funkcije, analitika, offline način, izvoz podatkov in upravljanje računa. Jasni odgovori brez odvečnega besedila.",
+            "keywords": "SetWise pogosta vprašanja, vprašanja o aplikaciji za vadbo, pomoč za fitnes sledilnik, podpora SetWise, pogosta vprašanja",
+            "ogTitle": "SetWise FAQ – hitri odgovori na pogosta vprašanja",
+            "ogDescription": "Namestitev, funkcije, analitika, offline način, izvoz podatkov – poiščite jasne odgovore o SetWise."
+        }
     },
     "HomePage": {
         "badge": "Sprejemamo beta uporabnike",
