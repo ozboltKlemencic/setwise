@@ -40,16 +40,7 @@ export function GuidesSidebar() {
                 { title: t('installation.requirements'), href: "/guides/installation#requirements" },
             ]
         },
-        {
-            title: t('createWorkout.title'),
-            href: "/guides/create-workout",
-            icon: PlusCircle,
-            subItems: [
-                { title: t('createWorkout.overview'), href: "/guides/create-workout#overview" },
-                { title: t('createWorkout.methods'), href: "/guides/create-workout#methods" },
-                { title: t('createWorkout.tips'), href: "/guides/create-workout#tips" },
-            ]
-        },
+
         {
             title: t('workouts.title'),
             href: "/guides/workouts",
