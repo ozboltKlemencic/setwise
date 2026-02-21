@@ -573,15 +573,15 @@
         "teamMembers": [
             {
                 "name": "Jernej Peternel",
-                "title": "Soustanovitelj",
+                "title": "Ustanovitelj",
                 "handle": "Jernej.fit",
                 "linkedinUrl": "https://www.linkedin.com/in/jernejpeternel/"
             },
             {
-                "name": "Jernej Peternel",
-                "title": "Razvijalec",
-                "handle": "Jernej.fit",
-                "linkedinUrl": "https://www.linkedin.com/in/jernejpeternel/"
+                "name": "Ožbolt Klemenčič",
+                "title": "Soustanovitelj",
+                "handle": "ozbolt.klemencic",
+                "linkedinUrl": "https://www.linkedin.com/in/ozbolt-klemencic/"
             }
         ]
     },

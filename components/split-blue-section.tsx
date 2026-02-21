@@ -29,8 +29,8 @@ export default function SplitBlueSection() {
 
     const teamMembers: TeamMember[] = translatedMembers.map((member) => ({
         ...member,
-        avatarUrl: "/jernej.png",
-        miniAvatarUrl: "/jernej.png",
+        avatarUrl: member.name === "Jernej Peternel" ? "/team/1.png" : "/team/2.png",
+        miniAvatarUrl: member.name === "Jernej Peternel" ? "/team/1.png" : "/team/2.png",
         status: "Online"
     }))
 
