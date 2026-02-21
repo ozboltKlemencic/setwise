@@ -127,12 +127,16 @@ export function Sidebar({ items, children }: { items: SidebarItem[]; children?: 
 
     // Guard ref — prevents scroll-spy from fighting with click-initiated scrolls
     const isClickScrolling = useRef(false)
+    // Track last hash pushed to history to avoid redundant replaceState calls
+    // (iOS Safari throws SecurityError if replaceState is called >100×/30s)
+    const lastPushedHash = useRef("")
 
     // Read initial hash on mount
     useEffect(() => {
         const hash = window.location.hash
         if (hash) {
             setActiveHash(pathname + hash)
+            lastPushedHash.current = hash
         }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -169,7 +173,16 @@ export function Sidebar({ items, children }: { items: SidebarItem[]; children?: 
 
                 if (active) {
                     setActiveHash(active.href)
-                    window.history.replaceState(null, "", "#" + active.id)
+                    // Only update URL hash when it actually changes
+                    const newHash = "#" + active.id
+                    if (lastPushedHash.current !== newHash) {
+                        lastPushedHash.current = newHash
+                        try {
+                            window.history.replaceState(null, "", newHash)
+                        } catch {
+                            // iOS Safari: SecurityError if rate-limited
+                        }
+                    }
                 }
                 ticking = false
             })
