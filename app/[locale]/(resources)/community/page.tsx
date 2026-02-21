@@ -25,7 +25,7 @@ const communityCards = [
         key: "discord",
         icon: DiscordIcon,
         cardClassName: "bg-linear-to-tr from-[#5865f2] to-[#737fff] hover:from-[#4e5bdf] hover:to-[#646fdf] border-[#5865f2]/90 hover:border-[#646fdf]/90",
-        link: "https://discord.gg/HauXt8tE",
+        link: "https://discord.gg/wAVsP2ZKkC",
     },
     {
         key: "facebook",
