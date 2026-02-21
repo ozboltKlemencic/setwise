@@ -9,14 +9,14 @@ export { generateMetadata } from './metadata'
 const teamMembers = [
     {
         key: 'jernej' as const,
-        email: 'jernej.peternel@setwise.app',
+        email: 'info@setwise.app',
         linkedin: 'https://www.linkedin.com/in/jernej-peternel-98ba0b371?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
         avatar: '/team/jernej-peternel.png',
         initials: 'JP',
     },
     {
         key: 'ozbolt' as const,
-        email: 'ozbolt.klemencic@setwise.app',
+        email: 'info@setwise.app',
         linkedin: 'https://www.linkedin.com/in/ožbolt-klemenčič',
         avatar: '/team/ozbolt-klemencic.png',
         initials: 'OK',
