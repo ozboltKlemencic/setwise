@@ -77,9 +77,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                     {showUserInfo && (
                         <div className="absolute bottom-(--space-3) left-(--space-3) right-(--space-3) lg:bottom-(--space-4) lg:left-(--space-4) lg:right-(--space-4) z-(--z-dropdown) flex items-center justify-between backdrop-blur-(--blur-ultra) bg-surface-950/20 dark:bg-surface-50/15 border border-white/10 dark:border-surface-50/10 rounded-lg p-(--space-2) lg:p-(--space-2\.5) gap-2 pointer-events-auto">
                             <div className="flex items-center gap-(--space-2) lg:gap-(--space-2\.5) min-w-0 overflow-hidden">
-                                <div className="size-7 lg:size-9 rounded-full overflow-hidden border border-white/10 dark:border-surface-50/10 shrink-0">
+                                <div className="size-8 lg:size-9 rounded-full overflow-hidden border border-white/10 dark:border-surface-50/10 shrink-0">
                                     <img
-                                        className="w-full h-full bg-brand-600/60 dark:bg-brand-400/40 object-cover"
+                                        className="w-full h-full bg-brand-600/60 dark:bg-brand-400/40 object-cover antialiased"
                                         src={miniAvatarUrl || avatarUrl}
                                         alt={`${handle} avatar`}
                                     />

@@ -10,15 +10,15 @@ const teamMembers = [
     {
         key: 'jernej' as const,
         email: 'jernej.peternel@setwise.app',
-        linkedin: 'https://www.linkedin.com/in/jernej-peternel',
-        avatar: '/jernej.png',
+        linkedin: 'https://www.linkedin.com/in/jernej-peternel-98ba0b371?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
+        avatar: '/team/jernej-peternel.png',
         initials: 'JP',
     },
     {
         key: 'ozbolt' as const,
         email: 'ozbolt.klemencic@setwise.app',
         linkedin: 'https://www.linkedin.com/in/ožbolt-klemenčič',
-        avatar: 'https://lh3.googleusercontent.com/a/ACg8ocJqWS8JpVtW4meLBH7SEo7x0kotN41Ez6-2KcmWBYGUeqC0otfv=s83-c-mo',
+        avatar: '/team/ozbolt-klemencic.png',
         initials: 'OK',
     },
 ]
@@ -47,62 +47,62 @@ export default async function OurTeamPage() {
                     <div className="">
                         {teamMembers.map((member, memberIndex) => (
                             <div key={member.key}>
-                            <div
-                                className="   transition-shadow duration-(--duration-normal) ease-(--ease-apple)"
-                            >
-                                {/* Row 1 — Avatar + Name & Role */}
-                                <div className="flex items-center gap-(--space-3) md:gap-(--space-4)">
-                                    <div className="relative size-12 md:size-14 rounded-full overflow-hidden bg-brand-50 dark:bg-brand-100 border border-surface-200 dark:border-surface-300 shrink-0">
-                                        <Image
-                                            src={member.avatar}
-                                            alt={t(`sections.${member.key}.title`)}
-                                            fill
-                                            className="object-cover"
-                                            sizes="56px"
-                                        />
-                                        {/* Initials fallback */}
-                                        <div className="absolute inset-0 flex items-center justify-center text-subheadline font-bold text-brand-500 dark:text-brand-400 -z-10">
-                                            {member.initials}
+                                <div
+                                    className="   transition-shadow duration-(--duration-normal) ease-(--ease-apple)"
+                                >
+                                    {/* Row 1 — Avatar + Name & Role */}
+                                    <div className="flex items-center gap-(--space-3) md:gap-(--space-4)">
+                                        <div className="relative size-12 md:size-14 rounded-full overflow-hidden bg-brand-50 dark:bg-brand-100 border border-surface-200 dark:border-surface-300 shrink-0">
+                                            <Image
+                                                src={member.avatar}
+                                                alt={t(`sections.${member.key}.title`)}
+                                                fill
+                                                className="object-cover"
+                                                sizes="56px"
+                                            />
+                                            {/* Initials fallback */}
+                                            <div className="absolute inset-0 flex items-center justify-center text-subheadline font-bold text-brand-500 dark:text-brand-400 -z-10">
+                                                {member.initials}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
+                                                {t(`sections.${member.key}.title`)}
+                                            </h2>
+                                            <p className="text-caption-1 md:text-footnote font-medium primaryGradient">
+                                                {t(`sections.${member.key}.role`)}
+                                            </p>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <h2 className="text-subheadline md:text-title-3 font-bold text-surface-900 tracking-tight">
-                                            {t(`sections.${member.key}.title`)}
-                                        </h2>
-                                        <p className="text-caption-1 md:text-footnote font-medium primaryGradient">
-                                            {t(`sections.${member.key}.role`)}
-                                        </p>
-                                    </div>
+
+                                    {/* Row 2 — Description */}
+                                    <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mt-(--space-3)">
+                                        {t(`sections.${member.key}.content`)}
+                                    </p>
+
+                                    {/* Row 3 — Email */}
+                                    <a
+                                        href={`mailto:${member.email}`}
+                                        className="inline-flex items-center gap-(--space-1) text-footnote text-surface-600 hover:text-surface-800 dark:hover:text-surface-800 transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-2)"
+                                    >
+                                        <Mail className="size-3.5 shrink-0" />
+                                        <span>{member.email}</span>
+                                    </a>
+
+                                    {/* Row 4 — LinkedIn */}
+                                    <a
+                                        href={member.linkedin}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-(--space-1) text-footnote text-surface-600 hover:text-surface-800 dark:hover:text-surface-800 transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-1)"
+                                    >
+                                        <Linkedin className="size-3.5 shrink-0" />
+                                        <span>LinkedIn</span>
+                                    </a>
                                 </div>
-
-                                {/* Row 2 — Description */}
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mt-(--space-3)">
-                                    {t(`sections.${member.key}.content`)}
-                                </p>
-
-                                {/* Row 3 — Email */}
-                                <a
-                                    href={`mailto:${member.email}`}
-                                    className="inline-flex items-center gap-(--space-1) text-footnote text-surface-600 hover:text-surface-800 dark:hover:text-surface-800 transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-2)"
-                                >
-                                    <Mail className="size-3.5 shrink-0" />
-                                    <span>{member.email}</span>
-                                </a>
-
-                                {/* Row 4 — LinkedIn */}
-                                <a
-                                    href={member.linkedin}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-(--space-1) text-footnote text-surface-600 hover:text-surface-800 dark:hover:text-surface-800 transition-colors duration-(--duration-fast) ease-(--ease-apple) mt-(--space-1)"
-                                >
-                                    <Linkedin className="size-3.5 shrink-0" />
-                                    <span>LinkedIn</span>
-                                </a>
-                            </div>
-                            {memberIndex < teamMembers.length - 1 && (
-                                <div className="h-px w-full bg-surface-200 dark:bg-surface-300 my-(--space-5) md:my-(--space-6)" />
-                            )}
+                                {memberIndex < teamMembers.length - 1 && (
+                                    <div className="h-px w-full bg-surface-200 dark:bg-surface-300 my-(--space-5) md:my-(--space-6)" />
+                                )}
                             </div>
                         ))}
                     </div>
