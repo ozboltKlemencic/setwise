@@ -61,11 +61,9 @@ export function ParticleText({
             if (width === 0 || height === 0) return
 
             const isMobile = width < 768
-            const density = isMobile ? 4 : 5
+            const density = isMobile ? 3 : 5
 
-            // Cap DPR to 2 — iPhone 3x Retina creates canvases that exceed
-            // iOS Safari's ~16 MP canvas memory limit and crash the page
-            const dpr = Math.min(window.devicePixelRatio || 1, 2)
+            const dpr = window.devicePixelRatio || 1
             canvas.width = width * dpr
             canvas.height = height * dpr
             canvas.style.width = `${width}px`
