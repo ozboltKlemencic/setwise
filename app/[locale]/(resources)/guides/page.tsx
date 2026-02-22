@@ -89,7 +89,7 @@ export default async function GuidesPage() {
                         <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight text-balance mb-(--space-2)">
                             {t('howTo.title')}
                         </h2>
-                        <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 leading-relaxed max-w-prose">
+                        <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 leading-relaxed max-w-prose">
                             {t('howTo.description')}
                         </p>
                     </div>
@@ -106,7 +106,7 @@ export default async function GuidesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.1.title').replace('1) ', '')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-700 leading-relaxed whitespace-pre-line">
                                     {t.rich('howTo.points.1.description', richTextComponents)}
                                 </p>
                             </div>
@@ -123,7 +123,7 @@ export default async function GuidesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.2.title').replace('2) ', '')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-700 leading-relaxed whitespace-pre-line">
                                     {t.rich('howTo.points.2.description', richTextComponents)}
                                 </p>
                             </div>
@@ -140,15 +140,15 @@ export default async function GuidesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.3.title').replace('3) ', '')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mb-(--space-3)">
+                                <p className="text-footnote md:text-subheadline text-surface-700 leading-relaxed mb-(--space-3)">
                                     {t('howTo.points.3.description')}
                                 </p>
-                                <ul className="space-y-1 mb-(--space-3) list-disc list-inside text-footnote md:text-subheadline text-surface-600 marker:text-surface-400">
+                                <ul className="space-y-1 mb-(--space-3) list-disc list-inside text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
                                     <li>{t('howTo.points.3.list.pain')}</li>
                                     <li>{t('howTo.points.3.list.technique')}</li>
                                     <li>{t('howTo.points.3.list.setup')}</li>
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed">
+                                <p className="text-footnote md:text-subheadline text-surface-700 leading-relaxed">
                                     {t('howTo.points.3.footer')}
                                 </p>
                             </div>
@@ -165,7 +165,7 @@ export default async function GuidesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.4.title').replace('4) ', '')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-700 leading-relaxed whitespace-pre-line">
                                     {t.rich('howTo.points.4.description', richTextComponents)}
                                 </p>
                             </div>
@@ -182,10 +182,10 @@ export default async function GuidesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-2)">
                                     {t('howTo.points.5.title').replace('5) ', '')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 leading-relaxed mb-(--space-3)">
+                                <p className="text-footnote md:text-subheadline text-surface-700 leading-relaxed mb-(--space-3)">
                                     {t.rich('howTo.points.5.description', richTextComponents)}
                                 </p>
-                                <ul className="space-y-1 list-disc list-inside text-footnote md:text-subheadline text-surface-600 marker:text-surface-400">
+                                <ul className="space-y-1 list-disc list-inside text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
                                     <li>{t('howTo.points.5.list.past')}</li>
                                     <li>{t('howTo.points.5.list.details')}</li>
                                     <li>{t('howTo.points.5.list.trends')}</li>

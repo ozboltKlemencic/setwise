@@ -35,7 +35,7 @@ export default async function WorkoutsPage() {
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t.rich('heading', richTextComponents)}
                     </h1>
-                    <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 max-w-prose mt-1">
+                    <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 max-w-prose mt-1">
                         {t('description')}
                     </p>
                 </header>
@@ -54,10 +54,10 @@ export default async function WorkoutsPage() {
                                     {t('createProgram.title')}
                                 </h2>
                             </div>
-                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 max-w-prose">
+                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 max-w-prose leading-relaxed">
                                 {t.rich('createProgram.subtitle', richTextComponents)}
                             </p>
-                            <p className="text-footnote md:text-subheadline text-surface-700 max-w-prose leading-relaxed pt-2 whitespace-pre-line">
+                            <p className="text-footnote md:text-subheadline text-surface-700 max-w-prose leading-relaxed pt-(--space-2) whitespace-pre-line">
                                 {t.rich('createProgram.description', richTextComponents)}
                             </p>
                         </div>
@@ -65,9 +65,9 @@ export default async function WorkoutsPage() {
                         {/* What You'll Do */}
                         <div className="p-(--space-4) md:p-(--space-6) border border-surface-200 dark:border-surface-300/40 bg-surface-50/50 dark:bg-surface-900/20 max-w-prose">
                             <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-4)">{t('createProgram.whatYouWillDo.title')}</h3>
-                            <ul className="space-y-3">
+                            <ul className="space-y-(--space-3)">
                                 {[1, 2, 3, 4].map(i => (
-                                    <li key={i} className="flex gap-2 text-footnote md:text-subheadline text-surface-700">
+                                    <li key={i} className="flex gap-(--space-2) text-footnote md:text-subheadline text-surface-700">
                                         <div className="size-1.5 rounded-full bg-brand-500 mt-2 shrink-0" />
                                         <span>{t.rich(`createProgram.whatYouWillDo.list.${i}`, richTextComponents)}</span>
                                     </li>
@@ -87,7 +87,7 @@ export default async function WorkoutsPage() {
 
                                         {/* Description */}
                                         {t.has(`createProgram.steps.${step}.description`) && (
-                                            <div className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line max-w-prose">
+                                            <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
                                                 {t.rich(`createProgram.steps.${step}.description`, richTextComponents)}
                                             </div>
                                         )}
@@ -107,8 +107,8 @@ export default async function WorkoutsPage() {
 
                                         {/* SubDescription & SubList for Step 3 */}
                                         {t.has(`createProgram.steps.${step}.subDescription`) && (
-                                            <div className="mt-4">
-                                                <p className="text-footnote md:text-subheadline text-surface-600 mb-2">
+                                            <div className="mt-(--space-4)">
+                                                <p className="text-footnote md:text-subheadline text-surface-700 mb-(--space-2)">
                                                     {t.rich(`createProgram.steps.${step}.subDescription`, richTextComponents)}
                                                 </p>
                                                 {t.has(`createProgram.steps.${step}.subList`) && (
@@ -123,22 +123,21 @@ export default async function WorkoutsPage() {
 
                                         {/* Footer */}
                                         {t.has(`createProgram.steps.${step}.footer`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-600 italic max-w-prose">
+                                            <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
                                                 {t.rich(`createProgram.steps.${step}.footer`, richTextComponents)}
                                             </p>
                                         )}
                                     </div>
 
-                                    {/* Phone Image/Placeholder */}
+                                    {/* Phone Image */}
                                     <div className="flex justify-center w-full">
                                         <div className="w-50 md:w-60">
-                                            <Iphone>
-                                                <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                    <span className="text-caption-1 text-surface-400 font-medium">
-                                                        {t(`createProgram.steps.${step}.imageAlt`)}
-                                                    </span>
-                                                </div>
-                                            </Iphone>
+                                            <div className="dark:hidden">
+                                                <Iphone src="" priority />
+                                            </div>
+                                            <div className="hidden dark:block">
+                                                <Iphone src="" priority />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +152,7 @@ export default async function WorkoutsPage() {
                                     <Search className="size-5 text-brand-500" />
                                     {t('createProgram.search.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t.rich('createProgram.search.description', richTextComponents)}
                                 </p>
                             </div>
@@ -164,7 +163,7 @@ export default async function WorkoutsPage() {
                                     <Info className="size-5 text-brand-500" />
                                     {t('createProgram.tips.title')}
                                 </h3>
-                                <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-600 marker:text-surface-400">
+                                <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
                                     {[1, 2, 3].map(i => (
                                         <li key={i}>{t.rich(`createProgram.tips.list.${i}`, richTextComponents)}</li>
                                     ))}
@@ -185,10 +184,10 @@ export default async function WorkoutsPage() {
                                     {t('startTemplate.title')}
                                 </h2>
                             </div>
-                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 max-w-prose">
+                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 max-w-prose leading-relaxed">
                                 {t.rich('startTemplate.subtitle', richTextComponents)}
                             </p>
-                            <p className="text-footnote md:text-subheadline text-surface-700 max-w-prose leading-relaxed pt-2">
+                            <p className="text-footnote md:text-subheadline text-surface-700 max-w-prose leading-relaxed pt-(--space-2)">
                                 {t.rich('startTemplate.description', richTextComponents)}
                             </p>
                         </div>
@@ -205,7 +204,7 @@ export default async function WorkoutsPage() {
 
                                         {/* Description */}
                                         {t.has(`startTemplate.steps.${step}.description`) && (
-                                            <div className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line max-w-prose">
+                                            <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
                                                 {t.rich(`startTemplate.steps.${step}.description`, richTextComponents)}
                                             </div>
                                         )}
@@ -226,22 +225,21 @@ export default async function WorkoutsPage() {
 
                                         {/* Footer */}
                                         {t.has(`startTemplate.steps.${step}.footer`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-600 italic max-w-prose">
+                                            <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
                                                 {t.rich(`startTemplate.steps.${step}.footer`, richTextComponents)}
                                             </p>
                                         )}
                                     </div>
 
-                                    {/* Phone Image/Placeholder */}
+                                    {/* Phone Image */}
                                     <div className="flex justify-center w-full">
                                         <div className="w-50 md:w-60">
-                                            <Iphone>
-                                                <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                    <span className="text-caption-1 text-surface-400 font-medium">
-                                                        {t(`startTemplate.steps.${step}.imageAlt`)}
-                                                    </span>
-                                                </div>
-                                            </Iphone>
+                                            <div className="dark:hidden">
+                                                <Iphone src="" priority />
+                                            </div>
+                                            <div className="hidden dark:block">
+                                                <Iphone src="" priority />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -261,10 +259,10 @@ export default async function WorkoutsPage() {
                                     {t('quickStart.title')}
                                 </h2>
                             </div>
-                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 max-w-prose">
+                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 max-w-prose leading-relaxed">
                                 {t.rich('quickStart.subtitle', richTextComponents)}
                             </p>
-                            <p className="text-footnote md:text-subheadline text-surface-700 max-w-prose leading-relaxed pt-2">
+                            <p className="text-footnote md:text-subheadline text-surface-700 max-w-prose leading-relaxed pt-(--space-2)">
                                 {t.rich('quickStart.description', richTextComponents)}
                             </p>
                         </div>
@@ -281,7 +279,7 @@ export default async function WorkoutsPage() {
 
                                         {/* Description */}
                                         {t.has(`quickStart.steps.${step}.description`) && (
-                                            <div className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line max-w-prose">
+                                            <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
                                                 {t.rich(`quickStart.steps.${step}.description`, richTextComponents)}
                                             </div>
                                         )}
@@ -303,10 +301,10 @@ export default async function WorkoutsPage() {
                                         {/* SubTitle & SubDescription for Step 2 */}
                                         {t.has(`quickStart.steps.${step}.subTitle`) && (
                                             <div className="w-full h-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-surface-900/10">
-                                                <h4 className="text-headline font-semibold text-surface-900 mb-2">
+                                                <h4 className="text-headline font-semibold text-surface-900 mb-(--space-2)">
                                                     {t(`quickStart.steps.${step}.subTitle`)}
                                                 </h4>
-                                                <p className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line max-w-prose">
+                                                <p className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
                                                     {t.rich(`quickStart.steps.${step}.subDescription`, richTextComponents)}
                                                 </p>
                                             </div>
@@ -314,22 +312,21 @@ export default async function WorkoutsPage() {
 
                                         {/* Footer */}
                                         {t.has(`quickStart.steps.${step}.footer`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-600 italic max-w-prose">
+                                            <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
                                                 {t.rich(`quickStart.steps.${step}.footer`, richTextComponents)}
                                             </p>
                                         )}
                                     </div>
 
-                                    {/* Phone Image/Placeholder */}
+                                    {/* Phone Image */}
                                     <div className="flex justify-center w-full">
                                         <div className="w-50 md:w-60">
-                                            <Iphone>
-                                                <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                    <span className="text-caption-1 text-surface-400 font-medium">
-                                                        {t(`quickStart.steps.${step}.imageAlt`)}
-                                                    </span>
-                                                </div>
-                                            </Iphone>
+                                            <div className="dark:hidden">
+                                                <Iphone src="" priority />
+                                            </div>
+                                            <div className="hidden dark:block">
+                                                <Iphone src="" priority />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -344,13 +341,12 @@ export default async function WorkoutsPage() {
                                     {t.rich('quickStart.resume.description', richTextComponents)}
                                 </p>
                                 <div className="w-30 shrink-0 hidden md:block">
-                                    <Iphone className="w-full!">
-                                        <div className="w-full h-full bg-surface-100 dark:bg-surface-800 flex items-center justify-center p-2 text-center">
-                                            <span className="text-[10px] text-surface-400">
-                                                {t('quickStart.resume.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone className="w-full!" src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone className="w-full!" src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +364,7 @@ export default async function WorkoutsPage() {
                                     {t('logging.title')}
                                 </h2>
                             </div>
-                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-600 max-w-prose">
+                            <p className="text-footnote md:text-subheadline lg:text-callout text-surface-700 max-w-prose">
                                 {t.rich('logging.subtitle', richTextComponents)}
                             </p>
                         </div>
@@ -384,7 +380,7 @@ export default async function WorkoutsPage() {
 
                                         {/* Description */}
                                         {t.has(`logging.steps.${step}.description`) && (
-                                            <div className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line">
+                                            <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line leading-relaxed">
                                                 {t.rich(`logging.steps.${step}.description`, richTextComponents)}
                                             </div>
                                         )}
@@ -404,29 +400,28 @@ export default async function WorkoutsPage() {
 
                                         {/* SubDescription */}
                                         {t.has(`logging.steps.${step}.subDescription`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-600">
+                                            <p className="text-footnote md:text-subheadline text-surface-700">
                                                 {t.rich(`logging.steps.${step}.subDescription`, richTextComponents)}
                                             </p>
                                         )}
 
                                         {/* Footer */}
                                         {t.has(`logging.steps.${step}.footer`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                            <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                                 {t.rich(`logging.steps.${step}.footer`, richTextComponents)}
                                             </p>
                                         )}
                                     </div>
 
-                                    {/* Phone Image/Placeholder */}
+                                    {/* Phone Image */}
                                     <div className="flex justify-center w-full">
                                         <div className="w-50 md:w-60">
-                                            <Iphone>
-                                                <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                    <span className="text-caption-1 text-surface-400 font-medium">
-                                                        {t(`logging.steps.${step}.imageAlt`)}
-                                                    </span>
-                                                </div>
-                                            </Iphone>
+                                            <div className="dark:hidden">
+                                                <Iphone src="" priority />
+                                            </div>
+                                            <div className="hidden dark:block">
+                                                <Iphone src="" priority />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -434,7 +429,7 @@ export default async function WorkoutsPage() {
                         </div>
 
                         {/* Tip */}
-                        <div className="p-(--space-3) md:p-(--space-5) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40 flex gap-(--space-3) text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                        <div className="p-(--space-3) md:p-(--space-5) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40 flex gap-(--space-3) text-footnote md:text-subheadline text-surface-700 max-w-prose">
                             <Info className="size-5 shrink-0 mt-0.5 text-brand-500" />
                             <div>
                                 <strong className="font-semibold text-surface-900 block mb-1">{t('logging.tip.title')}</strong>

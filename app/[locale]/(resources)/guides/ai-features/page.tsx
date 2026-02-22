@@ -1,8 +1,4 @@
 import { getTranslations } from "next-intl/server"
-import { Bot, Clipboard, Check, ShieldCheck } from "lucide-react"
-import {
-    StepCard,
-} from "@/components/features/feature-cards"
 import type { ReactNode } from "react"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 
@@ -39,21 +35,20 @@ export default async function AiFeaturesPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('overview.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                 {t.rich('overview.description', richTextComponents)}
                             </div>
                         </div>
 
                         {/* Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('overview.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
@@ -81,7 +76,7 @@ export default async function AiFeaturesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('overview.requirements.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t('overview.requirements.description')}
                                 </p>
                             </div>
@@ -94,21 +89,20 @@ export default async function AiFeaturesPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('importPlan.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                 {t.rich('importPlan.description', richTextComponents)}
                             </div>
                         </div>
 
                         {/* Image: Import Plan Screen */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('importPlan.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
@@ -125,19 +119,18 @@ export default async function AiFeaturesPage() {
                                         <li key={i}>{t.rich(`importPlan.pastePlan.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t('importPlan.pastePlan.note')}
                                 </p>
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('importPlan.pastePlan.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +143,7 @@ export default async function AiFeaturesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('importPlan.preview.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('importPlan.preview.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -159,24 +152,22 @@ export default async function AiFeaturesPage() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
+                            <div className="flex flex-col md:flex-row gap-(--space-4) justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('importPlan.preview.imageAlt1')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('importPlan.preview.imageAlt2')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +180,7 @@ export default async function AiFeaturesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('importPlan.confidence.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('importPlan.confidence.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -200,13 +191,12 @@ export default async function AiFeaturesPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('importPlan.confidence.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -219,16 +209,16 @@ export default async function AiFeaturesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('importPlan.edit.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('importPlan.edit.description', richTextComponents)}
                                 </div>
 
                                 {/* Chips */}
-                                <div className="space-y-2 pt-4">
+                                <div className="space-y-2 pt-(--space-4)">
                                     <h4 className="text-subheadline md:text-callout font-semibold text-surface-900">
                                         {t('importPlan.edit.chips.title')}
                                     </h4>
-                                    <p className="text-footnote md:text-subheadline text-surface-600">
+                                    <p className="text-footnote md:text-subheadline text-surface-700">
                                         {t('importPlan.edit.chips.description')}
                                     </p>
                                     <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -237,20 +227,19 @@ export default async function AiFeaturesPage() {
                                         ))}
                                     </ul>
                                 </div>
-                                <div className="flex justify-center w-full py-4">
+                                <div className="flex justify-center w-full py-(--space-4)">
                                     <div className="w-50 md:w-60">
-                                        <Iphone>
-                                            <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                <span className="text-caption-1 text-surface-400 font-medium">
-                                                    {t('importPlan.edit.chips.imageAlt')}
-                                                </span>
-                                            </div>
-                                        </Iphone>
+                                        <div className="dark:hidden">
+                                            <Iphone src="" priority />
+                                        </div>
+                                        <div className="hidden dark:block">
+                                            <Iphone src="" priority />
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Sets */}
-                                <div className="space-y-2 pt-4">
+                                <div className="space-y-2 pt-(--space-4)">
                                     <h4 className="text-subheadline md:text-callout font-semibold text-surface-900">
                                         {t('importPlan.edit.sets.title')}
                                     </h4>
@@ -260,36 +249,34 @@ export default async function AiFeaturesPage() {
                                         ))}
                                     </ul>
                                 </div>
-                                <div className="flex justify-center w-full py-4">
+                                <div className="flex justify-center w-full py-(--space-4)">
                                     <div className="w-50 md:w-60">
-                                        <Iphone>
-                                            <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                <span className="text-caption-1 text-surface-400 font-medium">
-                                                    {t('importPlan.edit.sets.imageAlt')}
-                                                </span>
-                                            </div>
-                                        </Iphone>
+                                        <div className="dark:hidden">
+                                            <Iphone src="" priority />
+                                        </div>
+                                        <div className="hidden dark:block">
+                                            <Iphone src="" priority />
+                                        </div>
                                     </div>
                                 </div>
 
                                 {/* Instructions */}
-                                <div className="space-y-2 pt-4">
+                                <div className="space-y-2 pt-(--space-4)">
                                     <h4 className="text-subheadline md:text-callout font-semibold text-surface-900">
                                         {t('importPlan.edit.instructions.title')}
                                     </h4>
-                                    <p className="text-footnote md:text-subheadline text-surface-600">
+                                    <p className="text-footnote md:text-subheadline text-surface-700">
                                         {t.rich('importPlan.edit.instructions.description', richTextComponents)}
                                     </p>
                                 </div>
-                                <div className="flex justify-center w-full py-4">
+                                <div className="flex justify-center w-full py-(--space-4)">
                                     <div className="w-50 md:w-60">
-                                        <Iphone>
-                                            <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                                <span className="text-caption-1 text-surface-400 font-medium">
-                                                    {t('importPlan.edit.instructions.imageAlt')}
-                                                </span>
-                                            </div>
-                                        </Iphone>
+                                        <div className="dark:hidden">
+                                            <Iphone src="" priority />
+                                        </div>
+                                        <div className="hidden dark:block">
+                                            <Iphone src="" priority />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -303,7 +290,7 @@ export default async function AiFeaturesPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('importPlan.save.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('importPlan.save.description', richTextComponents)}
                                 </div>
                                 <ul className="list-decimal list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -311,19 +298,18 @@ export default async function AiFeaturesPage() {
                                         <li key={i}>{t.rich(`importPlan.save.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t('importPlan.save.footer')}
                                 </p>
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('importPlan.save.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -342,7 +328,7 @@ export default async function AiFeaturesPage() {
                             </ul>
 
                             <div className="p-(--space-4) md:p-(--space-6) border border-surface-200 dark:border-surface-300/40 bg-surface-50 dark:bg-surface-200/10">
-                                <p className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line leading-relaxed">
                                     {t.rich('importPlan.tips.note', richTextComponents)}
                                 </p>
                             </div>

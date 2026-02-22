@@ -40,12 +40,12 @@ export default async function ProgressPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('overview.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                 {t.rich('overview.description', richTextComponents)}
                             </div>
 
                             {/* Overview List */}
-                            <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400 mt-4">
+                            <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400 mt-(--space-4)">
                                 {[1, 2, 3].map((i) => (
                                     <li key={i}>{t.rich(`overview.list.${i}`, richTextComponents)}</li>
                                 ))}
@@ -53,15 +53,14 @@ export default async function ProgressPage() {
                         </div>
 
                         {/* Main Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('overview.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
@@ -73,7 +72,7 @@ export default async function ProgressPage() {
                                     <Calendar className="size-5 text-brand-500" />
                                     {t('overview.calendar.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('overview.calendar.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -81,20 +80,19 @@ export default async function ProgressPage() {
                                         <li key={i}>{t.rich(`overview.calendar.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t('overview.calendar.footer')}
                                 </p>
                             </div>
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('overview.calendar.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -106,7 +104,7 @@ export default async function ProgressPage() {
                                     <History className="size-5 text-brand-500" />
                                     {t('overview.history.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('overview.history.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -114,23 +112,22 @@ export default async function ProgressPage() {
                                         <li key={i}>{t.rich(`overview.history.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t('overview.history.scrollNote')}
                                 </p>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t.rich('overview.history.footer', richTextComponents)}
                                 </p>
                             </div>
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('overview.history.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +139,7 @@ export default async function ProgressPage() {
                                     <ArrowRight className="size-5 text-brand-500" />
                                     {t('overview.details.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose whitespace-pre-line">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                     {t.rich('overview.details.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -154,13 +151,12 @@ export default async function ProgressPage() {
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('overview.details.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +167,7 @@ export default async function ProgressPage() {
                                 <Info className="size-5 text-brand-500" />
                                 {t('overview.tip.title')}
                             </h3>
-                            <p className="text-footnote md:text-subheadline text-surface-600">
+                            <p className="text-footnote md:text-subheadline text-surface-700">
                                 {t.rich('overview.tip.description', richTextComponents)}
                             </p>
                         </div>
@@ -184,12 +180,12 @@ export default async function ProgressPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('workoutDetails.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                 {t.rich('workoutDetails.intro.text', richTextComponents)}
                             </div>
 
                             {/* Tabs List */}
-                            <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400 mt-4">
+                            <ul className="list-disc list-outside ml-4 space-y-1 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400 mt-(--space-4)">
                                 {[1, 2, 3].map((i) => (
                                     <li key={i}>{t.rich(`workoutDetails.intro.list.${i}`, richTextComponents)}</li>
                                 ))}
@@ -197,15 +193,14 @@ export default async function ProgressPage() {
                         </div>
 
                         {/* Tabs Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('workoutDetails.intro.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
@@ -217,7 +212,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('workoutDetails.summary.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('workoutDetails.summary.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -226,8 +221,8 @@ export default async function ProgressPage() {
                                     ))}
                                 </ul>
 
-                                <div className="pt-2">
-                                    <p className="text-footnote md:text-subheadline text-surface-700 font-semibold mb-2">
+                                <div className="pt-(--space-2)">
+                                    <p className="text-footnote md:text-subheadline text-surface-700 font-semibold mb-(--space-2)">
                                         {t('workoutDetails.summary.achievements.title')}
                                     </p>
                                     <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -240,13 +235,12 @@ export default async function ProgressPage() {
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('workoutDetails.summary.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -259,7 +253,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('workoutDetails.exercises.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('workoutDetails.exercises.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -267,20 +261,19 @@ export default async function ProgressPage() {
                                         <li key={i}>{t.rich(`workoutDetails.exercises.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t('workoutDetails.exercises.note')}
                                 </p>
                             </div>
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('workoutDetails.exercises.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -293,7 +286,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('workoutDetails.analysis.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('workoutDetails.analysis.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -302,8 +295,8 @@ export default async function ProgressPage() {
                                     ))}
                                 </ul>
 
-                                <div className="pt-2">
-                                    <p className="text-footnote md:text-subheadline text-surface-700 font-semibold mb-2">
+                                <div className="pt-(--space-2)">
+                                    <p className="text-footnote md:text-subheadline text-surface-700 font-semibold mb-(--space-2)">
                                         {t('workoutDetails.analysis.filters.title')}
                                     </p>
                                     <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -316,13 +309,12 @@ export default async function ProgressPage() {
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('workoutDetails.analysis.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -335,7 +327,7 @@ export default async function ProgressPage() {
                                 <Info className="size-5 text-brand-500" />
                                 {t('workoutDetails.tip.title')}
                             </h3>
-                            <p className="text-footnote md:text-subheadline text-surface-600">
+                            <p className="text-footnote md:text-subheadline text-surface-700">
                                 {t.rich('workoutDetails.tip.description', richTextComponents)}
                             </p>
                         </div>
@@ -348,21 +340,20 @@ export default async function ProgressPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('volumeTrend.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                 {t.rich('volumeTrend.description', richTextComponents)}
                             </div>
                         </div>
 
                         {/* Main Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('volumeTrend.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
@@ -383,13 +374,12 @@ export default async function ProgressPage() {
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('volumeTrend.chartShows.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -402,7 +392,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('volumeTrend.compare.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('volumeTrend.compare.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -410,20 +400,19 @@ export default async function ProgressPage() {
                                         <li key={i}>{t.rich(`volumeTrend.compare.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t('volumeTrend.compare.note')}
                                 </p>
                             </div>
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('volumeTrend.compare.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -436,7 +425,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('volumeTrend.timeframe.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('volumeTrend.timeframe.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -448,13 +437,12 @@ export default async function ProgressPage() {
 
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('volumeTrend.timeframe.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -475,7 +463,7 @@ export default async function ProgressPage() {
                                     <Info className="size-5 text-brand-500" />
                                     {t('volumeTrend.howTo.tip.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line leading-relaxed">
                                     {t.rich('volumeTrend.howTo.tip.text', {
                                         ...richTextComponents,
                                         link: (children) => <a href="#exercise-explorer" className="font-semibold text-brand-500 hover:text-brand-600 underline decoration-brand-500/30 underline-offset-4 transition-colors duration-200">{children}</a>
@@ -493,21 +481,20 @@ export default async function ProgressPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('exerciseExplorer.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                                 {t.rich('exerciseExplorer.description', richTextComponents)}
                             </div>
                         </div>
 
                         {/* Main Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('exerciseExplorer.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
@@ -527,13 +514,12 @@ export default async function ProgressPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('exerciseExplorer.pickExercise.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -546,7 +532,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('exerciseExplorer.whatToTrack.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('exerciseExplorer.whatToTrack.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -557,13 +543,12 @@ export default async function ProgressPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('exerciseExplorer.whatToTrack.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -576,7 +561,7 @@ export default async function ProgressPage() {
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('exerciseExplorer.filters.title')}
                                 </h3>
-                                <div className="text-footnote md:text-subheadline text-surface-600 max-w-prose">
+                                <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose">
                                     {t.rich('exerciseExplorer.filters.description', richTextComponents)}
                                 </div>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -584,19 +569,18 @@ export default async function ProgressPage() {
                                         <li key={i}>{t.rich(`exerciseExplorer.filters.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t('exerciseExplorer.filters.note')}
                                 </p>
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('exerciseExplorer.filters.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -619,7 +603,7 @@ export default async function ProgressPage() {
                                     <Info className="size-5 text-brand-500" />
                                     {t('exerciseExplorer.tip.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t.rich('exerciseExplorer.tip.description', richTextComponents)}
                                 </p>
                             </div>

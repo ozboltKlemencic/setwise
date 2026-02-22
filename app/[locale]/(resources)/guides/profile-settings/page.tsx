@@ -1,11 +1,5 @@
 import { getTranslations } from "next-intl/server"
-import { Eye, Languages, Activity, FastForward, MessageCircle, LogOut } from "lucide-react"
-import {
-    FeatureCard,
-    MiniFeatureCard,
-    StepCard,
-    FeatureTextBlock,
-} from "@/components/features/feature-cards"
+import { Eye, Languages, Activity, FastForward } from "lucide-react"
 import type { ReactNode } from "react"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
 
@@ -37,20 +31,19 @@ export default async function ProfileSettingsPage() {
 
                     {/* INTRO Section */}
                     <section id="intro" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
-                        <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line">
+                        <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
                             {t.rich('intro.description', richTextComponents)}
                         </div>
 
                         {/* Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6) bg-surface-50 dark:bg-surface-200/10 border border-surface-200 dark:border-surface-300/40">
+                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('intro.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -72,7 +65,7 @@ export default async function ProfileSettingsPage() {
                                     <Eye className="size-5 text-brand-500" />
                                     {t('preferences.appearance.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t('preferences.appearance.description')}
                                 </p>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -83,13 +76,12 @@ export default async function ProfileSettingsPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('preferences.appearance.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +93,7 @@ export default async function ProfileSettingsPage() {
                                     <Languages className="size-5 text-brand-500" />
                                     {t('preferences.language.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t('preferences.language.description')}
                                 </p>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -112,13 +104,12 @@ export default async function ProfileSettingsPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('preferences.language.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +132,7 @@ export default async function ProfileSettingsPage() {
                                     <Activity className="size-5 text-brand-500" />
                                     {t('training.advancedAnalytics.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600">
+                                <p className="text-footnote md:text-subheadline text-surface-700">
                                     {t('training.advancedAnalytics.description')}
                                 </p>
                                 <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
@@ -149,19 +140,18 @@ export default async function ProfileSettingsPage() {
                                         <li key={i}>{t.rich(`training.advancedAnalytics.list.${i}`, richTextComponents)}</li>
                                     ))}
                                 </ul>
-                                <p className="text-footnote md:text-subheadline text-surface-600 italic">
+                                <p className="text-footnote md:text-subheadline text-surface-700 italic">
                                     {t('training.advancedAnalytics.footer')}
                                 </p>
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('training.advancedAnalytics.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -173,19 +163,18 @@ export default async function ProfileSettingsPage() {
                                     <FastForward className="size-5 text-brand-500" />
                                     {t('training.autoAdvance.title')}
                                 </h3>
-                                <p className="text-footnote md:text-subheadline text-surface-600 whitespace-pre-line">
+                                <p className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line leading-relaxed">
                                     {t('training.autoAdvance.description')}
                                 </p>
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <Iphone>
-                                        <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                            <span className="text-caption-1 text-surface-400 font-medium">
-                                                {t('training.autoAdvance.imageAlt')}
-                                            </span>
-                                        </div>
-                                    </Iphone>
+                                    <div className="dark:hidden">
+                                        <Iphone src="" priority />
+                                    </div>
+                                    <div className="hidden dark:block">
+                                        <Iphone src="" priority />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -196,28 +185,27 @@ export default async function ProfileSettingsPage() {
                     {/* ACCOUNT Section */}
                     <section id="account" className="scroll-mt-32 space-y-(--space-6) md:space-y-(--space-12)">
                         <div className="space-y-(--space-4)">
-                            <h3 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-2)">
+                            <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight flex items-center gap-(--space-2)">
                                 {t('account.title')}
-                            </h3>
-                            <p className="text-footnote md:text-subheadline text-surface-600">
+                            </h2>
+                            <p className="text-footnote md:text-subheadline text-surface-700">
                                 {t.rich('account.description', richTextComponents)}
                             </p>
                         </div>
                         <div className="flex justify-center w-full">
                             <div className="w-50 md:w-60">
-                                <Iphone>
-                                    <div className="w-full h-full bg-surface-50 dark:bg-surface-900 flex items-center justify-center p-6 text-center">
-                                        <span className="text-caption-1 text-surface-400 font-medium">
-                                            {t('account.imageAlt')}
-                                        </span>
-                                    </div>
-                                </Iphone>
+                                <div className="dark:hidden">
+                                    <Iphone src="" priority />
+                                </div>
+                                <div className="hidden dark:block">
+                                    <Iphone src="" priority />
+                                </div>
                             </div>
                         </div>
 
                         {/* Tips */}
-                        <div className="pt-8">
-                            <div className="p-(--space-4) md:p-(--space-6) border border-surface-200 dark:border-surface-300/40 bg-surface-50 dark:bg-surface-200/10 space-y-4">
+                        <div className="pt-(--space-8)">
+                            <div className="p-(--space-4) md:p-(--space-6) border border-surface-200 dark:border-surface-300/40 bg-surface-50 dark:bg-surface-200/10 space-y-(--space-4)">
                                 <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
                                     {t('tips.title')}
                                 </h3>
