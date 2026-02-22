@@ -31,7 +31,7 @@ export default function SplitBlueSection() {
         ...member,
         avatarUrl: member.name === "Jernej Peternel" ? "/team/jernej-peternel.png" : "/team/ozbolt-klemencic.png",
         miniAvatarUrl: member.name === "Jernej Peternel" ? "/team/jernej-peternel.png" : "/team/ozbolt-klemencic.png",
-        status: "Online"
+        status: "LinkedIn"
     }))
 
     return (
