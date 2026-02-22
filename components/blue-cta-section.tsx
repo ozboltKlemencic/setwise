@@ -88,10 +88,10 @@ export default function BlueCTASection() {
 
                         {/* iPhones — hidden on mobile, with Apple-style animations */}
                         <div className="absolute right-[-50px] md:right-[-20px] lg:right-[-30px] top-[20px] z-20 w-40 md:w-40 lg:w-64 -rotate-15 group-hover:rotate-0 group-hover:-translate-x-14 group-hover:-translate-y-28 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
-                            <Iphone src="/home.png" darkSrc="/dark/dark-workouts.png" />
+                            <Iphone src="/app-screens/light/workout-summary.png" darkSrc="/app-screens/dark/workout-summary.png" />
                         </div>
                         <div className="absolute left-[-50px] md:left-[-20px] lg:left-[-30px] top-[40px] z-20 w-40 md:w-40 lg:w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
-                            <Iphone src="/workout-in-progres.png" darkSrc="/dark/dark-workouts.png" />
+                            <Iphone src="/app-screens/light/analyze.png" darkSrc="/app-screens/dark/analyze.png" />
                         </div>
                     </div>
                 </div>

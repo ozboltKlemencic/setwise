@@ -35,7 +35,7 @@ export default function LandingPage() {
 
                     <Feature2
                         isReverse={false}
-                        imageSrcDark="/dark/dark-workouts.png"
+                        imageSrcDark="/app-screens/dark/progres.png"
                         title={
                             <span className="">
                                 {t('feature1.title')}
@@ -44,13 +44,14 @@ export default function LandingPage() {
                         }
                         description={<>{t('feature1.description')}</>}
                         buttonText={t('feature1.button')}
-                        imageSrc="/workout.png"
+                        imageSrc="/app-screens/light/progres.png"
+
                     />
                     {/* Features Section */}
                     <section id="features" className="w-full">
                         <Feature
                             isReverse={true}
-                            imageSrcDark="/dark/dark-workouts.png"
+                            imageSrcDark="/app-screens/dark/workout-import.png"
                             title={
                                 <span>
                                     {t('feature2.title')} <span className="font-bold px-1 pl-1 primaryGradient">{t('feature2.titleHighlight')}</span> {t('feature2.titleEnd')}
@@ -58,13 +59,13 @@ export default function LandingPage() {
                             }
                             description={<>{t('feature2.description')}</>}
                             buttonText={t('feature2.button')}
-                            imageSrc="/workout-in-progres.png"
+                            imageSrc="/app-screens/light/workout-import.png"
                         />
                     </section>
 
                     <Feature
                         isReverse={false}
-                        imageSrcDark="/dark/dark-workouts.png"
+                        imageSrcDark="/app-screens/dark/workout-in-progres.png"
                         title={
                             <span>
                                 {t('feature3.title')} <span className="font-bold px-1 pl-1 primaryGradient">{t('feature3.titleHighlight')}</span> {t('feature3.titleEnd')}
@@ -72,7 +73,7 @@ export default function LandingPage() {
                         }
                         description={<>{t('feature3.description')}</>}
                         buttonText={t('feature3.button')}
-                        imageSrc="/workout.png"
+                        imageSrc="/app-screens/light/workout-in-progres.png"
                     />
 
                     {/* Testimonials Section */}

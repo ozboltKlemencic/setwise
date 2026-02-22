@@ -22,8 +22,11 @@ const DialogStickyFooterDemo = ({ trigger }: { trigger?: React.ReactNode }) => {
                     <X className="size-4 md:size-8" />
                     <span className="sr-only">Close</span>
                 </DialogClose>
-                <div className='w-full h-full max-w-[80%] sm:max-w-[400px] dark'>
-                    <Iphone src="/workout.png" className="w-full h-full sm:max-w-[400px] drop-shadow-2xl" />
+                <div className='w-full h-full max-w-[80%] sm:max-w-[400px] dark:hidden block'>
+                    <Iphone src="/app-screens/light/workout-summary.png" className="w-full h-full sm:max-w-[280px] lg:max-w-[400px] drop-shadow-2xl" />
+                </div>
+                <div className='w-full h-full max-w-[80%] sm:max-w-[400px] dark:block hidden'>
+                    <Iphone src="/app-screens/dark/workout-summary.png" className="w-full h-full sm:max-w-[280px] lg:max-w-[400px] drop-shadow-2xl" />
                 </div>
             </DialogContent>
         </Dialog>
