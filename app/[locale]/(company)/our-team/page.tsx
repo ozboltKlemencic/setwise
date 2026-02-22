@@ -17,7 +17,7 @@ const teamMembers = [
     {
         key: 'ozbolt' as const,
         email: 'info@setwise.app',
-        linkedin: 'https://www.linkedin.com/in/ožbolt-klemenčič',
+        linkedin: 'https://www.linkedin.com/in/ozbolt-klemencic',
         avatar: '/team/ozbolt-klemencic.png',
         initials: 'OK',
     },

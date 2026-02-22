@@ -10,13 +10,13 @@ const generalEmail = 'info@setwise.app'
 const teamContacts = [
     {
         name: 'Jernej Peternel',
-        email: 'jernej.peternel@setwise.app',
-        linkedin: 'https://www.linkedin.com/in/jernej-peternel',
+        email: 'info@setwise.app',
+        linkedin: 'https://www.linkedin.com/in/jernej-peternel-98ba0b371?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
     },
     {
         name: 'Ožbolt Klemenčič',
-        email: 'ozbolt.klemencic@setwise.app',
-        linkedin: 'https://www.linkedin.com/in/ožbolt-klemenčič',
+        email: 'info@setwise.app',
+        linkedin: 'https://www.linkedin.com/in/ozbolt-klemencic',
     },
 ]
 
