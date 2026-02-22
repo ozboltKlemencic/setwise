@@ -61,7 +61,7 @@ export default async function GuidesPage() {
                         {t('subtitle')}
                     </p>
 
-                    <div className="mb-(--space-8)">
+                    <div className="">
                         <h2 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight mb-(--space-4)">
                             {t('intro.title')}
                         </h2>
