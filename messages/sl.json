@@ -694,7 +694,8 @@
             "FOOTER_LEGAL": "Pravno",
             "FOOTER_PRIVACY_POLICY": "Politika zasebnosti",
             "FOOTER_TERMS_OF_USE": "Pogoji uporabe",
-            "FOOTER_COOKIES": "Piškotki"
+            "FOOTER_COOKIES": "Piškotki",
+            "FOOTER_COPYRIGHT": "2026 SetWise. Vse pravice pridržane."
         }
     },
     "CTA": {
