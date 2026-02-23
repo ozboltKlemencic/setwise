@@ -124,10 +124,10 @@ export default function HeroSection() {
           {/* Center phone — md only */}
           <div className="absolute top-(--space-4) left-1/2 -translate-x-1/2 w-[175px] transform-gpu will-change-transform z-(--z-dropdown) hidden md:block lg:hidden">
             <div className="dark:hidden">
-              <Iphone src="/app-screens/light/workout-in-progress.png" priority />
+              <Iphone src="/app-screens/light/workout-in-progres.png" priority />
             </div>
             <div className="hidden dark:block">
-              <Iphone src="/app-screens/dark/workout-in-progress.png" priority />
+              <Iphone src="/app-screens/dark/workout-in-progres.png" priority />
             </div>
           </div>
           {/* Left phone */}
