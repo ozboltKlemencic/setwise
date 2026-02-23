@@ -35,7 +35,7 @@ export default function LandingPage() {
 
                     <Feature2
                         isReverse={false}
-                        imageSrcDark="/app-screens/dark/progres.png"
+                        imageSrcDark="/app-screens/dark/progres/progres-2.png"
                         title={
                             <span className="">
                                 {t('feature1.title')}
@@ -44,7 +44,7 @@ export default function LandingPage() {
                         }
                         description={<>{t('feature1.description')}</>}
                         buttonText={t('feature1.button')}
-                        imageSrc="/app-screens/light/progres.png"
+                        imageSrc="/app-screens/light/progres/progres-2.png"
 
                     />
                     {/* Features Section */}
@@ -65,7 +65,7 @@ export default function LandingPage() {
 
                     <Feature
                         isReverse={false}
-                        imageSrcDark="/app-screens/dark/workout-in-progres.png"
+                        imageSrcDark="/app-screens/dark/workout/workout-in-progres.png"
                         title={
                             <span>
                                 {t('feature3.title')} <span className="font-bold px-1 pl-1 primaryGradient">{t('feature3.titleHighlight')}</span> {t('feature3.titleEnd')}
@@ -73,7 +73,7 @@ export default function LandingPage() {
                         }
                         description={<>{t('feature3.description')}</>}
                         buttonText={t('feature3.button')}
-                        imageSrc="/app-screens/light/workout-in-progres.png"
+                        imageSrc="/app-screens/light/workout/workout-in-progres.png"
                     />
 
                     {/* Testimonials Section */}
