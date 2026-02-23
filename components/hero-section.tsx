@@ -118,7 +118,7 @@ export default function HeroSection() {
               <Iphone src="/app-screens/light/progres/workout-summary.png" priority />
             </div>
             <div className="hidden dark:block">
-              <Iphone src="/app-screens/dark/preogres/workout-summary.png" priority />
+              <Iphone src="/app-screens/dark/progres/workout-summary.png" priority />
             </div>
           </div>
           {/* Center phone — md only */}
