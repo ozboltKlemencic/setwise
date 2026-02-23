@@ -64,12 +64,12 @@ export default function CTASection() {
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="w-[250px] md:w-[240px] lg:w-[334px] absolute md:top-[-2rem] lg:top-[-4rem] top-[40%] right-12 md:right-[3rem] lg:right-[6rem] transform-gpu will-change-transform hidden md:block"
         >
-          <Iphone src="/app-screens/light/analyze.png" darkSrc="/app-screens/dark/analyze.png" />
+          <Iphone src="/app-screens/light/progres/analyze-volume.png" darkSrc="/app-screens/dark/progres/analyze-volume.png" />
         </motion.div>
 
         {/* iPhone — mobile static */}
         <div className="w-[250px] absolute top-[75%] right-12 transform-gpu will-change-transform block md:hidden">
-          <Iphone src="/app-screens/light/analyze.png" darkSrc="/app-screens/dark/analyze.png" />
+          <Iphone src="/app-screens/light/progres/analyze-volume.png" darkSrc="/app-screens/dark/progres/analyze-volume.png" />
         </div>
       </div>
     </div>
