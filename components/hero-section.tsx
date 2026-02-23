@@ -115,19 +115,19 @@ export default function HeroSection() {
           {/* Right phone */}
           <div className="absolute top-(--space-10) md:top-(--space-10) lg:top-(--space-12) right-[calc(50%-150px)] sm:right-[calc(50%-210px)] md:right-[calc(50%-280px)] lg:right-(--space-2) w-[200px] md:w-[175px] lg:w-[220px] min-[1152px]:w-[230px] transform-gpu will-change-transform z-(--z-raised)">
             <div className="dark:hidden">
-              <Iphone src="/app-screens/light/workout-summary.png" priority />
+              <Iphone src="/app-screens/light/progres/workout-summary.png" priority />
             </div>
             <div className="hidden dark:block">
-              <Iphone src="/app-screens/dark/workout-summary.png" priority />
+              <Iphone src="/app-screens/dark/preogres/workout-summary.png" priority />
             </div>
           </div>
           {/* Center phone — md only */}
           <div className="absolute top-(--space-4) left-1/2 -translate-x-1/2 w-[175px] transform-gpu will-change-transform z-(--z-dropdown) hidden md:block lg:hidden">
             <div className="dark:hidden">
-              <Iphone src="/app-screens/light/workout-in-progres.png" priority />
+              <Iphone src="/app-screens/light/workout/workout-in-progres.png" priority />
             </div>
             <div className="hidden dark:block">
-              <Iphone src="/app-screens/dark/workout-in-progres.png" priority />
+              <Iphone src="/app-screens/dark/workout/workout-in-progres.png" priority />
             </div>
           </div>
           {/* Left phone */}
