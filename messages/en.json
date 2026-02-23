@@ -641,6 +641,10 @@
     "BetaSignup": {
         "title": "Get Early Access",
         "description": "Join our exclusive beta program and be among the first to experience the future of workout tracking. Get early access to features, provide feedback, and help shape the app.",
+        "androidInstallTitle": "Android Installation",
+        "androidInstallLink": "Link to install on Android",
+        "iosInstallTitle": "iOS Installation",
+        "iosInstallLink": "Link to install on iOS",
         "emailLabel": "Email",
         "emailPlaceholder": "you@example.com",
         "platformLabel": "Platform",

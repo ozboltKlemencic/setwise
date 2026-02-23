@@ -640,6 +640,10 @@
     "BetaSignup": {
         "title": "Pridobite zgodnji dostop",
         "description": "Pridružite se našemu ekskluzivnemu beta programu in bodite med prvimi, ki bodo preizkusili prihodnost sledenja vadbam. Pridobite zgodnji dostop do funkcij, podajte povratne informacije in pomagajte oblikovati aplikacijo.",
+        "androidInstallTitle": "Namestitev za Android",
+        "androidInstallLink": "Povezava za namestitev na Android",
+        "iosInstallTitle": "Namestitev za iOS",
+        "iosInstallLink": "Povezava za namestitev na iOS",
         "emailLabel": "E-pošta",
         "emailPlaceholder": "ti@primer.com",
         "platformLabel": "Platforma",
