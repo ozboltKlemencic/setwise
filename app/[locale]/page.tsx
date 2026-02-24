@@ -35,7 +35,7 @@ export default function LandingPage() {
 
                     <Feature2
                         isReverse={false}
-                        imageSrcDark="/app-screens/dark/progres/progres-2.png"
+                        imageSrcDark="/app-screens/dark/progres/calendar-view.png"
                         title={
                             <span className="">
                                 {t('feature1.title')}
@@ -44,14 +44,14 @@ export default function LandingPage() {
                         }
                         description={<>{t('feature1.description')}</>}
                         buttonText={t('feature1.button')}
-                        imageSrc="/app-screens/light/progres/progres-2.png"
+                        imageSrc="/app-screens/light/progres/calendar-view.png"
 
                     />
                     {/* Features Section */}
                     <section id="features" className="w-full">
                         <Feature
                             isReverse={true}
-                            imageSrcDark="/app-screens/dark/workout-import.png"
+                            imageSrcDark="/app-screens/dark/import-plan/parsing.png"
                             title={
                                 <span>
                                     {t('feature2.title')} <span className="font-bold px-1 pl-1 primaryGradient">{t('feature2.titleHighlight')}</span> {t('feature2.titleEnd')}
@@ -59,7 +59,7 @@ export default function LandingPage() {
                             }
                             description={<>{t('feature2.description')}</>}
                             buttonText={t('feature2.button')}
-                            imageSrc="/app-screens/light/workout-import.png"
+                            imageSrc="/app-screens/light/import-plan/parsing.png"
                         />
                     </section>
 
