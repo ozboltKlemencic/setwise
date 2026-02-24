@@ -48,8 +48,8 @@ export default async function QuickLoggingPage() {
                                 {t.rich('liveSession.description', richTextComponents)}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout-in-progres.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/workout/workout-in-progres.png" darkSrc="/app-screens/dark/workout/workout-in-progres.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -62,8 +62,8 @@ export default async function QuickLoggingPage() {
                                 {t('quickWorkout.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/quick-workout/quick-workout.png" darkSrc="/app-screens/dark/quick-workout/quick-workout.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -76,8 +76,8 @@ export default async function QuickLoggingPage() {
                                 {t('setNotes.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/demo-phone-pic.avif" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/workout/set-note.png" darkSrc="/app-screens/dark/workout/set-note.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -90,8 +90,8 @@ export default async function QuickLoggingPage() {
                                 {t('workoutDuration.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout-in-progres.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/workout/workout-in-progres-1.png" darkSrc="/app-screens/dark/workout/workout-in-progres-1.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
