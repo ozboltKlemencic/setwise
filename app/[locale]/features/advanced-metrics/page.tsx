@@ -55,8 +55,9 @@ export default async function AdvancedMetricsPage() {
                                 {t('rpeRir.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout-in-progres.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full gap-(--space-6)">
+                            <Iphone src="/app-screens/light/import-plan/edit-rpe.png" darkSrc="/app-screens/dark/import-plan/edit-rpe.png" className="w-full max-w-62.5" />
+                            <Iphone src="/app-screens/light/import-plan/edit-rir.png" darkSrc="/app-screens/dark/import-plan/edit-rir.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -70,8 +71,8 @@ export default async function AdvancedMetricsPage() {
                                 {t('tempoRom.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/import-plan/edit-tempo.png" darkSrc="/app-screens/dark/import-plan/edit-tempo.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -85,8 +86,8 @@ export default async function AdvancedMetricsPage() {
                                 {t('intensifiers.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/demo-phone-pic.avif" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/import-plan/edit-intensifier.png" darkSrc="/app-screens/dark/import-plan/edit-intensifier.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
