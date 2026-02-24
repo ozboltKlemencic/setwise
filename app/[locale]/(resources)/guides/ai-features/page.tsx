@@ -40,12 +40,7 @@ export default async function AiFeaturesPage() {
                             </div>
                         </div>
 
-                        {/* Image */}
-                        <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
-                            <div className="w-50 md:w-60">
-                                <Iphone src="/app-screens/light/import-plan/overview.png" darkSrc="/app-screens/dark/import-plan/overview.png" priority />
-                            </div>
-                        </div>
+
 
                         <div className="w-full border-t border-surface-200/80 dark:border-surface-300/60" />
 
@@ -90,7 +85,11 @@ export default async function AiFeaturesPage() {
                         </div>
 
                         {/* Image: Import Plan Screen */}
-
+                        <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
+                            <div className="w-50 md:w-60">
+                                <Iphone src="/app-screens/light/import-plan/overview.png" darkSrc="/app-screens/dark/import-plan/overview.png" priority />
+                            </div>
+                        </div>
 
                         <div className="w-full border-t border-surface-200/80 dark:border-surface-300/60" />
 
