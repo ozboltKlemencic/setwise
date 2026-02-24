@@ -57,7 +57,7 @@ export default function FAQPage() {
                             primary: (chunks) => <span className="primaryGradient">{chunks}</span>,
                         })}
                     </h1>
-                    <p className="mt-(--space-2) md:max-w-sm md:px-(--space-6) text-center md:mt-(--space-3) text-subheadline md:text-callout text-surface-600 max-w-2xl mx-auto leading-relaxed">
+                    <p className="mt-(--space-2) md:max-w-sm md:px-(--space-6) text-center md:mt-(--space-3) text-subheadline md:text-callout text-surface-600 max-w-2xl mx-auto leading-relaxed ">
                         {t("description")}
                     </p>
                 </header>
