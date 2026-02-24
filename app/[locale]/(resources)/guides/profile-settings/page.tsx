@@ -36,14 +36,9 @@ export default async function ProfileSettingsPage() {
                         </div>
 
                         {/* Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
+                        <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
+                                <Iphone src="/app-screens/light/profile/profile.png" darkSrc="/app-screens/dark/profile/profile.png" priority />
                             </div>
                         </div>
                     </section>
@@ -74,14 +69,10 @@ export default async function ProfileSettingsPage() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/profile/theme.png" darkSrc="/app-screens/dark/profile/theme.png" />
+
                                 </div>
                             </div>
                         </div>
@@ -102,14 +93,9 @@ export default async function ProfileSettingsPage() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/profile/language.png" darkSrc="/app-screens/dark/profile/language.png" />
                                 </div>
                             </div>
                         </div>
@@ -144,14 +130,10 @@ export default async function ProfileSettingsPage() {
                                     {t('training.advancedAnalytics.footer')}
                                 </p>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/profile/profile-2.png" darkSrc="/app-screens/dark/profile/profile-2.png" />
+
                                 </div>
                             </div>
                         </div>
@@ -167,14 +149,9 @@ export default async function ProfileSettingsPage() {
                                     {t('training.autoAdvance.description')}
                                 </p>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/profile/profile-2.png" darkSrc="/app-screens/dark/profile/profile-2.png" />
                                 </div>
                             </div>
                         </div>
@@ -192,14 +169,9 @@ export default async function ProfileSettingsPage() {
                                 {t.rich('account.description', richTextComponents)}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
+                        <div className="flex justify-start w-full">
                             <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
+                                <Iphone src="/app-screens/light/profile/profile-2.png" darkSrc="/app-screens/dark/profile/profile-2.png" />
                             </div>
                         </div>
 

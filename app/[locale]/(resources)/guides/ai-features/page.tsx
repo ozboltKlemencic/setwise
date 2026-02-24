@@ -41,14 +41,9 @@ export default async function AiFeaturesPage() {
                         </div>
 
                         {/* Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
+                        <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
+                                <Iphone src="/app-screens/light/workout-import.png" darkSrc="/app-screens/dark/workout-import.png" priority />
                             </div>
                         </div>
 
