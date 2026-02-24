@@ -76,73 +76,128 @@ export default async function WorkoutsPage() {
                         </div>
 
                         {/* Steps */}
-                        <div className="space-y-(--space-8) md:space-y-(--space-12)">
-                            {[1, 2, 3, 4, 5].map((step) => (
-                                <div key={step} className="flex flex-col gap-(--space-8)">
-                                    {/* Text Content */}
-                                    <div className="space-y-(--space-4)">
-                                        <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
-                                            {t(`createProgram.steps.${step}.title`)}
-                                        </h3>
+                        {(() => {
+                            const createProgramSteps = [
+                                {
+                                    step: 1, listItems: [1, 2, 3, 4], subListItems: [], images:
+                                        [{
+                                            light: "/app-screens/light/program/program-page.png",
+                                            dark: "/app-screens/dark/program/program-page.png"
+                                        },
+                                        {
+                                            light: "/app-screens/light/program/create-program.png",
+                                            dark: "/app-screens/dark/program/create-program.png"
+                                        }
+                                        ]
+                                },
+                                {
+                                    step: 2, listItems: [1, 2, 3, 4], subListItems: [], images:
+                                        [{
+                                            light: "/app-screens/light/template/create-template.png",
+                                            dark: "/app-screens/dark/template/create-template.png"
+                                        },
+                                        ]
+                                },
+                                {
+                                    step: 3, listItems: [1, 2, 3], subListItems: [1, 2, 3], images:
+                                        [{
+                                            light: "/app-screens/light/template/edit-template.png",
+                                            dark: "/app-screens/dark/template/edit-template.png"
+                                        },
+                                        {
+                                            light: "/app-screens/light/template/add-exercise.png",
+                                            dark: "/app-screens/dark/template/add-exercise.png"
+                                        },
+                                        {
+                                            light: "/app-screens/light/template/edit-exercise.png",
+                                            dark: "/app-screens/dark/template/edit-exercise.png"
+                                        }]
 
-                                        {/* Description */}
-                                        {t.has(`createProgram.steps.${step}.description`) && (
-                                            <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
-                                                {t.rich(`createProgram.steps.${step}.description`, richTextComponents)}
-                                            </div>
-                                        )}
+                                },
+                                {
+                                    step: 4, listItems: [], subListItems: [], images:
+                                        [{
+                                            light: "/app-screens/light/workout/set-note.png",
+                                            dark: "/app-screens/dark/workout/set-note.png"
+                                        }]
+                                },
+                                {
+                                    step: 5, listItems: [1, 2, 3, 4, 5], subListItems: [], images:
+                                        [{
+                                            light: "/app-screens/light/workout/edit-sets-2.png",
+                                            dark: "/app-screens/dark/workout/edit-sets-2.png"
+                                        }]
+                                },
+                            ]
 
-                                        {/* List */}
-                                        {t.has(`createProgram.steps.${step}.list`) && (
-                                            <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
-                                                {(step === 1 ? [1, 2, 3, 4] :
-                                                    step === 2 ? [1, 2, 3, 4] :
-                                                        step === 3 ? [1, 2, 3] :
-                                                            step === 5 ? [1, 2, 3, 4, 5] :
-                                                                []).map((i) => (
-                                                                    <li key={i}>{t.rich(`createProgram.steps.${step}.list.${i}`, richTextComponents)}</li>
-                                                                ))}
-                                            </ul>
-                                        )}
+                            return (
+                                <div className="space-y-(--space-8) md:space-y-(--space-12)">
+                                    {createProgramSteps.map(({ step, listItems, subListItems, images }) => (
+                                        <div key={step} className="flex flex-col gap-(--space-8)">
+                                            {/* Text Content */}
+                                            <div className="space-y-(--space-4)">
+                                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
+                                                    {t(`createProgram.steps.${step}.title`)}
+                                                </h3>
 
-                                        {/* SubDescription & SubList for Step 3 */}
-                                        {t.has(`createProgram.steps.${step}.subDescription`) && (
-                                            <div className="mt-(--space-4)">
-                                                <p className="text-footnote md:text-subheadline text-surface-700 mb-(--space-2)">
-                                                    {t.rich(`createProgram.steps.${step}.subDescription`, richTextComponents)}
-                                                </p>
-                                                {t.has(`createProgram.steps.${step}.subList`) && (
+                                                {/* Description */}
+                                                {t.has(`createProgram.steps.${step}.description`) && (
+                                                    <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
+                                                        {t.rich(`createProgram.steps.${step}.description`, richTextComponents)}
+                                                    </div>
+                                                )}
+
+                                                {/* List */}
+                                                {listItems.length > 0 && t.has(`createProgram.steps.${step}.list`) && (
                                                     <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
-                                                        {[1, 2, 3].map((i) => (
-                                                            <li key={i}>{t.rich(`createProgram.steps.${step}.subList.${i}`, richTextComponents)}</li>
+                                                        {listItems.map((i) => (
+                                                            <li key={i}>{t.rich(`createProgram.steps.${step}.list.${i}`, richTextComponents)}</li>
                                                         ))}
                                                     </ul>
                                                 )}
-                                            </div>
-                                        )}
 
-                                        {/* Footer */}
-                                        {t.has(`createProgram.steps.${step}.footer`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
-                                                {t.rich(`createProgram.steps.${step}.footer`, richTextComponents)}
-                                            </p>
-                                        )}
-                                    </div>
+                                                {/* SubDescription & SubList */}
+                                                {t.has(`createProgram.steps.${step}.subDescription`) && (
+                                                    <div className="mt-(--space-4)">
+                                                        <p className="text-footnote md:text-subheadline text-surface-700 mb-(--space-2)">
+                                                            {t.rich(`createProgram.steps.${step}.subDescription`, richTextComponents)}
+                                                        </p>
+                                                        {subListItems.length > 0 && t.has(`createProgram.steps.${step}.subList`) && (
+                                                            <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
+                                                                {subListItems.map((i) => (
+                                                                    <li key={i}>{t.rich(`createProgram.steps.${step}.subList.${i}`, richTextComponents)}</li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                    </div>
+                                                )}
 
-                                    {/* Phone Image */}
-                                    <div className="flex justify-center w-full">
-                                        <div className="w-50 md:w-60">
-                                            <div className="dark:hidden">
-                                                <Iphone src="" priority />
+                                                {/* Footer */}
+                                                {t.has(`createProgram.steps.${step}.footer`) && (
+                                                    <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
+                                                        {t.rich(`createProgram.steps.${step}.footer`, richTextComponents)}
+                                                    </p>
+                                                )}
                                             </div>
-                                            <div className="hidden dark:block">
-                                                <Iphone src="" priority />
+
+                                            {/* Phone Images */}
+                                            <div className={`flex ${images.length > 1 ? 'justify-start' : 'justify-start'} md:flex-row flex-col gap-(--space-6) w-full`}>
+                                                {images.map((img, idx) => (
+                                                    <div key={idx} className="w-50 md:w-60">
+                                                        <div className="dark:hidden">
+                                                            <Iphone src={img.light} priority />
+                                                        </div>
+                                                        <div className="hidden dark:block">
+                                                            <Iphone src={img.dark} priority />
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            )
+                        })()}
 
                         {/* Search & Tips Grid */}
                         <div className="grid md:grid-cols-2 gap-(--space-3) md:gap-(--space-4)">

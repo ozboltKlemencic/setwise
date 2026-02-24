@@ -53,14 +53,12 @@ export default async function ProgressPage() {
                         </div>
 
                         {/* Main Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
+                        <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
+                                <div className="">
+                                    <Iphone src="/app-screens/light/progres/progres.png" darkSrc="/app-screens/dark/progres/progres.png" priority />
                                 </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
+
                             </div>
                         </div>
 
@@ -85,13 +83,10 @@ export default async function ProgressPage() {
                                 </p>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
+                                    <div className="">
+                                        <Iphone src="/app-screens/light/progres/calendar-view.png" darkSrc="/app-screens/dark/progres/calendar-view.png" priority />
                                     </div>
                                 </div>
                             </div>
@@ -120,14 +115,12 @@ export default async function ProgressPage() {
                                 </p>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
+                                    <div className="">
+                                        <Iphone src="/app-screens/light/progres/progres.png" darkSrc="/app-screens/dark/progres/progres.png" priority />
                                     </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -149,14 +142,9 @@ export default async function ProgressPage() {
                                 </ul>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/progres/workout-summary.png" darkSrc="/app-screens/dark/progres/workout-summary.png" priority />
                                 </div>
                             </div>
                         </div>
@@ -192,17 +180,7 @@ export default async function ProgressPage() {
                             </ul>
                         </div>
 
-                        {/* Tabs Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
-                            <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div className="w-full border-t border-surface-200/80 dark:border-surface-300/60" />
 
@@ -233,14 +211,9 @@ export default async function ProgressPage() {
                                 </div>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/progres/workout-summary.png" darkSrc="/app-screens/dark/progres/workout-summary.png" priority />
                                 </div>
                             </div>
                         </div>
@@ -266,14 +239,9 @@ export default async function ProgressPage() {
                                 </p>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/progres/progres-exercise.png" darkSrc="/app-screens/dark/progres/progres-exercise.png" priority />
                                 </div>
                             </div>
                         </div>
@@ -307,14 +275,11 @@ export default async function ProgressPage() {
                                 </div>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
+                                    <Iphone src="/app-screens/light/progres/analyze-top-set.png" darkSrc="/app-screens/dark/progres/analyze-top-set.png" />
+
                                 </div>
                             </div>
                         </div>
@@ -345,17 +310,7 @@ export default async function ProgressPage() {
                             </div>
                         </div>
 
-                        {/* Main Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
-                            <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div className="w-full border-t border-surface-200/80 dark:border-surface-300/60" />
 
@@ -372,14 +327,12 @@ export default async function ProgressPage() {
                                 </ul>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
+                                    <Iphone src="/app-screens/light/progres/analyze-volumen.png" darkSrc="/app-screens/dark/progres/analyze-volumen.png" priority />
+
+
                                 </div>
                             </div>
                         </div>
@@ -405,14 +358,12 @@ export default async function ProgressPage() {
                                 </p>
                             </div>
 
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full gap-(--space-6)">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/progres/same-template.png" darkSrc="/app-screens/dark/progres/same-template.png" priority />
+                                </div>
+                                <div className="w-50 md:w-60">
+                                    <Iphone src="/app-screens/light/progres/all-workouts.png" darkSrc="/app-screens/dark/progres/all-workouts.png" priority />
                                 </div>
                             </div>
                         </div>
@@ -436,14 +387,7 @@ export default async function ProgressPage() {
                             </div>
 
                             <div className="flex justify-center w-full">
-                                <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
-                                </div>
+                                {/*<Iphone src="" priority />*/}
                             </div>
                         </div>
 
@@ -481,20 +425,8 @@ export default async function ProgressPage() {
                             <h2 className="text-title-2 md:text-title-1 lg:text-large-title font-bold text-surface-900 tracking-tight">
                                 {t('exerciseExplorer.title')}
                             </h2>
-                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose whitespace-pre-line leading-relaxed">
+                            <div className="text-footnote md:text-subheadline text-surface-700 max-w-prose  leading-relaxed">
                                 {t.rich('exerciseExplorer.description', richTextComponents)}
-                            </div>
-                        </div>
-
-                        {/* Main Image */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
-                            <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
                             </div>
                         </div>
 
@@ -512,14 +444,12 @@ export default async function ProgressPage() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
+                                    <Iphone src="/app-screens/light/progres/analyze-select-exercise.png" darkSrc="/app-screens/dark/progres/analyze-select-exercise.png" priority />
+
+
                                 </div>
                             </div>
                         </div>
@@ -543,12 +473,9 @@ export default async function ProgressPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
+                                    {/* <Iphone src="" priority /> */}
+
                                 </div>
                             </div>
                         </div>
@@ -575,12 +502,10 @@ export default async function ProgressPage() {
                             </div>
                             <div className="flex justify-center w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
+                                    {/*<Iphone src="" priority />*/}
+
+
                                 </div>
                             </div>
                         </div>
