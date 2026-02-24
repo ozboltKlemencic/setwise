@@ -91,7 +91,7 @@ export default function BlueCTASection() {
                             <Iphone src="/app-screens/light/progres/workout-summary.png" darkSrc="/app-screens/dark/progres/workout-summary.png" />
                         </div>
                         <div className="absolute left-[-50px] md:left-[-20px] lg:left-[-30px] top-[40px] z-20 w-40 md:w-40 lg:w-64 rotate-15 group-hover:rotate-0 group-hover:translate-x-14 transition-transform duration-(--duration-slow) ease-(--ease-apple) transform-gpu will-change-transform hidden md:block">
-                            <Iphone src="/app-screens/light/progres/analyze-volumen.png" darkSrc="/app-screens/dark/progres/analyze-volume.png" />
+                            <Iphone src="/app-screens/light/progres/analyze-volumen.png" darkSrc="/app-screens/dark/progres/analyze-volumen.png" />
                         </div>
                     </div>
                 </div>
