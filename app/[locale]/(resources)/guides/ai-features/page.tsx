@@ -43,7 +43,7 @@ export default async function AiFeaturesPage() {
                         {/* Image */}
                         <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
                             <div className="w-50 md:w-60">
-                                <Iphone src="/app-screens/light/workout-import.png" darkSrc="/app-screens/dark/workout-import.png" priority />
+                                <Iphone src="/app-screens/light/import-plan/overview.png" darkSrc="/app-screens/dark/import-plan/overview.png" priority />
                             </div>
                         </div>
 
@@ -90,16 +90,7 @@ export default async function AiFeaturesPage() {
                         </div>
 
                         {/* Image: Import Plan Screen */}
-                        <div className="flex justify-center w-full py-(--space-4) md:py-(--space-6)">
-                            <div className="w-50 md:w-60">
-                                <div className="dark:hidden">
-                                    <Iphone src="" priority />
-                                </div>
-                                <div className="hidden dark:block">
-                                    <Iphone src="" priority />
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div className="w-full border-t border-surface-200/80 dark:border-surface-300/60" />
 
@@ -118,14 +109,9 @@ export default async function AiFeaturesPage() {
                                     {t('importPlan.pastePlan.note')}
                                 </p>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full py-(--space-4) md:py-(--space-6)">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/import-plan/pasted-plan.png" darkSrc="/app-screens/dark/import-plan/pasted-plan.png" priority />
                                 </div>
                             </div>
                         </div>
@@ -147,22 +133,12 @@ export default async function AiFeaturesPage() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex flex-col md:flex-row gap-(--space-4) justify-center w-full">
+                            <div className="flex justify-start flex-col md:flex-row gap-(--space-4)  w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/import-plan/workout-preview.png" darkSrc="/app-screens/dark/import-plan/workout-preview.png" priority />
                                 </div>
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/import-plan/workout-indepth-previvew.png" darkSrc="/app-screens/dark/import-plan/workout-indepth-previvew.png" priority />
                                 </div>
                             </div>
                         </div>
@@ -184,14 +160,11 @@ export default async function AiFeaturesPage() {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+
+                                    <Iphone src="/app-screens/light/import-plan/workout-indepth-previvew.png" darkSrc="/app-screens/dark/import-plan/workout-indepth-previvew.png" priority />
+
                                 </div>
                             </div>
                         </div>
@@ -222,14 +195,15 @@ export default async function AiFeaturesPage() {
                                         ))}
                                     </ul>
                                 </div>
-                                <div className="flex justify-center w-full py-(--space-4)">
+                                <div className="flex justify-start w-full py-(--space-4) gap-(--space-4)">
                                     <div className="w-50 md:w-60">
-                                        <div className="dark:hidden">
-                                            <Iphone src="" priority />
-                                        </div>
-                                        <div className="hidden dark:block">
-                                            <Iphone src="" priority />
-                                        </div>
+                                        <Iphone src="/app-screens/light/import-plan/edit-reps.png" darkSrc="/app-screens/dark/import-plan/edit-reps.png" priority />
+                                    </div>
+                                    <div className="w-50 md:w-60">
+                                        <Iphone src="/app-screens/light/import-plan/edit-tempo.png" darkSrc="/app-screens/dark/import-plan/edit-tempo.png" priority />
+                                    </div>
+                                    <div className="w-50 md:w-60">
+                                        <Iphone src="/app-screens/light/import-plan/edit-intensifier.png" darkSrc="/app-screens/dark/import-plan/edit-intensifier.png" priority />
                                     </div>
                                 </div>
 
@@ -244,14 +218,11 @@ export default async function AiFeaturesPage() {
                                         ))}
                                     </ul>
                                 </div>
-                                <div className="flex justify-center w-full py-(--space-4)">
+                                <div className="flex justify-start w-full py-(--space-4)">
                                     <div className="w-50 md:w-60">
-                                        <div className="dark:hidden">
-                                            <Iphone src="" priority />
-                                        </div>
-                                        <div className="hidden dark:block">
-                                            <Iphone src="" priority />
-                                        </div>
+
+                                        <Iphone src="/app-screens/light/import-plan/workout-indepth-previvew.png" darkSrc="/app-screens/dark/import-plan/workout-indepth-previvew.png" priority />
+
                                     </div>
                                 </div>
 
@@ -264,14 +235,11 @@ export default async function AiFeaturesPage() {
                                         {t.rich('importPlan.edit.instructions.description', richTextComponents)}
                                     </p>
                                 </div>
-                                <div className="flex justify-center w-full py-(--space-4)">
+                                <div className="flex justify-start w-full py-(--space-4)">
                                     <div className="w-50 md:w-60">
-                                        <div className="dark:hidden">
-                                            <Iphone src="" priority />
-                                        </div>
-                                        <div className="hidden dark:block">
-                                            <Iphone src="" priority />
-                                        </div>
+
+                                        <Iphone src="/app-screens/light/import-plan/instructions.png" darkSrc="/app-screens/dark/import-plan/instructions.png" priority />
+
                                     </div>
                                 </div>
                             </div>
@@ -297,14 +265,9 @@ export default async function AiFeaturesPage() {
                                     {t('importPlan.save.footer')}
                                 </p>
                             </div>
-                            <div className="flex justify-center w-full">
+                            <div className="flex justify-start w-full">
                                 <div className="w-50 md:w-60">
-                                    <div className="dark:hidden">
-                                        <Iphone src="" priority />
-                                    </div>
-                                    <div className="hidden dark:block">
-                                        <Iphone src="" priority />
-                                    </div>
+                                    <Iphone src="/app-screens/light/import-plan/workout-preview.png" darkSrc="/app-screens/dark/import-plan/workout-preview.png" priority />
                                 </div>
                             </div>
                         </div>

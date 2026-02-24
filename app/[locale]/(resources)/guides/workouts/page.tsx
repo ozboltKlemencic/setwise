@@ -248,58 +248,87 @@ export default async function WorkoutsPage() {
                         </div>
 
                         {/* Steps */}
-                        <div className="space-y-(--space-8) md:space-y-(--space-12)">
-                            {[1, 2, 3, 4, 5].map((step) => (
-                                <div key={step} className="flex flex-col gap-(--space-8)">
-                                    {/* Text Content */}
-                                    <div className="space-y-(--space-4)">
-                                        <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
-                                            {t(`startTemplate.steps.${step}.title`)}
-                                        </h3>
+                        {(() => {
+                            const startTemplateSteps = [
+                                {
+                                    step: 1, listItems: [1, 2, 3], images: [{
+                                        light: "/app-screens/light/workout/start-workout.png",
+                                        dark: "/app-screens/dark/workout/start-workout.png"
+                                    }]
+                                },
+                                {
+                                    step: 2, listItems: [1, 2, 3], images: [{
+                                        light: "/app-screens/light/workout/workout-in-progres.png",
+                                        dark: "/app-screens/dark/workout/workout-in-progres.png"
+                                    }]
+                                },
+                                {
+                                    step: 3, listItems: [1, 2, 3], images: [{
+                                        light: "/app-screens/light/workout/workout-action.png",
+                                        dark: "/app-screens/dark/workout/workout-action.png"
+                                    }]
+                                },
+                                {
+                                    step: 4, listItems: [1, 2], images: [{
+                                        light: "",
+                                        dark: ""
+                                    }]
+                                },
+                                {
+                                    step: 5, listItems: [1, 2], images: [{
+                                        light: "",
+                                        dark: ""
+                                    }]
+                                },
+                            ]
 
-                                        {/* Description */}
-                                        {t.has(`startTemplate.steps.${step}.description`) && (
-                                            <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
-                                                {t.rich(`startTemplate.steps.${step}.description`, richTextComponents)}
+                            return (
+                                <div className="space-y-(--space-8) md:space-y-(--space-12)">
+                                    {startTemplateSteps.map(({ step, listItems, images }) => (
+                                        <div key={step} className="flex flex-col gap-(--space-8)">
+                                            {/* Text Content */}
+                                            <div className="space-y-(--space-4)">
+                                                <h3 className="text-title-3 md:text-title-2 font-bold text-surface-900 tracking-tight">
+                                                    {t(`startTemplate.steps.${step}.title`)}
+                                                </h3>
+
+                                                {/* Description */}
+                                                {t.has(`startTemplate.steps.${step}.description`) && (
+                                                    <div className="text-footnote md:text-subheadline text-surface-700 whitespace-pre-line max-w-prose">
+                                                        {t.rich(`startTemplate.steps.${step}.description`, richTextComponents)}
+                                                    </div>
+                                                )}
+
+                                                {/* List */}
+                                                {listItems.length > 0 && t.has(`startTemplate.steps.${step}.list`) && (
+                                                    <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
+                                                        {listItems.map((i) => (
+                                                            <li key={i}>{t.rich(`startTemplate.steps.${step}.list.${i}`, richTextComponents)}</li>
+                                                        ))}
+                                                    </ul>
+                                                )}
+
+                                                {/* Footer */}
+                                                {t.has(`startTemplate.steps.${step}.footer`) && (
+                                                    <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
+                                                        {t.rich(`startTemplate.steps.${step}.footer`, richTextComponents)}
+                                                    </p>
+                                                )}
                                             </div>
-                                        )}
 
-                                        {/* List */}
-                                        {t.has(`startTemplate.steps.${step}.list`) && (
-                                            <ul className="list-disc list-outside ml-4 space-y-2 text-footnote md:text-subheadline text-surface-700 marker:text-surface-400">
-                                                {(step === 1 ? [1, 2, 3] :
-                                                    step === 2 ? [1, 2, 3] :
-                                                        step === 3 ? [1, 2, 3] :
-                                                            step === 4 ? [1, 2] :
-                                                                step === 5 ? [1, 2] :
-                                                                    []).map((i) => (
-                                                                        <li key={i}>{t.rich(`startTemplate.steps.${step}.list.${i}`, richTextComponents)}</li>
-                                                                    ))}
-                                            </ul>
-                                        )}
-
-                                        {/* Footer */}
-                                        {t.has(`startTemplate.steps.${step}.footer`) && (
-                                            <p className="text-footnote md:text-subheadline text-surface-700 italic max-w-prose">
-                                                {t.rich(`startTemplate.steps.${step}.footer`, richTextComponents)}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* Phone Image */}
-                                    <div className="flex justify-center w-full">
-                                        <div className="w-50 md:w-60">
-                                            <div className="dark:hidden">
-                                                <Iphone src="" priority />
-                                            </div>
-                                            <div className="hidden dark:block">
-                                                <Iphone src="" priority />
+                                            {/* Phone Images */}
+                                            <div className={`flex justify-start md:flex-row flex-col gap-(--space-6) w-full`}>
+                                                {images.map((img, idx) => (
+                                                    <div key={idx} className="w-50 md:w-60">
+                                                        <Iphone src={img.light} darkSrc={img.dark} priority />
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            )
+                        })()}
                     </section>
 
 
