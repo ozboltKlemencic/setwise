@@ -44,8 +44,8 @@ export default async function ProgressAnalyticsPage() {
                                 {t('progress.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout-in-progres.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/progres/progres.png" darkSrc="/app-screens/dark/progres/progres.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -69,8 +69,8 @@ export default async function ProgressAnalyticsPage() {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/progres/progres-exercise.png" darkSrc="/app-screens/dark/progres/progres-exercise.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -95,8 +95,8 @@ export default async function ProgressAnalyticsPage() {
                                     {t('analytics.volumeChart.description')}
                                 </p>
                             </div>
-                            <div className="flex justify-center w-full">
-                                <Iphone src="/demo-phone-pic.avif" className="w-full max-w-62.5" />
+                            <div className="flex justify-start w-full">
+                                <Iphone src="/app-screens/light/progres/analyze-volumen.png" darkSrc="/app-screens/dark/progres/analyze-volumen.png" className="w-full max-w-62.5" />
                             </div>
                         </div>
 
@@ -110,8 +110,8 @@ export default async function ProgressAnalyticsPage() {
                                     {t('analytics.exerciseChart.description')}
                                 </p>
                             </div>
-                            <div className="flex justify-center w-full">
-                                <Iphone src="/demo-phone-pic.avif" className="w-full max-w-62.5" />
+                            <div className="flex justify-start w-full">
+                                <Iphone src="/app-screens/light/progres/analyze-top-set.png" darkSrc="/app-screens/dark/progres/analyze-top-set.png" className="w-full max-w-62.5" />
                             </div>
                         </div>
                     </section>
