@@ -43,8 +43,8 @@ export default async function TemplatesProgramsPage() {
                                 {t('importPlan.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout-in-progres.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/import-plan/pasted-plan.png" darkSrc="/app-screens/dark/import-plan/pasted-plan.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
@@ -57,8 +57,8 @@ export default async function TemplatesProgramsPage() {
                                 {t('createNew.description')}
                             </p>
                         </div>
-                        <div className="flex justify-center w-full">
-                            <Iphone src="/workout.png" className="w-full max-w-62.5" />
+                        <div className="flex justify-start w-full">
+                            <Iphone src="/app-screens/light/template/edit-template.png" darkSrc="/app-screens/dark/template/edit-template.png" className="w-full max-w-62.5" />
                         </div>
                     </section>
 
