@@ -270,14 +270,14 @@ export default async function WorkoutsPage() {
                                 },
                                 {
                                     step: 4, listItems: [1, 2], images: [{
-                                        light: "",
-                                        dark: ""
+                                        light: "/app-screens/light/workout/finnished-workout.png",
+                                        dark: "/app-screens/dark/workout/finnished-workout.png"
                                     }]
                                 },
                                 {
                                     step: 5, listItems: [1, 2], images: [{
-                                        light: "",
-                                        dark: ""
+                                        light: "/app-screens/light/workout/resume.png",
+                                        dark: "/app-screens/dark/workout/resume.png"
                                     }]
                                 },
                             ]
