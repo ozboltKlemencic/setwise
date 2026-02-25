@@ -21,7 +21,7 @@ export default function Navigation() {
 
     // Features pages have their own sidebar navigation — hide floating nav
     const isFeaturePage = pathname === "/features" || pathname.startsWith("/features/") || pathname.startsWith("/guides/") || pathname === "/guides"
-    const isHomePage = pathname === "/" 
+    const isHomePage = pathname === "/"
     const navLinkLabels = {
         "/guides": t("guides"),
         "/features": t("features"),
@@ -48,7 +48,7 @@ export default function Navigation() {
 
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
-{/*
+    {/*
     useEffect(() => {
         const handleScrollActive = () => {
             const scrollPosition = window.scrollY + 150
@@ -101,9 +101,9 @@ export default function Navigation() {
                 <Blur className="md:hidden top-0 left-0 w-3/5 h-full translate-x-1/3 translate-y-1/3 bg-brand-500/5" />
                 <Blur className="md:hidden top-0 left-0 w-2/5 h-full -translate-y-1/3 -translate-x-1/2 bg-brand-500/5" />
 
-                <Link href="/" 
-                //onClick={scrollToTop}
-                aria-label="SetWise – home page" className="flex items-center gap-(--space-2) cursor-pointer">
+                <Link href="/"
+                    //onClick={scrollToTop}
+                    aria-label="SetWise – home page" className="flex items-center gap-(--space-2) cursor-pointer">
                     <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) md:size-(--space-8) rounded-sm" />
                     <span className="text-callout md:text-body font-bold text-foreground font-sans">SetWise</span>
                 </Link>
@@ -157,17 +157,17 @@ export default function Navigation() {
                         className="hidden lg:flex fixed top-(--space-4) left-1/2 -translate-x-1/2 z-(--z-overlay) bg-background/85 backdrop-blur-(--blur-thick) border border-border/40 rounded-full px-(--space-2) py-(--space-2) shadow-(--shadow-lg) items-center gap-x-(--space-20)"
                     >
                         <Link
-                         href="/" 
-                         //onClick={(e) => handleNavClick(e, "/", "hero")}
-                        
-                         aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
+                            href="/"
+                            //onClick={(e) => handleNavClick(e, "/", "hero")}
+
+                            aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) pl-(--space-2\.5)">
                             <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
                             <span className="text-footnote font-bold text-foreground font-sans">SetWise</span>
                         </Link>
 
                         <div className="flex items-center gap-(--space-1)">
                             {navLinks.map((link) => (
-                                <Link   
+                                <Link
                                     key={link.href}
                                     href={link.href}
                                     //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
@@ -239,10 +239,10 @@ export default function Navigation() {
                                 className="mx-(--space-4) mb-(--space-4) bg-card/95 rounded-3xl shadow-(--shadow-2xl) overflow-hidden border border-border/60"
                             >
                                 <div className="flex items-center justify-between px-(--space-6) py-(--space-4)">
-                                    <Link 
-                                    href="/" 
-                                    //onClick={(e) => handleNavClick(e, "/", "hero")}
-                                     aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
+                                    <Link
+                                        href="/"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        aria-label="SetWise – Back to top" className="flex items-center gap-(--space-2) cursor-pointer">
                                         <img src="/setwise-logo.png" alt="SetWise logo" className="size-(--space-6) rounded-sm" />
                                         <span className="text-callout font-bold text-foreground">SetWise</span>
                                     </Link>
@@ -290,7 +290,7 @@ export default function Navigation() {
                                         >
                                             <Link
                                                 href={link.href}
-                                                //onClick={(e) => handleNavClick(e, link.href, link.sectionId)}
+                                                onClick={() => setIsMenuOpen(false)}
                                                 className={`block px-(--space-3) py-(--space-4) text-callout font-medium rounded-xl transition-colors ${isPathActive(pathname, link.href)
                                                     ? "text-foreground dark:bg-surface-300/30 bg-surface-300/25"
                                                     : "text-muted-foreground hover:text-foreground hover:bg-surface-50"

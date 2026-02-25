@@ -1,4 +1,4 @@
- "use client"
+"use client"
 
 import { useEffect, useMemo, useState } from "react"
 import { useTranslations } from "next-intl"
@@ -95,7 +95,7 @@ export default function ChangelogPage() {
                 </header>
 
                 <div className="space-y-(--space-6) md:space-y-(--space-8) pb-(--space-10) md:pb-(--space-8)">
-                  
+
 
                     <div className="flex flex-wrap gap-(--space-2) md:gap-(--space-3)">
                         {filterOrder.map((filterKey) => {
@@ -127,7 +127,7 @@ export default function ChangelogPage() {
 
                     <div>
                         {filteredYearGroups.map((group, index) => (
-                            <div key={group.key} className="border-b border-border/60">
+                            <div key={group.key} className=" border-border/60">
                                 <button
                                     type="button"
                                     onClick={() => setOpenIndex((prev) => (prev === index ? -1 : index))}
@@ -141,9 +141,10 @@ export default function ChangelogPage() {
                                     >
                                         <ChevronDown className="size-5 text-surface-500" />
                                     </motion.div>
+
                                 </button>
 
-                               
+
 
                                 <AnimatePresence initial={false}>
                                     {openIndex === index && (
@@ -155,13 +156,13 @@ export default function ChangelogPage() {
                                                 height: { duration: 0.34, ease: [0.4, 0, 0.2, 1] },
                                                 opacity: { duration: 0.22, ease: "easeInOut" },
                                             }}
-                                            className="overflow-hidden"
+                                            className="overflow-hidden "
                                         >
-                                            <div className="pb-(--space-5) md:pb-(--space-6) space-y-(--space-3)">
+                                            <div className="space-y-(--space-3) px-(--space-2) ">
                                                 {group.updates.map((update) => (
                                                     <article
                                                         key={update.key}
-                                                        className="bg-surface-100/40 dark:bg-surface-100/5 px-(--space-4) md:px-(--space-5) py-(--space-4) md:py-(--space-5)"
+                                                        className="bg-surface-100/40 dark:bg-surface-100/5 "
                                                     >
                                                         <div className="flex items-center justify-between gap-(--space-3)">
                                                             <div className="flex items-center gap-(--space-2)">
@@ -187,10 +188,16 @@ export default function ChangelogPage() {
                                                         </p>
                                                     </article>
                                                 ))}
+
                                             </div>
+
                                         </motion.div>
                                     )}
+
                                 </AnimatePresence>
+                                {index < filteredYearGroups.length - 1 && (
+                                    <div className="my-(--space-3) h-px bg-surface-200 w-full" />
+                                )}
                             </div>
                         ))}
                         {filteredYearGroups.length === 0 && (
