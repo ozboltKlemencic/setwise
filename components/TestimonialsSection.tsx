@@ -101,7 +101,8 @@ export default function TestimonialsSection() {
     const reviewMeta = [
         { rating: 5, avatarUrl: "/testimonials/liam-fabian.png" },
         { rating: 5, avatarUrl: "/testimonials/martin-zust.png" },
-        { rating: 5, avatarUrl: "/testimonials/martin-zust.png" },
+        { rating: 5, avatarUrl: "/testimonials/liam-fabian.png" },
+
     ]
 
     const reviews: ReviewItem[] = translatedReviews.map((item, i) => ({
