@@ -437,21 +437,15 @@
             },
             {
                 "name": "Martin Žust",
-                "role": "Fitness navdušenec",
-                "company": "",
-                "reviewText": ""
-            },
-            {
-                "name": "Liam Fabiani",
                 "role": "Fitness Enthusiast",
                 "company": "",
-                "reviewText": "The app gives you a lot of customizability despite its early access and I'd love to see where the developers take it from here..."
+                "reviewText": "The app is great! It helps me plan my workouts, which keeps me accountable to complete them. At the same time, I can also track my progress analytics in the app 🙂"
             },
             {
-                "name": "Martin Žust",
-                "role": "Fitness navdušenec",
+                "name": "Urban Justin",
+                "role": "Fitness Enthusiast",
                 "company": "",
-                "reviewText": ""
+                "reviewText": "A very professionally designed app for recording workouts, I recommend it!"
             }
         ]
     },
