@@ -78,12 +78,12 @@ export default function HeroSection() {
           <aside aria-label="Social proof" className="flex flex-col items-center lg:items-start gap-(--space-2) mt-(--space-3)">
             <div className="flex flex-col md:flex-row items-center gap-(--space-2)">
               <div className="flex -space-x-2">
-                {[1, 2, 3].map((i) => (
+                {["/testimonials/liam-fabian.png", "/testimonials/martin-zust.png", "/testimonials/anonymous.png"].map((src, i) => (
                   <div
                     key={i}
                     className="w-6 h-6 rounded-full border border-white dark:border-surface-300 overflow-hidden bg-surface-200"
                   >
-                    <img src="/jernej.png" alt="User" className="w-full h-full object-cover grayscale" />
+                    <img src={src} alt="User" className="w-full h-full object-cover " />
                   </div>
                 ))}
               </div>
