@@ -97,10 +97,16 @@ export default function TestimonialsSection() {
 
     const translatedReviews = t.raw('reviews') as Array<{ name: string; role: string; company: string; reviewText: string }>
 
-    const reviews: ReviewItem[] = translatedReviews.map((item) => ({
+    // Rating and avatarUrl per review (same order as translations)
+    const reviewMeta = [
+        { rating: 5, avatarUrl: "/testimonials/liam-fabian.png" },
+        { rating: 5, avatarUrl: "/testimonials/martin-zust.png" },
+        { rating: 5, avatarUrl: "/testimonials/jernej.png" },
+    ]
+
+    const reviews: ReviewItem[] = translatedReviews.map((item, i) => ({
         ...item,
-        rating: 5,
-        avatarUrl: "/jernej.png"
+        ...reviewMeta[i],
     }))
 
     const duplicatedReviews = [...reviews, ...reviews];

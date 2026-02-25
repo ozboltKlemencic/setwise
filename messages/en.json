@@ -430,16 +430,16 @@
         "button": "Download for free",
         "reviews": [
             {
-                "name": "Sarah Jenkins",
-                "role": "Competitive Powerlifter",
-                "company": "3x National Champion",
-                "reviewText": "SetWise streamlined my entire training workflow. I used to spend hours on manual entry, now it's all automated. Highly recommended!"
+                "name": "Liam Fabiani",
+                "role": "Fitness Enthusiast",
+                "company": "",
+                "reviewText": "The app gives you a lot of customizability despite its early access and I'd love to see where the developers take it from here..."
             },
             {
-                "name": "Mark Thompson",
-                "role": "Strength Coach",
-                "company": "GrowthX Fitness",
-                "reviewText": "The insights I get from SetWise are game-changing. It really helps me make data-driven decisions for my athletes."
+                "name": "Martin Žust",
+                "role": "Fitness navdušenec",
+                "company": "",
+                "reviewText": ""
             },
             {
                 "name": "Elena Rodriguez",

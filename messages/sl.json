@@ -429,22 +429,22 @@
         "button": "Prenesi brezplačno",
         "reviews": [
             {
-                "name": "Sarah Jenkins",
-                "role": "Tekmovalna powerlifterka",
-                "company": "3x državna prvakinja",
-                "reviewText": "SetWise je poenostavil moj celoten trening. Prej sem porabil ure za ročni vnos, zdaj je vse avtomatizirano. Zelo priporočam!"
+                "name": "Liam Fabiani",
+                "role": "Fitness navdušenec",
+                "company": "",
+                "reviewText": "Aplikacija ti kljub zgodnjemu dostopu ponuja veliko možnosti prilagajanja in res bi rad videl, kam jo bodo razvijalci popeljali..."
             },
             {
-                "name": "Mark Thompson",
-                "role": "Trener moči",
-                "company": "GrowthX Fitness",
-                "reviewText": "Vpogledi, ki jih dobim od SetWise, so revolucionarni. Res mi pomagajo sprejemati odločitve na podlagi podatkov za moje atlete."
+                "name": "Martin Žust",
+                "role": "Fitness navdušenec",
+                "company": "",
+                "reviewText": ""
             },
             {
-                "name": "Elena Rodriguez",
-                "role": "Fitnes influencerka",
-                "company": "500k+ sledilcev",
-                "reviewText": "Neverjetna uporabniška izkušnja in podpora. Ekipa pri SetWise res skrbi za uspeh svojih strank."
+                "name": "Martin Žust",
+                "role": "Fitness navdušenec",
+                "company": "",
+                "reviewText": ""
             }
         ]
     },

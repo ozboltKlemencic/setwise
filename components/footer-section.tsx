@@ -107,25 +107,7 @@ export default function FooterSection() {
             </p>
           </div>
 
-          {/* Newsletter Section */}
-          <div className="flex flex-col gap-y-(--space-2) w-full">
-            <div className="text-surface-700  text-footnote font-medium font-sans">
-              {t('joinWaitlist')}
-            </div>
-            <div className="flex gap-(--space-2) w-full">
-              <input
-                type="email"
-                id="footer-email"
-                placeholder={t('emailPlaceholder')}
-                className="flex-1 min-w-0 px-(--space-3) md:px-(--space-4) py-(--space-2) h-10 dark:text-surface-100 text-footnote placeholder-surface-400 dark:placeholder-surface-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors duration-(--duration-fast) ease-(--ease-apple) rounded-lg border border-surface-200 dark:border-surface-300 bg-card dark:bg-surface-200/80 text-surface-900"
-              />
-              <button className="px-(--space-3) overflow-hidden md:px-(--space-5) py-(--space-2) relative h-10 shrink-0 whitespace-nowrap rounded-lg bg-brand-500 hover:bg-brand-600 dark:hover:bg-brand-500/80 cursor-pointer text-white text-footnote font-medium transition-colors duration-(--duration-fast) ease-(--ease-apple)">
-                {t('join')}
-                <div className="absolute top-0 left-0 w-2/5 translate-y-1/3 -translate-x-1/2 h-full bg-white/50 md:bg-white/30 blur-(--blur-regular) rounded-full" />
-                <div className="absolute top-0 right-0 w-2/5 -translate-y-1/3 translate-x-1/2 h-full bg-white/50 md:bg-white/30 blur-(--blur-regular) rounded-full" />
-              </button>
-            </div>
-          </div>
+
 
           {/* Social Links Section */}
           <div className="flex flex-col gap-y-(--space-2)">
