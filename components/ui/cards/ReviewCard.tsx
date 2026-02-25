@@ -53,7 +53,7 @@ const ReviewCardComponent: React.FC<ReviewCardProps> = ({
                             )}
                             <div className="flex flex-col">
                                 <span className="text-subheadline font-semibold text-surface-900">{name}</span>
-                                <span className="text-caption-1 text-surface-500">{role}, {company}</span>
+                                <span className="text-caption-1 text-surface-500">{role} {company}</span>
                             </div>
                         </div>
 
