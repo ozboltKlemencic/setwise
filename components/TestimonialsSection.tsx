@@ -102,6 +102,8 @@ export default function TestimonialsSection() {
         { rating: 5, avatarUrl: "/testimonials/liam-fabian.png" },
         { rating: 5, avatarUrl: "/testimonials/martin-zust.png" },
         { rating: 5, avatarUrl: "/testimonials/liam-fabian.png" },
+        { rating: 5, avatarUrl: "/testimonials/martin-zust.png" },
+
 
     ]
 
