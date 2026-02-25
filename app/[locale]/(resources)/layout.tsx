@@ -29,13 +29,13 @@ export default function ResourcesLayout({
 
                     <div className="flex-1 flex flex-col items-center md:max-w-6xl relative">
                         {/* Header Effect area matching Features design */}
-                        <div className="h-[80px] w-full relative mask-[linear-gradient(to_bottom,white,transparent)] shrink-0">
+                        <div className="h-[80px] mt-14 md:mt-0 w-full relative mask-[linear-gradient(to_bottom,white,transparent)] shrink-0">
                             <ParticleText text="" backgroundBrightness={{ dark: 160, light: 185 }} reverse={true} className="h-full min-h-0 opacity-80 w-full z-20" />
                             <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b to-transparent from-brand-500/5 z-10"></div>
                         </div>
 
                         {/* Content Area */}
-                        <div className="w-full relative z-10 max-w-3xl -mt-[60px]">
+                        <div className="flex-1 w-full -mt-14 md:-mt-0 max-w-4xl pt-0">
                             {children}
                         </div>
                     </div>

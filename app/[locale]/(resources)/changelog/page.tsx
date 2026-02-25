@@ -83,9 +83,9 @@ export default function ChangelogPage() {
     }, [filteredYearGroups.length, openIndex])
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-8 md:pt-0">
+        <div className="w-full h-full flex flex-col  items-center justify-start font-sans">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-6xl ">
-                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-6) min-[1152px]:pr-(--space-8)">
+                <header className="pb-(--space-5)  md:pb-(--space-6) min-[1152px]:pr-(--space-8)">
                     <h1 className="text-title-1 md:text-display-sm lg:text-display font-bold text-surface-900 tracking-tight text-balance">
                         {t("title")}
                     </h1>

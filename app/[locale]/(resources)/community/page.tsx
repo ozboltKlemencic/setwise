@@ -39,9 +39,9 @@ export default function CommunityPage() {
     const t = useTranslations("CommunityPage")
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-12 md:pt-12 lg:pt-0">
+        <div className="w-full h-full flex flex-col items-center justify-start font-sans">
             <div className="w-full px-(--space-5) md:px-(--space-12) max-w-5xl">
-                <header className="pt-(--space-8) pb-(--space-5) md:pt-(--space-16) md:pb-(--space-8) text-center flex flex-col items-center justify-center">
+                <header className=" pb-(--space-5) pt-(--space-2) md:pb-(--space-8) text-center flex flex-col items-center justify-center">
                     <p className="text-caption-2 tracking-wider font-semibold primaryGradient mb-1">
                         {t("badge")}
                     </p>

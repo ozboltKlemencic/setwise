@@ -50,7 +50,7 @@ export default function GuidesLayout({
                                     <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b to-transparent from-brand-500/5 z-10"></div>
                                 </div>
 
-                                <div className="flex-1 w-full max-w-4xl pt-(--space-8) md:pt-0 -mt-[120px] md:-mt-[100px]">
+                                <div className="flex-1 w-full max-w-4xl pt-0 -mt-[130px] md:-mt-[100px]">
                                     {children}
                                 </div>
                             </div>
