@@ -68,7 +68,7 @@ export default async function SupportPage() {
                                 <Link
                                     key={key}
                                     href={href}
-                                    className="group p-(--space-6) bg-surface-100/50 backdrop-blur-(--blur-thin) border border-surface-200 shadow-(--shadow-xs) hover:shadow-(--shadow-md) hover:border-brand-200 transition-all duration-300"
+                                    className="group p-(--space-6) bg-surface-100/50 backdrop-blur-(--blur-thin) border border-surface-200 shadow-(--shadow-xs) hover:shadow-(--shadow-md) hover:border-brand-200 transition-all duration-300 rounded-2xl"
                                 >
                                     <div className="flex flex-col items-center text-center space-y-(--space-4)">
                                         <div className="flex items-center justify-center size-12 rounded-xl bg-linear-to-tr from-brand-500/5 to-brand-500/15">
