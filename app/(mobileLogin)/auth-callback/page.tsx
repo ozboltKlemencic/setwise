@@ -1,9 +1,7 @@
 export default function AuthCallbackPage() {
-    return (
-      <html>
-        <body>
-          <p>Redirecting...</p>
-        </body>
-      </html>
-    );
-  }
+  return (
+    <main>
+      <p>Open the app to continue sign-in.</p>
+    </main>
+  );
+}
