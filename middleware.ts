@@ -9,6 +9,7 @@ export const config = {
     // - Next.js internals (_next)
     // - Static files (images, fonts, etc.)
     // - Mobile deep-link callback route
+    // - Well-known routes ,auth-callback
     matcher: [
         // Match all pathnames except those starting with:
         '/((?!api|_next|_vercel|auth-callback|.*\\..*).*)',
