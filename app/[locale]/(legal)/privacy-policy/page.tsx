@@ -4,7 +4,15 @@ export { generateMetadata } from './metadata'
 
 export default async function PrivacyPolicyPage() {
     const t = await getTranslations('PrivacyPolicy')
-    const sections = ['overview', 'dataCollection', 'usage', 'dataProtection'] as const
+    const sections = [
+        'overview',
+        'dataCollection',
+        'thirdPartyAuthentication',
+        'usage',
+        'dataProtection',
+        'dataRetentionDeletion',
+        'contactUs',
+    ] as const
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-8 md:pt-0">

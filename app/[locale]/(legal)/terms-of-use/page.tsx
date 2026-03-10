@@ -4,7 +4,20 @@ export { generateMetadata } from './metadata'
 
 export default async function TermsOfUsePage() {
     const t = await getTranslations('TermsOfUse')
-    const sections = ['whoIsBehind', 'purpose', 'beta', 'accountUsage', 'content', 'aiFeatures', 'liability', 'privacyConnection', 'changes', 'contact'] as const
+    const sections = [
+        'whoIsBehind',
+        'purpose',
+        'beta',
+        'ageRequirement',
+        'accountUsage',
+        'intellectualProperty',
+        'content',
+        'aiFeatures',
+        'liability',
+        'privacyConnection',
+        'changes',
+        'contact',
+    ] as const
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-start font-sans pt-8 md:pt-0">

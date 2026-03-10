@@ -127,32 +127,40 @@
                 "title": "3. Beta verzija",
                 "content": "Setwise je trenutno v beta fazi. To pomeni, da:\n\n• se lahko pojavijo napake, nekatere funkcije morda ne bodo delovale ali pa se podatki lahko izgubijo\n• se funkcije lahko spremenijo ali odstranijo\n• lahko kadarkoli spremenimo ali ukinemo dostop do aplikacije ali delov aplikacije\n\nNe moremo prevzeti odgovornosti za izgubo podatkov ali druge posledice, povezane z uporabo beta verzije, razen v obsegu, ki ga izrecno zahteva veljavna zakonodaja."
             },
+            "ageRequirement": {
+                "title": "4. Starostna zahteva",
+                "content": "Z uporabo Setwise izjavljate in jamčite, da ste stari najmanj 13 let (ali 16 let, odvisno od zakonskih zahtev vaše države glede digitalnega soglasja). Če te starostne zahteve ne izpolnjujete, ne smete dostopati do aplikacije ali je uporabljati."
+            },
             "accountUsage": {
-                "title": "4. Uporaba računa",
-                "content": "Kot uporabnik se strinjate, da boste:\n\n• po potrebi zagotovili točne osnovne podatke\n• varovali dostop do svojega računa in ga ne boste delili z drugimi\n• aplikacijo uporabljali v skladu z veljavno zakonodajo in temi pogoji\n\nVaš račun ali dostop do aplikacije lahko omejimo ali ukinemo, če:\n\n• uporabljate aplikacijo na način, ki škoduje nam ali drugim uporabnikom\n• poskušate izkoristiti varnostne ranljivosti\n• kršite veljavno zakonodajo ali te pogoje uporabe"
+                "title": "5. Uporaba računa",
+                "content": "Kot uporabnik se strinjate, da boste:\n\n• po potrebi zagotovili točne osnovne podatke\n• varovali dostop do svojega računa in ga ne boste delili z drugimi\n• aplikacijo uporabljali v skladu z veljavno zakonodajo in temi pogoji\n\nVaš račun ali dostop do aplikacije lahko omejimo ali ukinemo, če:\n\n• uporabljate aplikacijo na način, ki škoduje nam ali drugim uporabnikom\n• poskušate izkoristiti varnostne ranljivosti\n• kršite veljavno zakonodajo ali te pogoje uporabe\n\nSvoj dogovor z nami lahko kadarkoli prekinete tako, da zahtevate izbris računa prek kontakta na info@setwise.app. Po izbrisu računa vaša pravica do uporabe personaliziranih funkcij aplikacije takoj preneha."
+            },
+            "intellectualProperty": {
+                "title": "6. Naša intelektualna lastnina",
+                "content": "Čeprav obdržite lastništvo nad podatki, ki jih vnesete, Setwise in njegova ustanovitelja ohranita vse pravice, lastništvo in interese v zvezi z aplikacijo, vključno z izvorno kodo, dizajnom, funkcijami in blagovno znamko. Brez našega izrecnega pisnega dovoljenja ne smete kopirati, spreminjati, distribuirati, prodajati ali oddajati nobenega dela aplikacije."
             },
             "content": {
-                "title": "5. Vsebina, ki jo vnesete v aplikacijo",
+                "title": "7. Vsebina, ki jo vnesete v aplikacijo",
                 "content": "Vsi podatki, ki jih vnesete v aplikacijo (npr. vadbe, vaje, serije, teže, opombe), ostanejo vaši podatki.\n\nZ njihovim vnosom nam dovoljujete, da jih obdelujemo kot del delovanja aplikacije, vključno z:\n\n• shranjevanjem in varnostnimi kopijami\n• prikazom znotraj aplikacije (npr. statistika, analitika)\n• tehničnimi postopki za vzdrževanje in izboljšanje storitve\n\nObdelava vaših podatkov je podrobneje opisana v Politiki zasebnosti."
             },
             "aiFeatures": {
-                "title": "6. AI funkcije",
+                "title": "8. AI funkcije",
                 "content": "Nekatere funkcije Setwise lahko uporabljajo modele umetne inteligence (npr. za pretvorbo besedilnih opisov vadbe v strukturiran načrt).\n\n• vsebina, ki jo vnesete v AI funkcije, se pošlje izbranemu ponudniku (trenutno Google AI Studio), ki vrne rezultat\n• ne jamčimo, da bodo rezultati vedno popolni, točni ali primerni za vaš specifičen primer\n• rezultati AI ne predstavljajo strokovnega ali zdravstvenega nasveta\n\nUporaba AI funkcij je prostovoljna – če jih ne želite uporabljati, jih preprosto ne uporabljajte."
             },
             "liability": {
-                "title": "7. Omejitev odgovornosti",
+                "title": "9. Omejitev odgovornosti",
                 "content": "Trudimo se, da bi bila aplikacija čim bolj stabilna, vendar:\n\n• ne jamčimo, da bo aplikacija vedno na voljo ali brez napak\n• ne jamčimo, da bodo vsi podatki vedno pravilno shranjeni ali sinhronizirani\n• nismo odgovorni za posredno škodo (npr. izgubljeni podatki o vadbi, izgubljen napredek, motnje pri uporabi aplikacije), razen kjer to izrecno zahteva zakonodaja\n\nVedno ste sami odgovorni za svojo vadbo, izbiro tež, tehniko in pogostost vadbe."
             },
             "privacyConnection": {
-                "title": "8. Povezava s Politiko zasebnosti",
+                "title": "10. Povezava s Politiko zasebnosti",
                 "content": "Ti pogoji uporabe so tesno povezani z našo Politiko zasebnosti, ki opisuje, kako obdelujemo vaše osebne podatke.\n\nOba dokumenta sta na voljo na:\nsetwise.app/terms\nsetwise.app/privacy\n\nZ uporabo aplikacije potrjujete, da ste se seznanili z obema dokumentoma."
             },
             "changes": {
-                "title": "9. Spremembe pogojev",
+                "title": "11. Spremembe pogojev",
                 "content": "Te pogoje uporabe lahko občasno posodobimo. Posodobljena različica bo vedno objavljena na setwise.app/terms z datumom zadnje posodobitve.\n\nČe pride do bistvenih sprememb, vas bomo poskušali obvestiti prek aplikacije ali e-pošte (če je primerno)."
             },
             "contact": {
-                "title": "10. Kontakt",
+                "title": "12. Kontakt",
                 "content": "Za vprašanja v zvezi s temi pogoji uporabe se lahko obrnete na:\n\nJernej Peternel\nE-pošta: jernej.peternel@setwise.app\n\nOžbolt Klemenčič\nE-pošta: ozbolt.klemencic@setwise.app\n\nSplošno: info@setwise.app"
             }
         }
@@ -170,13 +178,25 @@
                 "title": "2. Zbiranje podatkov",
                 "content": "Podatke o vas lahko zbiramo na različne načine. Informacije, ki jih lahko zbiramo v aplikaciji, vključujejo: osebne podatke in izpeljane podatke."
             },
+            "thirdPartyAuthentication": {
+                "title": "3. Avtentikacija s storitvami tretjih oseb",
+                "content": "Če se odločite za prijavo ali registracijo prek storitve tretje osebe, kot je Google, bomo zbirali vaš e-poštni naslov in osnovne profilne podatke (kot sta ime in profilna slika), ki jih posreduje ta storitev. Te podatke uporabljamo izključno za ustvarjanje, avtentikacijo in upravljanje vašega SetWise računa. Nimamo dostopa do vaših Google gesel ali občutljivih podatkov zunaj obsegov, ki jih izrecno odobrite."
+            },
             "usage": {
-                "title": "3. Uporaba vaših informacij",
-                "content": "Točne informacije o vas nam omogočajo, da vam zagotovimo nemoteno, učinkovito in prilagojeno izkušnjo. Natančneje, informacije, zbrane o vas prek aplikacije, uporabljamo za ustvarjanje in upravljanje vašega računa."
+                "title": "4. Uporaba vaših informacij",
+                "content": "Točne informacije o vas nam omogočajo, da vam zagotovimo nemoteno, učinkovito in prilagojeno izkušnjo. Natančneje, informacije, zbrane o vas prek aplikacije, uporabljamo za ustvarjanje in upravljanje vašega računa.\n\nSetWise vaših osebnih podatkov (vključno s podatki, pridobljenimi prek avtentikatorjev tretjih oseb, kot je Google) ne bo oddajal, prodajal ali delil s tretjimi osebami za njihove namene neposrednega trženja."
             },
             "dataProtection": {
-                "title": "4. Varstvo podatkov",
+                "title": "5. Varstvo podatkov",
                 "content": "Uporabljamo administrativne, tehnične in fizične varnostne ukrepe za zaščito vaših osebnih podatkov. Čeprav smo sprejeli razumne ukrepe za zavarovanje osebnih podatkov, ki nam jih posredujete, se zavedajte, da kljub našim prizadevanjem nobeni varnostni ukrepi niso popolni ali neprebojni."
+            },
+            "dataRetentionDeletion": {
+                "title": "6. Hramba in izbris podatkov",
+                "content": "Vaše osebne podatke hranimo le toliko časa, dokler je vaš račun aktiven oziroma kolikor je potrebno za zagotavljanje naših storitev. Kadarkoli imate pravico zahtevati izbris svojih osebnih podatkov. Svoj račun in povezane podatke lahko izbrišete tako, da nas kontaktirate na info@setwise.app. Na vašo zahtevo bomo podatke izbrisali iz naših aktivnih baz."
+            },
+            "contactUs": {
+                "title": "7. Kontakt",
+                "content": "Če imate kakršnakoli vprašanja ali predloge glede naše Politike zasebnosti, nas brez zadržkov kontaktirajte na: info@setwise.app"
             }
         }
     },

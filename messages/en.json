@@ -127,39 +127,47 @@
                 "title": "3. Beta Version",
                 "content": "Setwise is currently in beta phase. This means that:\n\n• errors may occur, some features may not work, or data may be lost\n• features may change or be removed\n• we may change or terminate access to the app or parts of the app at any time\n\nWe cannot accept responsibility for data loss or other consequences related to the use of the beta version, except to the extent expressly required by applicable law."
             },
+            "ageRequirement": {
+                "title": "4. Age Requirement",
+                "content": "By using Setwise, you represent and warrant that you are at least 13 years of age (or 16 years of age, depending on your country's legal requirements for digital consent). If you do not meet this age requirement, you must not access or use the App."
+            },
             "accountUsage": {
-                "title": "4. Account Usage",
-                "content": "As a user, you agree to:\n\n• provide accurate basic information where required\n• protect your account access and not share it with others\n• use the app in accordance with applicable law and these terms\n\nWe may limit or terminate your account or access to the app if you:\n\n• use the app in a way that harms us or other users\n• attempt to exploit security vulnerabilities\n• violate applicable law or these terms of use"
+                "title": "5. Account Usage",
+                "content": "As a user, you agree to:\n\n• provide accurate basic information where required\n• protect your account access and not share it with others\n• use the app in accordance with applicable law and these terms\n\nWe may limit or terminate your account or access to the app if you:\n\n• use the app in a way that harms us or other users\n• attempt to exploit security vulnerabilities\n• violate applicable law or these terms of use\n\nYou may terminate your agreement with us at any time by deleting your account by contacting us at info@setwise.app. Upon account deletion, your right to use the personalized features of the App will immediately cease."
+            },
+            "intellectualProperty": {
+                "title": "6. Our Intellectual Property",
+                "content": "While you retain ownership of the data you enter, Setwise and its founders retain all right, title, and interest in and to the App, including its original code, design, features, and branding. You may not copy, modify, distribute, sell, or lease any part of our App without our explicit written permission."
             },
             "content": {
-                "title": "5. Content You Enter into the App",
+                "title": "7. Content You Enter into the App",
                 "content": "All data you enter into the app (e.g., workouts, exercises, sets, weights, notes) remain your data.\n\nBy entering them, you give us permission to process them as part of the app's operation, including:\n\n• storage and backups\n• display within the app (e.g., statistics, analytics)\n• technical processes for maintaining and improving the service\n\nProcessing of your data is described in more detail in the Privacy Policy."
             },
             "aiFeatures": {
-                "title": "6. AI Features",
+                "title": "8. AI Features",
                 "content": "Some Setwise features may use artificial intelligence models (e.g., for converting text workout descriptions into a structured plan).\n\n• content you enter into AI features is sent to a selected provider (currently Google AI Studio), which returns the result\n• we do not guarantee that results will always be complete, accurate, or suitable for your specific case\n• AI results do not constitute professional or health advice\n\nUse of AI features is voluntary – if you don't want to use them, simply don't use them."
             },
             "liability": {
-                "title": "7. Limitation of Liability",
+                "title": "9. Limitation of Liability",
                 "content": "We strive to keep the app as stable as possible, however:\n\n• we do not guarantee that the app will always be available or error-free\n• we do not guarantee that all data will always be correctly saved or synchronized\n• we are not liable for indirect damages (e.g., lost workout data, lost progress, disruptions in app use), except where expressly required by law\n\nYou are always responsible for your own training, choice of weights, techniques, and training frequency."
             },
             "privacyConnection": {
-                "title": "8. Connection to Privacy Policy",
+                "title": "10. Connection to Privacy Policy",
                 "content": "These terms of use are closely linked to our Privacy Policy, which describes how we process your personal data.\n\nBoth documents are available at:\nsetwise.app/terms\nsetwise.app/privacy\n\nBy using the app, you confirm that you have familiarized yourself with both documents."
             },
             "changes": {
-                "title": "9. Changes to Terms",
+                "title": "11. Changes to Terms",
                 "content": "We may update these terms of use from time to time. The updated version will always be published at setwise.app/terms with the date of the last update.\n\nIf there are significant changes, we will try to notify you through the app or email (if appropriate)."
             },
             "contact": {
-                "title": "10. Contact",
+                "title": "12. Contact",
                 "content": "For questions regarding these terms of use, you can contact:\n\nJernej Peternel\nEmail: jernej.peternel@setwise.app\n\nOžbolt Klemenčič\nEmail: ozbolt.klemencic@setwise.app\n\nGeneral: info@setwise.app"
             }
         }
     },
     "PrivacyPolicy": {
         "title": "Privacy Policy",
-        "lastUpdated": "Last updated: February 10, 2026",
+        "lastUpdated": "Last updated: March 10, 2026",
         "intro": "Your privacy is important to us. It is SetWise's policy to respect your privacy regarding any information we may collect from you across our website and applications.",
         "sections": {
             "overview": {
@@ -170,13 +178,25 @@
                 "title": "2. Data Collection",
                 "content": "We may collect information about you in a variety of ways. The information we may collect on the App includes: Personal Data and Derivative Data."
             },
+            "thirdPartyAuthentication": {
+                "title": "3. Third-Party Authentication",
+                "content": "If you choose to log in or register using a third-party service like Google, we will collect your email address and basic profile information (such as your name and profile picture) provided by that service. We use this information solely to create, authenticate, and manage your SetWise account. We do not access your Google passwords or any sensitive data outside of the scopes you explicitly approve."
+            },
             "usage": {
-                "title": "3. Use of Your Information",
-                "content": "Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we use information collected about you via the App to create and manage your account."
+                "title": "4. Use of Your Information",
+                "content": "Having accurate information about you permits us to provide you with a smooth, efficient, and customized experience. Specifically, we use information collected about you via the App to create and manage your account.\n\nSetWise will not rent, sell, or share your personal information (including data obtained from third-party authenticators like Google) with third parties for their direct marketing purposes."
             },
             "dataProtection": {
-                "title": "4. Data Protection",
+                "title": "5. Data Protection",
                 "content": "We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable."
+            },
+            "dataRetentionDeletion": {
+                "title": "6. Data Retention and Deletion",
+                "content": "We retain your personal information only for as long as your account is active or as needed to provide you with our services. You have the right to request the deletion of your personal data at any time. You can delete your account and associated data directly by contacting us at info@setwise.app. Upon your request, we will delete your data from our active databases."
+            },
+            "contactUs": {
+                "title": "7. Contact Us",
+                "content": "If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at: info@setwise.app"
             }
         }
     },
