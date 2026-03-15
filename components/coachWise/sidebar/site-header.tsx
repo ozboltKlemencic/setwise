@@ -7,6 +7,11 @@ import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route
 
 const coachWiseRoutes = [
   {
+    title: "Habbits",
+    href: "/beta-coach-wise/habbits",
+    exact: true,
+  },
+  {
     title: "Onboarding",
     href: "/beta-coach-wise/onboarding",
     exact: true,

@@ -7,6 +7,7 @@ import {
   IconChefHat,
   IconClipboardList,
   IconPill,
+  IconRepeat,
   IconSettings,
   IconUserCheck,
   IconUsersGroup,
@@ -63,6 +64,13 @@ const data = {
       icon: IconActivityHeartbeat,
       exact: true,
     },
+    {
+      name: "Habbits",
+      url: "/beta-coach-wise/habbits",
+      icon: IconRepeat,
+      exact: true,
+    },
+
   ],
   documents: [
     {
