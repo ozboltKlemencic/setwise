@@ -26,7 +26,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarRail,
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar"
@@ -144,8 +143,8 @@ function SidebarBrand() {
 
   if (isCollapsed) {
     return (
-      <div className="group/brand relative mx-auto flex size-7 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-neutral-200/70">
-        <div className="flex size-7 items-center justify-center rounded-md transition-opacity duration-150 group-hover/brand:opacity-0 group-hover/brand:pointer-events-none">
+      <div className="group/brand relative mx-auto flex size-7 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-neutral-300/80">
+        <div className="flex size-7 items-center justify-center rounded-md transition-opacity duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/brand:opacity-0 group-hover/brand:pointer-events-none">
           <img
             src="/setwise-logo.png"
             alt=""
@@ -153,7 +152,7 @@ function SidebarBrand() {
           />
           <span className="sr-only">SetWise</span>
         </div>
-        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 rounded-md opacity-0 transition-opacity duration-150 group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/80 cursor-w-resize" />
+        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 cursor-pointer rounded-md opacity-0 transition-opacity duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/80" />
       </div>
     )
   }
@@ -163,7 +162,7 @@ function SidebarBrand() {
       <Link
         href="/"
         aria-label="SetWise home page"
-        className="flex min-w-0 flex-1 items-center gap-(--space-2) "
+        className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer"
       >
         <img
           src="/setwise-logo.png"
@@ -174,7 +173,7 @@ function SidebarBrand() {
           SetWise
         </span>
       </Link>
-      <SidebarTrigger className="ml-auto text-muted-foreground hover:text-foreground hover:bg-neutral-300/80 cursor-w-resize" />
+      <SidebarTrigger className="ml-auto cursor-pointer text-muted-foreground hover:bg-neutral-300/80 hover:text-foreground" />
     </div>
   )
 }
@@ -193,7 +192,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-
     </Sidebar>
   )
 }
