@@ -4,6 +4,16 @@ import { isPathActive, usePathname } from "@/i18n/navigation"
 
 const coachWiseRoutes = [
   {
+    title: "Onboarding",
+    href: "/beta-coach-wise/onboarding",
+    exact: true,
+  },
+  {
+    title: "Check in",
+    href: "/beta-coach-wise/check-in",
+    exact: true,
+  },
+  {
     title: "Programi",
     href: "/beta-coach-wise/programi",
     exact: true,

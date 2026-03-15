@@ -2,11 +2,13 @@
 
 import * as React from "react"
 import {
+  IconActivityHeartbeat,
   IconBarbell,
   IconChefHat,
   IconClipboardList,
   IconPill,
   IconSettings,
+  IconUserCheck,
   IconUsersGroup,
 } from "@tabler/icons-react"
 import Link from "next/link"
@@ -22,6 +24,7 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { NavVprasalniki } from "./vprasalniki"
 
 const data = {
   user: {
@@ -42,6 +45,20 @@ const data = {
       title: "Settings",
       url: "/beta-coach-wise/settings",
       icon: IconSettings,
+      exact: true,
+    },
+  ],
+  vprasalniki: [
+    {
+      name: "Onboarding",
+      url: "/beta-coach-wise/onboarding",
+      icon: IconUserCheck,
+      exact: true,
+    },
+    {
+      name: "Check in",
+      url: "/beta-coach-wise/check-in",
+      icon: IconActivityHeartbeat,
       exact: true,
     },
   ],
@@ -115,7 +132,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
+        <NavVprasalniki items={data.vprasalniki} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
+
       </SidebarContent>
 
       <SidebarFooter>
