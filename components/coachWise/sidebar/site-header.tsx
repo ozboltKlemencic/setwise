@@ -62,7 +62,7 @@ export function SiteHeader() {
     )?.title ?? "Coach Wise"
 
   return (
-    <header className="sticky top-0 z-20 flex h-(--header-height) w-full shrink-0 items-center border-b border-neutral-200 bg-neutral-50/95 backdrop-blur-sm transition-[height] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+    <header className="sticky top-0 z-20 flex h-(--header-height) w-full shrink-0 items-center border-b border-neutral-200 bg-neutral-50/75 backdrop-blur-sm transition-[height] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center px-4 lg:px-6">
         <h1 className="text-base font-medium">{activeRoute}</h1>
       </div>
