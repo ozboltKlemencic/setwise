@@ -2,18 +2,12 @@
 
 import * as React from "react"
 import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconListDetails,
-  IconReport,
+  IconBarbell,
+  IconChefHat,
+  IconClipboardList,
+  IconPill,
   IconSettings,
-  IconUsers,
+  IconUsersGroup,
 } from "@tabler/icons-react"
 import Link from "next/link"
 
@@ -27,7 +21,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarTrigger,
-  useSidebar,
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -39,80 +32,37 @@ const data = {
   navMain: [
     {
       title: "Stranke",
-      url: "#",
-      icon: IconDashboard,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
+      url: "/beta-coach-wise",
+      icon: IconUsersGroup,
+      exact: true,
     },
   ],
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/beta-coach-wise/settings",
       icon: IconSettings,
+      exact: true,
     },
   ],
   documents: [
     {
       name: "Programi",
-      url: "#",
-      icon: IconDatabase,
+      url: "/beta-coach-wise/programi",
+      icon: IconClipboardList,
+      exact: true,
     },
     {
       name: "Meal plani",
-      url: "#",
-      icon: IconReport,
+      url: "/beta-coach-wise/meal-plani",
+      icon: IconChefHat,
+      exact: true,
     },
     {
       name: "Suplementi",
-      url: "#",
-      icon: IconFileWord,
+      url: "/beta-coach-wise/suplementi",
+      icon: IconPill,
+      exact: true,
     },
   ],
 }

@@ -1,22 +1,46 @@
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { isPathActive, usePathname } from "@/i18n/navigation"
+
+const coachWiseRoutes = [
+  {
+    title: "Programi",
+    href: "/beta-coach-wise/programi",
+    exact: true,
+  },
+  {
+    title: "Meal plani",
+    href: "/beta-coach-wise/meal-plani",
+    exact: true,
+  },
+  {
+    title: "Suplementi",
+    href: "/beta-coach-wise/suplementi",
+    exact: true,
+  },
+  {
+    title: "Settings",
+    href: "/beta-coach-wise/settings",
+    exact: true,
+  },
+  {
+    title: "Stranke",
+    href: "/beta-coach-wise",
+    exact: true,
+  },
+]
 
 export function SiteHeader() {
+  const pathname = usePathname()
+  const activeRoute =
+    coachWiseRoutes.find((route) =>
+      isPathActive(pathname, route.href, { exact: route.exact })
+    )?.title ?? "Coach Wise"
+
   return (
     <header className="flex h-(--header-height) shrink-0 items-center border-b border-neutral-200 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center px-4 lg:px-6">
-        <h1 className="text-base font-medium">Documents</h1>
-        <div className="ml-auto flex items-center gap-2">
-          <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
-            <a
-              href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="dark:text-foreground"
-            >
-              GitHub
-            </a>
-          </Button>
-        </div>
+        <h1 className="text-base font-medium">{activeRoute}</h1>
       </div>
     </header>
   )

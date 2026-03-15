@@ -3,6 +3,7 @@
 import * as React from "react"
 import { type Icon } from "@tabler/icons-react"
 
+import { isPathActive, Link, usePathname } from "@/i18n/navigation"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -19,19 +20,25 @@ export function NavSecondary({
     title: string
     url: string
     icon: Icon
+    exact?: boolean
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const pathname = usePathname()
+
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
+              <SidebarMenuButton
+                asChild
+                isActive={isPathActive(pathname, item.url, { exact: item.exact })}
+              >
+                <Link href={item.url as any}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { isPathActive, Link, usePathname } from "@/i18n/navigation"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -33,9 +34,11 @@ export function NavDocuments({
     name: string
     url: string
     icon: Icon
+    exact?: boolean
   }[]
 }) {
   const { isMobile, state } = useSidebar()
+  const pathname = usePathname()
   const isCollapsed = state === "collapsed"
 
   return (
@@ -47,11 +50,15 @@ export function NavDocuments({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild tooltip={item.name}>
-                <a href={item.url}>
+              <SidebarMenuButton
+                asChild
+                isActive={isPathActive(pathname, item.url, { exact: item.exact })}
+                tooltip={item.name}
+              >
+                <Link href={item.url as any}>
                   <item.icon />
                   <span>{item.name}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
               {!isCollapsed && (
                 <DropdownMenu>
@@ -87,7 +94,6 @@ export function NavDocuments({
               )}
             </SidebarMenuItem>
           ))}
-
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
