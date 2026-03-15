@@ -42,6 +42,11 @@ const coachWiseRoutes = [
     exact: true,
   },
   {
+    title: "Kako deluje?",
+    href: "/beta-coach-wise/how-it-works",
+    exact: true,
+  },
+  {
     title: "Stranke",
     href: "/beta-coach-wise",
     exact: true,

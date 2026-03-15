@@ -3,9 +3,9 @@
 import * as React from "react"
 import {
   IconActivityHeartbeat,
-  IconBarbell,
   IconChefHat,
   IconClipboardList,
+  IconInfoCircle,
   IconPill,
   IconRepeat,
   IconSettings,
@@ -48,6 +48,12 @@ const data = {
       title: "Settings",
       url: "/beta-coach-wise/settings",
       icon: IconSettings,
+      exact: true,
+    },
+    {
+      title: "Kako deluje?",
+      url: "/beta-coach-wise/how-it-works",
+      icon: IconInfoCircle,
       exact: true,
     },
   ],
@@ -146,7 +152,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavDocuments items={data.documents} />
         <NavVprasalniki items={data.vprasalniki} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
-
       </SidebarContent>
 
       <SidebarFooter>
