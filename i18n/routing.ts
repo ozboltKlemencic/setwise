@@ -142,6 +142,18 @@ export const routing = defineRouting({
             sl: '/beta-coach-wise',
             en: '/beta-coach-wise',
         },
+        '/beta-coach-wise/data-library': {
+            sl: '/beta-coach-wise/data-library',
+            en: '/beta-coach-wise/data-library',
+        },
+        '/beta-coach-wise/reports': {
+            sl: '/beta-coach-wise/reports',
+            en: '/beta-coach-wise/reports',
+        },
+        '/beta-coach-wise/word-assistant': {
+            sl: '/beta-coach-wise/word-assistant',
+            en: '/beta-coach-wise/word-assistant',
+        },
     },
 });
 

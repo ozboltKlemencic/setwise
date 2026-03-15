@@ -10,27 +10,25 @@ import {
   IconFileDescription,
   IconFileWord,
   IconFolder,
-  IconHelp,
-  IconInnerShadowTop,
   IconListDetails,
   IconReport,
-  IconSearch,
   IconSettings,
   IconUsers,
 } from "@tabler/icons-react"
+import Link from "next/link"
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/coachWise/sidebar/nav-documents"
+import { NavMain } from "@/components/coachWise/sidebar/nav-main"
+import { NavSecondary } from "@/components/coachWise/sidebar/nav-secondary"
+import { NavUser } from "@/components/coachWise/sidebar/nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarRail,
+  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 const data = {
@@ -120,16 +118,6 @@ const data = {
       url: "#",
       icon: IconSettings,
     },
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
-    },
   ],
   documents: [
     {
@@ -150,23 +138,52 @@ const data = {
   ],
 }
 
+function SidebarBrand() {
+  const { state } = useSidebar()
+  const isCollapsed = state === "collapsed"
+
+  if (isCollapsed) {
+    return (
+      <div className="group/brand relative mx-auto flex size-7 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-neutral-200/70">
+        <div className="flex size-7 items-center justify-center rounded-md transition-opacity duration-150 group-hover/brand:opacity-0 group-hover/brand:pointer-events-none">
+          <img
+            src="/setwise-logo.png"
+            alt=""
+            className="size-(--space-5) rounded-sm"
+          />
+          <span className="sr-only">SetWise</span>
+        </div>
+        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 rounded-md opacity-0 transition-opacity duration-150 group-hover/brand:pointer-events-auto group-hover/brand:opacity-100" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex w-full items-center gap-2">
+      <Link
+        href="/"
+        aria-label="SetWise home page"
+        className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer"
+      >
+        <img
+          src="/setwise-logo.png"
+          alt="SetWise logo"
+          className="size-(--space-5) rounded-sm"
+        />
+        <span className="truncate text-sm font-semibold text-foreground font-sans">
+          SetWise
+        </span>
+      </Link>
+      <SidebarTrigger className="ml-auto text-muted-foreground hover:text-foreground" />
+    </div>
+  )
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <a href="#">
-                <IconInnerShadowTop className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader className="px-3 group-data-[collapsible=icon]:px-1">
+        <SidebarBrand />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
@@ -176,6 +193,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
+
     </Sidebar>
   )
 }
