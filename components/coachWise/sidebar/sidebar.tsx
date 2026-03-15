@@ -153,7 +153,7 @@ function SidebarBrand() {
           />
           <span className="sr-only">SetWise</span>
         </div>
-        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 rounded-md opacity-0 transition-opacity duration-150 group-hover/brand:pointer-events-auto group-hover/brand:opacity-100" />
+        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 rounded-md opacity-0 transition-opacity duration-150 group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/70 cursor-pointer" />
       </div>
     )
   }
@@ -174,7 +174,7 @@ function SidebarBrand() {
           SetWise
         </span>
       </Link>
-      <SidebarTrigger className="ml-auto text-muted-foreground hover:text-foreground" />
+      <SidebarTrigger className="ml-auto text-muted-foreground hover:text-foreground hover:bg-neutral-300/70 cursor-pointer" />
     </div>
   )
 }
