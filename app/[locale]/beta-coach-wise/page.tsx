@@ -3,8 +3,7 @@ import data from "./data.json"
 
 export default function Page() {
   return (
-    <section className="">
-
+    <section>
       <DataTable data={data} />
     </section>
   )

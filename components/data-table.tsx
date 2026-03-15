@@ -54,6 +54,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -108,12 +109,11 @@ import {
 
 export const schema = z.object({
   id: z.number(),
+  avatar: z.string().optional(),
   header: z.string(),
   type: z.string(),
   status: z.string(),
   target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
 })
 
 // Create a separate component for the drag handle
@@ -170,7 +170,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "header",
-    header: "Header",
+    header: "Stranke",
     cell: ({ row }) => {
       return <TableCellViewer item={row.original} />
     },
@@ -178,7 +178,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "type",
-    header: "Section Type",
+    header: "Status",
     cell: ({ row }) => (
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
@@ -189,7 +189,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Check in",
     cell: ({ row }) => (
       <Badge variant="outline" className="px-1.5 text-muted-foreground">
         {row.original.status === "Done" ? (
@@ -203,9 +203,10 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
   {
     accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
+    header: () => <div className="w-28 text-left">Pridruzil</div>,
     cell: ({ row }) => (
       <form
+        className="w-28"
         onSubmit={(e) => {
           e.preventDefault()
           toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
@@ -216,74 +217,15 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         }}
       >
         <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
+          Pridruzil
         </Label>
         <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
+          className="h-8 w-full border-transparent bg-transparent pl-0 text-left shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
           defaultValue={row.original.target}
           id={`${row.original.id}-target`}
         />
       </form>
     ),
-  },
-  {
-    accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "reviewer",
-    header: "Reviewer",
-    cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer"
-
-      if (isAssigned) {
-        return row.original.reviewer
-      }
-
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-              size="sm"
-              id={`${row.original.id}-reviewer`}
-            >
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-              <SelectItem value="Jamik Tashpulatov">
-                Jamik Tashpulatov
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </>
-      )
-    },
   },
   {
     id: "actions",
@@ -638,14 +580,23 @@ const chartData = [
 
 const chartConfig = {
   desktop: {
-    label: "Desktop",
+    label: "Treningi",
     color: "var(--primary)",
   },
   mobile: {
-    label: "Mobile",
+    label: "Check in",
     color: "var(--primary)",
   },
 } satisfies ChartConfig
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+}
 
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   const isMobile = useIsMobile()
@@ -653,15 +604,30 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
-        <Button variant="link" className="w-fit px-0 text-left text-foreground">
-          {item.header}
+        <Button
+          variant="link"
+          className="h-auto w-full justify-start px-0 text-left text-foreground hover:no-underline"
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            <Avatar className="size-8">
+              <AvatarImage src={item.avatar} alt={item.header} />
+              <AvatarFallback>{getInitials(item.header)}</AvatarFallback>
+            </Avatar>
+            <span className="truncate font-medium">{item.header}</span>
+          </div>
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.header}</DrawerTitle>
+          <DrawerTitle className="flex items-center gap-3">
+            <Avatar>
+              <AvatarImage src={item.avatar} alt={item.header} />
+              <AvatarFallback>{getInitials(item.header)}</AvatarFallback>
+            </Avatar>
+            <span>{item.header}</span>
+          </DrawerTitle>
           <DrawerDescription>
-            Showing total visitors for the last 6 months
+            Pregled aktivnosti stranke v zadnjih 6 mesecih.
           </DrawerDescription>
         </DrawerHeader>
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
@@ -710,13 +676,11 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{" "}
+                  Napredek +5.2% ta mesec{" "}
                   <IconTrendingUp className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
-                  Showing total visitors for the last 6 months. This is just
-                  some random text to test the layout. It spans multiple lines
-                  and should wrap around.
+                  Hiter pregled check-inov in aktivnosti v zadnjem obdobju.
                 </div>
               </div>
               <Separator />
@@ -724,74 +688,40 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           )}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
+              <Label htmlFor="header">Stranka</Label>
               <Input id="header" defaultValue={item.header} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="type">Type</Label>
+                <Label htmlFor="type">Status</Label>
                 <Select defaultValue={item.type}>
                   <SelectTrigger id="type" className="w-full">
-                    <SelectValue placeholder="Select a type" />
+                    <SelectValue placeholder="Izberi status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Table of Contents">
-                      Table of Contents
-                    </SelectItem>
-                    <SelectItem value="Executive Summary">
-                      Executive Summary
-                    </SelectItem>
-                    <SelectItem value="Technical Approach">
-                      Technical Approach
-                    </SelectItem>
-                    <SelectItem value="Design">Design</SelectItem>
-                    <SelectItem value="Capabilities">Capabilities</SelectItem>
-                    <SelectItem value="Focus Documents">
-                      Focus Documents
-                    </SelectItem>
-                    <SelectItem value="Narrative">Narrative</SelectItem>
-                    <SelectItem value="Cover Page">Cover Page</SelectItem>
+                    <SelectItem value="Aktiven">Aktiven</SelectItem>
+                    <SelectItem value="Onboarding">Onboarding</SelectItem>
+                    <SelectItem value="Na pavzi">Na pavzi</SelectItem>
+                    <SelectItem value="Zakljucen">Zakljucen</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Check in</Label>
                 <Select defaultValue={item.status}>
                   <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
+                    <SelectValue placeholder="Izberi check in" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Done">Done</SelectItem>
-                    <SelectItem value="In Progress">In Progress</SelectItem>
-                    <SelectItem value="Not Started">Not Started</SelectItem>
+                    <SelectItem value="In Process">In Process</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Target</Label>
-                <Input id="target" defaultValue={item.target} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Limit</Label>
-                <Input id="limit" defaultValue={item.limit} />
-              </div>
-            </div>
             <div className="flex flex-col gap-3">
-              <Label htmlFor="reviewer">Reviewer</Label>
-              <Select defaultValue={item.reviewer}>
-                <SelectTrigger id="reviewer" className="w-full">
-                  <SelectValue placeholder="Select a reviewer" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                  <SelectItem value="Jamik Tashpulatov">
-                    Jamik Tashpulatov
-                  </SelectItem>
-                  <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="target">Pridruzil</Label>
+              <Input id="target" defaultValue={item.target} />
             </div>
           </form>
         </div>
