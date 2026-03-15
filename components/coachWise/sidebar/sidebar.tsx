@@ -138,42 +138,39 @@ const data = {
 }
 
 function SidebarBrand() {
-  const { state } = useSidebar()
-  const isCollapsed = state === "collapsed"
-
-  if (isCollapsed) {
-    return (
-      <div className="group/brand relative mx-auto flex size-7 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-neutral-300/80">
-        <div className="flex size-7 items-center justify-center rounded-md transition-opacity duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/brand:opacity-0 group-hover/brand:pointer-events-none">
+  return (
+    <div className="relative flex w-full items-center">
+      <div className="flex w-full items-center gap-2 overflow-hidden opacity-100 transition-[opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[collapsible=icon]:delay-75 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:translate-x-1 group-data-[collapsible=icon]:opacity-0">
+        <Link
+          href="/"
+          aria-label="SetWise home page"
+          className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer overflow-hidden"
+        >
           <img
             src="/setwise-logo.png"
-            alt=""
+            alt="SetWise logo"
             className="size-(--space-5) rounded-sm"
           />
-          <span className="sr-only">SetWise</span>
-        </div>
-        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 cursor-pointer rounded-md opacity-0 transition-opacity duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/80" />
+          <span className="truncate text-sm font-semibold text-foreground font-sans">
+            SetWise
+          </span>
+        </Link>
+        <SidebarTrigger className="ml-auto cursor-pointer text-muted-foreground hover:bg-neutral-300/80 hover:text-foreground" />
       </div>
-    )
-  }
 
-  return (
-    <div className="flex w-full items-center gap-2">
-      <Link
-        href="/"
-        aria-label="SetWise home page"
-        className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer"
-      >
-        <img
-          src="/setwise-logo.png"
-          alt="SetWise logo"
-          className="size-(--space-5) rounded-sm"
-        />
-        <span className="truncate text-sm font-semibold text-foreground font-sans">
-          SetWise
-        </span>
-      </Link>
-      <SidebarTrigger className="ml-auto cursor-pointer text-muted-foreground hover:bg-neutral-300/80 hover:text-foreground" />
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-[opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[collapsible=icon]:pointer-events-auto group-data-[collapsible=icon]:translate-x-0 group-data-[collapsible=icon]:opacity-100">
+        <div className="group/brand relative flex size-7 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-neutral-300/80">
+          <div className="flex size-7 items-center justify-center rounded-md transition-opacity duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/brand:opacity-0 group-hover/brand:pointer-events-none">
+            <img
+              src="/setwise-logo.png"
+              alt=""
+              className="size-(--space-5) rounded-sm"
+            />
+            <span className="sr-only">SetWise</span>
+          </div>
+          <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 cursor-pointer rounded-md opacity-0 transition-opacity duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/80" />
+        </div>
+      </div>
     </div>
   )
 }
