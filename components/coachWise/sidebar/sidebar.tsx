@@ -32,35 +32,15 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Jernej Ficko",
+    email: "jernej.123@gmmail.com",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
     {
-      title: "Dashboard",
+      title: "Stranke",
       url: "#",
       icon: IconDashboard,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
     },
   ],
   navClouds: [
@@ -120,17 +100,17 @@ const data = {
   ],
   documents: [
     {
-      name: "Data Library",
+      name: "Programi",
       url: "#",
       icon: IconDatabase,
     },
     {
-      name: "Reports",
+      name: "Meal plani",
       url: "#",
       icon: IconReport,
     },
     {
-      name: "Word Assistant",
+      name: "Suplementi",
       url: "#",
       icon: IconFileWord,
     },
@@ -140,7 +120,7 @@ const data = {
 function SidebarBrand() {
   return (
     <div className="relative flex w-full items-center">
-      <div className="flex w-full items-center gap-2 overflow-hidden opacity-100 transition-[opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[collapsible=icon]:delay-75 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:translate-x-1 group-data-[collapsible=icon]:opacity-0">
+      <div className="flex w-full items-center gap-2 overflow-hidden opacity-100 transition-[opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:pointer-events-none group-data-[transition=closing]:translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:translate-x-1 group-data-[collapsible=icon]:opacity-0">
         <Link
           href="/"
           aria-label="SetWise home page"
@@ -181,11 +161,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="px-3 group-data-[collapsible=icon]:px-1">
         <SidebarBrand />
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>

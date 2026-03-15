@@ -31,9 +31,18 @@ const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "2.75rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
+const SIDEBAR_CLOSE_MS = 90
+const SIDEBAR_OPEN_MS = 360
+
+type SidebarTransitionState =
+  | "expanded"
+  | "collapsed"
+  | "opening"
+  | "closing"
 
 type SidebarContextProps = {
   state: "expanded" | "collapsed"
+  transitionState: SidebarTransitionState
   open: boolean
   setOpen: (open: boolean) => void
   openMobile: boolean
@@ -73,6 +82,16 @@ function SidebarProvider({
   // We use openProp and setOpenProp for control from outside the component.
   const [_open, _setOpen] = React.useState(defaultOpen)
   const open = openProp ?? _open
+  const [state, setState] = React.useState<"expanded" | "collapsed">(
+    open ? "expanded" : "collapsed"
+  )
+  const [transitionState, setTransitionState] =
+    React.useState<SidebarTransitionState>(open ? "expanded" : "collapsed")
+  const prevOpenRef = React.useRef(open)
+  const transitionTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
+
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === "function" ? value(open) : value
@@ -109,13 +128,54 @@ function SidebarProvider({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [toggleSidebar])
 
-  // We add a state so that we can do data-state="expanded" or "collapsed".
-  // This makes it easier to style the sidebar with Tailwind classes.
-  const state = open ? "expanded" : "collapsed"
+  React.useEffect(() => {
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current)
+      transitionTimeoutRef.current = null
+    }
+
+    if (isMobile) {
+      setState(open ? "expanded" : "collapsed")
+      setTransitionState(open ? "expanded" : "collapsed")
+      prevOpenRef.current = open
+      return
+    }
+
+    if (prevOpenRef.current === open) {
+      return
+    }
+
+    prevOpenRef.current = open
+
+    if (open) {
+      setState("expanded")
+      setTransitionState("opening")
+      transitionTimeoutRef.current = setTimeout(() => {
+        setTransitionState("expanded")
+        transitionTimeoutRef.current = null
+      }, SIDEBAR_OPEN_MS)
+      return
+    }
+
+    setTransitionState("closing")
+    transitionTimeoutRef.current = setTimeout(() => {
+      setState("collapsed")
+      setTransitionState("collapsed")
+      transitionTimeoutRef.current = null
+    }, SIDEBAR_CLOSE_MS)
+
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current)
+        transitionTimeoutRef.current = null
+      }
+    }
+  }, [isMobile, open])
 
   const contextValue = React.useMemo<SidebarContextProps>(
     () => ({
       state,
+      transitionState,
       open,
       setOpen,
       isMobile,
@@ -123,7 +183,16 @@ function SidebarProvider({
       setOpenMobile,
       toggleSidebar,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [
+      state,
+      transitionState,
+      open,
+      setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
+      toggleSidebar,
+    ]
   )
 
   return (
@@ -163,7 +232,10 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { isMobile, state, transitionState, openMobile, setOpenMobile } =
+    useSidebar()
+  const isCollapsing = transitionState === "closing"
+  const showCollapsedState = state === "collapsed" || isCollapsing
 
   if (collapsible === "none") {
     return (
@@ -209,7 +281,8 @@ function Sidebar({
     <div
       className="group peer p-0 hidden bg-neutral-100 border-r border-neutral-200 text-sidebar-foreground md:block"
       data-state={state}
-      data-collapsible={state === "collapsed" ? collapsible : ""}
+      data-transition={transitionState}
+      data-collapsible={showCollapsedState ? collapsible : ""}
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
@@ -418,7 +491,7 @@ function SidebarGroupLabel({
       data-sidebar="group-label"
       className={cn(
         "flex h-8 shrink-0 items-center overflow-hidden rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity,max-height,padding,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
-        "max-h-8 translate-x-0 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:max-h-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:opacity-0",
+        "max-h-8 translate-x-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:max-h-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:opacity-0",
         className
       )}
       {...props}
@@ -492,13 +565,13 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding,gap] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2! hover:bg-sidebar-accent hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:hover:bg-neutral-300/80 group-data-[collapsible=icon]:hover:text-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground [&>span:last-child]:max-w-[12rem] [&>span:last-child]:translate-x-0 [&>span:last-child]:truncate [&>span:last-child]:opacity-100 [&>span:last-child]:transition-[max-width,opacity,transform] [&>span:last-child]:duration-[360ms] [&>span:last-child]:ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[collapsible=icon]:[&>span:last-child]:delay-75 group-data-[collapsible=icon]:[&>span:last-child]:max-w-0 group-data-[collapsible=icon]:[&>span:last-child]:-translate-x-1 group-data-[collapsible=icon]:[&>span:last-child]:opacity-0 [&>svg]:size-4 [&>svg]:shrink-0",
+  "peer/menu-button flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding,gap] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2! hover:bg-neutral-300/80 hover:text-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground [&>span:last-child]:max-w-[12rem] [&>span:last-child]:translate-x-0 [&>span:last-child]:truncate [&>span:last-child]:opacity-100 [&>span:last-child]:transition-[max-width,opacity,transform] [&>span:last-child]:duration-[360ms] [&>span:last-child]:ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:[&>span:last-child]:max-w-0 group-data-[transition=closing]:[&>span:last-child]:-translate-x-1 group-data-[transition=closing]:[&>span:last-child]:opacity-0 group-data-[collapsible=icon]:[&>span:last-child]:max-w-0 group-data-[collapsible=icon]:[&>span:last-child]:-translate-x-1 group-data-[collapsible=icon]:[&>span:last-child]:opacity-0 [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        default: "hover:bg-neutral-300/80 hover:text-foreground",
         outline:
-          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
+          "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-neutral-300/80 hover:text-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-border))]",
       },
       size: {
         default: "h-8 text-sm",
@@ -585,7 +658,7 @@ function SidebarMenuAction({
         "peer-data-[size=sm]/menu-button:top-1",
         "peer-data-[size=default]/menu-button:top-1.5",
         "peer-data-[size=lg]/menu-button:top-2.5",
-        "group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:scale-90 group-data-[collapsible=icon]:opacity-0",
+        "group-data-[transition=closing]:pointer-events-none group-data-[transition=closing]:scale-90 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:scale-90 group-data-[collapsible=icon]:opacity-0",
         showOnHover &&
         "group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 peer-data-[active=true]/menu-button:text-sidebar-accent-foreground data-[state=open]:opacity-100 md:opacity-0",
         className
