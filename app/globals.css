@@ -27,7 +27,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 /* ============================================================
    1. DESIGN TOKENS — LIGHT THEME (default)
    ============================================================ */
@@ -486,7 +485,6 @@
   /* Use: Glass effect — CTA button inner glass, frosted panel */
 }
 
-
 /* ============================================================
    2. DARK THEME — Overrides
    ─────────────────────────────────────────────────────────────
@@ -620,7 +618,6 @@
   0 8px 10px -6px rgba(0, 0, 0, 0.25);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
-
 
 /* ============================================================
    3. TAILWIND v4 THEME REGISTRATION
@@ -932,7 +929,6 @@
   }
 }
 
-
 /* ============================================================
    4. BASE LAYER — Global Resets & Defaults
    ============================================================ */
@@ -991,7 +987,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-
 /* ============================================================
    5. TYPOGRAPHY UTILITIES
    ============================================================ */
@@ -1020,7 +1015,6 @@ body::-webkit-scrollbar {
 .text-pretty {
   text-wrap: pretty;
 }
-
 
 /* ============================================================
    5A. APPLE HIG TYPOGRAPHY SCALE — @utility definitions
@@ -1170,7 +1164,6 @@ body::-webkit-scrollbar {
   letter-spacing: -0.05em;
 }
 
-
 /* ============================================================
    6. BLEND & FILTER UTILITIES
    ============================================================ */
@@ -1182,7 +1175,6 @@ body::-webkit-scrollbar {
 .backdrop-blur-custom {
   backdrop-filter: blur(8.25px);
 }
-
 
 /* ============================================================
    7. UTILITY CLASSES
@@ -1203,7 +1195,6 @@ body::-webkit-scrollbar {
   -webkit-background-clip: text;
   background-clip: text;
 }
-
 
 /* ============================================================
    8. DESIGN SYSTEM QUICK REFERENCE

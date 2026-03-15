@@ -138,6 +138,10 @@ export const routing = defineRouting({
             sl: '/vodici/ustvari-trening',
             en: '/guides/create-workout',
         },
+        '/beta-coach-wise': {
+            sl: '/beta-coach-wise',
+            en: '/beta-coach-wise',
+        },
     },
 });
 
