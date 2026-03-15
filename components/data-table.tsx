@@ -112,6 +112,7 @@ export const schema = z.object({
   avatar: z.string().optional(),
   header: z.string(),
   type: z.string(),
+  phase: z.string().optional(),
   status: z.string(),
   target: z.string(),
 })
@@ -183,6 +184,17 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       <div className="w-32">
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
           {row.original.type}
+        </Badge>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "phase",
+    header: "Faza",
+    cell: ({ row }) => (
+      <div className="w-32">
+        <Badge variant="outline" className="px-1.5 text-muted-foreground">
+          {row.original.phase ?? "-"}
         </Badge>
       </div>
     ),
@@ -286,7 +298,11 @@ export function DataTable({
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>(() =>
+      initialData.some((item) => item.phase)
+        ? ({} as VisibilityState)
+        : ({ phase: false } as VisibilityState)
+    )
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -439,9 +455,9 @@ export function DataTable({
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                         </TableHead>
                       )
                     })}
@@ -691,7 +707,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               <Label htmlFor="header">Stranka</Label>
               <Input id="header" defaultValue={item.header} />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="type">Status</Label>
                 <Select defaultValue={item.type}>
@@ -703,6 +719,19 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     <SelectItem value="Onboarding">Onboarding</SelectItem>
                     <SelectItem value="Na pavzi">Na pavzi</SelectItem>
                     <SelectItem value="Zakljucen">Zakljucen</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="phase">Faza</Label>
+                <Select defaultValue={item.phase}>
+                  <SelectTrigger id="phase" className="w-full">
+                    <SelectValue placeholder="Izberi fazo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Bulk">Bulk</SelectItem>
+                    <SelectItem value="Maintenance">Maintenance</SelectItem>
+                    <SelectItem value="Cut">Cut</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

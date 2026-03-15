@@ -4,6 +4,7 @@
     "avatar": "/team/jernej-peternel.png",
     "header": "Luka Zupan",
     "type": "Aktiven",
+    "phase": "Bulk",
     "status": "Done",
     "target": "12.02.2026"
   },
@@ -12,6 +13,7 @@
     "avatar": "/testimonials/liam-fabian.png",
     "header": "Nina Kranjc",
     "type": "Onboarding",
+    "phase": "Maintenance",
     "status": "In Process",
     "target": "03.03.2026"
   },
@@ -20,6 +22,7 @@
     "avatar": "/testimonials/martin-zust.png",
     "header": "Marko Vidmar",
     "type": "Na pavzi",
+    "phase": "Cut",
     "status": "Done",
     "target": "18.11.2025"
   },
@@ -28,6 +31,7 @@
     "avatar": "/team/ozbolt-klemencic.png",
     "header": "Sara Kos",
     "type": "Aktiven",
+    "phase": "Maintenance",
     "status": "In Process",
     "target": "27.01.2026"
   },
@@ -36,6 +40,7 @@
     "avatar": "/testimonials/anonymous.png",
     "header": "Anja Mlakar",
     "type": "Aktiven",
+    "phase": "Cut",
     "status": "Done",
     "target": "09.12.2025"
   },
@@ -44,6 +49,7 @@
     "avatar": "/testimonials/liam-fabian.png",
     "header": "Tadej Novak",
     "type": "Zakljucen",
+    "phase": "Maintenance",
     "status": "Done",
     "target": "14.08.2025"
   },
@@ -52,6 +58,7 @@
     "avatar": "/team/jernej-peternel.png",
     "header": "Eva Puc",
     "type": "Onboarding",
+    "phase": "Bulk",
     "status": "In Process",
     "target": "05.03.2026"
   },
@@ -60,6 +67,7 @@
     "avatar": "/team/ozbolt-klemencic.png",
     "header": "Miha Hribar",
     "type": "Aktiven",
+    "phase": "Maintenance",
     "status": "Done",
     "target": "22.10.2025"
   },
@@ -68,6 +76,7 @@
     "avatar": "/testimonials/martin-zust.png",
     "header": "Petra Rozman",
     "type": "Na pavzi",
+    "phase": "Cut",
     "status": "In Process",
     "target": "11.01.2026"
   },
@@ -76,6 +85,7 @@
     "avatar": "/testimonials/anonymous.png",
     "header": "Zan Kralj",
     "type": "Aktiven",
+    "phase": "Bulk",
     "status": "Done",
     "target": "29.09.2025"
   },
@@ -84,6 +94,7 @@
     "avatar": "/testimonials/liam-fabian.png",
     "header": "Maja Tratnik",
     "type": "Aktiven",
+    "phase": "Maintenance",
     "status": "In Process",
     "target": "17.02.2026"
   },
@@ -92,6 +103,7 @@
     "avatar": "/team/jernej-peternel.png",
     "header": "Rok Bizjak",
     "type": "Zakljucen",
+    "phase": "Cut",
     "status": "Done",
     "target": "04.07.2025"
   }
