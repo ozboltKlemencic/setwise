@@ -37,7 +37,7 @@ export function NavDocuments({
   const { isMobile } = useSidebar()
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+    <SidebarGroup className="max-h-80 overflow-hidden opacity-100 transition-[max-height,opacity,padding] duration-300 ease-in-out group-data-[collapsible=icon]:max-h-0 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:py-0 group-data-[collapsible=icon]:opacity-0">
       <SidebarGroupLabel>Documents</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (

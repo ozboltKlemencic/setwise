@@ -153,7 +153,7 @@ function SidebarBrand() {
           />
           <span className="sr-only">SetWise</span>
         </div>
-        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 rounded-md opacity-0 transition-opacity duration-150 group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/70 cursor-pointer" />
+        <SidebarTrigger className="pointer-events-none absolute inset-0 m-0 size-7 rounded-md opacity-0 transition-opacity duration-150 group-hover/brand:pointer-events-auto group-hover/brand:opacity-100 hover:bg-neutral-300/80 cursor-w-resize" />
       </div>
     )
   }
@@ -163,7 +163,7 @@ function SidebarBrand() {
       <Link
         href="/"
         aria-label="SetWise home page"
-        className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer"
+        className="flex min-w-0 flex-1 items-center gap-(--space-2) "
       >
         <img
           src="/setwise-logo.png"
@@ -174,7 +174,7 @@ function SidebarBrand() {
           SetWise
         </span>
       </Link>
-      <SidebarTrigger className="ml-auto text-muted-foreground hover:text-foreground hover:bg-neutral-300/70 cursor-pointer" />
+      <SidebarTrigger className="ml-auto text-muted-foreground hover:text-foreground hover:bg-neutral-300/80 cursor-w-resize" />
     </div>
   )
 }
