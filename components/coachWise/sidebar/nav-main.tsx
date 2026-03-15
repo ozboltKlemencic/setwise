@@ -1,8 +1,14 @@
 "use client"
 
 import { type Icon } from "@tabler/icons-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
-import { isPathActive, Link, usePathname } from "@/i18n/navigation"
+import { isPathActive } from "@/i18n/navigation"
+import {
+  buildCoachWiseHref,
+  normalizeCoachWisePathname,
+} from "@/components/coachWise/sidebar/route-utils"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -22,6 +28,7 @@ export function NavMain({
   }[]
 }) {
   const pathname = usePathname()
+  const normalizedPathname = normalizeCoachWisePathname(pathname)
 
   return (
     <SidebarGroup>
@@ -31,10 +38,10 @@ export function NavMain({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
-                isActive={isPathActive(pathname, item.url, { exact: item.exact })}
+                isActive={isPathActive(normalizedPathname, item.url, { exact: item.exact })}
                 tooltip={item.title}
               >
-                <Link href={item.url as any}>
+                <Link href={buildCoachWiseHref(pathname, item.url)}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>

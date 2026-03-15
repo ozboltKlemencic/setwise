@@ -12,6 +12,7 @@ import {
   IconUsersGroup,
 } from "@tabler/icons-react"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import { NavDocuments } from "@/components/coachWise/sidebar/nav-documents"
 import { NavMain } from "@/components/coachWise/sidebar/nav-main"
@@ -24,6 +25,7 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { NavVprasalniki } from "./vprasalniki"
 
 const data = {
@@ -85,11 +87,13 @@ const data = {
 }
 
 function SidebarBrand() {
+  const pathname = usePathname()
+
   return (
     <div className="relative flex w-full items-center">
       <div className="flex w-full items-center gap-2 overflow-hidden opacity-100 transition-[opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:pointer-events-none group-data-[transition=closing]:translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:pointer-events-none group-data-[collapsible=icon]:translate-x-1 group-data-[collapsible=icon]:opacity-0">
         <Link
-          href="/"
+          href={buildCoachWiseHref(pathname, "/")}
           aria-label="SetWise home page"
           className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer overflow-hidden"
         >

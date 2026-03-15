@@ -7,6 +7,8 @@ import {
   IconTrash,
   type Icon,
 } from "@tabler/icons-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import {
   DropdownMenu,
@@ -15,7 +17,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { isPathActive, Link, usePathname } from "@/i18n/navigation"
+import { isPathActive } from "@/i18n/navigation"
+import {
+  buildCoachWiseHref,
+  normalizeCoachWisePathname,
+} from "@/components/coachWise/sidebar/route-utils"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -39,6 +45,7 @@ export function NavDocuments({
 }) {
   const { isMobile, state } = useSidebar()
   const pathname = usePathname()
+  const normalizedPathname = normalizeCoachWisePathname(pathname)
   const isCollapsed = state === "collapsed"
 
   return (
@@ -52,10 +59,10 @@ export function NavDocuments({
             <SidebarMenuItem key={item.name}>
               <SidebarMenuButton
                 asChild
-                isActive={isPathActive(pathname, item.url, { exact: item.exact })}
+                isActive={isPathActive(normalizedPathname, item.url, { exact: item.exact })}
                 tooltip={item.name}
               >
-                <Link href={item.url as any}>
+                <Link href={buildCoachWiseHref(pathname, item.url)}>
                   <item.icon />
                   <span>{item.name}</span>
                 </Link>

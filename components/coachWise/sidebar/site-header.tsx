@@ -1,6 +1,9 @@
 "use client"
 
-import { isPathActive, usePathname } from "@/i18n/navigation"
+import { usePathname } from "next/navigation"
+
+import { isPathActive } from "@/i18n/navigation"
+import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
 
 const coachWiseRoutes = [
   {
@@ -42,9 +45,10 @@ const coachWiseRoutes = [
 
 export function SiteHeader() {
   const pathname = usePathname()
+  const normalizedPathname = normalizeCoachWisePathname(pathname)
   const activeRoute =
     coachWiseRoutes.find((route) =>
-      isPathActive(pathname, route.href, { exact: route.exact })
+      isPathActive(normalizedPathname, route.href, { exact: route.exact })
     )?.title ?? "Coach Wise"
 
   return (

@@ -2,8 +2,14 @@
 
 import * as React from "react"
 import { type Icon } from "@tabler/icons-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
-import { isPathActive, Link, usePathname } from "@/i18n/navigation"
+import { isPathActive } from "@/i18n/navigation"
+import {
+  buildCoachWiseHref,
+  normalizeCoachWisePathname,
+} from "@/components/coachWise/sidebar/route-utils"
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -24,6 +30,7 @@ export function NavSecondary({
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   const pathname = usePathname()
+  const normalizedPathname = normalizeCoachWisePathname(pathname)
 
   return (
     <SidebarGroup {...props}>
@@ -33,9 +40,9 @@ export function NavSecondary({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
-                isActive={isPathActive(pathname, item.url, { exact: item.exact })}
+                isActive={isPathActive(normalizedPathname, item.url, { exact: item.exact })}
               >
-                <Link href={item.url as any}>
+                <Link href={buildCoachWiseHref(pathname, item.url)}>
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>
