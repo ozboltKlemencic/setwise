@@ -10,9 +10,11 @@ import {
   IconPill,
   IconPlus,
   IconRepeat,
+  IconSettings,
 } from "@tabler/icons-react"
 import { notFound } from "next/navigation"
 
+import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -117,17 +119,6 @@ function getNutritionFocus(phase?: string) {
   }
 }
 
-function getProgramFocus(phase?: string) {
-  switch (phase) {
-    case "Bulk":
-      return "Upper / Lower split s poudarkom na volumenu in progresiji."
-    case "Cut":
-      return "Full-body in conditioning blok za ohranjanje moci in porabe."
-    default:
-      return "Balanced split za stabilen napredek, tehniko in recovery."
-  }
-}
-
 function SectionSubHeader({
   items,
   actions,
@@ -168,7 +159,7 @@ function SectionSubHeader({
 }
 
 function SectionBody({ children }: { children: ReactNode }) {
-  return <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">{children}</div>
+  return <div className="space-y-4 bg-neutral-50">{children}</div>
 }
 
 export default async function ClientProfilePage({ params }: Props) {
@@ -220,13 +211,6 @@ export default async function ClientProfilePage({ params }: Props) {
       description: "Podpora vecernemu ritualu in boljsemu recoveryju.",
     },
   ]
-  const programBlocks = [
-    "Dan 1: Upper strength + accessory work",
-    "Dan 2: Lower strength + core",
-    "Dan 3: Upper hypertrophy",
-    "Dan 4: Lower hypertrophy + conditioning",
-  ]
-
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs defaultValue="info" className="min-w-0 w-full gap-0">
@@ -645,6 +629,13 @@ export default async function ClientProfilePage({ params }: Props) {
                 <>
                   <Button
                     variant="outline"
+                    size="icon-sm"
+                    className="border-neutral-200 bg-white text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
+                  >
+                    <IconSettings className="size-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
                     size="sm"
                     className="border-neutral-200 text-neutral-700"
                   >
@@ -987,45 +978,7 @@ export default async function ClientProfilePage({ params }: Props) {
 
             <TabsContent value="calendar" className="mt-0 space-y-0">
               <SectionBody>
-                <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Aktivni program</CardTitle>
-                      <CardDescription>
-                        {getProgramFocus(client.phase)}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {programBlocks.map((block) => (
-                        <div
-                          key={block}
-                          className="rounded-lg border p-4 text-sm text-muted-foreground"
-                        >
-                          {block}
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Coaching note</CardTitle>
-                      <CardDescription>
-                        Kaj spremljati v naslednjem programskem bloku.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3 text-sm text-muted-foreground">
-                      <div className="rounded-lg border p-4">
-                        Fokus ostane na tehniki, doslednosti in recoveryju med
-                        trening dnevi.
-                      </div>
-                      <div className="rounded-lg border p-4">
-                        Naslednja posodobitev programa je smiselna po naslednjem
-                        check-in ciklu.
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                <WorkoutCalendar />
               </SectionBody>
             </TabsContent>
 
