@@ -71,6 +71,9 @@ const profileTabTriggerClassName =
 const primaryActionButtonClassName =
   "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
 
+const sectionSubTabTriggerClassName =
+  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-3 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-4 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+
 function getInitials(name: string) {
   return name
     .split(" ")
@@ -132,36 +135,29 @@ function SectionSubHeader({
   items: {
     icon: ReactNode
     label: string
-    active?: boolean
+    value: string
   }[]
   actions?: ReactNode
 }) {
   return (
     <div className="border-b border-neutral-200 bg-neutral-50">
       <div className="flex min-h-11 flex-col gap-3  lg:flex-row lg:items-center lg:justify-between px-4">
-        <div className="min-w-0 overflow-x-auto">
-          <div className="flex w-max min-w-max items-center gap-5">
+        <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <TabsList
+            variant="line"
+            className="h-auto w-max min-w-max justify-start gap-5 rounded-none bg-transparent p-0"
+          >
             {items.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                className={cn(
-                  "inline-flex items-center gap-1.5 text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700",
-                  item.active && "font-medium text-neutral-900"
-                )}
+              <TabsTrigger
+                key={item.value}
+                value={item.value}
+                className={sectionSubTabTriggerClassName}
               >
-                <span
-                  className={cn(
-                    "text-neutral-400",
-                    item.active && "text-brand-600"
-                  )}
-                >
-                  {item.icon}
-                </span>
+                <span>{item.icon}</span>
                 <span>{item.label}</span>
-              </button>
+              </TabsTrigger>
             ))}
-          </div>
+          </TabsList>
         </div>
         {actions ? (
           <div className="flex flex-wrap items-center gap-2">{actions}</div>
@@ -169,6 +165,10 @@ function SectionSubHeader({
       </div>
     </div>
   )
+}
+
+function SectionBody({ children }: { children: ReactNode }) {
+  return <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">{children}</div>
 }
 
 export default async function ClientProfilePage({ params }: Props) {
@@ -253,498 +253,835 @@ export default async function ClientProfilePage({ params }: Props) {
         </div>
 
         <TabsContent value="info" className="mt-0 space-y-0">
-          <SectionSubHeader
-            items={[
-              {
-                icon: <IconInfoCircle className="size-4" />,
-                label: "General",
-                active: true,
-              },
-              {
-                icon: <IconChartBar className="size-4" />,
-                label: "Progress",
-              },
-              {
-                icon: <IconClipboardCheck className="size-4" />,
-                label: "Notes",
-              },
-            ]}
-            actions={
-              <>
-                <Button
-                  size="sm"
-                  className={primaryActionButtonClassName}
-                >
+          <Tabs defaultValue="general" className="gap-0">
+            <SectionSubHeader
+              items={[
+                {
+                  icon: <IconInfoCircle className="size-4" />,
+                  label: "General",
+                  value: "general",
+                },
+                {
+                  icon: <IconChartBar className="size-4" />,
+                  label: "Progress",
+                  value: "progress",
+                },
+                {
+                  icon: <IconClipboardCheck className="size-4" />,
+                  label: "Notes",
+                  value: "notes",
+                },
+              ]}
+              actions={
+                <Button size="sm" className={primaryActionButtonClassName}>
                   Edit client
                 </Button>
-              </>
-            }
-          />
-          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
-            <div className="rounded-lg border border-neutral-200 bg-white p-6 shadow-none">
-              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-4">
-                  <Avatar className="size-16">
-                    <AvatarImage src={client.avatar} alt={client.header} />
-                    <AvatarFallback>{getInitials(client.header)}</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h1 className="text-2xl font-semibold tracking-tight">
-                        {client.header}
-                      </h1>
-                      <Badge variant="outline">{client.type}</Badge>
-                      <Badge variant="secondary">
-                        {client.phase ?? "Brez faze"}
-                      </Badge>
+              }
+            />
+
+            <TabsContent value="general" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="rounded-lg border border-neutral-200 bg-white p-6 shadow-none">
+                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <div className="flex items-center gap-4">
+                      <Avatar className="size-16">
+                        <AvatarImage src={client.avatar} alt={client.header} />
+                        <AvatarFallback>{getInitials(client.header)}</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h1 className="text-2xl font-semibold tracking-tight">
+                            {client.header}
+                          </h1>
+                          <Badge variant="outline">{client.type}</Badge>
+                          <Badge variant="secondary">
+                            {client.phase ?? "Brez faze"}
+                          </Badge>
+                        </div>
+                        <p className="max-w-2xl text-sm text-muted-foreground">
+                          Profil stranke z osnovnim pregledom sodelovanja, faze in
+                          kratkih operativnih opomb za naslednje korake.
+                        </p>
+                      </div>
                     </div>
-                    <p className="max-w-2xl text-sm text-muted-foreground">
-                      Profil stranke z osnovnim pregledom sodelovanja, faze in
-                      kratkih operativnih opomb za naslednje korake.
-                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card>
-                <CardHeader className="gap-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <IconClipboardCheck className="size-4" />
-                    Check in
-                  </div>
-                  <CardTitle>{client.status}</CardTitle>
-                  <CardDescription>
-                    Trenutni status zadnjega pregleda.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader className="gap-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <IconChartBar className="size-4" />
-                    Faza
-                  </div>
-                  <CardTitle>{client.phase ?? "Brez faze"}</CardTitle>
-                  <CardDescription>
-                    Aktualna faza sodelovanja s stranko.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card>
-                <CardHeader className="gap-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <IconCalendarEvent className="size-4" />
-                    Pridruzil
-                  </div>
-                  <CardTitle>{client.target}</CardTitle>
-                  <CardDescription>
-                    Datum vstopa v coach-wise proces.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </div>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader className="gap-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <IconClipboardCheck className="size-4" />
+                        Check in
+                      </div>
+                      <CardTitle>{client.status}</CardTitle>
+                      <CardDescription>
+                        Trenutni status zadnjega pregleda.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader className="gap-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <IconChartBar className="size-4" />
+                        Faza
+                      </div>
+                      <CardTitle>{client.phase ?? "Brez faze"}</CardTitle>
+                      <CardDescription>
+                        Aktualna faza sodelovanja s stranko.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader className="gap-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <IconCalendarEvent className="size-4" />
+                        Pridruzil
+                      </div>
+                      <CardTitle>{client.target}</CardTitle>
+                      <CardDescription>
+                        Datum vstopa v coach-wise proces.
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </div>
 
-            <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Osnovni pregled</CardTitle>
-                  <CardDescription>
-                    Najpomembnejse informacije o stranki na enem mestu.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-lg border p-4">
-                    <div className="text-sm text-muted-foreground">
-                      Ime stranke
-                    </div>
-                    <div className="mt-2 font-medium">{client.header}</div>
-                  </div>
-                  <div className="rounded-lg border p-4">
-                    <div className="text-sm text-muted-foreground">Status</div>
-                    <div className="mt-2 font-medium">{client.type}</div>
-                  </div>
-                  <div className="rounded-lg border p-4">
-                    <div className="text-sm text-muted-foreground">
-                      Check in
-                    </div>
-                    <div className="mt-2 font-medium">{client.status}</div>
-                  </div>
-                  <div className="rounded-lg border p-4">
-                    <div className="text-sm text-muted-foreground">Faza</div>
-                    <div className="mt-2 font-medium">
-                      {client.phase ?? "-"}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Osnovni pregled</CardTitle>
+                      <CardDescription>
+                        Najpomembnejse informacije o stranki na enem mestu.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-lg border p-4">
+                        <div className="text-sm text-muted-foreground">
+                          Ime stranke
+                        </div>
+                        <div className="mt-2 font-medium">{client.header}</div>
+                      </div>
+                      <div className="rounded-lg border p-4">
+                        <div className="text-sm text-muted-foreground">Status</div>
+                        <div className="mt-2 font-medium">{client.type}</div>
+                      </div>
+                      <div className="rounded-lg border p-4">
+                        <div className="text-sm text-muted-foreground">
+                          Check in
+                        </div>
+                        <div className="mt-2 font-medium">{client.status}</div>
+                      </div>
+                      <div className="rounded-lg border p-4">
+                        <div className="text-sm text-muted-foreground">Faza</div>
+                        <div className="mt-2 font-medium">
+                          {client.phase ?? "-"}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Naslednji koraki</CardTitle>
-                  <CardDescription>
-                    Predlog za hiter operativen pregled stranke.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm text-muted-foreground">
-                  <div className="rounded-lg border p-4">
-                    Preglej zadnji check-in in preveri, ali je potreben
-                    follow-up.
-                  </div>
-                  <div className="rounded-lg border p-4">
-                    Posodobi fazo sodelovanja glede na napredek in cilje
-                    stranke.
-                  </div>
-                  <div className="rounded-lg border p-4">
-                    {getPhaseFocus(client.phase)}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Naslednji koraki</CardTitle>
+                      <CardDescription>
+                        Predlog za hiter operativen pregled stranke.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm text-muted-foreground">
+                      <div className="rounded-lg border p-4">
+                        Preglej zadnji check-in in preveri, ali je potreben
+                        follow-up.
+                      </div>
+                      <div className="rounded-lg border p-4">
+                        Posodobi fazo sodelovanja glede na napredek in cilje
+                        stranke.
+                      </div>
+                      <div className="rounded-lg border p-4">
+                        {getPhaseFocus(client.phase)}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="progress" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Momentum</CardDescription>
+                      <CardTitle>Stabilen</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Zadnja dva cikla kažeta dober odziv na trenutni plan.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Recovery</CardDescription>
+                      <CardTitle>7.3 / 10</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Spanje in hidracija ostajata glavni ročici za naslednji korak.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Adherence</CardDescription>
+                      <CardTitle>86%</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Dobra konsistenca pri treningu, manj nihanja pri vikend rutini.
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Fazni napredek</CardTitle>
+                    <CardDescription>
+                      Kratek povzetek stanja glede na trenutno fazo sodelovanja.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid gap-3 md:grid-cols-2">
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      {getPhaseFocus(client.phase)}
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Naslednja smiselna točka je primerjava zadnjega check-ina s
+                      trening logom in energijo čez teden.
+                    </div>
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="notes" className="mt-0 space-y-0">
+              <SectionBody>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Coach notes</CardTitle>
+                    <CardDescription>
+                      Operativne opombe za naslednji stik s stranko.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-muted-foreground">
+                    <div className="rounded-lg border p-4">
+                      Stranka dobro reagira na jasen tedenski ritem in kratke
+                      actionable korake.
+                    </div>
+                    <div className="rounded-lg border p-4">
+                      Pri naslednjem klicu preveri spanec, stres in izvedbo obrokov
+                      v bolj napornih dneh.
+                    </div>
+                    <div className="rounded-lg border p-4">
+                      Če ostane ritem stabilen, lahko naslednji blok dobi malo več
+                      volumna ali višji prehranski target.
+                    </div>
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
         <TabsContent value="habbits" className="mt-0 space-y-0">
-          <SectionSubHeader
-            items={[
-              {
-                icon: <IconRepeat className="size-4" />,
-                label: "Daily habits",
-                active: true,
-              },
-              {
-                icon: <IconChartBar className="size-4" />,
-                label: "Streaks",
-              },
-              {
-                icon: <IconClipboardCheck className="size-4" />,
-                label: "Weekly score",
-              },
-            ]}
-            actions={
-              <Button
-                size="sm"
-                className={primaryActionButtonClassName}
-              >
-                <IconPlus className="size-4" />
-                Add habit
-              </Button>
-            }
-          />
-          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              {habits.map((habit) => (
-                <Card key={habit.title}>
+          <Tabs defaultValue="daily-habits" className="gap-0">
+            <SectionSubHeader
+              items={[
+                {
+                  icon: <IconRepeat className="size-4" />,
+                  label: "Daily habits",
+                  value: "daily-habits",
+                },
+                {
+                  icon: <IconChartBar className="size-4" />,
+                  label: "Streaks",
+                  value: "streaks",
+                },
+                {
+                  icon: <IconClipboardCheck className="size-4" />,
+                  label: "Weekly score",
+                  value: "weekly-score",
+                },
+              ]}
+              actions={
+                <Button size="sm" className={primaryActionButtonClassName}>
+                  <IconPlus className="size-4" />
+                  Add habit
+                </Button>
+              }
+            />
+
+            <TabsContent value="daily-habits" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {habits.map((habit) => (
+                    <Card key={habit.title}>
+                      <CardHeader>
+                        <CardDescription>{habit.title}</CardDescription>
+                        <CardTitle>{habit.value}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="text-sm text-muted-foreground">
+                        {habit.description}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <Card>
                   <CardHeader>
-                    <CardDescription>{habit.title}</CardDescription>
-                    <CardTitle>{habit.value}</CardTitle>
+                    <CardTitle>Rutina tedna</CardTitle>
+                    <CardDescription>
+                      Kratek pregled navad, ki jih je smiselno spremljati vsak
+                      teden.
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    {habit.description}
+                  <CardContent className="grid gap-3 md:grid-cols-2">
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Jutranji check: voda, kratka mobilnost, 10 minut hoje.
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Vecerni check: spanje, magnezij, priprava obrokov za naslednji
+                      dan.
+                    </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+              </SectionBody>
+            </TabsContent>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Rutina tedna</CardTitle>
-                <CardDescription>
-                  Kratek pregled navad, ki jih je smiselno spremljati vsak
-                  teden.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid gap-3 md:grid-cols-2">
-                <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                  Jutranji check: voda, kratka mobilnost, 10 minut hoje.
+            <TabsContent value="streaks" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Sleep streak</CardDescription>
+                      <CardTitle>12 dni</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Več kot 7 ur spanja v zadnjih dveh tednih.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Hydration streak</CardDescription>
+                      <CardTitle>9 dni</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Dnevni cilj tekočine je dosežen skoraj vsak dan.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Steps streak</CardDescription>
+                      <CardTitle>6 dni</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Gibanje je najboljše na trening dneve, vikendi še nihajo.
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                  Vecerni check: spanje, magnezij, priprava obrokov za naslednji
-                  dan.
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="weekly-score" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Overall score</CardDescription>
+                      <CardTitle>8.4 / 10</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Consistency</CardDescription>
+                      <CardTitle>84%</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Next focus</CardDescription>
+                      <CardTitle>Weekend rhythm</CardTitle>
+                    </CardHeader>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Tedenski povzetek</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    Navade so dobre med delovnikom. Največ rezerve je v sobotnem in
+                    nedeljskem ritmu prehrane, spanja in korakov.
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
         <TabsContent value="checkins" className="mt-0 space-y-0">
-          <SectionSubHeader
-            items={[
-              {
-                icon: <IconClipboardCheck className="size-4" />,
-                label: "Overview",
-                active: true,
-              },
-              {
-                icon: <IconChartBar className="size-4" />,
-                label: "History",
-              },
-              {
-                icon: <IconInfoCircle className="size-4" />,
-                label: "Pending",
-              },
-            ]}
-            actions={
-              <>
-                <Button variant="outline" size="sm" className="border-neutral-200 text-neutral-700">
-                  Last 30 days
-                  <IconChevronDown className="size-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  className={primaryActionButtonClassName}
-                >
-                  <IconPlus className="size-4" />
-                  New check-in
-                </Button>
-              </>
-            }
-          />
-          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardDescription>Status</CardDescription>
-                  <CardTitle>{client.status}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  Zadnji check-in je trenutno oznacen kot {client.status}.
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardDescription>Ritem</CardDescription>
-                  <CardTitle>1x tedensko</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  Priporocen termin je vsak ponedeljek dopoldne.
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardDescription>Glavni fokus</CardDescription>
-                  <CardTitle>{client.phase ?? "Maintenance"}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  Spremljaj energijo, izvedbo treninga in doslednost prehrane.
-                </CardContent>
-              </Card>
-            </div>
+          <Tabs defaultValue="overview" className="gap-0">
+            <SectionSubHeader
+              items={[
+                {
+                  icon: <IconClipboardCheck className="size-4" />,
+                  label: "Overview",
+                  value: "overview",
+                },
+                {
+                  icon: <IconChartBar className="size-4" />,
+                  label: "History",
+                  value: "history",
+                },
+                {
+                  icon: <IconInfoCircle className="size-4" />,
+                  label: "Pending",
+                  value: "pending",
+                },
+              ]}
+              actions={
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-neutral-200 text-neutral-700"
+                  >
+                    Last 30 days
+                    <IconChevronDown className="size-4" />
+                  </Button>
+                  <Button size="sm" className={primaryActionButtonClassName}>
+                    <IconPlus className="size-4" />
+                    New check-in
+                  </Button>
+                </>
+              }
+            />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Zadnje opombe</CardTitle>
-                <CardDescription>
-                  Povzetek zadnjih coaching signalov in follow-up tock.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                  Napredek je stabilen, potrebno je samo malo vec konsistence
-                  pri spanju in hidraciji.
+            <TabsContent value="overview" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Status</CardDescription>
+                      <CardTitle>{client.status}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Zadnji check-in je trenutno oznacen kot {client.status}.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Ritem</CardDescription>
+                      <CardTitle>1x tedensko</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Priporocen termin je vsak ponedeljek dopoldne.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Glavni fokus</CardDescription>
+                      <CardTitle>{client.phase ?? "Maintenance"}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Spremljaj energijo, izvedbo treninga in doslednost prehrane.
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                  Naslednji check-in naj potrdi odziv na trenutni trening blok in
-                  prehranski setup.
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Zadnje opombe</CardTitle>
+                    <CardDescription>
+                      Povzetek zadnjih coaching signalov in follow-up tock.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Napredek je stabilen, potrebno je samo malo vec konsistence
+                      pri spanju in hidraciji.
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Naslednji check-in naj potrdi odziv na trenutni trening blok in
+                      prehranski setup.
+                    </div>
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="history" className="mt-0 space-y-0">
+              <SectionBody>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Check-in history</CardTitle>
+                    <CardDescription>
+                      Zadnji trije vnosi in ključni poudarki.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      11 Mar: energija bolj stabilna, spanec izboljšan, trening dober.
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      04 Mar: prehrana konsistentna, hidracija nekoliko pod planom.
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      26 Feb: dober začetek cikla, potreben manjši popravek vikend rutine.
+                    </div>
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="pending" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Naslednji rok</CardDescription>
+                      <CardTitle>Ponedeljek</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Open items</CardDescription>
+                      <CardTitle>3</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Priority</CardDescription>
+                      <CardTitle>Sleep + nutrition</CardTitle>
+                    </CardHeader>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </SectionBody>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
         <TabsContent value="nutrition" className="mt-0 space-y-0">
-          <SectionSubHeader
-            items={[
-              {
-                icon: <IconChefHat className="size-4" />,
-                label: "Meal Plans",
-                active: true,
-              },
-              {
-                icon: <IconClipboardCheck className="size-4" />,
-                label: "Nutrition Logger",
-              },
-            ]}
-            actions={
-              <Button
-                size="sm"
-                className={primaryActionButtonClassName}
-              >
-                <IconPlus className="size-4" />
-                Add Meal Plan
-              </Button>
-            }
-          />
-          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardDescription>Dnevni cilj</CardDescription>
-                  <CardTitle>{nutrition.calories}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  Nastavljeno glede na trenutno fazo in tempo napredka.
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardDescription>Makroji</CardDescription>
-                  <CardTitle>{nutrition.macros}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  Razmerje podpira trening, recovery in dober apetit.
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardDescription>Meal flow</CardDescription>
-                  <CardTitle>4 obroki / dan</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  2 vecja obroka, 1 pre-workout in 1 vecerni recovery meal.
-                </CardContent>
-              </Card>
-            </div>
+          <Tabs defaultValue="meal-plans" className="gap-0">
+            <SectionSubHeader
+              items={[
+                {
+                  icon: <IconChefHat className="size-4" />,
+                  label: "Meal Plans",
+                  value: "meal-plans",
+                },
+                {
+                  icon: <IconClipboardCheck className="size-4" />,
+                  label: "Nutrition Logger",
+                  value: "nutrition-logger",
+                },
+              ]}
+              actions={
+                <Button size="sm" className={primaryActionButtonClassName}>
+                  <IconPlus className="size-4" />
+                  Add Meal Plan
+                </Button>
+              }
+            />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Nutrition note</CardTitle>
-                <CardDescription>
-                  Trenutni prehranski fokus za to fazo.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">
-                {nutrition.note}
-              </CardContent>
-            </Card>
-          </div>
+            <TabsContent value="meal-plans" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Dnevni cilj</CardDescription>
+                      <CardTitle>{nutrition.calories}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Nastavljeno glede na trenutno fazo in tempo napredka.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Makroji</CardDescription>
+                      <CardTitle>{nutrition.macros}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Razmerje podpira trening, recovery in dober apetit.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Meal flow</CardDescription>
+                      <CardTitle>4 obroki / dan</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      2 vecja obroka, 1 pre-workout in 1 vecerni recovery meal.
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Nutrition note</CardTitle>
+                    <CardDescription>
+                      Trenutni prehranski fokus za to fazo.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    {nutrition.note}
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="nutrition-logger" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Logged days</CardDescription>
+                      <CardTitle>11 / 14</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Protein target</CardDescription>
+                      <CardTitle>92%</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Hydration</CardDescription>
+                      <CardTitle>2.4L avg</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Logger note</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    Logging je dovolj dober za coaching odločitve. Največ odstopanja
+                    nastane pri vikend obrokih in večernih snackih.
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
         <TabsContent value="supplements" className="mt-0 space-y-0">
-          <SectionSubHeader
-            items={[
-              {
-                icon: <IconPill className="size-4" />,
-                label: "Stack",
-                active: true,
-              },
-              {
-                icon: <IconCalendarEvent className="size-4" />,
-                label: "Schedule",
-              },
-            ]}
-            actions={
-              <Button
-                size="sm"
-                className={primaryActionButtonClassName}
-              >
-                <IconPlus className="size-4" />
-                Add Supplement
-              </Button>
-            }
-          />
-          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
-            <div className="grid gap-4 md:grid-cols-3">
-              {supplements.map((item) => (
-                <Card key={item.title}>
+          <Tabs defaultValue="stack" className="gap-0">
+            <SectionSubHeader
+              items={[
+                {
+                  icon: <IconPill className="size-4" />,
+                  label: "Stack",
+                  value: "stack",
+                },
+                {
+                  icon: <IconCalendarEvent className="size-4" />,
+                  label: "Schedule",
+                  value: "schedule",
+                },
+              ]}
+              actions={
+                <Button size="sm" className={primaryActionButtonClassName}>
+                  <IconPlus className="size-4" />
+                  Add Supplement
+                </Button>
+              }
+            />
+
+            <TabsContent value="stack" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {supplements.map((item) => (
+                    <Card key={item.title}>
+                      <CardHeader>
+                        <CardDescription>{item.timing}</CardDescription>
+                        <CardTitle>{item.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="text-sm text-muted-foreground">
+                        {item.description}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <Card>
                   <CardHeader>
-                    <CardDescription>{item.timing}</CardDescription>
-                    <CardTitle>{item.title}</CardTitle>
+                    <CardTitle>Opomba</CardTitle>
+                    <CardDescription>
+                      Suplementacija naj ostane preprosta in dosledna.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="text-sm text-muted-foreground">
-                    {item.description}
+                    Prioriteta je rutina, ne kompleksnost. Dodaj samo stvari, ki jih
+                    stranka res redno uporablja.
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+              </SectionBody>
+            </TabsContent>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Opomba</CardTitle>
-                <CardDescription>
-                  Suplementacija naj ostane preprosta in dosledna.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="text-sm text-muted-foreground">
-                Prioriteta je rutina, ne kompleksnost. Dodaj samo stvari, ki jih
-                stranka res redno uporablja.
-              </CardContent>
-            </Card>
-          </div>
+            <TabsContent value="schedule" className="mt-0 space-y-0">
+              <SectionBody>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Dnevni razpored</CardTitle>
+                    <CardDescription>
+                      Enostaven timing za boljšo doslednost.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="grid gap-3 md:grid-cols-3">
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Jutro: kreatin + omega 3
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Kosilo: omega 3 in obrok z dovolj beljakovin
+                    </div>
+                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                      Večer: magnezij in priprava na spanec
+                    </div>
+                  </CardContent>
+                </Card>
+              </SectionBody>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
 
         <TabsContent value="programs" className="mt-0 space-y-0">
-          <SectionSubHeader
-            items={[
-              {
-                icon: <IconCalendarEvent className="size-4" />,
-                label: "Calendar",
-                active: true,
-              },
-              {
-                icon: <IconChartBar className="size-4" />,
-                label: "Exercise History",
-              },
-              {
-                icon: <IconClipboardCheck className="size-4" />,
-                label: "Completed Workouts",
-              },
-            ]}
-            actions={
-              <>
-                <Button variant="outline" size="sm" className="border-neutral-200 text-neutral-700">
-                  Periodise Planner
-                </Button>
-                <Button
-                  size="sm"
-                  className={primaryActionButtonClassName}
-                >
-                  <IconPlus className="size-4" />
-                  Import Calendar
-                </Button>
-              </>
-            }
-          />
-          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
-            <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Aktivni program</CardTitle>
-                  <CardDescription>{getProgramFocus(client.phase)}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {programBlocks.map((block) => (
-                    <div
-                      key={block}
-                      className="rounded-lg border p-4 text-sm text-muted-foreground"
-                    >
-                      {block}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+          <Tabs defaultValue="calendar" className="gap-0">
+            <SectionSubHeader
+              items={[
+                {
+                  icon: <IconCalendarEvent className="size-4" />,
+                  label: "Calendar",
+                  value: "calendar",
+                },
+                {
+                  icon: <IconChartBar className="size-4" />,
+                  label: "Exercise History",
+                  value: "exercise-history",
+                },
+                {
+                  icon: <IconClipboardCheck className="size-4" />,
+                  label: "Completed Workouts",
+                  value: "completed-workouts",
+                },
+              ]}
+              actions={
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-neutral-200 text-neutral-700"
+                  >
+                    Periodise Planner
+                  </Button>
+                  <Button size="sm" className={primaryActionButtonClassName}>
+                    <IconPlus className="size-4" />
+                    Import Calendar
+                  </Button>
+                </>
+              }
+            />
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Coaching note</CardTitle>
-                  <CardDescription>
-                    Kaj spremljati v naslednjem programskem bloku.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm text-muted-foreground">
-                  <div className="rounded-lg border p-4">
-                    Fokus ostane na tehniki, doslednosti in recoveryju med
-                    trening dnevi.
-                  </div>
-                  <div className="rounded-lg border p-4">
-                    Naslednja posodobitev programa je smiselna po naslednjem
-                    check-in ciklu.
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+            <TabsContent value="calendar" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Aktivni program</CardTitle>
+                      <CardDescription>
+                        {getProgramFocus(client.phase)}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {programBlocks.map((block) => (
+                        <div
+                          key={block}
+                          className="rounded-lg border p-4 text-sm text-muted-foreground"
+                        >
+                          {block}
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Coaching note</CardTitle>
+                      <CardDescription>
+                        Kaj spremljati v naslednjem programskem bloku.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3 text-sm text-muted-foreground">
+                      <div className="rounded-lg border p-4">
+                        Fokus ostane na tehniki, doslednosti in recoveryju med
+                        trening dnevi.
+                      </div>
+                      <div className="rounded-lg border p-4">
+                        Naslednja posodobitev programa je smiselna po naslednjem
+                        check-in ciklu.
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="exercise-history" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Top lift</CardDescription>
+                      <CardTitle>Bench press</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm text-muted-foreground">
+                      Zadnji cikel je pokazal lepo tehnično stabilnost in napredek.
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Most repeated</CardDescription>
+                      <CardTitle>RDL</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Focus block</CardDescription>
+                      <CardTitle>Upper strength</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </div>
+              </SectionBody>
+            </TabsContent>
+
+            <TabsContent value="completed-workouts" className="mt-0 space-y-0">
+              <SectionBody>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Completed</CardDescription>
+                      <CardTitle>14 workouts</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Completion rate</CardDescription>
+                      <CardTitle>88%</CardTitle>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardDescription>Missed sessions</CardDescription>
+                      <CardTitle>2</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </div>
+              </SectionBody>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
       </Tabs>
     </section>
