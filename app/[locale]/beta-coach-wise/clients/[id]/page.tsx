@@ -104,27 +104,29 @@ function SectionSubHeader({
   return (
     <div className="border-b border-neutral-200 bg-white">
       <div className="flex min-h-11 flex-col gap-3 px-4 py-2 lg:flex-row lg:items-center lg:justify-between lg:px-6">
-        <div className="flex flex-wrap items-center gap-5">
-          {items.map((item) => (
-            <button
-              key={item.label}
-              type="button"
-              className={cn(
-                "inline-flex items-center gap-1.5 text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700",
-                item.active && "font-medium text-neutral-900"
-              )}
-            >
-              <span
+        <div className="min-w-0 overflow-x-auto">
+          <div className="flex w-max min-w-max items-center gap-5">
+            {items.map((item) => (
+              <button
+                key={item.label}
+                type="button"
                 className={cn(
-                  "text-neutral-400",
-                  item.active && "text-indigo-600"
+                  "inline-flex items-center gap-1.5 text-sm font-normal text-neutral-500 transition-colors hover:text-neutral-700",
+                  item.active && "font-medium text-neutral-900"
                 )}
               >
-                {item.icon}
-              </span>
-              <span>{item.label}</span>
-            </button>
-          ))}
+                <span
+                  className={cn(
+                    "text-neutral-400",
+                    item.active && "text-indigo-600"
+                  )}
+                >
+                  {item.icon}
+                </span>
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
         {actions ? (
           <div className="flex flex-wrap items-center gap-2">{actions}</div>
@@ -191,70 +193,72 @@ export default async function ClientProfilePage({ params }: Props) {
   ]
 
   return (
-    <section className="-mx-4 -mt-4 bg-white lg:-mx-6 md:-mt-6">
-      <Tabs defaultValue="info" className="w-full gap-0">
+    <section className="min-w-0 bg-white">
+      <Tabs defaultValue="info" className="min-w-0 w-full gap-0">
         <div className="border-b border-neutral-200 bg-white">
-          <div className="flex items-center justify-between gap-4 px-4 lg:px-6">
-            <TabsList
-              variant="line"
-              className="h-11 flex-1 justify-start gap-0 overflow-x-auto rounded-none bg-transparent p-0"
-            >
-              <TabsTrigger
-                value="info"
-                className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 first:pl-0 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+          <div className="flex min-w-0 items-center justify-between gap-4 px-4 lg:px-6">
+            <div className="min-w-0 flex-1 overflow-x-auto">
+              <TabsList
+                variant="line"
+                className="h-11 w-max min-w-max justify-start gap-0 rounded-none bg-transparent p-0"
               >
-                <IconInfoCircle className="size-4" />
-                Info
-              </TabsTrigger>
-              <TabsTrigger
-                value="habbits"
-                className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-              >
-                <IconRepeat className="size-4" />
-                Habbits
-              </TabsTrigger>
-              <TabsTrigger
-                value="checkins"
-                className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-              >
-                <IconClipboardCheck className="size-4" />
-                Check-ins
-              </TabsTrigger>
-              <TabsTrigger
-                value="nutrition"
-                className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-              >
-                <IconChefHat className="size-4" />
-                Nutrition
-              </TabsTrigger>
-              <TabsTrigger
-                value="supplements"
-                className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-              >
-                <IconPill className="size-4" />
-                Supplements
-              </TabsTrigger>
-              <TabsTrigger
-                value="programs"
-                className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-              >
-                <IconClipboardList className="size-4" />
-                Programs
-              </TabsTrigger>
-            </TabsList>
+                <TabsTrigger
+                  value="info"
+                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 first:pl-0 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+                >
+                  <IconInfoCircle className="size-4" />
+                  Info
+                </TabsTrigger>
+                <TabsTrigger
+                  value="habbits"
+                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+                >
+                  <IconRepeat className="size-4" />
+                  Habbits
+                </TabsTrigger>
+                <TabsTrigger
+                  value="checkins"
+                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+                >
+                  <IconClipboardCheck className="size-4" />
+                  Check-ins
+                </TabsTrigger>
+                <TabsTrigger
+                  value="nutrition"
+                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+                >
+                  <IconChefHat className="size-4" />
+                  Nutrition
+                </TabsTrigger>
+                <TabsTrigger
+                  value="supplements"
+                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+                >
+                  <IconPill className="size-4" />
+                  Supplements
+                </TabsTrigger>
+                <TabsTrigger
+                  value="programs"
+                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 pr-6 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
+                >
+                  <IconClipboardList className="size-4" />
+                  Programs
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <div className="hidden items-center gap-2 sm:flex">
               <button
                 type="button"
                 aria-label="Search workspace"
-                className="inline-flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-neutral-700"
+                className="shrink-0 inline-flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-neutral-700"
               >
                 <IconSearch className="size-4" />
               </button>
               <button
                 type="button"
                 aria-label="Open layout tools"
-                className="inline-flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-neutral-700"
+                className="shrink-0 inline-flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-neutral-700"
               >
                 <IconLayoutColumns className="size-4" />
               </button>
