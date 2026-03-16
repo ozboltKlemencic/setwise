@@ -1,6 +1,5 @@
 import type { ReactNode } from "react"
 import {
-  IconArrowLeft,
   IconCalendarEvent,
   IconChartBar,
   IconChefHat,
@@ -8,15 +7,12 @@ import {
   IconClipboardCheck,
   IconClipboardList,
   IconInfoCircle,
-  IconLayoutColumns,
   IconPill,
   IconPlus,
   IconRepeat,
-  IconSearch,
 } from "@tabler/icons-react"
 import { notFound } from "next/navigation"
 
-import { Link } from "@/i18n/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -35,6 +31,45 @@ import data from "../../data.json"
 type Props = {
   params: Promise<{ locale: string; id: string }>
 }
+
+const profileTabs = [
+  {
+    label: "Info",
+    value: "info",
+    icon: <IconInfoCircle className="size-4" />,
+  },
+  {
+    label: "Habbits",
+    value: "habbits",
+    icon: <IconRepeat className="size-4" />,
+  },
+  {
+    label: "Check-ins",
+    value: "checkins",
+    icon: <IconClipboardCheck className="size-4" />,
+  },
+  {
+    label: "Nutrition",
+    value: "nutrition",
+    icon: <IconChefHat className="size-4" />,
+  },
+  {
+    label: "Supplements",
+    value: "supplements",
+    icon: <IconPill className="size-4" />,
+  },
+  {
+    label: "Programs",
+    value: "programs",
+    icon: <IconClipboardList className="size-4" />,
+  },
+] as const
+
+const profileTabTriggerClassName =
+  "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-4 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
+
+const primaryActionButtonClassName =
+  "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
 
 function getInitials(name: string) {
   return name
@@ -103,7 +138,7 @@ function SectionSubHeader({
 }) {
   return (
     <div className="border-b border-neutral-200 bg-neutral-50">
-      <div className="flex min-h-11 flex-col gap-3 px-4 py-2 lg:flex-row lg:items-center lg:justify-between lg:px-6">
+      <div className="flex min-h-11 flex-col gap-3  lg:flex-row lg:items-center lg:justify-between px-4">
         <div className="min-w-0 overflow-x-auto">
           <div className="flex w-max min-w-max items-center gap-5">
             {items.map((item) => (
@@ -118,7 +153,7 @@ function SectionSubHeader({
                 <span
                   className={cn(
                     "text-neutral-400",
-                    item.active && "text-indigo-600"
+                    item.active && "text-brand-600"
                   )}
                 >
                   {item.icon}
@@ -196,72 +231,23 @@ export default async function ClientProfilePage({ params }: Props) {
     <section className="min-w-0 bg-neutral-50">
       <Tabs defaultValue="info" className="min-w-0 w-full gap-0">
         <div className="border-b border-neutral-200 bg-neutral-50">
-          <div className="flex min-w-0 items-center justify-between gap-4 px-4 lg:px-6">
+          <div className="flex min-w-0 items-center">
             <div className="min-w-0 flex-1 overflow-x-auto">
               <TabsList
                 variant="line"
-                className="h-16 w-max min-w-max justify-start gap-0 rounded-none bg-transparent p-0"
+                className=" w-max min-w-full justify-start gap-0 rounded-none bg-transparent p-0"
               >
-                <TabsTrigger
-                  value="info"
-                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 first:pl-0 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-                >
-                  <IconInfoCircle className="size-4" />
-                  Info
-                </TabsTrigger>
-                <TabsTrigger
-                  value="habbits"
-                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-                >
-                  <IconRepeat className="size-4" />
-                  Habbits
-                </TabsTrigger>
-                <TabsTrigger
-                  value="checkins"
-                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-                >
-                  <IconClipboardCheck className="size-4" />
-                  Check-ins
-                </TabsTrigger>
-                <TabsTrigger
-                  value="nutrition"
-                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-                >
-                  <IconChefHat className="size-4" />
-                  Nutrition
-                </TabsTrigger>
-                <TabsTrigger
-                  value="supplements"
-                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-                >
-                  <IconPill className="size-4" />
-                  Supplements
-                </TabsTrigger>
-                <TabsTrigger
-                  value="programs"
-                  className="h-11 flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent px-4 pr-6 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-indigo-600 data-[state=active]:bg-transparent data-[state=active]:font-semibold data-[state=active]:text-neutral-900 data-[state=active]:shadow-none data-[state=active]:[&_svg]:text-indigo-600 [&_svg]:size-4 [&_svg]:text-neutral-400"
-                >
-                  <IconClipboardList className="size-4" />
-                  Programs
-                </TabsTrigger>
+                {profileTabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    className={profileTabTriggerClassName}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
               </TabsList>
-            </div>
-
-            <div className="hidden items-center gap-2 sm:flex">
-              <button
-                type="button"
-                aria-label="Search workspace"
-                className="shrink-0 inline-flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-neutral-700"
-              >
-                <IconSearch className="size-4" />
-              </button>
-              <button
-                type="button"
-                aria-label="Open layout tools"
-                className="shrink-0 inline-flex size-8 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-neutral-700"
-              >
-                <IconLayoutColumns className="size-4" />
-              </button>
             </div>
           </div>
         </div>
@@ -286,19 +272,8 @@ export default async function ClientProfilePage({ params }: Props) {
             actions={
               <>
                 <Button
-                  asChild
-                  variant="outline"
                   size="sm"
-                  className="border-neutral-200 text-neutral-700"
-                >
-                  <Link href="/beta-coach-wise/clients">
-                    <IconArrowLeft className="size-4" />
-                    Nazaj
-                  </Link>
-                </Button>
-                <Button
-                  size="sm"
-                  className="bg-indigo-600 text-white hover:bg-indigo-700"
+                  className={primaryActionButtonClassName}
                 >
                   Edit client
                 </Button>
@@ -450,7 +425,7 @@ export default async function ClientProfilePage({ params }: Props) {
             actions={
               <Button
                 size="sm"
-                className="bg-indigo-600 text-white hover:bg-indigo-700"
+                className={primaryActionButtonClassName}
               >
                 <IconPlus className="size-4" />
                 Add habit
@@ -518,7 +493,7 @@ export default async function ClientProfilePage({ params }: Props) {
                 </Button>
                 <Button
                   size="sm"
-                  className="bg-indigo-600 text-white hover:bg-indigo-700"
+                  className={primaryActionButtonClassName}
                 >
                   <IconPlus className="size-4" />
                   New check-in
@@ -594,7 +569,7 @@ export default async function ClientProfilePage({ params }: Props) {
             actions={
               <Button
                 size="sm"
-                className="bg-indigo-600 text-white hover:bg-indigo-700"
+                className={primaryActionButtonClassName}
               >
                 <IconPlus className="size-4" />
                 Add Meal Plan
@@ -662,7 +637,7 @@ export default async function ClientProfilePage({ params }: Props) {
             actions={
               <Button
                 size="sm"
-                className="bg-indigo-600 text-white hover:bg-indigo-700"
+                className={primaryActionButtonClassName}
               >
                 <IconPlus className="size-4" />
                 Add Supplement
@@ -723,7 +698,7 @@ export default async function ClientProfilePage({ params }: Props) {
                 </Button>
                 <Button
                   size="sm"
-                  className="bg-indigo-600 text-white hover:bg-indigo-700"
+                  className={primaryActionButtonClassName}
                 >
                   <IconPlus className="size-4" />
                   Import Calendar
