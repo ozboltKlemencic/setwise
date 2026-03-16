@@ -223,7 +223,7 @@ export function WorkoutCalendar() {
   }
 
   return (
-    <div className="overflow-hidden  bg-neutral-50">
+    <div className="overflow-hidden border-b border-neutral-200 bg-neutral-50">
       <div className="flex flex-col gap-3 border-b border-neutral-200 bg-neutral-50 px-4 py-3 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <Button
@@ -261,17 +261,17 @@ export function WorkoutCalendar() {
           </div>
         </div>
 
-        <div className="inline-flex items-center rounded-md border border-neutral-200 bg-neutral-50 p-1">
+        <div className="inline-flex h-8 shrink-0 flex-nowrap items-stretch rounded-md border border-neutral-200 bg-white p-0">
           {(["week", "month"] as const).map((mode) => (
             <button
               key={mode}
               type="button"
               onClick={() => setViewMode(mode)}
               className={cn(
-                "rounded-md px-3 py-1.5 text-xs font-medium capitalize transition-colors",
+                "inline-flex h-full min-w-12 items-center justify-center whitespace-nowrap rounded-none border border-transparent px-3 text-xs font-medium capitalize transition-colors first:rounded-l-[5px] last:rounded-r-[5px]",
                 viewMode === mode
-                  ? "bg-brand-500 text-white"
-                  : "text-neutral-500 hover:text-neutral-700"
+                  ? "border-brand-500 bg-brand-500/10 text-brand-600"
+                  : "border-transparent text-neutral-500 hover:text-neutral-700"
               )}
             >
               {mode}
