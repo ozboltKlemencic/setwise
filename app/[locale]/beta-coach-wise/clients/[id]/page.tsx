@@ -102,7 +102,7 @@ function SectionSubHeader({
   actions?: ReactNode
 }) {
   return (
-    <div className="border-b border-neutral-200 bg-white">
+    <div className="border-b border-neutral-200 bg-neutral-50">
       <div className="flex min-h-11 flex-col gap-3 px-4 py-2 lg:flex-row lg:items-center lg:justify-between lg:px-6">
         <div className="min-w-0 overflow-x-auto">
           <div className="flex w-max min-w-max items-center gap-5">
@@ -193,14 +193,14 @@ export default async function ClientProfilePage({ params }: Props) {
   ]
 
   return (
-    <section className="min-w-0 bg-white">
+    <section className="min-w-0 bg-neutral-50">
       <Tabs defaultValue="info" className="min-w-0 w-full gap-0">
-        <div className="border-b border-neutral-200 bg-white">
+        <div className="border-b border-neutral-200 bg-neutral-50">
           <div className="flex min-w-0 items-center justify-between gap-4 px-4 lg:px-6">
             <div className="min-w-0 flex-1 overflow-x-auto">
               <TabsList
                 variant="line"
-                className="h-11 w-max min-w-max justify-start gap-0 rounded-none bg-transparent p-0"
+                className="h-16 w-max min-w-max justify-start gap-0 rounded-none bg-transparent p-0"
               >
                 <TabsTrigger
                   value="info"
@@ -305,7 +305,7 @@ export default async function ClientProfilePage({ params }: Props) {
               </>
             }
           />
-          <div className="space-y-4 bg-white px-4 py-4 lg:px-6">
+          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
             <div className="rounded-lg border border-neutral-200 bg-white p-6 shadow-none">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex items-center gap-4">
@@ -457,7 +457,7 @@ export default async function ClientProfilePage({ params }: Props) {
               </Button>
             }
           />
-          <div className="space-y-4 bg-white px-4 py-4 lg:px-6">
+          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
             <div className="grid gap-4 md:grid-cols-3">
               {habits.map((habit) => (
                 <Card key={habit.title}>
@@ -526,7 +526,7 @@ export default async function ClientProfilePage({ params }: Props) {
               </>
             }
           />
-          <div className="space-y-4 bg-white px-4 py-4 lg:px-6">
+          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
             <div className="grid gap-4 md:grid-cols-3">
               <Card>
                 <CardHeader>
@@ -601,7 +601,7 @@ export default async function ClientProfilePage({ params }: Props) {
               </Button>
             }
           />
-          <div className="space-y-4 bg-white px-4 py-4 lg:px-6">
+          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
             <div className="grid gap-4 md:grid-cols-3">
               <Card>
                 <CardHeader>
@@ -669,7 +669,7 @@ export default async function ClientProfilePage({ params }: Props) {
               </Button>
             }
           />
-          <div className="space-y-4 bg-white px-4 py-4 lg:px-6">
+          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
             <div className="grid gap-4 md:grid-cols-3">
               {supplements.map((item) => (
                 <Card key={item.title}>
@@ -731,7 +731,7 @@ export default async function ClientProfilePage({ params }: Props) {
               </>
             }
           />
-          <div className="space-y-4 bg-white px-4 py-4 lg:px-6">
+          <div className="space-y-4 bg-neutral-50 px-4 py-4 lg:px-6">
             <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
               <Card>
                 <CardHeader>
