@@ -1,10 +1,14 @@
-import { DataTable } from "@/components/data-table";
-import data from "./data.json"
+import { redirect } from "next/navigation"
 
-export default function Page() {
-  return (
-    <section>
-      <DataTable data={data} />
-    </section>
-  )
+import { routing } from "@/i18n/routing"
+
+type Props = {
+  params: Promise<{ locale: string }>
+}
+
+export default async function Page({ params }: Props) {
+  const { locale } = await params
+  const localePrefix = locale === routing.defaultLocale ? "" : `/${locale}`
+
+  redirect(`${localePrefix}/beta-coach-wise/clients`)
 }

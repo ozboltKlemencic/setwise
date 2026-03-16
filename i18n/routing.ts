@@ -142,6 +142,14 @@ export const routing = defineRouting({
             sl: '/beta-coach-wise',
             en: '/beta-coach-wise',
         },
+        '/beta-coach-wise/clients': {
+            sl: '/beta-coach-wise/clients',
+            en: '/beta-coach-wise/clients',
+        },
+        '/beta-coach-wise/clients/[id]': {
+            sl: '/beta-coach-wise/clients/[id]',
+            en: '/beta-coach-wise/clients/[id]',
+        },
         '/beta-coach-wise/data-library': {
             sl: '/beta-coach-wise/data-library',
             en: '/beta-coach-wise/data-library',

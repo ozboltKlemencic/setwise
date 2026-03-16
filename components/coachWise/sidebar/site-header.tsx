@@ -48,8 +48,8 @@ const coachWiseRoutes = [
   },
   {
     title: "Stranke",
-    href: "/beta-coach-wise",
-    exact: true,
+    href: "/beta-coach-wise/clients",
+    exact: false,
   },
 ]
 

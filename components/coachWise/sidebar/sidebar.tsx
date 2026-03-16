@@ -38,9 +38,9 @@ const data = {
   navMain: [
     {
       title: "Stranke",
-      url: "/beta-coach-wise",
+      url: "/beta-coach-wise/clients",
       icon: IconUsersGroup,
-      exact: true,
+      exact: false,
     },
   ],
   navSecondary: [
