@@ -354,7 +354,7 @@ function getWeekStart(date: Date) {
 function getWeekEnd(date: Date) {
   const nextDate = getWeekStart(date)
   nextDate.setDate(nextDate.getDate() + 6)
-  nextDate.setHours(23, 59, 59, 999)
+  nextDate.setHours(0, 0, 0, 0)
 
   return nextDate
 }
@@ -766,10 +766,10 @@ function HabitDatePicker({
                   },
                 }}
                 onMonthChange={setViewMonth}
-                onDayClick={(anchorDate) => {
+                onSelect={(_, selectedDay) => {
                   const fullWeekRange = {
-                    from: getWeekStart(anchorDate),
-                    to: getWeekEnd(anchorDate),
+                    from: getWeekStart(selectedDay),
+                    to: getWeekEnd(selectedDay),
                   }
 
                   setViewMonth(fullWeekRange.from)
