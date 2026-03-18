@@ -528,7 +528,7 @@ function HabitDatePicker({
     weekRange?.from ?? customRange?.from ?? value
   )
   const label = getHabitPickerLabel(period, value, weekRange, customRange)
-  const triggerWidth = `clamp(11rem, ${Math.max(label.length + 6, 18)}ch, 28rem)`
+  const triggerWidth = `clamp(11rem, ${Math.max(label.length + 2,)}ch, 18rem)`
 
   React.useEffect(() => {
     if (period === "week") {
@@ -553,7 +553,7 @@ function HabitDatePicker({
         readOnly
         title={label}
         value={label}
-        className="h-9 cursor-pointer rounded-sm border-neutral-200/80 bg-white pr-12 text-[13px] font-medium text-neutral-800 capitalize shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+        className="h-9 cursor-pointer rounded-sm border-neutral-200/80  pr-12 text-[13px] font-medium text-neutral-800 capitalize shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 gap-x-2"
         onClick={() => setOpen(true)}
       />
       <Popover open={open} onOpenChange={setOpen}>
@@ -561,7 +561,7 @@ function HabitDatePicker({
           <Button
             type="button"
             variant="ghost"
-            className="absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center gap-0.5 rounded-sm text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-600"
+            className="absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center gap-0.5 rounded-sm text-neutral-400 shadow-none  hover:bg-neutral-100 hover:text-neutral-600"
           >
             <CalendarDays className="size-4" />
             <ChevronDown className="size-3.5" />
