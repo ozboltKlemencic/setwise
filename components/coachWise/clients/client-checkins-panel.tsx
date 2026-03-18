@@ -35,6 +35,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react"
 import { usePathname, useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -1176,6 +1177,9 @@ function AssignedCheckinEditor({
     description: checkin.description,
   })
   const [isPreview, setIsPreview] = React.useState(false)
+  const reorderToastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
@@ -1195,6 +1199,14 @@ function AssignedCheckinEditor({
     setIsPreview(false)
   }, [checkin.description, checkin.id, checkin.questions, checkin.title])
 
+  React.useEffect(() => {
+    return () => {
+      if (reorderToastTimeoutRef.current) {
+        clearTimeout(reorderToastTimeoutRef.current)
+      }
+    }
+  }, [])
+
   function handleQuestionDragEnd(event: DragEndEvent) {
     const { active, over } = event
 
@@ -1209,6 +1221,15 @@ function AssignedCheckinEditor({
 
         return arrayMove(currentQuestions, oldIndex, newIndex)
       })
+      if (reorderToastTimeoutRef.current) {
+        clearTimeout(reorderToastTimeoutRef.current)
+      }
+
+      reorderToastTimeoutRef.current = setTimeout(() => {
+        toast.success("Spremembe so shranjene", {
+          id: "assigned-checkin-order-saved",
+        })
+      }, 650)
     }
   }
 
