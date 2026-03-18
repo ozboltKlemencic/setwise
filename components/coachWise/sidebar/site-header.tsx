@@ -6,6 +6,7 @@ import {
   IconClipboardList,
   IconInfoCircle,
   IconPill,
+  IconPlus,
   IconRepeat,
   IconSettings,
   IconUserCheck,
@@ -17,6 +18,7 @@ import { usePathname } from "next/navigation"
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const coachWiseRoutes = [
@@ -81,6 +83,16 @@ const coachWiseRoutes = [
   exact: boolean
 }[]
 
+const coachWiseHeaderActions: Record<
+  string,
+  { label: string; icon: Icon }
+> = {
+  "/beta-coach-wise/clients": {
+    label: "Dodaj stranko",
+    icon: IconPlus,
+  },
+}
+
 export function SiteHeader() {
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
@@ -95,6 +107,7 @@ export function SiteHeader() {
       isPathActive(normalizedPathname, route.href, { exact: route.exact })
     ) ?? null
   const ActiveIcon = activeClient ? IconUsersGroup : activeRoute?.icon
+  const headerAction = coachWiseHeaderActions[normalizedPathname]
 
   return (
     <header
@@ -103,7 +116,7 @@ export function SiteHeader() {
         activeClient ? "bg-neutral-50" : "bg-white"
       )}
     >
-      <div className="flex w-full items-center px-4 lg:px-6">
+      <div className="flex w-full items-center justify-between gap-4 px-4 ">
         <div className="flex min-w-0 items-center gap-2.5">
           {ActiveIcon ? (
             <ActiveIcon className="size-4 shrink-0 text-neutral-500" />
@@ -118,6 +131,16 @@ export function SiteHeader() {
             </h1>
           )}
         </div>
+        {headerAction ? (
+          <Button
+            type="button"
+            size="sm"
+            className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+          >
+            <headerAction.icon className="size-4" />
+            {headerAction.label}
+          </Button>
+        ) : null}
       </div>
     </header>
   )

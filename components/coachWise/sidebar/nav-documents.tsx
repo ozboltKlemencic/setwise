@@ -1,22 +1,9 @@
 "use client"
 
-import {
-  IconDots,
-  IconFolder,
-  IconShare3,
-  IconTrash,
-  type Icon,
-} from "@tabler/icons-react"
+import { type Icon } from "@tabler/icons-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { isPathActive } from "@/i18n/navigation"
 import {
   buildCoachWiseHref,
@@ -27,10 +14,8 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
 
 export function NavDocuments({
@@ -43,10 +28,8 @@ export function NavDocuments({
     exact?: boolean
   }[]
 }) {
-  const { isMobile, state } = useSidebar()
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
-  const isCollapsed = state === "collapsed"
 
   return (
     <SidebarGroup className="transition-[padding] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)]">
@@ -67,38 +50,6 @@ export function NavDocuments({
                   <span>{item.name}</span>
                 </Link>
               </SidebarMenuButton>
-              {!isCollapsed && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <SidebarMenuAction
-                      showOnHover
-                      className="rounded-sm data-[state=open]:bg-accent"
-                    >
-                      <IconDots />
-                      <span className="sr-only">More</span>
-                    </SidebarMenuAction>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className="w-24 rounded-lg"
-                    side={isMobile ? "bottom" : "right"}
-                    align={isMobile ? "end" : "start"}
-                  >
-                    <DropdownMenuItem>
-                      <IconFolder />
-                      <span>Open</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <IconShare3 />
-                      <span>Share</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem variant="destructive">
-                      <IconTrash />
-                      <span>Delete</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
