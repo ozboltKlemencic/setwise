@@ -10,7 +10,6 @@ import {
 } from "recharts"
 import {
   BarChart3,
-  Check,
   CalendarDays,
   ChevronDown,
   ChevronLeft,
@@ -549,10 +548,14 @@ function HabitDatePicker({
   const [viewMonth, setViewMonth] = React.useState<Date>(
     weekRange?.from ?? customRange?.from ?? value
   )
+  const [draftWeekRange, setDraftWeekRange] = React.useState<DateRange | undefined>(
+    weekRange
+  )
   const [draftCustomRange, setDraftCustomRange] = React.useState<DateRange | undefined>(
     customRange
   )
   const [draftMonth, setDraftMonth] = React.useState<Date>(getMonthStart(value))
+  const [draftYear, setDraftYear] = React.useState<number>(value.getFullYear())
   const [leftCustomMonth, setLeftCustomMonth] = React.useState<Date>(
     getMonthStart(customRange?.from ?? value)
   )
@@ -577,6 +580,15 @@ function HabitDatePicker({
   }, [customRange?.from, period, value, weekRange?.from])
 
   React.useEffect(() => {
+    if (period === "year" && open) {
+      setDraftYear(value.getFullYear())
+    }
+
+    if (period === "week" && open) {
+      setDraftWeekRange(weekRange)
+      setViewMonth(weekRange?.from ?? value)
+    }
+
     if (period === "month" && open) {
       setDraftMonth(getMonthStart(value))
     }
@@ -593,7 +605,7 @@ function HabitDatePicker({
         nextRightMonth < nextLeftMonth ? nextLeftMonth : nextRightMonth
       )
     }
-  }, [customRange, open, period, value])
+  }, [customRange, open, period, value, weekRange])
 
   const minAvailableMonth = React.useMemo(
     () => new Date(Math.min(...availableYears), 0, 1),
@@ -635,6 +647,9 @@ function HabitDatePicker({
       normalizedMonth < currentLeftMonth ? normalizedMonth : currentLeftMonth
     )
   }, [])
+
+  const canConfirmWeek = Boolean(draftWeekRange?.from && draftWeekRange?.to)
+  const canConfirmCustom = Boolean(draftCustomRange?.from && draftCustomRange?.to)
 
   return (
     <div
@@ -696,58 +711,91 @@ function HabitDatePicker({
           </div>
 
           {period === "year" ? (
-            <div className="grid grid-cols-2 gap-2 p-3">
-              {availableYears.map((year) => {
-                const isActive = value.getFullYear() === year
+            <div>
+              <div className="grid grid-cols-2 gap-2 p-3">
+                {availableYears.map((year) => {
+                  const isActive = draftYear === year
 
-                return (
-                  <Button
-                    key={year}
-                    type="button"
-                    variant="outline"
-                    className={cn(
-                      "rounded-sm border-neutral-200 text-[13px] shadow-none hover:bg-neutral-50",
-                      isActive && "border-brand-300 bg-brand-50 text-brand-700"
-                    )}
-                    onClick={() => {
-                      onChange(new Date(year, 0, 1))
-                      setOpen(false)
-                    }}
-                  >
-                    {year}
-                  </Button>
-                )
-              })}
+                  return (
+                    <Button
+                      key={year}
+                      type="button"
+                      variant="outline"
+                      className={cn(
+                        "rounded-sm border-neutral-200 text-[13px] shadow-none hover:bg-neutral-50",
+                        isActive && "border-brand-300 bg-brand-50 text-brand-700"
+                      )}
+                      onClick={() => {
+                        setDraftYear(year)
+                      }}
+                    >
+                      {year}
+                    </Button>
+                  )
+                })}
+              </div>
+              <div className="flex justify-end border-t border-neutral-200 px-3 py-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 px-3 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+                  onClick={() => {
+                    onChange(new Date(draftYear, 0, 1))
+                    setOpen(false)
+                  }}
+                >
+                  Potrdi
+                </Button>
+              </div>
             </div>
           ) : period === "week" ? (
-            <Calendar
-              mode="range"
-              month={viewMonth}
-              selected={weekRange}
-              numberOfMonths={2}
-              startMonth={new Date(Math.min(...availableYears), 0, 1)}
-              endMonth={new Date(Math.max(...availableYears), 11, 1)}
-              modifiersClassNames={{
-                outside: "text-neutral-400",
-              }}
-              modifiersStyles={{
-                outside: {
-                  opacity: 0.7,
-                },
-              }}
-              onMonthChange={setViewMonth}
-              onDayClick={(anchorDate) => {
-                const fullWeekRange = {
-                  from: getWeekStart(anchorDate),
-                  to: getWeekEnd(anchorDate),
-                }
+            <div>
+              <Calendar
+                mode="range"
+                month={viewMonth}
+                selected={draftWeekRange}
+                numberOfMonths={2}
+                startMonth={new Date(Math.min(...availableYears), 0, 1)}
+                endMonth={new Date(Math.max(...availableYears), 11, 1)}
+                modifiersClassNames={{
+                  outside: "text-neutral-400",
+                }}
+                modifiersStyles={{
+                  outside: {
+                    opacity: 0.7,
+                  },
+                }}
+                onMonthChange={setViewMonth}
+                onDayClick={(anchorDate) => {
+                  const fullWeekRange = {
+                    from: getWeekStart(anchorDate),
+                    to: getWeekEnd(anchorDate),
+                  }
 
-                setViewMonth(fullWeekRange.from)
-                onWeekRangeChange(fullWeekRange)
-                onChange(fullWeekRange.from)
-                setOpen(false)
-              }}
-            />
+                  setViewMonth(fullWeekRange.from)
+                  setDraftWeekRange(fullWeekRange)
+                }}
+              />
+              <div className="flex justify-end border-t border-neutral-200 px-3 py-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  disabled={!canConfirmWeek}
+                  className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 px-3 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+                  onClick={() => {
+                    if (!draftWeekRange?.from || !draftWeekRange?.to) {
+                      return
+                    }
+
+                    onWeekRangeChange(draftWeekRange)
+                    onChange(draftWeekRange.from)
+                    setOpen(false)
+                  }}
+                >
+                  Potrdi
+                </Button>
+              </div>
+            </div>
           ) : period === "custom" ? (
             <div>
               <div className="grid gap-0 border-b border-neutral-200 md:grid-cols-2">
@@ -800,7 +848,7 @@ function HabitDatePicker({
                 <Button
                   type="button"
                   size="sm"
-                  disabled={!draftCustomRange?.from || !draftCustomRange?.to}
+                  disabled={!canConfirmCustom}
                   className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 px-3 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
                   onClick={() => {
                     if (!draftCustomRange?.from || !draftCustomRange?.to) {
@@ -817,83 +865,86 @@ function HabitDatePicker({
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-between gap-2 px-3 py-3">
-              <div className="flex items-center gap-1.5">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={!canGoToPreviousMonth}
-                  className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
-                  onClick={() => handleDraftMonthOffset(-1)}
-                >
-                  <ChevronLeft className="size-4" />
-                  <span className="sr-only">Prejsnji mesec</span>
-                </Button>
-                <Select
-                  value={String(draftMonth.getMonth())}
-                  onValueChange={(month) => {
-                    setDraftMonth(
-                      getMonthStart(
-                        new Date(draftMonth.getFullYear(), Number(month), 1)
+            <div>
+              <div className="flex items-center justify-center px-3 py-3">
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    disabled={!canGoToPreviousMonth}
+                    className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                    onClick={() => handleDraftMonthOffset(-1)}
+                  >
+                    <ChevronLeft className="size-4" />
+                    <span className="sr-only">Prejsnji mesec</span>
+                  </Button>
+                  <Select
+                    value={String(draftMonth.getMonth())}
+                    onValueChange={(month) => {
+                      setDraftMonth(
+                        getMonthStart(
+                          new Date(draftMonth.getFullYear(), Number(month), 1)
+                        )
                       )
-                    )
-                  }}
-                >
-                  <SelectTrigger className="h-9 min-w-[5.25rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
-                    {habitMonthOptions.map((monthLabel, index) => (
-                      <SelectItem key={monthLabel} value={String(index)}>
-                        {monthLabel}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select
-                  value={String(draftMonth.getFullYear())}
-                  onValueChange={(year) => {
-                    setDraftMonth(
-                      getMonthStart(
-                        new Date(Number(year), draftMonth.getMonth(), 1)
+                    }}
+                  >
+                    <SelectTrigger className="h-9 min-w-[5.25rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                      {habitMonthOptions.map((monthLabel, index) => (
+                        <SelectItem key={monthLabel} value={String(index)}>
+                          {monthLabel}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select
+                    value={String(draftMonth.getFullYear())}
+                    onValueChange={(year) => {
+                      setDraftMonth(
+                        getMonthStart(
+                          new Date(Number(year), draftMonth.getMonth(), 1)
+                        )
                       )
-                    )
-                  }}
-                >
-                  <SelectTrigger className="h-9 min-w-[5.5rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
-                    {availableYears.map((year) => (
-                      <SelectItem key={year} value={String(year)}>
-                        {year}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    }}
+                  >
+                    <SelectTrigger className="h-9 min-w-[5.5rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                      {availableYears.map((year) => (
+                        <SelectItem key={year} value={String(year)}>
+                          {year}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    disabled={!canGoToNextMonth}
+                    className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                    onClick={() => handleDraftMonthOffset(1)}
+                  >
+                    <ChevronRight className="size-4" />
+                    <span className="sr-only">Naslednji mesec</span>
+                  </Button>
+                </div>
+              </div>
+              <div className="flex justify-end border-t border-neutral-200 px-3 py-2">
                 <Button
                   type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={!canGoToNextMonth}
-                  className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
-                  onClick={() => handleDraftMonthOffset(1)}
-                >
-                  <ChevronRight className="size-4" />
-                  <span className="sr-only">Naslednji mesec</span>
-                </Button>
-                <Button
-                  type="button"
-                  size="icon"
-                  className="size-8 rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+                  size="sm"
+                  className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 px-3 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
                   onClick={() => {
                     onChange(getMonthStart(draftMonth))
                     setOpen(false)
                   }}
                 >
-                  <Check className="size-4" />
-                  <span className="sr-only">Potrdi mesec</span>
+                  Potrdi
                 </Button>
               </div>
             </div>
