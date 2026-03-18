@@ -1163,9 +1163,9 @@ function AssignedCheckinPreview({
           />
         ))}
       </div>
-      <div className="hidden xl:block xl:self-start">
-        <div className="sticky top-16 mx-auto w-full max-w-[260px] space-y-3">
-          <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3 w-full">
+      <div className="hidden xl:block xl:self-start xl:sticky xl:top-[calc(var(--header-height)+0.25rem)]">
+        <div className="mx-auto w-full max-w-[260px] space-y-3">
+          <div className="w-full rounded-sm border border-neutral-200 bg-white px-4 py-3">
             <div className="text-[13px] font-semibold text-neutral-900">
               Predogled v aplikaciji stranke
             </div>
