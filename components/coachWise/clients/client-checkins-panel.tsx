@@ -1163,8 +1163,8 @@ function AssignedCheckinPreview({
           />
         ))}
       </div>
-      <div className="hidden xl:flex xl:justify-center ">
-        <div className="sticky top-16 min-w-[260px] w-full space-y-3 flex items-center justify-center flex-col">
+      <div className="hidden xl:block xl:self-start">
+        <div className="sticky top-16 mx-auto w-full max-w-[260px] space-y-3">
           <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3 w-full">
             <div className="text-[13px] font-semibold text-neutral-900">
               Predogled v aplikaciji stranke
@@ -1173,7 +1173,7 @@ function AssignedCheckinPreview({
               Primerjava desktop obrazca in mobilnega prikaza za stranko.
             </div>
           </div>
-          <div className="w-[94%]">
+          <div className="mx-auto w-[94%]">
             <Iphone>
               <div className="flex h-full flex-col bg-neutral-50 ">
                 <div className="border-b border-neutral-200 bg-white px-4 pb-3 pt-4">
