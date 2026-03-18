@@ -22,6 +22,7 @@ import {
   SubmittedCheckinsCompareDialog,
   SubmittedCheckinsPanel,
 } from "@/components/coachWise/clients/client-checkins-panel"
+import { ClientHabitsPanel } from "@/components/coachWise/clients/client-habits-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -548,6 +549,8 @@ export default async function ClientProfilePage({
         </TabsContent>
 
         <TabsContent value="habbits" className="mt-0 space-y-0">
+          <ClientHabitsPanel />
+          {false ? (
           <Tabs defaultValue="daily-habits" className="gap-0">
             <SectionSubHeader
               items={[
@@ -680,6 +683,7 @@ export default async function ClientProfilePage({
               </SectionBody>
             </TabsContent>
           </Tabs>
+          ) : null}
         </TabsContent>
 
         <TabsContent value="checkins" className="mt-0 space-y-0">
