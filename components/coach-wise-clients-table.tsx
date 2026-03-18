@@ -86,6 +86,25 @@ type ClientSortOption =
 type ClientGroupOption = "none" | "phase" | "type"
 type ClientStatusFilter = "all" | "active" | "completed"
 
+function formatClientCountLabel(count: number) {
+  const mod100 = count % 100
+  const mod10 = count % 10
+
+  if (mod100 !== 11 && mod10 === 1) {
+    return `${count} stranka`
+  }
+
+  if (mod100 !== 12 && mod10 === 2) {
+    return `${count} stranki`
+  }
+
+  if ((mod100 < 10 || mod100 > 14) && (mod10 === 3 || mod10 === 4)) {
+    return `${count} stranke`
+  }
+
+  return `${count} strank`
+}
+
 function getInitials(name: string) {
   return name
     .split(" ")
@@ -382,11 +401,6 @@ export function CoachWiseClientsTable({
     () => getColumns(openClientProfile),
     [openClientProfile]
   )
-  const activeFilterCount =
-    (sortOption !== "recent-pridruzil" ? 1 : 0) +
-    (groupOption !== "none" ? 1 : 0) +
-    (statusFilter !== "all" ? 1 : 0)
-
   const table = useReactTable({
     data: preparedData,
     columns,
@@ -410,12 +424,8 @@ export function CoachWiseClientsTable({
   })
 
   const clientSearch = (table.getColumn("header")?.getFilterValue() as string) ?? ""
-  const filterButtonLabel =
-    activeFilterCount === 0
-      ? "Filtri"
-      : activeFilterCount === 1
-        ? "1 filter"
-        : `${activeFilterCount} filtri`
+  const filteredClientsCount = table.getFilteredRowModel().rows.length
+  const filterButtonLabel = formatClientCountLabel(filteredClientsCount)
 
   React.useEffect(() => {
     setPagination((current) =>
@@ -426,8 +436,8 @@ export function CoachWiseClientsTable({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-3 px-2 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:max-w-2xl">
-          <div className="relative w-full sm:flex-1 lg:max-w-sm">
+        <div className="flex w-full flex-col gap-1 sm:flex-row sm:items-center lg:max-w-2xl">
+          <div className="relative w-full sm:flex-1 lg:max-w-xs">
             <IconSearch className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               aria-label="Search clients"
@@ -443,8 +453,8 @@ export function CoachWiseClientsTable({
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                size="sm"
-                className="justify-start border-neutral-200/70 bg-white/80 text-neutral-700 shadow-none hover:bg-neutral-50"
+                size="default"
+                className="h-9 justify-start gap-2 border-neutral-200/70 bg-white/80 px-3 text-[13px] font-normal text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700 rounded-sm"
               >
                 <IconAdjustmentsHorizontal className="size-4" />
                 {filterButtonLabel}
@@ -453,11 +463,11 @@ export function CoachWiseClientsTable({
             <DropdownMenuContent
               align="start"
               sideOffset={8}
-              className="w-[340px] rounded-lg border-neutral-200/70 bg-white/95 p-4 shadow-xl shadow-black/5 backdrop-blur-sm"
+              className="w-[320px] rounded-lg border-neutral-200/70 bg-white/95 p-3.5 shadow-xl shadow-black/5 backdrop-blur-sm"
             >
-              <div className="space-y-4">
-                <div className="grid grid-cols-[92px_minmax(0,1fr)] items-center gap-3">
-                  <div className="text-sm font-medium text-neutral-900">
+              <div className="space-y-3.5">
+                <div className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
+                  <div className="text-[13px] font-medium text-neutral-900">
                     Razvrsti po:
                   </div>
                   <Select
@@ -466,10 +476,10 @@ export function CoachWiseClientsTable({
                       setSortOption(value as ClientSortOption)
                     }
                   >
-                    <SelectTrigger className="w-full border-neutral-200 bg-white focus-visible:border-neutral-200 focus-visible:ring-0">
+                    <SelectTrigger className="h-8 w-full border-neutral-200 bg-white text-[13px] font-normal text-neutral-700 shadow-none focus-visible:border-neutral-200 focus-visible:ring-0">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="rounded-lg border-neutral-200/70">
+                    <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5 [&_[data-slot=select-item]]:py-2 [&_[data-slot=select-item]]:text-[13px] [&_[data-slot=select-item]]:font-normal">
                       <SelectItem value="recent-pridruzil">
                         Najnovejsi vpis
                       </SelectItem>
@@ -486,8 +496,8 @@ export function CoachWiseClientsTable({
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-[92px_minmax(0,1fr)] items-center gap-3">
-                  <div className="text-sm font-medium text-neutral-900">
+                <div className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
+                  <div className="text-[13px] font-medium text-neutral-900">
                     Skupina:
                   </div>
                   <Select
@@ -496,10 +506,10 @@ export function CoachWiseClientsTable({
                       setGroupOption(value as ClientGroupOption)
                     }
                   >
-                    <SelectTrigger className="w-full border-neutral-200 bg-white focus-visible:border-neutral-200 focus-visible:ring-0">
+                    <SelectTrigger className="h-8 w-full border-neutral-200 bg-white text-[13px] font-normal text-neutral-700 shadow-none focus-visible:border-neutral-200 focus-visible:ring-0">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="rounded-lg border-neutral-200/70">
+                    <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5 [&_[data-slot=select-item]]:py-2 [&_[data-slot=select-item]]:text-[13px] [&_[data-slot=select-item]]:font-normal">
                       <SelectItem value="none">Brez</SelectItem>
                       <SelectItem value="phase">Faza</SelectItem>
                       <SelectItem value="type">Status stranke</SelectItem>
@@ -507,15 +517,15 @@ export function CoachWiseClientsTable({
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-[92px_minmax(0,1fr)] items-center gap-3">
-                  <div className="text-sm font-medium text-neutral-900">
+                <div className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
+                  <div className="text-[13px] font-medium text-neutral-900">
                     Status:
                   </div>
-                  <div className="flex items-center rounded-md border border-neutral-200 bg-white p-1">
+                  <div className="flex items-center rounded-md border border-neutral-200 bg-white p-1 shadow-none">
                     <button
                       type="button"
                       className={cn(
-                        "flex-1 cursor-pointer rounded-sm px-3 py-1.5 text-sm transition-colors",
+                        "flex-1 cursor-pointer rounded-sm px-3 py-1.5 text-[13px] font-normal transition-colors",
                         statusFilter === "active"
                           ? "bg-neutral-100 text-neutral-950"
                           : "text-neutral-600 hover:text-neutral-900"
@@ -531,7 +541,7 @@ export function CoachWiseClientsTable({
                     <button
                       type="button"
                       className={cn(
-                        "flex-1 cursor-pointer rounded-sm px-3 py-1.5 text-sm transition-colors",
+                        "flex-1 cursor-pointer rounded-sm px-3 py-1.5 text-[13px] font-normal transition-colors",
                         statusFilter === "completed"
                           ? "bg-neutral-100 text-neutral-950"
                           : "text-neutral-600 hover:text-neutral-900"
@@ -550,7 +560,7 @@ export function CoachWiseClientsTable({
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    className="cursor-pointer text-sm font-medium text-brand-600 transition-colors hover:text-brand-700"
+                    className="cursor-pointer text-[13px] font-medium text-brand-600 transition-colors hover:text-brand-700"
                     onClick={() => {
                       setSortOption("recent-pridruzil")
                       setGroupOption("none")
