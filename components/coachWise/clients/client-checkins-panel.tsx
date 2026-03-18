@@ -71,6 +71,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
+import { Iphone } from "@/components/ui/mobileDevices/Phone"
 import { cn } from "@/lib/utils"
 
 type SubmittedCheckin = {
@@ -1152,14 +1153,75 @@ function AssignedCheckinPreview({
   questions: AssignedCheckinQuestion[]
 }) {
   return (
-    <div className="space-y-7 rounded-sm border border-neutral-200 bg-neutral-50 px-4 py-5 lg:px-5">
-      {questions.map((question, index) => (
-        <PreviewQuestionField
-          key={question.id}
-          question={question}
-          index={index}
-        />
-      ))}
+    <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start">
+      <div className="space-y-7 rounded-sm border border-neutral-200 bg-neutral-50 px-4 py-5 lg:px-5">
+        {questions.map((question, index) => (
+          <PreviewQuestionField
+            key={question.id}
+            question={question}
+            index={index}
+          />
+        ))}
+      </div>
+
+      <div className="hidden xl:flex xl:justify-end">
+        <div className="sticky top-20 w-[260px]">
+          <Iphone>
+            <div className="flex h-full flex-col bg-neutral-50">
+              <div className="border-b border-neutral-200 bg-white px-4 pb-3 pt-4">
+                <div className="h-2.5 w-20 rounded-full bg-neutral-200" />
+                <div className="mt-3 h-5 w-32 rounded-full bg-neutral-300" />
+                <div className="mt-2 h-2.5 w-24 rounded-full bg-neutral-200" />
+              </div>
+
+              <div className="flex-1 space-y-4 overflow-hidden px-4 py-4">
+                <div className="space-y-2">
+                  <div className="h-3 w-40 rounded-full bg-neutral-300" />
+                  <div className="h-10 rounded-xl border border-neutral-200 bg-white" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 w-32 rounded-full bg-neutral-300" />
+                  <div className="h-10 rounded-xl border border-neutral-200 bg-white" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 w-44 rounded-full bg-neutral-300" />
+                  <div className="flex gap-2">
+                    <div className="h-9 flex-1 rounded-xl border border-neutral-200 bg-white" />
+                    <div className="h-9 flex-1 rounded-xl border border-neutral-200 bg-white" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 w-28 rounded-full bg-neutral-300" />
+                  <div className="h-1 rounded-full bg-sky-100" />
+                  <div className="grid grid-cols-5 gap-1">
+                    {Array.from({ length: 5 }, (_, index) => (
+                      <div
+                        key={index}
+                        className="h-2 rounded-full bg-neutral-200"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 w-36 rounded-full bg-neutral-300" />
+                  <div className="grid grid-cols-3 gap-2">
+                    {Array.from({ length: 3 }, (_, index) => (
+                      <div
+                        key={index}
+                        className="h-16 rounded-2xl border border-dashed border-neutral-200 bg-white"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-neutral-200 bg-white px-4 py-4">
+                <div className="h-10 rounded-xl bg-brand-500/15" />
+              </div>
+            </div>
+          </Iphone>
+        </div>
+      </div>
     </div>
   )
 }
