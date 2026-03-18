@@ -451,6 +451,11 @@ function HabitDatePicker({
   availableYears: number[]
 }) {
   const [open, setOpen] = React.useState(false)
+  const [viewMonth, setViewMonth] = React.useState<Date>(weekRange?.from ?? value)
+
+  React.useEffect(() => {
+    setViewMonth(period === "week" ? (weekRange?.from ?? value) : value)
+  }, [period, value, weekRange?.from])
 
   return (
     <div className="relative w-[220px] shrink-0">
@@ -475,7 +480,13 @@ function HabitDatePicker({
         <PopoverContent
           align="end"
           sideOffset={8}
-          className="w-[280px] overflow-hidden rounded-sm border-neutral-200/80 p-0 shadow-lg shadow-black/5"
+          collisionPadding={12}
+          className={cn(
+            "rounded-sm border-neutral-200/80 p-0 shadow-lg shadow-black/5",
+            period === "week"
+              ? "w-auto overflow-hidden"
+              : "w-[280px] overflow-hidden"
+          )}
         >
           <div className="border-b border-neutral-200 p-2">
             <div className="inline-flex w-full overflow-hidden rounded-sm border border-neutral-200 bg-white">
@@ -527,18 +538,30 @@ function HabitDatePicker({
           ) : period === "week" ? (
             <Calendar
               mode="range"
-              month={weekRange?.from ?? value}
+              month={viewMonth}
               selected={weekRange}
-              defaultMonth={weekRange?.from ?? value}
               numberOfMonths={2}
               startMonth={new Date(Math.min(...availableYears), 0, 1)}
               endMonth={new Date(Math.max(...availableYears), 11, 1)}
-              onSelect={(range) => {
-                onWeekRangeChange(range)
-
-                if (range?.from && range?.to) {
-                  setOpen(false)
+              modifiersClassNames={{
+                outside: "text-neutral-300",
+              }}
+              modifiersStyles={{
+                outside: {
+                  opacity: 0.45,
+                },
+              }}
+              onMonthChange={setViewMonth}
+              onDayClick={(anchorDate) => {
+                const fullWeekRange = {
+                  from: getWeekStart(anchorDate),
+                  to: getWeekEnd(anchorDate),
                 }
+
+                setViewMonth(fullWeekRange.from)
+                onWeekRangeChange(fullWeekRange)
+                onChange(fullWeekRange.from)
+                setOpen(false)
               }}
             />
           ) : (
@@ -547,7 +570,7 @@ function HabitDatePicker({
               month={value}
               selected={value}
               captionLayout="dropdown"
-              showOutsideDays={period === "week"}
+              showOutsideDays={false}
               startMonth={new Date(Math.min(...availableYears), 0, 1)}
               endMonth={new Date(Math.max(...availableYears), 11, 1)}
               onSelect={(date) => {
@@ -555,17 +578,11 @@ function HabitDatePicker({
                   return
                 }
 
-                onChange(period === "month" ? getMonthStart(date) : date)
-
-                if (period === "week") {
-                  setOpen(false)
-                }
+                onChange(getMonthStart(date))
               }}
               onMonthChange={(month) => {
-                if (period === "month") {
-                  onChange(getMonthStart(month))
-                  setOpen(false)
-                }
+                onChange(getMonthStart(month))
+                setOpen(false)
               }}
               classNames={
                 period === "month"
@@ -1044,13 +1061,16 @@ export function ClientHabitsPanel() {
       }
 
       if (selectedPeriod === "week") {
-        if (!selectedWeekRange?.from || !selectedWeekRange?.to) {
+        const from = selectedWeekRange?.from
+        const to = selectedWeekRange?.to
+
+        if (!from || !to) {
           return []
         }
 
         return selectedHabit.chartData.filter((point) =>
-          parseHabitDate(point.date) >= selectedWeekRange.from &&
-          parseHabitDate(point.date) <= selectedWeekRange.to
+          parseHabitDate(point.date) >= from &&
+          parseHabitDate(point.date) <= to
         )
       }
 
@@ -1069,13 +1089,16 @@ export function ClientHabitsPanel() {
       }
 
       if (selectedPeriod === "week") {
-        if (!selectedWeekRange?.from || !selectedWeekRange?.to) {
+        const from = selectedWeekRange?.from
+        const to = selectedWeekRange?.to
+
+        if (!from || !to) {
           return []
         }
 
         return selectedHabit.entries.filter((entry) =>
-          parseHabitDate(entry.date) >= selectedWeekRange.from &&
-          parseHabitDate(entry.date) <= selectedWeekRange.to
+          parseHabitDate(entry.date) >= from &&
+          parseHabitDate(entry.date) <= to
         )
       }
 
