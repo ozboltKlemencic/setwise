@@ -541,7 +541,7 @@ function HabitDatePicker({
     getMonthStart(customRange?.to ?? getNextMonth(customRange?.from ?? value))
   )
   const label = getHabitPickerLabel(period, value, weekRange, customRange)
-  const triggerWidth = `clamp(11rem, ${Math.max(label.length + 2,)}ch, 18rem)`
+  const triggerWidth = `clamp(11rem, ${Math.max(label.length + 8,)}ch, 18rem)`
 
   React.useEffect(() => {
     if (period === "week") {
