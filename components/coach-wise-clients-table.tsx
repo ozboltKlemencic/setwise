@@ -33,7 +33,6 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table"
 import { usePathname, useRouter } from "next/navigation"
-import { toast } from "sonner"
 import { z } from "zod"
 
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
@@ -49,7 +48,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
@@ -194,41 +192,24 @@ function getColumns(
       accessorKey: "target",
       header: () => <div className="w-28 text-left">Pridruzil</div>,
       cell: ({ row }) => (
-        <form
-          className="w-28"
-          onSubmit={(event) => {
-            event.preventDefault()
-            toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-              loading: `Saving ${row.original.header}`,
-              success: "Done",
-              error: "Error",
-            })
-          }}
-        >
-          <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-            Pridruzil
-          </Label>
-          <Input
-            className="h-8 w-full border-transparent bg-transparent pl-0 text-left shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-            defaultValue={row.original.target}
-            id={`${row.original.id}-target`}
-          />
-        </form>
+        <div className="w-28 text-left text-sm text-foreground">
+          {row.original.target}
+        </div>
       ),
     },
     {
       id: "actions",
-      header: () => <div className="w-10" />,
+      header: () => <div className="w-6 " />,
       cell: ({ row }) => (
-        <div className="flex w-10 justify-end">
+        <div className="flex w-6  justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="icon-sm"
-                className="size-8 cursor-pointer rounded-md border-neutral-200/50 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/75 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/75 data-[state=open]:bg-neutral-50/80"
+                className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
               >
-                <IconDotsVertical className="size-4" />
+                <IconDotsVertical className="size-3" />
                 <span className="sr-only">Odpri meni stranke</span>
               </Button>
             </DropdownMenuTrigger>
@@ -315,7 +296,7 @@ function ClientRow({
           key={cell.id}
           className={cn(
             cell.column.id === "header" && "pl-4 lg:pl-5",
-            cell.column.id === "actions" && "pr-4 lg:pr-5"
+            cell.column.id === "actions" && "px-1 pr-2 lg:pr-3"
           )}
         >
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -435,7 +416,7 @@ export function CoachWiseClientsTable({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-3 px-2 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-3  px-2 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex w-full flex-col gap-1 sm:flex-row sm:items-center lg:max-w-2xl">
           <div className="relative w-full sm:flex-1 lg:max-w-xs">
             <IconSearch className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -465,7 +446,7 @@ export function CoachWiseClientsTable({
               sideOffset={8}
               className="w-[320px] rounded-lg border-neutral-200/70 bg-white/95 p-3.5 shadow-xl shadow-black/5 backdrop-blur-sm"
             >
-              <div className="space-y-3.5">
+              <div className="space-y-2">
                 <div className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
                   <div className="text-[13px] font-medium text-neutral-900">
                     Razvrsti po:
@@ -521,7 +502,7 @@ export function CoachWiseClientsTable({
                   <div className="text-[13px] font-medium text-neutral-900">
                     Status:
                   </div>
-                  <div className="flex items-center rounded-md border border-neutral-200 bg-white p-1 shadow-none">
+                  <div className="flex items-center rounded-md border border-neutral-200 bg-white p-0.5 shadow-none">
                     <button
                       type="button"
                       className={cn(
@@ -618,7 +599,7 @@ export function CoachWiseClientsTable({
                       colSpan={header.colSpan}
                       className={cn(
                         header.column.id === "header" && "pl-4 lg:pl-5",
-                        header.column.id === "actions" && "pr-4 lg:pr-5"
+                        header.column.id === "actions" && "px-1 pr-2 lg:pr-3"
                       )}
                     >
                       {header.isPlaceholder
@@ -656,78 +637,53 @@ export function CoachWiseClientsTable({
         </div>
       </div>
       <div className="flex items-center justify-between px-4 lg:px-6">
-        <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-          {table.getFilteredRowModel().rows.length} prikazanih strank
-        </div>
-        <div className="flex w-full items-center gap-8 lg:w-fit">
-          <div className="hidden items-center gap-2 lg:flex">
-            <Label htmlFor="rows-per-page" className="text-sm font-medium">
-              Vrstic na stran
-            </Label>
-            <Select
-              value={`${table.getState().pagination.pageSize}`}
-              onValueChange={(value) => {
-                table.setPageSize(Number(value))
-              }}
-            >
-              <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                <SelectValue
-                  placeholder={table.getState().pagination.pageSize}
-                />
-              </SelectTrigger>
-              <SelectContent side="top">
-                {[10, 20, 30, 40, 50].map((pageSize) => (
-                  <SelectItem key={pageSize} value={`${pageSize}`}>
-                    {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex w-fit items-center justify-center text-sm font-medium">
-            Stran {table.getState().pagination.pageIndex + 1} od{" "}
-            {table.getPageCount()}
-          </div>
-          <div className="ml-auto flex items-center gap-2 lg:ml-0">
-            <Button
-              variant="outline"
-              className="hidden h-8 w-8 p-0 lg:flex"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to first page</span>
-              <IconChevronsLeft />
-            </Button>
-            <Button
-              variant="outline"
-              className="size-8"
-              size="icon"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              <span className="sr-only">Go to previous page</span>
-              <IconChevronLeft />
-            </Button>
-            <Button
-              variant="outline"
-              className="size-8"
-              size="icon"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to next page</span>
-              <IconChevronRight />
-            </Button>
-            <Button
-              variant="outline"
-              className="hidden size-8 lg:flex"
-              size="icon"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              <span className="sr-only">Go to last page</span>
-              <IconChevronsRight />
-            </Button>
+        <div className="ml-auto flex w-full justify-end lg:w-fit">
+          <div className="flex items-center gap-8">
+            <div className="flex w-fit items-center justify-center text-sm font-medium">
+              Stran {table.getState().pagination.pageIndex + 1} od{" "}
+              {table.getPageCount()}
+            </div>
+            <div className="ml-auto flex items-center gap-2 lg:ml-0">
+              <Button
+                variant="outline"
+                className="hidden h-8 w-8 p-0 lg:flex"
+                onClick={() => table.setPageIndex(0)}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <span className="sr-only">Go to first page</span>
+                <IconChevronsLeft />
+              </Button>
+              <Button
+                variant="outline"
+                className="size-8"
+                size="icon"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                <span className="sr-only">Go to previous page</span>
+                <IconChevronLeft />
+              </Button>
+              <Button
+                variant="outline"
+                className="size-8"
+                size="icon"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                <span className="sr-only">Go to next page</span>
+                <IconChevronRight />
+              </Button>
+              <Button
+                variant="outline"
+                className="hidden size-8 lg:flex"
+                size="icon"
+                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+                disabled={!table.getCanNextPage()}
+              >
+                <span className="sr-only">Go to last page</span>
+                <IconChevronsRight />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
