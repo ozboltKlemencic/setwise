@@ -88,7 +88,7 @@ type HabitEntry = {
   memo: string
 }
 
-type HabitPeriod = "week" | "month" | "year"
+type HabitPeriod = "week" | "month" | "year" | "custom"
 
 type HabitDefinition = {
   id: string
@@ -346,8 +346,22 @@ function getMonthStart(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), 1)
 }
 
+function getMonthEnd(date: Date) {
+  const nextDate = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+  nextDate.setHours(23, 59, 59, 999)
+
+  return nextDate
+}
+
 function getYearStart(date: Date) {
   return new Date(date.getFullYear(), 0, 1)
+}
+
+function shiftDays(date: Date, days: number) {
+  const nextDate = new Date(date)
+  nextDate.setDate(nextDate.getDate() + days)
+
+  return nextDate
 }
 
 function isSameMonth(date: Date, target: Date) {
@@ -407,9 +421,12 @@ function formatHabitWeekRange(range: DateRange | undefined) {
     })
   }
 
+  const sameYear = range.from.getFullYear() === range.to.getFullYear()
+
   return `${range.from.toLocaleDateString("sl-SI", {
     day: "2-digit",
     month: "short",
+    ...(sameYear ? {} : { year: "numeric" }),
   })} - ${range.to.toLocaleDateString("sl-SI", {
     day: "2-digit",
     month: "short",
@@ -433,6 +450,58 @@ function formatHabitPickerLabel(
   return `Mesec · ${formatHabitMonth(date)}`
 }
 
+function getDateRangeLengthInDays(range: DateRange | undefined) {
+  if (!range?.from || !range?.to) {
+    return 0
+  }
+
+  const start = new Date(
+    range.from.getFullYear(),
+    range.from.getMonth(),
+    range.from.getDate()
+  )
+  const end = new Date(range.to.getFullYear(), range.to.getMonth(), range.to.getDate())
+
+  return Math.floor((end.getTime() - start.getTime()) / 86_400_000) + 1
+}
+
+function isDateInRange(date: Date, range: DateRange | undefined) {
+  if (!range?.from || !range?.to) {
+    return false
+  }
+
+  return date >= range.from && date <= range.to
+}
+
+function doesMonthOverlapRange(date: Date, range: DateRange | undefined) {
+  if (!range?.from || !range?.to) {
+    return false
+  }
+
+  return getMonthStart(date) <= range.to && getMonthEnd(date) >= range.from
+}
+
+function getHabitPickerLabel(
+  period: HabitPeriod,
+  date: Date,
+  weekRange?: DateRange,
+  customRange?: DateRange
+) {
+  if (period === "week") {
+    return `Teden | ${formatHabitWeekRange(weekRange)}`
+  }
+
+  if (period === "custom") {
+    return `Custom | ${formatHabitWeekRange(customRange)}`
+  }
+
+  if (period === "year") {
+    return `Leto | ${date.getFullYear()}`
+  }
+
+  return `Mesec | ${formatHabitMonth(date)}`
+}
+
 function HabitDatePicker({
   period,
   onPeriodChange,
@@ -440,6 +509,8 @@ function HabitDatePicker({
   onChange,
   weekRange,
   onWeekRangeChange,
+  customRange,
+  onCustomRangeChange,
   availableYears,
 }: {
   period: HabitPeriod
@@ -448,20 +519,36 @@ function HabitDatePicker({
   onChange: (value: Date) => void
   weekRange: DateRange | undefined
   onWeekRangeChange: (value: DateRange | undefined) => void
+  customRange: DateRange | undefined
+  onCustomRangeChange: (value: DateRange | undefined) => void
   availableYears: number[]
 }) {
   const [open, setOpen] = React.useState(false)
-  const [viewMonth, setViewMonth] = React.useState<Date>(weekRange?.from ?? value)
+  const [viewMonth, setViewMonth] = React.useState<Date>(
+    weekRange?.from ?? customRange?.from ?? value
+  )
+  const label = getHabitPickerLabel(period, value, weekRange, customRange)
 
   React.useEffect(() => {
-    setViewMonth(period === "week" ? (weekRange?.from ?? value) : value)
-  }, [period, value, weekRange?.from])
+    if (period === "week") {
+      setViewMonth(weekRange?.from ?? value)
+      return
+    }
+
+    if (period === "custom") {
+      setViewMonth(customRange?.from ?? value)
+      return
+    }
+
+    setViewMonth(value)
+  }, [customRange?.from, period, value, weekRange?.from])
 
   return (
-    <div className="relative w-[220px] shrink-0">
+    <div className="relative w-[250px] max-w-full shrink-0">
       <Input
         readOnly
-        value={formatHabitPickerLabel(period, value, weekRange)}
+        title={label}
+        value={label}
         className="h-9 cursor-pointer rounded-sm border-neutral-200/80 bg-white pr-12 text-[13px] font-medium text-neutral-800 capitalize shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
         onClick={() => setOpen(true)}
       />
@@ -474,7 +561,7 @@ function HabitDatePicker({
           >
             <CalendarDays className="size-4" />
             <ChevronDown className="size-3.5" />
-            <span className="sr-only">Izberi mesec</span>
+            <span className="sr-only">Izberi obdobje</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -483,8 +570,8 @@ function HabitDatePicker({
           collisionPadding={12}
           className={cn(
             "rounded-sm border-neutral-200/80 p-0 shadow-lg shadow-black/5",
-            period === "week"
-              ? "w-auto overflow-hidden"
+            period === "week" || period === "custom"
+              ? "w-auto max-w-[calc(100vw-24px)] overflow-hidden"
               : "w-[280px] overflow-hidden"
           )}
         >
@@ -494,6 +581,7 @@ function HabitDatePicker({
                 { value: "week", label: "Teden" },
                 { value: "month", label: "Mesec" },
                 { value: "year", label: "Leto" },
+                { value: "custom", label: "Custom" },
               ] as const).map((option) => (
                 <Button
                   key={option.value}
@@ -544,11 +632,11 @@ function HabitDatePicker({
               startMonth={new Date(Math.min(...availableYears), 0, 1)}
               endMonth={new Date(Math.max(...availableYears), 11, 1)}
               modifiersClassNames={{
-                outside: "text-neutral-300",
+                outside: "text-neutral-400",
               }}
               modifiersStyles={{
                 outside: {
-                  opacity: 0.45,
+                  opacity: 0.7,
                 },
               }}
               onMonthChange={setViewMonth}
@@ -562,6 +650,37 @@ function HabitDatePicker({
                 onWeekRangeChange(fullWeekRange)
                 onChange(fullWeekRange.from)
                 setOpen(false)
+              }}
+              />
+          ) : period === "custom" ? (
+            <Calendar
+              mode="range"
+              month={viewMonth}
+              selected={customRange}
+              numberOfMonths={2}
+              captionLayout="dropdown"
+              startMonth={new Date(Math.min(...availableYears), 0, 1)}
+              endMonth={new Date(Math.max(...availableYears), 11, 1)}
+              modifiersClassNames={{
+                outside: "text-neutral-400",
+              }}
+              modifiersStyles={{
+                outside: {
+                  opacity: 0.7,
+                },
+              }}
+              onMonthChange={setViewMonth}
+              onSelect={(range) => {
+                onCustomRangeChange(range)
+
+                if (range?.from) {
+                  onChange(range.from)
+                  setViewMonth(range.from)
+                }
+
+                if (range?.from && range?.to) {
+                  setOpen(false)
+                }
               }}
             />
           ) : (
@@ -1042,6 +1161,18 @@ export function ClientHabitsPanel() {
       }
     }
   )
+  const [selectedCustomRange, setSelectedCustomRange] = React.useState<
+    DateRange | undefined
+  >(() => {
+    const baseDate = parseHabitDate(
+      habitDefinitions[0]?.chartData.at(-1)?.date ?? "2026-03-18"
+    )
+
+    return {
+      from: shiftDays(baseDate, -13),
+      to: baseDate,
+    }
+  })
 
   const selectedHabit =
     habitDefinitions.find((habit) => habit.id === selectedHabitId) ??
@@ -1057,6 +1188,20 @@ export function ClientHabitsPanel() {
       if (selectedPeriod === "year") {
         return selectedHabit.yearlyData.filter((point) =>
           isSameYear(parseHabitDate(point.date), selectedDate)
+        )
+      }
+
+      if (selectedPeriod === "custom") {
+        const rangeLength = getDateRangeLengthInDays(selectedCustomRange)
+
+        if (rangeLength > 62) {
+          return selectedHabit.yearlyData.filter((point) =>
+            doesMonthOverlapRange(parseHabitDate(point.date), selectedCustomRange)
+          )
+        }
+
+        return selectedHabit.chartData.filter((point) =>
+          isDateInRange(parseHabitDate(point.date), selectedCustomRange)
         )
       }
 
@@ -1078,13 +1223,25 @@ export function ClientHabitsPanel() {
         isSameMonth(parseHabitDate(point.date), selectedDate)
       )
     },
-    [selectedDate, selectedHabit, selectedPeriod, selectedWeekRange]
+    [
+      selectedCustomRange,
+      selectedDate,
+      selectedHabit,
+      selectedPeriod,
+      selectedWeekRange,
+    ]
   )
   const filteredEntries = React.useMemo(
     () => {
       if (selectedPeriod === "year") {
         return selectedHabit.entries.filter((entry) =>
           isSameYear(parseHabitDate(entry.date), selectedDate)
+        )
+      }
+
+      if (selectedPeriod === "custom") {
+        return selectedHabit.entries.filter((entry) =>
+          isDateInRange(parseHabitDate(entry.date), selectedCustomRange)
         )
       }
 
@@ -1106,7 +1263,13 @@ export function ClientHabitsPanel() {
         isSameMonth(parseHabitDate(entry.date), selectedDate)
       )
     },
-    [selectedDate, selectedHabit, selectedPeriod, selectedWeekRange]
+    [
+      selectedCustomRange,
+      selectedDate,
+      selectedHabit,
+      selectedPeriod,
+      selectedWeekRange,
+    ]
   )
 
   React.useEffect(() => {
@@ -1133,6 +1296,17 @@ export function ClientHabitsPanel() {
         from: getWeekStart(parsedDate),
         to: getWeekEnd(parsedDate),
       })
+      return
+    }
+
+    if (selectedPeriod === "custom") {
+      const nextRange = {
+        from: shiftDays(parsedDate, -13),
+        to: parsedDate,
+      }
+
+      setSelectedDate(nextRange.from)
+      setSelectedCustomRange(nextRange)
       return
     }
 
@@ -1268,6 +1442,8 @@ export function ClientHabitsPanel() {
                   onChange={setSelectedDate}
                   weekRange={selectedWeekRange}
                   onWeekRangeChange={setSelectedWeekRange}
+                  customRange={selectedCustomRange}
+                  onCustomRangeChange={setSelectedCustomRange}
                   availableYears={availableYears}
                 />
               </div>
