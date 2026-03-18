@@ -488,18 +488,18 @@ function getHabitPickerLabel(
   customRange?: DateRange
 ) {
   if (period === "week") {
-    return `Teden | ${formatHabitWeekRange(weekRange)}`
+    return `Teden \u00b7 ${formatHabitWeekRange(weekRange)}`
   }
 
   if (period === "custom") {
-    return `Custom | ${formatHabitWeekRange(customRange)}`
+    return `Custom \u00b7 ${formatHabitWeekRange(customRange)}`
   }
 
   if (period === "year") {
-    return `Leto | ${date.getFullYear()}`
+    return `Leto \u00b7 ${date.getFullYear()}`
   }
 
-  return `Mesec | ${formatHabitMonth(date)}`
+  return `Mesec \u00b7 ${formatHabitMonth(date)}`
 }
 
 function HabitDatePicker({
@@ -528,6 +528,7 @@ function HabitDatePicker({
     weekRange?.from ?? customRange?.from ?? value
   )
   const label = getHabitPickerLabel(period, value, weekRange, customRange)
+  const triggerWidth = `clamp(11rem, ${Math.max(label.length + 6, 18)}ch, 28rem)`
 
   React.useEffect(() => {
     if (period === "week") {
@@ -544,7 +545,10 @@ function HabitDatePicker({
   }, [customRange?.from, period, value, weekRange?.from])
 
   return (
-    <div className="relative w-[250px] max-w-full shrink-0">
+    <div
+      className="relative max-w-full shrink-0"
+      style={{ width: triggerWidth }}
+    >
       <Input
         readOnly
         title={label}
@@ -651,7 +655,7 @@ function HabitDatePicker({
                 onChange(fullWeekRange.from)
                 setOpen(false)
               }}
-              />
+            />
           ) : period === "custom" ? (
             <Calendar
               mode="range"
