@@ -567,7 +567,7 @@ function HabitDatePicker({
 
   React.useEffect(() => {
     if (period === "week") {
-      setViewMonth(weekRange?.from ?? value)
+      setViewMonth(getMonthStart(weekRange?.from ?? value))
       return
     }
 
@@ -586,7 +586,7 @@ function HabitDatePicker({
 
     if (period === "week" && open) {
       setDraftWeekRange(weekRange)
-      setViewMonth(weekRange?.from ?? value)
+      setViewMonth(getMonthStart(weekRange?.from ?? value))
     }
 
     if (period === "month" && open) {
@@ -630,6 +630,47 @@ function HabitDatePicker({
     )
   }, [])
 
+  const handleWeekDaySelect = React.useCallback(
+    (
+      anchorDate: Date | undefined,
+      event?: {
+        currentTarget: EventTarget | null
+      }
+    ) => {
+      if (!anchorDate) {
+        return
+      }
+
+      const fullWeekRange = {
+        from: getWeekStart(anchorDate),
+        to: getWeekEnd(anchorDate),
+      }
+
+      const leftDisplayedMonth = getMonthStart(viewMonth)
+      const rightDisplayedMonth = getNextMonth(leftDisplayedMonth)
+      const rightDisplayedMonthEnd = getMonthEnd(rightDisplayedMonth)
+
+      setDraftWeekRange(fullWeekRange)
+
+      if (
+        fullWeekRange.from < leftDisplayedMonth ||
+        fullWeekRange.to > rightDisplayedMonthEnd
+      ) {
+        setViewMonth(getMonthStart(fullWeekRange.from))
+      }
+
+      const target =
+        event?.currentTarget instanceof HTMLElement ? event.currentTarget : null
+
+      if (target) {
+        requestAnimationFrame(() => {
+          target.blur()
+        })
+      }
+    },
+    [viewMonth]
+  )
+
   const handleLeftCustomMonthChange = React.useCallback((nextMonth: Date) => {
     const normalizedMonth = getMonthStart(nextMonth)
 
@@ -650,7 +691,6 @@ function HabitDatePicker({
 
   const canConfirmWeek = Boolean(draftWeekRange?.from && draftWeekRange?.to)
   const canConfirmCustom = Boolean(draftCustomRange?.from && draftCustomRange?.to)
-
   return (
     <div
       className="relative max-w-full shrink-0"
@@ -766,14 +806,8 @@ function HabitDatePicker({
                   },
                 }}
                 onMonthChange={setViewMonth}
-                onSelect={(_, selectedDay) => {
-                  const fullWeekRange = {
-                    from: getWeekStart(selectedDay),
-                    to: getWeekEnd(selectedDay),
-                  }
-
-                  setViewMonth(fullWeekRange.from)
-                  setDraftWeekRange(fullWeekRange)
+                onSelect={(_range, anchorDate, _modifiers, event) => {
+                  handleWeekDaySelect(anchorDate, event)
                 }}
               />
               <div className="flex justify-end border-t border-neutral-200 px-3 py-2">
