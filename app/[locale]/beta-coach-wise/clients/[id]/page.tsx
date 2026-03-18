@@ -11,6 +11,7 @@ import {
   IconPlus,
   IconRepeat,
 } from "@tabler/icons-react"
+import { MessageSquareText } from "lucide-react"
 import { notFound } from "next/navigation"
 
 import {
@@ -129,6 +130,12 @@ function getNutritionFocus(phase?: string) {
         note: "Vzdrzevalni vnos za stabilno formo, dober recovery in enakomeren tempo.",
       }
   }
+}
+
+function getWhatsappLink(name: string) {
+  const message = `Pozdrav ${name}, javljam se glede tvojega check-ina.`
+
+  return `https://wa.me/?text=${encodeURIComponent(message)}`
 }
 
 function SectionSubHeader({
@@ -285,6 +292,23 @@ export default async function ClientProfilePage({
                   </TabsTrigger>
                 ))}
               </TabsList>
+            </div>
+            <div className="flex shrink-0 items-center self-stretch pr-3">
+              <Button
+                asChild
+                variant="outline"
+                size="icon-sm"
+                className=" rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900 px-2.5 py-2 "
+              >
+                <a
+                  href={getWhatsappLink(client.header)}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Odpri WhatsApp za ${client.header}`}
+                >
+                  <MessageSquareText className="size-4" />
+                </a>
+              </Button>
             </div>
           </div>
         </div>
@@ -705,25 +729,25 @@ export default async function ClientProfilePage({
               <SectionBody>
                 <AssignedCheckinsPanel />
                 {false ? (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Check-in history</CardTitle>
-                    <CardDescription>
-                      Zadnji trije vnosi in ključni poudarki.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      11 Mar: energija bolj stabilna, spanec izboljšan, trening dober.
-                    </div>
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      04 Mar: prehrana konsistentna, hidracija nekoliko pod planom.
-                    </div>
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      26 Feb: dober začetek cikla, potreben manjši popravek vikend rutine.
-                    </div>
-                  </CardContent>
-                </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Check-in history</CardTitle>
+                      <CardDescription>
+                        Zadnji trije vnosi in ključni poudarki.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                        11 Mar: energija bolj stabilna, spanec izboljšan, trening dober.
+                      </div>
+                      <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                        04 Mar: prehrana konsistentna, hidracija nekoliko pod planom.
+                      </div>
+                      <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                        26 Feb: dober začetek cikla, potreben manjši popravek vikend rutine.
+                      </div>
+                    </CardContent>
+                  </Card>
                 ) : null}
               </SectionBody>
             </TabsContent>

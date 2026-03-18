@@ -1087,7 +1087,7 @@ export function CreateAssignedCheckinDialog({
                   value="library"
                   className={createCheckinTabTriggerClassName}
                 >
-                  Tvoja knjiznica
+                  Templates
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -1213,7 +1213,7 @@ export function CreateAssignedCheckinDialog({
                 type="button"
                 className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
               >
-                Uporabi iz knjiznice
+                Uporabi template
               </Button>
             </DialogFooter>
           </TabsContent>
