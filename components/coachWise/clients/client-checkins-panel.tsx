@@ -538,7 +538,11 @@ function getAssignedCheckinById(checkinId: string) {
   return assignedCheckins.find((item) => item.id === checkinId) ?? null
 }
 
-function AddQuestionDialog() {
+function AddQuestionDialog({
+  trigger,
+}: {
+  trigger?: React.ReactElement
+}) {
   const [open, setOpen] = React.useState(false)
   const [questionLabel, setQuestionLabel] = React.useState("")
   const [isRequired, setIsRequired] = React.useState(true)
@@ -562,14 +566,16 @@ function AddQuestionDialog() {
       }}
     >
       <DialogTrigger asChild>
-        <Button
-          type="button"
-          size="sm"
-          className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-        >
-          <IconPlus className="size-4" />
-          Dodaj vprasanje
-        </Button>
+        {trigger ?? (
+          <Button
+            type="button"
+            size="sm"
+            className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+          >
+            <IconPlus className="size-4" />
+            Dodaj vprasanje
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
@@ -1302,6 +1308,21 @@ function AssignedCheckinEditor({
                       />
                     ))}
                   </SortableContext>
+                  <TableRow className="hover:bg-transparent">
+                    <TableCell colSpan={5} className="p-2">
+                      <AddQuestionDialog
+                        trigger={
+                          <button
+                            type="button"
+                            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-sm border border-dashed border-brand-400 bg-brand-50/40 px-3 py-3 text-[14px] font-medium text-brand-700 transition-colors hover:bg-brand-50"
+                          >
+                            <IconPlus className="size-4" />
+                            Dodaj vprasanje
+                          </button>
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </DndContext>
