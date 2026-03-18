@@ -527,6 +527,9 @@ function HabitDatePicker({
   const [viewMonth, setViewMonth] = React.useState<Date>(
     weekRange?.from ?? customRange?.from ?? value
   )
+  const [draftCustomRange, setDraftCustomRange] = React.useState<DateRange | undefined>(
+    customRange
+  )
   const label = getHabitPickerLabel(period, value, weekRange, customRange)
   const triggerWidth = `clamp(11rem, ${Math.max(label.length + 2,)}ch, 18rem)`
 
@@ -543,6 +546,12 @@ function HabitDatePicker({
 
     setViewMonth(value)
   }, [customRange?.from, period, value, weekRange?.from])
+
+  React.useEffect(() => {
+    if (period === "custom" && open) {
+      setDraftCustomRange(customRange)
+    }
+  }, [customRange, open, period])
 
   return (
     <div
@@ -657,36 +666,52 @@ function HabitDatePicker({
               }}
             />
           ) : period === "custom" ? (
-            <Calendar
-              mode="range"
-              month={viewMonth}
-              selected={customRange}
-              numberOfMonths={2}
-              captionLayout="dropdown"
-              startMonth={new Date(Math.min(...availableYears), 0, 1)}
-              endMonth={new Date(Math.max(...availableYears), 11, 1)}
-              modifiersClassNames={{
-                outside: "text-neutral-400",
-              }}
-              modifiersStyles={{
-                outside: {
-                  opacity: 0.7,
-                },
-              }}
-              onMonthChange={setViewMonth}
-              onSelect={(range) => {
-                onCustomRangeChange(range)
+            <div>
+              <Calendar
+                mode="range"
+                month={viewMonth}
+                selected={draftCustomRange}
+                numberOfMonths={2}
+                captionLayout="dropdown"
+                startMonth={new Date(Math.min(...availableYears), 0, 1)}
+                endMonth={new Date(Math.max(...availableYears), 11, 1)}
+                modifiersClassNames={{
+                  outside: "text-neutral-400",
+                }}
+                modifiersStyles={{
+                  outside: {
+                    opacity: 0.7,
+                  },
+                }}
+                onMonthChange={setViewMonth}
+                onSelect={(range) => {
+                  setDraftCustomRange(range)
 
-                if (range?.from) {
-                  onChange(range.from)
-                  setViewMonth(range.from)
-                }
+                  if (range?.from) {
+                    setViewMonth(range.from)
+                  }
+                }}
+              />
+              <div className="flex justify-end border-t border-neutral-200 px-3 py-2">
+                <Button
+                  type="button"
+                  size="sm"
+                  disabled={!draftCustomRange?.from || !draftCustomRange?.to}
+                  className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 px-3 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+                  onClick={() => {
+                    if (!draftCustomRange?.from || !draftCustomRange?.to) {
+                      return
+                    }
 
-                if (range?.from && range?.to) {
-                  setOpen(false)
-                }
-              }}
-            />
+                    onCustomRangeChange(draftCustomRange)
+                    onChange(draftCustomRange.from)
+                    setOpen(false)
+                  }}
+                >
+                  Poglej
+                </Button>
+              </div>
+            </div>
           ) : (
             <Calendar
               mode="single"
