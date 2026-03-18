@@ -235,11 +235,11 @@ export function SubmittedCheckinsPanel({
   }, [activeCheckin.id])
 
   return (
-    <div className="grid gap-0 xl:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="overflow-hidden rounded-none border-r border-neutral-200 bg-neutral-50 shadow-none ">
+    <div className="grid gap-0 xl:grid-cols-[336px_minmax(0,1fr)]">
+      <aside className="w-full rounded-none border-r border-neutral-200 bg-neutral-50 shadow-none xl:min-w-[336px] xl:sticky xl:top-12 xl:h-[calc(100vh-7rem)] xl:self-start xl:overflow-hidden">
 
 
-        <div className="space-y-1.5 p-2">
+        <div className="space-y-1.5 p-2 xl:max-h-[calc(100vh-10.5rem)] xl:overflow-y-auto [scrollbar-color:var(--color-neutral-200)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
           {submittedCheckins.map((item) => {
             const isActive = item.id === activeCheckin.id
 
@@ -251,8 +251,8 @@ export function SubmittedCheckinsPanel({
                 className={cn(
                   "flex w-full cursor-pointer flex-col items-start gap-2 rounded-md border px-3 py-3 text-left transition-colors",
                   isActive
-                    ? "border-neutral-200 bg-neutral-50"
-                    : "border-transparent bg-white hover:bg-neutral-50"
+                    ? "border-brand-500 bg-brand-500/10"
+                    : "border-neutral-200/70 bg-white hover:bg-neutral-50"
                 )}
               >
                 <div className="flex w-full items-start justify-between gap-2">
@@ -421,12 +421,12 @@ export function SubmittedCheckinsPanel({
             </div>
           </div>
 
-          <div className="sticky bottom-0 z-10 border-t border-neutral-200/80 bg-white/95 px-5 py-4 backdrop-blur-sm">
-            <div className="rounded-sm border border-brand-200/70 bg-linear-to-r from-brand-50/60 to-white px-4 py-4 shadow-[0_-10px_20px_-18px_rgba(17,24,39,0.2)]">
+          <div className="sticky bottom-0 z-10 border-t border-neutral-200/80 bg-neutral-50/95 px-5 py-4 backdrop-blur-sm">
+            <div className="rounded-sm border border-brand-200/70  px-4 py-4 shadow-[0_-10px_20px_-18px_rgba(17,24,39,0.2)]">
               <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-100">
-                    <span className="size-2.5 rounded-full bg-brand-500" />
+                    <IconPencil className="size-4 text-brand-600" />
                   </div>
                   <div>
                     <div className="text-[15px] font-semibold text-neutral-950">
@@ -464,7 +464,7 @@ export function SubmittedCheckinsPanel({
 export function AssignedCheckinsPanel() {
   return (
     <div className="px-2 mt-2 bg-neutral-50">
-      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+      <div className="overflow-hidden rounded-sm border border-neutral-200 ">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow className="hover:bg-transparent">
