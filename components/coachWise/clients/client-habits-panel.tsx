@@ -617,6 +617,13 @@ function HabitDatePicker({
   )
   const canGoToPreviousMonth = draftMonth > minAvailableMonth
   const canGoToNextMonth = draftMonth < maxAvailableMonth
+  const customCalendarClassNames = {
+    dropdowns:
+      "flex h-9 w-full items-center justify-center gap-1.5 text-[13px] font-medium",
+    dropdown_root:
+      "relative rounded-sm border border-neutral-200 bg-white shadow-none has-focus:border-neutral-300 has-focus:ring-0",
+    caption_label: "flex h-9 items-center gap-1 rounded-sm pr-1 pl-2 text-[13px]",
+  } satisfies React.ComponentProps<typeof Calendar>["classNames"]
 
   const handleDraftMonthOffset = React.useCallback((offset: number) => {
     setDraftMonth((currentDraftMonth) =>
@@ -839,6 +846,7 @@ function HabitDatePicker({
                     month={leftCustomMonth}
                     selected={draftCustomRange}
                     captionLayout="dropdown"
+                    classNames={customCalendarClassNames}
                     startMonth={new Date(Math.min(...availableYears), 0, 1)}
                     endMonth={new Date(Math.max(...availableYears), 11, 1)}
                     modifiersClassNames={{
@@ -861,6 +869,7 @@ function HabitDatePicker({
                     month={rightCustomMonth}
                     selected={draftCustomRange}
                     captionLayout="dropdown"
+                    classNames={customCalendarClassNames}
                     startMonth={new Date(Math.min(...availableYears), 0, 1)}
                     endMonth={new Date(Math.max(...availableYears), 11, 1)}
                     modifiersClassNames={{
