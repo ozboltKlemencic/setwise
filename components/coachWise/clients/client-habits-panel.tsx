@@ -364,6 +364,10 @@ function shiftDays(date: Date, days: number) {
   return nextDate
 }
 
+function getNextMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 1)
+}
+
 function isSameMonth(date: Date, target: Date) {
   return (
     date.getFullYear() === target.getFullYear() &&
@@ -530,6 +534,12 @@ function HabitDatePicker({
   const [draftCustomRange, setDraftCustomRange] = React.useState<DateRange | undefined>(
     customRange
   )
+  const [leftCustomMonth, setLeftCustomMonth] = React.useState<Date>(
+    getMonthStart(customRange?.from ?? value)
+  )
+  const [rightCustomMonth, setRightCustomMonth] = React.useState<Date>(
+    getMonthStart(customRange?.to ?? getNextMonth(customRange?.from ?? value))
+  )
   const label = getHabitPickerLabel(period, value, weekRange, customRange)
   const triggerWidth = `clamp(11rem, ${Math.max(label.length + 2,)}ch, 18rem)`
 
@@ -550,8 +560,35 @@ function HabitDatePicker({
   React.useEffect(() => {
     if (period === "custom" && open) {
       setDraftCustomRange(customRange)
+      const nextLeftMonth = getMonthStart(customRange?.from ?? value)
+      const nextRightMonth = getMonthStart(
+        customRange?.to ?? getNextMonth(customRange?.from ?? value)
+      )
+
+      setLeftCustomMonth(nextLeftMonth)
+      setRightCustomMonth(
+        nextRightMonth < nextLeftMonth ? nextLeftMonth : nextRightMonth
+      )
     }
   }, [customRange, open, period])
+
+  const handleLeftCustomMonthChange = React.useCallback((nextMonth: Date) => {
+    const normalizedMonth = getMonthStart(nextMonth)
+
+    setLeftCustomMonth(normalizedMonth)
+    setRightCustomMonth((currentRightMonth) =>
+      normalizedMonth > currentRightMonth ? normalizedMonth : currentRightMonth
+    )
+  }, [])
+
+  const handleRightCustomMonthChange = React.useCallback((nextMonth: Date) => {
+    const normalizedMonth = getMonthStart(nextMonth)
+
+    setRightCustomMonth(normalizedMonth)
+    setLeftCustomMonth((currentLeftMonth) =>
+      normalizedMonth < currentLeftMonth ? normalizedMonth : currentLeftMonth
+    )
+  }, [])
 
   return (
     <div
@@ -667,31 +704,52 @@ function HabitDatePicker({
             />
           ) : period === "custom" ? (
             <div>
-              <Calendar
-                mode="range"
-                month={viewMonth}
-                selected={draftCustomRange}
-                numberOfMonths={2}
-                captionLayout="dropdown"
-                startMonth={new Date(Math.min(...availableYears), 0, 1)}
-                endMonth={new Date(Math.max(...availableYears), 11, 1)}
-                modifiersClassNames={{
-                  outside: "text-neutral-400",
-                }}
-                modifiersStyles={{
-                  outside: {
-                    opacity: 0.7,
-                  },
-                }}
-                onMonthChange={setViewMonth}
-                onSelect={(range) => {
-                  setDraftCustomRange(range)
-
-                  if (range?.from) {
-                    setViewMonth(range.from)
-                  }
-                }}
-              />
+              <div className="grid gap-0 border-b border-neutral-200 md:grid-cols-2">
+                <div className="border-neutral-200 md:border-r">
+                  <Calendar
+                    mode="range"
+                    month={leftCustomMonth}
+                    selected={draftCustomRange}
+                    captionLayout="dropdown"
+                    startMonth={new Date(Math.min(...availableYears), 0, 1)}
+                    endMonth={new Date(Math.max(...availableYears), 11, 1)}
+                    modifiersClassNames={{
+                      outside: "text-neutral-400",
+                    }}
+                    modifiersStyles={{
+                      outside: {
+                        opacity: 0.7,
+                      },
+                    }}
+                    onMonthChange={handleLeftCustomMonthChange}
+                    onSelect={(range) => {
+                      setDraftCustomRange(range)
+                    }}
+                  />
+                </div>
+                <div>
+                  <Calendar
+                    mode="range"
+                    month={rightCustomMonth}
+                    selected={draftCustomRange}
+                    captionLayout="dropdown"
+                    startMonth={new Date(Math.min(...availableYears), 0, 1)}
+                    endMonth={new Date(Math.max(...availableYears), 11, 1)}
+                    modifiersClassNames={{
+                      outside: "text-neutral-400",
+                    }}
+                    modifiersStyles={{
+                      outside: {
+                        opacity: 0.7,
+                      },
+                    }}
+                    onMonthChange={handleRightCustomMonthChange}
+                    onSelect={(range) => {
+                      setDraftCustomRange(range)
+                    }}
+                  />
+                </div>
+              </div>
               <div className="flex justify-end border-t border-neutral-200 px-3 py-2">
                 <Button
                   type="button"
@@ -708,7 +766,7 @@ function HabitDatePicker({
                     setOpen(false)
                   }}
                 >
-                  Poglej
+                  Potrdi
                 </Button>
               </div>
             </div>
