@@ -19,6 +19,7 @@ import { AddClientDialog } from "@/components/coachWise/clients/add-client-dialo
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -94,6 +95,15 @@ const coachWiseHeaderActions: Record<
   },
 }
 
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+}
+
 export function SiteHeader() {
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
@@ -119,7 +129,14 @@ export function SiteHeader() {
     >
       <div className="flex w-full items-center justify-between gap-4 px-4 ">
         <div className="flex min-w-0 items-center gap-2.5">
-          {ActiveIcon ? (
+          {activeClient ? (
+            <Avatar className="size-7 shrink-0">
+              <AvatarImage src={activeClient.avatar} alt={activeClient.header} />
+              <AvatarFallback className="text-[11px]">
+                {getInitials(activeClient.header)}
+              </AvatarFallback>
+            </Avatar>
+          ) : ActiveIcon ? (
             <ActiveIcon className="size-4 shrink-0 text-neutral-500" />
           ) : null}
           {activeClient ? (

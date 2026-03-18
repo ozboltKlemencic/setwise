@@ -415,7 +415,7 @@ export function CoachWiseClientsTable({
   }, [clientSearch, groupOption, sortOption, statusFilter])
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col px-2 gap-4">
       <div className="flex flex-col gap-3  px-2 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex w-full flex-col gap-1 sm:flex-row sm:items-center lg:max-w-2xl">
           <div className="relative w-full sm:flex-1 lg:max-w-xs">

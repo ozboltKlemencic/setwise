@@ -68,13 +68,13 @@ const profileTabs = [
 ] as const
 
 const profileTabTriggerClassName =
-  "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-4 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-4 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
+  "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
 
 const primaryActionButtonClassName =
   "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
 
 const sectionSubTabTriggerClassName =
-  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-3 text-sm font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-4 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
 function getInitials(name: string) {
   return name
@@ -132,11 +132,11 @@ function SectionSubHeader({
 }) {
   return (
     <div className="border-b border-neutral-200 bg-neutral-50">
-      <div className="flex min-h-11 flex-col gap-3  lg:flex-row lg:items-center lg:justify-between px-4">
+      <div className="flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <TabsList
             variant="line"
-            className="h-auto w-max min-w-max justify-start gap-5 rounded-none bg-transparent p-0"
+            className="h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0"
           >
             {items.map((item) => (
               <TabsTrigger
@@ -151,7 +151,7 @@ function SectionSubHeader({
           </TabsList>
         </div>
         {actions ? (
-          <div className="flex flex-wrap items-center gap-2">{actions}</div>
+          <div className="flex flex-wrap items-center gap-1.5">{actions}</div>
         ) : null}
       </div>
     </div>
@@ -219,7 +219,7 @@ export default async function ClientProfilePage({ params }: Props) {
             <div className="min-w-0 flex-1 overflow-x-auto">
               <TabsList
                 variant="line"
-                className=" w-max min-w-full justify-start gap-0 rounded-none bg-transparent p-0"
+                className="w-max min-w-full justify-start gap-0 rounded-none bg-transparent p-0"
               >
                 {profileTabs.map((tab) => (
                   <TabsTrigger
