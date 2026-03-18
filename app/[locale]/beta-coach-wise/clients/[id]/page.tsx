@@ -10,10 +10,13 @@ import {
   IconPill,
   IconPlus,
   IconRepeat,
-  IconSettings,
 } from "@tabler/icons-react"
 import { notFound } from "next/navigation"
 
+import {
+  AssignedCheckinsPanel,
+  SubmittedCheckinsPanel,
+} from "@/components/coachWise/clients/client-checkins-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -606,105 +609,48 @@ export default async function ClientProfilePage({ params }: Props) {
         </TabsContent>
 
         <TabsContent value="checkins" className="mt-0 space-y-0">
-          <Tabs defaultValue="overview" className="gap-0">
+          <Tabs defaultValue="submitted" className="gap-0">
             <SectionSubHeader
               items={[
                 {
                   icon: <IconClipboardCheck className="size-4" />,
-                  label: "Overview",
-                  value: "overview",
+                  label: "Oddani",
+                  value: "submitted",
                 },
                 {
-                  icon: <IconChartBar className="size-4" />,
-                  label: "History",
-                  value: "history",
-                },
-                {
-                  icon: <IconInfoCircle className="size-4" />,
-                  label: "Pending",
-                  value: "pending",
+                  icon: <IconCalendarEvent className="size-4" />,
+                  label: "Dodeljeni",
+                  value: "assigned",
                 },
               ]}
               actions={
                 <>
                   <Button
                     variant="outline"
-                    size="icon-sm"
-                    className="border-neutral-200 bg-white text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
-                  >
-                    <IconSettings className="size-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
                     size="sm"
                     className="border-neutral-200 text-neutral-700"
                   >
-                    Last 30 days
+                    Zadnjih 30 dni
                     <IconChevronDown className="size-4" />
                   </Button>
                   <Button size="sm" className={primaryActionButtonClassName}>
                     <IconPlus className="size-4" />
-                    New check-in
+                    Nov check-in
                   </Button>
                 </>
               }
             />
 
-            <TabsContent value="overview" className="mt-0 space-y-0">
+            <TabsContent value="submitted" className="mt-0 space-y-0">
               <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Status</CardDescription>
-                      <CardTitle>{client.status}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Zadnji check-in je trenutno oznacen kot {client.status}.
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Ritem</CardDescription>
-                      <CardTitle>1x tedensko</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Priporocen termin je vsak ponedeljek dopoldne.
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Glavni fokus</CardDescription>
-                      <CardTitle>{client.phase ?? "Maintenance"}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Spremljaj energijo, izvedbo treninga in doslednost prehrane.
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Zadnje opombe</CardTitle>
-                    <CardDescription>
-                      Povzetek zadnjih coaching signalov in follow-up tock.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      Napredek je stabilen, potrebno je samo malo vec konsistence
-                      pri spanju in hidraciji.
-                    </div>
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      Naslednji check-in naj potrdi odziv na trenutni trening blok in
-                      prehranski setup.
-                    </div>
-                  </CardContent>
-                </Card>
+                <SubmittedCheckinsPanel clientName={client.header} />
               </SectionBody>
             </TabsContent>
 
-            <TabsContent value="history" className="mt-0 space-y-0">
+            <TabsContent value="assigned" className="mt-0 space-y-0">
               <SectionBody>
+                <AssignedCheckinsPanel />
+                {false ? (
                 <Card>
                   <CardHeader>
                     <CardTitle>Check-in history</CardTitle>
@@ -724,6 +670,7 @@ export default async function ClientProfilePage({ params }: Props) {
                     </div>
                   </CardContent>
                 </Card>
+                ) : null}
               </SectionBody>
             </TabsContent>
 
