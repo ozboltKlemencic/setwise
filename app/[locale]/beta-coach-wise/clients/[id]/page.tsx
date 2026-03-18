@@ -16,6 +16,7 @@ import { notFound } from "next/navigation"
 import {
   AssignedCheckinDetailView,
   AssignedCheckinsPanel,
+  CreateAssignedCheckinDialog,
   SubmittedCheckinPhotosCompareDialog,
   SubmittedCheckinsCompareDialog,
   SubmittedCheckinsPanel,
@@ -679,10 +680,9 @@ export default async function ClientProfilePage({
               ]}
               actions={
                 resolvedCheckinTab === "assigned" ? (
-                  <Button size="sm" className={primaryActionButtonClassName}>
-                    <IconPlus className="size-4" />
-                    Nov check-in
-                  </Button>
+                  <CreateAssignedCheckinDialog
+                    triggerClassName={primaryActionButtonClassName}
+                  />
                 ) : (
                   <>
                     <SubmittedCheckinPhotosCompareDialog

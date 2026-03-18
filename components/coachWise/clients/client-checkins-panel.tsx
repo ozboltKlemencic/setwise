@@ -23,6 +23,7 @@ import { CSS } from "@dnd-kit/utilities"
 import {
   IconArrowLeft,
   IconArrowRight,
+  IconClipboardCheck,
   IconGitCompare,
   IconCalendarEvent,
   IconDotsVertical,
@@ -81,6 +82,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
 type SubmittedCheckin = {
@@ -1007,6 +1009,218 @@ function QuestionToken({
 
 function getAssignedCheckinById(checkinId: string) {
   return assignedCheckins.find((item) => item.id === checkinId) ?? null
+}
+
+const createCheckinTabTriggerClassName =
+  "relative top-px -mb-px h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
+
+export function CreateAssignedCheckinDialog({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) {
+  const featuredCheckin = assignedCheckins[1] ?? assignedCheckins[0]
+  const [open, setOpen] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState("new")
+  const [formName, setFormName] = React.useState("")
+  const [formDescription, setFormDescription] = React.useState("")
+  const [selectedLibraryId, setSelectedLibraryId] = React.useState(
+    featuredCheckin?.id ?? ""
+  )
+
+  const resetDialog = React.useCallback(() => {
+    setActiveTab("new")
+    setFormName("")
+    setFormDescription("")
+    setSelectedLibraryId(featuredCheckin?.id ?? "")
+  }, [featuredCheckin?.id])
+
+  const descriptionLength = formDescription.length
+  const selectedLibrary =
+    assignedCheckins.find((item) => item.id === selectedLibraryId) ??
+    featuredCheckin
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+
+        if (!nextOpen) {
+          resetDialog()
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button size="sm" className={triggerClassName}>
+          <IconPlus className="size-4" />
+          Nov check-in
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="gap-0"
+        >
+          <div className="pt-4">
+            <div className="px-5">
+              <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+                <IconClipboardCheck className="size-4 text-neutral-500" />
+                Dodaj check-in
+              </DialogTitle>
+            </div>
+
+            <div className="mt-3 border-b border-neutral-200 px-5">
+              <TabsList
+                variant="line"
+                className="h-auto w-full justify-start gap-6 rounded-none bg-transparent p-0"
+              >
+                <TabsTrigger
+                  value="new"
+                  className={createCheckinTabTriggerClassName}
+                >
+                  Nov check-in
+                </TabsTrigger>
+                <TabsTrigger
+                  value="library"
+                  className={createCheckinTabTriggerClassName}
+                >
+                  Tvoja knjiznica
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </div>
+
+          <TabsContent value="new" className="mt-0 space-y-0">
+            <div className="space-y-5 px-5 py-5">
+              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_60px] md:items-start">
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Naziv obrazca <span className="text-rose-500">*</span>
+                  </label>
+                  <Input
+                    value={formName}
+                    onChange={(event) => setFormName(event.target.value)}
+                    placeholder="Vnesi naziv check-ina, npr. Dnevni check-in"
+                    className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                </div>
+
+                <div
+                  className={cn(
+                    "flex size-[60px] shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-1.5",
+                    featuredCheckin?.previewClassName ??
+                      "bg-linear-to-br from-sky-100 via-sky-50 to-white text-sky-500"
+                  )}
+                >
+                  <div className="h-5 w-4 rounded-[2px] border border-white/80 bg-white/80" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Opis obrazca
+                </label>
+                <textarea
+                  value={formDescription}
+                  onChange={(event) => setFormDescription(event.target.value)}
+                  maxLength={1000}
+                  placeholder="Dodaj kratek opis ali dodatne informacije."
+                  className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+                />
+                <div className="text-right text-[12px] text-neutral-400">
+                  {descriptionLength} / 1000
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+                >
+                  Zapri
+                </Button>
+              </DialogClose>
+              <Button
+                type="button"
+                className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+              >
+                Dodaj check-in
+              </Button>
+            </DialogFooter>
+          </TabsContent>
+
+          <TabsContent value="library" className="mt-0 space-y-0">
+            <div className="space-y-2 px-5 py-5">
+              {assignedCheckins.map((item) => {
+                const isActive = item.id === selectedLibrary?.id
+
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setSelectedLibraryId(item.id)}
+                    className={cn(
+                      "flex w-full items-center gap-3 rounded-sm border px-3 py-3 text-left transition-colors",
+                      isActive
+                        ? "border-brand-200 bg-brand-50/50"
+                        : "border-neutral-200 bg-white hover:bg-neutral-50"
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "flex size-10 shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-1.5",
+                        item.previewClassName
+                      )}
+                    >
+                      <div className="h-4 w-3 rounded-[2px] border border-white/80 bg-white/80" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[14px] font-medium text-neutral-900">
+                        {item.title}
+                      </div>
+                      <div className="mt-0.5 text-[13px] text-neutral-500">
+                        {item.questionCount} vprasanj
+                      </div>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className="rounded-sm border-sky-200 bg-sky-50 px-1.5 py-0 text-[11px] font-medium text-sky-700"
+                    >
+                      {item.schedule}
+                    </Badge>
+                  </button>
+                )
+              })}
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+                >
+                  Zapri
+                </Button>
+              </DialogClose>
+              <Button
+                type="button"
+                className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+              >
+                Uporabi iz knjiznice
+              </Button>
+            </DialogFooter>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  )
 }
 
 function AddQuestionDialog({
