@@ -617,13 +617,10 @@ function HabitDatePicker({
   )
   const canGoToPreviousMonth = draftMonth > minAvailableMonth
   const canGoToNextMonth = draftMonth < maxAvailableMonth
-  const customCalendarClassNames = {
-    dropdowns:
-      "flex h-9 w-full items-center justify-center gap-1.5 text-[13px] font-medium",
-    dropdown_root:
-      "relative rounded-sm border border-neutral-200 bg-white shadow-none has-focus:border-neutral-300 has-focus:ring-0",
-    caption_label: "flex h-9 items-center gap-1 rounded-sm pr-1 pl-2 text-[13px]",
-  } satisfies React.ComponentProps<typeof Calendar>["classNames"]
+  const canGoToPreviousLeftCustomMonth = leftCustomMonth > minAvailableMonth
+  const canGoToNextLeftCustomMonth = leftCustomMonth < maxAvailableMonth
+  const canGoToPreviousRightCustomMonth = rightCustomMonth > minAvailableMonth
+  const canGoToNextRightCustomMonth = rightCustomMonth < maxAvailableMonth
 
   const handleDraftMonthOffset = React.useCallback((offset: number) => {
     setDraftMonth((currentDraftMonth) =>
@@ -636,7 +633,6 @@ function HabitDatePicker({
       )
     )
   }, [])
-
   const handleWeekDaySelect = React.useCallback(
     (
       anchorDate: Date | undefined,
@@ -695,6 +691,30 @@ function HabitDatePicker({
       normalizedMonth < currentLeftMonth ? normalizedMonth : currentLeftMonth
     )
   }, [])
+  const handleLeftCustomMonthOffset = React.useCallback(
+    (offset: number) => {
+      handleLeftCustomMonthChange(
+        new Date(
+          leftCustomMonth.getFullYear(),
+          leftCustomMonth.getMonth() + offset,
+          1
+        )
+      )
+    },
+    [handleLeftCustomMonthChange, leftCustomMonth]
+  )
+  const handleRightCustomMonthOffset = React.useCallback(
+    (offset: number) => {
+      handleRightCustomMonthChange(
+        new Date(
+          rightCustomMonth.getFullYear(),
+          rightCustomMonth.getMonth() + offset,
+          1
+        )
+      )
+    },
+    [handleRightCustomMonthChange, rightCustomMonth]
+  )
 
   const canConfirmWeek = Boolean(draftWeekRange?.from && draftWeekRange?.to)
   const canConfirmCustom = Boolean(draftCustomRange?.from && draftCustomRange?.to)
@@ -841,12 +861,86 @@ function HabitDatePicker({
             <div>
               <div className="grid gap-0 border-b border-neutral-200 md:grid-cols-2">
                 <div className="border-neutral-200 md:border-r">
+                  <div className="flex items-center justify-center px-3 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={!canGoToPreviousLeftCustomMonth}
+                        className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                        onClick={() => handleLeftCustomMonthOffset(-1)}
+                      >
+                        <ChevronLeft className="size-4" />
+                        <span className="sr-only">Prejsnji mesec</span>
+                      </Button>
+                      <Select
+                        value={String(leftCustomMonth.getMonth())}
+                        onValueChange={(month) => {
+                          handleLeftCustomMonthChange(
+                            new Date(
+                              leftCustomMonth.getFullYear(),
+                              Number(month),
+                              1
+                            )
+                          )
+                        }}
+                      >
+                        <SelectTrigger className="h-9 min-w-[5.25rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                          {habitMonthOptions.map((monthLabel, index) => (
+                            <SelectItem key={monthLabel} value={String(index)}>
+                              {monthLabel}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Select
+                        value={String(leftCustomMonth.getFullYear())}
+                        onValueChange={(year) => {
+                          handleLeftCustomMonthChange(
+                            new Date(
+                              Number(year),
+                              leftCustomMonth.getMonth(),
+                              1
+                            )
+                          )
+                        }}
+                      >
+                        <SelectTrigger className="h-9 min-w-[5.5rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                          {availableYears.map((year) => (
+                            <SelectItem key={year} value={String(year)}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={!canGoToNextLeftCustomMonth}
+                        className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                        onClick={() => handleLeftCustomMonthOffset(1)}
+                      >
+                        <ChevronRight className="size-4" />
+                        <span className="sr-only">Naslednji mesec</span>
+                      </Button>
+                    </div>
+                  </div>
                   <Calendar
                     mode="range"
                     month={leftCustomMonth}
                     selected={draftCustomRange}
-                    captionLayout="dropdown"
-                    classNames={customCalendarClassNames}
+                    classNames={{
+                      month_caption: "hidden",
+                      nav: "hidden",
+                    }}
                     startMonth={new Date(Math.min(...availableYears), 0, 1)}
                     endMonth={new Date(Math.max(...availableYears), 11, 1)}
                     modifiersClassNames={{
@@ -864,12 +958,86 @@ function HabitDatePicker({
                   />
                 </div>
                 <div>
+                  <div className="flex items-center justify-center px-3 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={!canGoToPreviousRightCustomMonth}
+                        className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                        onClick={() => handleRightCustomMonthOffset(-1)}
+                      >
+                        <ChevronLeft className="size-4" />
+                        <span className="sr-only">Prejsnji mesec</span>
+                      </Button>
+                      <Select
+                        value={String(rightCustomMonth.getMonth())}
+                        onValueChange={(month) => {
+                          handleRightCustomMonthChange(
+                            new Date(
+                              rightCustomMonth.getFullYear(),
+                              Number(month),
+                              1
+                            )
+                          )
+                        }}
+                      >
+                        <SelectTrigger className="h-9 min-w-[5.25rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                          {habitMonthOptions.map((monthLabel, index) => (
+                            <SelectItem key={monthLabel} value={String(index)}>
+                              {monthLabel}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Select
+                        value={String(rightCustomMonth.getFullYear())}
+                        onValueChange={(year) => {
+                          handleRightCustomMonthChange(
+                            new Date(
+                              Number(year),
+                              rightCustomMonth.getMonth(),
+                              1
+                            )
+                          )
+                        }}
+                      >
+                        <SelectTrigger className="h-9 min-w-[5.5rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                          {availableYears.map((year) => (
+                            <SelectItem key={year} value={String(year)}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={!canGoToNextRightCustomMonth}
+                        className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                        onClick={() => handleRightCustomMonthOffset(1)}
+                      >
+                        <ChevronRight className="size-4" />
+                        <span className="sr-only">Naslednji mesec</span>
+                      </Button>
+                    </div>
+                  </div>
                   <Calendar
                     mode="range"
                     month={rightCustomMonth}
                     selected={draftCustomRange}
-                    captionLayout="dropdown"
-                    classNames={customCalendarClassNames}
+                    classNames={{
+                      month_caption: "hidden",
+                      nav: "hidden",
+                    }}
                     startMonth={new Date(Math.min(...availableYears), 0, 1)}
                     endMonth={new Date(Math.max(...availableYears), 11, 1)}
                     modifiersClassNames={{
