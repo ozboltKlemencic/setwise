@@ -84,6 +84,10 @@ type HabitDefinition = {
   id: string
   title: string
   target: string
+  templateDescription: string
+  goalValue: string
+  goalUnit: "steps" | "liters" | "hours" | "minutes"
+  goalPeriod: "daily" | "weekly"
   icon: LucideIcon
   iconClassName: string
   iconWrapClassName: string
@@ -110,6 +114,10 @@ const habitDefinitions: HabitDefinition[] = [
     id: "steps",
     title: "Daily Steps",
     target: "10000 steps/day",
+    templateDescription: "Track daily walking volume and consistency.",
+    goalValue: "10000",
+    goalUnit: "steps",
+    goalPeriod: "daily",
     icon: Footprints,
     iconClassName: "text-violet-600",
     iconWrapClassName: "bg-violet-50 border-violet-200",
@@ -150,6 +158,10 @@ const habitDefinitions: HabitDefinition[] = [
     id: "water",
     title: "Water Intake",
     target: "2.5 liters/day",
+    templateDescription: "Stay consistent with hydration through the day.",
+    goalValue: "2.5",
+    goalUnit: "liters",
+    goalPeriod: "daily",
     icon: Droplets,
     iconClassName: "text-sky-600",
     iconWrapClassName: "bg-sky-50 border-sky-200",
@@ -190,6 +202,10 @@ const habitDefinitions: HabitDefinition[] = [
     id: "sleep",
     title: "Sleep Duration",
     target: "8 hours/day",
+    templateDescription: "Build a steady sleep routine and improve recovery.",
+    goalValue: "8",
+    goalUnit: "hours",
+    goalPeriod: "daily",
     icon: MoonStar,
     iconClassName: "text-orange-600",
     iconWrapClassName: "bg-orange-50 border-orange-200",
@@ -287,6 +303,7 @@ function CreateHabitDialog({
   const [hasReminder, setHasReminder] = React.useState(true)
   const [reminderTime, setReminderTime] = React.useState("09:00")
   const [reminderNote, setReminderNote] = React.useState("")
+  const [draftHabitId, setDraftHabitId] = React.useState(featuredHabit?.id ?? "")
   const [selectedTemplateId, setSelectedTemplateId] = React.useState(
     featuredHabit?.id ?? ""
   )
@@ -304,12 +321,27 @@ function CreateHabitDialog({
     setHasReminder(true)
     setReminderTime("09:00")
     setReminderNote("")
+    setDraftHabitId(featuredHabit?.id ?? "")
     setSelectedTemplateId(featuredHabit?.id ?? "")
   }, [featuredHabit?.id])
 
+  const draftHabit =
+    habitDefinitions.find((habit) => habit.id === draftHabitId) ?? featuredHabit
   const selectedTemplate =
     habitDefinitions.find((habit) => habit.id === selectedTemplateId) ??
     featuredHabit
+
+  const applyTemplate = React.useCallback((habit: HabitDefinition) => {
+    setSelectedTemplateId(habit.id)
+    setDraftHabitId(habit.id)
+    setHabitName(habit.title)
+    setHabitDescription(habit.templateDescription)
+    setGoalValue(habit.goalValue)
+    setGoalUnit(habit.goalUnit)
+    setGoalPeriod(habit.goalPeriod)
+    setReminderNote(habit.target)
+    setActiveTab("new")
+  }, [])
 
   return (
     <Dialog
@@ -367,8 +399,19 @@ function CreateHabitDialog({
                   Habit Name <span className="text-rose-500">*</span>
                 </label>
                 <div className="grid gap-3 md:grid-cols-[52px_minmax(0,1fr)]">
-                  <div className="flex size-[52px] items-center justify-center rounded-sm border border-neutral-200 bg-violet-50">
-                    <Footprints className="size-5 text-violet-600" />
+                  <div
+                    className={cn(
+                      "flex size-[52px] items-center justify-center rounded-sm border border-neutral-200",
+                      draftHabit?.iconWrapClassName ?? "bg-violet-50"
+                    )}
+                  >
+                    {draftHabit ? (
+                      <draftHabit.icon
+                        className={cn("size-5", draftHabit.iconClassName)}
+                      />
+                    ) : (
+                      <Footprints className="size-5 text-violet-600" />
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Input
@@ -572,7 +615,7 @@ function CreateHabitDialog({
                   <button
                     key={habit.id}
                     type="button"
-                    onClick={() => setSelectedTemplateId(habit.id)}
+                    onClick={() => applyTemplate(habit)}
                     className={cn(
                       "flex items-center gap-3 rounded-sm border px-3 py-3 text-left transition-colors",
                       isActive
@@ -613,6 +656,11 @@ function CreateHabitDialog({
               </DialogClose>
               <Button
                 type="button"
+                onClick={() => {
+                  if (selectedTemplate) {
+                    applyTemplate(selectedTemplate)
+                  }
+                }}
                 className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
               >
                 Use Template

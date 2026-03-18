@@ -23,6 +23,7 @@ import { CSS } from "@dnd-kit/utilities"
 import {
   IconArrowLeft,
   IconArrowRight,
+  IconChevronDown,
   IconClipboardCheck,
   IconGitCompare,
   IconCalendarEvent,
@@ -49,6 +50,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Calendar } from "@/components/ui/calendar"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
@@ -75,6 +77,11 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   Select,
   SelectContent,
@@ -352,6 +359,34 @@ const improvementOptions = [
   "Prehrana",
   "Recovery",
 ]
+
+function parseCheckinDate(value: string) {
+  const [day, month, year] = value.split(".").map(Number)
+
+  return new Date(year, month - 1, day)
+}
+
+function getMonthStart(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1)
+}
+
+function isSameMonth(date: Date, target: Date) {
+  return (
+    date.getFullYear() === target.getFullYear() &&
+    date.getMonth() === target.getMonth()
+  )
+}
+
+function formatSubmittedMonth(date: Date | undefined) {
+  if (!date) {
+    return "Izberi mesec"
+  }
+
+  return date.toLocaleDateString("sl-SI", {
+    month: "long",
+    year: "numeric",
+  })
+}
 
 const questionTypeOptions = [
   {
@@ -2113,97 +2148,183 @@ export function SubmittedCheckinsPanel({
 }: {
   clientName: string
 }) {
-  const [activeId, setActiveId] = React.useState(submittedCheckins[0]?.id)
+  const [activeId, setActiveId] = React.useState<string | undefined>(
+    submittedCheckins[0]?.id
+  )
+  const [selectedMonth, setSelectedMonth] = React.useState(() =>
+    getMonthStart(parseCheckinDate(submittedCheckins[0]?.date ?? "01.01.2026"))
+  )
+  const [monthPickerOpen, setMonthPickerOpen] = React.useState(false)
   const [reviewDraft, setReviewDraft] = React.useState("")
+  const filteredCheckins = React.useMemo(
+    () =>
+      submittedCheckins.filter((item) =>
+        isSameMonth(parseCheckinDate(item.date), selectedMonth)
+      ),
+    [selectedMonth]
+  )
   const activeCheckin =
-    submittedCheckins.find((item) => item.id === activeId) ?? submittedCheckins[0]
+    filteredCheckins.find((item) => item.id === activeId) ??
+    filteredCheckins[0] ??
+    null
+
+  React.useEffect(() => {
+    if (!filteredCheckins.length) {
+      setActiveId(undefined)
+      return
+    }
+
+    if (!filteredCheckins.some((item) => item.id === activeId)) {
+      setActiveId(filteredCheckins[0]?.id)
+    }
+  }, [activeId, filteredCheckins])
 
   React.useEffect(() => {
     setReviewDraft("")
-  }, [activeCheckin.id])
+  }, [activeCheckin?.id])
 
   return (
     <div className="grid gap-0 xl:grid-cols-[336px_minmax(0,1fr)]">
-      <aside className="w-full rounded-none border-r border-neutral-200 bg-neutral-50 shadow-none xl:min-w-[336px] xl:sticky xl:top-12 xl:h-[calc(100vh-7rem)] xl:self-start xl:overflow-hidden">
-
-
-        <div className="space-y-1.5 p-2 xl:max-h-[calc(100vh-10.5rem)] xl:overflow-y-auto [scrollbar-color:var(--color-neutral-200)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
-          {submittedCheckins.map((item) => {
-            const isActive = item.id === activeCheckin.id
-
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setActiveId(item.id)}
-                className={cn(
-                  "flex w-full cursor-pointer flex-col items-start gap-2 rounded-md border px-3 py-3 text-left transition-colors",
-                  isActive
-                    ? "border-brand-500 bg-brand-500/10"
-                    : "border-neutral-200/70 bg-white hover:bg-neutral-50"
-                )}
+      <aside className="w-full rounded-none border-r border-neutral-200 bg-neutral-50 shadow-none xl:min-w-[336px] xl:sticky xl:top-12 xl:h-[calc(100vh-7rem)] xl:self-start xl:overflow-hidden xl:flex xl:flex-col">
+        <div className="p-2 pb-0">
+          <div className="relative">
+            <Input
+              readOnly
+              value={formatSubmittedMonth(selectedMonth)}
+              className="h-9 cursor-pointer rounded-sm border-neutral-200/80 bg-white pr-12 text-[13px] capitalize shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+              onClick={() => setMonthPickerOpen(true)}
+            />
+            <Popover open={monthPickerOpen} onOpenChange={setMonthPickerOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="absolute top-1/2 right-1 flex size-8 -translate-y-1/2 items-center justify-center gap-0.5 rounded-sm text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-600"
+                >
+                  <IconCalendarEvent className="size-4" />
+                  <IconChevronDown className="size-3.5" />
+                  <span className="sr-only">Izberi mesec</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="start"
+                sideOffset={8}
+                className="w-auto overflow-hidden rounded-sm border-neutral-200/80 p-0 shadow-lg shadow-black/5"
               >
-                <div className="flex w-full items-start justify-between gap-2">
-                  <div>
-                    <div
+                <Calendar
+                  mode="single"
+                  month={selectedMonth}
+                  selected={selectedMonth}
+                  captionLayout="dropdown"
+                  showOutsideDays={false}
+                  startMonth={new Date(selectedMonth.getFullYear(), 0, 1)}
+                  endMonth={new Date(selectedMonth.getFullYear(), 11, 1)}
+                  onMonthChange={(month) => {
+                    setSelectedMonth(getMonthStart(month))
+                    setMonthPickerOpen(false)
+                  }}
+                  classNames={{
+                    month: "flex w-full flex-col gap-0",
+                    table: "hidden",
+                    weekdays: "hidden",
+                    week: "hidden",
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
+        <div className="space-y-1.5 p-2 xl:flex-1 xl:overflow-y-auto [scrollbar-color:var(--color-neutral-200)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
+          {filteredCheckins.length ? (
+            filteredCheckins.map((item) => {
+              const isActive = item.id === activeCheckin?.id
+
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActiveId(item.id)}
+                  className={cn(
+                    "flex w-full cursor-pointer flex-col items-start gap-2 rounded-md border px-3 py-3 text-left transition-colors",
+                    isActive
+                      ? "border-brand-500 bg-brand-500/10"
+                      : "border-neutral-200/70 bg-white hover:bg-neutral-50"
+                  )}
+                >
+                  <div className="flex w-full items-start justify-between gap-2">
+                    <div>
+                      <div
+                        className={cn(
+                          "text-[14px] font-medium",
+                          isActive ? "text-neutral-900" : "text-neutral-700"
+                        )}
+                      >
+                        {item.title}
+                      </div>
+                      <div className="mt-1 text-xs text-neutral-500">{item.date}</div>
+                    </div>
+                    <Badge
+                      variant="outline"
                       className={cn(
-                        "text-[14px] font-medium",
-                        isActive ? "text-neutral-900" : "text-neutral-700"
+                        "rounded-sm px-1.5 py-0 text-[11px] font-medium",
+                        getStatusBadgeClassName(item.status)
                       )}
                     >
-                      {item.title}
-                    </div>
-                    <div className="mt-1 text-xs text-neutral-500">{item.date}</div>
+                      {item.status}
+                    </Badge>
                   </div>
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      "rounded-sm px-1.5 py-0 text-[11px] font-medium",
-                      getStatusBadgeClassName(item.status)
-                    )}
-                  >
-                    {item.status}
-                  </Badge>
-                </div>
-              </button>
-            )
-          })}
+                </button>
+              )
+            })
+          ) : (
+            <div className="rounded-sm border border-dashed border-neutral-200 bg-white px-4 py-6 text-center">
+              <div className="text-[14px] font-medium text-neutral-900">
+                V izbranem mesecu ni oddanih check-inov
+              </div>
+              <div className="mt-1 text-[13px] text-neutral-500">
+                Izberi drug mesec za prikaz oddanih obrazcev.
+              </div>
+            </div>
+          )}
         </div>
       </aside>
 
       <Card className="gap-0  bg-neutral-50 py-0 border-none shadow-none xl:rounded-l-none">
-        <CardHeader className="gap-3 px-5 py-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-            <div>
-              <CardTitle className="text-[18px] font-semibold text-neutral-950">
-                {activeCheckin.title}
-              </CardTitle>
-              <CardDescription className="mt-1 text-[13px]">
-                Oddani odgovori za {clientName} dne {activeCheckin.date}.
-              </CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge
-                variant="outline"
-                className={cn(
-                  "rounded-sm px-2 py-0.5 text-[11px] font-medium",
-                  getStatusBadgeClassName(activeCheckin.status)
-                )}
-              >
-                {activeCheckin.status}
-              </Badge>
-              <Button
-                variant="outline"
-                size="sm"
-                className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-              >
-                Odpri v obrazcu
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-0 px-0 py-0">
-          <div className="space-y-5 px-5 py-4 pb-32">
+        {activeCheckin ? (
+          <>
+            <CardHeader className="gap-3 px-5 py-4">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                <div>
+                  <CardTitle className="text-[18px] font-semibold text-neutral-950">
+                    {activeCheckin.title}
+                  </CardTitle>
+                  <CardDescription className="mt-1 text-[13px]">
+                    Oddani odgovori za {clientName} dne {activeCheckin.date}.
+                  </CardDescription>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "rounded-sm px-2 py-0.5 text-[11px] font-medium",
+                      getStatusBadgeClassName(activeCheckin.status)
+                    )}
+                  >
+                    {activeCheckin.status}
+                  </Badge>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+                  >
+                    Odpri v obrazcu
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-0 px-0 py-0">
+              <div className="space-y-5 px-5 py-4 pb-32">
             <DetailField
               label="1. Kaj je bil tvoj najvecji napredek ta teden?"
               value={activeCheckin.biggestWin}
@@ -2307,43 +2428,56 @@ export function SubmittedCheckinsPanel({
                 })}
               </div>
             </div>
-          </div>
-
-          <div className="sticky bottom-0 z-10 border-t border-neutral-200/80 bg-neutral-50/95 px-5 py-4 backdrop-blur-sm">
-            <div className="rounded-sm border border-brand-200/70  px-4 py-4 shadow-[0_-10px_20px_-18px_rgba(17,24,39,0.2)]">
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-100">
-                    <IconPencil className="size-4 text-brand-600" />
-                  </div>
-                  <div>
-                    <div className="text-[15px] font-semibold text-neutral-950">
-                      Pregled check-ina
-                    </div>
-                    <div className="mt-1 text-[13px] text-neutral-600">
-                      Dodaj povratno informacijo, naslednje korake ali opombe za stranko.
-                    </div>
-                  </div>
-                </div>
-                <Button
-                  type="button"
-                  size="sm"
-                  disabled={!reviewDraft.trim()}
-                  onClick={() => setReviewDraft("")}
-                  className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
-                >
-                  Oddaj pregled
-                </Button>
               </div>
-              <textarea
-                value={reviewDraft}
-                onChange={(event) => setReviewDraft(event.target.value)}
-                placeholder="Vnesi povratno informacijo, komentarje ali naslednje korake za stranko..."
-                className="mt-4 min-h-[96px] w-full resize-none rounded-sm border border-brand-200 bg-white px-3 py-2 text-[13px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-brand-300 focus:ring-0"
-              />
+
+              <div className="sticky bottom-0 z-10 border-t border-neutral-200/80 bg-neutral-50/95 px-5 py-4 backdrop-blur-sm">
+                <div className="rounded-sm border border-brand-200/70  px-4 py-4 shadow-[0_-10px_20px_-18px_rgba(17,24,39,0.2)]">
+                  <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-100">
+                        <IconPencil className="size-4 text-brand-600" />
+                      </div>
+                      <div>
+                        <div className="text-[15px] font-semibold text-neutral-950">
+                          Pregled check-ina
+                        </div>
+                        <div className="mt-1 text-[13px] text-neutral-600">
+                          Dodaj povratno informacijo, naslednje korake ali opombe za stranko.
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      disabled={!reviewDraft.trim()}
+                      onClick={() => setReviewDraft("")}
+                      className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+                    >
+                      Oddaj pregled
+                    </Button>
+                  </div>
+                  <textarea
+                    value={reviewDraft}
+                    onChange={(event) => setReviewDraft(event.target.value)}
+                    placeholder="Vnesi povratno informacijo, komentarje ali naslednje korake za stranko..."
+                    className="mt-4 min-h-[96px] w-full resize-none rounded-sm border border-brand-200 bg-white px-3 py-2 text-[13px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-brand-300 focus:ring-0"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </>
+        ) : (
+          <CardContent className="flex min-h-[420px] items-center justify-center px-6 py-12">
+            <div className="max-w-sm text-center">
+              <div className="text-[15px] font-semibold text-neutral-950">
+                Ni oddanih check-inov za izbrani mesec
+              </div>
+              <div className="mt-2 text-[13px] text-neutral-500">
+                Na levi strani izberi drug mesec, da prikazes oddane odgovore stranke.
+              </div>
             </div>
-          </div>
-        </CardContent>
+          </CardContent>
+        )}
       </Card>
     </div>
   )
