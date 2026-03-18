@@ -10,14 +10,19 @@ import {
 } from "recharts"
 import {
   BarChart3,
+  CalendarDays,
   CheckCircle2,
+  Clock3,
   Droplets,
   Flame,
   Footprints,
+  MoreVertical,
   MoonStar,
   Pencil,
   Plus,
   Rocket,
+  Sprout,
+  Trash2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -28,6 +33,29 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Table,
   TableBody,
@@ -71,8 +99,11 @@ type HabitDefinition = {
   entries: HabitEntry[]
 }
 
-const habitsTabTriggerClassName =
-  "h-8 rounded-md border-0 px-3 text-[13px] font-medium text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm"
+const habitsSubTabTriggerClassName =
+  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+
+const createHabitTabTriggerClassName =
+  "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
 
 const habitDefinitions: HabitDefinition[] = [
   {
@@ -217,6 +248,383 @@ function formatAxisValue(habit: HabitDefinition, value: number) {
   return value.toFixed(1)
 }
 
+function formatHabitAverage(habit: HabitDefinition) {
+  if (!habit.chartData.length) {
+    return "-"
+  }
+
+  const average =
+    habit.chartData.reduce((sum, point) => sum + point.value, 0) /
+    habit.chartData.length
+
+  if (habit.id === "steps") {
+    return Math.round(average).toLocaleString()
+  }
+
+  if (habit.id === "water") {
+    return `${average.toFixed(1)} L`
+  }
+
+  return `${average.toFixed(1)} h`
+}
+
+function CreateHabitDialog({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) {
+  const featuredHabit = habitDefinitions[0]
+  const [open, setOpen] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState("new")
+  const [habitName, setHabitName] = React.useState("")
+  const [habitDescription, setHabitDescription] = React.useState("")
+  const [goalValue, setGoalValue] = React.useState("")
+  const [goalUnit, setGoalUnit] = React.useState("steps")
+  const [goalPeriod, setGoalPeriod] = React.useState("daily")
+  const [hasDateRange, setHasDateRange] = React.useState(true)
+  const [startDate, setStartDate] = React.useState("2026-03-18")
+  const [endDate, setEndDate] = React.useState("2026-04-17")
+  const [hasReminder, setHasReminder] = React.useState(true)
+  const [reminderTime, setReminderTime] = React.useState("09:00")
+  const [reminderNote, setReminderNote] = React.useState("")
+  const [selectedTemplateId, setSelectedTemplateId] = React.useState(
+    featuredHabit?.id ?? ""
+  )
+
+  const resetDialog = React.useCallback(() => {
+    setActiveTab("new")
+    setHabitName("")
+    setHabitDescription("")
+    setGoalValue("")
+    setGoalUnit("steps")
+    setGoalPeriod("daily")
+    setHasDateRange(true)
+    setStartDate("2026-03-18")
+    setEndDate("2026-04-17")
+    setHasReminder(true)
+    setReminderTime("09:00")
+    setReminderNote("")
+    setSelectedTemplateId(featuredHabit?.id ?? "")
+  }, [featuredHabit?.id])
+
+  const selectedTemplate =
+    habitDefinitions.find((habit) => habit.id === selectedTemplateId) ??
+    featuredHabit
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+
+        if (!nextOpen) {
+          resetDialog()
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button type="button" size="sm" className={triggerClassName}>
+          <Plus className="size-4" />
+          New Habit
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[720px]">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-0">
+          <div className="pt-4">
+            <div className="px-5">
+              <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+                <Sprout className="size-4 text-neutral-500" />
+                New Habit
+              </DialogTitle>
+            </div>
+
+            <div className="mt-3 border-b border-neutral-200 px-5">
+              <TabsList
+                variant="line"
+                className="h-auto w-full justify-start gap-6 rounded-none bg-transparent p-0"
+              >
+                <TabsTrigger
+                  value="new"
+                  className={createHabitTabTriggerClassName}
+                >
+                  New Habit
+                </TabsTrigger>
+                <TabsTrigger
+                  value="templates"
+                  className={createHabitTabTriggerClassName}
+                >
+                  Templates
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </div>
+
+          <TabsContent value="new" className="mt-0 space-y-0">
+            <div className="space-y-5 px-5 py-5">
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Habit Name <span className="text-rose-500">*</span>
+                </label>
+                <div className="grid gap-3 md:grid-cols-[52px_minmax(0,1fr)]">
+                  <div className="flex size-[52px] items-center justify-center rounded-sm border border-neutral-200 bg-violet-50">
+                    <Footprints className="size-5 text-violet-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <Input
+                      value={habitName}
+                      onChange={(event) => setHabitName(event.target.value)}
+                      maxLength={50}
+                      placeholder="Name of the habit e.g. Daily Steps"
+                      className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    />
+                    <div className="text-right text-[12px] text-neutral-400">
+                      {habitName.length} / 50
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Habit Description
+                </label>
+                <textarea
+                  value={habitDescription}
+                  onChange={(event) => setHabitDescription(event.target.value)}
+                  maxLength={1000}
+                  placeholder="Enter any additional info"
+                  className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+                />
+                <div className="text-right text-[12px] text-neutral-400">
+                  {habitDescription.length} / 1000
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Goal, Unit &amp; Period <span className="text-rose-500">*</span>
+                </label>
+                <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                  <Input
+                    value={goalValue}
+                    onChange={(event) => setGoalValue(event.target.value)}
+                    placeholder="Goal"
+                    className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 md:w-[110px]"
+                  />
+                  <Select value={goalUnit} onValueChange={setGoalUnit}>
+                    <SelectTrigger className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 md:w-[120px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5">
+                      <SelectItem value="steps">steps</SelectItem>
+                      <SelectItem value="liters">liters</SelectItem>
+                      <SelectItem value="hours">hours</SelectItem>
+                      <SelectItem value="minutes">minutes</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <span className="hidden text-neutral-400 md:block">/</span>
+                  <div className="inline-flex overflow-hidden rounded-sm border border-neutral-200 bg-white">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className={cn(
+                        "rounded-none px-4 text-neutral-700 shadow-none hover:bg-neutral-50",
+                        goalPeriod === "daily" && "bg-brand-50 text-brand-700"
+                      )}
+                      onClick={() => setGoalPeriod("daily")}
+                    >
+                      Daily
+                    </Button>
+                    <div className="w-px bg-neutral-200" />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className={cn(
+                        "rounded-none px-4 text-neutral-700 shadow-none hover:bg-neutral-50",
+                        goalPeriod === "weekly" && "bg-brand-50 text-brand-700"
+                      )}
+                      onClick={() => setGoalPeriod("weekly")}
+                    >
+                      Weekly
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Start Habit Date / Include End Date?
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setHasDateRange((current) => !current)}
+                    className={cn(
+                      "relative inline-flex h-6 w-11 items-center rounded-full border transition-colors",
+                      hasDateRange
+                        ? "border-brand-500 bg-brand-500"
+                        : "border-neutral-300 bg-neutral-200"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "inline-block size-5 rounded-full bg-white shadow-sm transition-transform",
+                        hasDateRange ? "translate-x-5" : "translate-x-0.5"
+                      )}
+                    />
+                    <span className="sr-only">Toggle date range</span>
+                  </button>
+                </div>
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_20px_minmax(0,1fr)] md:items-center">
+                  <Input
+                    type="date"
+                    value={startDate}
+                    onChange={(event) => setStartDate(event.target.value)}
+                    className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <div className="hidden justify-center text-neutral-400 md:flex">
+                    <CalendarDays className="size-4" />
+                  </div>
+                  <Input
+                    type="date"
+                    value={endDate}
+                    onChange={(event) => setEndDate(event.target.value)}
+                    disabled={!hasDateRange}
+                    className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 disabled:opacity-45"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Set Reminder
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setHasReminder((current) => !current)}
+                    className={cn(
+                      "relative inline-flex h-6 w-11 items-center rounded-full border transition-colors",
+                      hasReminder
+                        ? "border-brand-500 bg-brand-500"
+                        : "border-neutral-300 bg-neutral-200"
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "inline-block size-5 rounded-full bg-white shadow-sm transition-transform",
+                        hasReminder ? "translate-x-5" : "translate-x-0.5"
+                      )}
+                    />
+                    <span className="sr-only">Toggle reminder</span>
+                  </button>
+                </div>
+                <div className="grid gap-2 md:grid-cols-[128px_minmax(0,1fr)]">
+                  <div className="relative">
+                    <Input
+                      type="time"
+                      value={reminderTime}
+                      onChange={(event) => setReminderTime(event.target.value)}
+                      disabled={!hasReminder}
+                      className="h-10 rounded-sm border-neutral-200 bg-white pr-9 text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 disabled:opacity-45"
+                    />
+                    <Clock3 className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-neutral-400" />
+                  </div>
+                  <Input
+                    value={reminderNote}
+                    onChange={(event) => setReminderNote(event.target.value)}
+                    disabled={!hasReminder}
+                    placeholder="Reminder note"
+                    className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 disabled:opacity-45"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+                >
+                  Close
+                </Button>
+              </DialogClose>
+              <Button
+                type="button"
+                disabled={!habitName.trim() || !goalValue.trim()}
+                className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+              >
+                Add Habit
+              </Button>
+            </DialogFooter>
+          </TabsContent>
+
+          <TabsContent value="templates" className="mt-0 space-y-0">
+            <div className="grid gap-3 px-5 py-5 sm:grid-cols-2 lg:grid-cols-3">
+              {habitDefinitions.map((habit) => {
+                const Icon = habit.icon
+                const isActive = habit.id === selectedTemplate?.id
+
+                return (
+                  <button
+                    key={habit.id}
+                    type="button"
+                    onClick={() => setSelectedTemplateId(habit.id)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-sm border px-3 py-3 text-left transition-colors",
+                      isActive
+                        ? "border-brand-200 bg-brand-50/50"
+                        : "border-neutral-200 bg-white hover:bg-neutral-50"
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "flex size-10 shrink-0 items-center justify-center rounded-sm border",
+                        habit.iconWrapClassName
+                      )}
+                    >
+                      <Icon className={cn("size-5", habit.iconClassName)} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate text-[14px] font-medium text-neutral-900">
+                        {habit.title}
+                      </div>
+                      <div className="mt-0.5 text-[13px] text-neutral-500">
+                        {habit.target}
+                      </div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+                >
+                  Close
+                </Button>
+              </DialogClose>
+              <Button
+                type="button"
+                className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+              >
+                Use Template
+              </Button>
+            </DialogFooter>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function HabitStatCard({
   icon: Icon,
   label,
@@ -265,25 +673,40 @@ export function ClientHabitsPanel() {
   return (
     <Tabs defaultValue="habits" className="gap-0">
       <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex min-h-12 flex-col gap-2 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-          <TabsList className="rounded-md border border-neutral-200 bg-neutral-100/80 p-1">
-            <TabsTrigger value="habits" className={habitsTabTriggerClassName}>
-              Habits
-            </TabsTrigger>
-            <TabsTrigger value="overview" className={habitsTabTriggerClassName}>
-              Overview
-            </TabsTrigger>
-          </TabsList>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
-          >
-            <Plus className="size-4" />
-            New Habit
-          </Button>
+        <div className="flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <TabsList
+              variant="line"
+              className="h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0"
+            >
+              <TabsTrigger
+                value="habits"
+                className={habitsSubTabTriggerClassName}
+              >
+                <BarChart3 className="size-4" />
+                Overview
+              </TabsTrigger>
+              <TabsTrigger
+                value="overview"
+                className={habitsSubTabTriggerClassName}
+              >
+                <Footprints className="size-4" />
+                Habits
+              </TabsTrigger>
+            </TabsList>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              <Pencil className="size-4" />
+              Uredi
+            </Button>
+            <CreateHabitDialog triggerClassName="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700" />
+          </div>
         </div>
       </div>
 
@@ -341,46 +764,24 @@ export function ClientHabitsPanel() {
 
           <div className="min-w-0 bg-neutral-50">
             <div className="space-y-4 px-4 py-4">
-              <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-                <div className="flex min-w-0 items-center gap-3">
-                  <div
-                    className={cn(
-                      "flex size-10 shrink-0 items-center justify-center rounded-sm border",
-                      selectedHabit.iconWrapClassName
-                    )}
-                  >
-                    <SelectedHabitIcon
-                      className={cn("size-5", selectedHabit.iconClassName)}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="truncate text-[28px] leading-none font-semibold text-neutral-950">
-                      {selectedHabit.title}
-                    </div>
-                    <div className="mt-1 text-[13px] text-neutral-500">
-                      {selectedHabit.target}
-                    </div>
-                  </div>
+              <div className="flex min-w-0 items-center gap-3">
+                <div
+                  className={cn(
+                    "flex size-10 shrink-0 items-center justify-center rounded-sm border",
+                    selectedHabit.iconWrapClassName
+                  )}
+                >
+                  <SelectedHabitIcon
+                    className={cn("size-5", selectedHabit.iconClassName)}
+                  />
                 </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
-                  >
-                    <Plus className="size-4" />
-                    Log Habit
-                  </Button>
-                  <Button
-                    type="button"
-                    size="sm"
-                    className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-                  >
-                    <Pencil className="size-4" />
-                    Edit Habit
-                  </Button>
+                <div className="min-w-0">
+                  <div className="truncate text-[28px] leading-none font-semibold text-neutral-950">
+                    {selectedHabit.title}
+                  </div>
+                  <div className="mt-1 text-[13px] text-neutral-500">
+                    {selectedHabit.target}
+                  </div>
                 </div>
               </div>
 
@@ -522,52 +923,89 @@ export function ClientHabitsPanel() {
       </TabsContent>
 
       <TabsContent value="overview" className="mt-0 space-y-0">
-        <div className="space-y-4 px-4 py-4">
-          <div className="grid gap-4 xl:grid-cols-3">
-            {habitDefinitions.map((habit) => {
-              const Icon = habit.icon
+        <div className="px-4 py-2">
+          <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+            <Table>
+              <TableHeader className="sticky top-0 z-10 bg-muted">
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="pl-4 lg:pl-5">
+                    <div className="w-[16rem] min-w-[16rem]">Habit</div>
+                  </TableHead>
+                  <TableHead>Povprecno</TableHead>
+                  <TableHead className="px-1 pr-2 lg:pr-3">
+                    <div className="w-6" />
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {habitDefinitions.map((habit) => {
+                  const Icon = habit.icon
 
-              return (
-                <div
-                  key={habit.id}
-                  className="rounded-sm border border-neutral-200 bg-white p-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={cn(
-                        "flex size-10 items-center justify-center rounded-sm border",
-                        habit.iconWrapClassName
-                      )}
-                    >
-                      <Icon className={cn("size-5", habit.iconClassName)} />
-                    </div>
-                    <div>
-                      <div className="text-[15px] font-medium text-neutral-900">
-                        {habit.title}
-                      </div>
-                      <div className="text-[13px] text-neutral-500">
-                        {habit.target}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 grid grid-cols-2 gap-3">
-                    <div className="rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-2">
-                      <div className="text-[12px] text-neutral-500">Streak</div>
-                      <div className="mt-1 text-[18px] font-semibold text-neutral-950">
-                        {habit.stats.currentStreak}
-                      </div>
-                    </div>
-                    <div className="rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-2">
-                      <div className="text-[12px] text-neutral-500">Rate</div>
-                      <div className="mt-1 text-[18px] font-semibold text-neutral-950">
-                        {habit.stats.completionRate}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+                  return (
+                    <TableRow key={habit.id} className="bg-white">
+                      <TableCell className="pl-4 lg:pl-5">
+                        <div className="flex w-[18rem] max-w-full items-center gap-3">
+                          <div
+                            className={cn(
+                              "flex size-9 shrink-0 items-center justify-center rounded-sm border",
+                              habit.iconWrapClassName
+                            )}
+                          >
+                            <Icon
+                              className={cn("size-4.5", habit.iconClassName)}
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="truncate text-[14px] font-medium text-neutral-900">
+                              {habit.title}
+                            </div>
+                            <div className="mt-0.5 text-[13px] text-neutral-500">
+                              {habit.target}
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-[14px] font-medium text-neutral-900">
+                        {formatHabitAverage(habit)}
+                      </TableCell>
+                      <TableCell className="px-1 pr-2 lg:pr-3">
+                        <div className="flex w-6 justify-end">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="icon-sm"
+                                className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
+                              >
+                                <MoreVertical className="size-3" />
+                                <span className="sr-only">
+                                  Odpri meni navade
+                                </span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              align="end"
+                              sideOffset={8}
+                              className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
+                            >
+                              <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950">
+                                <Pencil className="size-4 text-neutral-500" />
+                                Uredi
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator className="bg-neutral-200/70" />
+                              <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-red-600 focus:bg-red-50 focus:text-red-700">
+                                <Trash2 className="size-4" />
+                                Izbrisi
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
           </div>
         </div>
       </TabsContent>
