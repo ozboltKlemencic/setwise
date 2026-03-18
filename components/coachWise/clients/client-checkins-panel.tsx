@@ -27,8 +27,10 @@ import {
   IconEye,
   IconGripVertical,
   IconPencil,
+  IconPhoto,
   IconPlus,
   IconSend,
+  IconStarFilled,
   IconTrash,
 } from "@tabler/icons-react"
 import { usePathname, useRouter } from "next/navigation"
@@ -776,6 +778,255 @@ function SortableQuestionRow({
   )
 }
 
+function PreviewScaleInput() {
+  return (
+    <div className="space-y-2.5">
+      <div className="relative h-1 rounded-full bg-sky-100">
+        <div className="absolute top-1/2 left-0 size-4 -translate-y-1/2 rounded-full border-2 border-white bg-slate-300 shadow-sm" />
+      </div>
+      <div className="grid grid-cols-10 text-center text-[11px] text-neutral-500">
+        {Array.from({ length: 10 }, (_, index) => (
+          <span key={index + 1}>{index + 1}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PreviewRatingInput() {
+  return (
+    <div className="flex items-center gap-1.5 text-neutral-300">
+      {Array.from({ length: 5 }, (_, index) => (
+        <IconStarFilled key={index} className="size-6" />
+      ))}
+    </div>
+  )
+}
+
+function PreviewUploadInput() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {["Front", "Back", "Side"].map((label) => (
+        <div
+          key={label}
+          className="flex h-20 w-20 items-center justify-center rounded-sm border border-dashed border-neutral-300 bg-white text-[13px] text-neutral-600"
+        >
+          {label}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function PreviewChoiceInput() {
+  return (
+    <div className="space-y-2.5">
+      {improvementOptions.map((option) => (
+        <label
+          key={option}
+          className="flex items-center gap-2.5 text-[14px] text-neutral-600"
+        >
+          <span className="size-4 rounded-full border border-neutral-300 bg-white" />
+          <span>{option}</span>
+        </label>
+      ))}
+    </div>
+  )
+}
+
+function PreviewQuestionField({
+  question,
+  index,
+}: {
+  question: AssignedCheckinQuestion
+  index: number
+}) {
+  const label = `${index + 1}. ${question.prompt}`
+
+  switch (question.type) {
+    case "Stevilo":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+            <span className="ml-1 text-[12px] text-neutral-500">
+              (samo stevilo)
+            </span>
+          </div>
+          <Input
+            readOnly
+            placeholder="Vnesi stevilo"
+            className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+        </div>
+      )
+    case "Da / Ne":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <div className="inline-flex overflow-hidden rounded-sm border border-neutral-200 bg-white">
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-none px-4 text-neutral-700 shadow-none hover:bg-neutral-50"
+            >
+              Da
+            </Button>
+            <div className="w-px bg-neutral-200" />
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-none px-4 text-neutral-700 shadow-none hover:bg-neutral-50"
+            >
+              Ne
+            </Button>
+          </div>
+        </div>
+      )
+    case "Lestvica":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <PreviewScaleInput />
+        </div>
+      )
+    case "Datum":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <div className="inline-flex h-9 min-w-[160px] items-center justify-between gap-3 rounded-sm border border-neutral-200 bg-white px-3 text-[14px] text-neutral-400">
+            <span>Izberi datum</span>
+            <IconCalendarEvent className="size-4 text-neutral-400" />
+          </div>
+        </div>
+      )
+    case "Ocena":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <PreviewRatingInput />
+        </div>
+      )
+    case "Fotografije":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <PreviewUploadInput />
+        </div>
+      )
+    case "Izbira":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <PreviewChoiceInput />
+        </div>
+      )
+    case "Metrika":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+            {question.helper ? (
+              <span className="ml-1 text-[12px] text-neutral-500">
+                ({question.helper})
+              </span>
+            ) : null}
+          </div>
+          <Input
+            readOnly
+            placeholder="Vnesi vrednost"
+            className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+        </div>
+      )
+    case "Medij":
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <div className="flex h-24 items-center justify-center gap-2 rounded-sm border border-dashed border-neutral-300 bg-white text-[13px] text-neutral-500">
+            <IconPhoto className="size-4" />
+            Nalozi sliko ali video
+          </div>
+        </div>
+      )
+    default:
+      return (
+        <div className="space-y-2.5">
+          <div className="text-[13px] font-medium text-neutral-900">
+            {label}
+            {question.required ? (
+              <span className="ml-1 text-rose-500">*</span>
+            ) : null}
+          </div>
+          <Input
+            readOnly
+            placeholder="Vnesi odgovor"
+            className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+        </div>
+      )
+  }
+}
+
+function AssignedCheckinPreview({
+  questions,
+}: {
+  questions: AssignedCheckinQuestion[]
+}) {
+  return (
+    <div className="space-y-7 rounded-sm border border-neutral-200 bg-neutral-50 px-4 py-5 lg:px-5">
+      {questions.map((question, index) => (
+        <PreviewQuestionField
+          key={question.id}
+          question={question}
+          index={index}
+        />
+      ))}
+    </div>
+  )
+}
+
 function AssignedCheckinEditor({
   checkin,
   onBack,
@@ -784,6 +1035,7 @@ function AssignedCheckinEditor({
   onBack: () => void
 }) {
   const [questions, setQuestions] = React.useState(checkin.questions)
+  const [isPreview, setIsPreview] = React.useState(false)
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
@@ -796,6 +1048,7 @@ function AssignedCheckinEditor({
 
   React.useEffect(() => {
     setQuestions(checkin.questions)
+    setIsPreview(false)
   }, [checkin.id, checkin.questions])
 
   function handleQuestionDragEnd(event: DragEndEvent) {
@@ -816,44 +1069,47 @@ function AssignedCheckinEditor({
   }
 
   return (
-    <div className="mt-2 bg-neutral-50 px-2">
-      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-        <div className="flex flex-col gap-3 border-b border-neutral-200 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex min-w-0 items-center gap-3">
+    <div className="bg-neutral-50">
+      <div className="border-b border-neutral-200 bg-neutral-50 px-2.5 py-2.5 lg:px-3">
+        <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-2.5">
             <Button
               type="button"
               variant="ghost"
               size="icon-sm"
               onClick={onBack}
-              className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+              className="size-7 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
             >
-              <IconArrowLeft className="size-4" />
+              <IconArrowLeft className="size-3.5" />
               <span className="sr-only">Nazaj</span>
             </Button>
             <div
               className={cn(
-                "flex size-8 shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-1.5",
+                "flex size-7 shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-1.25",
                 checkin.previewClassName
               )}
             >
-              <div className="h-4 w-3 rounded-[2px] border border-white/80 bg-white/80" />
+              <div className="h-3.5 w-2.5 rounded-[2px] border border-white/80 bg-white/80" />
             </div>
             <div className="min-w-0">
-              <div className="truncate text-[18px] font-semibold text-neutral-950">
+              <div className="truncate text-[15px] font-medium text-neutral-950">
                 {checkin.title}
-              </div>
-              <div className="mt-1 text-[13px] text-neutral-600">
-                {checkin.description}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5">
             <Button
               type="button"
               variant="outline"
               size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+              onClick={() => setIsPreview(false)}
+              className={cn(
+                "rounded-sm shadow-none",
+                isPreview
+                  ? "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
+                  : "border-brand-200 bg-brand-50 text-brand-700 hover:bg-brand-50"
+              )}
             >
               <IconPencil className="size-4" />
               Uredi
@@ -862,62 +1118,62 @@ function AssignedCheckinEditor({
               type="button"
               variant="outline"
               size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+              onClick={() => setIsPreview(true)}
+              className={cn(
+                "rounded-sm shadow-none",
+                isPreview
+                  ? "border-brand-200 bg-brand-50 text-brand-700 hover:bg-brand-50"
+                  : "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
+              )}
             >
               <IconEye className="size-4" />
               Predogled
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-            >
-              <IconCalendarEvent className="size-4" />
-              Urnik
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-            >
-              Preuredi
-            </Button>
             <AddQuestionDialog />
           </div>
         </div>
+      </div>
 
-        <DndContext
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={handleQuestionDragEnd}
-          sensors={sensors}
-        >
-          <Table>
-            <TableHeader className="bg-muted">
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="w-8 pl-3 pr-0" />
-                <TableHead className="pl-2 lg:pl-3">Vprasanje</TableHead>
-                <TableHead>Tip</TableHead>
-                <TableHead>Obvezno</TableHead>
-                <TableHead className="px-1 pr-2 lg:pr-3">
-                  <div className="w-6" />
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <SortableContext
-                items={questionIds}
-                strategy={verticalListSortingStrategy}
-              >
-                {questions.map((question) => (
-                  <SortableQuestionRow key={question.id} question={question} />
-                ))}
-              </SortableContext>
-            </TableBody>
-          </Table>
-        </DndContext>
+      <div className="px-2 py-2">
+        {isPreview ? (
+          <AssignedCheckinPreview questions={questions} />
+        ) : (
+          <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+            <DndContext
+              collisionDetection={closestCenter}
+              modifiers={[restrictToVerticalAxis]}
+              onDragEnd={handleQuestionDragEnd}
+              sensors={sensors}
+            >
+              <Table>
+                <TableHeader className="bg-muted">
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="w-8 pl-3 pr-0" />
+                    <TableHead className="pl-2 lg:pl-3">Vprasanje</TableHead>
+                    <TableHead>Tip</TableHead>
+                    <TableHead>Obvezno</TableHead>
+                    <TableHead className="px-1 pr-2 lg:pr-3">
+                      <div className="w-6" />
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <SortableContext
+                    items={questionIds}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {questions.map((question) => (
+                      <SortableQuestionRow
+                        key={question.id}
+                        question={question}
+                      />
+                    ))}
+                  </SortableContext>
+                </TableBody>
+              </Table>
+            </DndContext>
+          </div>
+        )}
       </div>
     </div>
   )
