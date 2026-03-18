@@ -490,7 +490,7 @@ function SidebarGroupLabel({
       data-slot="sidebar-group-label"
       data-sidebar="group-label"
       className={cn(
-        "flex h-8 shrink-0 items-center overflow-hidden rounded-md px-2 text-xs font-medium text-sidebar-foreground/70 ring-sidebar-ring outline-hidden transition-[margin,opacity,max-height,padding,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+        "flex h-8 shrink-0 items-center overflow-hidden rounded-md px-2 text-[11px] font-medium tracking-[0.06em] uppercase text-sidebar-foreground/65 ring-sidebar-ring outline-hidden transition-[margin,opacity,max-height,padding,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
         "max-h-8 translate-x-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:max-h-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:opacity-0",
         className
       )}
@@ -565,7 +565,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center justify-start gap-2 overflow-hidden rounded-sm p-2 text-left text-sm ring-sidebar-ring outline-hidden transition-[width,height,padding,gap] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2! hover:bg-neutral-300/80 hover:text-foreground focus-visible:ring-2 active:bg-neutral-300/80 active:text-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-neutral-300/80 data-[active=true]:font-medium data-[active=true]:text-foreground [&>span:last-child]:max-w-[12rem] [&>span:last-child]:translate-x-0 [&>span:last-child]:truncate [&>span:last-child]:opacity-100 [&>span:last-child]:transition-[max-width,opacity,transform] [&>span:last-child]:duration-[360ms] [&>span:last-child]:ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:[&>span:last-child]:max-w-0 group-data-[transition=closing]:[&>span:last-child]:-translate-x-1 group-data-[transition=closing]:[&>span:last-child]:opacity-0 group-data-[collapsible=icon]:[&>span:last-child]:max-w-0 group-data-[collapsible=icon]:[&>span:last-child]:-translate-x-1 group-data-[collapsible=icon]:[&>span:last-child]:opacity-0 [&>svg]:size-4 [&>svg]:shrink-0 ",
+  "peer/menu-button flex w-full items-center justify-start gap-1 overflow-hidden rounded-sm px-2.5 py-1 text-left text-[13px] font-normal ring-sidebar-ring outline-hidden transition-[width,height,padding,gap] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:gap-0 group-data-[collapsible=icon]:p-2! hover:bg-neutral-300/80 hover:text-foreground focus-visible:ring-2 active:bg-neutral-300/80 active:text-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-neutral-300/80 data-[active=true]:font-medium data-[active=true]:text-foreground [&>span:last-child]:max-w-[12rem] [&>span:last-child]:translate-x-0 [&>span:last-child]:truncate [&>span:last-child]:opacity-100 [&>span:last-child]:transition-[max-width,opacity,transform] [&>span:last-child]:duration-[360ms] [&>span:last-child]:ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:[&>span:last-child]:max-w-0 group-data-[transition=closing]:[&>span:last-child]:-translate-x-1 group-data-[transition=closing]:[&>span:last-child]:opacity-0 group-data-[collapsible=icon]:[&>span:last-child]:max-w-0 group-data-[collapsible=icon]:[&>span:last-child]:-translate-x-1 group-data-[collapsible=icon]:[&>span:last-child]:opacity-0 [&>svg]:size-[1.15rem] [&>svg]:shrink-0 ",
   {
     variants: {
       variant: {
@@ -574,9 +574,9 @@ const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-neutral-300/80 hover:text-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-border))]",
       },
       size: {
-        default: "h-8 text-sm",
+        default: "h-9",
         sm: "h-7 text-xs",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
+        lg: "h-8 text-[13px] group-data-[collapsible=icon]:p-0!",
       },
     },
     defaultVariants: {

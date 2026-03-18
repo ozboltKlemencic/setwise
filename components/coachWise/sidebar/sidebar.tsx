@@ -109,14 +109,14 @@ function SidebarBrand() {
         <Link
           href={buildCoachWiseHref(pathname, "/")}
           aria-label="SetWise home page"
-          className="flex min-w-0 flex-1 items-center gap-(--space-2) cursor-pointer overflow-hidden"
+          className="flex min-w-0 flex-1 items-center gap-2 cursor-pointer overflow-hidden"
         >
           <img
             src="/setwise-logo.png"
             alt="SetWise logo"
-            className="size-(--space-5) rounded-sm"
+            className="size-6 rounded-md"
           />
-          <span className="truncate text-sm font-semibold text-foreground font-sans">
+          <span className="truncate text-sm font-bold text-foreground font-sans">
             SetWise
           </span>
         </Link>
@@ -129,7 +129,7 @@ function SidebarBrand() {
             <img
               src="/setwise-logo.png"
               alt=""
-              className="size-(--space-5) rounded-sm"
+              className="size-6 rounded-md"
             />
             <span className="sr-only">SetWise</span>
           </div>

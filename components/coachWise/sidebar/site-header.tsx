@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
 const coachWiseRoutes = [
@@ -56,15 +55,6 @@ const coachWiseRoutes = [
   },
 ]
 
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? "")
-    .join("")
-}
-
 export function SiteHeader() {
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
@@ -88,20 +78,9 @@ export function SiteHeader() {
     >
       <div className="flex w-full items-center px-4 lg:px-6">
         {activeClient ? (
-          <div className="flex min-w-0 items-center gap-3">
-            <Avatar className="size-8">
-              <AvatarImage src={activeClient.avatar} alt={activeClient.header} />
-              <AvatarFallback>{getInitials(activeClient.header)}</AvatarFallback>
-            </Avatar>
-            <div className="min-w-0">
-              <div className="truncate text-sm font-semibold text-neutral-900">
-                {activeClient.header}
-              </div>
-              <div className="truncate text-xs text-neutral-500">
-                Client workspace
-              </div>
-            </div>
-          </div>
+          <h1 className="truncate text-sm font-semibold text-neutral-900">
+            {activeClient.header}
+          </h1>
         ) : (
           <h1 className="text-sm font-semibold text-neutral-900">{activeRoute}</h1>
         )}

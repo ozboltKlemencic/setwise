@@ -53,9 +53,9 @@ export function NavUser({
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
-              <div className="grid max-w-[10rem] flex-1 translate-x-0 overflow-hidden text-left text-sm leading-tight opacity-100 transition-[max-width,opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:max-w-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:max-w-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:opacity-0">
+              <div className="grid max-w-[10rem] flex-1 translate-x-0 overflow-hidden text-left text-[13px] leading-tight opacity-100 transition-[max-width,opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:max-w-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:max-w-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:opacity-0">
                 <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs text-muted-foreground">
+                <span className="truncate text-[11px] text-muted-foreground">
                   {user.email}
                 </span>
               </div>
