@@ -1012,7 +1012,7 @@ function getAssignedCheckinById(checkinId: string) {
 }
 
 const createCheckinTabTriggerClassName =
-  "relative top-px -mb-px h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
+  "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
 
 export function CreateAssignedCheckinDialog({
   triggerClassName,
@@ -1112,7 +1112,7 @@ export function CreateAssignedCheckinDialog({
                   className={cn(
                     "flex size-[60px] shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-1.5",
                     featuredCheckin?.previewClassName ??
-                      "bg-linear-to-br from-sky-100 via-sky-50 to-white text-sky-500"
+                    "bg-linear-to-br from-sky-100 via-sky-50 to-white text-sky-500"
                   )}
                 >
                   <div className="h-5 w-4 rounded-[2px] border border-white/80 bg-white/80" />
