@@ -25,6 +25,7 @@ import {
   IconCalendarEvent,
   IconDotsVertical,
   IconEye,
+  IconEyeOff,
   IconGripVertical,
   IconPencil,
   IconPhoto,
@@ -686,6 +687,135 @@ function AddQuestionDialog() {
   )
 }
 
+function EditAssignedCheckinDialog({
+  title,
+  description,
+  previewClassName,
+  onSave,
+}: {
+  title: string
+  description: string
+  previewClassName: string
+  onSave: (values: { title: string; description: string }) => void
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [draftTitle, setDraftTitle] = React.useState(title)
+  const [draftDescription, setDraftDescription] = React.useState(description)
+
+  const resetDialog = React.useCallback(() => {
+    setDraftTitle(title)
+    setDraftDescription(description)
+  }, [description, title])
+
+  React.useEffect(() => {
+    if (!open) {
+      resetDialog()
+    }
+  }, [open, resetDialog])
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+
+        if (!nextOpen) {
+          resetDialog()
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+        >
+          <IconPencil className="size-4" />
+          Uredi
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
+        <div className="border-b border-neutral-200 px-5 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+            <IconPencil className="size-4.5 text-neutral-500" />
+            Uredi check-in
+          </DialogTitle>
+        </div>
+
+        <div className="space-y-5 px-5 py-4">
+          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_72px] md:items-start">
+            <div className="space-y-2">
+              <div className="text-[13px] font-medium text-neutral-800">
+                Naziv obrazca <span className="text-rose-500">*</span>
+              </div>
+              <Input
+                value={draftTitle}
+                onChange={(event) => setDraftTitle(event.target.value)}
+                placeholder="Vnesi naziv obrazca"
+                className="rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+              />
+            </div>
+
+            <div
+              className={cn(
+                "flex size-[60px] shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-2",
+                previewClassName
+              )}
+            >
+              <div className="h-7 w-5 rounded-[3px] border border-white/80 bg-white/80" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-[13px] font-medium text-neutral-800">
+              Opis obrazca
+            </div>
+            <textarea
+              value={draftDescription}
+              onChange={(event) => setDraftDescription(event.target.value)}
+              maxLength={1000}
+              placeholder="Vnesi dodatne informacije"
+              rows={3}
+              className="flex min-h-[88px] w-full rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-900 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300"
+            />
+            <div className="text-right text-[12px] text-neutral-400">
+              {draftDescription.length} / 1000
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="justify-between border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Zapri
+            </Button>
+          </DialogClose>
+          <Button
+            type="button"
+            disabled={!draftTitle.trim()}
+            onClick={() => {
+              onSave({
+                title: draftTitle.trim(),
+                description: draftDescription.trim(),
+              })
+              setOpen(false)
+            }}
+            className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+          >
+            Posodobi check-in
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function QuestionDragHandle({
   attributes,
   listeners,
@@ -1035,6 +1165,10 @@ function AssignedCheckinEditor({
   onBack: () => void
 }) {
   const [questions, setQuestions] = React.useState(checkin.questions)
+  const [formMeta, setFormMeta] = React.useState({
+    title: checkin.title,
+    description: checkin.description,
+  })
   const [isPreview, setIsPreview] = React.useState(false)
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -1048,8 +1182,12 @@ function AssignedCheckinEditor({
 
   React.useEffect(() => {
     setQuestions(checkin.questions)
+    setFormMeta({
+      title: checkin.title,
+      description: checkin.description,
+    })
     setIsPreview(false)
-  }, [checkin.id, checkin.questions])
+  }, [checkin.description, checkin.id, checkin.questions, checkin.title])
 
   function handleQuestionDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -1093,32 +1231,23 @@ function AssignedCheckinEditor({
             </div>
             <div className="min-w-0">
               <div className="truncate text-[15px] font-medium text-neutral-950">
-                {checkin.title}
+                {formMeta.title}
               </div>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
+            <EditAssignedCheckinDialog
+              title={formMeta.title}
+              description={formMeta.description}
+              previewClassName={checkin.previewClassName}
+              onSave={(values) => setFormMeta(values)}
+            />
             <Button
               type="button"
               variant="outline"
               size="sm"
-              onClick={() => setIsPreview(false)}
-              className={cn(
-                "rounded-sm shadow-none",
-                isPreview
-                  ? "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
-                  : "border-brand-200 bg-brand-50 text-brand-700 hover:bg-brand-50"
-              )}
-            >
-              <IconPencil className="size-4" />
-              Uredi
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setIsPreview(true)}
+              onClick={() => setIsPreview((current) => !current)}
               className={cn(
                 "rounded-sm shadow-none",
                 isPreview
@@ -1126,7 +1255,11 @@ function AssignedCheckinEditor({
                   : "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
               )}
             >
-              <IconEye className="size-4" />
+              {isPreview ? (
+                <IconEye className="size-4" />
+              ) : (
+                <IconEyeOff className="size-4" />
+              )}
               Predogled
             </Button>
             <AddQuestionDialog />
