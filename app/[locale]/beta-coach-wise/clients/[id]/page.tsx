@@ -1,9 +1,9 @@
 import type { ReactNode } from "react"
+import Link from "next/link"
 import {
   IconCalendarEvent,
   IconChartBar,
   IconChefHat,
-  IconChevronDown,
   IconClipboardCheck,
   IconClipboardList,
   IconInfoCircle,
@@ -16,6 +16,7 @@ import { notFound } from "next/navigation"
 import {
   AssignedCheckinDetailView,
   AssignedCheckinsPanel,
+  SubmittedCheckinsCompareDialog,
   SubmittedCheckinsPanel,
 } from "@/components/coachWise/clients/client-checkins-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
@@ -136,6 +137,7 @@ function SectionSubHeader({
     icon: ReactNode
     label: string
     value: string
+    href?: string
   }[]
   actions?: ReactNode
 }) {
@@ -148,14 +150,28 @@ function SectionSubHeader({
             className="h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0"
           >
             {items.map((item) => (
-              <TabsTrigger
-                key={item.value}
-                value={item.value}
-                className={sectionSubTabTriggerClassName}
-              >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
-              </TabsTrigger>
+              item.href ? (
+                <TabsTrigger
+                  key={item.value}
+                  value={item.value}
+                  className={sectionSubTabTriggerClassName}
+                  asChild
+                >
+                  <Link href={item.href}>
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
+                </TabsTrigger>
+              ) : (
+                <TabsTrigger
+                  key={item.value}
+                  value={item.value}
+                  className={sectionSubTabTriggerClassName}
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.label}</span>
+                </TabsTrigger>
+              )
             ))}
           </TabsList>
         </div>
@@ -193,6 +209,8 @@ export default async function ClientProfilePage({
   }
 
   const client = data.find((item) => item.id === clientId)
+  const resolvedCheckinTab =
+    activeCheckinTab === "assigned" ? "assigned" : "submitted"
 
   if (!client) {
     notFound()
@@ -640,9 +658,7 @@ export default async function ClientProfilePage({
 
         <TabsContent value="checkins" className="mt-0 space-y-0">
           <Tabs
-            defaultValue={
-              activeCheckinTab === "assigned" ? "assigned" : "submitted"
-            }
+            value={resolvedCheckinTab}
             className="gap-0"
           >
             <SectionSubHeader
@@ -651,28 +667,24 @@ export default async function ClientProfilePage({
                   icon: <IconClipboardCheck className="size-4" />,
                   label: "Oddani",
                   value: "submitted",
+                  href: "?tab=checkins&checkinTab=submitted",
                 },
                 {
                   icon: <IconCalendarEvent className="size-4" />,
                   label: "Dodeljeni",
                   value: "assigned",
+                  href: "?tab=checkins&checkinTab=assigned",
                 },
               ]}
               actions={
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-neutral-200 text-neutral-700"
-                  >
-                    Zadnjih 30 dni
-                    <IconChevronDown className="size-4" />
-                  </Button>
+                resolvedCheckinTab === "assigned" ? (
                   <Button size="sm" className={primaryActionButtonClassName}>
                     <IconPlus className="size-4" />
                     Nov check-in
                   </Button>
-                </>
+                ) : (
+                  <SubmittedCheckinsCompareDialog />
+                )
               }
             />
 

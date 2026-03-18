@@ -22,6 +22,8 @@ import {
 import { CSS } from "@dnd-kit/utilities"
 import {
   IconArrowLeft,
+  IconArrowRight,
+  IconGitCompare,
   IconCalendarEvent,
   IconDotsVertical,
   IconEye,
@@ -72,6 +74,13 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Iphone } from "@/components/ui/mobileDevices/Phone"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 type SubmittedCheckin = {
@@ -154,6 +163,16 @@ const submittedCheckins: SubmittedCheckin[] = [
     improvementArea: "Prehrana",
   },
 ]
+
+const currentSubmittedCheckinId = submittedCheckins[0]?.id ?? ""
+const comparePhotoPlaceholderSrc =
+  "https://app.hubfit.com/storage/progress-photo/demo-front-5.png"
+const photoViewOptions = [
+  { value: "front", label: "Front" },
+  { value: "side", label: "Side" },
+  { value: "back", label: "Back" },
+] as const
+type PhotoView = (typeof photoViewOptions)[number]["value"]
 
 const assignedCheckins: AssignedCheckin[] = [
   {
@@ -424,7 +443,7 @@ function DetailField({
   value,
   compact = false,
 }: {
-  label: string
+  label: React.ReactNode
   value: React.ReactNode
   compact?: boolean
 }) {
@@ -440,6 +459,444 @@ function DetailField({
         {value}
       </div>
     </div>
+  )
+}
+
+function CompareCheckinSelect({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (value: string) => void
+}) {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="h-10 w-full rounded-sm border-neutral-200 bg-white text-[15px] font-medium text-neutral-900 shadow-none focus-visible:border-neutral-200 focus-visible:ring-0">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5 [&_[data-slot=select-item]]:py-2 [&_[data-slot=select-item]]:text-[13px] [&_[data-slot=select-item]]:font-normal">
+        {submittedCheckins.map((item) => (
+          <SelectItem key={item.id} value={item.id}>
+            <span>{item.title} ({item.date})</span>
+            {item.id === currentSubmittedCheckinId ? (
+              <span className="text-[12px] font-medium text-rose-500">
+                Trenutni check-in
+              </span>
+            ) : null}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  )
+}
+
+function SubmittedCheckinCompareColumn({
+  checkin,
+  leftSelectedId,
+  rightSelectedId,
+}: {
+  checkin: SubmittedCheckin
+  leftSelectedId: string
+  rightSelectedId: string
+}) {
+  return (
+    <div className="space-y-5">
+      <DetailField
+        label={
+          <>
+            1. Kaj je bil tvoj najvecji napredek ta teden?
+            <span className="ml-1 text-rose-500">*</span>
+          </>
+        }
+        value={checkin.biggestWin}
+      />
+
+      <DetailField
+        label={
+          <>
+            2. Koliko treningov si opravil ta teden?
+            <span className="ml-1 text-rose-500">*</span>
+            <span className="ml-1 text-[12px] font-normal text-neutral-500">
+              (samo stevilo)
+            </span>
+          </>
+        }
+        value={checkin.workoutsCompleted}
+      />
+
+      <DetailField
+        label={
+          <>
+            3. Ali si dosegel glavni fokus tedna?
+            <span className="ml-1 text-rose-500">*</span>
+          </>
+        }
+        value={checkin.reachedTarget}
+        compact
+      />
+
+      <div className="space-y-2">
+        <div className="text-[13px] font-medium text-neutral-800">
+          4. Kako bi ocenil svoj napredek ta teden na lestvici 1-10?
+          <span className="ml-1 text-rose-500">*</span>
+        </div>
+        <div className="rounded-sm border border-neutral-200 bg-white px-4 py-4">
+          <ScoreScale value={checkin.progressScore} />
+        </div>
+      </div>
+
+      <DetailField
+        label={
+          <>
+            5. Kateri dan v tednu si imel najvec energije?
+            <span className="ml-1 text-rose-500">*</span>
+          </>
+        }
+        value={checkin.bestDay}
+        compact
+      />
+
+      <div className="space-y-2">
+        <div className="text-[13px] font-medium text-neutral-800">
+          6. Kako zadovoljen si bil s svojim tednom?
+          <span className="ml-1 text-rose-500">*</span>
+        </div>
+        <div className="rounded-sm border border-neutral-200 bg-white px-3 py-3">
+          <SatisfactionScale value={checkin.satisfaction} />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="text-[13px] font-medium text-neutral-800">
+          7. Fotografije napredka za ta teden
+          <span className="ml-1 text-rose-500">*</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-3 rounded-sm border border-neutral-200 bg-white px-3 py-3">
+          {["Front", "Side"].map((label, index) => (
+            <div
+              key={label}
+              className={cn(
+                "flex h-20 w-16 items-end justify-center rounded-sm border border-neutral-200 pb-2 text-[11px] font-medium text-neutral-500",
+                index === 0
+                  ? "bg-linear-to-b from-orange-50 to-orange-100"
+                  : "bg-linear-to-b from-amber-50 to-amber-100"
+              )}
+            >
+              {label}
+            </div>
+          ))}
+          <SubmittedCheckinPhotosCompareDialog
+            initialLeftId={leftSelectedId}
+            initialRightId={rightSelectedId}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="text-[13px] font-medium text-neutral-800">
+          8. Na katerem podrocju si najbolj napredoval?
+          <span className="ml-1 text-rose-500">*</span>
+        </div>
+        <div className="space-y-2 rounded-sm border border-neutral-200 bg-white px-3 py-3">
+          {improvementOptions.map((option) => {
+            const isSelected = option === checkin.improvementArea
+
+            return (
+              <div
+                key={option}
+                className={cn(
+                  "flex items-center gap-2 text-[13px]",
+                  isSelected ? "text-neutral-900" : "text-neutral-500"
+                )}
+              >
+                <span
+                  className={cn(
+                    "flex size-4 shrink-0 items-center justify-center rounded-full border",
+                    isSelected
+                      ? "border-brand-500 bg-brand-500"
+                      : "border-neutral-300 bg-white"
+                  )}
+                >
+                  {isSelected ? (
+                    <span className="size-1.5 rounded-full bg-white" />
+                  ) : null}
+                </span>
+                {option}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ComparePhotoFigure({
+  view,
+  tone = "left",
+}: {
+  view: PhotoView
+  tone?: "left" | "right"
+}) {
+  const toneClassName =
+    tone === "right"
+      ? "from-sky-50 via-white to-neutral-100"
+      : "from-orange-50 via-white to-neutral-100"
+
+  return (
+    <div
+      className={cn(
+        "relative min-h-0 flex-1 overflow-hidden rounded-sm bg-linear-to-b",
+        toneClassName
+      )}
+    >
+      <div className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-neutral-200/60 to-transparent" />
+      <div className="absolute left-3 top-3 z-10 rounded-full bg-white/85 px-2 py-1 text-[11px] font-medium text-neutral-600 shadow-sm">
+        {photoViewOptions.find((item) => item.value === view)?.label}
+      </div>
+
+      <div className="absolute inset-0">
+        <img
+          src={comparePhotoPlaceholderSrc}
+          alt={`Primer progress fotografije (${view})`}
+          className="h-full w-full object-cover object-center select-none"
+          draggable={false}
+        />
+      </div>
+    </div>
+  )
+}
+
+function SubmittedCheckinPhotosCompareDialog({
+  initialLeftId,
+  initialRightId,
+}: {
+  initialLeftId: string
+  initialRightId: string
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [photoView, setPhotoView] = React.useState<PhotoView>("front")
+  const [leftId, setLeftId] = React.useState(initialLeftId)
+  const [rightId, setRightId] = React.useState(initialRightId)
+
+  function updatePhotoView(direction: "previous" | "next") {
+    const currentIndex = photoViewOptions.findIndex(
+      (option) => option.value === photoView
+    )
+    const offset = direction === "next" ? 1 : -1
+    const nextIndex =
+      (currentIndex + offset + photoViewOptions.length) %
+      photoViewOptions.length
+
+    setPhotoView(photoViewOptions[nextIndex]?.value ?? "front")
+  }
+
+  React.useEffect(() => {
+    if (open) {
+      setLeftId(initialLeftId)
+      setRightId(initialRightId)
+      setPhotoView("front")
+    }
+  }, [initialLeftId, initialRightId, open])
+
+  const leftCheckin =
+    submittedCheckins.find((item) => item.id === leftId) ?? submittedCheckins[0]
+  const rightCheckin =
+    submittedCheckins.find((item) => item.id === rightId) ?? submittedCheckins[0]
+
+  if (!leftCheckin || !rightCheckin) {
+    return null
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+        >
+          <IconGitCompare className="size-3.5" />
+          Compare
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="!grid h-[84vh] max-h-[84vh] !grid-rows-[auto_auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[980px]">
+        <div className="border-b border-neutral-200 px-4 py-3">
+          <DialogTitle className="flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
+            <IconPhoto className="size-4 text-neutral-500" />
+            Compare Photos
+          </DialogTitle>
+        </div>
+
+        <div className="border-b border-neutral-200 px-4 py-3">
+          <div className="grid grid-cols-3 gap-1 rounded-sm border border-neutral-200 bg-neutral-50 p-1">
+            {photoViewOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setPhotoView(option.value)}
+                className={cn(
+                  "cursor-pointer rounded-sm px-3 py-1.25 text-[12px] font-medium transition-colors",
+                  photoView === option.value
+                    ? "bg-white text-neutral-950 shadow-sm"
+                    : "text-neutral-500 hover:text-neutral-800"
+                )}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="min-h-0 overflow-y-auto px-4 py-3 [scrollbar-color:var(--color-neutral-300)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
+          <div className="grid gap-3 lg:grid-cols-2 lg:items-stretch">
+            <div className="flex min-h-0 flex-col gap-2.5">
+              <CompareCheckinSelect value={leftId} onChange={setLeftId} />
+              <div className="flex h-full min-h-[540px] flex-1 flex-col overflow-hidden rounded-sm border border-neutral-200 bg-white">
+                <ComparePhotoFigure view={photoView} tone="left" />
+                <div className="flex items-center justify-between border-t border-neutral-200 px-2.5 py-2.5">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={() => updatePhotoView("previous")}
+                    className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+                  >
+                    <IconArrowLeft className="size-3.5" />
+                  </Button>
+                  <div className="text-[12px] text-neutral-600">
+                    {leftCheckin.title} ({leftCheckin.date})
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={() => updatePhotoView("next")}
+                    className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+                  >
+                    <IconArrowRight className="size-3.5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex min-h-0 flex-col gap-2.5">
+              <CompareCheckinSelect value={rightId} onChange={setRightId} />
+              <div className="flex h-full min-h-[540px] flex-1 flex-col overflow-hidden rounded-sm border border-neutral-200 bg-white">
+                <ComparePhotoFigure view={photoView} tone="right" />
+                <div className="flex items-center justify-between border-t border-neutral-200 px-2.5 py-2.5">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={() => updatePhotoView("previous")}
+                    className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+                  >
+                    <IconArrowLeft className="size-3.5" />
+                  </Button>
+                  <div className="text-[12px] text-neutral-600">
+                    {rightCheckin.title} ({rightCheckin.date})
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-sm"
+                    onClick={() => updatePhotoView("next")}
+                    className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+                  >
+                    <IconArrowRight className="size-3.5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-4 py-3 sm:flex-row sm:justify-start">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Zapri
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export function SubmittedCheckinsCompareDialog() {
+  const [leftId, setLeftId] = React.useState(submittedCheckins[1]?.id ?? submittedCheckins[0]?.id ?? "")
+  const [rightId, setRightId] = React.useState(submittedCheckins[0]?.id ?? "")
+
+  const leftCheckin =
+    submittedCheckins.find((item) => item.id === leftId) ?? submittedCheckins[0]
+  const rightCheckin =
+    submittedCheckins.find((item) => item.id === rightId) ?? submittedCheckins[0]
+
+  if (!leftCheckin || !rightCheckin) {
+    return null
+  }
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50"
+        >
+          <IconGitCompare className="size-4" />
+          Compare
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="!grid h-[80vh] max-h-[80vh] !grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[calc(100vw-3rem)] xl:max-w-[1400px]">
+        <div className="border-b border-neutral-200 px-5 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+            <IconGitCompare className="size-4 text-neutral-500" />
+            Primerjava check-inov
+          </DialogTitle>
+        </div>
+
+        <div className="min-h-0 overflow-y-auto [scrollbar-color:var(--color-neutral-300)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-300 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1.5">
+          <div className="grid gap-0 lg:grid-cols-2 lg:items-stretch">
+            <div className="min-w-0 space-y-5 px-5 py-4 lg:pr-6">
+              <CompareCheckinSelect value={leftId} onChange={setLeftId} />
+              <SubmittedCheckinCompareColumn
+                checkin={leftCheckin}
+                leftSelectedId={leftId}
+                rightSelectedId={rightId}
+              />
+            </div>
+            <div className="min-w-0 space-y-5 border-t border-neutral-200 px-5 py-4 lg:border-t-0 lg:border-l lg:border-neutral-200 lg:pl-6">
+              <CompareCheckinSelect value={rightId} onChange={setRightId} />
+              <SubmittedCheckinCompareColumn
+                checkin={rightCheckin}
+                leftSelectedId={leftId}
+                rightSelectedId={rightId}
+              />
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:justify-start">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Zapri
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 
