@@ -10,8 +10,11 @@ import {
 } from "recharts"
 import {
   BarChart3,
+  Check,
   CalendarDays,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   CheckCircle2,
   Clock3,
   Droplets,
@@ -119,6 +122,21 @@ const habitsSubTabTriggerClassName =
 
 const createHabitTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
+
+const habitMonthOptions = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "Maj",
+  "Jun",
+  "Jul",
+  "Avg",
+  "Sep",
+  "Okt",
+  "Nov",
+  "Dec",
+]
 
 function buildYearlyHabitData(year: number, values: number[]) {
   return values.map((value, index) => ({
@@ -534,6 +552,7 @@ function HabitDatePicker({
   const [draftCustomRange, setDraftCustomRange] = React.useState<DateRange | undefined>(
     customRange
   )
+  const [draftMonth, setDraftMonth] = React.useState<Date>(getMonthStart(value))
   const [leftCustomMonth, setLeftCustomMonth] = React.useState<Date>(
     getMonthStart(customRange?.from ?? value)
   )
@@ -558,6 +577,10 @@ function HabitDatePicker({
   }, [customRange?.from, period, value, weekRange?.from])
 
   React.useEffect(() => {
+    if (period === "month" && open) {
+      setDraftMonth(getMonthStart(value))
+    }
+
     if (period === "custom" && open) {
       setDraftCustomRange(customRange)
       const nextLeftMonth = getMonthStart(customRange?.from ?? value)
@@ -570,7 +593,30 @@ function HabitDatePicker({
         nextRightMonth < nextLeftMonth ? nextLeftMonth : nextRightMonth
       )
     }
-  }, [customRange, open, period])
+  }, [customRange, open, period, value])
+
+  const minAvailableMonth = React.useMemo(
+    () => new Date(Math.min(...availableYears), 0, 1),
+    [availableYears]
+  )
+  const maxAvailableMonth = React.useMemo(
+    () => new Date(Math.max(...availableYears), 11, 1),
+    [availableYears]
+  )
+  const canGoToPreviousMonth = draftMonth > minAvailableMonth
+  const canGoToNextMonth = draftMonth < maxAvailableMonth
+
+  const handleDraftMonthOffset = React.useCallback((offset: number) => {
+    setDraftMonth((currentDraftMonth) =>
+      getMonthStart(
+        new Date(
+          currentDraftMonth.getFullYear(),
+          currentDraftMonth.getMonth() + offset,
+          1
+        )
+      )
+    )
+  }, [])
 
   const handleLeftCustomMonthChange = React.useCallback((nextMonth: Date) => {
     const normalizedMonth = getMonthStart(nextMonth)
@@ -771,36 +817,86 @@ function HabitDatePicker({
               </div>
             </div>
           ) : (
-            <Calendar
-              mode="single"
-              month={value}
-              selected={value}
-              captionLayout="dropdown"
-              showOutsideDays={false}
-              startMonth={new Date(Math.min(...availableYears), 0, 1)}
-              endMonth={new Date(Math.max(...availableYears), 11, 1)}
-              onSelect={(date) => {
-                if (!date) {
-                  return
-                }
-
-                onChange(getMonthStart(date))
-              }}
-              onMonthChange={(month) => {
-                onChange(getMonthStart(month))
-                setOpen(false)
-              }}
-              classNames={
-                period === "month"
-                  ? {
-                    month: "flex w-full flex-col gap-0",
-                    table: "hidden",
-                    weekdays: "hidden",
-                    week: "hidden",
-                  }
-                  : undefined
-              }
-            />
+            <div className="flex items-center justify-between gap-2 px-3 py-3">
+              <div className="flex items-center gap-1.5">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  disabled={!canGoToPreviousMonth}
+                  className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                  onClick={() => handleDraftMonthOffset(-1)}
+                >
+                  <ChevronLeft className="size-4" />
+                  <span className="sr-only">Prejsnji mesec</span>
+                </Button>
+                <Select
+                  value={String(draftMonth.getMonth())}
+                  onValueChange={(month) => {
+                    setDraftMonth(
+                      getMonthStart(
+                        new Date(draftMonth.getFullYear(), Number(month), 1)
+                      )
+                    )
+                  }}
+                >
+                  <SelectTrigger className="h-9 min-w-[5.25rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                    {habitMonthOptions.map((monthLabel, index) => (
+                      <SelectItem key={monthLabel} value={String(index)}>
+                        {monthLabel}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={String(draftMonth.getFullYear())}
+                  onValueChange={(year) => {
+                    setDraftMonth(
+                      getMonthStart(
+                        new Date(Number(year), draftMonth.getMonth(), 1)
+                      )
+                    )
+                  }}
+                >
+                  <SelectTrigger className="h-9 min-w-[5.5rem] rounded-sm border-neutral-200 bg-white px-3 text-[13px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-sm border-neutral-200 shadow-lg shadow-black/5">
+                    {availableYears.map((year) => (
+                      <SelectItem key={year} value={String(year)}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  disabled={!canGoToNextMonth}
+                  className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 disabled:opacity-35"
+                  onClick={() => handleDraftMonthOffset(1)}
+                >
+                  <ChevronRight className="size-4" />
+                  <span className="sr-only">Naslednji mesec</span>
+                </Button>
+                <Button
+                  type="button"
+                  size="icon"
+                  className="size-8 rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+                  onClick={() => {
+                    onChange(getMonthStart(draftMonth))
+                    setOpen(false)
+                  }}
+                >
+                  <Check className="size-4" />
+                  <span className="sr-only">Potrdi mesec</span>
+                </Button>
+              </div>
+            </div>
           )}
         </PopoverContent>
       </Popover>
