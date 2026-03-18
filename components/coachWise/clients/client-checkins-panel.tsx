@@ -667,17 +667,25 @@ function ComparePhotoFigure({
   )
 }
 
-function SubmittedCheckinPhotosCompareDialog({
+export function SubmittedCheckinPhotosCompareDialog({
   initialLeftId,
   initialRightId,
+  triggerLabel = "Compare",
+  triggerIcon = "compare",
 }: {
-  initialLeftId: string
-  initialRightId: string
+  initialLeftId?: string
+  initialRightId?: string
+  triggerLabel?: string
+  triggerIcon?: "compare" | "photo"
 }) {
   const [open, setOpen] = React.useState(false)
   const [photoView, setPhotoView] = React.useState<PhotoView>("front")
-  const [leftId, setLeftId] = React.useState(initialLeftId)
-  const [rightId, setRightId] = React.useState(initialRightId)
+  const resolvedInitialLeftId =
+    initialLeftId ?? submittedCheckins[1]?.id ?? submittedCheckins[0]?.id ?? ""
+  const resolvedInitialRightId =
+    initialRightId ?? submittedCheckins[0]?.id ?? ""
+  const [leftId, setLeftId] = React.useState(resolvedInitialLeftId)
+  const [rightId, setRightId] = React.useState(resolvedInitialRightId)
 
   function updatePhotoView(direction: "previous" | "next") {
     const currentIndex = photoViewOptions.findIndex(
@@ -693,11 +701,11 @@ function SubmittedCheckinPhotosCompareDialog({
 
   React.useEffect(() => {
     if (open) {
-      setLeftId(initialLeftId)
-      setRightId(initialRightId)
+      setLeftId(resolvedInitialLeftId)
+      setRightId(resolvedInitialRightId)
       setPhotoView("front")
     }
-  }, [initialLeftId, initialRightId, open])
+  }, [open, resolvedInitialLeftId, resolvedInitialRightId])
 
   const leftCheckin =
     submittedCheckins.find((item) => item.id === leftId) ?? submittedCheckins[0]
@@ -716,8 +724,12 @@ function SubmittedCheckinPhotosCompareDialog({
           size="sm"
           className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
         >
-          <IconGitCompare className="size-3.5" />
-          Compare
+          {triggerIcon === "photo" ? (
+            <IconPhoto className="size-3.5" />
+          ) : (
+            <IconGitCompare className="size-3.5" />
+          )}
+          {triggerLabel}
         </Button>
       </DialogTrigger>
 

@@ -16,6 +16,7 @@ import { notFound } from "next/navigation"
 import {
   AssignedCheckinDetailView,
   AssignedCheckinsPanel,
+  SubmittedCheckinPhotosCompareDialog,
   SubmittedCheckinsCompareDialog,
   SubmittedCheckinsPanel,
 } from "@/components/coachWise/clients/client-checkins-panel"
@@ -683,7 +684,13 @@ export default async function ClientProfilePage({
                     Nov check-in
                   </Button>
                 ) : (
-                  <SubmittedCheckinsCompareDialog />
+                  <>
+                    <SubmittedCheckinPhotosCompareDialog
+                      triggerIcon="photo"
+                      triggerLabel="Primerjaj slike"
+                    />
+                    <SubmittedCheckinsCompareDialog />
+                  </>
                 )
               }
             />
