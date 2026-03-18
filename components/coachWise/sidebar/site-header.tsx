@@ -15,6 +15,7 @@ import {
 } from "@tabler/icons-react"
 import { usePathname } from "next/navigation"
 
+import { AddClientDialog } from "@/components/coachWise/clients/add-client-dialog"
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
@@ -132,14 +133,21 @@ export function SiteHeader() {
           )}
         </div>
         {headerAction ? (
-          <Button
-            type="button"
-            size="sm"
-            className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-          >
-            <headerAction.icon className="size-4" />
-            {headerAction.label}
-          </Button>
+          normalizedPathname === "/beta-coach-wise/clients" ? (
+            <AddClientDialog
+              label={headerAction.label}
+              icon={headerAction.icon}
+            />
+          ) : (
+            <Button
+              type="button"
+              size="sm"
+              className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+            >
+              <headerAction.icon className="size-4" />
+              {headerAction.label}
+            </Button>
+          )
         ) : null}
       </div>
     </header>
