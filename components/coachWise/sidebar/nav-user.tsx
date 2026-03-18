@@ -47,19 +47,21 @@ export function NavUser({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:justify-center hover:bg-neutral-300/80 hover:text-foreground"
+              className="data-[state=open]:bg-neutral-900/8 data-[state=open]:text-neutral-950 group-data-[collapsible=icon]:justify-center hover:bg-neutral-900/5 hover:text-neutral-950"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale group-data-[collapsible=icon]:size-7">
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid max-w-[10rem] flex-1 translate-x-0 overflow-hidden text-left text-[13px] leading-tight opacity-100 transition-[max-width,opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:max-w-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:max-w-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:opacity-0">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-normal text-neutral-800">
+                  {user.name}
+                </span>
                 <span className="truncate text-[11px] text-muted-foreground">
                   {user.email}
                 </span>
               </div>
-              <IconDotsVertical className="ml-auto size-4 translate-x-0 opacity-100 transition-[margin,width,opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:w-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:ml-0 group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:opacity-0" />
+              <IconDotsVertical className="ml-auto size-3.5 translate-x-0 opacity-100 transition-[margin,width,opacity,transform] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[transition=closing]:w-0 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:ml-0 group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:opacity-0" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent

@@ -53,7 +53,7 @@ export function NavDocuments({
       <SidebarGroupLabel className="group-data-[transition=closing]:mt-0 group-data-[transition=closing]:max-h-8 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:px-2 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:mt-0 group-data-[collapsible=icon]:max-h-8 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:opacity-0">
         Orodja
       </SidebarGroupLabel>
-      <SidebarGroupContent className="flex flex-col ">
+      <SidebarGroupContent className="flex flex-col gap-1">
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.name}>
