@@ -14,6 +14,7 @@ import {
 import { notFound } from "next/navigation"
 
 import {
+  AssignedCheckinDetailView,
   AssignedCheckinsPanel,
   SubmittedCheckinsPanel,
 } from "@/components/coachWise/clients/client-checkins-panel"
@@ -35,6 +36,11 @@ import data from "../../data.json"
 
 type Props = {
   params: Promise<{ locale: string; id: string }>
+  searchParams: Promise<{
+    tab?: string | string[]
+    checkinTab?: string | string[]
+    assignedCheckin?: string | string[]
+  }>
 }
 
 const profileTabs = [
@@ -165,9 +171,22 @@ function SectionBody({ children }: { children: ReactNode }) {
   return <div className="space-y-4 bg-neutral-50">{children}</div>
 }
 
-export default async function ClientProfilePage({ params }: Props) {
+export default async function ClientProfilePage({
+  params,
+  searchParams,
+}: Props) {
   const { id } = await params
+  const resolvedSearchParams = await searchParams
   const clientId = Number(id)
+  const activeProfileTab = Array.isArray(resolvedSearchParams.tab)
+    ? resolvedSearchParams.tab[0]
+    : resolvedSearchParams.tab
+  const activeCheckinTab = Array.isArray(resolvedSearchParams.checkinTab)
+    ? resolvedSearchParams.checkinTab[0]
+    : resolvedSearchParams.checkinTab
+  const assignedCheckinId = Array.isArray(resolvedSearchParams.assignedCheckin)
+    ? resolvedSearchParams.assignedCheckin[0]
+    : resolvedSearchParams.assignedCheckin
 
   if (!Number.isInteger(clientId)) {
     notFound()
@@ -177,6 +196,14 @@ export default async function ClientProfilePage({ params }: Props) {
 
   if (!client) {
     notFound()
+  }
+
+  if (assignedCheckinId) {
+    return (
+      <section className="min-w-0 bg-neutral-50">
+        <AssignedCheckinDetailView checkinId={assignedCheckinId} />
+      </section>
+    )
   }
 
   const nutrition = getNutritionFocus(client.phase)
@@ -216,7 +243,10 @@ export default async function ClientProfilePage({ params }: Props) {
   ]
   return (
     <section className="min-w-0 bg-neutral-50">
-      <Tabs defaultValue="info" className="min-w-0 w-full gap-0">
+      <Tabs
+        defaultValue={activeProfileTab === "checkins" ? "checkins" : "info"}
+        className="min-w-0 w-full gap-0"
+      >
         <div className="border-b border-neutral-200 bg-neutral-50">
           <div className="flex min-w-0 items-center">
             <div className="min-w-0 flex-1 overflow-x-auto">
@@ -609,7 +639,12 @@ export default async function ClientProfilePage({ params }: Props) {
         </TabsContent>
 
         <TabsContent value="checkins" className="mt-0 space-y-0">
-          <Tabs defaultValue="submitted" className="gap-0">
+          <Tabs
+            defaultValue={
+              activeCheckinTab === "assigned" ? "assigned" : "submitted"
+            }
+            className="gap-0"
+          >
             <SectionSubHeader
               items={[
                 {

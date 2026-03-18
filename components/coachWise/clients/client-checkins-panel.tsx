@@ -2,11 +2,36 @@
 
 import * as React from "react"
 import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type UniqueIdentifier,
+} from "@dnd-kit/core"
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import {
+  IconArrowLeft,
+  IconCalendarEvent,
   IconDotsVertical,
+  IconEye,
+  IconGripVertical,
   IconPencil,
+  IconPlus,
   IconSend,
   IconTrash,
 } from "@tabler/icons-react"
+import { usePathname, useRouter } from "next/navigation"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,6 +42,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +66,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 type SubmittedCheckin = {
@@ -57,6 +92,17 @@ type AssignedCheckin = {
   questionCount: number
   description: string
   previewClassName: string
+  questions: AssignedCheckinQuestion[]
+}
+
+type AssignedCheckinQuestion = {
+  id: string
+  prompt: string
+  helper?: string
+  type: string
+  required: boolean
+  token: string
+  tokenClassName: string
 }
 
 const submittedCheckins: SubmittedCheckin[] = [
@@ -116,6 +162,106 @@ const assignedCheckins: AssignedCheckin[] = [
       "Glavni tedenski obrazec za spremljanje energije, treninga, prehrane in splosnega ritma.",
     previewClassName:
       "bg-linear-to-br from-fuchsia-100 via-rose-50 to-white text-fuchsia-500",
+    questions: [
+      {
+        id: "q1",
+        prompt: "Kaj je bil tvoj najvecji napredek ta teden?",
+        type: "Besedilo",
+        required: true,
+        token: "Aa",
+        tokenClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
+      },
+      {
+        id: "q2",
+        prompt: "Koliko treningov si opravil ta teden?",
+        type: "Stevilo",
+        required: true,
+        token: "1",
+        tokenClassName: "border-rose-200 bg-rose-50 text-rose-700",
+      },
+      {
+        id: "q3",
+        prompt: "Ali si dosegel glavni fokus tedna?",
+        type: "Da / Ne",
+        required: true,
+        token: "Da",
+        tokenClassName: "border-violet-200 bg-violet-50 text-violet-700",
+      },
+      {
+        id: "q4",
+        prompt: "Kako bi ocenil svoj napredek ta teden na lestvici 1-10?",
+        type: "Lestvica",
+        required: true,
+        token: "10",
+        tokenClassName: "border-sky-200 bg-sky-50 text-sky-700",
+      },
+      {
+        id: "q5",
+        prompt: "Kateri dan v tednu si imel najvec energije?",
+        type: "Datum",
+        required: true,
+        token: "12",
+        tokenClassName: "border-slate-200 bg-slate-50 text-slate-700",
+      },
+      {
+        id: "q6",
+        prompt: "Kako zadovoljen si bil s svojim tednom?",
+        type: "Ocena",
+        required: true,
+        token: "★",
+        tokenClassName: "border-amber-200 bg-amber-50 text-amber-700",
+      },
+      {
+        id: "q7",
+        prompt: "Nalozi fotografije napredka za ta teden",
+        type: "Fotografije",
+        required: true,
+        token: "Img",
+        tokenClassName: "border-cyan-200 bg-cyan-50 text-cyan-700",
+      },
+      {
+        id: "q8",
+        prompt: "Na katerem podrocju si najbolj napredoval?",
+        type: "Izbira",
+        required: true,
+        token: "✓",
+        tokenClassName: "border-orange-200 bg-orange-50 text-orange-700",
+      },
+      {
+        id: "q9",
+        prompt: "Povprecno stevilo korakov ta teden",
+        helper: "Koraki / dan",
+        type: "Metrika",
+        required: true,
+        token: "123",
+        tokenClassName: "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700",
+      },
+      {
+        id: "q10",
+        prompt: "Telesna teza ob koncu tedna",
+        helper: "Teza (kg)",
+        type: "Metrika",
+        required: true,
+        token: "kg",
+        tokenClassName: "border-indigo-200 bg-indigo-50 text-indigo-700",
+      },
+      {
+        id: "q11",
+        prompt: "Koliko ur spanja si povprecno imel vsako noc?",
+        type: "Stevilo",
+        required: true,
+        token: "1",
+        tokenClassName: "border-rose-200 bg-rose-50 text-rose-700",
+      },
+      {
+        id: "q12",
+        prompt: "Povej, kako si se na splosno pocutil ta teden",
+        type: "Besedilo",
+        required: true,
+        token: "Aa",
+        tokenClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
+      },
+    ],
   },
   {
     id: "assigned-daily",
@@ -128,6 +274,48 @@ const assignedCheckins: AssignedCheckin[] = [
       "Kratek dnevni obrazec za pocutje, energijo in osnovni adherence signal cez teden.",
     previewClassName:
       "bg-linear-to-br from-sky-100 via-cyan-50 to-white text-sky-500",
+    questions: [
+      {
+        id: "dq1",
+        prompt: "Kako se danes pocutis?",
+        type: "Besedilo",
+        required: true,
+        token: "Aa",
+        tokenClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
+      },
+      {
+        id: "dq2",
+        prompt: "Koliko energije imas danes?",
+        type: "Lestvica",
+        required: true,
+        token: "10",
+        tokenClassName: "border-sky-200 bg-sky-50 text-sky-700",
+      },
+      {
+        id: "dq3",
+        prompt: "Ali si danes opravil planiran trening?",
+        type: "Da / Ne",
+        required: true,
+        token: "Da",
+        tokenClassName: "border-violet-200 bg-violet-50 text-violet-700",
+      },
+      {
+        id: "dq4",
+        prompt: "Koliko korakov si naredil danes?",
+        type: "Metrika",
+        required: false,
+        token: "123",
+        tokenClassName: "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700",
+      },
+      {
+        id: "dq5",
+        prompt: "Dodaj kratko opombo dneva",
+        type: "Besedilo",
+        required: false,
+        token: "Aa",
+        tokenClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
+      },
+    ],
   },
 ]
 
@@ -137,6 +325,82 @@ const improvementOptions = [
   "Mobilnost",
   "Prehrana",
   "Recovery",
+]
+
+const questionTypeOptions = [
+  {
+    id: "text",
+    title: "Besedilo",
+    description: "Kratek ali daljsi tekstovni odgovor.",
+    token: "Aa",
+    tokenClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  },
+  {
+    id: "number",
+    title: "Stevilo",
+    description: "Celo ali decimalno stevilo.",
+    token: "1",
+    tokenClassName: "border-rose-200 bg-rose-50 text-rose-700",
+  },
+  {
+    id: "choice",
+    title: "Vec moznosti",
+    description: "Izbira ene ali vec moznosti.",
+    token: "✓",
+    tokenClassName: "border-orange-200 bg-orange-50 text-orange-700",
+  },
+  {
+    id: "scale",
+    title: "Lestvica",
+    description: "Ocena na lestvici od 1 do 10.",
+    token: "10",
+    tokenClassName: "border-sky-200 bg-sky-50 text-sky-700",
+  },
+  {
+    id: "yes-no",
+    title: "Da / Ne",
+    description: "Enostaven odgovor z da ali ne.",
+    token: "Da",
+    tokenClassName: "border-violet-200 bg-violet-50 text-violet-700",
+  },
+  {
+    id: "media",
+    title: "Medij",
+    description: "Ena slika ali video.",
+    token: "Vid",
+    tokenClassName: "border-lime-200 bg-lime-50 text-lime-700",
+  },
+  {
+    id: "date",
+    title: "Datum",
+    description: "Izbira konkretnega datuma.",
+    token: "12",
+    tokenClassName: "border-slate-200 bg-slate-50 text-slate-700",
+  },
+  {
+    id: "rating",
+    title: "Ocena",
+    description: "Ocena od 1 do 5.",
+    token: "★",
+    tokenClassName: "border-amber-200 bg-amber-50 text-amber-700",
+  },
+]
+
+const syncedQuestionOptions = [
+  {
+    id: "progress-photos",
+    title: "Fotografije napredka",
+    description: "Sinhroniziraj fotografije v galerijo.",
+    token: "Img",
+    tokenClassName: "border-cyan-200 bg-cyan-50 text-cyan-700",
+  },
+  {
+    id: "metric",
+    title: "Metrika",
+    description: "Sinhroniziraj v sekcijo metrik.",
+    token: "123",
+    tokenClassName: "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700",
+  },
 ]
 
 function getStatusBadgeClassName(status: SubmittedCheckin["status"]) {
@@ -216,6 +480,445 @@ function SatisfactionScale({ value }: { value: number }) {
           />
         )
       })}
+    </div>
+  )
+}
+
+function isInteractiveElement(target: EventTarget | null) {
+  if (!(target instanceof HTMLElement)) {
+    return false
+  }
+
+  return Boolean(
+    target.closest(
+      "button, a, input, textarea, select, [data-prevent-row-click='true']"
+    )
+  )
+}
+
+function RequiredBadge({ required }: { required: boolean }) {
+  return (
+    <Badge
+      variant="outline"
+      className={cn(
+        "rounded-sm px-1.5 py-0 text-[11px] font-medium",
+        required
+          ? "border-rose-200 bg-rose-50 text-rose-700"
+          : "border-lime-200 bg-lime-50 text-lime-700"
+      )}
+    >
+      {required ? "Da" : "Ne"}
+    </Badge>
+  )
+}
+
+function QuestionToken({
+  token,
+  className,
+}: {
+  token: string
+  className: string
+}) {
+  return (
+    <div
+      className={cn(
+        "inline-flex h-7 min-w-7 items-center justify-center rounded-sm border px-1.5 text-[11px] font-semibold",
+        className
+      )}
+    >
+      {token}
+    </div>
+  )
+}
+
+function getAssignedCheckinById(checkinId: string) {
+  return assignedCheckins.find((item) => item.id === checkinId) ?? null
+}
+
+function AddQuestionDialog() {
+  const [open, setOpen] = React.useState(false)
+  const [questionLabel, setQuestionLabel] = React.useState("")
+  const [isRequired, setIsRequired] = React.useState(true)
+  const [selectedType, setSelectedType] = React.useState("text")
+
+  const resetDialog = React.useCallback(() => {
+    setQuestionLabel("")
+    setIsRequired(true)
+    setSelectedType("text")
+  }, [])
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+
+        if (!nextOpen) {
+          resetDialog()
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button
+          type="button"
+          size="sm"
+          className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+        >
+          <IconPlus className="size-4" />
+          Dodaj vprasanje
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
+        <div className="border-b border-neutral-200 px-5 py-4">
+          <DialogTitle className="text-[18px] font-semibold text-neutral-950">
+            Dodaj vprasanje
+          </DialogTitle>
+        </div>
+
+        <div className="space-y-5 px-5 py-4">
+          <div className="space-y-2">
+            <div className="text-[13px] font-medium text-neutral-800">
+              Vprasanje <span className="text-rose-500">*</span>
+            </div>
+            <Input
+              value={questionLabel}
+              onChange={(event) => setQuestionLabel(event.target.value)}
+              placeholder="Vnesi vprasanje, npr. Kako se danes pocutis?"
+              className="rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            />
+          </div>
+
+          <label className="flex cursor-pointer items-center gap-3 text-[13px] text-neutral-700">
+            <Checkbox
+              checked={isRequired}
+              onCheckedChange={(checked) => setIsRequired(checked === true)}
+              className="rounded-[4px] border-neutral-300 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[state=checked]:border-brand-500 data-[state=checked]:bg-brand-500"
+            />
+            <span>Obvezno?</span>
+          </label>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            {questionTypeOptions.map((option) => {
+              const isSelected = option.id === selectedType
+
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setSelectedType(option.id)}
+                  className={cn(
+                    "flex items-start gap-3 rounded-sm border px-3 py-3 text-left transition-colors",
+                    isSelected
+                      ? "border-brand-500 bg-brand-500/5"
+                      : "border-neutral-200 bg-white hover:bg-neutral-50"
+                  )}
+                >
+                  <QuestionToken
+                    token={option.token}
+                    className={option.tokenClassName}
+                  />
+                  <div>
+                    <div className="text-[14px] font-medium text-neutral-900">
+                      {option.title}
+                    </div>
+                    <div className="mt-1 text-[13px] text-neutral-500">
+                      {option.description}
+                    </div>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="border-t border-neutral-200 pt-4">
+            <div className="mb-3 text-center text-[13px] font-medium text-neutral-500">
+              Sinhronizirana vprasanja
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {syncedQuestionOptions.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  className="flex items-start gap-3 rounded-sm border border-neutral-200 bg-white px-3 py-3 text-left transition-colors hover:bg-neutral-50"
+                >
+                  <QuestionToken
+                    token={option.token}
+                    className={option.tokenClassName}
+                  />
+                  <div>
+                    <div className="text-[14px] font-medium text-neutral-900">
+                      {option.title}
+                    </div>
+                    <div className="mt-1 text-[13px] text-neutral-500">
+                      {option.description}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="justify-between border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Zapri
+            </Button>
+          </DialogClose>
+          <Button
+            type="button"
+            disabled={!questionLabel.trim()}
+            onClick={() => setOpen(false)}
+            className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+          >
+            Dodaj vprasanje
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function QuestionDragHandle({
+  attributes,
+  listeners,
+}: {
+  attributes: ReturnType<typeof useSortable>["attributes"]
+  listeners: ReturnType<typeof useSortable>["listeners"]
+}) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      className="size-7 cursor-grab text-neutral-400 shadow-none hover:bg-transparent hover:text-neutral-600 active:cursor-grabbing"
+      data-prevent-row-click="true"
+      {...attributes}
+      {...listeners}
+    >
+      <IconGripVertical className="size-3.5" />
+      <span className="sr-only">Premakni vprasanje</span>
+    </Button>
+  )
+}
+
+function SortableQuestionRow({
+  question,
+}: {
+  question: AssignedCheckinQuestion
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({
+      id: question.id,
+    })
+
+  return (
+    <TableRow
+      ref={setNodeRef}
+      className="bg-white data-[dragging=true]:z-10 data-[dragging=true]:opacity-80"
+      data-dragging={isDragging}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+    >
+      <TableCell className="w-8 pl-3 pr-0">
+        <div className="flex items-center justify-center">
+          <QuestionDragHandle
+            attributes={attributes}
+            listeners={listeners}
+          />
+        </div>
+      </TableCell>
+      <TableCell className="pl-2 lg:pl-3">
+        <div className="flex items-start gap-3">
+          <QuestionToken
+            token={question.token}
+            className={question.tokenClassName}
+          />
+          <div className="min-w-0">
+            <div className="text-[14px] font-medium text-neutral-900">
+              {question.prompt}
+            </div>
+            {question.helper ? (
+              <div className="mt-0.5 text-[13px] text-neutral-500">
+                {question.helper}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </TableCell>
+      <TableCell className="text-[14px] text-neutral-800">
+        {question.type}
+      </TableCell>
+      <TableCell>
+        <RequiredBadge required={question.required} />
+      </TableCell>
+      <TableCell className="px-1 pr-2 lg:pr-3">
+        <div className="flex w-6 justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            className="size-6 rounded-md border-neutral-200/70 bg-transparent text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+          >
+            <IconTrash className="size-3.5" />
+            <span className="sr-only">Izbrisi vprasanje</span>
+          </Button>
+        </div>
+      </TableCell>
+    </TableRow>
+  )
+}
+
+function AssignedCheckinEditor({
+  checkin,
+  onBack,
+}: {
+  checkin: AssignedCheckin
+  onBack: () => void
+}) {
+  const [questions, setQuestions] = React.useState(checkin.questions)
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {})
+  )
+  const questionIds = React.useMemo<UniqueIdentifier[]>(
+    () => questions.map((question) => question.id),
+    [questions]
+  )
+
+  React.useEffect(() => {
+    setQuestions(checkin.questions)
+  }, [checkin.id, checkin.questions])
+
+  function handleQuestionDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    if (active && over && active.id !== over.id) {
+      setQuestions((currentQuestions) => {
+        const oldIndex = currentQuestions.findIndex(
+          (question) => question.id === active.id
+        )
+        const newIndex = currentQuestions.findIndex(
+          (question) => question.id === over.id
+        )
+
+        return arrayMove(currentQuestions, oldIndex, newIndex)
+      })
+    }
+  }
+
+  return (
+    <div className="mt-2 bg-neutral-50 px-2">
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <div className="flex flex-col gap-3 border-b border-neutral-200 px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-3">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              onClick={onBack}
+              className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+            >
+              <IconArrowLeft className="size-4" />
+              <span className="sr-only">Nazaj</span>
+            </Button>
+            <div
+              className={cn(
+                "flex size-8 shrink-0 items-end justify-end rounded-sm border border-neutral-200 p-1.5",
+                checkin.previewClassName
+              )}
+            >
+              <div className="h-4 w-3 rounded-[2px] border border-white/80 bg-white/80" />
+            </div>
+            <div className="min-w-0">
+              <div className="truncate text-[18px] font-semibold text-neutral-950">
+                {checkin.title}
+              </div>
+              <div className="mt-1 text-[13px] text-neutral-600">
+                {checkin.description}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              <IconPencil className="size-4" />
+              Uredi
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              <IconEye className="size-4" />
+              Predogled
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              <IconCalendarEvent className="size-4" />
+              Urnik
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              Preuredi
+            </Button>
+            <AddQuestionDialog />
+          </div>
+        </div>
+
+        <DndContext
+          collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis]}
+          onDragEnd={handleQuestionDragEnd}
+          sensors={sensors}
+        >
+          <Table>
+            <TableHeader className="bg-muted">
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="w-8 pl-3 pr-0" />
+                <TableHead className="pl-2 lg:pl-3">Vprasanje</TableHead>
+                <TableHead>Tip</TableHead>
+                <TableHead>Obvezno</TableHead>
+                <TableHead className="px-1 pr-2 lg:pr-3">
+                  <div className="w-6" />
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <SortableContext
+                items={questionIds}
+                strategy={verticalListSortingStrategy}
+              >
+                {questions.map((question) => (
+                  <SortableQuestionRow key={question.id} question={question} />
+                ))}
+              </SortableContext>
+            </TableBody>
+          </Table>
+        </DndContext>
+      </div>
     </div>
   )
 }
@@ -462,6 +1165,9 @@ export function SubmittedCheckinsPanel({
 }
 
 export function AssignedCheckinsPanel() {
+  const router = useRouter()
+  const pathname = usePathname()
+
   return (
     <div className="px-2 mt-2 bg-neutral-50">
       <div className="overflow-hidden rounded-sm border border-neutral-200 ">
@@ -478,7 +1184,33 @@ export function AssignedCheckinsPanel() {
           </TableHeader>
           <TableBody>
             {assignedCheckins.map((item) => (
-              <TableRow key={item.id} className="bg-white">
+              <TableRow
+                key={item.id}
+                role="button"
+                tabIndex={0}
+                className="cursor-pointer bg-white"
+                onClick={(event) => {
+                  if (isInteractiveElement(event.target)) {
+                    return
+                  }
+
+                  router.push(
+                    `${pathname}?tab=checkins&checkinTab=assigned&assignedCheckin=${item.id}`
+                  )
+                }}
+                onKeyDown={(event) => {
+                  if (isInteractiveElement(event.target)) {
+                    return
+                  }
+
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault()
+                    router.push(
+                      `${pathname}?tab=checkins&checkinTab=assigned&assignedCheckin=${item.id}`
+                    )
+                  }
+                }}
+              >
                 <TableCell className="pl-4 lg:pl-5">
                   <div className="flex items-center gap-3">
                     <div
@@ -533,7 +1265,14 @@ export function AssignedCheckinsPanel() {
                         sideOffset={8}
                         className="w-48 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
                       >
-                        <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950">
+                        <DropdownMenuItem
+                          className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
+                          onSelect={() =>
+                            router.push(
+                              `${pathname}?tab=checkins&checkinTab=assigned&assignedCheckin=${item.id}`
+                            )
+                          }
+                        >
                           <IconPencil className="size-4 text-neutral-500" />
                           Uredi
                         </DropdownMenuItem>
@@ -559,5 +1298,30 @@ export function AssignedCheckinsPanel() {
         </Table>
       </div>
     </div>
+  )
+}
+
+export function AssignedCheckinDetailView({
+  checkinId,
+}: {
+  checkinId: string
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const selectedCheckin = getAssignedCheckinById(checkinId)
+
+  if (!selectedCheckin) {
+    return (
+      <div className="px-2 pt-2 text-sm text-neutral-500">
+        Check-in ni najden.
+      </div>
+    )
+  }
+
+  return (
+    <AssignedCheckinEditor
+      checkin={selectedCheckin}
+      onBack={() => router.push(`${pathname}?tab=checkins&checkinTab=assigned`)}
+    />
   )
 }
