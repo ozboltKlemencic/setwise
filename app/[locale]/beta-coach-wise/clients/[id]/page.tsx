@@ -13,8 +13,6 @@ import {
 } from "@tabler/icons-react"
 import {
   Activity,
-  ArrowDown,
-  ArrowUp,
   Camera,
   Clock3,
   CreditCard,
@@ -23,8 +21,6 @@ import {
   Mail,
   Maximize2,
   Pencil,
-  Ruler,
-  Scale,
   Tag,
   UserRound,
   MessageSquareText,
@@ -43,6 +39,7 @@ import {
   ClientHabitsPanel,
   HabitDetailView,
 } from "@/components/coachWise/clients/client-habits-panel"
+import { ClientGeneralMetricsPanel } from "@/components/coachWise/clients/client-general-metrics-panel"
 import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
 import {
   ClientNutritionPanel,
@@ -790,74 +787,11 @@ export default async function ClientProfilePage({
                     </Card>
                   </div>
 
-                  <div className="space-y-4">
-                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
-                      <CardHeader className="border-b border-neutral-200 px-4 py-3">
-                        <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
-                          <Scale className="size-4 text-neutral-500" />
-                          <span>Metrics Avg</span>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="divide-y divide-neutral-200 p-0">
-                        {metricsAverageRows.map((metric) => (
-                          <div
-                            key={metric.label}
-                            className="flex items-center justify-between gap-4 px-4 py-4"
-                          >
-                            <div className="text-[15px] text-neutral-800">
-                              {metric.label}
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <div className="text-[15px] font-medium text-neutral-900">
-                                {metric.value}
-                              </div>
-                              <Badge
-                                className={cn(
-                                  "rounded-md border px-2.5 py-1 text-[12px] font-medium shadow-none",
-                                  metric.tone === "up"
-                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
-                                    : "border-red-200 bg-red-50 text-red-700 hover:bg-red-50"
-                                )}
-                              >
-                                {metric.tone === "up" ? (
-                                  <ArrowUp className="mr-1 size-3" />
-                                ) : (
-                                  <ArrowDown className="mr-1 size-3" />
-                                )}
-                                {metric.delta}
-                              </Badge>
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
-                      <CardHeader className="border-b border-neutral-200 px-4 py-3">
-                        <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
-                          <Camera className="size-4 text-neutral-500" />
-                          <span>Recent Photos</span>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="p-4">
-                        <div className="grid grid-cols-3 gap-2.5 md:grid-cols-5">
-                          {recentPhotoPositions.map((position, index) => (
-                            <div
-                              key={`${position}-${index}`}
-                              className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100"
-                            >
-                              <img
-                                src={recentPhotoUrl}
-                                alt={`Progress photo ${index + 1}`}
-                                className="h-24 w-full object-cover"
-                                style={{ objectPosition: position }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  <ClientGeneralMetricsPanel
+                    metrics={metricsAverageRows}
+                    recentPhotoUrl={recentPhotoUrl}
+                    recentPhotoPositions={recentPhotoPositions}
+                  />
 
                   <div className="space-y-4">
                     <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
