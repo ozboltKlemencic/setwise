@@ -48,6 +48,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
@@ -217,6 +225,49 @@ function SectionBody({ children }: { children: ReactNode }) {
   return <div className="space-y-4 bg-neutral-50">{children}</div>
 }
 
+function SupplementsSectionTable({
+  title,
+  rows,
+}: {
+  title: string
+  rows: {
+    supplement: string
+    timing: string
+    dose: string
+    purpose: string
+  }[]
+}) {
+  return (
+    <div className="space-y-2">
+      <div className="px-1 text-[12px] font-medium text-neutral-500">{title}</div>
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4 lg:pl-5">Supplement</TableHead>
+              <TableHead>Timing</TableHead>
+              <TableHead>Dose</TableHead>
+              <TableHead>Purpose</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow key={`${title}-${row.supplement}`}>
+                <TableCell className="pl-4 font-medium text-neutral-950 lg:pl-5">
+                  {row.supplement}
+                </TableCell>
+                <TableCell>{row.timing}</TableCell>
+                <TableCell>{row.dose}</TableCell>
+                <TableCell className="text-neutral-600">{row.purpose}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  )
+}
+
 export default async function ClientProfilePage({
   params,
   searchParams,
@@ -267,7 +318,7 @@ export default async function ClientProfilePage({
       : "meal-plans"
   const resolvedProgramTab =
     activeProgramTab === "exercise-history" ||
-    activeProgramTab === "completed-workouts"
+      activeProgramTab === "completed-workouts"
       ? activeProgramTab
       : "calendar"
 
@@ -325,21 +376,57 @@ export default async function ClientProfilePage({
       description: "Dnevno gibanje podpira trenutno fazo in splosno kondicijo.",
     },
   ]
-  const supplements = [
+  const supplementSections = [
     {
-      title: "Kreatin",
-      timing: "Vsak dan z zajtrkom",
-      description: "Podpora performansu in ponovljivosti v treningu.",
+      title: "Performance",
+      rows: [
+        {
+          supplement: "Kreatin",
+          timing: "Vsak dan z zajtrkom",
+          dose: "5 g",
+          purpose: "Podpora performansu in ponovljivosti v treningu.",
+        },
+        {
+          supplement: "Elektroliti",
+          timing: "Pred treningom",
+          dose: "1 serving",
+          purpose: "Boljssa hidracija in stabilna energija med sessionom.",
+        },
+      ],
     },
     {
-      title: "Omega 3",
-      timing: "Kosilo",
-      description: "Podpora splosnemu zdravju in regeneraciji.",
+      title: "Health",
+      rows: [
+        {
+          supplement: "Omega 3",
+          timing: "Kosilo",
+          dose: "2 kapsuli",
+          purpose: "Podpora splosnemu zdravju in regeneraciji.",
+        },
+        {
+          supplement: "Vitamin D3",
+          timing: "Zjutraj",
+          dose: "2000 IU",
+          purpose: "Podpora imunskemu sistemu in splosnemu well-beingu.",
+        },
+      ],
     },
     {
-      title: "Magnezij",
-      timing: "Pred spanjem",
-      description: "Podpora vecernemu ritualu in boljsemu recoveryju.",
+      title: "Recovery",
+      rows: [
+        {
+          supplement: "Magnezij",
+          timing: "Pred spanjem",
+          dose: "300 mg",
+          purpose: "Podpora vecernemu ritualu in boljssemu recoveryju.",
+        },
+        {
+          supplement: "Glicin",
+          timing: "Pred spanjem",
+          dose: "3 g",
+          purpose: "Pomoc pri umiritvi rutine in kvaliteti spanja.",
+        },
+      ],
     },
   ]
   return (
@@ -623,138 +710,138 @@ export default async function ClientProfilePage({
         <TabsContent value="habbits" className="mt-0 space-y-0">
           <ClientHabitsPanel initialSubTab={resolvedHabitTab} />
           {false ? (
-          <Tabs defaultValue="daily-habits" className="gap-0">
-            <SectionSubHeader
-              items={[
-                {
-                  icon: <IconRepeat className="size-4" />,
-                  label: "Daily habits",
-                  value: "daily-habits",
-                },
-                {
-                  icon: <IconChartBar className="size-4" />,
-                  label: "Streaks",
-                  value: "streaks",
-                },
-                {
-                  icon: <IconClipboardCheck className="size-4" />,
-                  label: "Weekly score",
-                  value: "weekly-score",
-                },
-              ]}
-              actions={
-                <Button size="sm" className={primaryActionButtonClassName}>
-                  <IconPlus className="size-4" />
-                  Add habit
-                </Button>
-              }
-            />
+            <Tabs defaultValue="daily-habits" className="gap-0">
+              <SectionSubHeader
+                items={[
+                  {
+                    icon: <IconRepeat className="size-4" />,
+                    label: "Daily habits",
+                    value: "daily-habits",
+                  },
+                  {
+                    icon: <IconChartBar className="size-4" />,
+                    label: "Streaks",
+                    value: "streaks",
+                  },
+                  {
+                    icon: <IconClipboardCheck className="size-4" />,
+                    label: "Weekly score",
+                    value: "weekly-score",
+                  },
+                ]}
+                actions={
+                  <Button size="sm" className={primaryActionButtonClassName}>
+                    <IconPlus className="size-4" />
+                    Add habit
+                  </Button>
+                }
+              />
 
-            <TabsContent value="daily-habits" className="mt-0 space-y-0">
-              <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {habits.map((habit) => (
-                    <Card key={habit.title}>
+              <TabsContent value="daily-habits" className="mt-0 space-y-0">
+                <SectionBody>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {habits.map((habit) => (
+                      <Card key={habit.title}>
+                        <CardHeader>
+                          <CardDescription>{habit.title}</CardDescription>
+                          <CardTitle>{habit.value}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-sm text-muted-foreground">
+                          {habit.description}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Rutina tedna</CardTitle>
+                      <CardDescription>
+                        Kratek pregled navad, ki jih je smiselno spremljati vsak
+                        teden.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid gap-3 md:grid-cols-2">
+                      <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                        Jutranji check: voda, kratka mobilnost, 10 minut hoje.
+                      </div>
+                      <div className="rounded-lg border p-4 text-sm text-muted-foreground">
+                        Vecerni check: spanje, magnezij, priprava obrokov za naslednji
+                        dan.
+                      </div>
+                    </CardContent>
+                  </Card>
+                </SectionBody>
+              </TabsContent>
+
+              <TabsContent value="streaks" className="mt-0 space-y-0">
+                <SectionBody>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <Card>
                       <CardHeader>
-                        <CardDescription>{habit.title}</CardDescription>
-                        <CardTitle>{habit.value}</CardTitle>
+                        <CardDescription>Sleep streak</CardDescription>
+                        <CardTitle>12 dni</CardTitle>
                       </CardHeader>
                       <CardContent className="text-sm text-muted-foreground">
-                        {habit.description}
+                        Več kot 7 ur spanja v zadnjih dveh tednih.
                       </CardContent>
                     </Card>
-                  ))}
-                </div>
+                    <Card>
+                      <CardHeader>
+                        <CardDescription>Hydration streak</CardDescription>
+                        <CardTitle>9 dni</CardTitle>
+                      </CardHeader>
+                      <CardContent className="text-sm text-muted-foreground">
+                        Dnevni cilj tekočine je dosežen skoraj vsak dan.
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardDescription>Steps streak</CardDescription>
+                        <CardTitle>6 dni</CardTitle>
+                      </CardHeader>
+                      <CardContent className="text-sm text-muted-foreground">
+                        Gibanje je najboljše na trening dneve, vikendi še nihajo.
+                      </CardContent>
+                    </Card>
+                  </div>
+                </SectionBody>
+              </TabsContent>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Rutina tedna</CardTitle>
-                    <CardDescription>
-                      Kratek pregled navad, ki jih je smiselno spremljati vsak
-                      teden.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="grid gap-3 md:grid-cols-2">
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      Jutranji check: voda, kratka mobilnost, 10 minut hoje.
-                    </div>
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      Vecerni check: spanje, magnezij, priprava obrokov za naslednji
-                      dan.
-                    </div>
-                  </CardContent>
-                </Card>
-              </SectionBody>
-            </TabsContent>
-
-            <TabsContent value="streaks" className="mt-0 space-y-0">
-              <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
+              <TabsContent value="weekly-score" className="mt-0 space-y-0">
+                <SectionBody>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <Card>
+                      <CardHeader>
+                        <CardDescription>Overall score</CardDescription>
+                        <CardTitle>8.4 / 10</CardTitle>
+                      </CardHeader>
+                    </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardDescription>Consistency</CardDescription>
+                        <CardTitle>84%</CardTitle>
+                      </CardHeader>
+                    </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardDescription>Next focus</CardDescription>
+                        <CardTitle>Weekend rhythm</CardTitle>
+                      </CardHeader>
+                    </Card>
+                  </div>
                   <Card>
                     <CardHeader>
-                      <CardDescription>Sleep streak</CardDescription>
-                      <CardTitle>12 dni</CardTitle>
+                      <CardTitle>Tedenski povzetek</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-muted-foreground">
-                      Več kot 7 ur spanja v zadnjih dveh tednih.
+                      Navade so dobre med delovnikom. Največ rezerve je v sobotnem in
+                      nedeljskem ritmu prehrane, spanja in korakov.
                     </CardContent>
                   </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Hydration streak</CardDescription>
-                      <CardTitle>9 dni</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Dnevni cilj tekočine je dosežen skoraj vsak dan.
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Steps streak</CardDescription>
-                      <CardTitle>6 dni</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Gibanje je najboljše na trening dneve, vikendi še nihajo.
-                    </CardContent>
-                  </Card>
-                </div>
-              </SectionBody>
-            </TabsContent>
-
-            <TabsContent value="weekly-score" className="mt-0 space-y-0">
-              <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Overall score</CardDescription>
-                      <CardTitle>8.4 / 10</CardTitle>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Consistency</CardDescription>
-                      <CardTitle>84%</CardTitle>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Next focus</CardDescription>
-                      <CardTitle>Weekend rhythm</CardTitle>
-                    </CardHeader>
-                  </Card>
-                </div>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Tedenski povzetek</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    Navade so dobre med delovnikom. Največ rezerve je v sobotnem in
-                    nedeljskem ritmu prehrane, spanja in korakov.
-                  </CardContent>
-                </Card>
-              </SectionBody>
-            </TabsContent>
-          </Tabs>
+                </SectionBody>
+              </TabsContent>
+            </Tabs>
           ) : null}
         </TabsContent>
 
@@ -987,34 +1074,15 @@ export default async function ClientProfilePage({
               }
             />
 
-            <TabsContent value="stack" className="mt-0 space-y-0">
+            <TabsContent value="stack" className="mt-0 space-y-0 m-2">
               <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  {supplements.map((item) => (
-                    <Card key={item.title}>
-                      <CardHeader>
-                        <CardDescription>{item.timing}</CardDescription>
-                        <CardTitle>{item.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="text-sm text-muted-foreground">
-                        {item.description}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Opomba</CardTitle>
-                    <CardDescription>
-                      Suplementacija naj ostane preprosta in dosledna.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-muted-foreground">
-                    Prioriteta je rutina, ne kompleksnost. Dodaj samo stvari, ki jih
-                    stranka res redno uporablja.
-                  </CardContent>
-                </Card>
+                {supplementSections.map((section) => (
+                  <SupplementsSectionTable
+                    key={section.title}
+                    title={section.title}
+                    rows={section.rows}
+                  />
+                ))}
               </SectionBody>
             </TabsContent>
 
