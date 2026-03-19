@@ -601,82 +601,77 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
           </div>
 
           <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-            <Table>
-              <TableHeader className="bg-muted">
-                <TableRow className="hover:bg-transparent">
-                  <TableHead className="h-11 w-[56%] pl-4 lg:pl-5">
-                    <div>Plan</div>
-                  </TableHead>
-                  <TableHead className="h-11 w-[180px]">Type</TableHead>
-                  <TableHead className="h-11 w-[160px] text-center">
-                    Calories
-                  </TableHead>
-                  <TableHead className="h-11 w-[56px] px-0 pr-4 text-right">
-                    <div className="w-6" />
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {preset.mealPlans.map((plan) => (
-                  <TableRow key={plan.id} className="bg-white hover:bg-neutral-50/60">
-                    <TableCell className="py-4 pl-4 lg:pl-5">
-                      <div className="space-y-1">
-                        <div className="text-[15px] font-medium text-neutral-950">
-                          {plan.title}
-                        </div>
-                        <div className="text-[13px] text-neutral-500">
-                          {plan.subtitle}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="py-4">
-                      <Badge
-                        variant="outline"
-                        className="rounded-md border-neutral-200 bg-white px-2.5 py-1 text-[12px] font-normal text-neutral-700"
+            <div className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 border-b border-neutral-200 bg-muted px-4 py-3 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5">
+              <div className="text-sm font-medium text-foreground">Plan</div>
+              <div className="text-sm font-medium text-foreground">Type</div>
+              <div className="text-center text-sm font-medium text-foreground">
+                Calories
+              </div>
+              <div />
+            </div>
+
+            <div className="divide-y divide-neutral-200">
+              {preset.mealPlans.map((plan) => (
+                <div
+                  key={plan.id}
+                  className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 bg-white px-4 py-4 transition-colors hover:bg-neutral-50/60 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5"
+                >
+                  <div className="min-w-0 space-y-1">
+                    <div className="text-[15px] font-medium text-neutral-950">
+                      {plan.title}
+                    </div>
+                    <div className="text-[13px] leading-5 text-neutral-500">
+                      {plan.subtitle}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Badge
+                      variant="outline"
+                      className="rounded-md border-neutral-200 bg-white px-2.5 py-1 text-[12px] font-normal text-neutral-700"
+                    >
+                      <UtensilsCrossed className="mr-1 size-3.5 text-neutral-500" />
+                      {plan.type}
+                    </Badge>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <NutritionCaloriesDonut plan={plan} />
+                  </div>
+
+                  <div className="flex justify-end">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon-sm"
+                          className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
+                        >
+                          <MoreVertical className="size-3" />
+                          <span className="sr-only">Odpri meni plana</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        sideOffset={8}
+                        className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
                       >
-                        <UtensilsCrossed className="mr-1 size-3.5 text-neutral-500" />
-                        {plan.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="py-3 text-center">
-                      <NutritionCaloriesDonut plan={plan} />
-                    </TableCell>
-                    <TableCell className="py-3 pl-0 pr-4">
-                      <div className="flex w-full justify-end">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="icon-sm"
-                              className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
-                            >
-                              <MoreVertical className="size-3" />
-                              <span className="sr-only">Odpri meni plana</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="end"
-                            sideOffset={8}
-                            className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
-                          >
-                            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-                              Uredi plan
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-                              Podvoji plan
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
-                              Arhiviraj
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                        <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+                          Uredi plan
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+                          Podvoji plan
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
+                          Arhiviraj
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="grid gap-3 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
