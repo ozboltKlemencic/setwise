@@ -541,11 +541,7 @@ function ProgramWorkoutsList({
   )
 }
 
-function ExerciseExplorer({
-  exercises,
-}: {
-  exercises: ProgramWorkoutExerciseEntry[]
-}) {
+function useExerciseExplorerState(exercises: ProgramWorkoutExerciseEntry[]) {
   const [selectedMetric, setSelectedMetric] = React.useState<"weight" | "reps">(
     "weight"
   )
@@ -569,6 +565,36 @@ function ExerciseExplorer({
   const selectedExercise =
     filteredExercises.find((exercise) => exercise.entryId === selectedExerciseId) ??
     exercises[0]
+
+  return {
+    selectedMetric,
+    setSelectedMetric,
+    exerciseSearch,
+    setExerciseSearch,
+    filteredExercises,
+    selectedExercise,
+    selectedExerciseId,
+    setSelectedExerciseId,
+  }
+}
+
+function ExerciseExplorer({
+  exercises,
+  rightTopContent,
+}: {
+  exercises: ProgramWorkoutExerciseEntry[]
+  rightTopContent?: React.ReactNode
+}) {
+  const {
+    selectedMetric,
+    setSelectedMetric,
+    exerciseSearch,
+    setExerciseSearch,
+    filteredExercises,
+    selectedExercise,
+    selectedExerciseId,
+    setSelectedExerciseId,
+  } = useExerciseExplorerState(exercises)
 
   if (!selectedExercise) {
     return null
@@ -607,6 +633,8 @@ function ExerciseExplorer({
       </div>
 
       <div className="min-w-0 space-y-4 bg-neutral-50 p-3">
+        {rightTopContent}
+
         <Card className="rounded-xl border-neutral-200 shadow-none">
           <CardHeader className="pb-3">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -869,12 +897,43 @@ export function WorkoutDetailView({
   const pathname = usePathname()
   const workout = React.useMemo(() => getWorkoutById(workoutId), [workoutId])
   const pickerProps = useProgramsPeriodPickerState()
+  const [detailSection, setDetailSection] = React.useState<
+    "summary" | "exercises" | "analysis"
+  >("summary")
 
   if (!workout) {
     return null
   }
 
   const workoutExercises = getWorkoutExerciseEntries([workout])
+  const {
+    selectedMetric,
+    setSelectedMetric,
+    exerciseSearch,
+    setExerciseSearch,
+    filteredExercises,
+    selectedExercise,
+    selectedExerciseId,
+    setSelectedExerciseId,
+  } = useExerciseExplorerState(workoutExercises)
+  const totalSets = workout.exercises.reduce(
+    (count, exercise) => count + exercise.currentSets.length,
+    0
+  )
+  const hardestSet = workout.exercises
+    .flatMap((exercise) =>
+      exercise.currentSets.map((setRow) => ({
+        exerciseName: exercise.name,
+        weight: setRow.weight,
+        reps: setRow.reps,
+        score: setRow.weight * setRow.reps,
+      }))
+    )
+    .sort((left, right) => right.score - left.score)[0]
+
+  if (!selectedExercise) {
+    return null
+  }
 
   return (
     <div className="min-w-0">
@@ -905,45 +964,303 @@ export function WorkoutDetailView({
         </div>
       </div>
 
-      <div className="space-y-4 bg-neutral-50 p-4">
-        <Card className="rounded-xl border-neutral-200 shadow-none">
-          <CardContent className="grid gap-4 p-5 md:grid-cols-[1fr_1fr_auto]">
-            <div className="border-r border-neutral-200 pr-4">
-              <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                Duration
-              </div>
-              <div className="mt-2 text-[24px] font-semibold text-neutral-950">
-                {workout.duration}
-              </div>
+      <div className="bg-neutral-50 p-4">
+        <div className="grid gap-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 xl:grid-cols-[300px_minmax(0,1fr)]">
+          <div className="border-r border-neutral-200 bg-white p-3">
+            <div className="inline-flex w-full rounded-sm border border-neutral-200 bg-white p-0.5 shadow-none">
+              {([
+                { value: "summary", label: "Summary" },
+                { value: "exercises", label: "Exercises" },
+                { value: "analysis", label: "Analysis" },
+              ] as const).map((section) => (
+                <Button
+                  key={section.value}
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setDetailSection(section.value)}
+                  className={cn(
+                    "flex-1 rounded-sm px-3 text-[13px] font-medium shadow-none",
+                    detailSection === section.value
+                      ? "bg-neutral-100 text-neutral-950"
+                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
+                  )}
+                >
+                  {section.label}
+                </Button>
+              ))}
             </div>
-            <div className="border-r border-neutral-200 pr-4">
-              <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                Volume
-              </div>
-              <div className="mt-2 text-[24px] font-semibold text-neutral-950">
-                {workout.volume}
-              </div>
-            </div>
-            <div className="flex items-start justify-end">
-              <Badge
-                variant="outline"
-                className={cn(
-                  "rounded-md px-2.5 py-1 text-[12px] font-medium",
-                  getTrendBadgeClassName(workout.trend)
-                )}
-              >
-                {workout.trend === "up" ? (
-                  <TrendingUp className="mr-1 size-3.5" />
-                ) : workout.trend === "down" ? (
-                  <TrendingDown className="mr-1 size-3.5" />
-                ) : null}
-                {workout.changeLabel}
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
 
-        <ExerciseExplorer exercises={workoutExercises} />
+            {detailSection === "analysis" ? (
+              <>
+                <div className="relative mt-3">
+                  <Input
+                    value={exerciseSearch}
+                    onChange={(event) => setExerciseSearch(event.target.value)}
+                    placeholder="Search exercise"
+                    className="h-10 rounded-sm border-neutral-200 bg-white pl-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+                </div>
+
+                <div className="mt-3 overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                  {filteredExercises.map((exercise) => (
+                    <button
+                      key={exercise.entryId}
+                      type="button"
+                      onClick={() => setSelectedExerciseId(exercise.entryId)}
+                      className={cn(
+                        "flex w-full items-center justify-between border-b border-neutral-200 px-4 py-4 text-left last:border-b-0",
+                        exercise.entryId === selectedExerciseId
+                          ? "bg-brand-50 text-brand-700"
+                          : "bg-white text-neutral-800 hover:bg-neutral-50"
+                      )}
+                    >
+                      <span className="text-[15px] font-medium">{exercise.name}</span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : null}
+          </div>
+
+          <div className="min-w-0 space-y-4 bg-neutral-50 p-3">
+            {detailSection === "summary" ? (
+              <>
+                <Card className="rounded-xl border-neutral-200 shadow-none">
+                  <CardContent className="p-5">
+                    <div className="text-[13px] font-medium text-neutral-500">
+                      Total Volume
+                    </div>
+                    <div className="mt-2 text-[40px] leading-none font-semibold text-neutral-950">
+                      {workout.volume}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Card className="rounded-xl border-neutral-200 shadow-none">
+                    <CardContent className="p-5">
+                      <div className="text-[13px] font-medium text-neutral-500">
+                        Duration
+                      </div>
+                      <div className="mt-3 text-[28px] font-semibold text-neutral-950">
+                        {workout.duration}
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="rounded-xl border-neutral-200 shadow-none">
+                    <CardContent className="p-5">
+                      <div className="text-[13px] font-medium text-neutral-500">
+                        Sets
+                      </div>
+                      <div className="mt-3 text-[28px] font-semibold text-neutral-950">
+                        {totalSets}
+                        <span className="ml-2 text-[18px] font-medium text-neutral-400">
+                          / {workout.exercises.length} exercises
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="px-1 text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                    Achievements
+                  </div>
+                  <Card className="rounded-xl border-neutral-200 shadow-none">
+                    <CardContent className="flex items-center justify-between gap-4 p-5">
+                      <div>
+                        <div className="text-[13px] font-medium text-neutral-500">
+                          Hardest set
+                        </div>
+                        <div className="mt-1 text-[18px] font-semibold text-neutral-950">
+                          {hardestSet?.exerciseName ?? "No data"}
+                        </div>
+                      </div>
+                      <div className="rounded-full bg-neutral-100 px-4 py-2 text-[15px] font-semibold text-neutral-950">
+                        {hardestSet ? `${hardestSet.weight} x ${hardestSet.reps}` : "-"}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="px-1 text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                    Notes
+                  </div>
+                  <Card className="rounded-xl border-neutral-200 shadow-none">
+                    <CardContent className="p-5 text-[15px] text-neutral-400">
+                      No notes
+                    </CardContent>
+                  </Card>
+                </div>
+              </>
+            ) : null}
+
+            {detailSection === "exercises" ? (
+              <div className="space-y-4">
+                {workout.exercises.map((exercise) => {
+                  const exerciseVolume = exercise.currentSets.reduce(
+                    (total, setRow) => total + setRow.weight * setRow.reps,
+                    0
+                  )
+
+                  return (
+                    <Card
+                      key={exercise.id}
+                      className="overflow-hidden rounded-[24px] border-neutral-200 shadow-none"
+                    >
+                      <CardContent className="p-0">
+                        <div className="border-b border-neutral-200 px-5 py-4">
+                          <div className="text-[17px] font-semibold text-neutral-950">
+                            {exercise.name}
+                          </div>
+                          <div className="mt-1 text-[13px] text-neutral-400">
+                            {exercise.currentSets.length} sets - Volume {exerciseVolume} kg
+                          </div>
+                        </div>
+                        {exercise.currentSets.map((setRow) => (
+                          <div
+                            key={`${exercise.id}-${setRow.set}`}
+                            className="grid grid-cols-[40px_minmax(0,1fr)] items-center border-b border-neutral-200 px-5 py-5 last:border-b-0"
+                          >
+                            <div className="text-[15px] text-neutral-400">
+                              {setRow.set}
+                            </div>
+                            <div className="text-[18px] font-semibold text-neutral-950">
+                              {setRow.weight} kg x {setRow.reps}
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            ) : null}
+
+            {detailSection === "analysis" ? (
+              <>
+                <Card className="rounded-xl border-neutral-200 shadow-none">
+                  <CardHeader className="pb-3">
+                    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                      <div>
+                        <CardTitle className="text-[16px] font-semibold text-neutral-950">
+                          {selectedExercise.name}
+                        </CardTitle>
+                        <div className="mt-1 text-[13px] text-neutral-500">
+                          {selectedExercise.workoutTitle} - {selectedExercise.workoutDateLabel}
+                        </div>
+                      </div>
+
+                      <div className="inline-flex rounded-sm border border-neutral-200 bg-white p-0.5 shadow-none">
+                        {(["weight", "reps"] as const).map((metric) => (
+                          <Button
+                            key={metric}
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedMetric(metric)}
+                            className={cn(
+                              "rounded-sm px-4 text-[13px] font-medium capitalize shadow-none",
+                              selectedMetric === metric
+                                ? "bg-neutral-100 text-neutral-950"
+                                : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
+                            )}
+                          >
+                            {metric}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <ChartContainer
+                      config={exerciseHistoryChartConfig}
+                      className="h-[360px] w-full"
+                    >
+                      <LineChart
+                        data={selectedExercise.history}
+                        margin={{ left: 12, right: 16, top: 8, bottom: 0 }}
+                      >
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="date"
+                          axisLine={false}
+                          tickLine={false}
+                          tickMargin={8}
+                          fontSize={12}
+                        />
+                        <YAxis
+                          axisLine={false}
+                          tickLine={false}
+                          tickMargin={8}
+                          fontSize={12}
+                          width={40}
+                        />
+                        <ChartTooltip
+                          cursor={{ stroke: "#a3a3a3", strokeWidth: 1 }}
+                          content={<ChartTooltipContent indicator="dot" />}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey={selectedMetric}
+                          stroke={
+                            selectedMetric === "weight"
+                              ? "var(--color-weight)"
+                              : "var(--color-reps)"
+                          }
+                          strokeWidth={2.5}
+                          dot={{ r: 4, fill: "#ffffff", strokeWidth: 2 }}
+                          activeDot={{ r: 5 }}
+                        />
+                      </LineChart>
+                    </ChartContainer>
+                  </CardContent>
+                </Card>
+
+                <Card className="rounded-xl border-neutral-200 shadow-none">
+                  <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
+                    <div>
+                      <CardTitle className="text-[16px] font-semibold text-neutral-950">
+                        {selectedExercise.workoutTitle}
+                      </CardTitle>
+                      <div className="mt-1 text-[13px] text-neutral-500">
+                        Current workout sets
+                      </div>
+                    </div>
+                    <div className="text-[13px] text-neutral-500">
+                      {selectedExercise.workoutDateLabel}
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                      <Table>
+                        <TableHeader className="bg-muted">
+                          <TableRow className="hover:bg-transparent">
+                            <TableHead className="w-24">Set</TableHead>
+                            <TableHead>Weight</TableHead>
+                            <TableHead>Reps</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedExercise.currentSets.map((setRow) => (
+                            <TableRow key={`${selectedExercise.entryId}-${setRow.set}`}>
+                              <TableCell className="font-medium">{setRow.set}</TableCell>
+                              <TableCell>{setRow.weight}</TableCell>
+                              <TableCell>{setRow.reps}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            ) : null}
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1072,7 +1072,8 @@ export default async function ClientProfilePage({
                   <ImportCalendarDialog
                     triggerClassName={primaryActionButtonClassName}
                   />
-                ) : resolvedProgramTab === "exercise-history" ? (
+                ) : resolvedProgramTab === "exercise-history" ||
+                  resolvedProgramTab === "completed-workouts" ? (
                   <ProgramsPeriodPicker />
                 ) : null
               }
