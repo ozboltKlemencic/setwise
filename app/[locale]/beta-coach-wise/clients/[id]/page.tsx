@@ -11,7 +11,24 @@ import {
   IconPlus,
   IconRepeat,
 } from "@tabler/icons-react"
-import { MessageSquareText } from "lucide-react"
+import {
+  Activity,
+  ArrowDown,
+  ArrowUp,
+  Camera,
+  Clock3,
+  CreditCard,
+  FileText,
+  LogIn,
+  Mail,
+  Maximize2,
+  Pencil,
+  Ruler,
+  Scale,
+  Tag,
+  UserRound,
+  MessageSquareText,
+} from "lucide-react"
 import { notFound } from "next/navigation"
 
 import {
@@ -430,6 +447,176 @@ export default async function ClientProfilePage({
       ],
     },
   ]
+  const contactEmail = `${client.header.toLowerCase().replaceAll(" ", ".")}@hubfit.io`
+  const coachingWeek = `Week ${((clientId + 10) % 13) + 1} of 13`
+  const clientTag =
+    client.phase === "Bulk"
+      ? "Strength Focus"
+      : client.phase === "Cut"
+        ? "Fat Loss"
+        : "In-Person"
+  const goalSummary =
+    client.phase === "Bulk"
+      ? "Wants to improve strength numbers, stay consistent with food quality and keep recovery high through the week."
+      : client.phase === "Cut"
+        ? "Wants to go down from 95kg to 75kg while keeping training performance stable and energy predictable."
+        : "Wants to maintain body composition, keep routine stable and improve overall daily energy."
+  const injurySummary =
+    client.phase === "Bulk"
+      ? "Sensitive left shoulder after heavier pressing days, but no pain in daily movement. Extra warm-up remains important."
+      : "Occasional lower-back tightness after longer sitting blocks. Mobility before training keeps symptoms under control."
+  const clientDetailRows = [
+    {
+      icon: <UserRound className="size-4" />,
+      label: "Name",
+      value: client.header,
+    },
+    {
+      icon: <Mail className="size-4" />,
+      label: "Email",
+      value: contactEmail,
+    },
+    {
+      icon: <IconClipboardCheck className="size-4" />,
+      label: "Last Check-In",
+      value: client.status === "Done" ? "1 day ago" : "3 hours ago",
+    },
+    {
+      icon: <Clock3 className="size-4" />,
+      label: "Last Active",
+      value: client.type === "Onboarding" ? "8 hours ago" : "1 day ago",
+    },
+    {
+      icon: <IconCalendarEvent className="size-4" />,
+      label: "Duration",
+      value: (
+        <Badge className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50">
+          {coachingWeek}
+        </Badge>
+      ),
+    },
+    {
+      icon: <Tag className="size-4" />,
+      label: "Tags",
+      value: (
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+          >
+            <IconPlus className="size-3.5" />
+          </Button>
+          <Badge className="rounded-md border border-red-200 bg-red-50 px-2 py-0.5 text-[12px] font-medium text-red-700 shadow-none hover:bg-red-50">
+            {clientTag}
+          </Badge>
+        </div>
+      ),
+    },
+    {
+      icon: <FileText className="size-4" />,
+      label: "Questionnaires",
+      value: (
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+        >
+          <IconPlus className="size-3.5" />
+        </Button>
+      ),
+    },
+  ]
+  const metricsAverageRows = [
+    {
+      label: "Weight",
+      value: client.phase === "Bulk" ? "74 kg" : "71 kg",
+      delta: "-22%",
+      tone: "down" as const,
+    },
+    {
+      label: "Body Fat",
+      value: client.phase === "Cut" ? "14 %" : "16 %",
+      delta: "-36%",
+      tone: "down" as const,
+    },
+    {
+      label: "Muscle Mass",
+      value: client.phase === "Bulk" ? "43 kg" : "41 kg",
+      delta: "8%",
+      tone: "up" as const,
+    },
+    {
+      label: "Waist",
+      value: "87 cm",
+      delta: "-8%",
+      tone: "down" as const,
+    },
+  ]
+  const activityLogEntries = [
+    {
+      title: "Submitted Daily Check-In",
+      date: "March 18, 2026 10:50 AM",
+      icon: <IconClipboardCheck className="size-3.5" />,
+    },
+    {
+      title: "Submitted Weekly Check-In",
+      date: "March 18, 2026 10:50 AM",
+      icon: <IconClipboardCheck className="size-3.5" />,
+    },
+    {
+      title: "Added metric",
+      date: "March 18, 2026 10:50 AM",
+      icon: <IconPlus className="size-3.5" />,
+    },
+    {
+      title: "Added progress photo",
+      date: "March 18, 2026 10:50 AM",
+      icon: <Camera className="size-3.5" />,
+    },
+    {
+      title: "Logged in",
+      date: "March 18, 2026 10:50 AM",
+      icon: <LogIn className="size-3.5" />,
+    },
+  ]
+  const generalNotes = [
+    {
+      title: "Coach Notes",
+      body: [
+        "Client responds well to concrete weekly tasks and shorter check-in feedback loops.",
+        "Keep food structure simple while training volume is increasing.",
+      ],
+      date: "18 March 2026",
+      private: false,
+    },
+    {
+      title: "Goal",
+      body: [goalSummary],
+      date: "16 November 2022",
+      private: true,
+    },
+    {
+      title: "Injuries",
+      body: [injurySummary],
+      date: "16 November 2022",
+      private: true,
+    },
+  ]
+  const recentPhotoPositions = [
+    "center 8%",
+    "center 24%",
+    "center 12%",
+    "center 30%",
+    "center 16%",
+    "center 68%",
+    "center 42%",
+    "center 56%",
+    "center 48%",
+    "center 60%",
+  ]
+  const recentPhotoUrl =
+    "https://app.hubfit.com/storage/progress-photo/demo-front-5.png"
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs
@@ -504,126 +691,232 @@ export default async function ClientProfilePage({
 
             <TabsContent value="general" className="mt-0 space-y-0">
               <SectionBody>
-                <div className="rounded-lg border border-neutral-200 bg-white p-6 shadow-none">
-                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="flex items-center gap-4">
-                      <Avatar className="size-16">
-                        <AvatarImage src={client.avatar} alt={client.header} />
-                        <AvatarFallback>{getInitials(client.header)}</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h1 className="text-2xl font-semibold tracking-tight">
-                            {client.header}
-                          </h1>
-                          <Badge variant="outline">{client.type}</Badge>
-                          <Badge variant="secondary">
-                            {client.phase ?? "Brez faze"}
-                          </Badge>
+                <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_1fr_0.98fr]">
+                  <div className="xl:pr-1">
+                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200  py-1! px-3.5 ">
+                        <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
+                          <IconClipboardList className="size-3.5 text-neutral-500" />
+                          <span>Client Details</span>
                         </div>
-                        <p className="max-w-2xl text-sm text-muted-foreground">
-                          Profil stranke z osnovnim pregledom sodelovanja, faze in
-                          kratkih operativnih opomb za naslednje korake.
-                        </p>
-                      </div>
-                    </div>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <div className="space-y-0.5 px-3.5 ">
+                          {clientDetailRows.map((row) => (
+                            <div
+                              key={row.label}
+                              className="grid grid-cols-[16px_96px_minmax(0,1fr)] items-center gap-x-2 py-1.5"
+                            >
+                              <span className="text-neutral-500 [&_svg]:size-3.5">
+                                {row.icon}
+                              </span>
+                              <div className="text-[13px] font-medium text-neutral-700">
+                                {row.label}
+                              </div>
+                              <div className="min-w-0 text-[13.5px] leading-5 font-medium text-neutral-950 break-words">
+                                {row.value}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="border-t border-neutral-200">
+                          <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-4 py-3">
+                            <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
+                              <FileText className="size-4 text-neutral-500" />
+                              <span>Notes</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="outline"
+                                size="icon"
+                                className="size-8 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+                              >
+                                <Maximize2 className="size-3.5" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-md border-neutral-200 shadow-none"
+                              >
+                                <IconPlus className="size-3.5" />
+                                Add Note
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="max-h-[calc(100vh-24rem)] space-y-4 overflow-y-auto p-4 pr-3 [scrollbar-width:thin]">
+                            {generalNotes.map((note) => (
+                              <div
+                                key={note.title}
+                                className="rounded-2xl border border-neutral-200 bg-white"
+                              >
+                                <div className="flex items-start justify-between gap-3 px-4 pt-4">
+                                  <h3 className="text-[17px] font-semibold text-neutral-950">
+                                    {note.title}
+                                  </h3>
+                                  <Button
+                                    variant="outline"
+                                    size="icon"
+                                    className="size-8 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+                                  >
+                                    <Pencil className="size-3.5" />
+                                  </Button>
+                                </div>
+                                <div className="space-y-2 px-4 pb-4 pt-3 text-[15px] leading-7 text-neutral-700">
+                                  {note.body.length > 1 ? (
+                                    note.body.map((line) => (
+                                      <p key={line} className="pl-4 -indent-4">
+                                        - {line}
+                                      </p>
+                                    ))
+                                  ) : (
+                                    <p>{note.body[0]}</p>
+                                  )}
+                                </div>
+                                <div className="flex items-center justify-between rounded-b-2xl border-t border-neutral-200 px-4 py-3 text-sm text-neutral-500">
+                                  <span>{note.date}</span>
+                                  {note.private ? (
+                                    <Badge className="rounded-md border border-neutral-300 bg-neutral-800 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase shadow-none hover:bg-neutral-800">
+                                      Private
+                                    </Badge>
+                                  ) : null}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
-                </div>
 
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader className="gap-3">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <IconClipboardCheck className="size-4" />
-                        Check in
-                      </div>
-                      <CardTitle>{client.status}</CardTitle>
-                      <CardDescription>
-                        Trenutni status zadnjega pregleda.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader className="gap-3">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <IconChartBar className="size-4" />
-                        Faza
-                      </div>
-                      <CardTitle>{client.phase ?? "Brez faze"}</CardTitle>
-                      <CardDescription>
-                        Aktualna faza sodelovanja s stranko.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader className="gap-3">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <IconCalendarEvent className="size-4" />
-                        Pridruzil
-                      </div>
-                      <CardTitle>{client.target}</CardTitle>
-                      <CardDescription>
-                        Datum vstopa v coach-wise proces.
-                      </CardDescription>
-                    </CardHeader>
-                  </Card>
-                </div>
+                  <div className="space-y-4">
+                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200 px-4 py-3">
+                        <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
+                          <Scale className="size-4 text-neutral-500" />
+                          <span>Metrics Avg</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="divide-y divide-neutral-200 p-0">
+                        {metricsAverageRows.map((metric) => (
+                          <div
+                            key={metric.label}
+                            className="flex items-center justify-between gap-4 px-4 py-4"
+                          >
+                            <div className="text-[15px] text-neutral-800">
+                              {metric.label}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-[15px] font-medium text-neutral-900">
+                                {metric.value}
+                              </div>
+                              <Badge
+                                className={cn(
+                                  "rounded-md border px-2.5 py-1 text-[12px] font-medium shadow-none",
+                                  metric.tone === "up"
+                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
+                                    : "border-red-200 bg-red-50 text-red-700 hover:bg-red-50"
+                                )}
+                              >
+                                {metric.tone === "up" ? (
+                                  <ArrowUp className="mr-1 size-3" />
+                                ) : (
+                                  <ArrowDown className="mr-1 size-3" />
+                                )}
+                                {metric.delta}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-                <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Osnovni pregled</CardTitle>
-                      <CardDescription>
-                        Najpomembnejse informacije o stranki na enem mestu.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid gap-4 sm:grid-cols-2">
-                      <div className="rounded-lg border p-4">
-                        <div className="text-sm text-muted-foreground">
-                          Ime stranke
+                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200 px-4 py-3">
+                        <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
+                          <Camera className="size-4 text-neutral-500" />
+                          <span>Recent Photos</span>
                         </div>
-                        <div className="mt-2 font-medium">{client.header}</div>
-                      </div>
-                      <div className="rounded-lg border p-4">
-                        <div className="text-sm text-muted-foreground">Status</div>
-                        <div className="mt-2 font-medium">{client.type}</div>
-                      </div>
-                      <div className="rounded-lg border p-4">
-                        <div className="text-sm text-muted-foreground">
-                          Check in
+                      </CardHeader>
+                      <CardContent className="p-4">
+                        <div className="grid grid-cols-3 gap-2.5 md:grid-cols-5">
+                          {recentPhotoPositions.map((position, index) => (
+                            <div
+                              key={`${position}-${index}`}
+                              className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100"
+                            >
+                              <img
+                                src={recentPhotoUrl}
+                                alt={`Progress photo ${index + 1}`}
+                                className="h-24 w-full object-cover"
+                                style={{ objectPosition: position }}
+                              />
+                            </div>
+                          ))}
                         </div>
-                        <div className="mt-2 font-medium">{client.status}</div>
-                      </div>
-                      <div className="rounded-lg border p-4">
-                        <div className="text-sm text-muted-foreground">Faza</div>
-                        <div className="mt-2 font-medium">
-                          {client.phase ?? "-"}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </div>
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Naslednji koraki</CardTitle>
-                      <CardDescription>
-                        Predlog za hiter operativen pregled stranke.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-3 text-sm text-muted-foreground">
-                      <div className="rounded-lg border p-4">
-                        Preglej zadnji check-in in preveri, ali je potreben
-                        follow-up.
-                      </div>
-                      <div className="rounded-lg border p-4">
-                        Posodobi fazo sodelovanja glede na napredek in cilje
-                        stranke.
-                      </div>
-                      <div className="rounded-lg border p-4">
-                        {getPhaseFocus(client.phase)}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="space-y-4">
+                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200 px-4 py-3">
+                        <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
+                          <Activity className="size-4 text-neutral-500" />
+                          <span>Activity Log</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-0 p-4">
+                        {activityLogEntries.map((entry, index) => (
+                          <div
+                            key={`${entry.title}-${index}`}
+                            className="relative pl-8 not-last:pb-5"
+                          >
+                            {index < activityLogEntries.length - 1 ? (
+                              <span className="absolute top-6 left-[9px] bottom-0 w-px bg-neutral-200" />
+                            ) : null}
+                            <span className="absolute top-0.5 left-0 flex size-5 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-500">
+                              {entry.icon}
+                            </span>
+                            <div className="text-[14px] font-medium text-neutral-900">
+                              {entry.title}
+                            </div>
+                            <div className="mt-1 text-sm text-neutral-500">
+                              {entry.date}
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
+
+                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200 px-4 py-3">
+                        <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
+                          <CreditCard className="size-4 text-neutral-500" />
+                          <span>Payments</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-5 p-4">
+                        <div className="space-y-2">
+                          <div className="text-[14px] font-medium text-neutral-900">
+                            All Subscriptions
+                          </div>
+                          <div className="flex min-h-20 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-sm text-neutral-500">
+                            No subscriptions available.
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-[14px] font-medium text-neutral-900">
+                            Past Payments
+                          </div>
+                          <div className="flex min-h-20 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-sm text-neutral-500">
+                            No past payments available.
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
                 </div>
               </SectionBody>
             </TabsContent>
