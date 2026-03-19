@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Beef,
   CalendarDays,
@@ -176,6 +177,24 @@ type NutritionIifymEntry = {
   saturatedFat: number
   polyunsaturatedFat: number
   monounsaturatedFat: number
+}
+
+type NutritionMealPlanOption = {
+  id: string
+  label: string
+  title: string
+  calories: number
+  carbs: number
+  protein: number
+  fats: number
+  description: string
+  image: string
+}
+
+type NutritionMealPlanSection = {
+  id: string
+  label: string
+  options: NutritionMealPlanOption[]
 }
 
 const nutritionSubTabTriggerClassName =
@@ -592,6 +611,223 @@ function formatMacroCellValue(value: number, unit: string) {
   }
 
   return `${Math.round(value)}`
+}
+
+const nutritionMealPlanSections: Record<string, NutritionMealPlanSection[]> = {
+  "training-day": [
+    {
+      id: "breakfast",
+      label: "Breakfast",
+      options: [
+        {
+          id: "oatmeal-fruits",
+          label: "Option 1",
+          title: "Oatmeal with Fruits",
+          calories: 389,
+          carbs: 60,
+          protein: 27,
+          fats: 5,
+          description:
+            "Hearty oatmeal with protein and fresh fruit for long-lasting energy.",
+          image:
+            "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          id: "eggs-toast",
+          label: "Option 2",
+          title: "Eggs, Sourdough and Berries",
+          calories: 412,
+          carbs: 36,
+          protein: 31,
+          fats: 14,
+          description:
+            "Higher protein breakfast for slower mornings and better satiety.",
+          image:
+            "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80",
+        },
+      ],
+    },
+    {
+      id: "lunch",
+      label: "Lunch",
+      options: [
+        {
+          id: "chicken-salad",
+          label: "Option 1",
+          title: "Grilled Chicken Salad",
+          calories: 374,
+          carbs: 10,
+          protein: 44,
+          fats: 18,
+          description:
+            "Crisp greens topped with juicy grilled chicken and a light olive oil dressing.",
+          image:
+            "https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          id: "rice-bowl",
+          label: "Option 2",
+          title: "Chicken Rice Bowl",
+          calories: 468,
+          carbs: 49,
+          protein: 39,
+          fats: 11,
+          description:
+            "Balanced lunch with easy carbs for the second half of the day.",
+          image:
+            "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80",
+        },
+      ],
+    },
+    {
+      id: "dinner",
+      label: "Dinner",
+      options: [
+        {
+          id: "fish-veggies",
+          label: "Option 1",
+          title: "Fish and Steamed Veggies",
+          calories: 335,
+          carbs: 15,
+          protein: 45,
+          fats: 11,
+          description:
+            "Lean dinner option focused on recovery, micronutrients and easy digestion.",
+          image:
+            "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          id: "beef-potatoes",
+          label: "Option 2",
+          title: "Lean Beef with Potatoes",
+          calories: 441,
+          carbs: 37,
+          protein: 42,
+          fats: 14,
+          description:
+            "Heavier dinner alternative for days with bigger training output.",
+          image:
+            "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=900&q=80",
+        },
+      ],
+    },
+  ],
+  "rest-day": [
+    {
+      id: "breakfast",
+      label: "Breakfast",
+      options: [
+        {
+          id: "yogurt-bowl",
+          label: "Option 1",
+          title: "Greek Yogurt Berry Bowl",
+          calories: 321,
+          carbs: 29,
+          protein: 28,
+          fats: 10,
+          description:
+            "Light breakfast with stable energy and a solid protein base.",
+          image:
+            "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          id: "omelette-avocado",
+          label: "Option 2",
+          title: "Veggie Omelette with Avocado",
+          calories: 348,
+          carbs: 14,
+          protein: 30,
+          fats: 19,
+          description:
+            "Lower-carb option with more fats to improve satiety on easier days.",
+          image:
+            "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=900&q=80",
+        },
+      ],
+    },
+    {
+      id: "lunch",
+      label: "Lunch",
+      options: [
+        {
+          id: "salmon-quinoa",
+          label: "Option 1",
+          title: "Salmon, Quinoa and Greens",
+          calories: 398,
+          carbs: 24,
+          protein: 38,
+          fats: 16,
+          description:
+            "Recovery-oriented meal with omega-3 fats and moderate carbohydrates.",
+          image:
+            "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          id: "turkey-wrap",
+          label: "Option 2",
+          title: "Turkey Wrap with Salad",
+          calories: 356,
+          carbs: 31,
+          protein: 34,
+          fats: 9,
+          description:
+            "Portable rest-day option when routine needs to stay simple.",
+          image:
+            "https://images.unsplash.com/photo-1539252554453-80ab65ce3586?auto=format&fit=crop&w=900&q=80",
+        },
+      ],
+    },
+    {
+      id: "dinner",
+      label: "Dinner",
+      options: [
+        {
+          id: "beef-broccoli",
+          label: "Option 1",
+          title: "Beef and Broccoli",
+          calories: 327,
+          carbs: 18,
+          protein: 37,
+          fats: 12,
+          description:
+            "Simple high-protein dinner with fiber and low prep effort.",
+          image:
+            "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
+        },
+        {
+          id: "tofu-stirfry",
+          label: "Option 2",
+          title: "Tofu Stir Fry",
+          calories: 304,
+          carbs: 22,
+          protein: 25,
+          fats: 13,
+          description:
+            "Plant-forward dinner alternative with steady digestion and volume.",
+          image:
+            "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+        },
+      ],
+    },
+  ],
+}
+
+function parseMealPlanMacros(macros: string) {
+  const match = macros.match(/(\d+)P\s*\/\s*(\d+)C\s*\/\s*(\d+)F/i)
+
+  if (!match) {
+    return {
+      protein: 0,
+      carbs: 0,
+      fats: 0,
+    }
+  }
+
+  return {
+    protein: Number.parseInt(match[1] ?? "0", 10),
+    carbs: Number.parseInt(match[2] ?? "0", 10),
+    fats: Number.parseInt(match[3] ?? "0", 10),
+  }
 }
 
 function getNutritionPreset(phase?: string): NutritionPreset {
@@ -1879,10 +2115,266 @@ function SmartMealPlannerDialog({
   )
 }
 
-export function ClientNutritionPanel({ phase }: { phase?: string }) {
+function NutritionMealPlanSectionCard({
+  section,
+}: {
+  section: NutritionMealPlanSection
+}) {
+  const [selectedOptionId, setSelectedOptionId] = React.useState(
+    section.options[0]?.id ?? ""
+  )
+
+  React.useEffect(() => {
+    setSelectedOptionId(section.options[0]?.id ?? "")
+  }, [section.id, section.options])
+
+  const activeOption =
+    section.options.find((option) => option.id === selectedOptionId) ??
+    section.options[0]
+
+  if (!activeOption) {
+    return null
+  }
+
+  return (
+    <Card className="rounded-xl border-neutral-200 shadow-none">
+      <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
+        <CardTitle className="text-[16px] font-semibold text-neutral-950">
+          {section.label}
+        </CardTitle>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon-sm"
+              className="size-8 rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              <MoreVertical className="size-4" />
+              <span className="sr-only">Odpri meni obroka</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            sideOffset={8}
+            className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
+          >
+            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+              Uredi obrok
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+              Podvoji opcijo
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
+              Izbrisi obrok
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardHeader>
+      <CardContent className="space-y-4 pt-0">
+        <div className="flex flex-wrap gap-2 border-b border-neutral-200 pb-3">
+          {section.options.map((option) => (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => setSelectedOptionId(option.id)}
+              className={cn(
+                "rounded-sm border px-3 py-1.5 text-[13px] transition-colors",
+                option.id === activeOption.id
+                  ? "border-brand-500 bg-brand-50 text-brand-700"
+                  : "border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
+              )}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-[150px_minmax(0,1fr)]">
+          <div className="overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+            <img
+              src={activeOption.image}
+              alt={activeOption.title}
+              className="h-full w-full object-cover"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
+                <div className="text-[24px] font-semibold leading-tight text-neutral-950">
+                  {activeOption.title}
+                </div>
+                <div className="mt-2 text-[14px] text-neutral-500">
+                  {activeOption.carbs}g C • {activeOption.protein}g P •{" "}
+                  {activeOption.fats}g F
+                </div>
+              </div>
+              <div className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-[15px] font-medium text-brand-700">
+                <Flame className="size-4" />
+                {activeOption.calories} kcal
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-[14px] leading-6 text-neutral-600">
+              {activeOption.description}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+export function MealPlanDetailView({
+  mealPlanId,
+  phase,
+}: {
+  mealPlanId: string
+  phase?: string
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+  const mealPlan = preset.mealPlans.find((plan) => plan.id === mealPlanId)
+
+  if (!mealPlan) {
+    return (
+      <div className="px-2 pt-2 text-sm text-neutral-500">
+        Meal plan ni najden.
+      </div>
+    )
+  }
+
+  const macros = parseMealPlanMacros(mealPlan.macros)
+  const sections = nutritionMealPlanSections[mealPlan.id] ?? []
+
+  return (
+    <div className="min-w-0 bg-neutral-50">
+      <div className="border-b border-neutral-200 bg-neutral-50">
+        <div className="flex min-h-10 flex-col gap-2 px-4 py-1.5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+              onClick={() => router.push(`${pathname}?tab=nutrition&nutritionTab=meal-plans`)}
+            >
+              <ChevronLeft className="size-4" />
+              <span className="sr-only">Nazaj na meal plans</span>
+            </Button>
+            <div className="min-w-0">
+              <div className="truncate text-[17px] font-semibold text-neutral-950">
+                {mealPlan.title}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              Uredi
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              <RefreshCcw className="size-4" />
+              Preuredi
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              className={primaryActionButtonClassName}
+            >
+              <Plus className="size-4" />
+              Dodaj obrok
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-[980px] space-y-4 px-4 py-4">
+        <Card className="rounded-xl border-neutral-200 shadow-none">
+          <CardContent className="space-y-5 p-5">
+            <div className="inline-flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
+              <Flame className="size-4.5 text-brand-600" />
+              {mealPlan.calories} kcal
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  label: "Carbs",
+                  grams: macros.carbs,
+                  percent:
+                    mealPlan.segments.find((segment) => segment.macro === "carbs")
+                      ?.value ?? 0,
+                  barClassName: "bg-blue-500",
+                },
+                {
+                  label: "Protein",
+                  grams: macros.protein,
+                  percent:
+                    mealPlan.segments.find((segment) => segment.macro === "protein")
+                      ?.value ?? 0,
+                  barClassName: "bg-violet-400",
+                },
+                {
+                  label: "Fat",
+                  grams: macros.fats,
+                  percent:
+                    mealPlan.segments.find((segment) => segment.macro === "fats")
+                      ?.value ?? 0,
+                  barClassName: "bg-cyan-400",
+                },
+              ].map((item) => (
+                <div key={item.label} className="space-y-2">
+                  <div className="flex items-center justify-between gap-3 text-[14px] font-medium text-neutral-900">
+                    <span>{item.label}</span>
+                    <span>{item.percent}%</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-neutral-100">
+                    <div
+                      className={cn("h-2 rounded-full", item.barClassName)}
+                      style={{ width: `${item.percent}%` }}
+                    />
+                  </div>
+                  <div className="text-[14px] text-neutral-500">
+                    {item.grams}g
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {sections.map((section) => (
+          <NutritionMealPlanSectionCard key={section.id} section={section} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export function ClientNutritionPanel({
+  phase,
+  initialSubTab = "meal-plans",
+}: {
+  phase?: string
+  initialSubTab?: "meal-plans" | "nutrition-logger"
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
   const [activeTab, setActiveTab] = React.useState<
     "meal-plans" | "nutrition-logger"
-  >("meal-plans")
+  >(initialSubTab)
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
   const iifymWeeks = React.useMemo(
     () => chunkNutritionWeeks(preset.iifymEntries),
@@ -1904,6 +2396,10 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
   React.useEffect(() => {
     setIifymWeekIndex(Math.max(0, iifymWeeks.length - 1))
   }, [iifymWeeks.length])
+
+  React.useEffect(() => {
+    setActiveTab(initialSubTab)
+  }, [initialSubTab])
 
   const visibleIifymWeek = iifymWeeks[iifymWeekIndex] ?? []
   const iifymWeekLabel = React.useMemo(
@@ -2058,7 +2554,22 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
               {preset.mealPlans.map((plan) => (
                 <div
                   key={plan.id}
-                  className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 bg-white px-4 py-4 transition-colors hover:bg-neutral-50/60 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() =>
+                    router.push(
+                      `${pathname}?tab=nutrition&nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                    )
+                  }
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault()
+                      router.push(
+                        `${pathname}?tab=nutrition&nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                      )
+                    }
+                  }}
+                  className="grid cursor-pointer grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 bg-white px-4 py-4 transition-colors hover:bg-neutral-50/60 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5"
                 >
                   <div className="min-w-0 space-y-1">
                     <div className="text-[15px] font-medium text-neutral-950">
@@ -2089,6 +2600,7 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
                         <Button
                           variant="outline"
                           size="icon-sm"
+                          onClick={(event) => event.stopPropagation()}
                           className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
                         >
                           <MoreVertical className="size-3" />
@@ -2098,8 +2610,19 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
                       <DropdownMenuContent
                         align="end"
                         sideOffset={8}
+                        onClick={(event) => event.stopPropagation()}
                         className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
                       >
+                        <DropdownMenuItem
+                          onSelect={() =>
+                            router.push(
+                              `${pathname}?tab=nutrition&nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                            )
+                          }
+                          className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"
+                        >
+                          Podrobnosti
+                        </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
                           Uredi plan
                         </DropdownMenuItem>

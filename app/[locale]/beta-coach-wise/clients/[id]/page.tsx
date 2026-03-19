@@ -26,7 +26,10 @@ import {
   ClientHabitsPanel,
   HabitDetailView,
 } from "@/components/coachWise/clients/client-habits-panel"
-import { ClientNutritionPanel } from "@/components/coachWise/clients/client-nutrition-panel"
+import {
+  ClientNutritionPanel,
+  MealPlanDetailView,
+} from "@/components/coachWise/clients/client-nutrition-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -51,6 +54,8 @@ type Props = {
     assignedCheckin?: string | string[]
     habitTab?: string | string[]
     habitId?: string | string[]
+    nutritionTab?: string | string[]
+    mealPlanId?: string | string[]
   }>
 }
 
@@ -225,6 +230,12 @@ export default async function ClientProfilePage({
   const habitId = Array.isArray(resolvedSearchParams.habitId)
     ? resolvedSearchParams.habitId[0]
     : resolvedSearchParams.habitId
+  const activeNutritionTab = Array.isArray(resolvedSearchParams.nutritionTab)
+    ? resolvedSearchParams.nutritionTab[0]
+    : resolvedSearchParams.nutritionTab
+  const mealPlanId = Array.isArray(resolvedSearchParams.mealPlanId)
+    ? resolvedSearchParams.mealPlanId[0]
+    : resolvedSearchParams.mealPlanId
 
   if (!Number.isInteger(clientId)) {
     notFound()
@@ -235,6 +246,10 @@ export default async function ClientProfilePage({
     activeCheckinTab === "assigned" ? "assigned" : "submitted"
   const resolvedHabitTab =
     activeHabitTab === "overview" ? "overview" : "habits"
+  const resolvedNutritionTab =
+    activeNutritionTab === "nutrition-logger"
+      ? "nutrition-logger"
+      : "meal-plans"
 
   if (!client) {
     notFound()
@@ -252,6 +267,14 @@ export default async function ClientProfilePage({
     return (
       <section className="min-w-0 bg-neutral-50">
         <HabitDetailView habitId={habitId} originTab={resolvedHabitTab} />
+      </section>
+    )
+  }
+
+  if (mealPlanId) {
+    return (
+      <section className="min-w-0 bg-neutral-50">
+        <MealPlanDetailView mealPlanId={mealPlanId} phase={client.phase} />
       </section>
     )
   }
@@ -806,7 +829,10 @@ export default async function ClientProfilePage({
         </TabsContent>
 
         <TabsContent value="nutrition" className="mt-0 space-y-0">
-          <ClientNutritionPanel phase={client.phase} />
+          <ClientNutritionPanel
+            phase={client.phase}
+            initialSubTab={resolvedNutritionTab}
+          />
           {false ? <Tabs defaultValue="meal-plans" className="gap-0">
             <SectionSubHeader
               items={[
