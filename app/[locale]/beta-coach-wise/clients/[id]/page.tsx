@@ -22,7 +22,10 @@ import {
   SubmittedCheckinsCompareDialog,
   SubmittedCheckinsPanel,
 } from "@/components/coachWise/clients/client-checkins-panel"
-import { ClientHabitsPanel } from "@/components/coachWise/clients/client-habits-panel"
+import {
+  ClientHabitsPanel,
+  HabitDetailView,
+} from "@/components/coachWise/clients/client-habits-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -45,6 +48,8 @@ type Props = {
     tab?: string | string[]
     checkinTab?: string | string[]
     assignedCheckin?: string | string[]
+    habitTab?: string | string[]
+    habitId?: string | string[]
   }>
 }
 
@@ -213,6 +218,12 @@ export default async function ClientProfilePage({
   const assignedCheckinId = Array.isArray(resolvedSearchParams.assignedCheckin)
     ? resolvedSearchParams.assignedCheckin[0]
     : resolvedSearchParams.assignedCheckin
+  const activeHabitTab = Array.isArray(resolvedSearchParams.habitTab)
+    ? resolvedSearchParams.habitTab[0]
+    : resolvedSearchParams.habitTab
+  const habitId = Array.isArray(resolvedSearchParams.habitId)
+    ? resolvedSearchParams.habitId[0]
+    : resolvedSearchParams.habitId
 
   if (!Number.isInteger(clientId)) {
     notFound()
@@ -221,6 +232,8 @@ export default async function ClientProfilePage({
   const client = data.find((item) => item.id === clientId)
   const resolvedCheckinTab =
     activeCheckinTab === "assigned" ? "assigned" : "submitted"
+  const resolvedHabitTab =
+    activeHabitTab === "overview" ? "overview" : "habits"
 
   if (!client) {
     notFound()
@@ -230,6 +243,14 @@ export default async function ClientProfilePage({
     return (
       <section className="min-w-0 bg-neutral-50">
         <AssignedCheckinDetailView checkinId={assignedCheckinId} />
+      </section>
+    )
+  }
+
+  if (habitId) {
+    return (
+      <section className="min-w-0 bg-neutral-50">
+        <HabitDetailView habitId={habitId} originTab={resolvedHabitTab} />
       </section>
     )
   }
@@ -549,7 +570,7 @@ export default async function ClientProfilePage({
         </TabsContent>
 
         <TabsContent value="habbits" className="mt-0 space-y-0">
-          <ClientHabitsPanel />
+          <ClientHabitsPanel initialSubTab={resolvedHabitTab} />
           {false ? (
           <Tabs defaultValue="daily-habits" className="gap-0">
             <SectionSubHeader

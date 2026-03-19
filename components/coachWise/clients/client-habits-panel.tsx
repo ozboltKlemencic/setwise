@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Area,
   AreaChart,
@@ -11,16 +12,19 @@ import {
 import {
   BarChart3,
   CalendarDays,
+  ChevronLeft,
   CheckCircle2,
   Clock3,
   Droplets,
   Flame,
   Footprints,
+  Info,
   MoreVertical,
   MoonStar,
   Pencil,
   Plus,
   Rocket,
+  RotateCcw,
   Sprout,
   Trash2,
   type LucideIcon,
@@ -334,6 +338,14 @@ function parseHabitDate(value: string) {
   return new Date(year, month - 1, day)
 }
 
+function formatDateInputValue(date: Date) {
+  const year = date.getFullYear()
+  const month = `${date.getMonth() + 1}`.padStart(2, "0")
+  const day = `${date.getDate()}`.padStart(2, "0")
+
+  return `${year}-${month}-${day}`
+}
+
 function getWeekStart(date: Date) {
   const nextDate = new Date(date)
   const day = nextDate.getDay()
@@ -515,6 +527,60 @@ function getHabitPickerLabel(
   }
 
   return `Mesec \u00b7 ${formatHabitMonth(date)}`
+}
+
+function getHabitEditDefaults(habit: HabitDefinition) {
+  const startDate = parseHabitDate(habit.chartData.at(0)?.date ?? "2026-03-04")
+  const endDate = shiftDays(startDate, 45)
+
+  return {
+    habitName: habit.title,
+    habitDescription: habit.templateDescription,
+    goalValue: habit.goalValue,
+    goalUnit: habit.goalUnit,
+    goalPeriod: habit.goalPeriod,
+    hasDateRange: true,
+    startDate: formatDateInputValue(startDate),
+    endDate: formatDateInputValue(endDate),
+    hasReminder: true,
+    reminderTime: "09:00",
+    reminderNote: `Reminder for ${habit.title}`,
+    draftHabitId: habit.id,
+  }
+}
+
+function formatGoalSummary(
+  goalValue: string,
+  goalUnit: HabitDefinition["goalUnit"],
+  goalPeriod: HabitDefinition["goalPeriod"]
+) {
+  if (!goalValue.trim()) {
+    return "Set your goal"
+  }
+
+  const periodLabel = goalPeriod === "daily" ? "day" : "week"
+
+  return `Complete ${goalValue} ${goalUnit} every ${periodLabel}`
+}
+
+function getDurationInDays(startDate: string, endDate: string) {
+  if (!startDate || !endDate) {
+    return null
+  }
+
+  const start = parseHabitDate(startDate)
+  const end = parseHabitDate(endDate)
+  const diff = Math.floor((end.getTime() - start.getTime()) / 86_400_000) + 1
+
+  if (!Number.isFinite(diff) || diff <= 0) {
+    return null
+  }
+
+  return diff
+}
+
+function formatHabitSettingsDate(value: string) {
+  return parseHabitDate(value).toLocaleDateString("sl-SI")
 }
 
 function CreateHabitDialog({
@@ -906,6 +972,321 @@ function CreateHabitDialog({
   )
 }
 
+function EditHabitDialog({
+  habit,
+  triggerClassName,
+  trigger,
+}: {
+  habit: HabitDefinition
+  triggerClassName?: string
+  trigger?: React.ReactElement
+}) {
+  const [open, setOpen] = React.useState(false)
+  const defaults = React.useMemo(() => getHabitEditDefaults(habit), [habit])
+  const [habitName, setHabitName] = React.useState(defaults.habitName)
+  const [habitDescription, setHabitDescription] = React.useState(
+    defaults.habitDescription
+  )
+  const [goalValue, setGoalValue] = React.useState(defaults.goalValue)
+  const [goalUnit, setGoalUnit] = React.useState(defaults.goalUnit)
+  const [goalPeriod, setGoalPeriod] = React.useState(defaults.goalPeriod)
+  const [hasDateRange, setHasDateRange] = React.useState(defaults.hasDateRange)
+  const [startDate, setStartDate] = React.useState(defaults.startDate)
+  const [endDate, setEndDate] = React.useState(defaults.endDate)
+  const [hasReminder, setHasReminder] = React.useState(defaults.hasReminder)
+  const [reminderTime, setReminderTime] = React.useState(defaults.reminderTime)
+  const [reminderNote, setReminderNote] = React.useState(defaults.reminderNote)
+  const [draftHabitId, setDraftHabitId] = React.useState(defaults.draftHabitId)
+
+  const resetDialog = React.useCallback(() => {
+    setHabitName(defaults.habitName)
+    setHabitDescription(defaults.habitDescription)
+    setGoalValue(defaults.goalValue)
+    setGoalUnit(defaults.goalUnit)
+    setGoalPeriod(defaults.goalPeriod)
+    setHasDateRange(defaults.hasDateRange)
+    setStartDate(defaults.startDate)
+    setEndDate(defaults.endDate)
+    setHasReminder(defaults.hasReminder)
+    setReminderTime(defaults.reminderTime)
+    setReminderNote(defaults.reminderNote)
+    setDraftHabitId(defaults.draftHabitId)
+  }, [defaults])
+
+  React.useEffect(() => {
+    if (!open) {
+      resetDialog()
+    }
+  }, [open, resetDialog])
+
+  const draftHabit =
+    habitDefinitions.find((item) => item.id === draftHabitId) ?? habit
+  const durationInDays = hasDateRange ? getDurationInDays(startDate, endDate) : null
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+
+        if (!nextOpen) {
+          resetDialog()
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        {trigger ?? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={triggerClassName}
+          >
+            <Pencil className="size-4" />
+            Uredi
+          </Button>
+        )}
+      </DialogTrigger>
+
+      <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
+        <div className="px-5 pt-4">
+          <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+            <Sprout className="size-4 text-neutral-500" />
+            Update Habit
+          </DialogTitle>
+        </div>
+
+        <div className="space-y-5 px-5 py-5">
+          <div className="space-y-2">
+            <label className="block text-[13px] font-medium text-neutral-800">
+              Habit Name <span className="text-rose-500">*</span>
+            </label>
+            <div className="grid gap-3 md:grid-cols-[52px_minmax(0,1fr)]">
+              <div
+                className={cn(
+                  "flex size-[52px] items-center justify-center rounded-sm border border-neutral-200",
+                  draftHabit.iconWrapClassName
+                )}
+              >
+                <draftHabit.icon
+                  className={cn("size-5", draftHabit.iconClassName)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Input
+                  value={habitName}
+                  onChange={(event) => setHabitName(event.target.value)}
+                  maxLength={50}
+                  className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                />
+                <div className="text-right text-[12px] text-neutral-400">
+                  {habitName.length} / 50
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-[13px] font-medium text-neutral-800">
+              Habit Description
+            </label>
+            <textarea
+              value={habitDescription}
+              onChange={(event) => setHabitDescription(event.target.value)}
+              maxLength={1000}
+              className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <label className="block text-[13px] font-medium text-neutral-800">
+                Goal, Unit &amp; Period <span className="text-rose-500">*</span>
+              </label>
+              <div className="flex items-center gap-2 text-[13px] font-medium text-brand-600">
+                <RotateCcw className="size-4" />
+                <span>{formatGoalSummary(goalValue, goalUnit, goalPeriod)}</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
+              <Input
+                value={goalValue}
+                onChange={(event) => setGoalValue(event.target.value)}
+                placeholder="Goal"
+                className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 md:w-[110px]"
+              />
+              <Select
+                value={goalUnit}
+                onValueChange={(value) =>
+                  setGoalUnit(value as HabitDefinition["goalUnit"])
+                }
+              >
+                <SelectTrigger className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 md:w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5">
+                  <SelectItem value="steps">steps</SelectItem>
+                  <SelectItem value="liters">liters</SelectItem>
+                  <SelectItem value="hours">hours</SelectItem>
+                  <SelectItem value="minutes">minutes</SelectItem>
+                </SelectContent>
+              </Select>
+              <span className="hidden text-neutral-400 md:block">/</span>
+              <div className="inline-flex overflow-hidden rounded-sm border border-neutral-200 bg-white">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className={cn(
+                    "rounded-none px-4 text-neutral-700 shadow-none hover:bg-neutral-50",
+                    goalPeriod === "daily" && "bg-brand-50 text-brand-700"
+                  )}
+                  onClick={() => setGoalPeriod("daily")}
+                >
+                  Daily
+                </Button>
+                <div className="w-px bg-neutral-200" />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className={cn(
+                    "rounded-none px-4 text-neutral-700 shadow-none hover:bg-neutral-50",
+                    goalPeriod === "weekly" && "bg-brand-50 text-brand-700"
+                  )}
+                  onClick={() => setGoalPeriod("weekly")}
+                >
+                  Weekly
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <label className="block text-[13px] font-medium text-neutral-800">
+                Start Habit Date / Include End Date?
+              </label>
+              <button
+                type="button"
+                onClick={() => setHasDateRange((current) => !current)}
+                className={cn(
+                  "relative inline-flex h-6 w-11 items-center rounded-full border transition-colors",
+                  hasDateRange
+                    ? "border-brand-500 bg-brand-500"
+                    : "border-neutral-300 bg-neutral-200"
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block size-5 rounded-full bg-white shadow-sm transition-transform",
+                    hasDateRange ? "translate-x-5" : "translate-x-0.5"
+                  )}
+                />
+                <span className="sr-only">Toggle date range</span>
+              </button>
+            </div>
+            <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_20px_minmax(0,1fr)] md:items-center">
+              <Input
+                type="date"
+                value={startDate}
+                onChange={(event) => setStartDate(event.target.value)}
+                className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+              />
+              <div className="hidden justify-center text-neutral-400 md:flex">
+                <CalendarDays className="size-4" />
+              </div>
+              <Input
+                type="date"
+                value={endDate}
+                onChange={(event) => setEndDate(event.target.value)}
+                disabled={!hasDateRange}
+                className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 disabled:opacity-45"
+              />
+            </div>
+            {durationInDays ? (
+              <div className="flex items-center gap-2 text-[13px] text-brand-600">
+                <Info className="size-4" />
+                <span>Habit will last for {durationInDays} days</span>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <label className="block text-[13px] font-medium text-neutral-800">
+                Set Reminder
+              </label>
+              <button
+                type="button"
+                onClick={() => setHasReminder((current) => !current)}
+                className={cn(
+                  "relative inline-flex h-6 w-11 items-center rounded-full border transition-colors",
+                  hasReminder
+                    ? "border-brand-500 bg-brand-500"
+                    : "border-neutral-300 bg-neutral-200"
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block size-5 rounded-full bg-white shadow-sm transition-transform",
+                    hasReminder ? "translate-x-5" : "translate-x-0.5"
+                  )}
+                />
+                <span className="sr-only">Toggle reminder</span>
+              </button>
+            </div>
+            <div className="grid gap-2 md:grid-cols-[128px_minmax(0,1fr)]">
+              <div className="relative">
+                <Input
+                  type="time"
+                  value={reminderTime}
+                  onChange={(event) => setReminderTime(event.target.value)}
+                  disabled={!hasReminder}
+                  className="h-10 rounded-sm border-neutral-200 bg-white pr-9 text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 disabled:opacity-45"
+                />
+                <Clock3 className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-neutral-400" />
+              </div>
+              <Input
+                value={reminderNote}
+                onChange={(event) => setReminderNote(event.target.value)}
+                disabled={!hasReminder}
+                placeholder="Reminder message e.g. Drink water today"
+                className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 disabled:opacity-45"
+              />
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              className="rounded-sm border-transparent bg-rose-500 text-white shadow-none hover:bg-rose-600"
+            >
+              Delete
+            </Button>
+            <Button
+              type="button"
+              disabled={!habitName.trim() || !goalValue.trim()}
+              className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+            >
+              Update Habit
+            </Button>
+          </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function HabitStatCard({
   icon: Icon,
   label,
@@ -934,23 +1315,26 @@ function HabitStatCard({
   )
 }
 
-export function ClientHabitsPanel() {
+function LegacyHabitOverviewPanelContent({
+  habit,
+  showDetails = false,
+}: {
+  habit: HabitDefinition
+  showDetails?: boolean
+}) {
   const currentYear = new Date().getFullYear()
   const confirmedPeriodSelectionRef =
     React.useRef<HabitPeriodSelection | null>(null)
-  const [selectedHabitId, setSelectedHabitId] = React.useState(
-    habitDefinitions[0]?.id ?? ""
-  )
   const [selectedPeriod, setSelectedPeriod] = React.useState<HabitPeriod>("month")
   const [selectedDate, setSelectedDate] = React.useState(() =>
     getMonthStart(
-      parseHabitDate(habitDefinitions[0]?.chartData.at(-1)?.date ?? "2026-03-01")
+      parseHabitDate(habit.chartData.at(-1)?.date ?? "2026-03-01")
     )
   )
   const [selectedWeekRange, setSelectedWeekRange] = React.useState<DateRange | undefined>(
     () => {
       const baseDate = parseHabitDate(
-        habitDefinitions[0]?.chartData.at(-1)?.date ?? "2026-03-01"
+        habit.chartData.at(-1)?.date ?? "2026-03-01"
       )
 
       return {
@@ -963,7 +1347,7 @@ export function ClientHabitsPanel() {
     DateRange | undefined
   >(() => {
     const baseDate = parseHabitDate(
-      habitDefinitions[0]?.chartData.at(-1)?.date ?? "2026-03-18"
+      habit.chartData.at(-1)?.date ?? "2026-03-18"
     )
 
     return {
@@ -971,11 +1355,7 @@ export function ClientHabitsPanel() {
       to: baseDate,
     }
   })
-
-  const selectedHabit =
-    habitDefinitions.find((habit) => habit.id === selectedHabitId) ??
-    habitDefinitions[0]
-  const SelectedHabitIcon = selectedHabit.icon
+  const SelectedHabitIcon = habit.icon
   const availableYears = React.useMemo(
     () =>
       Array.from({ length: 8 }, (_, index) => currentYear - 2 + index),
@@ -984,7 +1364,7 @@ export function ClientHabitsPanel() {
   const filteredChartData = React.useMemo(
     () => {
       if (selectedPeriod === "year") {
-        return selectedHabit.yearlyData.filter((point) =>
+        return habit.yearlyData.filter((point) =>
           isSameYear(parseHabitDate(point.date), selectedDate)
         )
       }
@@ -993,12 +1373,12 @@ export function ClientHabitsPanel() {
         const rangeLength = getDateRangeLengthInDays(selectedCustomRange)
 
         if (rangeLength > 62) {
-          return selectedHabit.yearlyData.filter((point) =>
+          return habit.yearlyData.filter((point) =>
             doesMonthOverlapRange(parseHabitDate(point.date), selectedCustomRange)
           )
         }
 
-        return selectedHabit.chartData.filter((point) =>
+        return habit.chartData.filter((point) =>
           isDateInRange(parseHabitDate(point.date), selectedCustomRange)
         )
       }
@@ -1011,20 +1391,20 @@ export function ClientHabitsPanel() {
           return []
         }
 
-        return selectedHabit.chartData.filter((point) =>
+        return habit.chartData.filter((point) =>
           parseHabitDate(point.date) >= from &&
           parseHabitDate(point.date) <= to
         )
       }
 
-      return selectedHabit.chartData.filter((point) =>
+      return habit.chartData.filter((point) =>
         isSameMonth(parseHabitDate(point.date), selectedDate)
       )
     },
     [
+      habit,
       selectedCustomRange,
       selectedDate,
-      selectedHabit,
       selectedPeriod,
       selectedWeekRange,
     ]
@@ -1032,13 +1412,13 @@ export function ClientHabitsPanel() {
   const filteredEntries = React.useMemo(
     () => {
       if (selectedPeriod === "year") {
-        return selectedHabit.entries.filter((entry) =>
+        return habit.entries.filter((entry) =>
           isSameYear(parseHabitDate(entry.date), selectedDate)
         )
       }
 
       if (selectedPeriod === "custom") {
-        return selectedHabit.entries.filter((entry) =>
+        return habit.entries.filter((entry) =>
           isDateInRange(parseHabitDate(entry.date), selectedCustomRange)
         )
       }
@@ -1051,20 +1431,20 @@ export function ClientHabitsPanel() {
           return []
         }
 
-        return selectedHabit.entries.filter((entry) =>
+        return habit.entries.filter((entry) =>
           parseHabitDate(entry.date) >= from &&
           parseHabitDate(entry.date) <= to
         )
       }
 
-      return selectedHabit.entries.filter((entry) =>
+      return habit.entries.filter((entry) =>
         isSameMonth(parseHabitDate(entry.date), selectedDate)
       )
     },
     [
+      habit,
       selectedCustomRange,
       selectedDate,
-      selectedHabit,
       selectedPeriod,
       selectedWeekRange,
     ]
@@ -1072,7 +1452,7 @@ export function ClientHabitsPanel() {
 
   React.useEffect(() => {
     if (selectedPeriod === "year") {
-      const fallbackYear = selectedHabit.yearlyData.at(-1)?.date
+      const fallbackYear = habit.yearlyData.at(-1)?.date
 
       if (fallbackYear) {
         setSelectedDate(getYearStart(parseHabitDate(fallbackYear)))
@@ -1081,7 +1461,7 @@ export function ClientHabitsPanel() {
       return
     }
 
-    const fallbackDate = selectedHabit.chartData.at(-1)?.date
+    const fallbackDate = habit.chartData.at(-1)?.date
 
     if (!fallbackDate) {
       return
@@ -1109,7 +1489,490 @@ export function ClientHabitsPanel() {
     }
 
     setSelectedDate(getMonthStart(parsedDate))
-  }, [selectedHabitId, selectedHabit, selectedPeriod])
+  }, [habit, selectedPeriod])
+
+  const handleHabitPeriodConfirm = React.useCallback(
+    (selection: HabitPeriodSelection) => {
+      confirmedPeriodSelectionRef.current = selection
+    },
+    []
+  )
+  const editDefaults = React.useMemo(() => getHabitEditDefaults(habit), [habit])
+  const detailDurationInDays = React.useMemo(
+    () => getDurationInDays(editDefaults.startDate, editDefaults.endDate),
+    [editDefaults.endDate, editDefaults.startDate]
+  )
+
+  const chartConfig: ChartConfig = {
+    value: {
+      label: habit.title,
+      color: habit.chartColor,
+    },
+  }
+
+  return (
+    <div className={cn("px-4", showDetails ? "space-y-3 py-3" : "space-y-4 py-4")}>
+      {showDetails ? (
+        <div className="grid gap-3 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-sm border border-neutral-200 bg-white p-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="text-[13px] font-medium text-neutral-500">
+                  Opis navade
+                </div>
+                <div className="text-[14px] leading-6 text-neutral-800">
+                  {editDefaults.habitDescription}
+                </div>
+              </div>
+              <div
+                className={cn(
+                  "flex size-10 shrink-0 items-center justify-center rounded-sm border",
+                  habit.iconWrapClassName
+                )}
+              >
+                <SelectedHabitIcon className={cn("size-5", habit.iconClassName)} />
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-3">
+                <div className="text-[12px] font-medium text-neutral-500">
+                  Goal, unit & period
+                </div>
+                <div className="mt-1.5 text-[18px] leading-none font-semibold text-neutral-950">
+                  {editDefaults.goalValue} {editDefaults.goalUnit}
+                </div>
+                <div className="mt-2 text-[13px] text-brand-600">
+                  {formatGoalSummary(
+                    editDefaults.goalValue,
+                    editDefaults.goalUnit,
+                    editDefaults.goalPeriod
+                  )}
+                </div>
+              </div>
+              <div className="rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-3">
+                <div className="text-[12px] font-medium text-neutral-500">
+                  Frekvenca
+                </div>
+                <div className="mt-1.5 text-[18px] leading-none font-semibold text-neutral-950">
+                  {editDefaults.goalPeriod === "daily" ? "Daily" : "Weekly"}
+                </div>
+                <div className="mt-2 text-[13px] text-neutral-500">
+                  Target: {habit.target}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3">
+            <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3">
+              <div className="text-[13px] font-medium text-neutral-500">
+                Datum navade
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-[14px] font-medium text-neutral-900">
+                <span>{formatHabitSettingsDate(editDefaults.startDate)}</span>
+                <span className="text-neutral-400">→</span>
+                <span>{formatHabitSettingsDate(editDefaults.endDate)}</span>
+              </div>
+              {detailDurationInDays ? (
+                <div className="mt-2 flex items-center gap-2 text-[13px] text-brand-600">
+                  <Info className="size-4" />
+                  <span>Habit bo trajal {detailDurationInDays} dni</span>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3">
+              <div className="text-[13px] font-medium text-neutral-500">
+                Reminder
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-[18px] leading-none font-semibold text-neutral-950">
+                <Clock3 className="size-4 text-neutral-400" />
+                {editDefaults.reminderTime}
+              </div>
+              <div className="mt-2 text-[13px] text-neutral-500">
+                {editDefaults.reminderNote}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <div
+        className={cn(
+          "flex flex-col gap-3",
+          showDetails
+            ? "md:flex-row md:justify-end"
+            : "md:flex-row md:items-start md:justify-between"
+        )}
+      >
+        {!showDetails ? (
+          <div className="flex min-w-0 items-center gap-3">
+            <div
+              className={cn(
+                "flex size-10 shrink-0 items-center justify-center rounded-sm border",
+                habit.iconWrapClassName
+              )}
+            >
+              <SelectedHabitIcon className={cn("size-5", habit.iconClassName)} />
+            </div>
+            <div className="min-w-0">
+              <div className="truncate text-[28px] leading-none font-semibold text-neutral-950">
+                {habit.title}
+              </div>
+              <div className="mt-1 text-[13px] text-neutral-500">
+                {habit.target}
+              </div>
+            </div>
+          </div>
+        ) : null}
+        <HabitPeriodPicker
+          period={selectedPeriod}
+          onPeriodChange={setSelectedPeriod}
+          value={selectedDate}
+          onChange={setSelectedDate}
+          weekRange={selectedWeekRange}
+          onWeekRangeChange={setSelectedWeekRange}
+          customRange={selectedCustomRange}
+          onCustomRangeChange={setSelectedCustomRange}
+          availableYears={availableYears}
+          onConfirm={handleHabitPeriodConfirm}
+        />
+      </div>
+
+      <div className="grid gap-3 xl:grid-cols-4">
+        <HabitStatCard
+          icon={Flame}
+          label="Current Streak"
+          value={habit.stats.currentStreak}
+          iconClassName="text-sky-500"
+        />
+        <HabitStatCard
+          icon={Rocket}
+          label="Longest Streak"
+          value={habit.stats.longestStreak}
+          iconClassName="text-blue-500"
+        />
+        <HabitStatCard
+          icon={CheckCircle2}
+          label="Habit Completed"
+          value={habit.stats.completed}
+          iconClassName="text-cyan-500"
+        />
+        <HabitStatCard
+          icon={BarChart3}
+          label="Completion Rate"
+          value={habit.stats.completionRate}
+          iconClassName="text-sky-500"
+        />
+      </div>
+
+      <div className="rounded-sm border border-neutral-200 bg-white p-4">
+        {filteredChartData.length ? (
+          <ChartContainer
+            config={chartConfig}
+            className="h-[360px] w-full aspect-auto"
+          >
+            <AreaChart
+              accessibilityLayer
+              data={filteredChartData}
+              margin={{ left: 12, right: 12, top: 8, bottom: 0 }}
+            >
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis
+                dataKey="label"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                width={54}
+                tickMargin={8}
+                tickFormatter={(value) => formatAxisValue(habit, Number(value))}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    indicator="line"
+                    labelFormatter={(_, payload) =>
+                      payload?.[0]?.payload?.date ?? ""
+                    }
+                    formatter={(value) => formatHabitValue(habit, Number(value))}
+                  />
+                }
+              />
+              <defs>
+                <linearGradient id="fillHabitValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-value)"
+                    stopOpacity={0.35}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-value)"
+                    stopOpacity={0.04}
+                  />
+                </linearGradient>
+              </defs>
+              <Area
+                dataKey="value"
+                type="natural"
+                fill="url(#fillHabitValue)"
+                fillOpacity={1}
+                stroke="var(--color-value)"
+                strokeWidth={2.5}
+              />
+            </AreaChart>
+          </ChartContainer>
+        ) : (
+          <div className="flex h-[360px] items-center justify-center rounded-sm bg-neutral-50 text-center">
+            <div>
+              <div className="text-[14px] font-medium text-neutral-900">
+                Ni podatkov za izbran prikaz
+              </div>
+              <div className="mt-1 text-[13px] text-neutral-500">
+                Izberi drug teden, mesec ali leto za prikaz napredka navade.
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <Table>
+          <TableHeader className="sticky top-0 z-10 bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4">Value</TableHead>
+              <TableHead>Memo</TableHead>
+              <TableHead>Date</TableHead>
+              {!showDetails ? (
+                <TableHead className="w-14 pr-4">
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              ) : null}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredEntries.length ? (
+              filteredEntries.map((entry) => (
+                <TableRow key={entry.id} className="bg-white">
+                  <TableCell className="pl-4 text-[14px] font-medium text-neutral-900">
+                    {formatHabitValue(habit, entry.value)}
+                  </TableCell>
+                  <TableCell className="text-[14px] text-neutral-500">
+                    {entry.memo}
+                  </TableCell>
+                  <TableCell className="text-[14px] text-neutral-700">
+                    {entry.date}
+                  </TableCell>
+                  {!showDetails ? (
+                    <TableCell className="pr-4 text-right">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-xs"
+                        className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+                      >
+                        <Pencil className="size-3.5" />
+                      </Button>
+                    </TableCell>
+                  ) : null}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={showDetails ? 3 : 4}
+                  className="h-24 text-center text-[13px] text-neutral-500"
+                >
+                  Ni vnosov za izbran prikaz.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  )
+}
+
+type HabitOverviewState = {
+  pickerProps: React.ComponentProps<typeof HabitPeriodPicker>
+  filteredChartData: HabitPoint[]
+  filteredEntries: HabitEntry[]
+  chartConfig: ChartConfig
+  editDefaults: ReturnType<typeof getHabitEditDefaults>
+  detailDurationInDays: number | null
+}
+
+function useHabitOverviewState(habit: HabitDefinition): HabitOverviewState {
+  const currentYear = new Date().getFullYear()
+  const confirmedPeriodSelectionRef =
+    React.useRef<HabitPeriodSelection | null>(null)
+  const [selectedPeriod, setSelectedPeriod] = React.useState<HabitPeriod>("month")
+  const [selectedDate, setSelectedDate] = React.useState(() =>
+    getMonthStart(
+      parseHabitDate(habit.chartData.at(-1)?.date ?? "2026-03-01")
+    )
+  )
+  const [selectedWeekRange, setSelectedWeekRange] = React.useState<
+    DateRange | undefined
+  >(() => {
+    const baseDate = parseHabitDate(
+      habit.chartData.at(-1)?.date ?? "2026-03-01"
+    )
+
+    return {
+      from: getWeekStart(baseDate),
+      to: getWeekEnd(baseDate),
+    }
+  })
+  const [selectedCustomRange, setSelectedCustomRange] = React.useState<
+    DateRange | undefined
+  >(() => {
+    const baseDate = parseHabitDate(
+      habit.chartData.at(-1)?.date ?? "2026-03-18"
+    )
+
+    return {
+      from: shiftDays(baseDate, -13),
+      to: baseDate,
+    }
+  })
+
+  const availableYears = React.useMemo(
+    () => Array.from({ length: 8 }, (_, index) => currentYear - 2 + index),
+    [currentYear]
+  )
+
+  const filteredChartData = React.useMemo(() => {
+    if (selectedPeriod === "year") {
+      return habit.yearlyData.filter((point) =>
+        isSameYear(parseHabitDate(point.date), selectedDate)
+      )
+    }
+
+    if (selectedPeriod === "custom") {
+      const rangeLength = getDateRangeLengthInDays(selectedCustomRange)
+
+      if (rangeLength > 62) {
+        return habit.yearlyData.filter((point) =>
+          doesMonthOverlapRange(parseHabitDate(point.date), selectedCustomRange)
+        )
+      }
+
+      return habit.chartData.filter((point) =>
+        isDateInRange(parseHabitDate(point.date), selectedCustomRange)
+      )
+    }
+
+    if (selectedPeriod === "week") {
+      const from = selectedWeekRange?.from
+      const to = selectedWeekRange?.to
+
+      if (!from || !to) {
+        return []
+      }
+
+      return habit.chartData.filter((point) =>
+        parseHabitDate(point.date) >= from &&
+        parseHabitDate(point.date) <= to
+      )
+    }
+
+    return habit.chartData.filter((point) =>
+      isSameMonth(parseHabitDate(point.date), selectedDate)
+    )
+  }, [
+    habit,
+    selectedCustomRange,
+    selectedDate,
+    selectedPeriod,
+    selectedWeekRange,
+  ])
+
+  const filteredEntries = React.useMemo(() => {
+    if (selectedPeriod === "year") {
+      return habit.entries.filter((entry) =>
+        isSameYear(parseHabitDate(entry.date), selectedDate)
+      )
+    }
+
+    if (selectedPeriod === "custom") {
+      return habit.entries.filter((entry) =>
+        isDateInRange(parseHabitDate(entry.date), selectedCustomRange)
+      )
+    }
+
+    if (selectedPeriod === "week") {
+      const from = selectedWeekRange?.from
+      const to = selectedWeekRange?.to
+
+      if (!from || !to) {
+        return []
+      }
+
+      return habit.entries.filter((entry) =>
+        parseHabitDate(entry.date) >= from &&
+        parseHabitDate(entry.date) <= to
+      )
+    }
+
+    return habit.entries.filter((entry) =>
+      isSameMonth(parseHabitDate(entry.date), selectedDate)
+    )
+  }, [
+    habit,
+    selectedCustomRange,
+    selectedDate,
+    selectedPeriod,
+    selectedWeekRange,
+  ])
+
+  React.useEffect(() => {
+    if (selectedPeriod === "year") {
+      const fallbackYear = habit.yearlyData.at(-1)?.date
+
+      if (fallbackYear) {
+        setSelectedDate(getYearStart(parseHabitDate(fallbackYear)))
+      }
+
+      return
+    }
+
+    const fallbackDate = habit.chartData.at(-1)?.date
+
+    if (!fallbackDate) {
+      return
+    }
+
+    const parsedDate = parseHabitDate(fallbackDate)
+    if (selectedPeriod === "week") {
+      setSelectedDate(getWeekStart(parsedDate))
+      setSelectedWeekRange({
+        from: getWeekStart(parsedDate),
+        to: getWeekEnd(parsedDate),
+      })
+      return
+    }
+
+    if (selectedPeriod === "custom") {
+      const nextRange = {
+        from: shiftDays(parsedDate, -13),
+        to: parsedDate,
+      }
+
+      setSelectedDate(nextRange.from)
+      setSelectedCustomRange(nextRange)
+      return
+    }
+
+    setSelectedDate(getMonthStart(parsedDate))
+  }, [habit, selectedPeriod])
 
   const handleHabitPeriodConfirm = React.useCallback(
     (selection: HabitPeriodSelection) => {
@@ -1118,15 +1981,450 @@ export function ClientHabitsPanel() {
     []
   )
 
-  const chartConfig: ChartConfig = {
-    value: {
-      label: selectedHabit.title,
-      color: selectedHabit.chartColor,
-    },
+  const pickerProps = React.useMemo(
+    () => ({
+      period: selectedPeriod,
+      onPeriodChange: setSelectedPeriod,
+      value: selectedDate,
+      onChange: setSelectedDate,
+      weekRange: selectedWeekRange,
+      onWeekRangeChange: setSelectedWeekRange,
+      customRange: selectedCustomRange,
+      onCustomRangeChange: setSelectedCustomRange,
+      availableYears,
+      onConfirm: handleHabitPeriodConfirm,
+    }),
+    [
+      availableYears,
+      handleHabitPeriodConfirm,
+      selectedCustomRange,
+      selectedDate,
+      selectedPeriod,
+      selectedWeekRange,
+    ]
+  )
+
+  const editDefaults = React.useMemo(() => getHabitEditDefaults(habit), [habit])
+  const detailDurationInDays = React.useMemo(
+    () => getDurationInDays(editDefaults.startDate, editDefaults.endDate),
+    [editDefaults.endDate, editDefaults.startDate]
+  )
+
+  const chartConfig = React.useMemo<ChartConfig>(
+    () => ({
+      value: {
+        label: habit.title,
+        color: habit.chartColor,
+      },
+    }),
+    [habit.chartColor, habit.title]
+  )
+
+  return {
+    pickerProps,
+    filteredChartData,
+    filteredEntries,
+    chartConfig,
+    editDefaults,
+    detailDurationInDays,
   }
+}
+
+function HabitOverviewPanelContent({
+  habit,
+  overviewState,
+  showDetails = false,
+  showPicker = true,
+}: {
+  habit: HabitDefinition
+  overviewState: HabitOverviewState
+  showDetails?: boolean
+  showPicker?: boolean
+}) {
+  const SelectedHabitIcon = habit.icon
+  const {
+    pickerProps,
+    filteredChartData,
+    filteredEntries,
+    chartConfig,
+    editDefaults,
+    detailDurationInDays,
+  } = overviewState
 
   return (
-    <Tabs defaultValue="habits" className="gap-0">
+    <div className={cn("px-4", showDetails ? "space-y-3 py-3" : "space-y-4 py-4")}>
+      {showPicker ? (
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          {!showDetails ? (
+            <div className="flex min-w-0 items-center gap-3">
+              <div
+                className={cn(
+                  "flex size-10 shrink-0 items-center justify-center rounded-sm border",
+                  habit.iconWrapClassName
+                )}
+              >
+                <SelectedHabitIcon className={cn("size-5", habit.iconClassName)} />
+              </div>
+              <div className="min-w-0">
+                <div className="truncate text-[28px] leading-none font-semibold text-neutral-950">
+                  {habit.title}
+                </div>
+                <div className="mt-1 text-[13px] text-neutral-500">
+                  {habit.target}
+                </div>
+              </div>
+            </div>
+          ) : null}
+          <HabitPeriodPicker {...pickerProps} />
+        </div>
+      ) : null}
+
+      <div className="grid gap-3 xl:grid-cols-4">
+        <HabitStatCard
+          icon={Flame}
+          label="Current Streak"
+          value={habit.stats.currentStreak}
+          iconClassName="text-sky-500"
+        />
+        <HabitStatCard
+          icon={Rocket}
+          label="Longest Streak"
+          value={habit.stats.longestStreak}
+          iconClassName="text-blue-500"
+        />
+        <HabitStatCard
+          icon={CheckCircle2}
+          label="Habit Completed"
+          value={habit.stats.completed}
+          iconClassName="text-cyan-500"
+        />
+        <HabitStatCard
+          icon={BarChart3}
+          label="Completion Rate"
+          value={habit.stats.completionRate}
+          iconClassName="text-sky-500"
+        />
+      </div>
+
+      <div className="rounded-sm border border-neutral-200 bg-white p-4">
+        {filteredChartData.length ? (
+          <ChartContainer
+            config={chartConfig}
+            className="h-[360px] w-full aspect-auto"
+          >
+            <AreaChart
+              accessibilityLayer
+              data={filteredChartData}
+              margin={{ left: 12, right: 12, top: 8, bottom: 0 }}
+            >
+              <CartesianGrid vertical={false} strokeDasharray="3 3" />
+              <XAxis
+                dataKey="label"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                width={54}
+                tickMargin={8}
+                tickFormatter={(value) => formatAxisValue(habit, Number(value))}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    indicator="line"
+                    labelFormatter={(_, payload) =>
+                      payload?.[0]?.payload?.date ?? ""
+                    }
+                    formatter={(value) => formatHabitValue(habit, Number(value))}
+                  />
+                }
+              />
+              <defs>
+                <linearGradient id="fillHabitValue" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-value)"
+                    stopOpacity={0.35}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-value)"
+                    stopOpacity={0.04}
+                  />
+                </linearGradient>
+              </defs>
+              <Area
+                dataKey="value"
+                type="natural"
+                fill="url(#fillHabitValue)"
+                fillOpacity={1}
+                stroke="var(--color-value)"
+                strokeWidth={2.5}
+              />
+            </AreaChart>
+          </ChartContainer>
+        ) : (
+          <div className="flex h-[360px] items-center justify-center rounded-sm bg-neutral-50 text-center">
+            <div>
+              <div className="text-[14px] font-medium text-neutral-900">
+                Ni podatkov za izbran prikaz
+              </div>
+              <div className="mt-1 text-[13px] text-neutral-500">
+                Izberi drug teden, mesec ali leto za prikaz napredka navade.
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {showDetails ? (
+        <div className="grid gap-3 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-sm border border-neutral-200 bg-white p-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="text-[13px] font-medium text-neutral-500">
+                  Opis navade
+                </div>
+                <div className="text-[14px] leading-6 text-neutral-800">
+                  {editDefaults.habitDescription}
+                </div>
+              </div>
+              <div
+                className={cn(
+                  "flex size-10 shrink-0 items-center justify-center rounded-sm border",
+                  habit.iconWrapClassName
+                )}
+              >
+                <SelectedHabitIcon className={cn("size-5", habit.iconClassName)} />
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              <div className="rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-3">
+                <div className="text-[12px] font-medium text-neutral-500">
+                  Goal, unit & period
+                </div>
+                <div className="mt-1.5 text-[18px] leading-none font-semibold text-neutral-950">
+                  {editDefaults.goalValue} {editDefaults.goalUnit}
+                </div>
+                <div className="mt-2 text-[13px] text-brand-600">
+                  {formatGoalSummary(
+                    editDefaults.goalValue,
+                    editDefaults.goalUnit,
+                    editDefaults.goalPeriod
+                  )}
+                </div>
+              </div>
+              <div className="rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-3">
+                <div className="text-[12px] font-medium text-neutral-500">
+                  Frekvenca
+                </div>
+                <div className="mt-1.5 text-[18px] leading-none font-semibold text-neutral-950">
+                  {editDefaults.goalPeriod === "daily" ? "Daily" : "Weekly"}
+                </div>
+                <div className="mt-2 text-[13px] text-neutral-500">
+                  Target: {habit.target}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-3">
+            <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3">
+              <div className="text-[13px] font-medium text-neutral-500">
+                Datum navade
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-[14px] font-medium text-neutral-900">
+                <span>{formatHabitSettingsDate(editDefaults.startDate)}</span>
+                <span className="text-neutral-400">-&gt;</span>
+                <span>{formatHabitSettingsDate(editDefaults.endDate)}</span>
+              </div>
+              {detailDurationInDays ? (
+                <div className="mt-2 flex items-center gap-2 text-[13px] text-brand-600">
+                  <Info className="size-4" />
+                  <span>Habit bo trajal {detailDurationInDays} dni</span>
+                </div>
+              ) : null}
+            </div>
+
+            <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3">
+              <div className="text-[13px] font-medium text-neutral-500">
+                Reminder
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-[18px] leading-none font-semibold text-neutral-950">
+                <Clock3 className="size-4 text-neutral-400" />
+                {editDefaults.reminderTime}
+              </div>
+              <div className="mt-2 text-[13px] text-neutral-500">
+                {editDefaults.reminderNote}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <Table>
+          <TableHeader className="sticky top-0 z-10 bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4">Value</TableHead>
+              <TableHead>Memo</TableHead>
+              <TableHead>Date</TableHead>
+              {!showDetails ? (
+                <TableHead className="w-14 pr-4">
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              ) : null}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredEntries.length ? (
+              filteredEntries.map((entry) => (
+                <TableRow key={entry.id} className="bg-white">
+                  <TableCell className="pl-4 text-[14px] font-medium text-neutral-900">
+                    {formatHabitValue(habit, entry.value)}
+                  </TableCell>
+                  <TableCell className="text-[14px] text-neutral-500">
+                    {entry.memo}
+                  </TableCell>
+                  <TableCell className="text-[14px] text-neutral-700">
+                    {entry.date}
+                  </TableCell>
+                  {!showDetails ? (
+                    <TableCell className="pr-4 text-right">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-xs"
+                        className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+                      >
+                        <Pencil className="size-3.5" />
+                      </Button>
+                    </TableCell>
+                  ) : null}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={showDetails ? 3 : 4}
+                  className="h-24 text-center text-[13px] text-neutral-500"
+                >
+                  Ni vnosov za izbran prikaz.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  )
+}
+
+export function HabitDetailView({
+  habitId,
+  originTab = "overview",
+}: {
+  habitId: string
+  originTab?: "habits" | "overview"
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const habit = habitDefinitions.find((item) => item.id === habitId)
+
+  if (!habit) {
+    return <div className="px-2 pt-2 text-sm text-neutral-500">Habit ni najden.</div>
+  }
+
+  const HabitIcon = habit.icon
+  const overviewState = useHabitOverviewState(habit)
+
+  return (
+    <div className="min-w-0 bg-neutral-50">
+      <div className="border-b border-neutral-200 bg-neutral-50">
+        <div className="flex min-h-10 flex-col gap-2 px-4 py-1.5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+              onClick={() => router.push(`${pathname}?tab=habbits&habitTab=${originTab}`)}
+            >
+              <ChevronLeft className="size-4" />
+              <span className="sr-only">Nazaj na navade</span>
+            </Button>
+            <div
+              className={cn(
+                "flex size-9 shrink-0 items-center justify-center rounded-sm border",
+                habit.iconWrapClassName
+              )}
+            >
+              <HabitIcon className={cn("size-4.5", habit.iconClassName)} />
+            </div>
+            <div className="min-w-0">
+              <div className="truncate text-[17px] font-semibold text-neutral-950">
+                {habit.title}
+              </div>
+              <div className="mt-0.5 text-[13px] text-neutral-500">
+                {habit.target}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <HabitPeriodPicker {...overviewState.pickerProps} />
+            <EditHabitDialog
+              habit={habit}
+              triggerClassName="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            />
+          </div>
+        </div>
+      </div>
+      <HabitOverviewPanelContent
+        habit={habit}
+        overviewState={overviewState}
+        showDetails
+        showPicker={false}
+      />
+    </div>
+  )
+}
+
+export function ClientHabitsPanel({
+  initialSubTab = "habits",
+}: {
+  initialSubTab?: "habits" | "overview"
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const [activeSubTab, setActiveSubTab] = React.useState<"habits" | "overview">(
+    initialSubTab
+  )
+  const [selectedHabitId, setSelectedHabitId] = React.useState(
+    habitDefinitions[0]?.id ?? ""
+  )
+  const selectedHabit =
+    habitDefinitions.find((habit) => habit.id === selectedHabitId) ??
+    habitDefinitions[0]
+  const overviewState = useHabitOverviewState(selectedHabit)
+
+  React.useEffect(() => {
+    setActiveSubTab(initialSubTab)
+  }, [initialSubTab])
+
+  const openHabitDetail = React.useCallback(
+    (habitId: string) => {
+      router.push(`${pathname}?tab=habbits&habitTab=overview&habitId=${habitId}`)
+    },
+    [pathname, router]
+  )
+
+  return (
+    <Tabs value={activeSubTab} onValueChange={(value) => setActiveSubTab(value as "habits" | "overview")} className="gap-0">
       <div className="border-b border-neutral-200 bg-neutral-50">
         <div className="flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -1151,15 +2449,12 @@ export function ClientHabitsPanel() {
             </TabsList>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-            >
-              <Pencil className="size-4" />
-              Uredi
-            </Button>
+            {activeSubTab === "habits" ? (
+              <EditHabitDialog
+                habit={selectedHabit}
+                triggerClassName="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+              />
+            ) : null}
             <CreateHabitDialog triggerClassName="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700" />
           </div>
         </div>
@@ -1218,199 +2513,10 @@ export function ClientHabitsPanel() {
           </aside>
 
           <div className="min-w-0 bg-neutral-50">
-            <div className="space-y-4 px-4 py-4">
-              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                <div className="flex min-w-0 items-center gap-3">
-                  <div
-                    className={cn(
-                      "flex size-10 shrink-0 items-center justify-center rounded-sm border",
-                      selectedHabit.iconWrapClassName
-                    )}
-                  >
-                    <SelectedHabitIcon
-                      className={cn("size-5", selectedHabit.iconClassName)}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="truncate text-[28px] leading-none font-semibold text-neutral-950">
-                      {selectedHabit.title}
-                    </div>
-                    <div className="mt-1 text-[13px] text-neutral-500">
-                      {selectedHabit.target}
-                    </div>
-                  </div>
-                </div>
-                <HabitPeriodPicker
-                  period={selectedPeriod}
-                  onPeriodChange={setSelectedPeriod}
-                  value={selectedDate}
-                  onChange={setSelectedDate}
-                  weekRange={selectedWeekRange}
-                  onWeekRangeChange={setSelectedWeekRange}
-                  customRange={selectedCustomRange}
-                  onCustomRangeChange={setSelectedCustomRange}
-                  availableYears={availableYears}
-                  onConfirm={handleHabitPeriodConfirm}
-                />
-              </div>
-
-              <div className="grid gap-3 xl:grid-cols-4">
-                <HabitStatCard
-                  icon={Flame}
-                  label="Current Streak"
-                  value={selectedHabit.stats.currentStreak}
-                  iconClassName="text-sky-500"
-                />
-                <HabitStatCard
-                  icon={Rocket}
-                  label="Longest Streak"
-                  value={selectedHabit.stats.longestStreak}
-                  iconClassName="text-blue-500"
-                />
-                <HabitStatCard
-                  icon={CheckCircle2}
-                  label="Habit Completed"
-                  value={selectedHabit.stats.completed}
-                  iconClassName="text-cyan-500"
-                />
-                <HabitStatCard
-                  icon={BarChart3}
-                  label="Completion Rate"
-                  value={selectedHabit.stats.completionRate}
-                  iconClassName="text-sky-500"
-                />
-              </div>
-
-              <div className="rounded-sm border border-neutral-200 bg-white p-4">
-                {filteredChartData.length ? (
-                  <ChartContainer
-                    config={chartConfig}
-                    className="h-[360px] w-full aspect-auto"
-                  >
-                    <AreaChart
-                      accessibilityLayer
-                      data={filteredChartData}
-                      margin={{ left: 12, right: 12, top: 8, bottom: 0 }}
-                    >
-                      <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                      <XAxis
-                        dataKey="label"
-                        tickLine={false}
-                        axisLine={false}
-                        tickMargin={10}
-                      />
-                      <YAxis
-                        tickLine={false}
-                        axisLine={false}
-                        width={54}
-                        tickMargin={8}
-                        tickFormatter={(value) =>
-                          formatAxisValue(selectedHabit, Number(value))
-                        }
-                      />
-                      <ChartTooltip
-                        cursor={false}
-                        content={
-                          <ChartTooltipContent
-                            indicator="line"
-                            labelFormatter={(_, payload) =>
-                              payload?.[0]?.payload?.date ?? ""
-                            }
-                            formatter={(value) =>
-                              formatHabitValue(selectedHabit, Number(value))
-                            }
-                          />
-                        }
-                      />
-                      <defs>
-                        <linearGradient id="fillHabitValue" x1="0" y1="0" x2="0" y2="1">
-                          <stop
-                            offset="5%"
-                            stopColor="var(--color-value)"
-                            stopOpacity={0.35}
-                          />
-                          <stop
-                            offset="95%"
-                            stopColor="var(--color-value)"
-                            stopOpacity={0.04}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <Area
-                        dataKey="value"
-                        type="natural"
-                        fill="url(#fillHabitValue)"
-                        fillOpacity={1}
-                        stroke="var(--color-value)"
-                        strokeWidth={2.5}
-                      />
-                    </AreaChart>
-                  </ChartContainer>
-                ) : (
-                  <div className="flex h-[360px] items-center justify-center rounded-sm bg-neutral-50 text-center">
-                    <div>
-                      <div className="text-[14px] font-medium text-neutral-900">
-                        Ni podatkov za izbran prikaz
-                      </div>
-                      <div className="mt-1 text-[13px] text-neutral-500">
-                        Izberi drug teden, mesec ali leto za prikaz napredka navade.
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead className="pl-4">Value</TableHead>
-                      <TableHead>Memo</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead className="w-14 pr-4">
-                        <span className="sr-only">Actions</span>
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredEntries.length ? (
-                      filteredEntries.map((entry) => (
-                        <TableRow key={entry.id} className="bg-white">
-                          <TableCell className="pl-4 text-[14px] font-medium text-neutral-900">
-                            {formatHabitValue(selectedHabit, entry.value)}
-                          </TableCell>
-                          <TableCell className="text-[14px] text-neutral-500">
-                            {entry.memo}
-                          </TableCell>
-                          <TableCell className="text-[14px] text-neutral-700">
-                            {entry.date}
-                          </TableCell>
-                          <TableCell className="pr-4 text-right">
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="icon-xs"
-                              className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
-                            >
-                              <Pencil className="size-3.5" />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell
-                          colSpan={4}
-                          className="h-24 text-center text-[13px] text-neutral-500"
-                        >
-                          Ni vnosov za izbran prikaz.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </div>
+            <HabitOverviewPanelContent
+              habit={selectedHabit}
+              overviewState={overviewState}
+            />
           </div>
         </div>
       </TabsContent>
@@ -1435,7 +2541,18 @@ export function ClientHabitsPanel() {
                   const Icon = habit.icon
 
                   return (
-                    <TableRow key={habit.id} className="bg-white">
+                    <TableRow
+                      key={habit.id}
+                      className="cursor-pointer bg-white hover:bg-neutral-50/60"
+                      tabIndex={0}
+                      onClick={() => openHabitDetail(habit.id)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault()
+                          openHabitDetail(habit.id)
+                        }
+                      }}
+                    >
                       <TableCell className="pl-4 lg:pl-5">
                         <div className="flex w-[18rem] max-w-full items-center gap-3">
                           <div
@@ -1461,7 +2578,10 @@ export function ClientHabitsPanel() {
                       <TableCell className="text-[14px] font-medium text-neutral-900">
                         {formatHabitAverage(habit)}
                       </TableCell>
-                      <TableCell className="px-1 pr-2 lg:pr-3">
+                      <TableCell
+                        className="px-1 pr-2 lg:pr-3"
+                        onClick={(event) => event.stopPropagation()}
+                      >
                         <div className="flex w-6 justify-end">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -1479,11 +2599,27 @@ export function ClientHabitsPanel() {
                             <DropdownMenuContent
                               align="end"
                               sideOffset={8}
+                              onClick={(event) => event.stopPropagation()}
                               className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
                             >
-                              <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950">
-                                <Pencil className="size-4 text-neutral-500" />
-                                Uredi
+                              <EditHabitDialog
+                                habit={habit}
+                                trigger={
+                                  <DropdownMenuItem
+                                    onSelect={(event) => event.preventDefault()}
+                                    className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
+                                  >
+                                    <Pencil className="size-4 text-neutral-500" />
+                                    Uredi
+                                  </DropdownMenuItem>
+                                }
+                              />
+                              <DropdownMenuItem
+                                onSelect={() => openHabitDetail(habit.id)}
+                                className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
+                              >
+                                <Info className="size-4 text-neutral-500" />
+                                Podrobnosti
                               </DropdownMenuItem>
                               <DropdownMenuSeparator className="bg-neutral-200/70" />
                               <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-red-600 focus:bg-red-50 focus:text-red-700">
