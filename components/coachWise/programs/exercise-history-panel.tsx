@@ -938,7 +938,7 @@ export function WorkoutDetailView({
   return (
     <div className="min-w-0">
       <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex min-h-10 flex-col gap-2.5 px-4 py-2.5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex min-h-10 flex-col gap-2.5 px-4 py-2.5 lg:flex-row lg:items-center">
           <div className="flex items-center gap-2">
             <Button
               asChild
@@ -957,36 +957,40 @@ export function WorkoutDetailView({
               <div className="text-[13px] text-neutral-500">{workout.dateLabel}</div>
             </div>
           </div>
-
-          <div className="flex items-center gap-1.5">
-            <HabitPeriodPicker {...pickerProps} />
-          </div>
         </div>
       </div>
 
       <div className="bg-neutral-50 p-4">
-        <div className="mb-4 inline-flex rounded-sm border border-neutral-200 bg-white p-0.5 shadow-none">
-          {([
-            { value: "summary", label: "Summary" },
-            { value: "exercises", label: "Exercises" },
-            { value: "analysis", label: "Analysis" },
-          ] as const).map((section) => (
-            <Button
-              key={section.value}
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => setDetailSection(section.value)}
-              className={cn(
-                "min-w-28 rounded-sm px-4 text-[13px] font-medium shadow-none",
-                detailSection === section.value
-                  ? "bg-neutral-100 text-neutral-950"
-                  : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
-              )}
-            >
-              {section.label}
-            </Button>
-          ))}
+        <div className="mb-4 flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="inline-flex rounded-sm border border-neutral-200 bg-white p-0.5 shadow-none">
+            {([
+              { value: "summary", label: "Summary" },
+              { value: "exercises", label: "Exercises" },
+              { value: "analysis", label: "Analysis" },
+            ] as const).map((section) => (
+              <Button
+                key={section.value}
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setDetailSection(section.value)}
+                className={cn(
+                  "min-w-28 rounded-sm px-4 text-[13px] font-medium shadow-none",
+                  detailSection === section.value
+                    ? "bg-neutral-100 text-neutral-950"
+                    : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
+                )}
+              >
+                {section.label}
+              </Button>
+            ))}
+          </div>
+
+          {detailSection === "analysis" ? (
+            <div className="flex items-center justify-end">
+              <HabitPeriodPicker {...pickerProps} />
+            </div>
+          ) : null}
         </div>
 
         {detailSection === "summary" ? (
