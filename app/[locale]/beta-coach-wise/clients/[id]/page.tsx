@@ -692,16 +692,16 @@ export default async function ClientProfilePage({
             <TabsContent value="general" className="mt-0 space-y-0">
               <SectionBody>
                 <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_1fr_0.98fr]">
-                  <div className="xl:pr-1">
-                    <Card className="overflow-hidden border-neutral-200 gap-0! bg-white shadow-none">
-                      <CardHeader className="border-b border-neutral-200   pb-0! py-1! px-3.5 ">
+                  <div className="xl:h-[calc(100vh-11.5rem)] xl:pr-1">
+                    <Card className="flex h-full flex-col overflow-hidden gap-0! border-neutral-200 bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200 px-3.5 py-2 ">
                         <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
                           <IconClipboardList className="size-3.5 text-neutral-500" />
                           <span>Client Details</span>
                         </div>
                       </CardHeader>
-                      <CardContent className="p-0 pt-0! ">
-                        <div className="space-y-0.5 px-3.5 py-2  ">
+                      <CardContent className="flex min-h-0 flex-1 pt-0! pb-0! flex-col p-0!">
+                        <div className="space-y-0.5 px-3.5 py-2">
                           {clientDetailRows.map((row) => (
                             <div
                               key={row.label}
@@ -720,24 +720,24 @@ export default async function ClientProfilePage({
                           ))}
                         </div>
 
-                        <div className="border-t border-neutral-200">
-                          <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-4 py-3">
-                            <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
-                              <FileText className="size-4 text-neutral-500" />
+                        <div className="flex min-h-0 flex-1 flex-col border-t border-neutral-200">
+                          <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-3.5 py-2.5">
+                            <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
+                              <FileText className="size-3.5 text-neutral-500" />
                               <span>Notes</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Button
                                 variant="outline"
                                 size="icon"
-                                className="size-8 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+                                className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
                               >
-                                <Maximize2 className="size-3.5" />
+                                <Maximize2 className="size-3" />
                               </Button>
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="rounded-md border-neutral-200 shadow-none"
+                                className="h-8 rounded-md border-neutral-200 px-2.5 text-[13px] shadow-none"
                               >
                                 <IconPlus className="size-3.5" />
                                 Add Note
@@ -745,25 +745,25 @@ export default async function ClientProfilePage({
                             </div>
                           </div>
 
-                          <div className="max-h-[calc(100vh-24rem)] space-y-4 overflow-y-auto p-4 pr-3 [scrollbar-width:thin]">
+                          <div className="flex-1 min-h-0 space-y-3 overflow-y-auto px-3.5 py-3 pr-2.5 [scrollbar-width:thin]">
                             {generalNotes.map((note) => (
                               <div
                                 key={note.title}
-                                className="rounded-2xl border border-neutral-200 bg-white"
+                                className="rounded-xl border border-neutral-200 bg-white"
                               >
-                                <div className="flex items-start justify-between gap-3 px-4 pt-4">
-                                  <h3 className="text-[17px] font-semibold text-neutral-950">
+                                <div className="flex items-start justify-between gap-3 px-3.5 pt-3.5">
+                                  <h3 className="text-[15px] font-semibold text-neutral-950">
                                     {note.title}
                                   </h3>
                                   <Button
                                     variant="outline"
                                     size="icon"
-                                    className="size-8 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+                                    className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
                                   >
-                                    <Pencil className="size-3.5" />
+                                    <Pencil className="size-3" />
                                   </Button>
                                 </div>
-                                <div className="space-y-2 px-4 pb-4 pt-3 text-[15px] leading-7 text-neutral-700">
+                                <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
                                   {note.body.length > 1 ? (
                                     note.body.map((line) => (
                                       <p key={line} className="pl-4 -indent-4">
@@ -774,7 +774,7 @@ export default async function ClientProfilePage({
                                     <p>{note.body[0]}</p>
                                   )}
                                 </div>
-                                <div className="flex items-center justify-between rounded-b-2xl border-t border-neutral-200 px-4 py-3 text-sm text-neutral-500">
+                                <div className="flex items-center justify-between rounded-b-xl border-t border-neutral-200 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
                                   <span>{note.date}</span>
                                   {note.private ? (
                                     <Badge className="rounded-md border border-neutral-300 bg-neutral-800 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase shadow-none hover:bg-neutral-800">
