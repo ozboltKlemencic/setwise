@@ -693,15 +693,15 @@ export default async function ClientProfilePage({
               <SectionBody>
                 <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_1fr_0.98fr]">
                   <div className="xl:pr-1">
-                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
-                      <CardHeader className="border-b border-neutral-200  py-1! px-3.5 ">
+                    <Card className="overflow-hidden border-neutral-200 gap-0! bg-white shadow-none">
+                      <CardHeader className="border-b border-neutral-200   pb-0! py-1! px-3.5 ">
                         <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
                           <IconClipboardList className="size-3.5 text-neutral-500" />
                           <span>Client Details</span>
                         </div>
                       </CardHeader>
-                      <CardContent className="p-0">
-                        <div className="space-y-0.5 px-3.5 ">
+                      <CardContent className="p-0 pt-0! ">
+                        <div className="space-y-0.5 px-3.5 py-2  ">
                           {clientDetailRows.map((row) => (
                             <div
                               key={row.label}
