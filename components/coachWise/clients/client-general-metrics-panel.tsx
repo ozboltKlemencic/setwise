@@ -247,7 +247,7 @@ export function ClientGeneralMetricsPanel({
         <CardContent className="flex min-h-0 flex-1 flex-col gap-2 p-3.5">
           <div className="flex flex-row gap-2 lg:flex-row lg:items-start lg:justify-between">
             <div className="gap-x-1.5 flex flex-row">
-              <div className="text-[28px] leading-none font-semibold text-neutral-950">
+              <div className="text-[22px] leading-none font-semibold text-neutral-950">
                 {currentMetricValue}
               </div>
               <div className="flex items-center gap-1.5">
