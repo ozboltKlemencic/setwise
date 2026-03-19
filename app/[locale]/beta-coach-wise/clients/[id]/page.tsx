@@ -13,11 +13,8 @@ import {
 } from "@tabler/icons-react"
 import {
   Activity,
-  Camera,
   Clock3,
-  CreditCard,
   FileText,
-  LogIn,
   Mail,
   Maximize2,
   Pencil,
@@ -550,31 +547,60 @@ export default async function ClientProfilePage({
       tone: "down" as const,
     },
   ]
-  const activityLogEntries = [
+  const habitsOverviewEntries = [
     {
-      title: "Submitted Daily Check-In",
-      date: "March 18, 2026 10:50 AM",
-      icon: <IconClipboardCheck className="size-3.5" />,
+      title: "Daily Steps",
+      subtitle: "10000 steps/day",
+      meta: "15 dni streak",
+      status: "+4%",
+      tone: "up" as const,
     },
     {
-      title: "Submitted Weekly Check-In",
-      date: "March 18, 2026 10:50 AM",
-      icon: <IconClipboardCheck className="size-3.5" />,
+      title: "Water Intake",
+      subtitle: "2.5 liters/day",
+      meta: "9/10 dni",
+      status: "Steady",
+      tone: "steady" as const,
     },
     {
-      title: "Added metric",
-      date: "March 18, 2026 10:50 AM",
-      icon: <IconPlus className="size-3.5" />,
+      title: "Sleep Duration",
+      subtitle: "8 hours/day",
+      meta: "7.8 h avg",
+      status: "-1%",
+      tone: "down" as const,
     },
     {
-      title: "Added progress photo",
-      date: "March 18, 2026 10:50 AM",
-      icon: <Camera className="size-3.5" />,
+      title: "Morning Walk",
+      subtitle: "20 min/day",
+      meta: "5 dni zapored",
+      status: "+2%",
+      tone: "up" as const,
+    },
+  ]
+  const recentCheckinsEntries = [
+    {
+      title: "Tedenski check-in",
+      date: "18. mar. 2026 - 10:50",
+      status: "Pregledan",
+      tone: "up" as const,
     },
     {
-      title: "Logged in",
-      date: "March 18, 2026 10:50 AM",
-      icon: <LogIn className="size-3.5" />,
+      title: "Dnevni check-in",
+      date: "18. mar. 2026 - 08:15",
+      status: "Oddan",
+      tone: "steady" as const,
+    },
+    {
+      title: "Tedenski check-in",
+      date: "11. mar. 2026 - 09:20",
+      status: "Pregledan",
+      tone: "up" as const,
+    },
+    {
+      title: "Dnevni check-in",
+      date: "10. mar. 2026 - 07:55",
+      status: "Zamuja",
+      tone: "down" as const,
     },
   ]
   const generalNotes = [
@@ -600,20 +626,38 @@ export default async function ClientProfilePage({
       private: true,
     },
   ]
-  const recentPhotoPositions = [
-    "center 8%",
-    "center 24%",
-    "center 12%",
-    "center 30%",
-    "center 16%",
-    "center 68%",
-    "center 42%",
-    "center 56%",
-    "center 48%",
-    "center 60%",
+  const completedWorkoutCards = [
+    {
+      id: "upper-a-0318",
+      title: "Upper A",
+      dateLabel: "Sre, 18. mar - 17:30",
+      duration: "42 min",
+      volume: "1.7k kg",
+      trend: "up" as const,
+      changeLabel: "+3%",
+      monthLabel: "Marec - 2026",
+    },
+    {
+      id: "lower-a-0315",
+      title: "Lower A",
+      dateLabel: "Ned, 15. mar - 10:00",
+      duration: "55 min",
+      volume: "2.3k kg",
+      trend: "steady" as const,
+      changeLabel: "Steady",
+      monthLabel: "Marec - 2026",
+    },
+    {
+      id: "upper-b-0309",
+      title: "Upper B",
+      dateLabel: "Pon, 09. mar - 18:10",
+      duration: "47 min",
+      volume: "1.6k kg",
+      trend: "down" as const,
+      changeLabel: "-1%",
+      monthLabel: "Marec - 2026",
+    },
   ]
-  const recentPhotoUrl =
-    "https://app.hubfit.com/storage/progress-photo/demo-front-5.png"
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs
@@ -789,65 +833,90 @@ export default async function ClientProfilePage({
 
                   <ClientGeneralMetricsPanel
                     metrics={metricsAverageRows}
-                    recentPhotoUrl={recentPhotoUrl}
-                    recentPhotoPositions={recentPhotoPositions}
+                    completedWorkouts={completedWorkoutCards}
                   />
 
-                  <div className="space-y-4">
-                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                  <div className="grid gap-4 xl:h-[calc(100vh-11.5rem)] xl:grid-rows-[minmax(0,1fr)_minmax(0,1fr)]">
+                    <Card className="flex min-h-0 flex-col overflow-hidden border-neutral-200 bg-white shadow-none">
                       <CardHeader className="border-b border-neutral-200 px-4 py-3">
                         <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
                           <Activity className="size-4 text-neutral-500" />
-                          <span>Activity Log</span>
+                          <span>Habbits</span>
                         </div>
                       </CardHeader>
-                      <CardContent className="space-y-0 p-4">
-                        {activityLogEntries.map((entry, index) => (
+                      <CardContent className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4 pr-3 [scrollbar-width:thin]">
+                        {habitsOverviewEntries.map((entry) => (
                           <div
-                            key={`${entry.title}-${index}`}
-                            className="relative pl-8 not-last:pb-5"
+                            key={entry.title}
+                            className="rounded-xl border border-neutral-200 bg-neutral-50 px-3.5 py-3"
                           >
-                            {index < activityLogEntries.length - 1 ? (
-                              <span className="absolute top-6 left-[9px] bottom-0 w-px bg-neutral-200" />
-                            ) : null}
-                            <span className="absolute top-0.5 left-0 flex size-5 items-center justify-center rounded-md border border-neutral-200 bg-white text-neutral-500">
-                              {entry.icon}
-                            </span>
-                            <div className="text-[14px] font-medium text-neutral-900">
-                              {entry.title}
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="min-w-0">
+                                <div className="text-[14px] font-medium text-neutral-900">
+                                  {entry.title}
+                                </div>
+                                <div className="mt-1 text-[13px] text-neutral-500">
+                                  {entry.subtitle}
+                                </div>
+                              </div>
+                              <Badge
+                                className={cn(
+                                  "rounded-md border px-2 py-0.5 text-[11px] font-medium shadow-none",
+                                  entry.tone === "up"
+                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
+                                    : entry.tone === "down"
+                                      ? "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-50"
+                                      : "border-neutral-200 bg-white text-neutral-600 hover:bg-white"
+                                )}
+                              >
+                                {entry.status}
+                              </Badge>
                             </div>
-                            <div className="mt-1 text-sm text-neutral-500">
-                              {entry.date}
+                            <div className="mt-3 text-[12.5px] text-neutral-500">
+                              {entry.meta}
                             </div>
                           </div>
                         ))}
                       </CardContent>
                     </Card>
 
-                    <Card className="overflow-hidden border-neutral-200 bg-white shadow-none">
+                    <Card className="flex min-h-0 flex-col overflow-hidden border-neutral-200 bg-white shadow-none">
                       <CardHeader className="border-b border-neutral-200 px-4 py-3">
                         <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
-                          <CreditCard className="size-4 text-neutral-500" />
-                          <span>Payments</span>
+                          <IconClipboardCheck className="size-4 text-neutral-500" />
+                          <span>Check-ins</span>
                         </div>
                       </CardHeader>
-                      <CardContent className="space-y-5 p-4">
-                        <div className="space-y-2">
-                          <div className="text-[14px] font-medium text-neutral-900">
-                            All Subscriptions
+                      <CardContent className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4 pr-3 [scrollbar-width:thin]">
+                        {recentCheckinsEntries.map((entry) => (
+                          <div
+                            key={`${entry.title}-${entry.date}`}
+                            className="rounded-xl border border-neutral-200 bg-neutral-50 px-3.5 py-3"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="min-w-0">
+                                <div className="text-[14px] font-medium text-neutral-900">
+                                  {entry.title}
+                                </div>
+                                <div className="mt-1 text-[13px] text-neutral-500">
+                                  {entry.date}
+                                </div>
+                              </div>
+                              <Badge
+                                className={cn(
+                                  "rounded-md border px-2 py-0.5 text-[11px] font-medium shadow-none",
+                                  entry.tone === "up"
+                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
+                                    : entry.tone === "down"
+                                      ? "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-50"
+                                      : "border-neutral-200 bg-white text-neutral-600 hover:bg-white"
+                                )}
+                              >
+                                {entry.status}
+                              </Badge>
+                            </div>
                           </div>
-                          <div className="flex min-h-20 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-sm text-neutral-500">
-                            No subscriptions available.
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="text-[14px] font-medium text-neutral-900">
-                            Past Payments
-                          </div>
-                          <div className="flex min-h-20 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-sm text-neutral-500">
-                            No past payments available.
-                          </div>
-                        </div>
+                        ))}
                       </CardContent>
                     </Card>
                   </div>

@@ -2,7 +2,15 @@
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import { ArrowDown, ArrowUp, Camera, Scale } from "lucide-react"
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronRight,
+  Dumbbell,
+  Scale,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react"
 
 import {
   HabitPeriodPicker,
@@ -32,10 +40,22 @@ type MetricAverageRow = {
   tone: "up" | "down"
 }
 
+type CompletedWorkoutTrend = "up" | "down" | "steady"
+
+type CompletedWorkoutRow = {
+  id: string
+  title: string
+  dateLabel: string
+  duration: string
+  volume: string
+  trend: CompletedWorkoutTrend
+  changeLabel: string
+  monthLabel: string
+}
+
 type ClientGeneralMetricsPanelProps = {
   metrics: MetricAverageRow[]
-  recentPhotoUrl: string
-  recentPhotoPositions: string[]
+  completedWorkouts: CompletedWorkoutRow[]
 }
 
 type MetricKey = "weight" | "fat"
@@ -86,10 +106,74 @@ function formatMetricDateLabel(date: Date, period: HabitPeriod) {
   })
 }
 
+function getWorkoutTrendBadgeClassName(trend: CompletedWorkoutTrend) {
+  if (trend === "up") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
+  }
+
+  if (trend === "down") {
+    return "border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-50"
+  }
+
+  return "border-neutral-200 bg-neutral-100 text-neutral-600 hover:bg-neutral-100"
+}
+
+function CompletedWorkoutPreviewCard({
+  workout,
+}: {
+  workout: CompletedWorkoutRow
+}) {
+  return (
+    <div className="rounded-2xl border border-neutral-200 bg-white px-5 py-4 shadow-[0_1px_2px_rgba(17,24,39,0.05)]">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-[16px] font-semibold text-neutral-950">
+            {workout.title}
+          </div>
+          <div className="mt-2 text-[13px] text-neutral-500">{workout.dateLabel}</div>
+        </div>
+        <ChevronRight className="size-4 text-neutral-300" />
+      </div>
+
+      <div className="mt-4 grid grid-cols-[1fr_1fr_auto] items-end gap-3">
+        <div className="border-r border-neutral-200 pr-3">
+          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+            Duration
+          </div>
+          <div className="mt-1 text-[14px] font-semibold text-neutral-950">
+            {workout.duration}
+          </div>
+        </div>
+        <div>
+          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+            Volume
+          </div>
+          <div className="mt-1 text-[14px] font-semibold text-neutral-950">
+            {workout.volume}
+          </div>
+        </div>
+        <Badge
+          variant="outline"
+          className={cn(
+            "rounded-md px-2.5 py-1 text-[12px] font-medium shadow-none",
+            getWorkoutTrendBadgeClassName(workout.trend)
+          )}
+        >
+          {workout.trend === "up" ? (
+            <TrendingUp className="mr-1 size-3.5" />
+          ) : workout.trend === "down" ? (
+            <TrendingDown className="mr-1 size-3.5" />
+          ) : null}
+          {workout.changeLabel}
+        </Badge>
+      </div>
+    </div>
+  )
+}
+
 export function ClientGeneralMetricsPanel({
   metrics,
-  recentPhotoUrl,
-  recentPhotoPositions,
+  completedWorkouts,
 }: ClientGeneralMetricsPanelProps) {
   const latestMetricDate = React.useMemo(
     () => parseMetricDate(metricChartData.at(-1)?.date ?? "2026-03-18"),
@@ -213,6 +297,19 @@ export function ClientGeneralMetricsPanel({
       Number((max + padding).toFixed(2)),
     ]
   }, [metricValues, selectedMetric])
+
+  const groupedCompletedWorkouts = React.useMemo(() => {
+    return completedWorkouts.reduce<Record<string, CompletedWorkoutRow[]>>(
+      (groups, workout) => {
+        const currentGroup = groups[workout.monthLabel] ?? []
+        currentGroup.push(workout)
+        groups[workout.monthLabel] = currentGroup
+
+        return groups
+      },
+      {}
+    )
+  }, [completedWorkouts])
 
   return (
     <div className="grid gap-4 xl:h-[calc(100vh-11.5rem)] xl:grid-rows-[minmax(0,1fr)_minmax(0,1fr)]">
@@ -369,23 +466,22 @@ export function ClientGeneralMetricsPanel({
       <Card className="flex h-full min-h-0 flex-col overflow-hidden border-neutral-200 bg-white shadow-none">
         <CardHeader className="border-b border-neutral-200 px-4 py-3">
           <div className="flex items-center gap-2 text-[15px] font-medium text-neutral-900">
-            <Camera className="size-4 text-neutral-500" />
-            <span>Recent Photos</span>
+            <Dumbbell className="size-4 text-neutral-500" />
+            <span>Completed Workouts</span>
           </div>
         </CardHeader>
-        <CardContent className="flex min-h-0 flex-1 p-4">
-          <div className="grid h-full w-full auto-rows-fr grid-cols-5 gap-2.5">
-            {recentPhotoPositions.map((position, index) => (
-              <div
-                key={`${position}-${index}`}
-                className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100"
-              >
-                <img
-                  src={recentPhotoUrl}
-                  alt={`Progress photo ${index + 1}`}
-                  className="h-full w-full object-cover"
-                  style={{ objectPosition: position }}
-                />
+        <CardContent className="min-h-0 flex-1 overflow-y-auto p-4 pr-3 [scrollbar-width:thin]">
+          <div className="space-y-5">
+            {Object.entries(groupedCompletedWorkouts).map(([monthLabel, workouts]) => (
+              <div key={monthLabel} className="space-y-2.5">
+                <div className="px-1 text-[12px] font-medium text-neutral-500">
+                  {monthLabel}
+                </div>
+                <div className="space-y-3">
+                  {workouts.map((workout) => (
+                    <CompletedWorkoutPreviewCard key={workout.id} workout={workout} />
+                  ))}
+                </div>
               </div>
             ))}
           </div>
