@@ -30,6 +30,7 @@ import {
   ClientNutritionPanel,
   MealPlanDetailView,
 } from "@/components/coachWise/clients/client-nutrition-panel"
+import { ExerciseHistoryPanel } from "@/components/coachWise/programs/exercise-history-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -521,7 +522,7 @@ export default async function ClientProfilePage({
                       <CardTitle>Stabilen</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-muted-foreground">
-                      Zadnja dva cikla kažeta dober odziv na trenutni plan.
+                      Zadnja dva cikla kazeta dober odziv na trenutni plan.
                     </CardContent>
                   </Card>
                   <Card>
@@ -530,7 +531,7 @@ export default async function ClientProfilePage({
                       <CardTitle>7.3 / 10</CardTitle>
                     </CardHeader>
                     <CardContent className="text-sm text-muted-foreground">
-                      Spanje in hidracija ostajata glavni ročici za naslednji korak.
+                      Spanje in hidracija ostajata glavni rocici za naslednji korak.
                     </CardContent>
                   </Card>
                   <Card>
@@ -556,14 +557,13 @@ export default async function ClientProfilePage({
                       {getPhaseFocus(client.phase)}
                     </div>
                     <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      Naslednja smiselna točka je primerjava zadnjega check-ina s
-                      trening logom in energijo čez teden.
+                      Naslednja smiselna tocka je primerjava zadnjega check-ina s
+                      trening logom in energijo cez teden.
                     </div>
                   </CardContent>
                 </Card>
               </SectionBody>
             </TabsContent>
-
             <TabsContent value="notes" className="mt-0 space-y-0">
               <SectionBody>
                 <Card>
@@ -1062,29 +1062,7 @@ export default async function ClientProfilePage({
 
             <TabsContent value="exercise-history" className="mt-0 space-y-0">
               <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Top lift</CardDescription>
-                      <CardTitle>Bench press</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Zadnji cikel je pokazal lepo tehnično stabilnost in napredek.
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Most repeated</CardDescription>
-                      <CardTitle>RDL</CardTitle>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Focus block</CardDescription>
-                      <CardTitle>Upper strength</CardTitle>
-                    </CardHeader>
-                  </Card>
-                </div>
+                <ExerciseHistoryPanel />
               </SectionBody>
             </TabsContent>
 

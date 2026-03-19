@@ -3,6 +3,24 @@
 import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core"
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
+import {
   Beef,
   CalendarDays,
   CheckCircle2,
@@ -10,17 +28,20 @@ import {
   ChevronLeft,
   ChevronRight,
   ChefHat,
-  ClipboardList,
   Droplets,
   Flame,
+  GripVertical,
   Info,
   MoreVertical,
   NotebookPen,
   Plus,
   RefreshCcw,
+  Search,
   Sparkles,
   Target,
+  Trash2,
   UtensilsCrossed,
+  Filter,
 } from "lucide-react"
 import {
   Area,
@@ -64,6 +85,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Table,
   TableBody,
@@ -74,6 +96,7 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 type NutritionMacroSegment = {
   macro: "protein" | "carbs" | "fats"
@@ -195,6 +218,17 @@ type NutritionMealPlanSection = {
   id: string
   label: string
   options: NutritionMealPlanOption[]
+}
+
+type NutritionRecipeLibraryItem = {
+  id: string
+  title: string
+  mealType: string
+  calories: number
+  carbs: number
+  protein: number
+  fats: number
+  image: string
 }
 
 const nutritionSubTabTriggerClassName =
@@ -812,6 +846,86 @@ const nutritionMealPlanSections: Record<string, NutritionMealPlanSection[]> = {
   ],
 }
 
+const nutritionRecipeLibrary: NutritionRecipeLibraryItem[] = [
+  {
+    id: "recipe-chicken-broccoli",
+    title: "Grilled Chicken Breast with Brown Rice and Broccoli",
+    mealType: "Lunch",
+    calories: 649,
+    carbs: 49,
+    protein: 52,
+    fats: 28,
+    image:
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: "recipe-overnight-oats",
+    title: "Overnight oats with peanut butter and banana",
+    mealType: "Breakfast",
+    calories: 476,
+    carbs: 60,
+    protein: 16,
+    fats: 19,
+    image:
+      "https://images.unsplash.com/photo-1495214783159-3503fd1b572d?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: "recipe-avocado-toast",
+    title: "Avocado toast with a boiled egg",
+    mealType: "Breakfast",
+    calories: 261,
+    carbs: 18,
+    protein: 9,
+    fats: 16,
+    image:
+      "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: "recipe-yogurt-granola",
+    title: "Greek Yogurt with Honey and Granola",
+    mealType: "Snack",
+    calories: 282,
+    carbs: 45,
+    protein: 18,
+    fats: 3,
+    image:
+      "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: "recipe-scrambled-eggs",
+    title: "Scrambled eggs with spinach and tomatoes",
+    mealType: "Breakfast",
+    calories: 358,
+    carbs: 4,
+    protein: 21,
+    fats: 29,
+    image:
+      "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: "recipe-protein-shake",
+    title: "Protein shake and banana",
+    mealType: "Snack",
+    calories: 262,
+    carbs: 30,
+    protein: 27,
+    fats: 4,
+    image:
+      "https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?auto=format&fit=crop&w=900&q=80",
+  },
+  {
+    id: "recipe-fruit-smoothie",
+    title: "Fruit and protein smoothie",
+    mealType: "Snack",
+    calories: 296,
+    carbs: 38,
+    protein: 28,
+    fats: 4,
+    image:
+      "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?auto=format&fit=crop&w=900&q=80",
+  },
+]
+
 function parseMealPlanMacros(macros: string) {
   const match = macros.match(/(\d+)P\s*\/\s*(\d+)C\s*\/\s*(\d+)F/i)
 
@@ -828,6 +942,18 @@ function parseMealPlanMacros(macros: string) {
     carbs: Number.parseInt(match[2] ?? "0", 10),
     fats: Number.parseInt(match[3] ?? "0", 10),
   }
+}
+
+function getMealPlanEditDescription(plan: NutritionMealPlan) {
+  if (plan.id === "training-day") {
+    return "Balanced meals designed for a training day with sufficient macros for muscle recovery and energy."
+  }
+
+  if (plan.id === "rest-day") {
+    return "Lower carb meals designed for easier days with stable energy and better satiety."
+  }
+
+  return plan.subtitle
 }
 
 function getNutritionPreset(phase?: string): NutritionPreset {
@@ -1535,7 +1661,7 @@ function CreateNutritionPlanDialog({
             </DialogFooter>
           </TabsContent>
 
-          <TabsContent value="library" className="mt-0 space-y-0">
+          <TabsContent value="library" className="mt-0 min-h-0 overflow-y-auto space-y-0">
             <div className="grid gap-3 px-5 py-5 sm:grid-cols-2">
               {templateItems.map((template) => {
                 const isActive = template.id === selectedTemplateId
@@ -2115,14 +2241,613 @@ function SmartMealPlannerDialog({
   )
 }
 
+function EditMealPlanDialog({
+  plan,
+  trigger,
+}: {
+  plan: NutritionMealPlan
+  trigger?: React.ReactElement
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [planName, setPlanName] = React.useState(plan.title)
+  const [planDescription, setPlanDescription] = React.useState(
+    getMealPlanEditDescription(plan)
+  )
+
+  const resetDialog = React.useCallback(() => {
+    setPlanName(plan.title)
+    setPlanDescription(getMealPlanEditDescription(plan))
+  }, [plan])
+
+  React.useEffect(() => {
+    if (!open) {
+      resetDialog()
+    }
+  }, [open, resetDialog])
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        {trigger ?? (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+          >
+            Uredi
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
+        <div className="px-5 pt-4">
+          <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+            <Droplets className="size-4 text-neutral-500" />
+            Edit Plan
+          </DialogTitle>
+        </div>
+
+        <div className="space-y-5 px-5 py-5">
+          <div className="space-y-2">
+            <label className="block text-[13px] font-medium text-neutral-800">
+              Plan Name <span className="text-rose-500">*</span>
+            </label>
+            <Input
+              value={planName}
+              onChange={(event) => setPlanName(event.target.value)}
+              className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-[13px] font-medium text-neutral-800">
+              Plan Description
+            </label>
+            <textarea
+              value={planDescription}
+              onChange={(event) => setPlanDescription(event.target.value)}
+              className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+            />
+          </div>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <Button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+          >
+            Save Changes
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function NutritionRecipeCaloriesDonut({
+  calories,
+}: {
+  calories: number
+}) {
+  const chartData = [
+    { name: "Carbs", value: 34, fill: "var(--color-carbs)" },
+    { name: "Protein", value: 31, fill: "var(--color-protein)" },
+    { name: "Fats", value: 35, fill: "var(--color-fats)" },
+  ]
+
+  return (
+    <ChartContainer config={mealPlanDonutConfig} className="size-12">
+      <PieChart>
+        <Pie
+          data={chartData}
+          dataKey="value"
+          innerRadius={16}
+          outerRadius={24}
+          strokeWidth={3}
+        >
+          <Label
+            content={({ viewBox }) => {
+              if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                return (
+                  <text
+                    x={viewBox.cx}
+                    y={viewBox.cy}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                  >
+                    <tspan
+                      x={viewBox.cx}
+                      y={viewBox.cy}
+                      className="fill-neutral-950 text-[9px] font-semibold"
+                    >
+                      {calories}
+                    </tspan>
+                  </text>
+                )
+              }
+
+              return null
+            }}
+          />
+        </Pie>
+      </PieChart>
+    </ChartContainer>
+  )
+}
+
+function AddMealDialog({
+  trigger,
+  open: openProp,
+  onOpenChange,
+}: {
+  trigger?: React.ReactElement | null
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+}) {
+  const [internalOpen, setInternalOpen] = React.useState(false)
+  const open = openProp ?? internalOpen
+  const setOpen = React.useCallback(
+    (nextOpen: boolean) => {
+      if (openProp === undefined) {
+        setInternalOpen(nextOpen)
+      }
+
+      onOpenChange?.(nextOpen)
+    },
+    [onOpenChange, openProp]
+  )
+  const [activeTab, setActiveTab] = React.useState<
+    "library" | "recipes" | "meal-ai" | "create"
+  >("recipes")
+  const [mealTypeFilter, setMealTypeFilter] = React.useState("All")
+  const [sortBy, setSortBy] = React.useState("Popular")
+  const [recipeSearch, setRecipeSearch] = React.useState("")
+  const [mealAiDescription, setMealAiDescription] = React.useState("")
+  const [mealAiAllergies, setMealAiAllergies] = React.useState("")
+  const [mealAiType, setMealAiType] = React.useState("Breakfast")
+  const [createMealName, setCreateMealName] = React.useState("")
+  const [createMealDescription, setCreateMealDescription] = React.useState("")
+
+  const resetDialog = React.useCallback(() => {
+    setActiveTab("recipes")
+    setMealTypeFilter("All")
+    setSortBy("Popular")
+    setRecipeSearch("")
+    setMealAiDescription("")
+    setMealAiAllergies("")
+    setMealAiType("Breakfast")
+    setCreateMealName("")
+    setCreateMealDescription("")
+  }, [])
+
+  React.useEffect(() => {
+    if (!open) {
+      resetDialog()
+    }
+  }, [open, resetDialog])
+
+  const filteredRecipes = React.useMemo(() => {
+    return nutritionRecipeLibrary.filter((recipe) => {
+      const matchesSearch = recipe.title
+        .toLowerCase()
+        .includes(recipeSearch.toLowerCase())
+      const matchesType =
+        mealTypeFilter === "All" || recipe.mealType === mealTypeFilter
+
+      return matchesSearch && matchesType
+    })
+  }, [mealTypeFilter, recipeSearch])
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      {trigger !== null ? (
+        <DialogTrigger asChild>
+          {trigger ?? (
+            <Button type="button" size="sm" className={primaryActionButtonClassName}>
+              <Plus className="size-4" />
+              Dodaj obrok
+            </Button>
+          )}
+        </DialogTrigger>
+      ) : null}
+
+      <DialogContent className="flex max-h-[85vh] w-[min(92vw,820px)] flex-col gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[820px]">
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as typeof activeTab)}
+          className="flex min-h-0 flex-1 flex-col gap-0"
+        >
+          <div className="pt-4">
+            <div className="px-5">
+              <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+                <Droplets className="size-4 text-neutral-500" />
+                Add Meal
+              </DialogTitle>
+            </div>
+
+            <div className="mt-3 border-b border-neutral-200 px-5">
+              <TabsList
+                variant="line"
+                className="h-auto w-full justify-start gap-6 rounded-none bg-transparent p-0"
+              >
+                <TabsTrigger value="library" className={createNutritionTabTriggerClassName}>
+                  Your Library
+                </TabsTrigger>
+                <TabsTrigger value="recipes" className={createNutritionTabTriggerClassName}>
+                  HubFit Recipes
+                </TabsTrigger>
+                <TabsTrigger value="meal-ai" className={createNutritionTabTriggerClassName}>
+                  Meal AI
+                </TabsTrigger>
+                <TabsTrigger value="create" className={createNutritionTabTriggerClassName}>
+                  Create New
+                </TabsTrigger>
+              </TabsList>
+            </div>
+          </div>
+
+          <TabsContent value="library" className="mt-0 space-y-0">
+            <div className="space-y-4 px-5 py-5">
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    value=""
+                    readOnly
+                    placeholder="Search meal"
+                    className="h-10 rounded-sm border-neutral-200 bg-white pl-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+                </div>
+                <Button variant="outline" size="icon-sm" className="size-10 rounded-sm border-neutral-200 text-neutral-500 shadow-none hover:bg-neutral-50">
+                  <Search className="size-4" />
+                </Button>
+                <Button variant="outline" size="icon-sm" className="size-10 rounded-sm border-neutral-200 text-neutral-500 shadow-none hover:bg-neutral-50">
+                  <Filter className="size-4" />
+                </Button>
+              </div>
+
+              <div className="flex min-h-[430px] flex-col items-center justify-center rounded-sm border border-neutral-200 bg-white px-6 py-12 text-center">
+                <div className="flex size-16 items-center justify-center rounded-sm border border-dashed border-neutral-200 bg-neutral-50 text-neutral-300">
+                  <UtensilsCrossed className="size-8" />
+                </div>
+                <div className="mt-8 text-[18px] font-semibold text-neutral-950">
+                  Your meal library is empty
+                </div>
+                <div className="mt-2 max-w-sm text-[14px] text-neutral-500">
+                  Create your first meal in your meal library to get started.
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="recipes" className="mt-0 min-h-0 overflow-y-auto space-y-0">
+            <div className="space-y-4 px-5 py-5">
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    value={recipeSearch}
+                    onChange={(event) => setRecipeSearch(event.target.value)}
+                    placeholder="Search recipes..."
+                    className="h-12 rounded-sm border-neutral-200 bg-white pl-11 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-neutral-400" />
+                </div>
+                <Button variant="outline" className="h-12 rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50">
+                  <Filter className="size-4" />
+                  Filters
+                </Button>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="h-12 min-w-[120px] rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5">
+                    <SelectItem value="Popular">Popular</SelectItem>
+                    <SelectItem value="Newest">Newest</SelectItem>
+                    <SelectItem value="Calories">Calories</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {["Breakfast", "Lunch", "Dinner", "Snack", "Side", "Dessert", "All"].map((type) => (
+                  <Button
+                    key={type}
+                    type="button"
+                    variant="outline"
+                    onClick={() => setMealTypeFilter(type)}
+                    className={cn(
+                      "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
+                      mealTypeFilter === type &&
+                        "border-brand-500 bg-brand-50 text-brand-700"
+                    )}
+                  >
+                    {type}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                {filteredRecipes.map((recipe) => (
+                  <div
+                    key={recipe.id}
+                    className="grid grid-cols-[48px_minmax(0,1fr)_58px] items-center gap-4 border-b border-neutral-200 px-4 py-3 last:border-b-0"
+                  >
+                    <div className="overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+                      <img
+                        src={recipe.image}
+                        alt={recipe.title}
+                        className="h-12 w-12 object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="truncate text-[15px] font-medium text-neutral-950">
+                        {recipe.title}
+                      </div>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        <Badge variant="outline" className="rounded-sm border-blue-200 bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-600">
+                          {recipe.carbs}g C
+                        </Badge>
+                        <Badge variant="outline" className="rounded-sm border-violet-200 bg-violet-50 px-2 py-0.5 text-[11px] font-medium text-violet-600">
+                          {recipe.protein}g P
+                        </Badge>
+                        <Badge variant="outline" className="rounded-sm border-cyan-200 bg-cyan-50 px-2 py-0.5 text-[11px] font-medium text-cyan-600">
+                          {recipe.fats}g F
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <NutritionRecipeCaloriesDonut calories={recipe.calories} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="meal-ai" className="mt-0 min-h-0 overflow-y-auto space-y-0">
+            <div className="space-y-5 px-5 py-5">
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Meal <span className="text-rose-500">*</span>
+                </label>
+                <textarea
+                  value={mealAiDescription}
+                  onChange={(event) => setMealAiDescription(event.target.value)}
+                  placeholder="Description of the meal you want e.g. 30 grams of chicken with lettuce"
+                  className="min-h-[82px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Allergies
+                </label>
+                <Input
+                  value={mealAiAllergies}
+                  onChange={(event) => setMealAiAllergies(event.target.value)}
+                  placeholder="Enter in any allergies e.g. nuts / vegan"
+                  className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Meal Type <span className="text-rose-500">*</span>
+                </label>
+                <div className="grid grid-cols-2 overflow-hidden rounded-sm border border-neutral-200 bg-white md:grid-cols-4">
+                  {["Breakfast", "Lunch", "Dinner", "Snacks"].map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setMealAiType(type)}
+                      className={cn(
+                        "flex items-center justify-center gap-2 border-r border-neutral-200 px-4 py-3 text-[14px] text-neutral-700 last:border-r-0 hover:bg-neutral-50",
+                        mealAiType === type && "bg-brand-50 text-brand-700"
+                      )}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <DialogClose asChild>
+                <Button type="button" variant="ghost" className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button type="button" className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+                Generate Meal
+              </Button>
+            </DialogFooter>
+          </TabsContent>
+
+          <TabsContent value="create" className="mt-0 min-h-0 overflow-y-auto space-y-0">
+            <div className="space-y-5 px-5 py-5">
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Meal Name <span className="text-rose-500">*</span>
+                </label>
+                <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_56px]">
+                  <Input
+                    value={createMealName}
+                    onChange={(event) => setCreateMealName(event.target.value)}
+                    placeholder="Name of the meal e.g. Breakfast"
+                    className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <div className="relative flex size-14 items-center justify-center overflow-hidden rounded-sm border border-neutral-200 bg-sky-50">
+                    <UtensilsCrossed className="size-6 text-neutral-500" />
+                    <span className="absolute right-1 bottom-1 flex size-5 items-center justify-center rounded-full bg-black text-white">
+                      <Plus className="size-3" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-neutral-800">
+                  Meal Description
+                </label>
+                <textarea
+                  value={createMealDescription}
+                  onChange={(event) => setCreateMealDescription(event.target.value)}
+                  placeholder="Enter any additional info"
+                  className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+                />
+              </div>
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+              <DialogClose asChild>
+                <Button type="button" variant="ghost" className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button
+                type="button"
+                disabled={!createMealName.trim()}
+                className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+              >
+                Add Meal
+              </Button>
+            </DialogFooter>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function RenameMealBlockDialog({
+  open,
+  onOpenChange,
+  initialValue,
+  onConfirm,
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  initialValue: string
+  onConfirm: (nextValue: string) => void
+}) {
+  const [value, setValue] = React.useState(initialValue)
+
+  React.useEffect(() => {
+    if (open) {
+      setValue(initialValue)
+    }
+  }, [initialValue, open])
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[560px]">
+        <div className="space-y-5 px-5 py-5">
+          <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+            <span className="flex size-5 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+              <Info className="size-3.5" />
+            </span>
+            Confirmation
+          </DialogTitle>
+
+          <div className="pl-7 text-[15px] text-neutral-600">
+            Are you sure you want to proceed with this action?
+          </div>
+
+          <div className="pl-7">
+            <Input
+              value={value}
+              onChange={(event) => setValue(event.target.value)}
+              className="h-11 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            />
+          </div>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-end sm:gap-2">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="outline"
+              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            >
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button
+            type="button"
+            disabled={!value.trim()}
+            onClick={() => {
+              onConfirm(value.trim())
+              onOpenChange(false)
+            }}
+            className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+          >
+            Rename
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function MealSectionDragHandle({
+  attributes,
+  listeners,
+}: {
+  attributes: ReturnType<typeof useSortable>["attributes"]
+  listeners: ReturnType<typeof useSortable>["listeners"]
+}) {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      className="size-7 cursor-grab text-neutral-400 shadow-none hover:bg-transparent hover:text-neutral-600 active:cursor-grabbing"
+      {...attributes}
+      {...listeners}
+    >
+      <GripVertical className="size-3.5" />
+      <span className="sr-only">Premakni obrok</span>
+    </Button>
+  )
+}
+
 function NutritionMealPlanSectionCard({
   section,
+  onRenameSection,
+  onDeleteSection,
+  attributes,
+  listeners,
+  setNodeRef,
+  transform,
+  transition,
+  isDragging,
 }: {
   section: NutritionMealPlanSection
+  onRenameSection?: (sectionId: string, nextLabel: string) => void
+  onDeleteSection?: (sectionId: string) => void
+  attributes?: ReturnType<typeof useSortable>["attributes"]
+  listeners?: ReturnType<typeof useSortable>["listeners"]
+  setNodeRef?: (node: HTMLElement | null) => void
+  transform?: { x: number; y: number; scaleX: number; scaleY: number } | null
+  transition?: string
+  isDragging?: boolean
 }) {
   const [selectedOptionId, setSelectedOptionId] = React.useState(
     section.options[0]?.id ?? ""
   )
+  const [isRenameOpen, setIsRenameOpen] = React.useState(false)
+  const [isAddAlternativeOpen, setIsAddAlternativeOpen] = React.useState(false)
 
   React.useEffect(() => {
     setSelectedOptionId(section.options[0]?.id ?? "")
@@ -2137,92 +2862,170 @@ function NutritionMealPlanSectionCard({
   }
 
   return (
-    <Card className="rounded-xl border-neutral-200 shadow-none">
-      <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
-        <CardTitle className="text-[16px] font-semibold text-neutral-950">
-          {section.label}
-        </CardTitle>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon-sm"
-              className="size-8 rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+    <>
+      <Card
+        ref={setNodeRef}
+        className="rounded-xl border-neutral-200 shadow-none data-[dragging=true]:opacity-80"
+        data-dragging={isDragging}
+        style={{
+          transform: transform ? CSS.Transform.toString(transform) : undefined,
+          transition,
+        }}
+      >
+        <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
+          <div className="flex items-center gap-2">
+            {attributes && listeners ? (
+              <MealSectionDragHandle attributes={attributes} listeners={listeners} />
+            ) : null}
+            <CardTitle className="text-[16px] font-semibold text-neutral-950">
+              {section.label}
+            </CardTitle>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                className="size-8 rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+              >
+                <MoreVertical className="size-4" />
+                <span className="sr-only">Odpri meni obroka</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className="w-52 rounded-xl border-neutral-200/70 bg-white p-1.5 shadow-lg shadow-black/5"
             >
-              <MoreVertical className="size-4" />
-              <span className="sr-only">Odpri meni obroka</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            sideOffset={8}
-            className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
-          >
-            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-              Uredi obrok
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-              Podvoji opcijo
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
-              Izbrisi obrok
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </CardHeader>
-      <CardContent className="space-y-4 pt-0">
-        <div className="flex flex-wrap gap-2 border-b border-neutral-200 pb-3">
-          {section.options.map((option) => (
-            <button
-              key={option.id}
-              type="button"
-              onClick={() => setSelectedOptionId(option.id)}
-              className={cn(
-                "rounded-sm border px-3 py-1.5 text-[13px] transition-colors",
-                option.id === activeOption.id
-                  ? "border-brand-500 bg-brand-50 text-brand-700"
-                  : "border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
-              )}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-[150px_minmax(0,1fr)]">
-          <div className="overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
-            <img
-              src={activeOption.image}
-              alt={activeOption.title}
-              className="h-full w-full object-cover"
-            />
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault()
+                  setIsAddAlternativeOpen(true)
+                }}
+                className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px] text-neutral-800 focus:bg-neutral-50"
+              >
+                <RefreshCcw className="mr-2 size-4 text-neutral-500" />
+                Add Alternative
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault()
+                  setIsRenameOpen(true)
+                }}
+                className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px] text-neutral-800 focus:bg-neutral-50"
+              >
+                <NotebookPen className="mr-2 size-4 text-neutral-500" />
+                Rename Block
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault()
+                  onDeleteSection?.(section.id)
+                }}
+                className="cursor-pointer rounded-lg px-3 py-2.5 text-[14px] text-rose-600 focus:bg-rose-50 focus:text-rose-600"
+              >
+                <Trash2 className="mr-2 size-4" />
+                Delete Block
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardHeader>
+        <CardContent className="space-y-4 pt-0">
+          <div className="flex flex-wrap gap-2 border-b border-neutral-200 pb-3">
+            {section.options.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => setSelectedOptionId(option.id)}
+                className={cn(
+                  "rounded-sm border px-3 py-1.5 text-[13px] transition-colors",
+                  option.id === activeOption.id
+                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                    : "border-neutral-200 bg-white text-neutral-600 hover:bg-neutral-50"
+                )}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
 
-          <div className="space-y-3">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="text-[24px] font-semibold leading-tight text-neutral-950">
-                  {activeOption.title}
-                </div>
-                <div className="mt-2 text-[14px] text-neutral-500">
-                  {activeOption.carbs}g C • {activeOption.protein}g P •{" "}
-                  {activeOption.fats}g F
-                </div>
-              </div>
-              <div className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-[15px] font-medium text-brand-700">
-                <Flame className="size-4" />
-                {activeOption.calories} kcal
-              </div>
+          <div className="grid gap-4 md:grid-cols-[150px_minmax(0,1fr)]">
+            <div className="overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100">
+              <img
+                src={activeOption.image}
+                alt={activeOption.title}
+                className="h-full w-full object-cover"
+              />
             </div>
 
-            <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-[14px] leading-6 text-neutral-600">
-              {activeOption.description}
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-[24px] font-semibold leading-tight text-neutral-950">
+                    {activeOption.title}
+                  </div>
+                  <div className="mt-2 text-[14px] text-neutral-500">
+                    {activeOption.carbs}g C / {activeOption.protein}g P /{" "}
+                    {activeOption.fats}g F
+                  </div>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-[15px] font-medium text-brand-700">
+                  <Flame className="size-4" />
+                  {activeOption.calories} kcal
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3 text-[14px] leading-6 text-neutral-600">
+                {activeOption.description}
+              </div>
             </div>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      <RenameMealBlockDialog
+        open={isRenameOpen}
+        onOpenChange={setIsRenameOpen}
+        initialValue={section.label}
+        onConfirm={(nextValue) => onRenameSection?.(section.id, nextValue)}
+      />
+
+      <AddMealDialog
+        open={isAddAlternativeOpen}
+        onOpenChange={setIsAddAlternativeOpen}
+        trigger={null}
+      />
+    </>
+  )
+}
+
+function SortableNutritionMealPlanSectionCard({
+  section,
+  onRenameSection,
+  onDeleteSection,
+}: {
+  section: NutritionMealPlanSection
+  onRenameSection?: (sectionId: string, nextLabel: string) => void
+  onDeleteSection?: (sectionId: string) => void
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({
+      id: section.id,
+    })
+
+  return (
+    <NutritionMealPlanSectionCard
+      section={section}
+      onRenameSection={onRenameSection}
+      onDeleteSection={onDeleteSection}
+      attributes={attributes}
+      listeners={listeners}
+      setNodeRef={setNodeRef}
+      transform={transform}
+      transition={transition}
+      isDragging={isDragging}
+    />
   )
 }
 
@@ -2237,6 +3040,88 @@ export function MealPlanDetailView({
   const pathname = usePathname()
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
   const mealPlan = preset.mealPlans.find((plan) => plan.id === mealPlanId)
+  const baseSections = React.useMemo(
+    () => (mealPlan ? nutritionMealPlanSections[mealPlan.id] ?? [] : []),
+    [mealPlan]
+  )
+  const macros = React.useMemo(
+    () => parseMealPlanMacros(mealPlan?.macros ?? ""),
+    [mealPlan]
+  )
+  const [sections, setSections] = React.useState(baseSections)
+  const reorderToastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {})
+  )
+
+  React.useEffect(() => {
+    setSections(baseSections)
+  }, [baseSections])
+
+  React.useEffect(() => {
+    return () => {
+      if (reorderToastTimeoutRef.current) {
+        clearTimeout(reorderToastTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  const scheduleSavedToast = React.useCallback((delay = 0) => {
+    if (reorderToastTimeoutRef.current) {
+      clearTimeout(reorderToastTimeoutRef.current)
+    }
+
+    reorderToastTimeoutRef.current = setTimeout(() => {
+      toast.success("Spremembe so shranjene", {
+        id: "nutrition-meal-plan-order-saved",
+      })
+    }, delay)
+  }, [])
+
+  function handleSectionDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    if (active && over && active.id !== over.id) {
+      setSections((currentSections) => {
+        const oldIndex = currentSections.findIndex(
+          (section) => section.id === active.id
+        )
+        const newIndex = currentSections.findIndex(
+          (section) => section.id === over.id
+        )
+
+        return arrayMove(currentSections, oldIndex, newIndex)
+      })
+
+      scheduleSavedToast(650)
+    }
+  }
+
+  const handleRenameSection = React.useCallback(
+    (sectionId: string, nextLabel: string) => {
+      setSections((currentSections) =>
+        currentSections.map((section) =>
+          section.id === sectionId ? { ...section, label: nextLabel } : section
+        )
+      )
+      scheduleSavedToast()
+    },
+    [scheduleSavedToast]
+  )
+
+  const handleDeleteSection = React.useCallback(
+    (sectionId: string) => {
+      setSections((currentSections) =>
+        currentSections.filter((section) => section.id !== sectionId)
+      )
+      scheduleSavedToast()
+    },
+    [scheduleSavedToast]
+  )
 
   if (!mealPlan) {
     return (
@@ -2245,9 +3130,6 @@ export function MealPlanDetailView({
       </div>
     )
   }
-
-  const macros = parseMealPlanMacros(mealPlan.macros)
-  const sections = nutritionMealPlanSections[mealPlan.id] ?? []
 
   return (
     <div className="min-w-0 bg-neutral-50">
@@ -2271,31 +3153,19 @@ export function MealPlanDetailView({
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-            >
-              Uredi
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-            >
-              <RefreshCcw className="size-4" />
-              Preuredi
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              className={primaryActionButtonClassName}
-            >
-              <Plus className="size-4" />
-              Dodaj obrok
-            </Button>
+            <EditMealPlanDialog plan={mealPlan} />
+            <AddMealDialog
+              trigger={
+                <Button
+                  type="button"
+                  size="sm"
+                  className={primaryActionButtonClassName}
+                >
+                  <Plus className="size-4" />
+                  Dodaj obrok
+                </Button>
+              }
+            />
           </div>
         </div>
       </div>
@@ -2355,9 +3225,28 @@ export function MealPlanDetailView({
           </CardContent>
         </Card>
 
-        {sections.map((section) => (
-          <NutritionMealPlanSectionCard key={section.id} section={section} />
-        ))}
+        <DndContext
+          collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis]}
+          onDragEnd={handleSectionDragEnd}
+          sensors={sensors}
+        >
+          <SortableContext
+            items={sections.map((section) => section.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-4">
+              {sections.map((section) => (
+                <SortableNutritionMealPlanSectionCard
+                  key={section.id}
+                  section={section}
+                  onRenameSection={handleRenameSection}
+                  onDeleteSection={handleDeleteSection}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   )
