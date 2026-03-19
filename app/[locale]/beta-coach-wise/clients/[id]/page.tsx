@@ -26,6 +26,7 @@ import {
   ClientHabitsPanel,
   HabitDetailView,
 } from "@/components/coachWise/clients/client-habits-panel"
+import { ClientNutritionPanel } from "@/components/coachWise/clients/client-nutrition-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -805,7 +806,8 @@ export default async function ClientProfilePage({
         </TabsContent>
 
         <TabsContent value="nutrition" className="mt-0 space-y-0">
-          <Tabs defaultValue="meal-plans" className="gap-0">
+          <ClientNutritionPanel phase={client.phase} />
+          {false ? <Tabs defaultValue="meal-plans" className="gap-0">
             <SectionSubHeader
               items={[
                 {
@@ -906,7 +908,7 @@ export default async function ClientProfilePage({
                 </Card>
               </SectionBody>
             </TabsContent>
-          </Tabs>
+          </Tabs> : null}
         </TabsContent>
 
         <TabsContent value="supplements" className="mt-0 space-y-0">
