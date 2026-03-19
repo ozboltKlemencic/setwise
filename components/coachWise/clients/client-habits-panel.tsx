@@ -2370,9 +2370,6 @@ export function HabitDetailView({
               <div className="truncate text-[17px] font-semibold text-neutral-950">
                 {habit.title}
               </div>
-              <div className="mt-0.5 text-[13px] text-neutral-500">
-                {habit.target}
-              </div>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
