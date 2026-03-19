@@ -26,6 +26,7 @@ import {
   ClientHabitsPanel,
   HabitDetailView,
 } from "@/components/coachWise/clients/client-habits-panel"
+import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
 import {
   ClientNutritionPanel,
   MealPlanDetailView,
@@ -268,49 +269,6 @@ function SupplementsSectionTable({
   )
 }
 
-function SupplementsScheduleTable({
-  title,
-  rows,
-}: {
-  title: string
-  rows: {
-    time: string
-    supplements: string
-    withMeal: string
-    note: string
-  }[]
-}) {
-  return (
-    <div className="space-y-2">
-      <div className="px-1 text-[12px] font-medium text-neutral-500">{title}</div>
-      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-        <Table>
-          <TableHeader className="bg-muted">
-            <TableRow className="hover:bg-transparent">
-              <TableHead className="pl-4 lg:pl-5">Cas</TableHead>
-              <TableHead>Dodatki</TableHead>
-              <TableHead>Ob obroku</TableHead>
-              <TableHead>Opomba</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={`${title}-${row.time}`}>
-                <TableCell className="pl-4 font-medium text-neutral-950 lg:pl-5">
-                  {row.time}
-                </TableCell>
-                <TableCell>{row.supplements}</TableCell>
-                <TableCell>{row.withMeal}</TableCell>
-                <TableCell className="text-neutral-600">{row.note}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
-  )
-}
-
 export default async function ClientProfilePage({
   params,
   searchParams,
@@ -468,47 +426,6 @@ export default async function ClientProfilePage({
           timing: "Pred spanjem",
           dose: "3 g",
           purpose: "Pomoc pri umiritvi rutine in kvaliteti spanja.",
-        },
-      ],
-    },
-  ]
-  const supplementScheduleSections = [
-    {
-      title: "Jutro",
-      rows: [
-        {
-          time: "07:30",
-          supplements: "Kreatin, Vitamin D3",
-          withMeal: "Zajtrk",
-          note: "Glavni dnevni anchor za dober ritem in lazjo doslednost.",
-        },
-      ],
-    },
-    {
-      title: "Sredina dneva",
-      rows: [
-        {
-          time: "13:00",
-          supplements: "Omega 3",
-          withMeal: "Kosilo",
-          note: "Najbolje deluje skupaj z vecjim obrokom, ki vsebuje nekaj mascob.",
-        },
-        {
-          time: "17:00",
-          supplements: "Elektroliti",
-          withMeal: "Pred treningom",
-          note: "Dodaj na trening dneve ali ko je potreba po hidraciji vecja.",
-        },
-      ],
-    },
-    {
-      title: "Vecer",
-      rows: [
-        {
-          time: "21:30",
-          supplements: "Magnezij, Glicin",
-          withMeal: "Po potrebi ob snacku",
-          note: "Podpira mirnejsi vecerni ritem in kvalitetnejsi recovery.",
         },
       ],
     },
@@ -1150,12 +1067,6 @@ export default async function ClientProfilePage({
                   value: "schedule",
                 },
               ]}
-              actions={
-                <Button size="sm" className={primaryActionButtonClassName}>
-                  <IconPlus className="size-4" />
-                  Add Supplement
-                </Button>
-              }
             />
 
             <TabsContent value="stack" className="mt-0 space-y-0 m-2">
@@ -1172,43 +1083,7 @@ export default async function ClientProfilePage({
 
             <TabsContent value="schedule" className="mt-0 space-y-0 m-2">
               <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card className="shadow-none">
-                    <CardHeader>
-                      <CardDescription>Dnevni anchorji</CardDescription>
-                      <CardTitle>3 touchpointi / dan</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Jutro, sredina dneva in pred spanjem za enostaven, ponovljiv ritem.
-                    </CardContent>
-                  </Card>
-                  <Card className="shadow-none">
-                    <CardHeader>
-                      <CardDescription>Trening dnevi</CardDescription>
-                      <CardTitle>+ elektroliti</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Dodani samo takrat, ko je trening tezji ali je obcutek hidracije slabsi.
-                    </CardContent>
-                  </Card>
-                  <Card className="shadow-none">
-                    <CardHeader>
-                      <CardDescription>Vecerna rutina</CardDescription>
-                      <CardTitle>Magnezij + glicin</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Recovery fokus za bolj umirjen zakljucek dneva in kvalitetnejsi spanec.
-                    </CardContent>
-                  </Card>
-                </div>
-
-                {supplementScheduleSections.map((section) => (
-                  <SupplementsScheduleTable
-                    key={section.title}
-                    title={section.title}
-                    rows={section.rows}
-                  />
-                ))}
+                <SupplementsScheduleCalendar />
               </SectionBody>
             </TabsContent>
           </Tabs>
