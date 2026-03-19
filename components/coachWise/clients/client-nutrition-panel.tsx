@@ -21,7 +21,16 @@ import {
   Target,
   UtensilsCrossed,
 } from "lucide-react"
-import { Area, AreaChart, CartesianGrid, Label, Pie, PieChart, XAxis } from "recharts"
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Label,
+  Pie,
+  PieChart,
+  XAxis,
+  YAxis,
+} from "recharts"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -215,6 +224,39 @@ const iifymChartConfig = {
     color: "#fb7185",
   },
 } satisfies ChartConfig
+
+const iifymSeries = [
+  {
+    key: "calories",
+    label: "Calories",
+    color: iifymChartConfig.calories.color,
+    axisId: "calories",
+  },
+  {
+    key: "protein",
+    label: "Protein",
+    color: iifymChartConfig.protein.color,
+    axisId: "macros",
+  },
+  {
+    key: "carbs",
+    label: "Carbs",
+    color: iifymChartConfig.carbs.color,
+    axisId: "macros",
+  },
+  {
+    key: "fats",
+    label: "Fats",
+    color: iifymChartConfig.fats.color,
+    axisId: "macros",
+  },
+  {
+    key: "fiber",
+    label: "Fiber",
+    color: iifymChartConfig.fiber.color,
+    axisId: "macros",
+  },
+] as const
 
 const smartMacroPresets: SmartMacroPreset[] = [
   {
@@ -997,31 +1039,13 @@ function NutritionIifymTooltip({
   }
 
   const items = [
-    {
-      label: "Calories",
-      value: `${point.rawCalories} kcal`,
-      color: iifymChartConfig.calories.color,
-    },
-    {
-      label: "Protein",
-      value: `${point.rawProtein} g`,
-      color: iifymChartConfig.protein.color,
-    },
-    {
-      label: "Carbs",
-      value: `${point.rawCarbs} g`,
-      color: iifymChartConfig.carbs.color,
-    },
-    {
-      label: "Fats",
-      value: `${point.rawFats} g`,
-      color: iifymChartConfig.fats.color,
-    },
-    {
-      label: "Fiber",
-      value: `${point.rawFiber} g`,
-      color: iifymChartConfig.fiber.color,
-    },
+    ...iifymSeries.map((series) => ({
+      label: series.label,
+      value: `${point[`raw${series.label}`]} ${
+        series.key === "calories" ? "kcal" : "g"
+      }`,
+      color: series.color,
+    })),
   ]
 
   return (
@@ -1867,6 +1891,15 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
   const [iifymWeekIndex, setIifymWeekIndex] = React.useState(
     Math.max(0, iifymWeeks.length - 1)
   )
+  const [visibleIifymSeries, setVisibleIifymSeries] = React.useState<
+    Record<(typeof iifymSeries)[number]["key"], boolean>
+  >({
+    calories: true,
+    protein: true,
+    carbs: true,
+    fats: true,
+    fiber: true,
+  })
 
   React.useEffect(() => {
     setIifymWeekIndex(Math.max(0, iifymWeeks.length - 1))
@@ -1891,23 +1924,18 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
         dayLabel: nutritionMonthDayFormatter.format(
           new Date(`${entry.date}T00:00:00`)
         ),
-        calories:
-          Math.round((entry.calories / preset.iifymTargets.calories) * 1000) /
-          10,
-        protein:
-          Math.round((entry.protein / preset.iifymTargets.protein) * 1000) / 10,
-        carbs:
-          Math.round((entry.carbs / preset.iifymTargets.carbs) * 1000) / 10,
-        fats: Math.round((entry.fats / preset.iifymTargets.fats) * 1000) / 10,
-        fiber:
-          Math.round((entry.fiber / preset.iifymTargets.fiber) * 1000) / 10,
+        calories: entry.calories,
+        protein: entry.protein,
+        carbs: entry.carbs,
+        fats: entry.fats,
+        fiber: entry.fiber,
         rawCalories: entry.calories,
         rawProtein: entry.protein,
         rawCarbs: entry.carbs,
         rawFats: entry.fats,
         rawFiber: entry.fiber,
       })),
-    [preset.iifymTargets, visibleIifymWeek]
+    [visibleIifymWeek]
   )
   const macroBreakdownRows = React.useMemo(
     () => [
@@ -2195,21 +2223,30 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
           <div className="grid gap-3 xl:grid-cols-[minmax(0,1.45fr)_minmax(330px,0.55fr)]">
             <Card className="rounded-xl border-neutral-200 shadow-none">
               <CardContent className="space-y-4 p-5">
-                <div className="flex flex-wrap items-center gap-4 text-[13px] text-neutral-600">
-                  {[
-                    ["Calories", iifymChartConfig.calories.color],
-                    ["Protein", iifymChartConfig.protein.color],
-                    ["Carbs", iifymChartConfig.carbs.color],
-                    ["Fats", iifymChartConfig.fats.color],
-                    ["Fiber", iifymChartConfig.fiber.color],
-                  ].map(([label, color]) => (
-                    <span key={label} className="inline-flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {iifymSeries.map((series) => (
+                    <button
+                      key={series.key}
+                      type="button"
+                      onClick={() =>
+                        setVisibleIifymSeries((current) => ({
+                          ...current,
+                          [series.key]: !current[series.key],
+                        }))
+                      }
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] transition-colors",
+                        visibleIifymSeries[series.key]
+                          ? "border-neutral-200 bg-white text-neutral-700"
+                          : "border-neutral-200 bg-neutral-100 text-neutral-400"
+                      )}
+                    >
                       <span
                         className="size-1.5 rounded-full"
-                        style={{ backgroundColor: color }}
+                        style={{ backgroundColor: series.color }}
                       />
-                      {label}
-                    </span>
+                      {series.label}
+                    </button>
                   ))}
                 </div>
 
@@ -2220,6 +2257,23 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
                     margin={{ left: 10, right: 16, top: 10, bottom: 0 }}
                   >
                     <CartesianGrid vertical={false} stroke="#e5e7eb" />
+                    <YAxis
+                      yAxisId="calories"
+                      hide
+                      domain={[
+                        0,
+                        (dataMax: number) => Math.max(2400, Math.ceil(dataMax * 1.12)),
+                      ]}
+                    />
+                    <YAxis
+                      yAxisId="macros"
+                      orientation="right"
+                      hide
+                      domain={[
+                        0,
+                        (dataMax: number) => Math.max(320, Math.ceil(dataMax * 1.18)),
+                      ]}
+                    />
                     <XAxis
                       dataKey="day"
                       tickLine={false}
@@ -2250,46 +2304,61 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
                         <stop offset="95%" stopColor={iifymChartConfig.fiber.color} stopOpacity={0.04} />
                       </linearGradient>
                     </defs>
-                    <Area
-                      dataKey="calories"
-                      type="natural"
-                      stroke={iifymChartConfig.calories.color}
-                      fill="url(#fillCalories)"
-                      fillOpacity={1}
-                      strokeWidth={2}
-                    />
-                    <Area
-                      dataKey="protein"
-                      type="natural"
-                      stroke={iifymChartConfig.protein.color}
-                      fill="url(#fillProtein)"
-                      fillOpacity={1}
-                      strokeWidth={2}
-                    />
-                    <Area
-                      dataKey="carbs"
-                      type="natural"
-                      stroke={iifymChartConfig.carbs.color}
-                      fill="url(#fillCarbs)"
-                      fillOpacity={1}
-                      strokeWidth={2}
-                    />
-                    <Area
-                      dataKey="fats"
-                      type="natural"
-                      stroke={iifymChartConfig.fats.color}
-                      fill="url(#fillFats)"
-                      fillOpacity={1}
-                      strokeWidth={2}
-                    />
-                    <Area
-                      dataKey="fiber"
-                      type="natural"
-                      stroke={iifymChartConfig.fiber.color}
-                      fill="url(#fillFiber)"
-                      fillOpacity={1}
-                      strokeWidth={2}
-                    />
+                    {visibleIifymSeries.calories ? (
+                      <Area
+                        yAxisId="calories"
+                        dataKey="calories"
+                        type="natural"
+                        stroke={iifymChartConfig.calories.color}
+                        fill="url(#fillCalories)"
+                        fillOpacity={1}
+                        strokeWidth={2.5}
+                      />
+                    ) : null}
+                    {visibleIifymSeries.protein ? (
+                      <Area
+                        yAxisId="macros"
+                        dataKey="protein"
+                        type="natural"
+                        stroke={iifymChartConfig.protein.color}
+                        fill="url(#fillProtein)"
+                        fillOpacity={1}
+                        strokeWidth={2}
+                      />
+                    ) : null}
+                    {visibleIifymSeries.carbs ? (
+                      <Area
+                        yAxisId="macros"
+                        dataKey="carbs"
+                        type="natural"
+                        stroke={iifymChartConfig.carbs.color}
+                        fill="url(#fillCarbs)"
+                        fillOpacity={1}
+                        strokeWidth={2}
+                      />
+                    ) : null}
+                    {visibleIifymSeries.fats ? (
+                      <Area
+                        yAxisId="macros"
+                        dataKey="fats"
+                        type="natural"
+                        stroke={iifymChartConfig.fats.color}
+                        fill="url(#fillFats)"
+                        fillOpacity={1}
+                        strokeWidth={2}
+                      />
+                    ) : null}
+                    {visibleIifymSeries.fiber ? (
+                      <Area
+                        yAxisId="macros"
+                        dataKey="fiber"
+                        type="natural"
+                        stroke={iifymChartConfig.fiber.color}
+                        fill="url(#fillFiber)"
+                        fillOpacity={1}
+                        strokeWidth={1.75}
+                      />
+                    ) : null}
                   </AreaChart>
                 </ChartContainer>
               </CardContent>
