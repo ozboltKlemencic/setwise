@@ -267,7 +267,7 @@ export function SupplementsScheduleCalendar() {
                           className={cn(
                             "rounded-lg border bg-white p-2.5 shadow-[0_1px_2px_rgba(17,24,39,0.05)]",
                             event.tone === "warning"
-                              ? "border-orange-300/70 bg-orange-50/30"
+                              ? "border-orange-300/70"
                               : "border-neutral-200"
                           )}
                         >
