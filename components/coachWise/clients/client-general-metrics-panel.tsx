@@ -13,13 +13,9 @@ import {
 } from "lucide-react"
 
 import {
-  HabitPeriodPicker,
   type HabitPeriod,
-  type HabitPeriodSelection,
   getMonthEnd,
   getMonthStart,
-  getWeekEnd,
-  getWeekStart,
 } from "@/components/coachWise/clients/habit-period-picker"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -31,7 +27,6 @@ import {
 } from "@/components/ui/chart"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
-import type { DateRange } from "react-day-picker"
 
 type MetricAverageRow = {
   label: string
@@ -179,65 +174,17 @@ export function ClientGeneralMetricsPanel({
     () => parseMetricDate(metricChartData.at(-1)?.date ?? "2026-03-18"),
     []
   )
-  const availableYears = React.useMemo(() => {
-    const currentYear = latestMetricDate.getFullYear()
-
-    return Array.from({ length: 8 }, (_, index) => currentYear - 2 + index)
-  }, [latestMetricDate])
-  const initialWeekRange = React.useMemo(
-    () => ({
-      from: getWeekStart(latestMetricDate),
-      to: getWeekEnd(latestMetricDate),
-    }),
-    [latestMetricDate]
-  )
-  const initialCustomRange = React.useMemo(
-    () => ({
-      from: new Date(latestMetricDate.getFullYear(), latestMetricDate.getMonth(), 1),
-      to: latestMetricDate,
-    }),
-    [latestMetricDate]
-  )
   const [selectedMetric, setSelectedMetric] = React.useState<MetricKey>("weight")
-  const [selectedPeriod, setSelectedPeriod] = React.useState<HabitPeriod>("month")
-  const [selectedDate, setSelectedDate] = React.useState<Date>(
-    getMonthStart(latestMetricDate)
-  )
-  const [selectedWeekRange, setSelectedWeekRange] = React.useState<
-    DateRange | undefined
-  >(initialWeekRange)
-  const [selectedCustomRange, setSelectedCustomRange] =
-    React.useState<DateRange | undefined>(initialCustomRange)
-  const [confirmedSelection, setConfirmedSelection] =
-    React.useState<HabitPeriodSelection>({
-      period: "month",
+  const confirmedSelection = React.useMemo(
+    () => ({
+      period: "month" as HabitPeriod,
       value: getMonthStart(latestMetricDate),
       range: {
         from: getMonthStart(latestMetricDate),
         to: getMonthEnd(latestMetricDate),
       },
-    })
-
-  const pickerProps = React.useMemo(
-    () => ({
-      period: selectedPeriod,
-      onPeriodChange: setSelectedPeriod,
-      value: selectedDate,
-      onChange: setSelectedDate,
-      weekRange: selectedWeekRange,
-      onWeekRangeChange: setSelectedWeekRange,
-      customRange: selectedCustomRange,
-      onCustomRangeChange: setSelectedCustomRange,
-      availableYears,
-      onConfirm: setConfirmedSelection,
     }),
-    [
-      availableYears,
-      selectedCustomRange,
-      selectedDate,
-      selectedPeriod,
-      selectedWeekRange,
-    ]
+    [latestMetricDate]
   )
 
   const filteredChartData = React.useMemo(() => {
@@ -342,7 +289,7 @@ export function ClientGeneralMetricsPanel({
           </div>
         </CardHeader>
         <CardContent className="flex min-h-0 flex-1 flex-col gap-2 p-3.5">
-          <div className="flex flex-row gap-2 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex flex-row gap-2">
             <div className="gap-x-1.5 flex flex-row">
               <div className="text-[22px] leading-none font-semibold text-neutral-950">
                 {currentMetricValue}
@@ -364,10 +311,7 @@ export function ClientGeneralMetricsPanel({
                   {selectedMetricSummary?.delta}
                 </Badge>
               </div>
-
             </div>
-
-            <HabitPeriodPicker {...pickerProps} />
           </div>
 
           <div className="min-h-0 flex-1 rounded-xl border border-neutral-200 bg-neutral-50/60 p-2.5">
