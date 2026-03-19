@@ -33,6 +33,9 @@ import {
 import {
   CompletedWorkoutsPanel,
   ExerciseHistoryPanel,
+  ImportCalendarDialog,
+  ProgramsPeriodPicker,
+  WorkoutDetailView,
 } from "@/components/coachWise/programs/exercise-history-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -60,6 +63,8 @@ type Props = {
     habitId?: string | string[]
     nutritionTab?: string | string[]
     mealPlanId?: string | string[]
+    programTab?: string | string[]
+    workoutId?: string | string[]
   }>
 }
 
@@ -216,7 +221,7 @@ export default async function ClientProfilePage({
   params,
   searchParams,
 }: Props) {
-  const { id } = await params
+  const { id, locale } = await params
   const resolvedSearchParams = await searchParams
   const clientId = Number(id)
   const activeProfileTab = Array.isArray(resolvedSearchParams.tab)
@@ -240,6 +245,12 @@ export default async function ClientProfilePage({
   const mealPlanId = Array.isArray(resolvedSearchParams.mealPlanId)
     ? resolvedSearchParams.mealPlanId[0]
     : resolvedSearchParams.mealPlanId
+  const activeProgramTab = Array.isArray(resolvedSearchParams.programTab)
+    ? resolvedSearchParams.programTab[0]
+    : resolvedSearchParams.programTab
+  const workoutId = Array.isArray(resolvedSearchParams.workoutId)
+    ? resolvedSearchParams.workoutId[0]
+    : resolvedSearchParams.workoutId
 
   if (!Number.isInteger(clientId)) {
     notFound()
@@ -254,6 +265,11 @@ export default async function ClientProfilePage({
     activeNutritionTab === "nutrition-logger"
       ? "nutrition-logger"
       : "meal-plans"
+  const resolvedProgramTab =
+    activeProgramTab === "exercise-history" ||
+    activeProgramTab === "completed-workouts"
+      ? activeProgramTab
+      : "calendar"
 
   if (!client) {
     notFound()
@@ -279,6 +295,14 @@ export default async function ClientProfilePage({
     return (
       <section className="min-w-0 bg-neutral-50">
         <MealPlanDetailView mealPlanId={mealPlanId} phase={client.phase} />
+      </section>
+    )
+  }
+
+  if (workoutId) {
+    return (
+      <section className="min-w-0 bg-neutral-50">
+        <WorkoutDetailView workoutId={workoutId} />
       </section>
     )
   }
@@ -1021,39 +1045,36 @@ export default async function ClientProfilePage({
         </TabsContent>
 
         <TabsContent value="programs" className="mt-0 space-y-0">
-          <Tabs defaultValue="calendar" className="gap-0">
+          <Tabs value={resolvedProgramTab} className="gap-0">
             <SectionSubHeader
               items={[
                 {
                   icon: <IconCalendarEvent className="size-4" />,
                   label: "Calendar",
                   value: "calendar",
+                  href: `/${locale}/beta-coach-wise/clients/${clientId}?tab=programs&programTab=calendar`,
                 },
                 {
                   icon: <IconChartBar className="size-4" />,
                   label: "Exercise History",
                   value: "exercise-history",
+                  href: `/${locale}/beta-coach-wise/clients/${clientId}?tab=programs&programTab=exercise-history`,
                 },
                 {
                   icon: <IconClipboardCheck className="size-4" />,
                   label: "Completed Workouts",
                   value: "completed-workouts",
+                  href: `/${locale}/beta-coach-wise/clients/${clientId}?tab=programs&programTab=completed-workouts`,
                 },
               ]}
               actions={
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-neutral-200 text-neutral-700"
-                  >
-                    Periodise Planner
-                  </Button>
-                  <Button size="sm" className={primaryActionButtonClassName}>
-                    <IconPlus className="size-4" />
-                    Import Calendar
-                  </Button>
-                </>
+                resolvedProgramTab === "calendar" ? (
+                  <ImportCalendarDialog
+                    triggerClassName={primaryActionButtonClassName}
+                  />
+                ) : resolvedProgramTab === "exercise-history" ? (
+                  <ProgramsPeriodPicker />
+                ) : null
               }
             />
 

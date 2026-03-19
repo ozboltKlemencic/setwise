@@ -1,9 +1,26 @@
 "use client"
 
 import * as React from "react"
-import { Search, TrendingDown, TrendingUp } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import {
+  CalendarDays,
+  CalendarIcon,
+  ChevronLeft,
+  Search,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+import { type DateRange } from "react-day-picker"
 
+import {
+  HabitPeriodPicker,
+  getMonthStart,
+  getWeekEnd,
+  getWeekStart,
+  type HabitPeriod,
+  type HabitPeriodSelection,
+} from "@/components/coachWise/clients/habit-period-picker"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,7 +35,17 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Table,
   TableBody,
@@ -350,8 +377,14 @@ function getGroupedWorkouts() {
   }, {})
 }
 
-function getExerciseEntries() {
-  return programWorkouts.flatMap((workout) =>
+function getWorkoutById(workoutId: string) {
+  return programWorkouts.find((workout) => workout.id === workoutId)
+}
+
+function getWorkoutExerciseEntries(
+  workouts: ProgramWorkout[]
+): ProgramWorkoutExerciseEntry[] {
+  return workouts.flatMap((workout) =>
     workout.exercises.map((exercise) => ({
       ...exercise,
       entryId: `${workout.id}-${exercise.id}`,
@@ -363,20 +396,58 @@ function getExerciseEntries() {
   )
 }
 
+function useProgramsPeriodPickerState(
+  initialDate?: Date,
+  onConfirm?: (selection: HabitPeriodSelection) => void
+) {
+  const currentYear = new Date().getFullYear()
+  const baseDate = initialDate ?? new Date(2026, 2, 18)
+  const [period, setPeriod] = React.useState<HabitPeriod>("month")
+  const [value, setValue] = React.useState<Date>(() => getMonthStart(baseDate))
+  const [weekRange, setWeekRange] = React.useState<DateRange | undefined>(() => ({
+    from: getWeekStart(baseDate),
+    to: getWeekEnd(baseDate),
+  }))
+  const [customRange, setCustomRange] = React.useState<DateRange | undefined>(() => ({
+    from: new Date(2026, 2, 5),
+    to: new Date(2026, 2, 18),
+  }))
+
+  const availableYears = React.useMemo(
+    () => Array.from({ length: 8 }, (_, index) => currentYear - 2 + index),
+    [currentYear]
+  )
+
+  return {
+    period,
+    onPeriodChange: setPeriod,
+    value,
+    onChange: setValue,
+    weekRange,
+    onWeekRangeChange: setWeekRange,
+    customRange,
+    onCustomRangeChange: setCustomRange,
+    availableYears,
+    onConfirm,
+  }
+}
+
 function ProgramWorkoutCard({
   workout,
   active = false,
+  compact = false,
   onClick,
 }: {
   workout: ProgramWorkout
   active?: boolean
+  compact?: boolean
   onClick?: () => void
 }) {
   const content = (
     <>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[15px] font-semibold text-neutral-950">
+          <div className="text-[16px] font-semibold text-neutral-950">
             {workout.title}
           </div>
           <div className="mt-2 text-[13px] text-neutral-500">{workout.dateLabel}</div>
@@ -389,7 +460,7 @@ function ProgramWorkoutCard({
           <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
             Duration
           </div>
-          <div className="mt-1 text-[13px] font-semibold text-neutral-950">
+          <div className="mt-1 text-[14px] font-semibold text-neutral-950">
             {workout.duration}
           </div>
         </div>
@@ -397,7 +468,7 @@ function ProgramWorkoutCard({
           <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
             Volume
           </div>
-          <div className="mt-1 text-[13px] font-semibold text-neutral-950">
+          <div className="mt-1 text-[14px] font-semibold text-neutral-950">
             {workout.volume}
           </div>
         </div>
@@ -420,7 +491,8 @@ function ProgramWorkoutCard({
   )
 
   const className = cn(
-    "w-full rounded-2xl border px-4 py-3 text-left shadow-[0_1px_2px_rgba(17,24,39,0.05)] transition-colors",
+    "w-full rounded-2xl border text-left shadow-[0_1px_2px_rgba(17,24,39,0.05)] transition-colors",
+    compact ? "px-4 py-3" : "px-5 py-4",
     active
       ? "border-brand-500 bg-brand-500/10"
       : "border-neutral-200 bg-white hover:bg-neutral-50"
@@ -438,28 +510,25 @@ function ProgramWorkoutCard({
 }
 
 function ProgramWorkoutsList({
-  activeWorkoutId,
   onSelectWorkout,
   centered = false,
 }: {
-  activeWorkoutId?: string
   onSelectWorkout?: (workoutId: string) => void
   centered?: boolean
 }) {
   const groupedWorkouts = React.useMemo(() => getGroupedWorkouts(), [])
 
   return (
-    <div className={cn("space-y-5", centered && "mx-auto max-w-[380px]")}>
+    <div className={cn("space-y-5", centered && "mx-auto max-w-[430px]")}>
       {Object.entries(groupedWorkouts).map(([monthLabel, workouts]) => (
-        <div key={monthLabel} className="space-y-2">
+        <div key={monthLabel} className="space-y-2.5">
           <div className="px-1 text-[12px] font-medium text-neutral-500">{monthLabel}</div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {workouts.map((workout) => (
               <ProgramWorkoutCard
                 key={workout.id}
                 workout={workout}
-                active={workout.id === activeWorkoutId}
                 onClick={
                   onSelectWorkout ? () => onSelectWorkout(workout.id) : undefined
                 }
@@ -472,31 +541,34 @@ function ProgramWorkoutsList({
   )
 }
 
-export function ExerciseHistoryPanel() {
-  const exerciseEntries = React.useMemo(() => getExerciseEntries(), [])
+function ExerciseExplorer({
+  exercises,
+}: {
+  exercises: ProgramWorkoutExerciseEntry[]
+}) {
   const [selectedMetric, setSelectedMetric] = React.useState<"weight" | "reps">(
     "weight"
   )
   const [exerciseSearch, setExerciseSearch] = React.useState("")
   const [selectedExerciseId, setSelectedExerciseId] = React.useState(
-    exerciseEntries[0]?.entryId ?? ""
+    exercises[0]?.entryId ?? ""
   )
 
   const filteredExercises = React.useMemo(() => {
-    return exerciseEntries.filter((exercise) =>
+    return exercises.filter((exercise) =>
       exercise.name.toLowerCase().includes(exerciseSearch.toLowerCase())
     )
-  }, [exerciseEntries, exerciseSearch])
+  }, [exerciseSearch, exercises])
 
   React.useEffect(() => {
     if (!filteredExercises.some((exercise) => exercise.entryId === selectedExerciseId)) {
-      setSelectedExerciseId(filteredExercises[0]?.entryId ?? exerciseEntries[0]?.entryId ?? "")
+      setSelectedExerciseId(filteredExercises[0]?.entryId ?? exercises[0]?.entryId ?? "")
     }
-  }, [exerciseEntries, filteredExercises, selectedExerciseId])
+  }, [exercises, filteredExercises, selectedExerciseId])
 
   const selectedExercise =
     filteredExercises.find((exercise) => exercise.entryId === selectedExerciseId) ??
-    exerciseEntries[0]
+    exercises[0]
 
   if (!selectedExercise) {
     return null
@@ -617,10 +689,10 @@ export function ExerciseHistoryPanel() {
           <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
             <div>
               <CardTitle className="text-[16px] font-semibold text-neutral-950">
-                Sets overview
+                {selectedExercise.workoutTitle}
               </CardTitle>
               <div className="mt-1 text-[13px] text-neutral-500">
-                {selectedExercise.workoutTitle}
+                Current workout sets
               </div>
             </div>
             <div className="text-[13px] text-neutral-500">
@@ -655,10 +727,224 @@ export function ExerciseHistoryPanel() {
   )
 }
 
-export function CompletedWorkoutsPanel() {
+export function ProgramsPeriodPicker({
+  onConfirm,
+}: {
+  onConfirm?: (selection: HabitPeriodSelection) => void
+}) {
+  const pickerProps = useProgramsPeriodPickerState(undefined, onConfirm)
+
+  return <HabitPeriodPicker {...pickerProps} />
+}
+
+export function ImportCalendarDialog({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [selectedProgramId, setSelectedProgramId] = React.useState("beginner-3m")
+  const [startDate, setStartDate] = React.useState("2026-03-19")
+
   return (
-    <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-4">
-      <ProgramWorkoutsList centered />
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" className={triggerClassName}>
+          <CalendarDays className="size-4" />
+          Import Calendar
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-[700px] rounded-sm p-0">
+        <DialogHeader className="border-b border-neutral-200 px-6 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold">
+            <CalendarDays className="size-4 text-neutral-500" />
+            Import Calendar
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-5 px-6 py-5">
+          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+            <div className="grid grid-cols-[minmax(0,1fr)_180px] items-center border-b border-neutral-200 px-4 py-3 text-[13px] font-medium text-neutral-700">
+              <div>Program</div>
+              <div className="flex items-center justify-between gap-3">
+                <Search className="size-4 text-neutral-400" />
+                <span>Tag</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSelectedProgramId("beginner-3m")}
+              className={cn(
+                "grid w-full grid-cols-[minmax(0,1fr)_180px] items-center px-4 py-4 text-left transition-colors",
+                selectedProgramId === "beginner-3m"
+                  ? "bg-brand-50"
+                  : "bg-white hover:bg-neutral-50"
+              )}
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "flex size-4 items-center justify-center rounded-full border-2",
+                    selectedProgramId === "beginner-3m"
+                      ? "border-brand-600"
+                      : "border-neutral-300"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      selectedProgramId === "beginner-3m"
+                        ? "bg-brand-600"
+                        : "bg-transparent"
+                    )}
+                  />
+                </span>
+                <span className="text-[15px] font-medium text-neutral-950">
+                  3 Month Beginner Program (Sample)
+                </span>
+              </div>
+              <div className="text-[13px] text-neutral-500">Starter</div>
+            </button>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-[13px] font-medium text-neutral-700">
+              Start Date
+            </Label>
+            <div className="relative max-w-[170px]">
+              <Input
+                type="date"
+                value={startDate}
+                onChange={(event) => setStartDate(event.target.value)}
+                className="h-10 rounded-sm border-neutral-200 bg-white pr-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+              />
+              <CalendarIcon className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-neutral-400" />
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-6 py-4 sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+              Close
+            </Button>
+          </DialogClose>
+          <Button onClick={() => setOpen(false)}>Import Program</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export function ExerciseHistoryPanel() {
+  const exerciseEntries = React.useMemo(() => getWorkoutExerciseEntries(programWorkouts), [])
+
+  return <ExerciseExplorer exercises={exerciseEntries} />
+}
+
+export function CompletedWorkoutsPanel() {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-5">
+      <ProgramWorkoutsList
+        centered
+        onSelectWorkout={(workoutId) =>
+          router.push(
+            `${pathname}?tab=programs&programTab=completed-workouts&workoutId=${workoutId}`
+          )
+        }
+      />
+    </div>
+  )
+}
+
+export function WorkoutDetailView({
+  workoutId,
+}: {
+  workoutId: string
+}) {
+  const pathname = usePathname()
+  const workout = React.useMemo(() => getWorkoutById(workoutId), [workoutId])
+  const pickerProps = useProgramsPeriodPickerState()
+
+  if (!workout) {
+    return null
+  }
+
+  const workoutExercises = getWorkoutExerciseEntries([workout])
+
+  return (
+    <div className="min-w-0">
+      <div className="border-b border-neutral-200 bg-neutral-50">
+        <div className="flex min-h-10 flex-col gap-2.5 px-4 py-2.5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+            >
+              <a href={`${pathname}?tab=programs&programTab=completed-workouts`}>
+                <ChevronLeft className="size-4" />
+              </a>
+            </Button>
+            <div>
+              <div className="text-[15px] font-semibold text-neutral-950">
+                {workout.title}
+              </div>
+              <div className="text-[13px] text-neutral-500">{workout.dateLabel}</div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <HabitPeriodPicker {...pickerProps} />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4 bg-neutral-50 p-4">
+        <Card className="rounded-xl border-neutral-200 shadow-none">
+          <CardContent className="grid gap-4 p-5 md:grid-cols-[1fr_1fr_auto]">
+            <div className="border-r border-neutral-200 pr-4">
+              <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                Duration
+              </div>
+              <div className="mt-2 text-[24px] font-semibold text-neutral-950">
+                {workout.duration}
+              </div>
+            </div>
+            <div className="border-r border-neutral-200 pr-4">
+              <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                Volume
+              </div>
+              <div className="mt-2 text-[24px] font-semibold text-neutral-950">
+                {workout.volume}
+              </div>
+            </div>
+            <div className="flex items-start justify-end">
+              <Badge
+                variant="outline"
+                className={cn(
+                  "rounded-md px-2.5 py-1 text-[12px] font-medium",
+                  getTrendBadgeClassName(workout.trend)
+                )}
+              >
+                {workout.trend === "up" ? (
+                  <TrendingUp className="mr-1 size-3.5" />
+                ) : workout.trend === "down" ? (
+                  <TrendingDown className="mr-1 size-3.5" />
+                ) : null}
+                {workout.changeLabel}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <ExerciseExplorer exercises={workoutExercises} />
+      </div>
     </div>
   )
 }
