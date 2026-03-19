@@ -604,14 +604,14 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
             <Table>
               <TableHeader className="bg-muted">
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="pl-4 lg:pl-5">
-                    <div className="w-[20rem] min-w-[20rem]">Plan</div>
+                  <TableHead className="h-11 w-[56%] pl-4 lg:pl-5">
+                    <div>Plan</div>
                   </TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead className="w-[140px] text-center">
+                  <TableHead className="h-11 w-[180px]">Type</TableHead>
+                  <TableHead className="h-11 w-[160px] text-center">
                     Calories
                   </TableHead>
-                  <TableHead className="px-1 pr-2 lg:pr-3">
+                  <TableHead className="h-11 w-[56px] px-0 pr-4 text-right">
                     <div className="w-6" />
                   </TableHead>
                 </TableRow>
@@ -619,7 +619,7 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
               <TableBody>
                 {preset.mealPlans.map((plan) => (
                   <TableRow key={plan.id} className="bg-white hover:bg-neutral-50/60">
-                    <TableCell className="pl-4 lg:pl-5">
+                    <TableCell className="py-4 pl-4 lg:pl-5">
                       <div className="space-y-1">
                         <div className="text-[15px] font-medium text-neutral-950">
                           {plan.title}
@@ -629,7 +629,7 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-4">
                       <Badge
                         variant="outline"
                         className="rounded-md border-neutral-200 bg-white px-2.5 py-1 text-[12px] font-normal text-neutral-700"
@@ -638,11 +638,11 @@ export function ClientNutritionPanel({ phase }: { phase?: string }) {
                         {plan.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-center">
+                    <TableCell className="py-3 text-center">
                       <NutritionCaloriesDonut plan={plan} />
                     </TableCell>
-                    <TableCell className="px-1 pr-2 lg:pr-3">
-                      <div className="flex w-6 justify-end">
+                    <TableCell className="py-3 pl-0 pr-4">
+                      <div className="flex w-full justify-end">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button
