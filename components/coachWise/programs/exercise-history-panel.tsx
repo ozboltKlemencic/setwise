@@ -62,6 +62,14 @@ type ProgramWorkout = {
   exercises: WorkoutExercise[]
 }
 
+type ProgramWorkoutExerciseEntry = WorkoutExercise & {
+  entryId: string
+  workoutId: string
+  workoutTitle: string
+  workoutDateLabel: string
+  monthLabel: string
+}
+
 const exerciseHistoryChartConfig = {
   weight: {
     label: "Weight",
@@ -77,7 +85,7 @@ const programWorkouts: ProgramWorkout[] = [
   {
     id: "upper-a-0318",
     title: "Upper A",
-    dateLabel: "Sre, 18. mar • 17:30",
+    dateLabel: "Sre, 18. mar - 17:30",
     duration: "42 min",
     volume: "1.7k kg",
     trend: "up",
@@ -149,7 +157,7 @@ const programWorkouts: ProgramWorkout[] = [
   {
     id: "lower-a-0315",
     title: "Lower A",
-    dateLabel: "Ned, 15. mar • 10:00",
+    dateLabel: "Ned, 15. mar - 10:00",
     duration: "55 min",
     volume: "2.3k kg",
     trend: "steady",
@@ -206,7 +214,7 @@ const programWorkouts: ProgramWorkout[] = [
   {
     id: "upper-b-0309",
     title: "Upper B",
-    dateLabel: "Pon, 09. mar • 18:10",
+    dateLabel: "Pon, 09. mar - 18:10",
     duration: "47 min",
     volume: "1.6k kg",
     trend: "down",
@@ -263,7 +271,7 @@ const programWorkouts: ProgramWorkout[] = [
   {
     id: "lower-b-0226",
     title: "Lower B",
-    dateLabel: "Cet, 26. feb • 16:50",
+    dateLabel: "Cet, 26. feb - 16:50",
     duration: "51 min",
     volume: "2.1k kg",
     trend: "up",
@@ -331,291 +339,326 @@ function getTrendBadgeClassName(trend: WorkoutTrend) {
   return "border-neutral-200 bg-neutral-100 text-neutral-600"
 }
 
-function formatDetailDate(value: string) {
-  return value.replace(" ", " 2026 ")
+function getGroupedWorkouts() {
+  return programWorkouts.reduce<Record<string, ProgramWorkout[]>>((groups, workout) => {
+    if (!groups[workout.monthLabel]) {
+      groups[workout.monthLabel] = []
+    }
+
+    groups[workout.monthLabel].push(workout)
+    return groups
+  }, {})
+}
+
+function getExerciseEntries() {
+  return programWorkouts.flatMap((workout) =>
+    workout.exercises.map((exercise) => ({
+      ...exercise,
+      entryId: `${workout.id}-${exercise.id}`,
+      workoutId: workout.id,
+      workoutTitle: workout.title,
+      workoutDateLabel: workout.dateLabel,
+      monthLabel: workout.monthLabel,
+    }))
+  )
+}
+
+function ProgramWorkoutCard({
+  workout,
+  active = false,
+  onClick,
+}: {
+  workout: ProgramWorkout
+  active?: boolean
+  onClick?: () => void
+}) {
+  const content = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="text-[15px] font-semibold text-neutral-950">
+            {workout.title}
+          </div>
+          <div className="mt-2 text-[13px] text-neutral-500">{workout.dateLabel}</div>
+        </div>
+        <div className="text-neutral-300">{">"}</div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-[1fr_1fr_auto] items-end gap-3">
+        <div className="border-r border-neutral-200 pr-3">
+          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+            Duration
+          </div>
+          <div className="mt-1 text-[13px] font-semibold text-neutral-950">
+            {workout.duration}
+          </div>
+        </div>
+        <div>
+          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+            Volume
+          </div>
+          <div className="mt-1 text-[13px] font-semibold text-neutral-950">
+            {workout.volume}
+          </div>
+        </div>
+        <Badge
+          variant="outline"
+          className={cn(
+            "rounded-md px-2.5 py-1 text-[12px] font-medium",
+            getTrendBadgeClassName(workout.trend)
+          )}
+        >
+          {workout.trend === "up" ? (
+            <TrendingUp className="mr-1 size-3.5" />
+          ) : workout.trend === "down" ? (
+            <TrendingDown className="mr-1 size-3.5" />
+          ) : null}
+          {workout.changeLabel}
+        </Badge>
+      </div>
+    </>
+  )
+
+  const className = cn(
+    "w-full rounded-2xl border px-4 py-3 text-left shadow-[0_1px_2px_rgba(17,24,39,0.05)] transition-colors",
+    active
+      ? "border-brand-500 bg-brand-500/10"
+      : "border-neutral-200 bg-white hover:bg-neutral-50"
+  )
+
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={className}>
+        {content}
+      </button>
+    )
+  }
+
+  return <div className={className}>{content}</div>
+}
+
+function ProgramWorkoutsList({
+  activeWorkoutId,
+  onSelectWorkout,
+  centered = false,
+}: {
+  activeWorkoutId?: string
+  onSelectWorkout?: (workoutId: string) => void
+  centered?: boolean
+}) {
+  const groupedWorkouts = React.useMemo(() => getGroupedWorkouts(), [])
+
+  return (
+    <div className={cn("space-y-5", centered && "mx-auto max-w-[380px]")}>
+      {Object.entries(groupedWorkouts).map(([monthLabel, workouts]) => (
+        <div key={monthLabel} className="space-y-2">
+          <div className="px-1 text-[12px] font-medium text-neutral-500">{monthLabel}</div>
+
+          <div className="space-y-2">
+            {workouts.map((workout) => (
+              <ProgramWorkoutCard
+                key={workout.id}
+                workout={workout}
+                active={workout.id === activeWorkoutId}
+                onClick={
+                  onSelectWorkout ? () => onSelectWorkout(workout.id) : undefined
+                }
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export function ExerciseHistoryPanel() {
-  const [selectedWorkoutId, setSelectedWorkoutId] = React.useState(
-    programWorkouts[0]?.id ?? ""
-  )
+  const exerciseEntries = React.useMemo(() => getExerciseEntries(), [])
   const [selectedMetric, setSelectedMetric] = React.useState<"weight" | "reps">(
     "weight"
   )
   const [exerciseSearch, setExerciseSearch] = React.useState("")
-  const selectedWorkout =
-    programWorkouts.find((workout) => workout.id === selectedWorkoutId) ??
-    programWorkouts[0]
   const [selectedExerciseId, setSelectedExerciseId] = React.useState(
-    selectedWorkout?.exercises[0]?.id ?? ""
+    exerciseEntries[0]?.entryId ?? ""
   )
 
-  React.useEffect(() => {
-    setSelectedExerciseId(selectedWorkout?.exercises[0]?.id ?? "")
-  }, [selectedWorkout?.id])
-
   const filteredExercises = React.useMemo(() => {
-    return (selectedWorkout?.exercises ?? []).filter((exercise) =>
+    return exerciseEntries.filter((exercise) =>
       exercise.name.toLowerCase().includes(exerciseSearch.toLowerCase())
     )
-  }, [exerciseSearch, selectedWorkout?.exercises])
+  }, [exerciseEntries, exerciseSearch])
+
+  React.useEffect(() => {
+    if (!filteredExercises.some((exercise) => exercise.entryId === selectedExerciseId)) {
+      setSelectedExerciseId(filteredExercises[0]?.entryId ?? exerciseEntries[0]?.entryId ?? "")
+    }
+  }, [exerciseEntries, filteredExercises, selectedExerciseId])
 
   const selectedExercise =
-    filteredExercises.find((exercise) => exercise.id === selectedExerciseId) ??
-    selectedWorkout?.exercises[0]
+    filteredExercises.find((exercise) => exercise.entryId === selectedExerciseId) ??
+    exerciseEntries[0]
 
-  const groupedWorkouts = React.useMemo(() => {
-    return programWorkouts.reduce<Record<string, ProgramWorkout[]>>((groups, workout) => {
-      if (!groups[workout.monthLabel]) {
-        groups[workout.monthLabel] = []
-      }
-
-      groups[workout.monthLabel].push(workout)
-      return groups
-    }, {})
-  }, [])
-
-  if (!selectedWorkout || !selectedExercise) {
+  if (!selectedExercise) {
     return null
   }
 
   return (
-    <div className="grid gap-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 lg:grid-cols-[320px_minmax(0,1fr)]">
-      <aside className="border-r border-neutral-200 bg-neutral-50 lg:sticky lg:top-0 lg:self-start">
-        <div className="max-h-[calc(100vh-18rem)] overflow-y-auto px-3 py-3 [scrollbar-color:#e5e5e5_transparent] [scrollbar-width:thin]">
-          <div className="space-y-5">
-            {Object.entries(groupedWorkouts).map(([monthLabel, workouts]) => (
-              <div key={monthLabel} className="space-y-2">
-                <div className="px-1 text-[12px] font-medium text-neutral-500">
-                  {monthLabel}
-                </div>
-
-                <div className="space-y-2">
-                  {workouts.map((workout) => (
-                    <button
-                      key={workout.id}
-                      type="button"
-                      onClick={() => setSelectedWorkoutId(workout.id)}
-                      className={cn(
-                        "w-full rounded-2xl border px-4 py-3 text-left shadow-[0_1px_2px_rgba(17,24,39,0.05)] transition-colors",
-                        workout.id === selectedWorkout.id
-                          ? "border-brand-500 bg-brand-500/10"
-                          : "border-neutral-200 bg-white hover:bg-neutral-50"
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <div className="text-[15px] font-semibold text-neutral-950">
-                            {workout.title}
-                          </div>
-                          <div className="mt-2 text-[13px] text-neutral-500">
-                            {workout.dateLabel}
-                          </div>
-                        </div>
-                        <div className="text-neutral-300">›</div>
-                      </div>
-
-                      <div className="mt-4 grid grid-cols-[1fr_1fr_auto] items-end gap-3">
-                        <div className="border-r border-neutral-200 pr-3">
-                          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                            Duration
-                          </div>
-                          <div className="mt-1 text-[13px] font-semibold text-neutral-950">
-                            {workout.duration}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                            Volume
-                          </div>
-                          <div className="mt-1 text-[13px] font-semibold text-neutral-950">
-                            {workout.volume}
-                          </div>
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className={cn(
-                            "rounded-md px-2.5 py-1 text-[12px] font-medium",
-                            getTrendBadgeClassName(workout.trend)
-                          )}
-                        >
-                          {workout.trend === "up" ? (
-                            <TrendingUp className="mr-1 size-3.5" />
-                          ) : workout.trend === "down" ? (
-                            <TrendingDown className="mr-1 size-3.5" />
-                          ) : null}
-                          {workout.changeLabel}
-                        </Badge>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </aside>
-
-      <div className="min-w-0 bg-white">
-        <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-3">
-          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <div className="text-[17px] font-semibold text-neutral-950">
-                {selectedWorkout.title}
-              </div>
-              <div className="text-[13px] text-neutral-500">
-                {selectedWorkout.dateLabel}
-              </div>
-            </div>
-
-            <div className="inline-flex rounded-sm border border-neutral-200 bg-white p-0.5 shadow-none">
-              {(["weight", "reps"] as const).map((metric) => (
-                <Button
-                  key={metric}
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSelectedMetric(metric)}
-                  className={cn(
-                    "rounded-sm px-4 text-[13px] font-medium capitalize shadow-none",
-                    selectedMetric === metric
-                      ? "bg-neutral-100 text-neutral-950"
-                      : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
-                  )}
-                >
-                  {metric}
-                </Button>
-              ))}
-            </div>
-          </div>
+    <div className="grid gap-0 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 xl:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="border-r border-neutral-200 bg-white p-3">
+        <div className="relative">
+          <Input
+            value={exerciseSearch}
+            onChange={(event) => setExerciseSearch(event.target.value)}
+            placeholder="Search exercise"
+            className="h-10 rounded-sm border-neutral-200 bg-white pl-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
         </div>
 
-        <div className="grid gap-0 xl:grid-cols-[300px_minmax(0,1fr)]">
-          <div className="border-r border-neutral-200 bg-white p-3">
-            <div className="relative">
-              <Input
-                value={exerciseSearch}
-                onChange={(event) => setExerciseSearch(event.target.value)}
-                placeholder="Search exercise"
-                className="h-10 rounded-sm border-neutral-200 bg-white pl-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-              />
-              <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
-            </div>
-
-            <div className="mt-3 overflow-hidden rounded-xl border border-neutral-200 bg-white">
-              {filteredExercises.map((exercise) => (
-                <button
-                  key={exercise.id}
-                  type="button"
-                  onClick={() => setSelectedExerciseId(exercise.id)}
-                  className={cn(
-                    "flex w-full items-center justify-between border-b border-neutral-200 px-4 py-4 text-left last:border-b-0",
-                    exercise.id === selectedExercise.id
-                      ? "bg-brand-50 text-brand-700"
-                      : "bg-white text-neutral-800 hover:bg-neutral-50"
-                  )}
-                >
-                  <span className="text-[15px] font-medium">{exercise.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="min-w-0 space-y-4 bg-neutral-50 p-3">
-            <Card className="rounded-xl border-neutral-200 shadow-none">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between gap-3">
-                  <CardTitle className="text-[16px] font-semibold text-neutral-950">
-                    {selectedExercise.name}
-                  </CardTitle>
-                  <div className="text-[13px] text-neutral-500">
-                    {selectedMetric === "weight" ? "Weight" : "Reps"}
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <ChartContainer
-                  config={exerciseHistoryChartConfig}
-                  className="h-[360px] w-full"
-                >
-                  <LineChart
-                    data={selectedExercise.history}
-                    margin={{ left: 12, right: 16, top: 8, bottom: 0 }}
-                  >
-                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="date"
-                      axisLine={false}
-                      tickLine={false}
-                      tickMargin={8}
-                      fontSize={12}
-                    />
-                    <YAxis
-                      axisLine={false}
-                      tickLine={false}
-                      tickMargin={8}
-                      fontSize={12}
-                      width={40}
-                    />
-                    <ChartTooltip
-                      cursor={{ stroke: "#a3a3a3", strokeWidth: 1 }}
-                      content={<ChartTooltipContent indicator="dot" />}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey={selectedMetric}
-                      stroke={
-                        selectedMetric === "weight"
-                          ? "var(--color-weight)"
-                          : "var(--color-reps)"
-                      }
-                      strokeWidth={2.5}
-                      dot={{ r: 4, fill: "#ffffff", strokeWidth: 2 }}
-                      activeDot={{ r: 5 }}
-                    />
-                  </LineChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-xl border-neutral-200 shadow-none">
-              <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
-                <CardTitle className="text-[16px] font-semibold text-neutral-950">
-                  {selectedWorkout.title}
-                </CardTitle>
-                <div className="text-[13px] text-neutral-500">
-                  {formatDetailDate(
-                    selectedExercise.history[selectedExercise.history.length - 1]?.date ??
-                      ""
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-                  <Table>
-                    <TableHeader className="bg-muted">
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead className="w-24">Set</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Reps</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {selectedExercise.currentSets.map((setRow) => (
-                        <TableRow key={`${selectedExercise.id}-${setRow.set}`}>
-                          <TableCell className="font-medium">{setRow.set}</TableCell>
-                          <TableCell>{setRow.weight}</TableCell>
-                          <TableCell>{setRow.reps}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <div className="mt-3 overflow-hidden rounded-xl border border-neutral-200 bg-white">
+          {filteredExercises.map((exercise) => (
+            <button
+              key={exercise.entryId}
+              type="button"
+              onClick={() => setSelectedExerciseId(exercise.entryId)}
+              className={cn(
+                "flex w-full items-center justify-between border-b border-neutral-200 px-4 py-4 text-left last:border-b-0",
+                exercise.entryId === selectedExercise.entryId
+                  ? "bg-brand-50 text-brand-700"
+                  : "bg-white text-neutral-800 hover:bg-neutral-50"
+              )}
+            >
+              <span className="text-[15px] font-medium">{exercise.name}</span>
+            </button>
+          ))}
         </div>
       </div>
+
+      <div className="min-w-0 space-y-4 bg-neutral-50 p-3">
+        <Card className="rounded-xl border-neutral-200 shadow-none">
+          <CardHeader className="pb-3">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <CardTitle className="text-[16px] font-semibold text-neutral-950">
+                  {selectedExercise.name}
+                </CardTitle>
+                <div className="mt-1 text-[13px] text-neutral-500">
+                  {selectedExercise.workoutTitle} - {selectedExercise.workoutDateLabel}
+                </div>
+              </div>
+
+              <div className="inline-flex rounded-sm border border-neutral-200 bg-white p-0.5 shadow-none">
+                {(["weight", "reps"] as const).map((metric) => (
+                  <Button
+                    key={metric}
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedMetric(metric)}
+                    className={cn(
+                      "rounded-sm px-4 text-[13px] font-medium capitalize shadow-none",
+                      selectedMetric === metric
+                        ? "bg-neutral-100 text-neutral-950"
+                        : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-700"
+                    )}
+                  >
+                    {metric}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <ChartContainer
+              config={exerciseHistoryChartConfig}
+              className="h-[360px] w-full"
+            >
+              <LineChart
+                data={selectedExercise.history}
+                margin={{ left: 12, right: 16, top: 8, bottom: 0 }}
+              >
+                <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="date"
+                  axisLine={false}
+                  tickLine={false}
+                  tickMargin={8}
+                  fontSize={12}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tickMargin={8}
+                  fontSize={12}
+                  width={40}
+                />
+                <ChartTooltip
+                  cursor={{ stroke: "#a3a3a3", strokeWidth: 1 }}
+                  content={<ChartTooltipContent indicator="dot" />}
+                />
+                <Line
+                  type="monotone"
+                  dataKey={selectedMetric}
+                  stroke={
+                    selectedMetric === "weight"
+                      ? "var(--color-weight)"
+                      : "var(--color-reps)"
+                  }
+                  strokeWidth={2.5}
+                  dot={{ r: 4, fill: "#ffffff", strokeWidth: 2 }}
+                  activeDot={{ r: 5 }}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-xl border-neutral-200 shadow-none">
+          <CardHeader className="flex flex-row items-center justify-between gap-3 pb-3">
+            <div>
+              <CardTitle className="text-[16px] font-semibold text-neutral-950">
+                Sets overview
+              </CardTitle>
+              <div className="mt-1 text-[13px] text-neutral-500">
+                {selectedExercise.workoutTitle}
+              </div>
+            </div>
+            <div className="text-[13px] text-neutral-500">
+              {selectedExercise.workoutDateLabel}
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+              <Table>
+                <TableHeader className="bg-muted">
+                  <TableRow className="hover:bg-transparent">
+                    <TableHead className="w-24">Set</TableHead>
+                    <TableHead>Weight</TableHead>
+                    <TableHead>Reps</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {selectedExercise.currentSets.map((setRow) => (
+                    <TableRow key={`${selectedExercise.entryId}-${setRow.set}`}>
+                      <TableCell className="font-medium">{setRow.set}</TableCell>
+                      <TableCell>{setRow.weight}</TableCell>
+                      <TableCell>{setRow.reps}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+export function CompletedWorkoutsPanel() {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-4">
+      <ProgramWorkoutsList centered />
     </div>
   )
 }

@@ -30,7 +30,10 @@ import {
   ClientNutritionPanel,
   MealPlanDetailView,
 } from "@/components/coachWise/clients/client-nutrition-panel"
-import { ExerciseHistoryPanel } from "@/components/coachWise/programs/exercise-history-panel"
+import {
+  CompletedWorkoutsPanel,
+  ExerciseHistoryPanel,
+} from "@/components/coachWise/programs/exercise-history-panel"
 import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -1068,26 +1071,7 @@ export default async function ClientProfilePage({
 
             <TabsContent value="completed-workouts" className="mt-0 space-y-0">
               <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Completed</CardDescription>
-                      <CardTitle>14 workouts</CardTitle>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Completion rate</CardDescription>
-                      <CardTitle>88%</CardTitle>
-                    </CardHeader>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Missed sessions</CardDescription>
-                      <CardTitle>2</CardTitle>
-                    </CardHeader>
-                  </Card>
-                </div>
+                <CompletedWorkoutsPanel />
               </SectionBody>
             </TabsContent>
           </Tabs>
