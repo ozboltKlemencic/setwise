@@ -583,6 +583,33 @@ function formatHabitSettingsDate(value: string) {
   return parseHabitDate(value).toLocaleDateString("sl-SI")
 }
 
+function getHabitOverviewTitle(habit: HabitDefinition) {
+  return habit.title.replace(/^Daily\s+/i, "").trim()
+}
+
+function formatHabitGoalSummary(
+  goalValue: string,
+  goalUnit: HabitDefinition["goalUnit"]
+) {
+  if (goalUnit === "liters") {
+    return `${goalValue} L`
+  }
+
+  if (goalUnit === "hours") {
+    return `${goalValue} h`
+  }
+
+  if (goalUnit === "minutes") {
+    return `${goalValue} min`
+  }
+
+  return `${Number(goalValue).toLocaleString("sl-SI")} ${goalUnit}`
+}
+
+function formatHabitFrequency(goalPeriod: HabitDefinition["goalPeriod"]) {
+  return goalPeriod === "daily" ? "Daily" : "Weekly"
+}
+
 function CreateHabitDialog({
   triggerClassName,
 }: {
@@ -1291,12 +1318,16 @@ function HabitStatCard({
   icon: Icon,
   label,
   value,
+  subValue,
   iconClassName,
+  valueClassName,
 }: {
   icon: LucideIcon
   label: string
-  value: string
+  value: React.ReactNode
+  subValue?: React.ReactNode
   iconClassName: string
+  valueClassName?: string
 }) {
   return (
     <div className="rounded-sm border border-neutral-200 bg-white px-4 py-3">
@@ -1306,9 +1337,17 @@ function HabitStatCard({
         </div>
         <div className="min-w-0">
           <div className="text-[13px] text-neutral-500">{label}</div>
-          <div className="mt-1 text-[28px] leading-none font-semibold text-neutral-950">
+          <div
+            className={cn(
+              "mt-1 text-[28px] leading-none font-semibold text-neutral-950",
+              valueClassName
+            )}
+          >
             {value}
           </div>
+          {subValue ? (
+            <div className="mt-2 text-[13px] text-brand-600">{subValue}</div>
+          ) : null}
         </div>
       </div>
     </div>
@@ -2050,6 +2089,12 @@ function HabitOverviewPanelContent({
     editDefaults,
     detailDurationInDays,
   } = overviewState
+  const overviewTitle = getHabitOverviewTitle(habit)
+  const goalSummary = formatHabitGoalSummary(
+    editDefaults.goalValue,
+    editDefaults.goalUnit
+  )
+  const habitDateRange = `${formatHabitSettingsDate(editDefaults.startDate)} -> ${formatHabitSettingsDate(editDefaults.endDate)}`
 
   return (
     <div className={cn("px-4", showDetails ? "space-y-3 py-3" : "space-y-4 py-4")}>
@@ -2067,10 +2112,7 @@ function HabitOverviewPanelContent({
               </div>
               <div className="min-w-0">
                 <div className="truncate text-[28px] leading-none font-semibold text-neutral-950">
-                  {habit.title}
-                </div>
-                <div className="mt-1 text-[13px] text-neutral-500">
-                  {habit.target}
+                  {overviewTitle}
                 </div>
               </div>
             </div>
@@ -2081,26 +2123,32 @@ function HabitOverviewPanelContent({
 
       <div className="grid gap-3 xl:grid-cols-4">
         <HabitStatCard
-          icon={Flame}
-          label="Current Streak"
-          value={habit.stats.currentStreak}
-          iconClassName="text-sky-500"
+          icon={Footprints}
+          label="Goal"
+          value={goalSummary}
+          iconClassName="text-violet-600"
+          valueClassName="text-[24px]"
         />
         <HabitStatCard
-          icon={Rocket}
-          label="Longest Streak"
-          value={habit.stats.longestStreak}
+          icon={RotateCcw}
+          label="Frequency"
+          value={formatHabitFrequency(editDefaults.goalPeriod)}
           iconClassName="text-blue-500"
+          valueClassName="text-[24px]"
         />
         <HabitStatCard
-          icon={CheckCircle2}
-          label="Habit Completed"
-          value={habit.stats.completed}
+          icon={CalendarDays}
+          label="Datum navade"
+          value={habitDateRange}
+          subValue={
+            detailDurationInDays ? `Habit bo trajal ${detailDurationInDays} dni` : undefined
+          }
           iconClassName="text-cyan-500"
+          valueClassName="text-[16px] leading-snug font-medium"
         />
         <HabitStatCard
           icon={BarChart3}
-          label="Completion Rate"
+          label="Success"
           value={habit.stats.completionRate}
           iconClassName="text-sky-500"
         />
