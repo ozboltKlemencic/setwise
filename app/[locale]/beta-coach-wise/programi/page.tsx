@@ -47,7 +47,7 @@ import {
 } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  FixedProgramEditorDialog,
+  FixedProgramDetailView,
   getFixedProgramEditorProgram,
 } from "@/components/coachWise/programs/exercise-history-panel"
 import { cn } from "@/lib/utils"
@@ -780,9 +780,9 @@ function ProgramCalendarDetailView({
 }
 
 function ProgramsTable({
-  onOpenCalendarProgram,
+  onOpenProgram,
 }: {
-  onOpenCalendarProgram: (programId: ProgramRow["id"]) => void
+  onOpenProgram: (programId: ProgramRow["id"]) => void
 }) {
   return (
     <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
@@ -793,15 +793,13 @@ function ProgramsTable({
       </div>
 
       {programRows.map((program) => {
-        const isFixedProgram = program.type === "Fixed"
-        const rowClassName = `group grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 text-left last:border-b-0 ${
-          isFixedProgram
-            ? "w-full cursor-pointer transition-colors hover:bg-neutral-50"
-            : ""
-        }`
-
-        const rowContent = isFixedProgram ? (
-          <button type="button" className={rowClassName}>
+        return (
+          <button
+            key={program.id}
+            type="button"
+            className="group grid w-full grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 text-left transition-colors last:border-b-0 hover:bg-neutral-50"
+            onClick={() => onOpenProgram(program.id)}
+          >
             <div className="min-w-0">
               <div className="truncate text-[15px] font-medium text-neutral-950">
                 {program.name}
@@ -816,38 +814,6 @@ function ProgramsTable({
               </span>
             </div>
           </button>
-        ) : (
-          <button
-            type="button"
-            className={`${rowClassName} w-full cursor-pointer transition-colors hover:bg-neutral-50`}
-            onClick={() => onOpenCalendarProgram(program.id)}
-          >
-            <div className="min-w-0">
-              <div className="truncate text-[15px] font-medium text-neutral-950">
-                {program.name}
-              </div>
-            </div>
-            <div>
-              <ProgramTypeBadge type={program.type} />
-            </div>
-            <div className="flex justify-end">
-              <span className="inline-flex size-8 items-center justify-center rounded-sm border border-neutral-200 bg-white text-neutral-500 shadow-none">
-                <IconDots className="size-4" />
-              </span>
-            </div>
-          </button>
-        )
-
-        if (!isFixedProgram) {
-          return <React.Fragment key={program.id}>{rowContent}</React.Fragment>
-        }
-
-        return (
-          <FixedProgramEditorDialog
-            key={program.id}
-            program={getFixedProgramEditorProgram(program.id, program.name)}
-            trigger={rowContent}
-          />
         )
       })}
     </div>
@@ -1074,11 +1040,19 @@ export default function ProgramiPage() {
     mainTabs.find((tab) => tab.value === searchParams.get("tab"))?.value ??
     "programs"
 
-  const selectedCalendarProgram =
+  const selectedProgramRow =
     activeTab === "programs"
-      ? calendarProgramDetails.find(
-          (program) => program.id === searchParams.get("programId")
-        ) ?? null
+      ? programRows.find((program) => program.id === searchParams.get("programId")) ?? null
+      : null
+
+  const selectedCalendarProgram =
+    selectedProgramRow?.type === "Calendar"
+      ? calendarProgramDetails.find((program) => program.id === selectedProgramRow.id) ?? null
+      : null
+
+  const selectedFixedProgram =
+    selectedProgramRow?.type === "Fixed"
+      ? getFixedProgramEditorProgram(selectedProgramRow.id, selectedProgramRow.name)
       : null
 
   function pushSearchParams(
@@ -1100,14 +1074,14 @@ export default function ProgramiPage() {
     })
   }
 
-  function handleOpenCalendarProgram(programId: ProgramRow["id"]) {
+  function handleOpenProgram(programId: ProgramRow["id"]) {
     pushSearchParams((params) => {
       params.set("tab", "programs")
       params.set("programId", programId)
     })
   }
 
-  function handleCloseCalendarProgram() {
+  function handleCloseProgram() {
     pushSearchParams((params) => {
       params.delete("programId")
     })
@@ -1139,7 +1113,7 @@ export default function ProgramiPage() {
                   ))}
                 </TabsList>
               </div>
-            {!selectedCalendarProgram ? (
+            {!selectedProgramRow ? (
               <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
                 <IconPlus className="size-4" />
                 Program
@@ -1150,20 +1124,23 @@ export default function ProgramiPage() {
 
         {mainTabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value} className="mt-0 space-y-0">
-            {tab.value === "programs" && selectedCalendarProgram ? (
+            {tab.value === "programs" && selectedFixedProgram ? (
+              <FixedProgramDetailView
+                program={selectedFixedProgram}
+                onBack={handleCloseProgram}
+              />
+            ) : tab.value === "programs" && selectedCalendarProgram ? (
               <ProgramCalendarDetailView
                 program={selectedCalendarProgram}
-                onBack={handleCloseCalendarProgram}
+                onBack={handleCloseProgram}
               />
             ) : (
               <ProgramSection
                 heading={tab.label}
                 description={tab.description}
-              >
-                {tab.value === "programs" ? (
-                  <ProgramsTable
-                    onOpenCalendarProgram={handleOpenCalendarProgram}
-                  />
+                >
+                  {tab.value === "programs" ? (
+                    <ProgramsTable onOpenProgram={handleOpenProgram} />
                 ) : tab.value === "templates" ? (
                   <TemplatesTable />
                 ) : tab.value === "exercises" ? (

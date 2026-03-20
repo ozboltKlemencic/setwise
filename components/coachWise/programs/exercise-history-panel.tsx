@@ -1517,12 +1517,14 @@ function AddWorkoutDialog({
   )
 }
 
-export function FixedProgramEditorDialog({
+function FixedProgramEditorBuilder({
   program,
-  trigger,
+  isActive = true,
+  footer,
 }: {
   program: FixedProgramEditorProgram
-  trigger: React.ReactNode
+  isActive?: boolean
+  footer?: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
   const [editorWorkouts, setEditorWorkouts] = React.useState(() =>
@@ -1537,7 +1539,7 @@ export function FixedProgramEditorDialog({
   const [isCanvasDragOver, setIsCanvasDragOver] = React.useState(false)
 
   React.useEffect(() => {
-    if (!open) {
+    if (!isActive) {
       return
     }
 
@@ -1546,7 +1548,7 @@ export function FixedProgramEditorDialog({
     setActiveWorkoutId(nextWorkouts[0]?.id ?? "")
     setDraggedExerciseName(null)
     setIsCanvasDragOver(false)
-  }, [open, program.editorWorkouts])
+  }, [isActive, program.id, program.editorWorkouts])
 
   const activeWorkout =
     editorWorkouts.find((workout) => workout.id === activeWorkoutId) ?? editorWorkouts[0]
@@ -1639,10 +1641,8 @@ export function FixedProgramEditorDialog({
   )
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="flex h-[88vh] max-h-[88vh] w-[min(1120px,calc(100vw-2rem))] max-w-[1120px] flex-col gap-0 overflow-hidden rounded-sm p-0">
-        <div className="grid min-h-0 flex-1 grid-cols-[320px_minmax(0,1fr)] overflow-hidden">
+    <>
+      <div className="grid min-h-0 flex-1 grid-cols-[320px_minmax(0,1fr)] overflow-hidden">
           <div className="flex min-h-0 overflow-hidden border-r border-neutral-200 bg-white">
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
               <div className="space-y-3 border-b border-neutral-200 px-5 py-4">
@@ -1750,12 +1750,12 @@ export function FixedProgramEditorDialog({
                 />
               </div>
 
-              {program.editorWorkouts.length > 0 ? (
+              {editorWorkouts.length > 0 ? (
                 <>
                   <div className="border-b border-neutral-200 px-5">
                     <Tabs value={activeWorkoutId} onValueChange={setActiveWorkoutId} className="gap-0">
                       <TabsList className="h-auto gap-8 rounded-none bg-transparent p-0">
-                        {program.editorWorkouts.map((workout) => (
+                        {editorWorkouts.map((workout) => (
                           <TabsTrigger
                             key={workout.id}
                             value={workout.id}
@@ -1934,17 +1934,80 @@ export function FixedProgramEditorDialog({
               )}
             </div>
           </div>
-        </div>
-        <DialogFooter className="border-t border-neutral-200 px-5 py-3 sm:justify-between">
-          <DialogClose asChild>
-            <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
-              Close
-            </Button>
-          </DialogClose>
-          <Button>Save Changes</Button>
-        </DialogFooter>
+      </div>
+      {footer}
+    </>
+  )
+}
+
+export function FixedProgramEditorDialog({
+  program,
+  trigger,
+}: {
+  program: FixedProgramEditorProgram
+  trigger: React.ReactNode
+}) {
+  const [open, setOpen] = React.useState(false)
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="flex h-[88vh] max-h-[88vh] w-[min(1120px,calc(100vw-2rem))] max-w-[1120px] flex-col gap-0 overflow-hidden rounded-sm p-0">
+        <FixedProgramEditorBuilder
+          program={program}
+          isActive={open}
+          footer={
+            <DialogFooter className="border-t border-neutral-200 px-5 py-3 sm:justify-between">
+              <DialogClose asChild>
+                <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button>Save Changes</Button>
+            </DialogFooter>
+          }
+        />
       </DialogContent>
     </Dialog>
+  )
+}
+
+export function FixedProgramDetailView({
+  program,
+  onBack,
+}: {
+  program: FixedProgramEditorProgram
+  onBack: () => void
+}) {
+  return (
+    <div className="min-w-0 bg-neutral-50">
+      <div className="border-b border-neutral-200 bg-neutral-50">
+        <div className="flex min-h-10 flex-col gap-2.5 px-4 py-2.5 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={onBack}
+              className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            <div className="text-[24px] font-semibold text-neutral-950">{program.title}</div>
+          </div>
+
+          <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            Save Changes
+          </Button>
+        </div>
+      </div>
+
+      <div className="min-h-0 p-4">
+        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+          <FixedProgramEditorBuilder program={program} />
+        </div>
+      </div>
+    </div>
   )
 }
 
