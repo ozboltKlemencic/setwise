@@ -1,13 +1,11 @@
 "use client"
 
 import {
-  IconActivityHeartbeat,
   IconChefHat,
   IconClipboardList,
   IconInfoCircle,
   IconPill,
   IconPlus,
-  IconRepeat,
   IconSettings,
   IconUserCheck,
   IconUsersGroup,
@@ -25,21 +23,9 @@ import { cn } from "@/lib/utils"
 
 const coachWiseRoutes = [
   {
-    title: "Habbits",
-    href: "/beta-coach-wise/habbits",
-    icon: IconRepeat,
-    exact: true,
-  },
-  {
-    title: "Onboarding",
-    href: "/beta-coach-wise/onboarding",
+    title: "Forms",
+    href: "/beta-coach-wise/forms",
     icon: IconUserCheck,
-    exact: true,
-  },
-  {
-    title: "Check in",
-    href: "/beta-coach-wise/check-in",
-    icon: IconActivityHeartbeat,
     exact: true,
   },
   {

@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
-type OnboardingTab = "onboarding" | "check-in" | "habbits"
+type FormsTab = "onboarding" | "check-in" | "habbits"
 
 type OnboardingFlowRow = {
   id: string
@@ -48,8 +48,8 @@ type HabbitsRow = {
   goal: string
 }
 
-const onboardingTabs: Array<{
-  value: OnboardingTab
+const formsTabs: Array<{
+  value: FormsTab
   label: string
   icon: React.ComponentType<{ className?: string }>
 }> = [
@@ -428,14 +428,14 @@ function HabbitsTable() {
   )
 }
 
-export default function OnboardingPage() {
+export default function FormsPage() {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const activeTab = (searchParams.get("tab") as OnboardingTab) || "onboarding"
+  const activeTab = (searchParams.get("tab") as FormsTab) || "onboarding"
 
   const setTab = React.useCallback(
-    (value: OnboardingTab) => {
+    (value: FormsTab) => {
       const params = new URLSearchParams(searchParams.toString())
       params.set("tab", value)
       router.replace(`${pathname}?${params.toString()}`, { scroll: false })
@@ -453,7 +453,7 @@ export default function OnboardingPage() {
     <section className="min-w-0 bg-neutral-50">
       <Tabs
         value={activeTab}
-        onValueChange={(value) => setTab(value as OnboardingTab)}
+        onValueChange={(value) => setTab(value as FormsTab)}
         className="min-w-0 w-full gap-0"
       >
         <div className="border-b border-neutral-200 bg-neutral-50">
@@ -463,7 +463,7 @@ export default function OnboardingPage() {
                 variant="line"
                 className="w-max min-w-full justify-start gap-0 rounded-none bg-transparent p-0"
               >
-                {onboardingTabs.map(({ value, label, icon: Icon }) => (
+                {formsTabs.map(({ value, label, icon: Icon }) => (
                   <TabsTrigger
                     key={value}
                     value={value}

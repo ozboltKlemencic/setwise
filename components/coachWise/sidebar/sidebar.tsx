@@ -7,10 +7,9 @@ import {
   IconClipboardList,
   IconInfoCircle,
   IconPill,
-  IconRepeat,
-  IconSettings,
   IconUserCheck,
   IconUsersGroup,
+  IconSettings,
 } from "@tabler/icons-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -59,24 +58,11 @@ const data = {
   ],
   vprasalniki: [
     {
-      name: "Onboarding",
-      url: "/beta-coach-wise/onboarding",
+      name: "Forms",
+      url: "/beta-coach-wise/forms",
       icon: IconUserCheck,
       exact: true,
     },
-    {
-      name: "Check in",
-      url: "/beta-coach-wise/check-in",
-      icon: IconActivityHeartbeat,
-      exact: true,
-    },
-    {
-      name: "Habbits",
-      url: "/beta-coach-wise/habbits",
-      icon: IconRepeat,
-      exact: true,
-    },
-
   ],
   documents: [
     {
