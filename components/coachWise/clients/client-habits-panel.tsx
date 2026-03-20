@@ -2396,8 +2396,6 @@ export function ClientHabitsPanel({
 }: {
   initialSubTab?: "habits" | "overview"
 }) {
-  const router = useRouter()
-  const pathname = usePathname()
   const [activeSubTab, setActiveSubTab] = React.useState<"habits" | "overview">(
     initialSubTab
   )
@@ -2412,13 +2410,6 @@ export function ClientHabitsPanel({
   React.useEffect(() => {
     setActiveSubTab(initialSubTab)
   }, [initialSubTab])
-
-  const openHabitDetail = React.useCallback(
-    (habitId: string) => {
-      router.push(`${pathname}?tab=habbits&habitTab=overview&habitId=${habitId}`)
-    },
-    [pathname, router]
-  )
 
   return (
     <Tabs value={activeSubTab} onValueChange={(value) => setActiveSubTab(value as "habits" | "overview")} className="gap-0">
@@ -2540,15 +2531,7 @@ export function ClientHabitsPanel({
                   return (
                     <TableRow
                       key={habit.id}
-                      className="cursor-pointer bg-white hover:bg-neutral-50/60"
-                      tabIndex={0}
-                      onClick={() => openHabitDetail(habit.id)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault()
-                          openHabitDetail(habit.id)
-                        }
-                      }}
+                      className="bg-white hover:bg-neutral-50/60"
                     >
                       <TableCell className="pl-4 lg:pl-5">
                         <div className="flex w-[18rem] max-w-full items-center gap-3">
@@ -2611,13 +2594,6 @@ export function ClientHabitsPanel({
                                   </DropdownMenuItem>
                                 }
                               />
-                              <DropdownMenuItem
-                                onSelect={() => openHabitDetail(habit.id)}
-                                className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
-                              >
-                                <Info className="size-4 text-neutral-500" />
-                                Podrobnosti
-                              </DropdownMenuItem>
                               <DropdownMenuSeparator className="bg-neutral-200/70" />
                               <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-red-600 focus:bg-red-50 focus:text-red-700">
                                 <Trash2 className="size-4" />

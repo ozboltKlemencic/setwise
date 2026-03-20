@@ -34,7 +34,6 @@ import {
 } from "@/components/coachWise/clients/client-checkins-panel"
 import {
   ClientHabitsPanel,
-  HabitDetailView,
 } from "@/components/coachWise/clients/client-habits-panel"
 import { ClientGeneralMetricsPanel } from "@/components/coachWise/clients/client-general-metrics-panel"
 import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
@@ -299,9 +298,6 @@ export default async function ClientProfilePage({
   const activeHabitTab = Array.isArray(resolvedSearchParams.habitTab)
     ? resolvedSearchParams.habitTab[0]
     : resolvedSearchParams.habitTab
-  const habitId = Array.isArray(resolvedSearchParams.habitId)
-    ? resolvedSearchParams.habitId[0]
-    : resolvedSearchParams.habitId
   const activeNutritionTab = Array.isArray(resolvedSearchParams.nutritionTab)
     ? resolvedSearchParams.nutritionTab[0]
     : resolvedSearchParams.nutritionTab
@@ -342,14 +338,6 @@ export default async function ClientProfilePage({
     return (
       <section className="min-w-0 bg-neutral-50">
         <AssignedCheckinDetailView checkinId={assignedCheckinId} />
-      </section>
-    )
-  }
-
-  if (habitId) {
-    return (
-      <section className="min-w-0 bg-neutral-50">
-        <HabitDetailView habitId={habitId} originTab={resolvedHabitTab} />
       </section>
     )
   }
