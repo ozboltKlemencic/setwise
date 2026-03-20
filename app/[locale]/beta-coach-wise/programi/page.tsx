@@ -1,14 +1,20 @@
 "use client"
 
 import * as React from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import {
   IconCalendarEvent,
   IconBarbell,
+  IconChevronLeft,
+  IconChevronRight,
   IconClipboardList,
   IconFilter,
   IconLayoutGrid,
   IconPlus,
   IconRectangle,
+  IconSettings,
+  IconPencil,
+  IconTag,
   IconUser,
 } from "@tabler/icons-react"
 import { IconDots } from "@tabler/icons-react"
@@ -44,6 +50,7 @@ import {
   FixedProgramEditorDialog,
   getFixedProgramEditorProgram,
 } from "@/components/coachWise/programs/exercise-history-panel"
+import { cn } from "@/lib/utils"
 
 const profileTabTriggerClassName =
   "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
@@ -91,6 +98,197 @@ const programRows = [
     type: "Calendar",
   },
 ] as const
+
+type ProgramRow = (typeof programRows)[number]
+
+type CalendarProgramWorkoutCard = {
+  title: string
+  exercises: number
+}
+
+type CalendarProgramDay = {
+  dayNumber: number
+  workout: CalendarProgramWorkoutCard | null
+}
+
+type CalendarProgramMonth = {
+  label: string
+  startWeek: number
+  days: CalendarProgramDay[]
+}
+
+type CalendarProgramDetail = {
+  id: string
+  title: string
+  months: CalendarProgramMonth[]
+}
+
+function createCalendarProgramMonth({
+  startDay,
+  startWeek,
+  workoutPattern,
+}: {
+  startDay: number
+  startWeek: number
+  workoutPattern: Record<number, CalendarProgramWorkoutCard>
+}): CalendarProgramMonth {
+  return {
+    label: `Month ${Math.ceil(startWeek / 4)} of 3`,
+    startWeek,
+    days: Array.from({ length: 28 }, (_, index) => ({
+      dayNumber: startDay + index,
+      workout: workoutPattern[index] ?? null,
+    })),
+  }
+}
+
+const calendarProgramDetails: CalendarProgramDetail[] = [
+  {
+    id: "beginner-calendar",
+    title: "3 Month Beginner Program (Sample)",
+    months: [
+      createCalendarProgramMonth({
+        startDay: 1,
+        startWeek: 1,
+        workoutPattern: {
+          0: { title: "Chest & Shoulder", exercises: 6 },
+          1: { title: "Back", exercises: 9 },
+          3: { title: "Arms", exercises: 6 },
+          4: { title: "Legs", exercises: 11 },
+          7: { title: "Chest & Shoulder", exercises: 6 },
+          8: { title: "Back", exercises: 9 },
+          10: { title: "Arms", exercises: 6 },
+          11: { title: "Legs", exercises: 11 },
+          14: { title: "Chest & Shoulder", exercises: 6 },
+          15: { title: "Back", exercises: 9 },
+          17: { title: "Arms", exercises: 6 },
+          18: { title: "Legs", exercises: 11 },
+          21: { title: "Chest & Shoulder", exercises: 6 },
+          22: { title: "Back", exercises: 9 },
+          24: { title: "Arms", exercises: 6 },
+          25: { title: "Legs", exercises: 11 },
+        },
+      }),
+      createCalendarProgramMonth({
+        startDay: 29,
+        startWeek: 5,
+        workoutPattern: {
+          0: { title: "Chest & Shoulder", exercises: 6 },
+          1: { title: "Back", exercises: 9 },
+          3: { title: "Arms", exercises: 6 },
+          4: { title: "Legs", exercises: 11 },
+          7: { title: "Chest & Shoulder", exercises: 6 },
+          8: { title: "Back", exercises: 9 },
+          10: { title: "Arms", exercises: 6 },
+          11: { title: "Legs", exercises: 11 },
+          14: { title: "Chest & Shoulder", exercises: 6 },
+          15: { title: "Back", exercises: 9 },
+          17: { title: "Arms", exercises: 6 },
+          18: { title: "Legs", exercises: 11 },
+          21: { title: "Chest & Shoulder", exercises: 6 },
+          22: { title: "Back", exercises: 9 },
+          24: { title: "Arms", exercises: 6 },
+          25: { title: "Legs", exercises: 11 },
+        },
+      }),
+      createCalendarProgramMonth({
+        startDay: 57,
+        startWeek: 9,
+        workoutPattern: {
+          0: { title: "Chest & Shoulder", exercises: 6 },
+          1: { title: "Back", exercises: 9 },
+          2: { title: "Conditioning", exercises: 4 },
+          4: { title: "Arms", exercises: 6 },
+          5: { title: "Legs", exercises: 11 },
+          7: { title: "Chest & Shoulder", exercises: 6 },
+          8: { title: "Back", exercises: 9 },
+          10: { title: "Arms", exercises: 6 },
+          11: { title: "Legs", exercises: 11 },
+          14: { title: "Chest & Shoulder", exercises: 6 },
+          15: { title: "Back", exercises: 9 },
+          17: { title: "Arms", exercises: 6 },
+          18: { title: "Legs", exercises: 11 },
+          21: { title: "Chest & Shoulder", exercises: 6 },
+          22: { title: "Back", exercises: 9 },
+          24: { title: "Arms", exercises: 6 },
+          25: { title: "Legs", exercises: 11 },
+        },
+      }),
+    ],
+  },
+  {
+    id: "hypertrophy-block",
+    title: "Hypertrophy Block - Spring",
+    months: [
+      createCalendarProgramMonth({
+        startDay: 1,
+        startWeek: 1,
+        workoutPattern: {
+          0: { title: "Push Day", exercises: 8 },
+          1: { title: "Pull Day", exercises: 8 },
+          3: { title: "Leg Day", exercises: 10 },
+          5: { title: "Upper Pump", exercises: 7 },
+          7: { title: "Push Day", exercises: 8 },
+          8: { title: "Pull Day", exercises: 8 },
+          10: { title: "Leg Day", exercises: 10 },
+          12: { title: "Upper Pump", exercises: 7 },
+          14: { title: "Push Day", exercises: 8 },
+          15: { title: "Pull Day", exercises: 8 },
+          17: { title: "Leg Day", exercises: 10 },
+          19: { title: "Upper Pump", exercises: 7 },
+          21: { title: "Push Day", exercises: 8 },
+          22: { title: "Pull Day", exercises: 8 },
+          24: { title: "Leg Day", exercises: 10 },
+          26: { title: "Upper Pump", exercises: 7 },
+        },
+      }),
+      createCalendarProgramMonth({
+        startDay: 29,
+        startWeek: 5,
+        workoutPattern: {
+          0: { title: "Push Day", exercises: 8 },
+          1: { title: "Pull Day", exercises: 8 },
+          3: { title: "Leg Day", exercises: 10 },
+          5: { title: "Upper Pump", exercises: 7 },
+          7: { title: "Push Day", exercises: 8 },
+          8: { title: "Pull Day", exercises: 8 },
+          10: { title: "Leg Day", exercises: 10 },
+          12: { title: "Upper Pump", exercises: 7 },
+          14: { title: "Push Day", exercises: 8 },
+          15: { title: "Pull Day", exercises: 8 },
+          17: { title: "Leg Day", exercises: 10 },
+          19: { title: "Upper Pump", exercises: 7 },
+          21: { title: "Push Day", exercises: 8 },
+          22: { title: "Pull Day", exercises: 8 },
+          24: { title: "Leg Day", exercises: 10 },
+          26: { title: "Upper Pump", exercises: 7 },
+        },
+      }),
+      createCalendarProgramMonth({
+        startDay: 57,
+        startWeek: 9,
+        workoutPattern: {
+          0: { title: "Push Day", exercises: 8 },
+          1: { title: "Pull Day", exercises: 8 },
+          3: { title: "Leg Day", exercises: 10 },
+          5: { title: "Upper Pump", exercises: 7 },
+          7: { title: "Push Day", exercises: 8 },
+          8: { title: "Pull Day", exercises: 8 },
+          10: { title: "Leg Day", exercises: 10 },
+          12: { title: "Upper Pump", exercises: 7 },
+          14: { title: "Push Day", exercises: 8 },
+          15: { title: "Pull Day", exercises: 8 },
+          17: { title: "Leg Day", exercises: 10 },
+          19: { title: "Upper Pump", exercises: 7 },
+          21: { title: "Push Day", exercises: 8 },
+          22: { title: "Pull Day", exercises: 8 },
+          24: { title: "Leg Day", exercises: 10 },
+          26: { title: "Upper Pump", exercises: 7 },
+        },
+      }),
+    ],
+  },
+] satisfies CalendarProgramDetail[]
 
 const templateRows = [
   {
@@ -398,7 +596,194 @@ function AddExerciseDialog({ trigger }: { trigger: React.ReactNode }) {
   )
 }
 
-function ProgramsTable() {
+function CalendarProgramWorkoutCard({
+  workout,
+}: {
+  workout: CalendarProgramWorkoutCard
+}) {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-white px-3 py-3 shadow-[0_1px_2px_rgba(17,24,39,0.05)]">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-2">
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-linear-to-br from-sky-500 via-blue-500 to-cyan-500 text-white">
+            <IconBarbell className="size-4" />
+          </div>
+          <div className="truncate text-[14px] font-semibold text-neutral-950">
+            {workout.title}
+          </div>
+        </div>
+        <IconDots className="size-4 shrink-0 text-neutral-300" />
+      </div>
+
+      <Badge className="mt-3 rounded-sm border border-neutral-200 bg-white px-2 py-0.5 text-[11px] font-medium text-neutral-500 shadow-none hover:bg-white">
+        {workout.exercises} Exercises
+      </Badge>
+    </div>
+  )
+}
+
+function ProgramCalendarDetailView({
+  program,
+  onBack,
+}: {
+  program: CalendarProgramDetail
+  onBack: () => void
+}) {
+  const [visibleMonthIndex, setVisibleMonthIndex] = React.useState(0)
+  const activeMonth = program.months[visibleMonthIndex]
+
+  return (
+    <div className="space-y-4 bg-neutral-50 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={onBack}
+            className="size-9 rounded-sm text-neutral-500 shadow-none hover:bg-white hover:text-neutral-900"
+          >
+            <IconChevronLeft className="size-4" />
+          </Button>
+          <div className="text-[28px] font-semibold text-neutral-950">
+            {program.title}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="size-9 rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50"
+          >
+            <IconPencil className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="size-9 rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50"
+          >
+            <IconTag className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="size-9 rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50"
+          >
+            <IconSettings className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-9 rounded-sm border-neutral-200 bg-white px-3 text-[14px] font-medium text-neutral-700 shadow-none hover:bg-neutral-50"
+          >
+            Periodise Planner
+          </Button>
+          <Button className="h-9 rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 px-4 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            Add Week
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex items-center rounded-sm border border-neutral-200 bg-white shadow-none">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              setVisibleMonthIndex((currentIndex) => Math.max(currentIndex - 1, 0))
+            }
+            disabled={visibleMonthIndex === 0}
+            className="size-9 rounded-none rounded-l-sm text-neutral-500 shadow-none hover:bg-neutral-50 disabled:opacity-40"
+          >
+            <IconChevronLeft className="size-4" />
+          </Button>
+          <div className="border-x border-neutral-200 px-4 py-2 text-[14px] font-medium text-neutral-900">
+            {activeMonth.label}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              setVisibleMonthIndex((currentIndex) =>
+                Math.min(currentIndex + 1, program.months.length - 1)
+              )
+            }
+            disabled={visibleMonthIndex === program.months.length - 1}
+            className="size-9 rounded-none rounded-r-sm text-neutral-500 shadow-none hover:bg-neutral-50 disabled:opacity-40"
+          >
+            <IconChevronRight className="size-4" />
+          </Button>
+        </div>
+
+        <div className="inline-flex h-10 items-stretch rounded-sm border border-neutral-200 bg-white p-0.5">
+          <button
+            type="button"
+            className="inline-flex min-w-16 items-center justify-center rounded-sm px-3 text-[13px] font-medium text-neutral-500"
+          >
+            Week
+          </button>
+          <button
+            type="button"
+            className="inline-flex min-w-16 items-center justify-center rounded-sm border border-brand-500 bg-brand-500/10 px-3 text-[13px] font-medium text-brand-600"
+          >
+            Month
+          </button>
+        </div>
+      </div>
+
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <div className="grid grid-cols-[40px_repeat(7,minmax(0,1fr))] bg-neutral-50">
+          {Array.from({ length: 4 }).map((_, weekIndex) => (
+            <React.Fragment key={`week-${activeMonth.startWeek + weekIndex}`}>
+              <div className="border-r border-neutral-200 px-2 py-3">
+                <div className="flex h-full items-start justify-center">
+                  <span className="-rotate-90 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.12em] text-neutral-300">
+                    WEEK {activeMonth.startWeek + weekIndex}
+                  </span>
+                </div>
+              </div>
+
+              {activeMonth.days
+                .slice(weekIndex * 7, weekIndex * 7 + 7)
+                .map((day, dayIndex) => (
+                  <div
+                    key={`day-${day.dayNumber}`}
+                    className={cn(
+                      "min-h-[188px] border-r border-neutral-200 p-3",
+                      weekIndex !== 3 && "border-b border-neutral-200",
+                      dayIndex === 6 && "border-r-0"
+                    )}
+                  >
+                    <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                      DAY {day.dayNumber}
+                    </div>
+
+                    <div className="mt-3">
+                      {day.workout ? (
+                        <CalendarProgramWorkoutCard workout={day.workout} />
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ProgramsTable({
+  onOpenCalendarProgram,
+}: {
+  onOpenCalendarProgram: (programId: ProgramRow["id"]) => void
+}) {
   return (
     <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
       <div className="grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
@@ -432,7 +817,11 @@ function ProgramsTable() {
             </div>
           </button>
         ) : (
-          <div className={rowClassName}>
+          <button
+            type="button"
+            className={`${rowClassName} w-full cursor-pointer transition-colors hover:bg-neutral-50`}
+            onClick={() => onOpenCalendarProgram(program.id)}
+          >
             <div className="min-w-0">
               <div className="truncate text-[15px] font-medium text-neutral-950">
                 {program.name}
@@ -442,16 +831,11 @@ function ProgramsTable() {
               <ProgramTypeBadge type={program.type} />
             </div>
             <div className="flex justify-end">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
-              >
+              <span className="inline-flex size-8 items-center justify-center rounded-sm border border-neutral-200 bg-white text-neutral-500 shadow-none">
                 <IconDots className="size-4" />
-              </Button>
+              </span>
             </div>
-          </div>
+          </button>
         )
 
         if (!isFixedProgram) {
@@ -682,9 +1066,60 @@ function ProgramSection({
 }
 
 export default function ProgramiPage() {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const activeTab =
+    mainTabs.find((tab) => tab.value === searchParams.get("tab"))?.value ??
+    "programs"
+
+  const selectedCalendarProgram =
+    activeTab === "programs"
+      ? calendarProgramDetails.find(
+          (program) => program.id === searchParams.get("programId")
+        ) ?? null
+      : null
+
+  function pushSearchParams(
+    updater: (params: URLSearchParams) => void
+  ) {
+    const nextParams = new URLSearchParams(searchParams.toString())
+    updater(nextParams)
+
+    const nextQueryString = nextParams.toString()
+    router.push(
+      nextQueryString ? `${pathname}?${nextQueryString}` : pathname
+    )
+  }
+
+  function handleTabChange(nextTab: string) {
+    pushSearchParams((params) => {
+      params.set("tab", nextTab)
+      params.delete("programId")
+    })
+  }
+
+  function handleOpenCalendarProgram(programId: ProgramRow["id"]) {
+    pushSearchParams((params) => {
+      params.set("tab", "programs")
+      params.set("programId", programId)
+    })
+  }
+
+  function handleCloseCalendarProgram() {
+    pushSearchParams((params) => {
+      params.delete("programId")
+    })
+  }
+
   return (
     <section className="min-w-0 bg-neutral-50">
-      <Tabs defaultValue="programs" className="min-w-0 w-full gap-0">
+      <Tabs
+        value={activeTab}
+        onValueChange={handleTabChange}
+        className="min-w-0 w-full gap-0"
+      >
         <div className="border-b border-neutral-200 bg-neutral-50">
           <div className="flex min-w-0 items-center justify-between gap-4 px-4">
             <div className="min-w-0 flex-1 overflow-x-auto">
@@ -701,30 +1136,41 @@ export default function ProgramiPage() {
                     {tab.icon}
                     {tab.label}
                   </TabsTrigger>
-                ))}
-              </TabsList>
-            </div>
-            <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
-              <IconPlus className="size-4" />
-              Program
-            </Button>
+                  ))}
+                </TabsList>
+              </div>
+            {!selectedCalendarProgram ? (
+              <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+                <IconPlus className="size-4" />
+                Program
+              </Button>
+            ) : null}
           </div>
         </div>
 
         {mainTabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value} className="mt-0 space-y-0">
-            <ProgramSection
-              heading={tab.label}
-              description={tab.description}
-            >
-              {tab.value === "programs" ? (
-                <ProgramsTable />
-              ) : tab.value === "templates" ? (
-                <TemplatesTable />
-              ) : tab.value === "exercises" ? (
-                <ExercisesTable />
-              ) : undefined}
-            </ProgramSection>
+            {tab.value === "programs" && selectedCalendarProgram ? (
+              <ProgramCalendarDetailView
+                program={selectedCalendarProgram}
+                onBack={handleCloseCalendarProgram}
+              />
+            ) : (
+              <ProgramSection
+                heading={tab.label}
+                description={tab.description}
+              >
+                {tab.value === "programs" ? (
+                  <ProgramsTable
+                    onOpenCalendarProgram={handleOpenCalendarProgram}
+                  />
+                ) : tab.value === "templates" ? (
+                  <TemplatesTable />
+                ) : tab.value === "exercises" ? (
+                  <ExercisesTable />
+                ) : undefined}
+              </ProgramSection>
+            )}
           </TabsContent>
         ))}
       </Tabs>
