@@ -1326,6 +1326,58 @@ const fixedPrograms: FixedProgramEditorProgram[] = [
   },
 ]
 
+function createFixedBuilderExercise(exerciseName: string): FixedProgramBuilderExercise {
+  return {
+    id: `${exerciseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Math.random()
+      .toString(36)
+      .slice(2, 8)}`,
+    name: exerciseName,
+    note: "Add a custom note for this exercise",
+    fields: ["Sets", "Reps", "Rest", "(Optional)", "(Optional)"],
+    values: ["3", "10", "01:30", "", ""],
+  }
+}
+
+function createFixedBuilderSection(
+  exerciseName: string
+): FixedProgramBuilderSection {
+  return {
+    id: `main-block-${Math.random().toString(36).slice(2, 8)}`,
+    title: "Main Block",
+    tone: "light",
+    note: "Drag more exercises here or add a custom note for this block.",
+    exercises: [createFixedBuilderExercise(exerciseName)],
+  }
+}
+
+function createFixedBuilderWorkout(
+  exerciseName: string
+): FixedProgramBuilderWorkout {
+  return {
+    id: `workout-${Math.random().toString(36).slice(2, 8)}`,
+    label: "Workout 1",
+    intro:
+      "Build your workout by dragging exercises from the left panel into this program.",
+    sections: [createFixedBuilderSection(exerciseName)],
+  }
+}
+
+function cloneFixedProgramBuilderWorkouts(
+  workouts: FixedProgramBuilderWorkout[]
+): FixedProgramBuilderWorkout[] {
+  return workouts.map((workout) => ({
+    ...workout,
+    sections: workout.sections.map((section) => ({
+      ...section,
+      exercises: section.exercises.map((exercise) => ({
+        ...exercise,
+        fields: [...exercise.fields],
+        values: [...exercise.values],
+      })),
+    })),
+  }))
+}
+
 function AddWorkoutDialog({
   trigger,
 }: {
@@ -1453,20 +1505,127 @@ function FixedProgramEditorDialog({
   program: FixedProgramEditorProgram
   trigger: React.ReactNode
 }) {
+  const [open, setOpen] = React.useState(false)
+  const [editorWorkouts, setEditorWorkouts] = React.useState(() =>
+    cloneFixedProgramBuilderWorkouts(program.editorWorkouts)
+  )
   const [activeWorkoutId, setActiveWorkoutId] = React.useState(
     program.editorWorkouts[0]?.id ?? ""
   )
+  const [draggedExerciseName, setDraggedExerciseName] = React.useState<string | null>(
+    null
+  )
+  const [isCanvasDragOver, setIsCanvasDragOver] = React.useState(false)
+
+  React.useEffect(() => {
+    if (!open) {
+      return
+    }
+
+    const nextWorkouts = cloneFixedProgramBuilderWorkouts(program.editorWorkouts)
+    setEditorWorkouts(nextWorkouts)
+    setActiveWorkoutId(nextWorkouts[0]?.id ?? "")
+    setDraggedExerciseName(null)
+    setIsCanvasDragOver(false)
+  }, [open, program.editorWorkouts])
 
   const activeWorkout =
-    program.editorWorkouts.find((workout) => workout.id === activeWorkoutId) ??
-    program.editorWorkouts[0]
+    editorWorkouts.find((workout) => workout.id === activeWorkoutId) ?? editorWorkouts[0]
+
+  const appendExerciseToProgram = React.useCallback(
+    (exerciseName: string) => {
+      const nextExercise = createFixedBuilderExercise(exerciseName)
+
+      setEditorWorkouts((previousWorkouts) => {
+        if (previousWorkouts.length === 0) {
+          const firstWorkout = createFixedBuilderWorkout(exerciseName)
+          setActiveWorkoutId(firstWorkout.id)
+          return [firstWorkout]
+        }
+
+        return previousWorkouts.map((workout, workoutIndex) => {
+          if (workout.id !== activeWorkoutId && !(workoutIndex === 0 && !activeWorkoutId)) {
+            return workout
+          }
+
+          const targetSectionIndex = workout.sections.findIndex(
+            (section) => section.tone !== "dark"
+          )
+
+          const sections =
+            workout.sections.length === 0
+              ? [createFixedBuilderSection(exerciseName)]
+              : targetSectionIndex === -1
+                ? [...workout.sections, createFixedBuilderSection(exerciseName)]
+                : workout.sections.map((section, sectionIndex) =>
+                    sectionIndex === targetSectionIndex
+                      ? {
+                          ...section,
+                          exercises: [...section.exercises, nextExercise],
+                        }
+                      : section
+                  )
+
+          return {
+            ...workout,
+            sections,
+          }
+        })
+      })
+    },
+    [activeWorkoutId]
+  )
+
+  const handleLibraryDragStart = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>, exerciseName: string) => {
+      event.dataTransfer.effectAllowed = "copy"
+      event.dataTransfer.setData("text/plain", exerciseName)
+      setDraggedExerciseName(exerciseName)
+    },
+    []
+  )
+
+  const handleCanvasDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      event.dataTransfer.dropEffect = "copy"
+      setIsCanvasDragOver(true)
+    },
+    []
+  )
+
+  const handleCanvasDragLeave = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+        setIsCanvasDragOver(false)
+      }
+    },
+    []
+  )
+
+  const handleCanvasDrop = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      const droppedExercise =
+        event.dataTransfer.getData("text/plain") || draggedExerciseName
+
+      if (droppedExercise) {
+        appendExerciseToProgram(droppedExercise)
+      }
+
+      setDraggedExerciseName(null)
+      setIsCanvasDragOver(false)
+    },
+    [appendExerciseToProgram, draggedExerciseName]
+  )
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-h-[88vh] max-w-[1200px] gap-0 overflow-hidden rounded-sm p-0">
-        <div className="grid min-h-0 grid-cols-[320px_minmax(0,1fr)]">
-          <div className="flex min-h-0 flex-col border-r border-neutral-200 bg-white">
+      <DialogContent className="flex h-[85vh] max-h-[85vh] max-w-[1200px] flex-col gap-0 overflow-hidden rounded-sm p-0">
+        <div className="grid min-h-0 flex-1 grid-cols-[320px_minmax(0,1fr)] overflow-hidden">
+          <div className="flex min-h-0 overflow-hidden border-r border-neutral-200 bg-white">
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="space-y-3 border-b border-neutral-200 px-5 py-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="text-[15px] font-medium text-neutral-900">
@@ -1517,7 +1676,16 @@ function FixedProgramEditorDialog({
                 {fixedProgramExerciseLibrary.map((exercise) => (
                   <div
                     key={`${program.id}-${exercise}`}
-                    className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)]"
+                    draggable
+                    onDragStart={(event) => handleLibraryDragStart(event, exercise)}
+                    onDragEnd={() => {
+                      setDraggedExerciseName(null)
+                      setIsCanvasDragOver(false)
+                    }}
+                    className={cn(
+                      "flex cursor-grab items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)] transition-colors active:cursor-grabbing",
+                      draggedExerciseName === exercise && "border-brand-300 bg-brand-50/40"
+                    )}
                   >
                     <div className="min-w-0 truncate text-[15px] font-medium text-neutral-900">
                       {exercise}
@@ -1527,9 +1695,10 @@ function FixedProgramEditorDialog({
                 ))}
               </div>
             </div>
+            </div>
           </div>
 
-          <div className="flex min-h-0 flex-col bg-white">
+          <div className="flex min-h-0 min-w-0 flex-col overflow-hidden bg-white">
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
               <div className="border-b border-neutral-200 px-5 py-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
@@ -1572,7 +1741,15 @@ function FixedProgramEditorDialog({
                     </Tabs>
                   </div>
 
-                  <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+                  <div
+                    className={cn(
+                      "min-h-0 flex-1 overflow-y-auto px-5 py-4 transition-colors",
+                      isCanvasDragOver && "bg-brand-50/20"
+                    )}
+                    onDragOver={handleCanvasDragOver}
+                    onDragLeave={handleCanvasDragLeave}
+                    onDrop={handleCanvasDrop}
+                  >
                     {activeWorkout ? (
                       <div className="space-y-4">
                         <div className="flex items-start gap-3">
@@ -1695,36 +1872,50 @@ function FixedProgramEditorDialog({
                   </div>
                 </>
               ) : (
-                <div className="flex min-h-0 flex-1 items-center justify-center px-8 py-10">
+                <div
+                  className={cn(
+                    "flex min-h-0 flex-1 items-center justify-center px-8 py-10 transition-colors",
+                    isCanvasDragOver && "bg-brand-50/20"
+                  )}
+                  onDragOver={handleCanvasDragOver}
+                  onDragLeave={handleCanvasDragLeave}
+                  onDrop={handleCanvasDrop}
+                >
                   <div className="flex max-w-[360px] flex-col items-center text-center">
-                    <div className="flex size-10 items-center justify-center rounded-full border border-sky-200 bg-sky-50 text-neutral-700">
-                      <Dumbbell className="size-5" />
+                    <div
+                      className={cn(
+                        "flex w-full flex-col items-center rounded-2xl border border-dashed border-neutral-200 px-8 py-10",
+                        isCanvasDragOver && "border-brand-400 bg-brand-50/35"
+                      )}
+                    >
+                      <div className="flex size-10 items-center justify-center rounded-full border border-sky-200 bg-sky-50 text-neutral-700">
+                        <Dumbbell className="size-5" />
+                      </div>
+                      <div className="mt-4 text-[15px] leading-7 text-neutral-700">
+                        Drag an exercise here or click the button below to add your first workout.
+                      </div>
+                      <AddWorkoutDialog
+                        trigger={
+                          <Button className="mt-4 h-12 rounded-sm bg-[#071b2f] px-5 text-white shadow-none hover:bg-[#0b2740]">
+                            Add Your First Workout
+                          </Button>
+                        }
+                      />
                     </div>
-                    <div className="mt-4 text-[15px] leading-7 text-neutral-700">
-                      Drag an exercise here or click the button below to add your first workout.
-                    </div>
-                    <AddWorkoutDialog
-                      trigger={
-                        <Button className="mt-4 h-12 rounded-sm bg-[#071b2f] px-5 text-white shadow-none hover:bg-[#0b2740]">
-                          Add Your First Workout
-                        </Button>
-                      }
-                    />
                   </div>
                 </div>
               )}
             </div>
-
-            <DialogFooter className="border-t border-neutral-200 px-5 py-3 sm:justify-between">
-              <DialogClose asChild>
-                <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
-                  Close
-                </Button>
-              </DialogClose>
-              <Button>Save Changes</Button>
-            </DialogFooter>
           </div>
         </div>
+        <DialogFooter className="border-t border-neutral-200 px-5 py-3 sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+              Close
+            </Button>
+          </DialogClose>
+          <Button>Save Changes</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
