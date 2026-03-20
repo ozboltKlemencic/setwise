@@ -1641,79 +1641,87 @@ export function FixedProgramEditorDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="flex h-[85vh] max-h-[85vh] max-w-[1200px] flex-col gap-0 overflow-hidden rounded-sm p-0">
+      <DialogContent className="flex h-[88vh] max-h-[88vh] w-[min(1120px,calc(100vw-2rem))] max-w-[1120px] flex-col gap-0 overflow-hidden rounded-sm p-0">
         <div className="grid min-h-0 flex-1 grid-cols-[320px_minmax(0,1fr)] overflow-hidden">
           <div className="flex min-h-0 overflow-hidden border-r border-neutral-200 bg-white">
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-            <div className="space-y-3 border-b border-neutral-200 px-5 py-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="text-[15px] font-medium text-neutral-900">
-                  5710 EXERCISES
-                </div>
-                <div className="inline-flex rounded-md border border-neutral-200 bg-white p-0.5 shadow-none">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 rounded-sm px-3 text-[13px] text-neutral-700 shadow-none"
-                  >
-                    <List className="size-3.5" />
-                    List
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 rounded-sm px-3 text-[13px] text-neutral-500 shadow-none"
-                  >
-                    <LayoutGrid className="size-3.5" />
-                    Grid
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <div className="relative min-w-0 flex-1">
-                  <Input
-                    placeholder="Search exercise"
-                    className="h-10 rounded-sm border-neutral-200 bg-white pr-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-                  />
-                  <Filter className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-neutral-500" />
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="h-10 rounded-sm border-neutral-200 bg-white px-4 text-neutral-700 shadow-none hover:bg-neutral-50"
-                >
-                  New
-                </Button>
-              </div>
-            </div>
-
-            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
-              <div className="space-y-3">
-                {fixedProgramExerciseLibrary.map((exercise) => (
-                  <div
-                    key={`${program.id}-${exercise}`}
-                    draggable
-                    onDragStart={(event) => handleLibraryDragStart(event, exercise)}
-                    onDragEnd={() => {
-                      setDraggedExerciseName(null)
-                      setIsCanvasDragOver(false)
-                    }}
-                    className={cn(
-                      "flex cursor-grab items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)] transition-colors active:cursor-grabbing",
-                      draggedExerciseName === exercise && "border-brand-300 bg-brand-50/40"
-                    )}
-                  >
-                    <div className="min-w-0 truncate text-[15px] font-medium text-neutral-900">
-                      {exercise}
-                    </div>
-                    <IconDots className="size-4 shrink-0 text-neutral-400" />
+              <div className="space-y-3 border-b border-neutral-200 px-5 py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-[15px] font-medium text-neutral-900">
+                    5710 EXERCISES
                   </div>
-                ))}
+                  <div className="inline-flex rounded-md border border-neutral-200 bg-white p-0.5 shadow-none">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 rounded-sm px-3 text-[13px] text-neutral-700 shadow-none"
+                    >
+                      <List className="size-3.5" />
+                      List
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 rounded-sm px-3 text-[13px] text-neutral-500 shadow-none"
+                    >
+                      <LayoutGrid className="size-3.5" />
+                      Grid
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="relative min-w-0 flex-1">
+                    <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+                    <Input
+                      placeholder="Search exercise"
+                      className="h-10 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    className="size-10 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+                  >
+                    <Filter className="size-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-10 rounded-sm border-neutral-200 bg-white px-4 text-neutral-700 shadow-none hover:bg-neutral-50"
+                  >
+                    New
+                  </Button>
+                </div>
               </div>
-            </div>
+
+              <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+                <div className="space-y-3">
+                  {fixedProgramExerciseLibrary.map((exercise) => (
+                    <div
+                      key={`${program.id}-${exercise}`}
+                      draggable
+                      onDragStart={(event) => handleLibraryDragStart(event, exercise)}
+                      onDragEnd={() => {
+                        setDraggedExerciseName(null)
+                        setIsCanvasDragOver(false)
+                      }}
+                      className={cn(
+                        "flex cursor-grab items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)] transition-colors active:cursor-grabbing",
+                        draggedExerciseName === exercise && "border-brand-300 bg-brand-50/40"
+                      )}
+                    >
+                      <div className="min-w-0 truncate text-[15px] font-medium text-neutral-900">
+                        {exercise}
+                      </div>
+                      <IconDots className="size-4 shrink-0 text-neutral-400" />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

@@ -794,7 +794,7 @@ function ProgramsTable({
 
       {programRows.map((program) => {
         const isFixedProgram = program.type === "Fixed"
-        const rowClassName = `grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 text-left last:border-b-0 ${
+        const rowClassName = `group grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 text-left last:border-b-0 ${
           isFixedProgram
             ? "w-full cursor-pointer transition-colors hover:bg-neutral-50"
             : ""
