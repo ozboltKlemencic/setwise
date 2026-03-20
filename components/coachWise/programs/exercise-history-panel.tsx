@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { IconDots } from "@tabler/icons-react"
 import {
   CalendarDays,
   CalendarIcon,
@@ -1099,16 +1100,105 @@ export function AddProgramDialog({
   )
 }
 
-export function ProgramsOverviewActions() {
-  const [programType, setProgramType] = React.useState<"calendar" | "fixed">(
-    "calendar"
+const fixedPrograms = [
+  {
+    id: "empty-program",
+    title: "aa",
+    workouts: [] as string[],
+  },
+  {
+    id: "full-body-sample",
+    title: "Full Body (Sample)",
+    workouts: ["Chest & Shoulder", "Back", "Arms", "Legs"],
+  },
+] as const
+
+export function FixedProgramsTable() {
+  return (
+    <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+      <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-4">
+        <div className="text-[15px] font-medium text-neutral-900">Program</div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-8 rounded-sm text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+        >
+          <Search className="size-4" />
+        </Button>
+      </div>
+
+      <div>
+        {fixedPrograms.map((program) => (
+          <div
+            key={program.id}
+            className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4 last:border-b-0"
+          >
+            <div className="min-w-0 space-y-3">
+              <div className="text-[15px] font-medium text-neutral-950">
+                {program.title}
+              </div>
+
+              {program.workouts.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  {program.workouts.map((workout, index) => (
+                    <React.Fragment key={`${program.id}-${workout}`}>
+                      <Badge className="rounded-sm border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50">
+                        {workout}
+                      </Badge>
+                      {index < program.workouts.length - 1 ? (
+                        <span className="text-[13px] text-neutral-400">/</span>
+                      ) : null}
+                    </React.Fragment>
+                  ))}
+                </div>
+              ) : (
+                <Badge className="rounded-sm border border-rose-200 bg-white px-2 py-0.5 text-[12px] font-medium text-rose-600 shadow-none hover:bg-white">
+                  No Workouts
+                </Badge>
+              )}
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-8 shrink-0 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+            >
+              <IconDots className="size-4" />
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export function ProgramsOverviewActions({
+  programType,
+}: {
+  programType: "calendar" | "fixed"
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const handleProgramTypeChange = React.useCallback(
+    (nextProgramType: "calendar" | "fixed") => {
+      const params = new URLSearchParams(searchParams.toString())
+      params.set("tab", "programs")
+      params.set("programTab", "calendar")
+      params.set("programType", nextProgramType)
+      router.push(`${pathname}?${params.toString()}`)
+    },
+    [pathname, router, searchParams]
   )
 
   return (
     <>
       <ProgramTypeDialog
         value={programType}
-        onValueChange={setProgramType}
+        onValueChange={handleProgramTypeChange}
         triggerClassName="rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
       />
       {programType === "calendar" ? (

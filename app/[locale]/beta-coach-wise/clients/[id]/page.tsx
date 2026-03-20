@@ -48,6 +48,7 @@ import {
 import {
   CompletedWorkoutsPanel,
   ExerciseHistoryPanel,
+  FixedProgramsTable,
   ProgramsOverviewActions,
   ProgramsPeriodPicker,
   WorkoutDetailView,
@@ -87,6 +88,7 @@ type Props = {
     nutritionTab?: string | string[]
     mealPlanId?: string | string[]
     programTab?: string | string[]
+    programType?: string | string[]
     workoutId?: string | string[]
   }>
 }
@@ -311,6 +313,9 @@ export default async function ClientProfilePage({
   const activeProgramTab = Array.isArray(resolvedSearchParams.programTab)
     ? resolvedSearchParams.programTab[0]
     : resolvedSearchParams.programTab
+  const activeProgramType = Array.isArray(resolvedSearchParams.programType)
+    ? resolvedSearchParams.programType[0]
+    : resolvedSearchParams.programType
   const workoutId = Array.isArray(resolvedSearchParams.workoutId)
     ? resolvedSearchParams.workoutId[0]
     : resolvedSearchParams.workoutId
@@ -333,6 +338,7 @@ export default async function ClientProfilePage({
       activeProgramTab === "completed-workouts"
       ? activeProgramTab
       : "calendar"
+  const resolvedProgramType = activeProgramType === "fixed" ? "fixed" : "calendar"
 
   if (!client) {
     notFound()
@@ -1348,7 +1354,7 @@ export default async function ClientProfilePage({
               ]}
               actions={
                 resolvedProgramTab === "calendar" ? (
-                  <ProgramsOverviewActions />
+                  <ProgramsOverviewActions programType={resolvedProgramType} />
                 ) : resolvedProgramTab === "exercise-history" ||
                   resolvedProgramTab === "completed-workouts" ? (
                   <ProgramsPeriodPicker />
@@ -1358,7 +1364,11 @@ export default async function ClientProfilePage({
 
             <TabsContent value="calendar" className="mt-0 space-y-0">
               <SectionBody>
-                <WorkoutCalendar />
+                {resolvedProgramType === "fixed" ? (
+                  <FixedProgramsTable />
+                ) : (
+                  <WorkoutCalendar />
+                )}
               </SectionBody>
             </TabsContent>
 
