@@ -14,6 +14,7 @@ import {
   IconRectangle,
   IconSettings,
   IconPencil,
+  IconSparkles,
   IconTag,
   IconUser,
 } from "@tabler/icons-react"
@@ -596,6 +597,145 @@ function AddExerciseDialog({ trigger }: { trigger: React.ReactNode }) {
   )
 }
 
+function AddTemplateDialog({ trigger }: { trigger: React.ReactNode }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="overflow-hidden rounded-sm border border-neutral-200 bg-white p-0 shadow-xl sm:max-w-[700px]">
+        <div className="flex items-center justify-between border-b border-neutral-200 px-5 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
+            <IconBarbell className="size-4 text-neutral-700" />
+            Add Template
+          </DialogTitle>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              <IconRectangle className="size-4 rotate-45" />
+            </Button>
+          </DialogClose>
+        </div>
+
+        <Tabs defaultValue="new-workout" className="gap-0">
+          <div className="border-b border-neutral-200 px-5">
+            <TabsList className="h-auto rounded-none border-0 bg-transparent p-0">
+              <TabsTrigger
+                value="new-workout"
+                className={cn(profileTabTriggerClassName, "px-2.5")}
+              >
+                New Workout
+              </TabsTrigger>
+              <TabsTrigger
+                value="hubfit-ai"
+                className={cn(profileTabTriggerClassName, "px-2.5")}
+              >
+                HubFit AI
+                <IconSparkles className="size-3.5" />
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          <TabsContent value="new-workout" className="mt-0 px-5 py-5">
+            <div className="space-y-5">
+              <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_76px] md:items-start">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-medium text-neutral-700">
+                      Workout Name <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      placeholder="Name of the workout e.g. Chest"
+                      className="h-10 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[13px] font-medium text-neutral-700">
+                      Workout Description
+                    </label>
+                    <textarea
+                      placeholder="Enter any additional info"
+                      className="min-h-[92px] w-full rounded-sm border border-neutral-200 px-3 py-2.5 text-[14px] text-neutral-900 shadow-none outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-300"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="flex size-[60px] items-center justify-center rounded-sm bg-linear-to-br from-sky-500 to-blue-700 text-white shadow-none transition-transform hover:scale-[1.01]"
+                >
+                  <IconBarbell className="size-5" />
+                </button>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="hubfit-ai" className="mt-0 px-5 py-5">
+            <div className="space-y-5">
+              <div className="flex items-center justify-center gap-3 text-center text-[14px] text-neutral-700">
+                <span>Create a new workout or paste an existing one to format</span>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-8 rounded-sm border-neutral-200 bg-white px-3 text-[13px] font-medium text-neutral-700 shadow-none hover:bg-neutral-50"
+                >
+                  Try Sample
+                </Button>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[13px] font-medium text-neutral-700">
+                  Workout Name
+                </label>
+                <Input
+                  placeholder="e.g., Upper Body Strength, Cardio Blast, Full Body Beginner"
+                  className="h-10 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[13px] font-medium text-neutral-700">
+                  Workout Description
+                </label>
+                <textarea
+                  placeholder={"Tell me what you want to do with your workout...\n\nExamples:\n- Create a 45-minute upper body workout\n- Format: Bench Press 5x8, Rows 4x10\n- Design a beginner full-body routine"}
+                  className="min-h-[140px] w-full rounded-sm border border-neutral-200 px-3 py-3 text-[14px] text-neutral-900 shadow-none outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-300"
+                />
+              </div>
+            </div>
+          </TabsContent>
+
+          <DialogFooter className="items-center justify-between border-t border-neutral-200 px-5 py-4 sm:flex-row sm:justify-between">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-9 px-0 text-[15px] font-normal text-neutral-700 hover:bg-transparent hover:text-neutral-900"
+              >
+                Close
+              </Button>
+            </DialogClose>
+            <TabsContent value="new-workout" forceMount className="m-0 data-[state=inactive]:hidden">
+              <Button className="h-9 rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 px-4 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+                Add Workout
+              </Button>
+            </TabsContent>
+            <TabsContent value="hubfit-ai" forceMount className="m-0 data-[state=inactive]:hidden">
+              <Button className="h-9 rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 px-4 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+                <IconSparkles className="size-4" />
+                Create Workout
+              </Button>
+            </TabsContent>
+          </DialogFooter>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function CalendarProgramWorkoutCard({
   workout,
 }: {
@@ -1087,6 +1227,33 @@ export default function ProgramiPage() {
     })
   }
 
+  const tabsAction = !selectedProgramRow ? (
+    activeTab === "programs" ? (
+      <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+        <IconPlus className="size-4" />
+        Program
+      </Button>
+    ) : activeTab === "templates" ? (
+      <AddTemplateDialog
+        trigger={
+          <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            <IconPlus className="size-4" />
+            Templates
+          </Button>
+        }
+      />
+    ) : activeTab === "exercises" ? (
+      <AddExerciseDialog
+        trigger={
+          <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            <IconPlus className="size-4" />
+            Exercises
+          </Button>
+        }
+      />
+    ) : null
+  ) : null
+
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs
@@ -1113,12 +1280,7 @@ export default function ProgramiPage() {
                   ))}
                 </TabsList>
               </div>
-            {!selectedProgramRow ? (
-              <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
-                <IconPlus className="size-4" />
-                Program
-              </Button>
-            ) : null}
+            {tabsAction}
           </div>
         </div>
 
