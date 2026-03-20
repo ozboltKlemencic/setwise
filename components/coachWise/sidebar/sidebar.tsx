@@ -3,10 +3,12 @@
 import * as React from "react"
 import {
   IconActivityHeartbeat,
+  IconCalendarWeek,
   IconChefHat,
   IconClipboardList,
   IconInfoCircle,
   IconPill,
+  IconReceipt2,
   IconUserCheck,
   IconUsersGroup,
   IconSettings,
@@ -41,6 +43,12 @@ const data = {
       icon: IconUsersGroup,
       exact: false,
     },
+    {
+      title: "Urnik",
+      url: "/beta-coach-wise/urnik",
+      icon: IconCalendarWeek,
+      exact: true,
+    },
   ],
   navSecondary: [
     {
@@ -61,6 +69,14 @@ const data = {
       name: "Forms",
       url: "/beta-coach-wise/forms",
       icon: IconUserCheck,
+      exact: true,
+    },
+  ],
+  racuni: [
+    {
+      name: "Racuni",
+      url: "/beta-coach-wise/racuni",
+      icon: IconReceipt2,
       exact: true,
     },
   ],
@@ -137,6 +153,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavVprasalniki items={data.vprasalniki} />
+        <NavDocuments items={data.racuni} label="Racuni" />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 

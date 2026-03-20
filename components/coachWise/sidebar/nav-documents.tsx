@@ -20,6 +20,7 @@ import {
 
 export function NavDocuments({
   items,
+  label = "Orodja",
 }: {
   items: {
     name: string
@@ -27,6 +28,7 @@ export function NavDocuments({
     icon: Icon
     exact?: boolean
   }[]
+  label?: string
 }) {
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
@@ -34,7 +36,7 @@ export function NavDocuments({
   return (
     <SidebarGroup className="transition-[padding] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)]">
       <SidebarGroupLabel className="group-data-[transition=closing]:mt-0 group-data-[transition=closing]:max-h-8 group-data-[transition=closing]:-translate-x-1 group-data-[transition=closing]:px-2 group-data-[transition=closing]:opacity-0 group-data-[collapsible=icon]:mt-0 group-data-[collapsible=icon]:max-h-8 group-data-[collapsible=icon]:-translate-x-1 group-data-[collapsible=icon]:px-2 group-data-[collapsible=icon]:opacity-0">
-        Orodja
+        {label}
       </SidebarGroupLabel>
       <SidebarGroupContent className="flex flex-col gap-1">
         <SidebarMenu>
