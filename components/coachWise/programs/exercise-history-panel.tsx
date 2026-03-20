@@ -7,11 +7,15 @@ import {
   CalendarDays,
   CalendarIcon,
   ChevronLeft,
+  ChevronDown,
   Dumbbell,
   Filter,
   LayoutGrid,
+  List,
   Plus,
+  RefreshCw,
   Search,
+  Sparkles,
   TrendingDown,
   TrendingUp,
   X,
@@ -1205,18 +1209,526 @@ export function AddProgramDialog({
   )
 }
 
-const fixedPrograms = [
+type FixedProgramBuilderExercise = {
+  id: string
+  name: string
+  note: string
+  fields: string[]
+  values: string[]
+}
+
+type FixedProgramBuilderSection = {
+  id: string
+  title: string
+  note: string
+  tone?: "dark" | "light"
+  exercises: FixedProgramBuilderExercise[]
+}
+
+type FixedProgramBuilderWorkout = {
+  id: string
+  label: string
+  intro: string
+  sections: FixedProgramBuilderSection[]
+}
+
+type FixedProgramEditorProgram = {
+  id: string
+  title: string
+  description: string
+  workouts: string[]
+  editorWorkouts: FixedProgramBuilderWorkout[]
+}
+
+const fixedProgramExerciseLibrary = [
+  "Barbell Bench Press",
+  "Bodyweight Half Squat",
+  "Bodyweight Squat",
+  "Dumbbell Standing Biceps Curl",
+  "Push-up",
+  "Run",
+  "Run on Treadmill",
+  "Squat",
+  "Walking",
+  "Walking on Treadmill",
+  "Arm Circles",
+  "Bar Biceps Curl",
+]
+
+const fixedPrograms: FixedProgramEditorProgram[] = [
   {
     id: "empty-program",
     title: "aa",
-    workouts: [] as string[],
+    description: "aaa",
+    workouts: [],
+    editorWorkouts: [],
   },
   {
     id: "full-body-sample",
     title: "Full Body (Sample)",
     workouts: ["Chest & Shoulder", "Back", "Arms", "Legs"],
+    description:
+      "This 4-day program will help intermediate and advanced trainees gain size and strength. Rest-pause sets, drop sets, and creative unilateral work are included.",
+    editorWorkouts: [
+      {
+        id: "chest-shoulder",
+        label: "Chest & Shoulder",
+        intro:
+          "Start your week with a chest workout that includes a variety of exercises. This workout is designed to target all areas of your chest, including the upper, lower, and middle portions.",
+        sections: [
+          {
+            id: "warmup",
+            title: "Warmup",
+            tone: "dark",
+            note:
+              "Start your workout with a warmup to get your blood flowing and your muscles ready for the workout.",
+            exercises: [
+              {
+                id: "jumping-jack",
+                name: "Jumping Jack",
+                note: "Add a custom note for this exercise",
+                fields: ["Sets", "Time", "(Optional)", "(Optional)", "(Optional)"],
+                values: ["1", "30", "", "", ""],
+              },
+              {
+                id: "arm-circles",
+                name: "Arm Circles",
+                note: "Add a custom note for this exercise",
+                fields: ["Sets", "Time", "(Optional)", "(Optional)", "(Optional)"],
+                values: ["1", "30", "", "", ""],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "back",
+        label: "Back",
+        intro:
+          "This back session balances vertical and horizontal pulling with enough warmup volume to keep the shoulders healthy.",
+        sections: [],
+      },
+      {
+        id: "arms",
+        label: "Arms",
+        intro:
+          "Use this arm day to focus on controlled reps, elbow-friendly tempos and consistent pump work.",
+        sections: [],
+      },
+      {
+        id: "legs",
+        label: "Legs",
+        intro:
+          "A lower body session focused on squat patterns, hinge work and stable progression from week to week.",
+        sections: [],
+      },
+    ],
   },
-] as const
+]
+
+function AddWorkoutDialog({
+  trigger,
+}: {
+  trigger: React.ReactNode
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState("new")
+  const [workoutName, setWorkoutName] = React.useState("")
+  const [workoutDescription, setWorkoutDescription] = React.useState("")
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="max-w-[700px] rounded-sm p-0">
+        <DialogHeader className="border-b border-neutral-200 px-6 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold">
+            <Dumbbell className="size-4 text-neutral-500" />
+            Add Workout
+          </DialogTitle>
+        </DialogHeader>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-0">
+          <div className="border-b border-neutral-200 px-6">
+            <TabsList className="h-auto gap-8 rounded-none bg-transparent p-0">
+              <TabsTrigger value="new" className={addProgramTabTriggerClassName}>
+                New Workout
+              </TabsTrigger>
+              <TabsTrigger value="library" className={addProgramTabTriggerClassName}>
+                Workout Library
+              </TabsTrigger>
+              <TabsTrigger value="ai" className={addProgramTabTriggerClassName}>
+                <span className="inline-flex items-center gap-1">
+                  HubFit AI
+                  <Sparkles className="size-3 text-neutral-500" />
+                </span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          <TabsContent value="new" className="mt-0 space-y-0">
+            <div className="space-y-5 px-6 py-5">
+              <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_60px]">
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <Label className="text-[13px] font-medium text-neutral-700">
+                      Workout Name <span className="text-rose-500">*</span>
+                    </Label>
+                    <Input
+                      value={workoutName}
+                      onChange={(event) => setWorkoutName(event.target.value)}
+                      placeholder="Name of the workout e.g. Chest"
+                      className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-[13px] font-medium text-neutral-700">
+                      Workout Description
+                    </Label>
+                    <textarea
+                      value={workoutDescription}
+                      onChange={(event) => setWorkoutDescription(event.target.value)}
+                      placeholder="Enter any additional info"
+                      className="min-h-[96px] w-full rounded-sm border border-neutral-200 bg-white px-3 py-2.5 text-[14px] text-neutral-900 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="h-[56px] rounded-xl bg-linear-to-br from-brand-500 to-brand-700" />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="library" className="mt-0 space-y-0">
+            <div className="space-y-4 px-6 py-5">
+              <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                <div className="grid grid-cols-[minmax(0,1fr)_150px] items-center border-b border-neutral-200 px-4 py-3 text-[13px] font-medium text-neutral-700">
+                  <div>Workout</div>
+                  <div className="flex items-center justify-end gap-3">
+                    <Search className="size-4 text-neutral-400" />
+                    <span>Tags</span>
+                  </div>
+                </div>
+                <div className="px-4 py-4 text-[15px] text-neutral-950">
+                  Full Body (Sample)
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="ai" className="mt-0 space-y-0">
+            <div className="space-y-5 px-6 py-5">
+              <div className="space-y-2">
+                <Label className="text-[13px] font-medium text-neutral-700">
+                  Workout Prompt <span className="text-rose-500">*</span>
+                </Label>
+                <textarea
+                  placeholder="Describe the workout you want to generate."
+                  className="min-h-[120px] w-full rounded-sm border border-neutral-200 bg-white px-3 py-2.5 text-[14px] text-neutral-900 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300"
+                />
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <DialogFooter className="border-t border-neutral-200 px-6 py-4 sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+              Close
+            </Button>
+          </DialogClose>
+          <Button onClick={() => setOpen(false)}>
+            {activeTab === "library" ? "Import Workout" : "Add Workout"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function FixedProgramEditorDialog({
+  program,
+  trigger,
+}: {
+  program: FixedProgramEditorProgram
+  trigger: React.ReactNode
+}) {
+  const [activeWorkoutId, setActiveWorkoutId] = React.useState(
+    program.editorWorkouts[0]?.id ?? ""
+  )
+
+  const activeWorkout =
+    program.editorWorkouts.find((workout) => workout.id === activeWorkoutId) ??
+    program.editorWorkouts[0]
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="max-h-[88vh] max-w-[1200px] gap-0 overflow-hidden rounded-sm p-0">
+        <div className="grid min-h-0 grid-cols-[320px_minmax(0,1fr)]">
+          <div className="flex min-h-0 flex-col border-r border-neutral-200 bg-white">
+            <div className="space-y-3 border-b border-neutral-200 px-5 py-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-[15px] font-medium text-neutral-900">
+                  5710 EXERCISES
+                </div>
+                <div className="inline-flex rounded-md border border-neutral-200 bg-white p-0.5 shadow-none">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 rounded-sm px-3 text-[13px] text-neutral-700 shadow-none"
+                  >
+                    <List className="size-3.5" />
+                    List
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 rounded-sm px-3 text-[13px] text-neutral-500 shadow-none"
+                  >
+                    <LayoutGrid className="size-3.5" />
+                    Grid
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="relative min-w-0 flex-1">
+                  <Input
+                    placeholder="Search exercise"
+                    className="h-10 rounded-sm border-neutral-200 bg-white pr-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <Filter className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-neutral-500" />
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-10 rounded-sm border-neutral-200 bg-white px-4 text-neutral-700 shadow-none hover:bg-neutral-50"
+                >
+                  New
+                </Button>
+              </div>
+            </div>
+
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+              <div className="space-y-3">
+                {fixedProgramExerciseLibrary.map((exercise) => (
+                  <div
+                    key={`${program.id}-${exercise}`}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)]"
+                  >
+                    <div className="min-w-0 truncate text-[15px] font-medium text-neutral-900">
+                      {exercise}
+                    </div>
+                    <IconDots className="size-4 shrink-0 text-neutral-400" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex min-h-0 flex-col bg-white">
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+              <div className="border-b border-neutral-200 px-5 py-4">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <div className="text-[16px] font-semibold text-neutral-950">
+                    {program.title}
+                  </div>
+                  <AddWorkoutDialog
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="h-10 rounded-sm border-neutral-200 bg-white px-4 text-neutral-700 shadow-none hover:bg-neutral-50"
+                      >
+                        Add Workout
+                      </Button>
+                    }
+                  />
+                </div>
+                <textarea
+                  defaultValue={program.description}
+                  className="min-h-[56px] w-full rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-[14px] text-neutral-700 shadow-none outline-none focus:border-neutral-300"
+                />
+              </div>
+
+              {program.editorWorkouts.length > 0 ? (
+                <>
+                  <div className="border-b border-neutral-200 px-5">
+                    <Tabs value={activeWorkoutId} onValueChange={setActiveWorkoutId} className="gap-0">
+                      <TabsList className="h-auto gap-8 rounded-none bg-transparent p-0">
+                        {program.editorWorkouts.map((workout) => (
+                          <TabsTrigger
+                            key={workout.id}
+                            value={workout.id}
+                            className={addProgramTabTriggerClassName}
+                          >
+                            {workout.label}
+                          </TabsTrigger>
+                        ))}
+                      </TabsList>
+                    </Tabs>
+                  </div>
+
+                  <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+                    {activeWorkout ? (
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="size-11 rounded-xl bg-linear-to-br from-brand-500 to-brand-700" />
+                          <textarea
+                            defaultValue={activeWorkout.intro}
+                            className="min-h-[56px] flex-1 rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-[14px] text-neutral-700 shadow-none outline-none focus:border-neutral-300"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="size-10 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+                          >
+                            <IconDots className="size-4" />
+                          </Button>
+                        </div>
+
+                        {activeWorkout.sections.map((section) => (
+                          <div
+                            key={section.id}
+                            className="rounded-2xl border border-neutral-200 bg-brand-50/35 p-3"
+                          >
+                            <div
+                              className={cn(
+                                "flex items-center justify-between rounded-xl px-4 py-3 text-[14px] font-semibold",
+                                section.tone === "dark"
+                                  ? "bg-[#071b2f] text-white"
+                                  : "bg-white text-neutral-950"
+                              )}
+                            >
+                              <div className="flex items-center gap-2">
+                                <ChevronDown className="size-4" />
+                                {section.title}
+                              </div>
+                              <IconDots className="size-4 text-current/70" />
+                            </div>
+
+                            <div className="mt-3 rounded-xl bg-white p-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)]">
+                              <div className="rounded-lg bg-neutral-100 px-4 py-3 text-[14px] text-neutral-700">
+                                {section.note}
+                              </div>
+
+                              <div className="mt-3 space-y-3">
+                                {section.exercises.map((exercise, exerciseIndex) => (
+                                  <React.Fragment key={exercise.id}>
+                                    <div className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)]">
+                                      <div className="mb-3 flex items-center gap-3">
+                                        <div className="size-7 rounded-lg border border-neutral-200 bg-neutral-50" />
+                                        <Input
+                                          defaultValue={exercise.name}
+                                          className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                                        />
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          size="icon"
+                                          className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+                                        >
+                                          <RefreshCw className="size-3.5" />
+                                        </Button>
+                                        <Button
+                                          type="button"
+                                          variant="outline"
+                                          size="icon"
+                                          className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+                                        >
+                                          <IconDots className="size-4" />
+                                        </Button>
+                                      </div>
+
+                                      <textarea
+                                        defaultValue={exercise.note}
+                                        className="min-h-[42px] w-full rounded-sm border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-[14px] text-neutral-500 shadow-none outline-none focus:border-neutral-300"
+                                      />
+
+                                      <div className="mt-3 overflow-hidden rounded-xl border border-neutral-200">
+                                        <div className="grid grid-cols-5 bg-white text-[13px] text-neutral-400">
+                                          {exercise.fields.map((field) => (
+                                            <div
+                                              key={`${exercise.id}-${field}`}
+                                              className="border-r border-neutral-200 px-3 py-3 last:border-r-0"
+                                            >
+                                              {field}
+                                            </div>
+                                          ))}
+                                        </div>
+                                        <div className="grid grid-cols-5 border-t border-neutral-200 bg-white text-[14px] text-neutral-800">
+                                          {exercise.values.map((value, valueIndex) => (
+                                            <div
+                                              key={`${exercise.id}-${valueIndex}`}
+                                              className="border-r border-neutral-200 px-3 py-3 last:border-r-0"
+                                            >
+                                              {value}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    {exerciseIndex < section.exercises.length - 1 ? (
+                                      <div className="flex justify-center py-1 text-neutral-500">
+                                        <Plus className="size-4 rotate-45" />
+                                      </div>
+                                    ) : null}
+                                  </React.Fragment>
+                                ))}
+                              </div>
+
+                              <div className="mt-4 flex justify-end">
+                                <Button className="h-10 rounded-sm bg-[#071b2f] px-4 text-white shadow-none hover:bg-[#0b2740]">
+                                  Add Exercise
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </>
+              ) : (
+                <div className="flex min-h-0 flex-1 items-center justify-center px-8 py-10">
+                  <div className="flex max-w-[360px] flex-col items-center text-center">
+                    <div className="flex size-10 items-center justify-center rounded-full border border-sky-200 bg-sky-50 text-neutral-700">
+                      <Dumbbell className="size-5" />
+                    </div>
+                    <div className="mt-4 text-[15px] leading-7 text-neutral-700">
+                      Drag an exercise here or click the button below to add your first workout.
+                    </div>
+                    <AddWorkoutDialog
+                      trigger={
+                        <Button className="mt-4 h-12 rounded-sm bg-[#071b2f] px-5 text-white shadow-none hover:bg-[#0b2740]">
+                          Add Your First Workout
+                        </Button>
+                      }
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <DialogFooter className="border-t border-neutral-200 px-5 py-3 sm:justify-between">
+              <DialogClose asChild>
+                <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button>Save Changes</Button>
+            </DialogFooter>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 export function FixedProgramsTable() {
   return (
@@ -1235,44 +1747,45 @@ export function FixedProgramsTable() {
 
       <div>
         {fixedPrograms.map((program) => (
-          <div
+          <FixedProgramEditorDialog
             key={program.id}
-            className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4 last:border-b-0"
-          >
-            <div className="min-w-0 space-y-3">
-              <div className="text-[15px] font-medium text-neutral-950">
-                {program.title}
-              </div>
+            program={program}
+            trigger={
+              <button
+                type="button"
+                className="flex w-full items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4 text-left transition-colors last:border-b-0 hover:bg-neutral-50"
+              >
+                <div className="min-w-0 space-y-3">
+                  <div className="text-[15px] font-medium text-neutral-950">
+                    {program.title}
+                  </div>
 
-              {program.workouts.length > 0 ? (
-                <div className="flex flex-wrap items-center gap-2">
-                  {program.workouts.map((workout, index) => (
-                    <React.Fragment key={`${program.id}-${workout}`}>
-                      <Badge className="rounded-sm border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50">
-                        {workout}
-                      </Badge>
-                      {index < program.workouts.length - 1 ? (
-                        <span className="text-[13px] text-neutral-400">/</span>
-                      ) : null}
-                    </React.Fragment>
-                  ))}
+                  {program.workouts.length > 0 ? (
+                    <div className="flex flex-wrap items-center gap-2">
+                      {program.workouts.map((workout, index) => (
+                        <React.Fragment key={`${program.id}-${workout}`}>
+                          <Badge className="rounded-sm border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50">
+                            {workout}
+                          </Badge>
+                          {index < program.workouts.length - 1 ? (
+                            <span className="text-[13px] text-neutral-400">/</span>
+                          ) : null}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  ) : (
+                    <Badge className="rounded-sm border border-rose-200 bg-white px-2 py-0.5 text-[12px] font-medium text-rose-600 shadow-none hover:bg-white">
+                      No Workouts
+                    </Badge>
+                  )}
                 </div>
-              ) : (
-                <Badge className="rounded-sm border border-rose-200 bg-white px-2 py-0.5 text-[12px] font-medium text-rose-600 shadow-none hover:bg-white">
-                  No Workouts
-                </Badge>
-              )}
-            </div>
 
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="size-8 shrink-0 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
-            >
-              <IconDots className="size-4" />
-            </Button>
-          </div>
+                <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-sm border border-neutral-200 bg-white text-neutral-500 shadow-none">
+                  <IconDots className="size-4" />
+                </span>
+              </button>
+            }
+          />
         ))}
       </div>
     </div>
