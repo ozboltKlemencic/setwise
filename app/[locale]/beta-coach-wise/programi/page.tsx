@@ -40,6 +40,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  FixedProgramEditorDialog,
+  getFixedProgramEditorProgram,
+} from "@/components/coachWise/programs/exercise-history-panel"
 
 const profileTabTriggerClassName =
   "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
@@ -403,31 +407,65 @@ function ProgramsTable() {
         <div />
       </div>
 
-      {programRows.map((program) => (
-        <div
-          key={program.id}
-          className="grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 last:border-b-0"
-        >
-          <div className="min-w-0">
-            <div className="truncate text-[15px] font-medium text-neutral-950">
-              {program.name}
+      {programRows.map((program) => {
+        const isFixedProgram = program.type === "Fixed"
+        const rowClassName = `grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 text-left last:border-b-0 ${
+          isFixedProgram
+            ? "w-full cursor-pointer transition-colors hover:bg-neutral-50"
+            : ""
+        }`
+
+        const rowContent = isFixedProgram ? (
+          <button type="button" className={rowClassName}>
+            <div className="min-w-0">
+              <div className="truncate text-[15px] font-medium text-neutral-950">
+                {program.name}
+              </div>
+            </div>
+            <div>
+              <ProgramTypeBadge type={program.type} />
+            </div>
+            <div className="flex justify-end">
+              <span className="inline-flex size-8 items-center justify-center rounded-sm border border-neutral-200 bg-white text-neutral-500 shadow-none transition-colors group-hover:bg-neutral-50 group-hover:text-neutral-700">
+                <IconDots className="size-4" />
+              </span>
+            </div>
+          </button>
+        ) : (
+          <div className={rowClassName}>
+            <div className="min-w-0">
+              <div className="truncate text-[15px] font-medium text-neutral-950">
+                {program.name}
+              </div>
+            </div>
+            <div>
+              <ProgramTypeBadge type={program.type} />
+            </div>
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+              >
+                <IconDots className="size-4" />
+              </Button>
             </div>
           </div>
-          <div>
-            <ProgramTypeBadge type={program.type} />
-          </div>
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
-            >
-              <IconDots className="size-4" />
-            </Button>
-          </div>
-        </div>
-      ))}
+        )
+
+        if (!isFixedProgram) {
+          return <React.Fragment key={program.id}>{rowContent}</React.Fragment>
+        }
+
+        return (
+          <FixedProgramEditorDialog
+            key={program.id}
+            program={getFixedProgramEditorProgram(program.id, program.name)}
+            trigger={rowContent}
+          />
+        )
+      })}
     </div>
   )
 }
