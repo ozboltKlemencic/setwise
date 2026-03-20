@@ -1,9 +1,11 @@
 "use client"
 
-import { FileText, Maximize2, X } from "lucide-react"
+import * as React from "react"
+import { CheckSquare, FileText, Maximize2, X } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogClose,
@@ -13,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 
 export type ClientNoteItem = {
   title: string
@@ -103,6 +106,125 @@ export function ClientNotesOverviewDialog({
               Close
             </Button>
           </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export function ClientAddNoteDialog() {
+  const [open, setOpen] = React.useState(false)
+  const [title, setTitle] = React.useState("")
+  const [description, setDescription] = React.useState("")
+  const [isPrivate, setIsPrivate] = React.useState(false)
+
+  const resetForm = React.useCallback(() => {
+    setTitle("")
+    setDescription("")
+    setIsPrivate(false)
+  }, [])
+
+  const handleOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      setOpen(nextOpen)
+
+      if (!nextOpen) {
+        resetForm()
+      }
+    },
+    [resetForm]
+  )
+
+  const canSubmit = title.trim().length > 0 && description.trim().length > 0
+
+  return (
+    <Dialog open={open} onOpenChange={handleOpenChange}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 rounded-md border-neutral-200 px-2.5 text-[13px] shadow-none"
+        >
+          <CheckSquare className="size-3.5" />
+          Add Note
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        showCloseButton={false}
+        className="overflow-hidden rounded-xl border-neutral-200 p-0 shadow-xl sm:max-w-[700px]"
+      >
+        <DialogHeader className="border-b border-neutral-200 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <DialogTitle className="flex items-center gap-2 text-[15px] font-medium text-neutral-950">
+              <CheckSquare className="size-4 text-neutral-500" />
+              <span>Add Note</span>
+            </DialogTitle>
+            <DialogClose asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+              >
+                <X className="size-4" />
+              </Button>
+            </DialogClose>
+          </div>
+        </DialogHeader>
+
+        <div className="space-y-5 px-4 py-4">
+          <div className="space-y-2">
+            <label className="text-[13px] font-medium text-neutral-800">
+              Title <span className="text-rose-500">*</span>
+            </label>
+            <Input
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              placeholder="Enter title e.g. Weekly Progress"
+              className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[13px] font-medium text-neutral-800">
+              Description <span className="text-rose-500">*</span>
+            </label>
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              placeholder="Enter description"
+              className="min-h-[112px] w-full rounded-sm border border-neutral-200 bg-white px-3 py-2.5 text-[14px] text-neutral-900 shadow-none outline-none placeholder:text-neutral-400 focus:border-brand-500"
+            />
+          </div>
+
+          <label className="flex items-center gap-2.5 text-[14px] text-neutral-900">
+            <Checkbox
+              checked={isPrivate}
+              onCheckedChange={(checked) => setIsPrivate(checked === true)}
+              className="rounded-[4px] border-neutral-300 data-[state=checked]:border-brand-600 data-[state=checked]:bg-brand-600"
+            />
+            <span>
+              Private Note <span className="text-neutral-500">(only visible to you)</span>
+            </span>
+          </label>
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <Button
+            type="button"
+            disabled={!canSubmit}
+            onClick={() => handleOpenChange(false)}
+            className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
+          >
+            Add Note
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

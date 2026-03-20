@@ -35,7 +35,10 @@ import {
   ClientHabitsPanel,
 } from "@/components/coachWise/clients/client-habits-panel"
 import { ClientGeneralMetricsPanel } from "@/components/coachWise/clients/client-general-metrics-panel"
-import { ClientNotesOverviewDialog } from "@/components/coachWise/clients/client-notes-overview-dialog"
+import {
+  ClientAddNoteDialog,
+  ClientNotesOverviewDialog,
+} from "@/components/coachWise/clients/client-notes-overview-dialog"
 import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
 import {
   ClientNutritionPanel,
@@ -747,14 +750,7 @@ export default async function ClientProfilePage({
                             </div>
                             <div className="flex items-center gap-2">
                               <ClientNotesOverviewDialog notes={generalNotes} />
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="h-8 rounded-md border-neutral-200 px-2.5 text-[13px] shadow-none"
-                              >
-                                <IconPlus className="size-3.5" />
-                                Add Note
-                              </Button>
+                              <ClientAddNoteDialog />
                             </div>
                           </div>
 
