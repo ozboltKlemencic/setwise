@@ -86,6 +86,7 @@ type WorkoutTrend = "up" | "down" | "steady"
 
 type ProgramWorkout = {
   id: string
+  dateKey: string
   title: string
   dateLabel: string
   duration: string
@@ -118,6 +119,7 @@ const exerciseHistoryChartConfig = {
 const programWorkouts: ProgramWorkout[] = [
   {
     id: "upper-a-0318",
+    dateKey: "2026-03-18",
     title: "Upper A",
     dateLabel: "Sre, 18. mar - 17:30",
     duration: "42 min",
@@ -190,6 +192,7 @@ const programWorkouts: ProgramWorkout[] = [
   },
   {
     id: "lower-a-0315",
+    dateKey: "2026-03-15",
     title: "Lower A",
     dateLabel: "Ned, 15. mar - 10:00",
     duration: "55 min",
@@ -247,6 +250,7 @@ const programWorkouts: ProgramWorkout[] = [
   },
   {
     id: "upper-b-0309",
+    dateKey: "2026-03-09",
     title: "Upper B",
     dateLabel: "Pon, 09. mar - 18:10",
     duration: "47 min",
@@ -304,6 +308,7 @@ const programWorkouts: ProgramWorkout[] = [
   },
   {
     id: "lower-b-0226",
+    dateKey: "2026-02-26",
     title: "Lower B",
     dateLabel: "Cet, 26. feb - 16:50",
     duration: "51 min",
@@ -384,6 +389,67 @@ function getGroupedWorkouts() {
   }, {})
 }
 
+const historyWeekdayLabels = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const
+
+function addCalendarDays(date: Date, amount: number) {
+  const nextDate = new Date(date)
+  nextDate.setDate(nextDate.getDate() + amount)
+  return nextDate
+}
+
+function getHistoryStartOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1)
+}
+
+function getHistoryEndOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0)
+}
+
+function getHistoryStartOfWeek(date: Date) {
+  const day = date.getDay()
+  const offset = day === 0 ? -6 : 1 - day
+  return addCalendarDays(date, offset)
+}
+
+function getHistoryEndOfWeek(date: Date) {
+  return addCalendarDays(getHistoryStartOfWeek(date), 6)
+}
+
+function toHistoryDateKey(date: Date) {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+  return `${year}-${month}-${day}`
+}
+
+function buildHistoryMonthDates(date: Date) {
+  const monthStart = getHistoryStartOfMonth(date)
+  const monthEnd = getHistoryEndOfMonth(date)
+  const calendarStart = getHistoryStartOfWeek(monthStart)
+  const calendarEnd = getHistoryEndOfWeek(monthEnd)
+
+  const dates: Date[] = []
+  for (
+    let cursor = calendarStart;
+    toHistoryDateKey(cursor) <= toHistoryDateKey(calendarEnd);
+    cursor = addCalendarDays(cursor, 1)
+  ) {
+    dates.push(cursor)
+  }
+
+  return dates
+}
+
+function getHistoryVisibleMonth() {
+  const latestWorkout = [...programWorkouts].sort((left, right) =>
+    right.dateKey.localeCompare(left.dateKey)
+  )[0]
+
+  return getHistoryStartOfMonth(
+    latestWorkout ? new Date(`${latestWorkout.dateKey}T00:00:00`) : new Date(2026, 2, 1)
+  )
+}
+
 function getWorkoutById(workoutId: string) {
   return programWorkouts.find((workout) => workout.id === workoutId)
 }
@@ -454,42 +520,81 @@ function ProgramWorkoutCard({
     <>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[16px] font-semibold text-neutral-950">
+          <div
+            className={cn(
+              "font-semibold text-neutral-950",
+              compact ? "text-[14px]" : "text-[16px]"
+            )}
+          >
             {workout.title}
           </div>
-          <div className="mt-2 text-[13px] text-neutral-500">{workout.dateLabel}</div>
+          <div
+            className={cn(
+              "text-neutral-500",
+              compact ? "mt-1 text-[11px]" : "mt-2 text-[13px]"
+            )}
+          >
+            {workout.dateLabel}
+          </div>
         </div>
-        <div className="text-neutral-300">{">"}</div>
+        <div className={cn("text-neutral-300", compact && "text-[12px]")}>{">"}</div>
       </div>
 
-      <div className="mt-4 grid grid-cols-[1fr_1fr_auto] items-end gap-3">
-        <div className="border-r border-neutral-200 pr-3">
-          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+      <div
+        className={cn(
+          "grid grid-cols-[1fr_1fr_auto] items-end",
+          compact ? "mt-3 gap-2" : "mt-4 gap-3"
+        )}
+      >
+        <div className={cn("border-r border-neutral-200", compact ? "pr-2" : "pr-3")}>
+          <div
+            className={cn(
+              "font-medium uppercase tracking-[0.08em] text-neutral-400",
+              compact ? "text-[10px]" : "text-[11px]"
+            )}
+          >
             Duration
           </div>
-          <div className="mt-1 text-[14px] font-semibold text-neutral-950">
+          <div
+            className={cn(
+              "mt-1 font-semibold text-neutral-950",
+              compact ? "text-[13px]" : "text-[14px]"
+            )}
+          >
             {workout.duration}
           </div>
         </div>
         <div>
-          <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+          <div
+            className={cn(
+              "font-medium uppercase tracking-[0.08em] text-neutral-400",
+              compact ? "text-[10px]" : "text-[11px]"
+            )}
+          >
             Volume
           </div>
-          <div className="mt-1 text-[14px] font-semibold text-neutral-950">
+          <div
+            className={cn(
+              "mt-1 font-semibold text-neutral-950",
+              compact ? "text-[13px]" : "text-[14px]"
+            )}
+          >
             {workout.volume}
           </div>
         </div>
         <Badge
           variant="outline"
           className={cn(
-            "rounded-md px-2.5 py-1 text-[12px] font-medium",
+            compact
+              ? "rounded-md px-2 py-0.5 text-[11px] font-medium"
+              : "rounded-md px-2.5 py-1 text-[12px] font-medium",
             getTrendBadgeClassName(workout.trend)
           )}
         >
           {workout.trend === "up" ? (
-            <TrendingUp className="mr-1 size-3.5" />
+            <TrendingUp className={cn("mr-1", compact ? "size-3" : "size-3.5")} />
           ) : workout.trend === "down" ? (
-            <TrendingDown className="mr-1 size-3.5" />
+            <TrendingDown className={cn("mr-1", compact ? "size-3" : "size-3.5")} />
           ) : null}
           {workout.changeLabel}
         </Badge>
@@ -499,7 +604,7 @@ function ProgramWorkoutCard({
 
   const className = cn(
     "w-full rounded-2xl border text-left shadow-[0_1px_2px_rgba(17,24,39,0.05)] transition-colors",
-    compact ? "px-4 py-3" : "px-5 py-4",
+    compact ? "px-3 py-2.5" : "px-5 py-4",
     active
       ? "border-brand-500 bg-brand-500/10"
       : "border-neutral-200 bg-white hover:bg-neutral-50"
@@ -1324,21 +1429,107 @@ export function ExerciseHistoryPanel() {
   return <ExerciseExplorer exercises={exerciseEntries} />
 }
 
+function CompletedWorkoutsCalendarGrid({
+  onSelectWorkout,
+}: {
+  onSelectWorkout?: (workoutId: string) => void
+}) {
+  const visibleMonth = React.useMemo(() => getHistoryVisibleMonth(), [])
+  const visibleDates = React.useMemo(
+    () => buildHistoryMonthDates(visibleMonth),
+    [visibleMonth]
+  )
+  const selectedDateKey = React.useMemo(
+    () =>
+      [...programWorkouts]
+        .sort((left, right) => right.dateKey.localeCompare(left.dateKey))[0]?.dateKey ?? "",
+    []
+  )
+
+  return (
+    <div className="overflow-hidden border-b border-neutral-200 bg-neutral-50">
+      <div className="overflow-x-auto">
+        <div className="min-w-[1100px]">
+          <div className="grid grid-cols-7 border-b border-neutral-200 bg-neutral-50">
+            {historyWeekdayLabels.map((label, index) => (
+              <div
+                key={label}
+                className={cn(
+                  "px-3 py-2 text-center text-xs font-medium text-neutral-500",
+                  index !== historyWeekdayLabels.length - 1 && "border-r border-neutral-200"
+                )}
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-7 bg-neutral-50">
+            {visibleDates.map((date, index) => {
+              const dateKey = toHistoryDateKey(date)
+              const outsideCurrentMonth = date.getMonth() !== visibleMonth.getMonth()
+              const isSelected = dateKey === selectedDateKey
+              const workouts = programWorkouts.filter((workout) => workout.dateKey === dateKey)
+
+              return (
+                <div
+                  key={dateKey}
+                  className={cn(
+                    "relative h-44 overflow-y-auto p-2 align-top",
+                    outsideCurrentMonth ? "bg-neutral-50/60" : "bg-neutral-50",
+                    isSelected && "bg-brand-50",
+                    index % 7 !== 6 && "border-r border-neutral-200",
+                    index < visibleDates.length - 7 && "border-b border-neutral-200",
+                    isSelected &&
+                      "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-brand-500"
+                  )}
+                >
+                  <div className="flex items-start justify-end">
+                    <span
+                      className={cn(
+                        "text-sm font-medium text-neutral-700",
+                        outsideCurrentMonth && "text-neutral-300",
+                        isSelected && !outsideCurrentMonth && "text-brand-600"
+                      )}
+                    >
+                      {date.getDate()}
+                    </span>
+                  </div>
+
+                  <div className="mt-3 space-y-2">
+                    {workouts.map((workout) => (
+                      <ProgramWorkoutCard
+                        key={workout.id}
+                        workout={workout}
+                        compact
+                        onClick={
+                          onSelectWorkout ? () => onSelectWorkout(workout.id) : undefined
+                        }
+                      />
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function CompletedWorkoutsPanel() {
   const router = useRouter()
   const pathname = usePathname()
 
   return (
-    <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-5">
-      <ProgramWorkoutsList
-        centered
+    <CompletedWorkoutsCalendarGrid
         onSelectWorkout={(workoutId) =>
           router.push(
             `${pathname}?tab=programs&programTab=completed-workouts&workoutId=${workoutId}`
           )
         }
       />
-    </div>
   )
 }
 
