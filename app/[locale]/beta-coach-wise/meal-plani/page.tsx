@@ -121,7 +121,7 @@ const foodRows: FoodRow[] = [
 ]
 
 const profileTabTriggerClassName =
-  "relative top-px -mb-px inline-flex h-11 items-center gap-2 rounded-none border-b-2 border-transparent px-3 text-[14px] font-medium text-neutral-600 transition-colors hover:text-neutral-900 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-brand-600 data-[state=active]:shadow-none"
+  "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
 
 function getTypeBadgeClassName(type: PlanType) {
   return type === "Meal Plan"
