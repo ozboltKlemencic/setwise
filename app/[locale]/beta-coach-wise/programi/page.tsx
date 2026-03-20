@@ -736,6 +736,156 @@ function AddTemplateDialog({ trigger }: { trigger: React.ReactNode }) {
   )
 }
 
+function AddProgramDialog({ trigger }: { trigger: React.ReactNode }) {
+  const [programType, setProgramType] = React.useState<"Calendar" | "Fixed">(
+    "Calendar"
+  )
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="overflow-hidden rounded-sm border border-neutral-200 bg-white p-0 shadow-xl sm:max-w-[680px]">
+        <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
+            <IconBarbell className="size-4 text-neutral-700" />
+            Add Programs
+          </DialogTitle>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              <IconRectangle className="size-4 rotate-45" />
+            </Button>
+          </DialogClose>
+        </div>
+
+        <div className="space-y-5 px-6 py-5">
+          <div className="space-y-2">
+            <label className="text-[13px] font-medium text-neutral-700">
+              Program Name <span className="text-red-500">*</span>
+            </label>
+            <Input
+              placeholder="Name of the program e.g. Full Body Workout"
+              className="h-10 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[13px] font-medium text-neutral-700">
+              Program Description
+            </label>
+            <textarea
+              placeholder="Enter any additional info"
+              className="min-h-[96px] w-full rounded-sm border border-neutral-200 px-3 py-2.5 text-[14px] text-neutral-900 shadow-none outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-300"
+            />
+          </div>
+
+          <div className="space-y-2.5">
+            <label className="text-[13px] font-medium text-neutral-700">
+              Program Type <span className="text-red-500">*</span>
+            </label>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                {
+                  value: "Calendar" as const,
+                  title: "Calendar",
+                  description:
+                    "Schedule workouts on specific dates. Ideal for clients needing daily structure.",
+                  icon: <IconCalendarEvent className="size-4" />,
+                },
+                {
+                  value: "Fixed" as const,
+                  title: "Fixed",
+                  description:
+                    "Create fixed programs clients can follow at their own pace with no dates.",
+                  icon: <IconLayoutGrid className="size-4" />,
+                },
+              ].map((option) => {
+                const isActive = programType === option.value
+
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setProgramType(option.value)}
+                    className={cn(
+                      "rounded-sm border px-4 py-4 text-left transition-colors",
+                      isActive
+                        ? "border-brand-500 bg-brand-500/5"
+                        : "border-neutral-200 bg-white hover:bg-neutral-50"
+                    )}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-3">
+                        <div
+                          className={cn(
+                            "flex size-8 items-center justify-center rounded-sm border",
+                            isActive
+                              ? "border-brand-200 bg-brand-500/10 text-brand-600"
+                              : "border-neutral-200 bg-neutral-50 text-neutral-500"
+                          )}
+                        >
+                          {option.icon}
+                        </div>
+                        <div className="space-y-1.5">
+                          <div
+                            className={cn(
+                              "text-[15px] font-semibold",
+                              isActive ? "text-brand-600" : "text-neutral-950"
+                            )}
+                          >
+                            {option.title}
+                          </div>
+                          <div className="text-[13px] leading-6 text-neutral-600">
+                            {option.description}
+                          </div>
+                        </div>
+                      </div>
+                      <span
+                        className={cn(
+                          "mt-1 inline-flex size-4 rounded-full border",
+                          isActive
+                            ? "border-brand-500 bg-white"
+                            : "border-neutral-300 bg-white"
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "m-auto size-2 rounded-full",
+                            isActive ? "bg-brand-500" : "bg-transparent"
+                          )}
+                        />
+                      </span>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="items-center justify-between border-t border-neutral-200 px-6 py-4 sm:flex-row sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-9 px-0 text-[15px] font-normal text-neutral-700 hover:bg-transparent hover:text-neutral-900"
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <Button className="h-9 rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 px-4 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            Add Program
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 function CalendarProgramWorkoutCard({
   workout,
 }: {
@@ -1229,10 +1379,14 @@ export default function ProgramiPage() {
 
   const tabsAction = !selectedProgramRow ? (
     activeTab === "programs" ? (
-      <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
-        <IconPlus className="size-4" />
-        Program
-      </Button>
+      <AddProgramDialog
+        trigger={
+          <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            <IconPlus className="size-4" />
+            Program
+          </Button>
+        }
+      />
     ) : activeTab === "templates" ? (
       <AddTemplateDialog
         trigger={
