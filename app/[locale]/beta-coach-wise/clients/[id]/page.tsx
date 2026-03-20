@@ -49,6 +49,7 @@ import {
   CompletedWorkoutsPanel,
   ExerciseHistoryPanel,
   ImportCalendarDialog,
+  ProgramTypeDialog,
   ProgramsPeriodPicker,
   WorkoutDetailView,
 } from "@/components/coachWise/programs/exercise-history-panel"
@@ -129,6 +130,9 @@ const profileTabTriggerClassName =
 
 const primaryActionButtonClassName =
   "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+
+const secondaryToolbarButtonClassName =
+  "rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
 
 const sectionSubTabTriggerClassName =
   "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
@@ -1329,28 +1333,35 @@ export default async function ClientProfilePage({
               items={[
                 {
                   icon: <IconCalendarEvent className="size-4" />,
-                  label: "Calendar",
+                  label: "Overview",
                   value: "calendar",
                   href: `/${locale}/beta-coach-wise/clients/${clientId}?tab=programs&programTab=calendar`,
                 },
                 {
                   icon: <IconChartBar className="size-4" />,
-                  label: "Exercise History",
+                  label: "Progress",
                   value: "exercise-history",
                   href: `/${locale}/beta-coach-wise/clients/${clientId}?tab=programs&programTab=exercise-history`,
                 },
                 {
                   icon: <IconClipboardCheck className="size-4" />,
-                  label: "Completed Workouts",
+                  label: "History",
                   value: "completed-workouts",
                   href: `/${locale}/beta-coach-wise/clients/${clientId}?tab=programs&programTab=completed-workouts`,
                 },
               ]}
               actions={
                 resolvedProgramTab === "calendar" ? (
-                  <ImportCalendarDialog
-                    triggerClassName={primaryActionButtonClassName}
-                  />
+                  <>
+                    <ProgramTypeDialog
+                      triggerClassName={secondaryToolbarButtonClassName}
+                    />
+                    <ImportCalendarDialog
+                      triggerClassName={primaryActionButtonClassName}
+                      triggerLabel="Import Program"
+                      dialogTitle="Import Program"
+                    />
+                  </>
                 ) : resolvedProgramTab === "exercise-history" ||
                   resolvedProgramTab === "completed-workouts" ? (
                   <ProgramsPeriodPicker />

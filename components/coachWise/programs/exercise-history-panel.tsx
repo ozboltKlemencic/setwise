@@ -6,9 +6,11 @@ import {
   CalendarDays,
   CalendarIcon,
   ChevronLeft,
+  LayoutGrid,
   Search,
   TrendingDown,
   TrendingUp,
+  X,
 } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { type DateRange } from "react-day-picker"
@@ -765,10 +767,186 @@ export function ProgramsPeriodPicker({
   return <HabitPeriodPicker {...pickerProps} />
 }
 
-export function ImportCalendarDialog({
+export function ProgramTypeDialog({
   triggerClassName,
 }: {
   triggerClassName?: string
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [selectedType, setSelectedType] = React.useState<"calendar" | "fixed">(
+    "fixed"
+  )
+
+  const options = [
+    {
+      id: "calendar" as const,
+      title: "Calendar",
+      description:
+        "Schedule workouts on specific dates. Ideal for clients needing daily structure.",
+      icon: CalendarDays,
+      cardClassName: "bg-linear-to-br from-amber-50 to-orange-50",
+      mockupClassName:
+        "bg-white shadow-[0_18px_44px_rgba(15,23,42,0.14)] border border-neutral-200",
+    },
+    {
+      id: "fixed" as const,
+      title: "Fixed",
+      description:
+        "Create fixed programs clients can follow at their own pace with no dates.",
+      icon: LayoutGrid,
+      cardClassName: "bg-linear-to-br from-sky-50 to-indigo-50",
+      mockupClassName:
+        "bg-linear-to-br from-sky-900 via-sky-700 to-cyan-500 text-white shadow-[0_18px_44px_rgba(14,116,144,0.28)]",
+    },
+  ]
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button type="button" size="sm" variant="outline" className={triggerClassName}>
+          <LayoutGrid className="size-4" />
+          Program Type
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        showCloseButton={false}
+        className="overflow-hidden rounded-xl border-neutral-200 p-0 shadow-xl sm:max-w-[820px]"
+      >
+        <DialogHeader className="border-b border-neutral-200 px-6 py-4">
+          <div className="flex items-center justify-between gap-3">
+            <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
+              <LayoutGrid className="size-4 text-neutral-500" />
+              Program Type
+            </DialogTitle>
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-10 rounded-md border-brand-200 text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+              >
+                <X className="size-4" />
+              </Button>
+            </DialogClose>
+          </div>
+        </DialogHeader>
+
+        <div className="grid gap-4 px-6 py-5 md:grid-cols-2">
+          {options.map((option) => {
+            const Icon = option.icon
+            const isSelected = selectedType === option.id
+
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => setSelectedType(option.id)}
+                className={cn(
+                  "rounded-2xl border p-4 text-left transition-all",
+                  isSelected
+                    ? "border-brand-500 bg-brand-50/30"
+                    : "border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50"
+                )}
+              >
+                <div
+                  className={cn(
+                    "relative mb-4 h-64 overflow-hidden rounded-2xl border border-white/60 p-5",
+                    option.cardClassName
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "absolute left-1/2 top-5 h-48 w-44 -translate-x-1/2 rounded-[1.65rem] p-3",
+                      option.mockupClassName
+                    )}
+                  >
+                    {option.id === "calendar" ? (
+                      <div className="space-y-3 text-neutral-900">
+                        <div className="flex items-center justify-between text-[10px] font-medium text-neutral-500">
+                          <span>Current Week</span>
+                          <span className="text-brand-600">View All</span>
+                        </div>
+                        <div className="grid grid-cols-7 gap-1 text-center text-[9px] text-neutral-400">
+                          {["M", "T", "W", "T", "F", "S", "S"].map((day, index) => (
+                            <div key={`${option.id}-${day}-${index}`} className="rounded-md bg-neutral-100 py-1">
+                              {day}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="rounded-2xl bg-linear-to-br from-fuchsia-200 via-rose-200 to-orange-100 p-3 text-white shadow-sm">
+                          <div className="h-16 rounded-xl bg-black/10" />
+                          <div className="mt-3 text-[11px] font-semibold">Glutes & Hamstrings Blast</div>
+                          <div className="mt-2 flex items-center gap-2 text-[8px] font-medium uppercase tracking-wide text-white/80">
+                            <span className="rounded-full bg-white/20 px-2 py-1">11 Exercises</span>
+                            <span className="rounded-full bg-white/20 px-2 py-1">Not Started</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="ml-auto h-3 w-14 rounded-full bg-white/20" />
+                        <div className="rounded-2xl bg-black/20 p-4 backdrop-blur-[2px]">
+                          <div className="h-16 rounded-xl bg-white/10" />
+                          <div className="mt-4 text-[16px] font-semibold">Push / Pull / Legs</div>
+                          <div className="mt-2 flex items-center justify-between text-[10px] uppercase tracking-wide text-white/80">
+                            <span>3 Workouts</span>
+                            <span className="rounded-full bg-white/15 px-2 py-1">New</span>
+                          </div>
+                        </div>
+                        <div className="ml-10 rounded-2xl bg-white/70 p-3 text-[11px] text-neutral-700 shadow-sm">
+                          Running Program
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <Icon
+                    className={cn(
+                      "mt-0.5 size-4",
+                      isSelected ? "text-brand-600" : "text-neutral-500"
+                    )}
+                  />
+                  <div>
+                    <div
+                      className={cn(
+                        "text-[14px] font-semibold",
+                        isSelected ? "text-brand-600" : "text-neutral-900"
+                      )}
+                    >
+                      {option.title}
+                    </div>
+                    <div className="mt-2 text-[13px] leading-6 text-neutral-600">
+                      {option.description}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-6 py-4 sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+              Close
+            </Button>
+          </DialogClose>
+          <Button onClick={() => setOpen(false)}>Switch</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export function ImportCalendarDialog({
+  triggerClassName,
+  triggerLabel = "Import Program",
+  dialogTitle = "Import Program",
+}: {
+  triggerClassName?: string
+  triggerLabel?: string
+  dialogTitle?: string
 }) {
   const [open, setOpen] = React.useState(false)
   const [selectedProgramId, setSelectedProgramId] = React.useState("beginner-3m")
@@ -779,14 +957,14 @@ export function ImportCalendarDialog({
       <DialogTrigger asChild>
         <Button size="sm" className={triggerClassName}>
           <CalendarDays className="size-4" />
-          Import Calendar
+          {triggerLabel}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[700px] rounded-sm p-0">
         <DialogHeader className="border-b border-neutral-200 px-6 py-4">
           <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold">
             <CalendarDays className="size-4 text-neutral-500" />
-            Import Calendar
+            {dialogTitle}
           </DialogTitle>
         </DialogHeader>
 
