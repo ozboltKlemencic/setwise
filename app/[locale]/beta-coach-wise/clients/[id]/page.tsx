@@ -16,7 +16,6 @@ import {
   Clock3,
   FileText,
   Mail,
-  Maximize2,
   Pencil,
   Tag,
   UserRound,
@@ -36,6 +35,7 @@ import {
   ClientHabitsPanel,
 } from "@/components/coachWise/clients/client-habits-panel"
 import { ClientGeneralMetricsPanel } from "@/components/coachWise/clients/client-general-metrics-panel"
+import { ClientNotesOverviewDialog } from "@/components/coachWise/clients/client-notes-overview-dialog"
 import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
 import {
   ClientNutritionPanel,
@@ -746,13 +746,7 @@ export default async function ClientProfilePage({
                               <span>Notes</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
-                              >
-                                <Maximize2 className="size-3" />
-                              </Button>
+                              <ClientNotesOverviewDialog notes={generalNotes} />
                               <Button
                                 variant="outline"
                                 size="sm"

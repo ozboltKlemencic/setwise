@@ -1,0 +1,110 @@
+"use client"
+
+import { FileText, Maximize2, X } from "lucide-react"
+
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+export type ClientNoteItem = {
+  title: string
+  body: string[]
+  date: string
+  private: boolean
+}
+
+function NotesDialogCard({ note }: { note: ClientNoteItem }) {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-white">
+      <div className="px-3.5 pt-3.5">
+        <h3 className="text-[15px] font-semibold text-neutral-950">{note.title}</h3>
+      </div>
+      <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
+        {note.body.length > 1 ? (
+          note.body.map((line) => (
+            <p key={line} className="pl-4 -indent-4">
+              - {line}
+            </p>
+          ))
+        ) : (
+          <p>{note.body[0]}</p>
+        )}
+      </div>
+      <div className="flex items-center justify-between rounded-b-xl border-t border-neutral-200 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
+        <span>{note.date}</span>
+        {note.private ? (
+          <Badge className="rounded-md border border-neutral-300 bg-neutral-800 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase shadow-none hover:bg-neutral-800">
+            Private
+          </Badge>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+export function ClientNotesOverviewDialog({
+  notes,
+}: {
+  notes: ClientNoteItem[]
+}) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
+        >
+          <Maximize2 className="size-3" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        showCloseButton={false}
+        className="overflow-hidden rounded-xl border-neutral-200 p-0 shadow-xl sm:max-w-[780px]"
+      >
+        <DialogHeader className="border-b border-neutral-200 px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <DialogTitle className="flex items-center gap-2 text-[15px] font-medium text-neutral-950">
+              <FileText className="size-4 text-neutral-500" />
+              <span>Note</span>
+            </DialogTitle>
+            <DialogClose asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+              >
+                <X className="size-4" />
+              </Button>
+            </DialogClose>
+          </div>
+        </DialogHeader>
+
+        <div className="max-h-[70vh] space-y-4 overflow-y-auto px-4 py-4 [scrollbar-width:thin]">
+          {notes.map((note) => (
+            <NotesDialogCard key={`${note.title}-${note.date}`} note={note} />
+          ))}
+        </div>
+
+        <DialogFooter className="border-t border-neutral-200 px-4 py-3 sm:justify-start">
+          <DialogClose asChild>
+            <Button
+              variant="ghost"
+              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            >
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
