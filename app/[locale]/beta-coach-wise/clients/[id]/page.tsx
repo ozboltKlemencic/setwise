@@ -712,16 +712,6 @@ export default async function ClientProfilePage({
                   label: "General",
                   value: "general",
                 },
-                {
-                  icon: <IconChartBar className="size-4" />,
-                  label: "Progress",
-                  value: "progress",
-                },
-                {
-                  icon: <IconClipboardCheck className="size-4" />,
-                  label: "Notes",
-                  value: "notes",
-                },
               ]}
               actions={
                 <Button size="sm" className={primaryActionButtonClassName}>
@@ -924,57 +914,6 @@ export default async function ClientProfilePage({
               </SectionBody>
             </TabsContent>
 
-            <TabsContent value="progress" className="mt-0 space-y-0">
-              <SectionBody>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Momentum</CardDescription>
-                      <CardTitle>Stabilen</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Zadnja dva cikla kazeta dober odziv na trenutni plan.
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Recovery</CardDescription>
-                      <CardTitle>7.3 / 10</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Spanje in hidracija ostajata glavni rocici za naslednji korak.
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader>
-                      <CardDescription>Adherence</CardDescription>
-                      <CardTitle>86%</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      Dobra konsistenca pri treningu, manj nihanja pri vikend rutini.
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Fazni napredek</CardTitle>
-                    <CardDescription>
-                      Kratek povzetek stanja glede na trenutno fazo sodelovanja.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="grid gap-3 md:grid-cols-2">
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      {getPhaseFocus(client.phase)}
-                    </div>
-                    <div className="rounded-lg border p-4 text-sm text-muted-foreground">
-                      Naslednja smiselna tocka je primerjava zadnjega check-ina s
-                      trening logom in energijo cez teden.
-                    </div>
-                  </CardContent>
-                </Card>
-              </SectionBody>
-            </TabsContent>
             <TabsContent value="notes" className="mt-0 space-y-0">
               <SectionBody>
                 <Card>
