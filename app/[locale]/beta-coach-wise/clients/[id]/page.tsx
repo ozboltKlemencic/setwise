@@ -16,7 +16,6 @@ import {
   Clock3,
   FileText,
   Mail,
-  Pencil,
   Tag,
   UserRound,
   MessageSquareText,
@@ -38,6 +37,7 @@ import { ClientGeneralMetricsPanel } from "@/components/coachWise/clients/client
 import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
+  ClientUpdateNoteDialog,
 } from "@/components/coachWise/clients/client-notes-overview-dialog"
 import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
 import {
@@ -764,13 +764,7 @@ export default async function ClientProfilePage({
                                   <h3 className="text-[15px] font-semibold text-neutral-950">
                                     {note.title}
                                   </h3>
-                                  <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
-                                  >
-                                    <Pencil className="size-3" />
-                                  </Button>
+                                  <ClientUpdateNoteDialog note={note} />
                                 </div>
                                 <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
                                   {note.body.length > 1 ? (
