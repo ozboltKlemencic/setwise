@@ -1,11 +1,20 @@
 "use client"
 
+import * as React from "react"
 import {
+  IconCalendarEvent,
   IconBarbell,
   IconClipboardList,
+  IconFilter,
   IconLayoutGrid,
+  IconPlus,
+  IconRectangle,
+  IconUser,
 } from "@tabler/icons-react"
+import { IconDots } from "@tabler/icons-react"
+import { ImageIcon, Search, Upload } from "lucide-react"
 
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -13,6 +22,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const profileTabTriggerClassName =
@@ -39,50 +65,561 @@ const mainTabs = [
   },
 ] as const
 
+const programRows = [
+  {
+    id: "full-body-sample",
+    name: "Full Body (Sample)",
+    type: "Fixed",
+  },
+  {
+    id: "beginner-calendar",
+    name: "3 Month Beginner Program (Sample)",
+    type: "Calendar",
+  },
+  {
+    id: "upper-lower",
+    name: "Upper / Lower Split",
+    type: "Fixed",
+  },
+  {
+    id: "hypertrophy-block",
+    name: "Hypertrophy Block - Spring",
+    type: "Calendar",
+  },
+] as const
+
+const templateRows = [
+  {
+    id: "leg-day",
+    name: "Leg Day",
+    exercises: 10,
+    tags: ["Strength"],
+    tone: "from-pink-400 via-fuchsia-500 to-rose-500",
+  },
+  {
+    id: "pull-day",
+    name: "Pull Day",
+    exercises: 8,
+    tags: ["Pull"],
+    tone: "from-amber-500 via-orange-500 to-red-500",
+  },
+  {
+    id: "push-day",
+    name: "Push Day",
+    exercises: 8,
+    tags: ["Push"],
+    tone: "from-violet-500 via-purple-500 to-fuchsia-500",
+  },
+  {
+    id: "legs",
+    name: "Legs",
+    exercises: 9,
+    tags: ["Lower"],
+    tone: "from-sky-500 via-blue-500 to-cyan-500",
+  },
+  {
+    id: "arms",
+    name: "Arms",
+    exercises: 6,
+    tags: ["Accessory"],
+    tone: "from-cyan-500 via-sky-500 to-blue-600",
+  },
+  {
+    id: "back",
+    name: "Back",
+    exercises: 7,
+    tags: ["Pull"],
+    tone: "from-teal-500 via-cyan-500 to-sky-600",
+  },
+] as const
+
+const exerciseRows = [
+  {
+    id: "barbell-bench-press",
+    name: "Barbell Bench Press",
+    focus: "Chest",
+    custom: false,
+  },
+  {
+    id: "bodyweight-half-squat",
+    name: "Bodyweight Half Squat",
+    focus: "Quadriceps",
+    custom: false,
+  },
+  {
+    id: "bodyweight-squat",
+    name: "Bodyweight Squat",
+    focus: "Quadriceps",
+    custom: false,
+  },
+  {
+    id: "dumbbell-standing-biceps-curl",
+    name: "Dumbbell Standing Biceps Curl",
+    focus: "Biceps",
+    custom: false,
+  },
+  {
+    id: "push-up",
+    name: "Push-up",
+    focus: "Chest",
+    custom: false,
+  },
+  {
+    id: "run",
+    name: "Run",
+    focus: "Quadriceps",
+    custom: false,
+  },
+  {
+    id: "run-on-treadmill",
+    name: "Run on Treadmill",
+    focus: "Quadriceps",
+    custom: false,
+  },
+  {
+    id: "squat",
+    name: "Squat",
+    focus: "Quadriceps",
+    custom: false,
+  },
+  {
+    id: "walking",
+    name: "Walking",
+    focus: "Quadriceps",
+    custom: false,
+  },
+  {
+    id: "walking-on-treadmill",
+    name: "Walking on Treadmill",
+    focus: "Other",
+    custom: false,
+  },
+  {
+    id: "arm-circles",
+    name: "Arm Circles",
+    focus: "Shoulders",
+    custom: true,
+  },
+] as const
+
+function ProgramsSearchBar({
+  placeholder,
+  action,
+}: {
+  placeholder: string
+  action?: React.ReactNode
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="relative w-full max-w-sm">
+        <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+        <Input
+          placeholder={placeholder}
+          className="h-9 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+        />
+      </div>
+      {action}
+    </div>
+  )
+}
+
+function ProgramTypeBadge({ type }: { type: "Fixed" | "Calendar" }) {
+  return (
+    <Badge
+      className="rounded-sm border border-neutral-200 bg-white px-2 py-0.5 text-[12px] font-medium text-neutral-700 shadow-none hover:bg-white"
+    >
+      {type === "Fixed" ? (
+        <IconRectangle className="mr-1 size-3.5 text-neutral-500" />
+      ) : (
+        <IconCalendarEvent className="mr-1 size-3.5 text-neutral-500" />
+      )}
+      {type}
+    </Badge>
+  )
+}
+
+function AddExerciseDialog({ trigger }: { trigger: React.ReactNode }) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent className="max-w-[calc(100%-2rem)] gap-0 overflow-hidden rounded-sm border-neutral-200 p-0 sm:max-w-4xl">
+        <div className="grid grid-cols-[minmax(0,1fr)_300px]">
+          <div className="border-r border-neutral-200">
+            <div className="flex items-center gap-2 border-b border-neutral-200 px-4 py-4">
+              <IconBarbell className="size-4 text-neutral-700" />
+              <DialogTitle className="text-[15px] font-semibold text-neutral-950">
+                Add Exercise
+              </DialogTitle>
+            </div>
+
+            <div className="space-y-5 px-4 py-4">
+              <div className="space-y-2">
+                <label className="text-[13px] font-medium text-neutral-700">
+                  Name <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  placeholder="Name of the exercise e.g. Squat"
+                  className="h-9 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[13px] font-medium text-neutral-700">
+                  Instructions
+                </label>
+                <textarea
+                  placeholder="Enter any additional info"
+                  className="min-h-[84px] w-full rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-900 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <div className="text-[13px] font-medium text-neutral-700">
+                  Filters
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <Select defaultValue="equipment">
+                    <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                      <SelectValue placeholder="Select Equipment" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="equipment">Select Equipment</SelectItem>
+                      <SelectItem value="barbell">Barbell</SelectItem>
+                      <SelectItem value="dumbbell">Dumbbell</SelectItem>
+                      <SelectItem value="bodyweight">Bodyweight</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select defaultValue="level">
+                    <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                      <SelectValue placeholder="Select Level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="level">Select Level</SelectItem>
+                      <SelectItem value="beginner">Beginner</SelectItem>
+                      <SelectItem value="intermediate">Intermediate</SelectItem>
+                      <SelectItem value="advanced">Advanced</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select defaultValue="muscle">
+                    <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                      <SelectValue placeholder="Select Main Muscle" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="muscle">Select Main Muscle</SelectItem>
+                      <SelectItem value="chest">Chest</SelectItem>
+                      <SelectItem value="back">Back</SelectItem>
+                      <SelectItem value="legs">Legs</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select defaultValue="type">
+                    <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0">
+                      <SelectValue placeholder="Select Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="type">Select Type</SelectItem>
+                      <SelectItem value="strength">Strength</SelectItem>
+                      <SelectItem value="cardio">Cardio</SelectItem>
+                      <SelectItem value="stretching">Stretching</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2 border-b border-neutral-200 px-4 py-4">
+              <ImageIcon className="size-4 text-neutral-700" />
+              <div className="text-[15px] font-semibold text-neutral-950">
+                Media
+              </div>
+            </div>
+
+            <div className="space-y-5 px-4 py-4">
+              <div className="space-y-2">
+                <label className="text-[13px] font-medium text-neutral-700">
+                  YouTube Link
+                </label>
+                <Input
+                  placeholder="Enter YouTube link"
+                  className="h-9 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 text-[13px] font-medium text-neutral-500">
+                <div className="h-px flex-1 bg-neutral-200" />
+                <span>OR</span>
+                <div className="h-px flex-1 bg-neutral-200" />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[13px] font-medium text-neutral-700">
+                  Custom Video
+                </label>
+                <button
+                  type="button"
+                  className="flex h-[116px] w-full flex-col items-center justify-center gap-3 rounded-sm border border-dashed border-neutral-200 bg-neutral-50 text-center text-neutral-500 transition-colors hover:border-neutral-300 hover:bg-white"
+                >
+                  <div className="flex size-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700">
+                    <Upload className="size-4" />
+                  </div>
+                  <div className="text-[14px]">
+                    Click or drag file to this area to upload
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter className="items-center justify-between border-t border-neutral-200 px-4 py-4 sm:flex-row sm:justify-between">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-9 px-0 text-[15px] font-normal text-neutral-700 hover:bg-transparent hover:text-neutral-900"
+            >
+              Close
+            </Button>
+          </DialogClose>
+          <Button className="h-9 rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 px-4 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            Add Exercise
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function ProgramsTable() {
+  return (
+    <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+      <div className="grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+        <div>Program</div>
+        <div>Type</div>
+        <div />
+      </div>
+
+      {programRows.map((program) => (
+        <div
+          key={program.id}
+          className="grid grid-cols-[minmax(0,1fr)_180px_56px] items-center border-b border-neutral-200 px-5 py-4 last:border-b-0"
+        >
+          <div className="min-w-0">
+            <div className="truncate text-[15px] font-medium text-neutral-950">
+              {program.name}
+            </div>
+          </div>
+          <div>
+            <ProgramTypeBadge type={program.type} />
+          </div>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+            >
+              <IconDots className="size-4" />
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function TemplatesTable() {
+  return (
+    <div className="space-y-4">
+      <ProgramsSearchBar placeholder="Isci template..." />
+
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+      <div className="grid grid-cols-[minmax(0,1fr)_120px_220px_56px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+        <div>Workout</div>
+        <div className="flex items-center gap-2">
+          <Search className="size-3.5 text-neutral-400" />
+          <span>Exercises</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span>Tags</span>
+          <IconFilter className="size-3.5 text-neutral-400" />
+        </div>
+        <div />
+      </div>
+
+      {templateRows.map((template) => (
+        <div
+          key={template.id}
+          className="grid grid-cols-[minmax(0,1fr)_120px_220px_56px] items-center border-b border-neutral-200 px-5 py-3.5 last:border-b-0"
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            <div
+              className={`flex size-7 shrink-0 items-center justify-center rounded-md bg-gradient-to-br ${template.tone} text-[11px] font-semibold text-white`}
+            >
+              {template.name
+                .split(" ")
+                .slice(0, 2)
+                .map((part) => part[0])
+                .join("")}
+            </div>
+            <div className="min-w-0 truncate text-[15px] font-medium text-neutral-950">
+              {template.name}
+            </div>
+          </div>
+          <div className="text-[15px] text-neutral-900">{template.exercises}</div>
+          <div className="flex flex-wrap items-center gap-2">
+            {template.tags.map((tag) => (
+              <Badge
+                key={`${template.id}-${tag}`}
+                className="rounded-sm border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              size="icon"
+              className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+            >
+              <IconDots className="size-4" />
+            </Button>
+          </div>
+        </div>
+      ))}
+      </div>
+    </div>
+  )
+}
+
+function ExercisesTable() {
+  return (
+    <div className="space-y-4">
+      <ProgramsSearchBar
+        placeholder="Search exercise"
+        action={
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="size-9 shrink-0 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+          >
+            <IconFilter className="size-4" />
+          </Button>
+        }
+      />
+
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <div className="grid grid-cols-[minmax(0,1fr)_240px_120px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+          <div>Name ({exerciseRows.length})</div>
+          <div>Primary Focus</div>
+          <div>Custom</div>
+        </div>
+
+        {exerciseRows.map((exercise) => (
+          <div
+            key={exercise.id}
+            className="grid grid-cols-[minmax(0,1fr)_240px_120px] items-center border-b border-neutral-200 px-5 py-3.5 last:border-b-0"
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-md border border-neutral-200 bg-neutral-50 text-neutral-500">
+                <IconBarbell className="size-4" />
+              </div>
+              <div className="min-w-0 truncate text-[15px] font-medium text-neutral-950">
+                {exercise.name}
+              </div>
+            </div>
+            <div className="text-[14px] text-neutral-900">{exercise.focus}</div>
+            <div className="flex items-center justify-start">
+              <AddExerciseDialog
+                trigger={
+                  <button
+                    type="button"
+                    className="flex h-8 w-8 items-center justify-center rounded-sm text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-brand-500"
+                  >
+                    <IconUser
+                      className={`size-4 ${
+                        exercise.custom ? "text-brand-500" : "text-neutral-300"
+                      }`}
+                    />
+                  </button>
+                }
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function ProgramSection({
   heading,
   description,
+  action,
+  children,
 }: {
   heading: string
   description: string
+  action?: React.ReactNode
+  children?: React.ReactNode
 }) {
+  if (children) {
+    return <div className="bg-neutral-50 p-4">{children}</div>
+  }
+
   return (
     <div className="bg-neutral-50 p-4">
       <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
         <Card className="rounded-sm border-neutral-200 bg-white shadow-none">
           <CardHeader className="space-y-1 px-5 py-4">
-            <CardTitle className="text-[15px] font-semibold text-neutral-900">
-              {heading}
-            </CardTitle>
-            <CardDescription className="text-[13px] text-neutral-500">
-              {description}
-            </CardDescription>
+            <div className="flex items-center justify-between gap-4">
+              <div className="space-y-1">
+                <CardTitle className="text-[15px] font-semibold text-neutral-900">
+                  {heading}
+                </CardTitle>
+                <CardDescription className="text-[13px] text-neutral-500">
+                  {description}
+                </CardDescription>
+              </div>
+              {action}
+            </div>
           </CardHeader>
-          <CardContent className="grid gap-3 px-5 pb-5 sm:grid-cols-3">
-            <div className="rounded-sm border border-neutral-200 bg-neutral-50 p-4">
-              <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                Status
+          <CardContent className="px-5 pb-5">
+            {children ?? (
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="rounded-sm border border-neutral-200 bg-neutral-50 p-4">
+                  <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                    Status
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold text-neutral-900">
+                    Active
+                  </div>
+                </div>
+                <div className="rounded-sm border border-neutral-200 bg-neutral-50 p-4">
+                  <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                    Items
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold text-neutral-900">
+                    12
+                  </div>
+                </div>
+                <div className="rounded-sm border border-neutral-200 bg-neutral-50 p-4">
+                  <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                    Updated
+                  </div>
+                  <div className="mt-2 text-[20px] font-semibold text-neutral-900">
+                    Today
+                  </div>
+                </div>
               </div>
-              <div className="mt-2 text-[20px] font-semibold text-neutral-900">
-                Active
-              </div>
-            </div>
-            <div className="rounded-sm border border-neutral-200 bg-neutral-50 p-4">
-              <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                Items
-              </div>
-              <div className="mt-2 text-[20px] font-semibold text-neutral-900">
-                12
-              </div>
-            </div>
-            <div className="rounded-sm border border-neutral-200 bg-neutral-50 p-4">
-              <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-                Updated
-              </div>
-              <div className="mt-2 text-[20px] font-semibold text-neutral-900">
-                Today
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
 
@@ -111,7 +648,7 @@ export default function ProgramiPage() {
     <section className="min-w-0 bg-neutral-50">
       <Tabs defaultValue="programs" className="min-w-0 w-full gap-0">
         <div className="border-b border-neutral-200 bg-neutral-50">
-          <div className="flex min-w-0 items-center">
+          <div className="flex min-w-0 items-center justify-between gap-4 px-4">
             <div className="min-w-0 flex-1 overflow-x-auto">
               <TabsList
                 variant="line"
@@ -129,12 +666,27 @@ export default function ProgramiPage() {
                 ))}
               </TabsList>
             </div>
+            <Button className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+              <IconPlus className="size-4" />
+              Program
+            </Button>
           </div>
         </div>
 
         {mainTabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value} className="mt-0 space-y-0">
-            <ProgramSection heading={tab.label} description={tab.description} />
+            <ProgramSection
+              heading={tab.label}
+              description={tab.description}
+            >
+              {tab.value === "programs" ? (
+                <ProgramsTable />
+              ) : tab.value === "templates" ? (
+                <TemplatesTable />
+              ) : tab.value === "exercises" ? (
+                <ExercisesTable />
+              ) : undefined}
+            </ProgramSection>
           </TabsContent>
         ))}
       </Tabs>

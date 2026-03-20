@@ -1326,6 +1326,25 @@ const fixedPrograms: FixedProgramEditorProgram[] = [
   },
 ]
 
+export function getFixedProgramEditorProgram(
+  programId: string,
+  title: string
+): FixedProgramEditorProgram {
+  const existingProgram = fixedPrograms.find((program) => program.id === programId)
+
+  if (existingProgram) {
+    return existingProgram
+  }
+
+  return {
+    id: programId,
+    title,
+    description: `Build and organize the ${title} program with custom workouts and exercises.`,
+    workouts: [],
+    editorWorkouts: [],
+  }
+}
+
 function createFixedBuilderExercise(exerciseName: string): FixedProgramBuilderExercise {
   return {
     id: `${exerciseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Math.random()
@@ -1498,7 +1517,7 @@ function AddWorkoutDialog({
   )
 }
 
-function FixedProgramEditorDialog({
+export function FixedProgramEditorDialog({
   program,
   trigger,
 }: {
