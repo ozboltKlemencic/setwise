@@ -34,6 +34,7 @@ import {
   ClientHabitsPanel,
 } from "@/components/coachWise/clients/client-habits-panel"
 import { ClientGeneralMetricsPanel } from "@/components/coachWise/clients/client-general-metrics-panel"
+import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
 import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
@@ -433,6 +434,9 @@ export default async function ClientProfilePage({
     },
   ]
   const contactEmail = `${client.header.toLowerCase().replaceAll(" ", ".")}@hubfit.io`
+  const [clientFirstName, ...clientLastNameParts] = client.header.split(" ")
+  const clientLastName = clientLastNameParts.join(" ")
+  const contactPhone = `+386 40 ${String(120 + clientId).padStart(3, "0")} ${String(310 + clientId).padStart(3, "0")}`
   const coachingWeek = `Week ${((clientId + 10) % 13) + 1} of 13`
   const clientTag =
     client.phase === "Bulk"
@@ -477,6 +481,24 @@ export default async function ClientProfilePage({
       value: (
         <Badge className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50">
           {coachingWeek}
+        </Badge>
+      ),
+    },
+    {
+      icon: <IconChartBar className="size-4" />,
+      label: "Faza",
+      value: (
+        <Badge
+          className={cn(
+            "rounded-md px-2 py-0.5 text-[12px] font-medium shadow-none",
+            client.phase === "Bulk"
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-50"
+              : client.phase === "Cut"
+                ? "border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-50"
+                : "border border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-50"
+          )}
+        >
+          {client.phase}
         </Badge>
       ),
     },
@@ -705,9 +727,14 @@ export default async function ClientProfilePage({
                 },
               ]}
               actions={
-                <Button size="sm" className={primaryActionButtonClassName}>
-                  Edit client
-                </Button>
+                <ClientEditDialog
+                  firstName={clientFirstName}
+                  lastName={clientLastName}
+                  email={contactEmail}
+                  phone={contactPhone}
+                  status={client.type}
+                  phase={client.phase}
+                />
               }
             />
 
