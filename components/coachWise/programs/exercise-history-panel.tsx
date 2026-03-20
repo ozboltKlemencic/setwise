@@ -6,7 +6,10 @@ import {
   CalendarDays,
   CalendarIcon,
   ChevronLeft,
+  Dumbbell,
+  Filter,
   LayoutGrid,
+  Plus,
   Search,
   TrendingDown,
   TrendingUp,
@@ -56,6 +59,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
 type ExerciseSet = {
@@ -768,14 +772,22 @@ export function ProgramsPeriodPicker({
 }
 
 export function ProgramTypeDialog({
+  value,
+  onValueChange,
   triggerClassName,
 }: {
+  value: "calendar" | "fixed"
+  onValueChange: (value: "calendar" | "fixed") => void
   triggerClassName?: string
 }) {
   const [open, setOpen] = React.useState(false)
-  const [selectedType, setSelectedType] = React.useState<"calendar" | "fixed">(
-    "fixed"
-  )
+  const [selectedType, setSelectedType] = React.useState<"calendar" | "fixed">(value)
+
+  React.useEffect(() => {
+    if (open) {
+      setSelectedType(value)
+    }
+  }, [open, value])
 
   const options = [
     {
@@ -932,10 +944,183 @@ export function ProgramTypeDialog({
               Close
             </Button>
           </DialogClose>
-          <Button onClick={() => setOpen(false)}>Switch</Button>
+          <Button
+            onClick={() => {
+              onValueChange(selectedType)
+              setOpen(false)
+            }}
+          >
+            Switch
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  )
+}
+
+const addProgramTabTriggerClassName =
+  "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
+
+export function AddProgramDialog({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) {
+  const [open, setOpen] = React.useState(false)
+  const [activeTab, setActiveTab] = React.useState("new")
+  const [programName, setProgramName] = React.useState("")
+  const [programDescription, setProgramDescription] = React.useState("")
+  const [selectedProgramId, setSelectedProgramId] = React.useState("full-body")
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" className={triggerClassName}>
+          <Plus className="size-4" />
+          Program
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-[680px] rounded-sm p-0">
+        <DialogHeader className="border-b border-neutral-200 px-6 py-4">
+          <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold">
+            <Dumbbell className="size-4 text-neutral-500" />
+            Add Program
+          </DialogTitle>
+        </DialogHeader>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-0">
+          <div className="border-b border-neutral-200 px-6">
+            <TabsList className="h-auto gap-6 rounded-none bg-transparent p-0">
+              <TabsTrigger value="new" className={addProgramTabTriggerClassName}>
+                New Program
+              </TabsTrigger>
+              <TabsTrigger value="library" className={addProgramTabTriggerClassName}>
+                Program Library
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          <TabsContent value="new" className="mt-0 space-y-0">
+            <div className="space-y-5 px-6 py-5">
+              <div className="space-y-2">
+                <Label className="text-[13px] font-medium text-neutral-700">
+                  Program Name <span className="text-rose-500">*</span>
+                </Label>
+                <Input
+                  value={programName}
+                  onChange={(event) => setProgramName(event.target.value)}
+                  placeholder="Name of the program e.g. Full Body Workout"
+                  className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[13px] font-medium text-neutral-700">
+                  Program Description
+                </Label>
+                <textarea
+                  value={programDescription}
+                  onChange={(event) => setProgramDescription(event.target.value)}
+                  placeholder="Enter any additional info"
+                  className="min-h-[120px] w-full rounded-sm border border-neutral-200 bg-white px-3 py-2.5 text-[14px] text-neutral-900 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300"
+                />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="library" className="mt-0 space-y-0">
+            <div className="space-y-5 px-6 py-5">
+              <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+                <div className="grid grid-cols-[minmax(0,1fr)_120px] items-center border-b border-neutral-200 px-4 py-3 text-[13px] font-medium text-neutral-700">
+                  <div>Program</div>
+                  <div className="flex items-center justify-end gap-3">
+                    <Search className="size-4 text-neutral-400" />
+                    <span>Tags</span>
+                    <Filter className="size-4 text-neutral-400" />
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedProgramId("full-body")}
+                  className={cn(
+                    "grid w-full grid-cols-[minmax(0,1fr)_120px] items-center px-4 py-4 text-left transition-colors",
+                    selectedProgramId === "full-body"
+                      ? "bg-brand-50"
+                      : "bg-white hover:bg-neutral-50"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={cn(
+                        "flex size-4 items-center justify-center rounded-full border-2",
+                        selectedProgramId === "full-body"
+                          ? "border-brand-600"
+                          : "border-neutral-300"
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "size-1.5 rounded-full",
+                          selectedProgramId === "full-body"
+                            ? "bg-brand-600"
+                            : "bg-transparent"
+                        )}
+                      />
+                    </span>
+                    <span className="text-[15px] font-medium text-neutral-950">
+                      Full Body (Sample)
+                    </span>
+                  </div>
+                  <div className="text-right text-[13px] text-neutral-500">Starter</div>
+                </button>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <DialogFooter className="border-t border-neutral-200 px-6 py-4 sm:justify-between">
+          <DialogClose asChild>
+            <Button variant="ghost" className="px-0 text-neutral-700 shadow-none">
+              Close
+            </Button>
+          </DialogClose>
+          <Button
+            onClick={() => setOpen(false)}
+            disabled={
+              activeTab === "new" ? programName.trim().length === 0 : !selectedProgramId
+            }
+          >
+            {activeTab === "new" ? "Add Program" : "Import Program"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export function ProgramsOverviewActions() {
+  const [programType, setProgramType] = React.useState<"calendar" | "fixed">(
+    "calendar"
+  )
+
+  return (
+    <>
+      <ProgramTypeDialog
+        value={programType}
+        onValueChange={setProgramType}
+        triggerClassName="rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+      />
+      {programType === "calendar" ? (
+        <ImportCalendarDialog
+          triggerClassName="border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+          triggerLabel="Import Program"
+          dialogTitle="Import Program"
+        />
+      ) : (
+        <AddProgramDialog triggerClassName="border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700" />
+      )}
+    </>
   )
 }
 
