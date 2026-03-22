@@ -749,7 +749,7 @@ function FoodTable() {
   )
 }
 
-export default function MealPlaniPage() {
+function MealPlaniPageContent() {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -811,5 +811,13 @@ export default function MealPlaniPage() {
         </TabsContent>
       </Tabs>
     </section>
+  )
+}
+
+export default function MealPlaniPage() {
+  return (
+    <React.Suspense fallback={<section className="min-w-0 bg-neutral-50" />}>
+      <MealPlaniPageContent />
+    </React.Suspense>
   )
 }

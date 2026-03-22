@@ -428,7 +428,7 @@ function HabbitsTable() {
   )
 }
 
-export default function FormsPage() {
+function FormsPageContent() {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -490,5 +490,13 @@ export default function FormsPage() {
         </TabsContent>
       </Tabs>
     </section>
+  )
+}
+
+export default function FormsPage() {
+  return (
+    <React.Suspense fallback={<section className="min-w-0 bg-neutral-50" />}>
+      <FormsPageContent />
+    </React.Suspense>
   )
 }
