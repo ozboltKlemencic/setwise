@@ -1321,7 +1321,7 @@ function ProgramSection({
   )
 }
 
-export default function ProgramiPage() {
+function ProgramiPageContent() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -1468,5 +1468,13 @@ export default function ProgramiPage() {
         ))}
       </Tabs>
     </section>
+  )
+}
+
+export default function ProgramiPage() {
+  return (
+    <React.Suspense fallback={<section className="min-w-0 bg-neutral-50" />}>
+      <ProgramiPageContent />
+    </React.Suspense>
   )
 }
