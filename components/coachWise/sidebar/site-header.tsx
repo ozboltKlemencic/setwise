@@ -94,7 +94,7 @@ export function SiteHeader() {
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
   const clientDetailMatch = normalizedPathname.match(
-    /^\/beta-coach-wise\/clients\/(\d+)$/
+    /^\/beta-coach-wise\/clients\/(\d+)(?:\/.*)?$/
   )
   const activeClient = clientDetailMatch
     ? clientData.find((item) => item.id === Number(clientDetailMatch[1]))

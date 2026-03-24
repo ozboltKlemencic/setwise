@@ -3029,6 +3029,31 @@ function SortableNutritionMealPlanSectionCard({
   )
 }
 
+export function CreateNutritionPlanAction({
+  phase,
+  triggerClassName,
+}: {
+  phase?: string
+  triggerClassName?: string
+}) {
+  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+
+  return (
+    <CreateNutritionPlanDialog
+      triggerClassName={triggerClassName}
+      libraryPlans={preset.mealPlans}
+    />
+  )
+}
+
+export function SmartMealPlannerAction({
+  triggerClassName,
+}: {
+  triggerClassName?: string
+}) {
+  return <SmartMealPlannerDialog triggerClassName={triggerClassName} />
+}
+
 export function MealPlanDetailView({
   mealPlanId,
   phase,
@@ -3141,7 +3166,7 @@ export function MealPlanDetailView({
               variant="ghost"
               size="icon-sm"
               className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              onClick={() => router.push(`${pathname}?tab=nutrition&nutritionTab=meal-plans`)}
+              onClick={() => router.push(`${pathname}?nutritionTab=meal-plans`)}
             >
               <ChevronLeft className="size-4" />
               <span className="sr-only">Nazaj na meal plans</span>
@@ -3447,14 +3472,14 @@ export function ClientNutritionPanel({
                   tabIndex={0}
                   onClick={() =>
                     router.push(
-                      `${pathname}?tab=nutrition&nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                      `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
                     )
                   }
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault()
                       router.push(
-                        `${pathname}?tab=nutrition&nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                        `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
                       )
                     }
                   }}
@@ -3505,7 +3530,7 @@ export function ClientNutritionPanel({
                         <DropdownMenuItem
                           onSelect={() =>
                             router.push(
-                              `${pathname}?tab=nutrition&nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                              `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
                             )
                           }
                           className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"

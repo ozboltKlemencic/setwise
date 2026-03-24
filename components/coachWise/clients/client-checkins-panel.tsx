@@ -2514,7 +2514,7 @@ export function AssignedCheckinsPanel() {
                   }
 
                   router.push(
-                    `${pathname}?tab=checkins&checkinTab=assigned&assignedCheckin=${item.id}`
+                    `${pathname}?checkinTab=assigned&assignedCheckin=${item.id}`
                   )
                 }}
                 onKeyDown={(event) => {
@@ -2525,7 +2525,7 @@ export function AssignedCheckinsPanel() {
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault()
                     router.push(
-                      `${pathname}?tab=checkins&checkinTab=assigned&assignedCheckin=${item.id}`
+                      `${pathname}?checkinTab=assigned&assignedCheckin=${item.id}`
                     )
                   }
                 }}
@@ -2588,7 +2588,7 @@ export function AssignedCheckinsPanel() {
                           className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
                           onSelect={() =>
                             router.push(
-                              `${pathname}?tab=checkins&checkinTab=assigned&assignedCheckin=${item.id}`
+                              `${pathname}?checkinTab=assigned&assignedCheckin=${item.id}`
                             )
                           }
                         >
@@ -2640,7 +2640,7 @@ export function AssignedCheckinDetailView({
   return (
     <AssignedCheckinEditor
       checkin={selectedCheckin}
-      onBack={() => router.push(`${pathname}?tab=checkins&checkinTab=assigned`)}
+      onBack={() => router.push(`${pathname}?checkinTab=assigned`)}
     />
   )
 }

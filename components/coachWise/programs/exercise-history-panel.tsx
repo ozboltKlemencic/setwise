@@ -2320,7 +2320,7 @@ export function CompletedWorkoutsPanel() {
     <CompletedWorkoutsCalendarGrid
         onSelectWorkout={(workoutId) =>
           router.push(
-            `${pathname}?tab=programs&programTab=completed-workouts&workoutId=${workoutId}`
+            `${pathname}?programTab=completed-workouts&workoutId=${workoutId}`
           )
         }
       />
@@ -2384,7 +2384,7 @@ export function WorkoutDetailView({
               size="icon"
               className="size-8 rounded-sm text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
             >
-              <a href={`${pathname}?tab=programs&programTab=completed-workouts`}>
+              <a href={`${pathname}?programTab=completed-workouts`}>
                 <ChevronLeft className="size-4" />
               </a>
             </Button>

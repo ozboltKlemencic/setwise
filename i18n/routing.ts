@@ -150,6 +150,30 @@ export const routing = defineRouting({
             sl: '/beta-coach-wise/clients/[id]',
             en: '/beta-coach-wise/clients/[id]',
         },
+        '/beta-coach-wise/clients/[id]/info': {
+            sl: '/beta-coach-wise/clients/[id]/info',
+            en: '/beta-coach-wise/clients/[id]/info',
+        },
+        '/beta-coach-wise/clients/[id]/habbits': {
+            sl: '/beta-coach-wise/clients/[id]/habbits',
+            en: '/beta-coach-wise/clients/[id]/habbits',
+        },
+        '/beta-coach-wise/clients/[id]/checkins': {
+            sl: '/beta-coach-wise/clients/[id]/checkins',
+            en: '/beta-coach-wise/clients/[id]/checkins',
+        },
+        '/beta-coach-wise/clients/[id]/nutrition': {
+            sl: '/beta-coach-wise/clients/[id]/nutrition',
+            en: '/beta-coach-wise/clients/[id]/nutrition',
+        },
+        '/beta-coach-wise/clients/[id]/supplements': {
+            sl: '/beta-coach-wise/clients/[id]/supplements',
+            en: '/beta-coach-wise/clients/[id]/supplements',
+        },
+        '/beta-coach-wise/clients/[id]/programs': {
+            sl: '/beta-coach-wise/clients/[id]/programs',
+            en: '/beta-coach-wise/clients/[id]/programs',
+        },
         '/beta-coach-wise/data-library': {
             sl: '/beta-coach-wise/data-library',
             en: '/beta-coach-wise/data-library',

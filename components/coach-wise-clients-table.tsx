@@ -335,7 +335,9 @@ export function CoachWiseClientsTable({
     React.useState<ClientStatusFilter>("all")
   const openClientProfile = React.useCallback(
     (id: number) => {
-      router.push(buildCoachWiseHref(pathname, `/beta-coach-wise/clients/${id}`))
+      router.push(
+        buildCoachWiseHref(pathname, `/beta-coach-wise/clients/${id}/info`)
+      )
     },
     [pathname, router]
   )

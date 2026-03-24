@@ -2401,7 +2401,7 @@ export function HabitDetailView({
               variant="ghost"
               size="icon-sm"
               className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              onClick={() => router.push(`${pathname}?tab=habbits&habitTab=${originTab}`)}
+              onClick={() => router.push(`${pathname}?habitTab=${originTab}`)}
             >
               <ChevronLeft className="size-4" />
               <span className="sr-only">Nazaj na navade</span>

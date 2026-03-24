@@ -17,7 +17,7 @@ export default function BetaCoachWiseLayout({
   const pathname = usePathname()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
   const isClientDetailPage =
-    /^\/beta-coach-wise\/clients\/[^/]+$/.test(normalizedPathname)
+    /^\/beta-coach-wise\/clients\/[^/]+(?:\/.*)?$/.test(normalizedPathname)
 
   return (
     <SidebarProvider
