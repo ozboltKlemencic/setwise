@@ -1073,8 +1073,10 @@ const addProgramTabTriggerClassName =
 
 export function AddProgramDialog({
   triggerClassName,
+  trigger,
 }: {
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
   const [activeTab, setActiveTab] = React.useState("new")
@@ -1085,10 +1087,12 @@ export function AddProgramDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className={triggerClassName}>
-          <Plus className="size-4" />
-          Program
-        </Button>
+        {trigger ?? (
+          <Button size="sm" className={triggerClassName}>
+            <Plus className="size-4" />
+            Program
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-w-[680px] rounded-sm p-0">
         <DialogHeader className="border-b border-neutral-200 px-6 py-4">

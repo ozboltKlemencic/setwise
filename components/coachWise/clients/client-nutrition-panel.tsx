@@ -1439,9 +1439,11 @@ function NutritionIifymTooltip({
 function CreateNutritionPlanDialog({
   triggerClassName,
   libraryPlans,
+  trigger,
 }: {
   triggerClassName?: string
   libraryPlans: NutritionMealPlan[]
+  trigger?: React.ReactNode
 }) {
   const templateItems = React.useMemo<NutritionPlanTemplate[]>(
     () => [
@@ -1500,10 +1502,12 @@ function CreateNutritionPlanDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button type="button" size="sm" className={triggerClassName}>
-          <Plus className="size-4" />
-          Add Meal Plan
-        </Button>
+        {trigger ?? (
+          <Button type="button" size="sm" className={triggerClassName}>
+            <Plus className="size-4" />
+            Add Meal Plan
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
@@ -3032,9 +3036,11 @@ function SortableNutritionMealPlanSectionCard({
 export function CreateNutritionPlanAction({
   phase,
   triggerClassName,
+  trigger,
 }: {
   phase?: string
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
 
@@ -3042,6 +3048,7 @@ export function CreateNutritionPlanAction({
     <CreateNutritionPlanDialog
       triggerClassName={triggerClassName}
       libraryPlans={preset.mealPlans}
+      trigger={trigger}
     />
   )
 }

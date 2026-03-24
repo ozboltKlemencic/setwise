@@ -1051,8 +1051,10 @@ const createCheckinTabTriggerClassName =
 
 export function CreateAssignedCheckinDialog({
   triggerClassName,
+  trigger,
 }: {
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const featuredCheckin = assignedCheckins[1] ?? assignedCheckins[0]
   const [open, setOpen] = React.useState(false)
@@ -1087,10 +1089,12 @@ export function CreateAssignedCheckinDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button size="sm" className={triggerClassName}>
-          <IconPlus className="size-4" />
-          Nov check-in
-        </Button>
+        {trigger ?? (
+          <Button size="sm" className={triggerClassName}>
+            <IconPlus className="size-4" />
+            Nov check-in
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">

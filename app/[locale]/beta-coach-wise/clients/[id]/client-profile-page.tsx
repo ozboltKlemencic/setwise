@@ -12,7 +12,6 @@ import {
   IconRepeat,
 } from "@tabler/icons-react"
 import {
-  Activity,
   Clock3,
   FileText,
   Mail,
@@ -44,14 +43,12 @@ import {
   ClientNutritionPanel,
   CreateNutritionPlanAction,
   MealPlanDetailView,
-  SmartMealPlannerAction,
 } from "@/components/coachWise/clients/client-nutrition-panel"
 import {
   AddProgramDialog,
   CompletedWorkoutsPanel,
   ExerciseHistoryPanel,
   FixedProgramsTable,
-  ImportCalendarDialog,
   ProgramsOverviewActions,
   ProgramsPeriodPicker,
   WorkoutDetailView,
@@ -149,11 +146,11 @@ const profileTabTriggerClassName =
 const primaryActionButtonClassName =
   "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
 
-const quickActionButtonClassName =
-  "rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
-
 const sectionSubTabTriggerClassName =
   "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+
+const infoCreateCardClassName =
+  "group flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border border-neutral-200 bg-white px-5 py-6 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all hover:border-neutral-300 hover:bg-neutral-50 hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]"
 
 function getInitials(name: string) {
   return name
@@ -300,41 +297,30 @@ function InfoActionSection({
           {title}
         </h2>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">{children}</div>
+      <div className="grid gap-3">{children}</div>
     </section>
   )
 }
 
-function InfoActionCard({
-  icon,
+function InfoCreateCardContent({
   title,
   description,
-  action,
 }: {
-  icon: ReactNode
   title: string
   description: string
-  action: ReactNode
 }) {
   return (
-    <Card className="rounded-xl border-neutral-200 bg-white shadow-none">
-      <CardContent className="space-y-4 p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 space-y-1">
-            <h3 className="text-[15px] font-semibold text-neutral-950">
-              {title}
-            </h3>
-            <p className="text-[13px] leading-5 text-neutral-500">
-              {description}
-            </p>
-          </div>
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-500 [&_svg]:size-4">
-            {icon}
-          </span>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">{action}</div>
-      </CardContent>
-    </Card>
+    <>
+      <span className="mb-4 flex size-12 items-center justify-center rounded-2xl border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors group-hover:border-neutral-300 group-hover:bg-white">
+        <IconPlus className="size-5" />
+      </span>
+      <span className="text-[20px] font-semibold tracking-[-0.02em] text-neutral-950">
+        {title}
+      </span>
+      <span className="mt-2 max-w-[19rem] text-[13px] leading-5 text-neutral-500">
+        {description}
+      </span>
+    </>
   )
 }
 
@@ -636,88 +622,6 @@ export default async function ClientProfilePage({
       ),
     },
   ]
-  const metricsAverageRows = [
-    {
-      label: "Weight",
-      value: client.phase === "Bulk" ? "74 kg" : "71 kg",
-      delta: "-22%",
-      tone: "down" as const,
-    },
-    {
-      label: "Body Fat",
-      value: client.phase === "Cut" ? "14 %" : "16 %",
-      delta: "-36%",
-      tone: "down" as const,
-    },
-    {
-      label: "Muscle Mass",
-      value: client.phase === "Bulk" ? "43 kg" : "41 kg",
-      delta: "8%",
-      tone: "up" as const,
-    },
-    {
-      label: "Waist",
-      value: "87 cm",
-      delta: "-8%",
-      tone: "down" as const,
-    },
-  ]
-  const habitsOverviewEntries = [
-    {
-      title: "Daily Steps",
-      subtitle: "10000 steps/day",
-      meta: "15 dni streak",
-      status: "+4%",
-      tone: "up" as const,
-    },
-    {
-      title: "Water Intake",
-      subtitle: "2.5 liters/day",
-      meta: "9/10 dni",
-      status: "Steady",
-      tone: "steady" as const,
-    },
-    {
-      title: "Sleep Duration",
-      subtitle: "8 hours/day",
-      meta: "7.8 h avg",
-      status: "-1%",
-      tone: "down" as const,
-    },
-    {
-      title: "Morning Walk",
-      subtitle: "20 min/day",
-      meta: "5 dni zapored",
-      status: "+2%",
-      tone: "up" as const,
-    },
-  ]
-  const recentCheckinsEntries = [
-    {
-      title: "Tedenski check-in",
-      date: "18. mar. 2026 - 10:50",
-      status: "Pregledan",
-      tone: "up" as const,
-    },
-    {
-      title: "Dnevni check-in",
-      date: "18. mar. 2026 - 08:15",
-      status: "Oddan",
-      tone: "steady" as const,
-    },
-    {
-      title: "Tedenski check-in",
-      date: "11. mar. 2026 - 09:20",
-      status: "Pregledan",
-      tone: "up" as const,
-    },
-    {
-      title: "Dnevni check-in",
-      date: "10. mar. 2026 - 07:55",
-      status: "Zamuja",
-      tone: "down" as const,
-    },
-  ]
   const generalNotes = [
     {
       title: "Coach Notes",
@@ -739,38 +643,6 @@ export default async function ClientProfilePage({
       body: [injurySummary],
       date: "16 November 2022",
       private: true,
-    },
-  ]
-  const completedWorkoutCards = [
-    {
-      id: "upper-a-0318",
-      title: "Upper A",
-      dateLabel: "Sre, 18. mar - 17:30",
-      duration: "42 min",
-      volume: "1.7k kg",
-      trend: "up" as const,
-      changeLabel: "+3%",
-      monthLabel: "Marec - 2026",
-    },
-    {
-      id: "lower-a-0315",
-      title: "Lower A",
-      dateLabel: "Ned, 15. mar - 10:00",
-      duration: "55 min",
-      volume: "2.3k kg",
-      trend: "steady" as const,
-      changeLabel: "Steady",
-      monthLabel: "Marec - 2026",
-    },
-    {
-      id: "upper-b-0309",
-      title: "Upper B",
-      dateLabel: "Pon, 09. mar - 18:10",
-      duration: "47 min",
-      volume: "1.6k kg",
-      trend: "down" as const,
-      changeLabel: "-1%",
-      monthLabel: "Marec - 2026",
     },
   ]
   return (
@@ -918,24 +790,17 @@ export default async function ClientProfilePage({
                       icon={<IconClipboardList className="size-4" />}
                       title="Programi"
                     >
-                      <InfoActionCard
-                        icon={<IconClipboardList className="size-4" />}
-                        title="Create Program"
-                        description="Dodaj nov program za stranko ali zgradi nov training block."
-                        action={
-                          <AddProgramDialog
-                            triggerClassName={quickActionButtonClassName}
-                          />
-                        }
-                      />
-                      <InfoActionCard
-                        icon={<IconCalendarEvent className="size-4" />}
-                        title="Import Program"
-                        description="Uvozi obstoječ plan iz libraryja in ga hitro pripni stranki."
-                        action={
-                          <ImportCalendarDialog
-                            triggerClassName={quickActionButtonClassName}
-                          />
+                      <AddProgramDialog
+                        trigger={
+                          <button
+                            type="button"
+                            className={infoCreateCardClassName}
+                          >
+                            <InfoCreateCardContent
+                              title="Create Program"
+                              description="Zgradi program od začetka ali uporabi library template."
+                            />
+                          </button>
                         }
                       />
                     </InfoActionSection>
@@ -944,25 +809,18 @@ export default async function ClientProfilePage({
                       icon={<IconChefHat className="size-4" />}
                       title="Nutrition"
                     >
-                      <InfoActionCard
-                        icon={<IconChefHat className="size-4" />}
-                        title="Create Meal Plan"
-                        description="Odpri nov meal plan in nastavi prehranski flow za trenutno fazo."
-                        action={
-                          <CreateNutritionPlanAction
-                            phase={client.phase}
-                            triggerClassName={quickActionButtonClassName}
-                          />
-                        }
-                      />
-                      <InfoActionCard
-                        icon={<IconChartBar className="size-4" />}
-                        title="Smart Meal Planner"
-                        description="Generiraj meal plan iz kalorij, makrov in omejitev v nekaj klikih."
-                        action={
-                          <SmartMealPlannerAction
-                            triggerClassName={quickActionButtonClassName}
-                          />
+                      <CreateNutritionPlanAction
+                        phase={client.phase}
+                        trigger={
+                          <button
+                            type="button"
+                            className={infoCreateCardClassName}
+                          >
+                            <InfoCreateCardContent
+                              title="Create Meal Plan"
+                              description="Zgradi jedilnik od začetka ali uporabi template."
+                            />
+                          </button>
                         }
                       />
                     </InfoActionSection>
@@ -971,71 +829,32 @@ export default async function ClientProfilePage({
                       icon={<IconPill className="size-4" />}
                       title="Suplementi"
                     >
-                      <InfoActionCard
-                        icon={<IconPill className="size-4" />}
-                        title="Supplement Stack"
-                        description="Preglej active stack in odpri dodatke za performance, health ali recovery."
-                        action={
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="sm"
-                            className={quickActionButtonClassName}
-                          >
-                            <Link href={`${clientBasePath}/supplements`}>
-                              Odpri stack
-                            </Link>
-                          </Button>
-                        }
-                      />
-                      <InfoActionCard
-                        icon={<IconCalendarEvent className="size-4" />}
-                        title="Daily Schedule"
-                        description="Uskladi timing suplementov in hitro skoči v schedule pogled."
-                        action={
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="sm"
-                            className={quickActionButtonClassName}
-                          >
-                            <Link href={`${clientBasePath}/supplements`}>
-                              Odpri schedule
-                            </Link>
-                          </Button>
-                        }
-                      />
+                      <Link
+                        href={`${clientBasePath}/supplements`}
+                        className={infoCreateCardClassName}
+                      >
+                        <InfoCreateCardContent
+                          title="Create Supplement Stack"
+                          description="Odpri suplemente in nastavi stack ter dnevni schedule."
+                        />
+                      </Link>
                     </InfoActionSection>
 
                     <InfoActionSection
                       icon={<IconClipboardCheck className="size-4" />}
                       title="Check-ins"
                     >
-                      <InfoActionCard
-                        icon={<IconClipboardCheck className="size-4" />}
-                        title="New Check-in"
-                        description="Dodeli nov check-in in nastavi jasen feedback loop za naslednji pregled."
-                        action={
-                          <CreateAssignedCheckinDialog
-                            triggerClassName={quickActionButtonClassName}
-                          />
-                        }
-                      />
-                      <InfoActionCard
-                        icon={<IconCalendarEvent className="size-4" />}
-                        title="Review Queue"
-                        description="Odpri assigned ali submitted check-ine in nadaljuj tam, kjer si ostal."
-                        action={
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="sm"
-                            className={quickActionButtonClassName}
+                      <CreateAssignedCheckinDialog
+                        trigger={
+                          <button
+                            type="button"
+                            className={infoCreateCardClassName}
                           >
-                            <Link href={`${clientBasePath}/checkins?checkinTab=assigned`}>
-                              Odpri queue
-                            </Link>
-                          </Button>
+                            <InfoCreateCardContent
+                              title="Create Check-in"
+                              description="Dodaj nov check-in in pripravi naslednji feedback loop za stranko."
+                            />
+                          </button>
                         }
                       />
                     </InfoActionSection>
@@ -1044,40 +863,15 @@ export default async function ClientProfilePage({
                       icon={<IconRepeat className="size-4" />}
                       title="Habbits"
                     >
-                      <InfoActionCard
-                        icon={<Activity className="size-4" />}
-                        title="Daily Habits"
-                        description="Skoči v dnevne navade in hitro preveri rutino, streake ter consistency."
-                        action={
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="sm"
-                            className={quickActionButtonClassName}
-                          >
-                            <Link href={`${clientBasePath}/habbits`}>
-                              Odpri habits
-                            </Link>
-                          </Button>
-                        }
-                      />
-                      <InfoActionCard
-                        icon={<IconChartBar className="size-4" />}
-                        title="Habit Overview"
-                        description="Odpri overview pogled in preveri širšo sliko navad ter trendov."
-                        action={
-                          <Button
-                            asChild
-                            variant="outline"
-                            size="sm"
-                            className={quickActionButtonClassName}
-                          >
-                            <Link href={`${clientBasePath}/habbits?habitTab=overview`}>
-                              Odpri overview
-                            </Link>
-                          </Button>
-                        }
-                      />
+                      <Link
+                        href={`${clientBasePath}/habbits`}
+                        className={infoCreateCardClassName}
+                      >
+                        <InfoCreateCardContent
+                          title="Create Habit"
+                          description="Odpri habits in dodaj novo navado ali coaching cilj."
+                        />
+                      </Link>
                     </InfoActionSection>
                   </div>
                 </div>
