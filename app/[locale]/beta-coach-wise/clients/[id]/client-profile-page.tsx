@@ -293,7 +293,7 @@ function InfoActionSection({
     <section className="space-y-2.5">
       <div className="flex items-center gap-2 px-1">
         <span className="text-neutral-400 [&_svg]:size-3.5">{icon}</span>
-        <h2 className="text-[11px] font-medium tracking-[0.12em] text-neutral-400 uppercase">
+        <h2 className="text-[10px] font-medium tracking-[0.1em] text-neutral-400 uppercase">
           {title}
         </h2>
       </div>
