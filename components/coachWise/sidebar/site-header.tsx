@@ -1,13 +1,11 @@
 "use client"
 
 import {
-  IconCalendarWeek,
   IconChefHat,
   IconClipboardList,
   IconInfoCircle,
   IconPill,
   IconPlus,
-  IconReceipt2,
   IconSettings,
   IconUserCheck,
   IconUsersGroup,
@@ -28,18 +26,6 @@ const coachWiseRoutes = [
     title: "Forms",
     href: "/beta-coach-wise/forms",
     icon: IconUserCheck,
-    exact: true,
-  },
-  {
-    title: "Urnik",
-    href: "/beta-coach-wise/urnik",
-    icon: IconCalendarWeek,
-    exact: true,
-  },
-  {
-    title: "Racuni",
-    href: "/beta-coach-wise/racuni",
-    icon: IconReceipt2,
     exact: true,
   },
   {
