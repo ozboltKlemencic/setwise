@@ -150,7 +150,7 @@ const sectionSubTabTriggerClassName =
   "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
 const infoCreateCardClassName =
-  "group flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border border-neutral-200 bg-white px-5 py-6 text-center shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all hover:border-neutral-300 hover:bg-neutral-50 hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]"
+  "group relative flex min-h-40 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-5 py-6 text-center shadow-none transition-colors hover:shadow-none"
 
 function getInitials(name: string) {
   return name
@@ -292,8 +292,8 @@ function InfoActionSection({
   return (
     <section className="space-y-2.5">
       <div className="flex items-center gap-2 px-1">
-        <span className="text-neutral-400 [&_svg]:size-4">{icon}</span>
-        <h2 className="text-[13px] font-semibold tracking-[0.08em] text-neutral-500 uppercase">
+        <span className="text-neutral-400 [&_svg]:size-3.5">{icon}</span>
+        <h2 className="text-[11px] font-medium tracking-[0.12em] text-neutral-400 uppercase">
           {title}
         </h2>
       </div>
@@ -303,15 +303,60 @@ function InfoActionSection({
 }
 
 function InfoCreateCardContent({
+  icon,
   title,
   description,
+  tone,
 }: {
+  icon: ReactNode
   title: string
   description: string
+  tone:
+    | "programs"
+    | "nutrition"
+    | "supplements"
+    | "checkins"
+    | "habits"
 }) {
+  const toneStyles = {
+    programs: {
+      badge: "border-sky-200 bg-sky-50 text-sky-700",
+      watermark: "text-sky-500/12",
+    },
+    nutrition: {
+      badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
+      watermark: "text-emerald-500/12",
+    },
+    supplements: {
+      badge: "border-violet-200 bg-violet-50 text-violet-700",
+      watermark: "text-violet-500/12",
+    },
+    checkins: {
+      badge: "border-amber-200 bg-amber-50 text-amber-700",
+      watermark: "text-amber-500/12",
+    },
+    habits: {
+      badge: "border-rose-200 bg-rose-50 text-rose-700",
+      watermark: "text-rose-500/12",
+    },
+  }[tone]
+
   return (
     <>
-      <span className="mb-4 flex size-12 items-center justify-center rounded-2xl border border-neutral-200 bg-neutral-50 text-neutral-700 transition-colors group-hover:border-neutral-300 group-hover:bg-white">
+      <span
+        className={cn(
+          "pointer-events-none absolute right-4 top-4 [&_svg]:size-16",
+          toneStyles.watermark
+        )}
+      >
+        {icon}
+      </span>
+      <span
+        className={cn(
+          "mb-4 flex size-12 items-center justify-center rounded-2xl border transition-colors",
+          toneStyles.badge
+        )}
+      >
         <IconPlus className="size-5" />
       </span>
       <span className="text-[20px] font-semibold tracking-[-0.02em] text-neutral-950">
@@ -785,7 +830,7 @@ export default async function ClientProfilePage({
                     </Card>
                   </div>
 
-                  <div className="space-y-5 xl:h-[calc(100vh-11.5rem)] xl:overflow-y-auto xl:pr-1 [scrollbar-width:thin]">
+                  <div className="grid content-start gap-5 md:grid-cols-2 xl:h-[calc(100vh-11.5rem)] xl:overflow-y-auto xl:pr-1 [scrollbar-width:thin]">
                     <InfoActionSection
                       icon={<IconClipboardList className="size-4" />}
                       title="Programi"
@@ -794,11 +839,16 @@ export default async function ClientProfilePage({
                         trigger={
                           <button
                             type="button"
-                            className={infoCreateCardClassName}
+                            className={cn(
+                              infoCreateCardClassName,
+                              "border-sky-200/80 bg-linear-to-br from-sky-50/45 to-white hover:border-sky-300 hover:bg-sky-50/60"
+                            )}
                           >
                             <InfoCreateCardContent
+                              icon={<IconClipboardList className="size-4" />}
                               title="Create Program"
                               description="Zgradi program od začetka ali uporabi library template."
+                              tone="programs"
                             />
                           </button>
                         }
@@ -814,11 +864,16 @@ export default async function ClientProfilePage({
                         trigger={
                           <button
                             type="button"
-                            className={infoCreateCardClassName}
+                            className={cn(
+                              infoCreateCardClassName,
+                              "border-emerald-200/80 bg-linear-to-br from-emerald-50/45 to-white hover:border-emerald-300 hover:bg-emerald-50/60"
+                            )}
                           >
                             <InfoCreateCardContent
+                              icon={<IconChefHat className="size-4" />}
                               title="Create Meal Plan"
                               description="Zgradi jedilnik od začetka ali uporabi template."
+                              tone="nutrition"
                             />
                           </button>
                         }
@@ -831,11 +886,16 @@ export default async function ClientProfilePage({
                     >
                       <Link
                         href={`${clientBasePath}/supplements`}
-                        className={infoCreateCardClassName}
+                        className={cn(
+                          infoCreateCardClassName,
+                          "border-violet-200/80 bg-linear-to-br from-violet-50/45 to-white hover:border-violet-300 hover:bg-violet-50/60"
+                        )}
                       >
                         <InfoCreateCardContent
+                          icon={<IconPill className="size-4" />}
                           title="Create Supplement Stack"
                           description="Odpri suplemente in nastavi stack ter dnevni schedule."
+                          tone="supplements"
                         />
                       </Link>
                     </InfoActionSection>
@@ -848,11 +908,16 @@ export default async function ClientProfilePage({
                         trigger={
                           <button
                             type="button"
-                            className={infoCreateCardClassName}
+                            className={cn(
+                              infoCreateCardClassName,
+                              "border-amber-200/80 bg-linear-to-br from-amber-50/45 to-white hover:border-amber-300 hover:bg-amber-50/60"
+                            )}
                           >
                             <InfoCreateCardContent
+                              icon={<IconClipboardCheck className="size-4" />}
                               title="Create Check-in"
                               description="Dodaj nov check-in in pripravi naslednji feedback loop za stranko."
+                              tone="checkins"
                             />
                           </button>
                         }
@@ -865,11 +930,16 @@ export default async function ClientProfilePage({
                     >
                       <Link
                         href={`${clientBasePath}/habbits`}
-                        className={infoCreateCardClassName}
+                        className={cn(
+                          infoCreateCardClassName,
+                          "border-rose-200/80 bg-linear-to-br from-rose-50/45 to-white hover:border-rose-300 hover:bg-rose-50/60"
+                        )}
                       >
                         <InfoCreateCardContent
+                          icon={<IconRepeat className="size-4" />}
                           title="Create Habit"
                           description="Odpri habits in dodaj novo navado ali coaching cilj."
+                          tone="habits"
                         />
                       </Link>
                     </InfoActionSection>
