@@ -140,8 +140,11 @@ const profileTabs = [
   },
 ] as const
 
-const profileTabTriggerClassName =
-  "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
+const profileTabLinkClassName =
+  "inline-flex h-full flex-none items-center justify-center gap-1.5 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal whitespace-nowrap text-neutral-500 transition-colors hover:text-neutral-700 [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:text-neutral-400"
+
+const profileTabLinkActiveClassName =
+  "border-(--brand-500) text-neutral-900 [&_svg]:text-(--brand-600)"
 
 const primaryActionButtonClassName =
   "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
@@ -695,25 +698,26 @@ export default async function ClientProfilePage({
       <Tabs value={section} className="min-w-0 w-full gap-0">
         <div className="border-b border-neutral-200 bg-neutral-50">
           <div className="flex min-w-0 items-center">
-            <div className="min-w-0 flex-1 overflow-x-auto">
-              <TabsList
-                variant="line"
-                className="w-max min-w-full justify-start gap-0 rounded-none bg-transparent p-0"
+            <div className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <nav
+                aria-label="Client profile sections"
+                className="flex min-w-max items-center"
               >
                 {profileTabs.map((tab) => (
-                  <TabsTrigger
+                  <Link
                     key={tab.value}
-                    value={tab.value}
-                    className={profileTabTriggerClassName}
-                    asChild
+                    href={getClientSectionHref(locale, clientId, tab.value)}
+                    aria-current={section === tab.value ? "page" : undefined}
+                    className={cn(
+                      profileTabLinkClassName,
+                      section === tab.value && profileTabLinkActiveClassName
+                    )}
                   >
-                    <Link href={getClientSectionHref(locale, clientId, tab.value)}>
-                      {tab.icon}
-                      {tab.label}
-                    </Link>
-                  </TabsTrigger>
+                    {tab.icon}
+                    {tab.label}
+                  </Link>
                 ))}
-              </TabsList>
+              </nav>
             </div>
             <div className="flex shrink-0 items-center self-stretch pr-3">
               <Button

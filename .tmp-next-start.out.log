@@ -1,0 +1,10 @@
+
+> my-v0-project@0.1.0 start
+> next start -p 3101
+
+▲ Next.js 16.1.6
+- Local:         http://localhost:3101
+- Network:       http://10.232.135.103:3101
+
+✓ Starting...
+✓ Ready in 972ms
