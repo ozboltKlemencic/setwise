@@ -32,9 +32,9 @@ import {
 
 import { Button } from "@/components/ui/button"
 import {
-  ClientSubtabsNavActionButton,
-  ClientSubtabsNav,
-} from "@/components/coachWise/clients/client-subtabs-nav"
+  SubtabsNavActionButton,
+  SubtabsNav,
+} from "@/components/coachWise/clients/subtabs-nav"
 import {
   ChartContainer,
   ChartTooltip,
@@ -2466,7 +2466,7 @@ export function ClientHabitsPanel({
 
   return (
     <Tabs value={activeSubTab} onValueChange={(value) => setActiveSubTab(value as "habits" | "overview")} className="gap-0">
-      <ClientSubtabsNav
+      <SubtabsNav
         items={[
           {
             icon: <BarChart3 className="size-4" />,
@@ -2485,7 +2485,7 @@ export function ClientHabitsPanel({
               <EditHabitDialog
                 habit={selectedHabit}
                 trigger={
-                  <ClientSubtabsNavActionButton
+                  <SubtabsNavActionButton
                     variant="secondary"
                     icon={<Pencil className="size-4" />}
                     label="Uredi"
@@ -2495,7 +2495,7 @@ export function ClientHabitsPanel({
             ) : null}
             <CreateHabitDialog
               trigger={
-                <ClientSubtabsNavActionButton
+                <SubtabsNavActionButton
                   variant="primary"
                   icon={<Plus className="size-4" />}
                   label="New Habit"

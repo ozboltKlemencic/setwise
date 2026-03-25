@@ -33,15 +33,15 @@ import {
 } from "@/components/coachWise/clients/client-habits-panel"
 import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
 import {
-  ClientProfileTabsNav,
   getClientProfileBasePath,
+  TabsNav,
   type ClientProfileSection,
-} from "@/components/coachWise/clients/client-profile-tabs-nav"
+} from "@/components/coachWise/clients/tabs-nav"
 import {
-  ClientSubtabsNavActionButton,
-  ClientSubtabsNav,
-  clientSubtabsNavActionButtonClassNames,
-} from "@/components/coachWise/clients/client-subtabs-nav"
+  SubtabsNavActionButton,
+  SubtabsNav,
+  subtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/subtabs-nav"
 import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
@@ -558,7 +558,7 @@ export default async function ClientProfilePage({
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs value={section} className="min-w-0 w-full gap-0">
-        <ClientProfileTabsNav
+        <TabsNav
           locale={locale}
           clientId={clientId}
           activeSection={section}
@@ -796,7 +796,7 @@ export default async function ClientProfilePage({
           <ClientHabitsPanel initialSubTab={resolvedHabitTab} />
           {false ? (
             <Tabs defaultValue="daily-habits" className="gap-0">
-              <ClientSubtabsNav
+              <SubtabsNav
                 items={[
                   {
                     icon: <IconRepeat className="size-4" />,
@@ -817,7 +817,7 @@ export default async function ClientProfilePage({
                 actions={
                   <Button
                     size="sm"
-                    className={clientSubtabsNavActionButtonClassNames.primary}
+                    className={subtabsNavActionButtonClassNames.primary}
                   >
                     <IconPlus className="size-4" />
                     Add habit
@@ -938,7 +938,7 @@ export default async function ClientProfilePage({
             value={resolvedCheckinTab}
             className="gap-0"
           >
-            <ClientSubtabsNav
+            <SubtabsNav
               items={[
                 {
                   icon: <IconClipboardCheck className="size-4" />,
@@ -957,7 +957,7 @@ export default async function ClientProfilePage({
                 resolvedCheckinTab === "assigned" ? (
                   <CreateAssignedCheckinDialog
                     trigger={
-                      <ClientSubtabsNavActionButton
+                      <SubtabsNavActionButton
                         variant="primary"
                         icon={<IconPlus className="size-4" />}
                         label="Nov check-in"
@@ -970,7 +970,7 @@ export default async function ClientProfilePage({
                       triggerIcon="photo"
                       triggerLabel="Primerjaj slike"
                       trigger={
-                        <ClientSubtabsNavActionButton
+                        <SubtabsNavActionButton
                           variant="secondary"
                           icon={<IconClipboardCheck className="size-4" />}
                           label="Primerjaj slike"
@@ -979,7 +979,7 @@ export default async function ClientProfilePage({
                     />
                     <SubmittedCheckinsCompareDialog
                       trigger={
-                        <ClientSubtabsNavActionButton
+                        <SubtabsNavActionButton
                           variant="secondary"
                           icon={<IconChartBar className="size-4" />}
                           label="Compare"
@@ -1057,7 +1057,7 @@ export default async function ClientProfilePage({
             initialSubTab={resolvedNutritionTab}
           />
           {false ? <Tabs defaultValue="meal-plans" className="gap-0">
-            <ClientSubtabsNav
+            <SubtabsNav
               items={[
                 {
                   icon: <IconChefHat className="size-4" />,
@@ -1073,7 +1073,7 @@ export default async function ClientProfilePage({
               actions={
                 <Button
                   size="sm"
-                  className={clientSubtabsNavActionButtonClassNames.primary}
+                  className={subtabsNavActionButtonClassNames.primary}
                 >
                   <IconPlus className="size-4" />
                   Add Meal Plan
@@ -1165,7 +1165,7 @@ export default async function ClientProfilePage({
 
         <TabsContent value="supplements" className="mt-0 space-y-0">
           <Tabs defaultValue="stack" className="gap-0">
-            <ClientSubtabsNav
+            <SubtabsNav
               items={[
                 {
                   icon: <IconPill className="size-4" />,
@@ -1202,7 +1202,7 @@ export default async function ClientProfilePage({
 
         <TabsContent value="programs" className="mt-0 space-y-0">
           <Tabs value={resolvedProgramTab} className="gap-0">
-            <ClientSubtabsNav
+            <SubtabsNav
               items={[
                 {
                   icon: <IconCalendarEvent className="size-4" />,

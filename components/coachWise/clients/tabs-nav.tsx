@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import type { MouseEventHandler, ReactNode } from "react"
 import Link from "next/link"
 import {
   IconChefHat,
@@ -9,6 +9,12 @@ import {
   IconRepeat,
 } from "@tabler/icons-react"
 
+import {
+  PrimaryActionButton,
+} from "@/components/coachWise/primary-action-button"
+import {
+  SecondaryActionButton,
+} from "@/components/coachWise/secondary-action-button"
 import { routing } from "@/i18n/routing"
 import { cn } from "@/lib/utils"
 
@@ -26,12 +32,25 @@ type ClientProfileTabDefinition = {
   icon: ReactNode
 }
 
-type ClientProfileTabsNavProps = {
+export type TabsNavActionButtonProps = {
+  label: string
+  icon?: ReactNode
+  variant?: "primary" | "secondary"
+  href?: string
+  onClick?: MouseEventHandler<HTMLButtonElement>
+  disabled?: boolean
+  className?: string
+  type?: "button" | "submit" | "reset"
+}
+
+type TabsNavProps = {
   locale: string
   clientId: number | string
   activeSection: ClientProfileSection
   actions?: ReactNode
+  actionButtons?: TabsNavActionButtonProps[]
   className?: string
+  actionsClassName?: string
 }
 
 const clientProfileTabDefinitions: readonly ClientProfileTabDefinition[] = [
@@ -73,8 +92,20 @@ const profileTabLinkClassName =
 const profileTabLinkActiveClassName =
   "border-(--brand-500) text-neutral-900 [&_svg]:text-(--brand-600)"
 
+const tabsNavActionButtonClassName =
+  "gap-1 px-2.5 text-[13px] font-medium [&_svg]:size-3"
+
 function getLocalePrefix(locale: string) {
   return locale === routing.defaultLocale ? "" : `/${locale}`
+}
+
+function renderActionButtonContent(label: string, icon?: ReactNode) {
+  return (
+    <>
+      {icon ? <span className="flex items-center text-current">{icon}</span> : null}
+      <span>{label}</span>
+    </>
+  )
 }
 
 export function getClientProfileBasePath(locale: string, clientId: number | string) {
@@ -89,18 +120,23 @@ export function getClientProfileSectionHref(
   return `${getClientProfileBasePath(locale, clientId)}/${section}`
 }
 
-export function ClientProfileTabsNav({
+export function TabsNav({
   locale,
   clientId,
   activeSection,
   actions,
+  actionButtons,
   className,
-}: ClientProfileTabsNavProps) {
+  actionsClassName,
+}: TabsNavProps) {
+  const hasActions =
+    Boolean(actions) || Boolean(actionButtons && actionButtons.length > 0)
+
   return (
     <div className={cn("border-b border-neutral-200 bg-neutral-50", className)}>
       <div className="flex min-w-0 items-center">
         <div className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <nav aria-label="Client profile sections " className="flex min-w-max items-center">
+          <nav aria-label="Client profile sections" className="flex min-w-max items-center">
             {clientProfileTabDefinitions.map((tab) => (
               <Link
                 key={tab.value}
@@ -117,8 +153,62 @@ export function ClientProfileTabsNav({
             ))}
           </nav>
         </div>
-        {actions ? (
-          <div className="flex shrink-0 items-center gap-2 self-stretch pr-3">
+        {hasActions ? (
+          <div
+            className={cn(
+              "flex shrink-0 items-center gap-2 self-stretch pr-3",
+              actionsClassName
+            )}
+          >
+            {actionButtons?.map((action) => {
+              const content = renderActionButtonContent(action.label, action.icon)
+
+              if (action.variant === "primary") {
+                if (action.href) {
+                  return (
+                    <PrimaryActionButton
+                      key={`${action.variant}-${action.label}`}
+                      href={action.href}
+                      label={content}
+                      className={cn(tabsNavActionButtonClassName, action.className)}
+                    />
+                  )
+                }
+
+                return (
+                  <PrimaryActionButton
+                    key={`${action.variant}-${action.label}`}
+                    type={action.type}
+                    onClick={action.onClick}
+                    disabled={action.disabled}
+                    label={content}
+                    className={cn(tabsNavActionButtonClassName, action.className)}
+                  />
+                )
+              }
+
+              if (action.href) {
+                return (
+                  <SecondaryActionButton
+                    key={`${action.variant ?? "secondary"}-${action.label}`}
+                    href={action.href}
+                    label={content}
+                    className={cn(tabsNavActionButtonClassName, action.className)}
+                  />
+                )
+              }
+
+              return (
+                <SecondaryActionButton
+                  key={`${action.variant ?? "secondary"}-${action.label}`}
+                  type={action.type}
+                  onClick={action.onClick}
+                  disabled={action.disabled}
+                  label={content}
+                  className={cn(tabsNavActionButtonClassName, action.className)}
+                />
+              )
+            })}
             {actions}
           </div>
         ) : null}

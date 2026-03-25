@@ -1,18 +1,25 @@
 import type { MouseEventHandler, ReactNode } from "react"
 import Link from "next/link"
 
-import { Button } from "@/components/ui/button"
+import {
+  PrimaryActionButton,
+  primaryActionButtonClassName,
+} from "@/components/coachWise/primary-action-button"
+import {
+  SecondaryActionButton,
+  secondaryActionButtonClassName,
+} from "@/components/coachWise/secondary-action-button"
 import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
-export type ClientSubtabsNavItem = {
+export type SubtabsNavItem = {
   icon?: ReactNode
   label: string
   value: string
   href?: string
 }
 
-export type ClientSubtabsNavActionButtonProps = {
+export type SubtabsNavActionButtonProps = {
   label: string
   icon?: ReactNode
   variant?: "primary" | "secondary"
@@ -23,30 +30,43 @@ export type ClientSubtabsNavActionButtonProps = {
   type?: "button" | "submit" | "reset"
 }
 
-type ClientSubtabsNavProps = {
-  items: ClientSubtabsNavItem[]
+type SubtabsNavProps = {
+  items: SubtabsNavItem[]
   actions?: ReactNode
-  actionButtons?: ClientSubtabsNavActionButtonProps[]
+  actionButtons?: SubtabsNavActionButtonProps[]
   className?: string
   tabsListClassName?: string
   triggerClassName?: string
   actionsClassName?: string
 }
 
-const clientSubtabsNavTriggerClassName =
+const subtabsNavTriggerClassName =
   "h-auto h-8 flex-none cursor-pointer gap-1 rounded-none border-0 bg-transparent px-0 py-1 text-[13px] font-normal leading-none text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
-const clientSubtabsNavActionButtonBaseClassName =
-  "h-8 cursor-pointer gap-1 px-2.5 text-[13px] font-medium [&_svg]:size-3"
+const subtabsNavActionButtonBaseClassName =
+  "gap-1 px-2.5 text-[13px] font-medium [&_svg]:size-3"
 
-export const clientSubtabsNavActionButtonClassNames = {
-  primary:
-    `${clientSubtabsNavActionButtonBaseClassName} border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700`,
-  secondary:
-    `${clientSubtabsNavActionButtonBaseClassName} rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900`,
+export const subtabsNavActionButtonClassNames = {
+  primary: cn(
+    primaryActionButtonClassName,
+    subtabsNavActionButtonBaseClassName
+  ),
+  secondary: cn(
+    secondaryActionButtonClassName,
+    subtabsNavActionButtonBaseClassName
+  ),
 } as const
 
-export function ClientSubtabsNavActionButton({
+function renderActionButtonContent(label: string, icon?: ReactNode) {
+  return (
+    <>
+      {icon ? <span className="flex items-center text-current">{icon}</span> : null}
+      <span>{label}</span>
+    </>
+  )
+}
+
+export function SubtabsNavActionButton({
   label,
   icon,
   variant = "secondary",
@@ -55,44 +75,54 @@ export function ClientSubtabsNavActionButton({
   disabled,
   className,
   type = "button",
-}: ClientSubtabsNavActionButtonProps) {
-  const resolvedClassName = cn(
-    clientSubtabsNavActionButtonClassNames[variant],
-    className
-  )
+}: SubtabsNavActionButtonProps) {
+  const content = renderActionButtonContent(label, icon)
+  const resolvedClassName = cn(subtabsNavActionButtonBaseClassName, className)
+
+  if (variant === "primary") {
+    if (href) {
+      return (
+        <PrimaryActionButton
+          href={href}
+          label={content}
+          className={resolvedClassName}
+        />
+      )
+    }
+
+    return (
+      <PrimaryActionButton
+        type={type}
+        onClick={onClick}
+        disabled={disabled}
+        label={content}
+        className={resolvedClassName}
+      />
+    )
+  }
 
   if (href) {
     return (
-      <Button
-        asChild
-        size="sm"
-        variant={variant === "secondary" ? "outline" : "default"}
+      <SecondaryActionButton
+        href={href}
+        label={content}
         className={resolvedClassName}
-      >
-        <Link href={href}>
-          {icon}
-          {label}
-        </Link>
-      </Button>
+      />
     )
   }
 
   return (
-    <Button
+    <SecondaryActionButton
       type={type}
-      size="sm"
-      variant={variant === "secondary" ? "outline" : "default"}
       onClick={onClick}
       disabled={disabled}
+      label={content}
       className={resolvedClassName}
-    >
-      {icon}
-      {label}
-    </Button>
+    />
   )
 }
 
-export function ClientSubtabsNav({
+export function SubtabsNav({
   items,
   actions,
   actionButtons,
@@ -100,7 +130,7 @@ export function ClientSubtabsNav({
   tabsListClassName,
   triggerClassName,
   actionsClassName,
-}: ClientSubtabsNavProps) {
+}: SubtabsNavProps) {
   const hasItems = items.length > 0
   const hasActions =
     Boolean(actions) || Boolean(actionButtons && actionButtons.length > 0)
@@ -127,10 +157,7 @@ export function ClientSubtabsNav({
                   <TabsTrigger
                     key={item.value}
                     value={item.value}
-                    className={cn(
-                      clientSubtabsNavTriggerClassName,
-                      triggerClassName
-                    )}
+                    className={cn(subtabsNavTriggerClassName, triggerClassName)}
                     asChild
                   >
                     <Link href={item.href}>
@@ -142,10 +169,7 @@ export function ClientSubtabsNav({
                   <TabsTrigger
                     key={item.value}
                     value={item.value}
-                    className={cn(
-                      clientSubtabsNavTriggerClassName,
-                      triggerClassName
-                    )}
+                    className={cn(subtabsNavTriggerClassName, triggerClassName)}
                   >
                     {item.icon ? <span>{item.icon}</span> : null}
                     <span>{item.label}</span>
@@ -159,7 +183,7 @@ export function ClientSubtabsNav({
         {hasActions ? (
           <div className={cn("flex flex-wrap items-center gap-1.5", actionsClassName)}>
             {actionButtons?.map((action) => (
-              <ClientSubtabsNavActionButton
+              <SubtabsNavActionButton
                 key={`${action.variant ?? "secondary"}-${action.label}`}
                 {...action}
               />

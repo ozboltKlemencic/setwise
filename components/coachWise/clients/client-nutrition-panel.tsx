@@ -85,10 +85,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  ClientSubtabsNavActionButton,
-  ClientSubtabsNav,
-  clientSubtabsNavActionButtonClassNames,
-} from "@/components/coachWise/clients/client-subtabs-nav"
+  SubtabsNavActionButton,
+  SubtabsNav,
+  subtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/subtabs-nav"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -237,7 +237,7 @@ type NutritionRecipeLibraryItem = {
 }
 
 const primaryActionButtonClassName =
-  clientSubtabsNavActionButtonClassNames.primary
+  subtabsNavActionButtonClassNames.primary
 
 const createNutritionTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
@@ -3374,7 +3374,7 @@ export function ClientNutritionPanel({
       }
       className="gap-0"
     >
-      <ClientSubtabsNav
+      <SubtabsNav
         items={[
           {
             icon: <UtensilsCrossed className="size-4" />,
@@ -3392,7 +3392,7 @@ export function ClientNutritionPanel({
             <>
               <SmartMealPlannerDialog
                 trigger={
-                  <ClientSubtabsNavActionButton
+                  <SubtabsNavActionButton
                     variant="secondary"
                     icon={<Sparkles className="size-4" />}
                     label="Smart Meal Planner"
@@ -3402,7 +3402,7 @@ export function ClientNutritionPanel({
               <CreateNutritionPlanDialog
                 libraryPlans={preset.mealPlans}
                 trigger={
-                  <ClientSubtabsNavActionButton
+                  <SubtabsNavActionButton
                     variant="primary"
                     icon={<Plus className="size-4" />}
                     label="Add Meal Plan"

@@ -32,9 +32,9 @@ import {
   type HabitPeriodSelection,
 } from "@/components/coachWise/clients/habit-period-picker"
 import {
-  ClientSubtabsNavActionButton,
-  clientSubtabsNavActionButtonClassNames,
-} from "@/components/coachWise/clients/client-subtabs-nav"
+  SubtabsNavActionButton,
+  subtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/subtabs-nav"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -938,7 +938,7 @@ export function ProgramTypeDialog({
             variant="outline"
             className={
               triggerClassName ??
-              clientSubtabsNavActionButtonClassNames.secondary
+              subtabsNavActionButtonClassNames.secondary
             }
           >
             <LayoutGrid className="size-4" />
@@ -2119,7 +2119,7 @@ export function ProgramsOverviewActions({
         value={programType}
         onValueChange={handleProgramTypeChange}
         trigger={
-          <ClientSubtabsNavActionButton
+          <SubtabsNavActionButton
             variant="secondary"
             icon={<LayoutGrid className="size-4" />}
             label="Program Type"
@@ -2131,7 +2131,7 @@ export function ProgramsOverviewActions({
           triggerLabel="Import Program"
           dialogTitle="Import Program"
           trigger={
-            <ClientSubtabsNavActionButton
+            <SubtabsNavActionButton
               variant="primary"
               icon={<CalendarDays className="size-4" />}
               label="Import Program"
@@ -2141,7 +2141,7 @@ export function ProgramsOverviewActions({
       ) : (
         <AddProgramDialog
           trigger={
-            <ClientSubtabsNavActionButton
+            <SubtabsNavActionButton
               variant="primary"
               icon={<Plus className="size-4" />}
               label="Program"
@@ -2176,7 +2176,7 @@ export function ImportCalendarDialog({
             size="sm"
             className={
               triggerClassName ??
-              clientSubtabsNavActionButtonClassNames.primary
+              subtabsNavActionButtonClassNames.primary
             }
           >
             <CalendarDays className="size-4" />

@@ -123,7 +123,7 @@ export function SiteHeader() {
               </AvatarFallback>
             </Avatar>
           ) : ActiveIcon ? (
-            <ActiveIcon className="size-4 ml-1 shrink-0 text-neutral-500" />
+            <ActiveIcon className="size-4 ml-1.5 shrink-0 text-neutral-500" />
           ) : null}
           {activeClient ? (
             <h1 className="truncate text-sm font-semibold text-neutral-900">
