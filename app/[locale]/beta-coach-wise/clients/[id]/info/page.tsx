@@ -1,5 +1,4 @@
 import type { ReactNode } from "react"
-import Link from "next/link"
 import {
   IconCalendarEvent,
   IconChefHat,
@@ -8,17 +7,21 @@ import {
   IconPill,
   IconPlus,
   IconRepeat,
-  type Icon,
 } from "@tabler/icons-react"
 import { FileText, Mail, Tag, UserRound } from "lucide-react"
 
 import { CreateAssignedCheckinDialog } from "@/components/coachWise/clients/client-checkins-panel"
 import { ClientNotesSection } from "@/components/coachWise/clients/client-notes-section"
+import {
+  ClientQuickActionCard,
+  type ClientQuickActionTone,
+} from "@/components/coachWise/clients/client-quick-action-card"
+import { ClientSectionHeader } from "@/components/coachWise/clients/client-section-header"
 import { CreateNutritionPlanAction } from "@/components/coachWise/clients/client-nutrition-panel"
 import { AddProgramDialog } from "@/components/coachWise/programs/exercise-history-panel"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   type CoachWiseClientProfile,
   getClientCoachingWeek,
@@ -33,89 +36,12 @@ import {
 } from "@/lib/handlers/client-detail.handlers"
 import { cn } from "@/lib/utils"
 
-type InfoCreateCardTone =
-  | "programs"
-  | "nutrition"
-  | "supplements"
-  | "checkins"
-  | "habits"
-
-const infoCreateCardClassName =
-  "group relative flex min-h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-5 py-6 text-center shadow-none transition-colors hover:shadow-none"
-
 function SectionBody({ children }: { children: ReactNode }) {
   return <div className="bg-neutral-50">{children}</div>
 }
 
 function InfoActionSection({ children }: { children: ReactNode }) {
   return <section className="grid gap-3">{children}</section>
-}
-
-function InfoCreateCardContent({
-  icon,
-  sectionLabel,
-  title,
-  description,
-  tone,
-}: {
-  icon: ReactNode
-  sectionLabel: string
-  title: string
-  description: string
-  tone: InfoCreateCardTone
-}) {
-  const toneStyles = {
-    programs: {
-      badge: "border-sky-200 bg-sky-50 text-sky-700",
-      watermark: "text-sky-500/12",
-    },
-    nutrition: {
-      badge: "border-emerald-200 bg-emerald-50 text-emerald-700",
-      watermark: "text-emerald-500/12",
-    },
-    supplements: {
-      badge: "border-violet-200 bg-violet-50 text-violet-700",
-      watermark: "text-violet-500/12",
-    },
-    checkins: {
-      badge: "border-amber-200 bg-amber-50 text-amber-700",
-      watermark: "text-amber-500/12",
-    },
-    habits: {
-      badge: "border-rose-200 bg-rose-50 text-rose-700",
-      watermark: "text-rose-500/12",
-    },
-  }[tone]
-
-  return (
-    <>
-      <span
-        className={cn(
-          "pointer-events-none absolute right-4 top-4 [&_svg]:size-16",
-          toneStyles.watermark
-        )}
-      >
-        {icon}
-      </span>
-      <span
-        className={cn(
-          "mb-4 flex size-12 items-center justify-center rounded-2xl border transition-colors",
-          toneStyles.badge
-        )}
-      >
-        <IconPlus className="size-5" />
-      </span>
-      <span className="mb-1.5 text-[10px] font-medium tracking-[0.1em] text-neutral-400 uppercase">
-        {sectionLabel}
-      </span>
-      <span className="text-[20px] font-semibold tracking-[-0.02em] text-neutral-950">
-        {title}
-      </span>
-      <span className="mt-2 max-w-[19rem] text-[13px] leading-5 text-neutral-500">
-        {description}
-      </span>
-    </>
-  )
 }
 
 function getPhaseBadgeClassName(phase?: string) {
@@ -129,22 +55,7 @@ function getPhaseBadgeClassName(phase?: string) {
   }
 }
 
-function getSectionCardToneClassName(tone: InfoCreateCardTone) {
-  switch (tone) {
-    case "programs":
-      return "border-sky-200/80 bg-linear-to-br from-sky-50/45 to-white hover:border-sky-300 hover:bg-sky-50/60"
-    case "nutrition":
-      return "border-emerald-200/80 bg-linear-to-br from-emerald-50/45 to-white hover:border-emerald-300 hover:bg-emerald-50/60"
-    case "supplements":
-      return "border-violet-200/80 bg-linear-to-br from-violet-50/45 to-white hover:border-violet-300 hover:bg-violet-50/60"
-    case "checkins":
-      return "border-amber-200/80 bg-linear-to-br from-amber-50/45 to-white hover:border-amber-300 hover:bg-amber-50/60"
-    case "habits":
-      return "border-rose-200/80 bg-linear-to-br from-rose-50/45 to-white hover:border-rose-300 hover:bg-rose-50/60"
-  }
-}
-
-function buildCreateCardProps(tone: InfoCreateCardTone): {
+function buildCreateCardProps(tone: ClientQuickActionTone): {
   sectionLabel: string
   title: string
   description: string
@@ -293,14 +204,12 @@ export default async function Page({ params }: ClientDetailParamsProps) {
   return (
     <SectionBody>
       <div className="grid gap-0 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
-        <div className="xl:h-[calc(100dvh-5.5rem)]">
-          <Card className="flex h-full flex-col overflow-hidden gap-0! rounded-none border-t-0 border-l-0 border-neutral-200 bg-neutral-50 shadow-none">
-            <CardHeader className="border-b border-neutral-200 bg-neutral-100/70 px-3.5 py-2 ">
-              <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
-                <IconClipboardList className="size-3.5 text-neutral-500" />
-                <span>Client Details</span>
-              </div>
-            </CardHeader>
+        <div className="xl:h-[calc(100dvh-5.5rem)] ">
+          <Card className="flex h-full flex-col overflow-hidden gap-0! rounded-none border-t-0 border-l-0 border-neutral-200 bg-neutral-50 shadow-none p-0">
+            <ClientSectionHeader
+              icon={<IconClipboardList />}
+              title="Client Details"
+            />
             <CardContent className="flex min-h-0 flex-1 pt-0! pb-0! flex-col p-0!">
               <div className="space-y-0.5 px-3.5 py-2">
                 {clientDetailRows.map((row) => (
@@ -330,19 +239,11 @@ export default async function Page({ params }: ClientDetailParamsProps) {
           <InfoActionSection>
             <AddProgramDialog
               trigger={
-                <button
-                  type="button"
-                  className={cn(
-                    infoCreateCardClassName,
-                    getSectionCardToneClassName("programs")
-                  )}
-                >
-                  <InfoCreateCardContent
-                    {...buildCreateCardProps("programs")}
-                    icon={<IconClipboardList className="size-4" />}
-                    tone="programs"
-                  />
-                </button>
+                <ClientQuickActionCard
+                  {...buildCreateCardProps("programs")}
+                  icon={<IconClipboardList className="size-4" />}
+                  tone="programs"
+                />
               }
             />
           </InfoActionSection>
@@ -351,73 +252,43 @@ export default async function Page({ params }: ClientDetailParamsProps) {
             <CreateNutritionPlanAction
               phase={client.phase}
               trigger={
-                <button
-                  type="button"
-                  className={cn(
-                    infoCreateCardClassName,
-                    getSectionCardToneClassName("nutrition")
-                  )}
-                >
-                  <InfoCreateCardContent
-                    {...buildCreateCardProps("nutrition")}
-                    icon={<IconChefHat className="size-4" />}
-                    tone="nutrition"
-                  />
-                </button>
+                <ClientQuickActionCard
+                  {...buildCreateCardProps("nutrition")}
+                  icon={<IconChefHat className="size-4" />}
+                  tone="nutrition"
+                />
               }
             />
           </InfoActionSection>
 
           <InfoActionSection>
-            <Link
+            <ClientQuickActionCard
+              {...buildCreateCardProps("supplements")}
+              icon={<IconPill className="size-4" />}
+              tone="supplements"
               href={`${clientBasePath}/supplements`}
-              className={cn(
-                infoCreateCardClassName,
-                getSectionCardToneClassName("supplements")
-              )}
-            >
-              <InfoCreateCardContent
-                {...buildCreateCardProps("supplements")}
-                icon={<IconPill className="size-4" />}
-                tone="supplements"
-              />
-            </Link>
+            />
           </InfoActionSection>
 
           <InfoActionSection>
             <CreateAssignedCheckinDialog
               trigger={
-                <button
-                  type="button"
-                  className={cn(
-                    infoCreateCardClassName,
-                    getSectionCardToneClassName("checkins")
-                  )}
-                >
-                  <InfoCreateCardContent
-                    {...buildCreateCardProps("checkins")}
-                    icon={<IconClipboardCheck className="size-4" />}
-                    tone="checkins"
-                  />
-                </button>
+                <ClientQuickActionCard
+                  {...buildCreateCardProps("checkins")}
+                  icon={<IconClipboardCheck className="size-4" />}
+                  tone="checkins"
+                />
               }
             />
           </InfoActionSection>
 
           <InfoActionSection>
-            <Link
+            <ClientQuickActionCard
+              {...buildCreateCardProps("habits")}
+              icon={<IconRepeat className="size-4" />}
+              tone="habits"
               href={`${clientBasePath}/habbits`}
-              className={cn(
-                infoCreateCardClassName,
-                getSectionCardToneClassName("habits")
-              )}
-            >
-              <InfoCreateCardContent
-                {...buildCreateCardProps("habits")}
-                icon={<IconRepeat className="size-4" />}
-                tone="habits"
-              />
-            </Link>
+            />
           </InfoActionSection>
         </div>
       </div>

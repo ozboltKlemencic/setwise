@@ -5,6 +5,7 @@ import type { ReactNode } from "react"
 import { CheckSquare, FileText, Maximize2, Pencil, X } from "lucide-react"
 
 import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
+import { ClientNoteCard } from "@/components/coachWise/clients/client-note-card"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Button } from "@/components/ui/button"
@@ -69,30 +70,6 @@ function useDialogCloseOnXOnly() {
   }
 }
 
-function NotesDialogCard({ note }: { note: ClientNoteItem }) {
-  return (
-    <div className="rounded-xl border border-neutral-200 bg-neutral-100/75">
-      <div className="px-3.5 pt-3.5">
-        <h3 className="text-[15px] font-semibold text-neutral-950">{note.title}</h3>
-      </div>
-      <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
-        {note.body.length > 1 ? (
-          note.body.map((line) => (
-            <p key={line} className="pl-4 -indent-4">
-              - {line}
-            </p>
-          ))
-        ) : (
-          <p>{note.body[0]}</p>
-        )}
-      </div>
-      <div className="rounded-b-xl border-t border-neutral-200 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
-        <span>{note.date}</span>
-      </div>
-    </div>
-  )
-}
-
 export function ClientNotesOverviewDialog({
   notes,
   trigger,
@@ -154,7 +131,7 @@ export function ClientNotesOverviewDialog({
 
         <div className="max-h-[70vh] space-y-4 overflow-y-auto px-5 py-4 [scrollbar-width:thin]">
           {notes.map((note) => (
-            <NotesDialogCard key={`${note.title}-${note.date}`} note={note} />
+            <ClientNoteCard key={note.id} note={note} />
           ))}
         </div>
       </DialogContent>
