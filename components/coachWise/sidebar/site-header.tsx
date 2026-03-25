@@ -137,20 +137,20 @@ export function SiteHeader() {
         </div>
         {headerAction ? (
           normalizedPathname === "/beta-coach-wise/clients" ? (
-                <AddClientDialog
-                  trigger={
-                    <PrimaryActionButton
-                      label={headerAction.label}
-                      icon={headerAction.icon}
-                    />
-                  }
-                />
-              ) : (
+            <AddClientDialog
+              trigger={
                 <PrimaryActionButton
                   label={headerAction.label}
                   icon={headerAction.icon}
                 />
-              )
+              }
+            />
+          ) : (
+            <PrimaryActionButton
+              label={headerAction.label}
+              icon={headerAction.icon}
+            />
+          )
         ) : null}
       </div>
     </header>
