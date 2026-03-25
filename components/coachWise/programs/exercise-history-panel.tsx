@@ -31,6 +31,10 @@ import {
   type HabitPeriod,
   type HabitPeriodSelection,
 } from "@/components/coachWise/clients/habit-period-picker"
+import {
+  ClientSubtabsNavActionButton,
+  clientSubtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/client-subtabs-nav"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -885,10 +889,12 @@ export function ProgramTypeDialog({
   value,
   onValueChange,
   triggerClassName,
+  trigger,
 }: {
   value: "calendar" | "fixed"
   onValueChange: (value: "calendar" | "fixed") => void
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
   const [selectedType, setSelectedType] = React.useState<"calendar" | "fixed">(value)
@@ -925,10 +931,20 @@ export function ProgramTypeDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" size="sm" variant="outline" className={triggerClassName}>
-          <LayoutGrid className="size-4" />
-          Program Type
-        </Button>
+        {trigger ?? (
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className={
+              triggerClassName ??
+              clientSubtabsNavActionButtonClassNames.secondary
+            }
+          >
+            <LayoutGrid className="size-4" />
+            Program Type
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
@@ -2102,16 +2118,36 @@ export function ProgramsOverviewActions({
       <ProgramTypeDialog
         value={programType}
         onValueChange={handleProgramTypeChange}
-        triggerClassName="rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+        trigger={
+          <ClientSubtabsNavActionButton
+            variant="secondary"
+            icon={<LayoutGrid className="size-4" />}
+            label="Program Type"
+          />
+        }
       />
       {programType === "calendar" ? (
         <ImportCalendarDialog
-          triggerClassName="border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
           triggerLabel="Import Program"
           dialogTitle="Import Program"
+          trigger={
+            <ClientSubtabsNavActionButton
+              variant="primary"
+              icon={<CalendarDays className="size-4" />}
+              label="Import Program"
+            />
+          }
         />
       ) : (
-        <AddProgramDialog triggerClassName="border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700" />
+        <AddProgramDialog
+          trigger={
+            <ClientSubtabsNavActionButton
+              variant="primary"
+              icon={<Plus className="size-4" />}
+              label="Program"
+            />
+          }
+        />
       )}
     </>
   )
@@ -2121,10 +2157,12 @@ export function ImportCalendarDialog({
   triggerClassName,
   triggerLabel = "Import Program",
   dialogTitle = "Import Program",
+  trigger,
 }: {
   triggerClassName?: string
   triggerLabel?: string
   dialogTitle?: string
+  trigger?: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
   const [selectedProgramId, setSelectedProgramId] = React.useState("beginner-3m")
@@ -2133,10 +2171,18 @@ export function ImportCalendarDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className={triggerClassName}>
-          <CalendarDays className="size-4" />
-          {triggerLabel}
-        </Button>
+        {trigger ?? (
+          <Button
+            size="sm"
+            className={
+              triggerClassName ??
+              clientSubtabsNavActionButtonClassNames.primary
+            }
+          >
+            <CalendarDays className="size-4" />
+            {triggerLabel}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-w-[700px] rounded-sm p-0">
         <DialogHeader className="border-b border-neutral-200 px-6 py-4">

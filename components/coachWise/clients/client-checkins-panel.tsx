@@ -709,11 +709,15 @@ export function SubmittedCheckinPhotosCompareDialog({
   initialRightId,
   triggerLabel = "Compare",
   triggerIcon = "compare",
+  triggerClassName,
+  trigger,
 }: {
   initialLeftId?: string
   initialRightId?: string
   triggerLabel?: string
   triggerIcon?: "compare" | "photo"
+  triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
   const [photoView, setPhotoView] = React.useState<PhotoView>("front")
@@ -756,18 +760,23 @@ export function SubmittedCheckinPhotosCompareDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-        >
-          {triggerIcon === "photo" ? (
-            <IconPhoto className="size-3.5" />
-          ) : (
-            <IconGitCompare className="size-3.5" />
-          )}
-          {triggerLabel}
-        </Button>
+        {trigger ?? (
+          <Button
+            variant="outline"
+            size="sm"
+            className={
+              triggerClassName ??
+              "rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+            }
+          >
+            {triggerIcon === "photo" ? (
+              <IconPhoto className="size-3.5" />
+            ) : (
+              <IconGitCompare className="size-3.5" />
+            )}
+            {triggerLabel}
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="!grid h-[84vh] max-h-[84vh] !grid-rows-[auto_auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[980px]">
@@ -878,7 +887,13 @@ export function SubmittedCheckinPhotosCompareDialog({
   )
 }
 
-export function SubmittedCheckinsCompareDialog() {
+export function SubmittedCheckinsCompareDialog({
+  triggerClassName,
+  trigger,
+}: {
+  triggerClassName?: string
+  trigger?: React.ReactNode
+}) {
   const [leftId, setLeftId] = React.useState(submittedCheckins[1]?.id ?? submittedCheckins[0]?.id ?? "")
   const [rightId, setRightId] = React.useState(submittedCheckins[0]?.id ?? "")
 
@@ -894,14 +909,19 @@ export function SubmittedCheckinsCompareDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50"
-        >
-          <IconGitCompare className="size-4" />
-          Compare
-        </Button>
+        {trigger ?? (
+          <Button
+            variant="outline"
+            size="sm"
+            className={
+              triggerClassName ??
+              "border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50"
+            }
+          >
+            <IconGitCompare className="size-4" />
+            Compare
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="!grid h-[80vh] max-h-[80vh] !grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[calc(100vw-3rem)] xl:max-w-[1400px]">

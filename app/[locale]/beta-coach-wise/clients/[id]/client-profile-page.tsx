@@ -38,6 +38,7 @@ import {
   type ClientProfileSection,
 } from "@/components/coachWise/clients/client-profile-tabs-nav"
 import {
+  ClientSubtabsNavActionButton,
   ClientSubtabsNav,
   clientSubtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/client-subtabs-nav"
@@ -955,8 +956,12 @@ export default async function ClientProfilePage({
               actions={
                 resolvedCheckinTab === "assigned" ? (
                   <CreateAssignedCheckinDialog
-                    triggerClassName={
-                      clientSubtabsNavActionButtonClassNames.primary
+                    trigger={
+                      <ClientSubtabsNavActionButton
+                        variant="primary"
+                        icon={<IconPlus className="size-4" />}
+                        label="Nov check-in"
+                      />
                     }
                   />
                 ) : (
@@ -964,8 +969,23 @@ export default async function ClientProfilePage({
                     <SubmittedCheckinPhotosCompareDialog
                       triggerIcon="photo"
                       triggerLabel="Primerjaj slike"
+                      trigger={
+                        <ClientSubtabsNavActionButton
+                          variant="secondary"
+                          icon={<IconClipboardCheck className="size-4" />}
+                          label="Primerjaj slike"
+                        />
+                      }
                     />
-                    <SubmittedCheckinsCompareDialog />
+                    <SubmittedCheckinsCompareDialog
+                      trigger={
+                        <ClientSubtabsNavActionButton
+                          variant="secondary"
+                          icon={<IconChartBar className="size-4" />}
+                          label="Compare"
+                        />
+                      }
+                    />
                   </>
                 )
               }

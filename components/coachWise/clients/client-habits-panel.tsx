@@ -32,8 +32,8 @@ import {
 
 import { Button } from "@/components/ui/button"
 import {
+  ClientSubtabsNavActionButton,
   ClientSubtabsNav,
-  clientSubtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/client-subtabs-nav"
 import {
   ChartContainer,
@@ -613,8 +613,10 @@ function formatHabitFrequency(goalPeriod: HabitDefinition["goalPeriod"]) {
 
 function CreateHabitDialog({
   triggerClassName,
+  trigger,
 }: {
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const featuredHabit = habitDefinitions[0]
   const [open, setOpen] = React.useState(false)
@@ -682,10 +684,12 @@ function CreateHabitDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button type="button" size="sm" className={triggerClassName}>
-          <Plus className="size-4" />
-          New Habit
-        </Button>
+        {trigger ?? (
+          <Button type="button" size="sm" className={triggerClassName}>
+            <Plus className="size-4" />
+            New Habit
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[720px]">
@@ -2480,14 +2484,22 @@ export function ClientHabitsPanel({
             {activeSubTab === "habits" ? (
               <EditHabitDialog
                 habit={selectedHabit}
-                triggerClassName={
-                  clientSubtabsNavActionButtonClassNames.secondary
+                trigger={
+                  <ClientSubtabsNavActionButton
+                    variant="secondary"
+                    icon={<Pencil className="size-4" />}
+                    label="Uredi"
+                  />
                 }
               />
             ) : null}
             <CreateHabitDialog
-              triggerClassName={
-                clientSubtabsNavActionButtonClassNames.primary
+              trigger={
+                <ClientSubtabsNavActionButton
+                  variant="primary"
+                  icon={<Plus className="size-4" />}
+                  label="New Habit"
+                />
               }
             />
           </>

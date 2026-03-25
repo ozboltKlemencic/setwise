@@ -85,6 +85,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
+  ClientSubtabsNavActionButton,
   ClientSubtabsNav,
   clientSubtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/client-subtabs-nav"
@@ -1763,8 +1764,10 @@ function SmartMacroOptionCard({
 
 function SmartMealPlannerDialog({
   triggerClassName,
+  trigger,
 }: {
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
   const [generated, setGenerated] = React.useState(false)
@@ -1842,17 +1845,19 @@ function SmartMealPlannerDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={triggerClassName}
-        >
-          <Sparkles className="size-4 text-brand-600" />
-          Smart Meal Planner
-          <Badge className="ml-1 rounded-full border-0 bg-violet-100 px-1.5 py-0 text-[10px] font-semibold tracking-wide text-violet-700 shadow-none">
-            NEW
-          </Badge>
-        </Button>
+        {trigger ?? (
+          <Button
+            variant="outline"
+            size="sm"
+            className={triggerClassName}
+          >
+            <Sparkles className="size-4 text-brand-600" />
+            Smart Meal Planner
+            <Badge className="ml-1 rounded-full border-0 bg-violet-100 px-1.5 py-0 text-[10px] font-semibold tracking-wide text-violet-700 shadow-none">
+              NEW
+            </Badge>
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[980px]">
@@ -3017,10 +3022,17 @@ export function CreateNutritionPlanAction({
 
 export function SmartMealPlannerAction({
   triggerClassName,
+  trigger,
 }: {
   triggerClassName?: string
+  trigger?: React.ReactNode
 }) {
-  return <SmartMealPlannerDialog triggerClassName={triggerClassName} />
+  return (
+    <SmartMealPlannerDialog
+      triggerClassName={triggerClassName}
+      trigger={trigger}
+    />
+  )
 }
 
 export function MealPlanDetailView({
@@ -3379,13 +3391,23 @@ export function ClientNutritionPanel({
           activeTab === "meal-plans" ? (
             <>
               <SmartMealPlannerDialog
-                triggerClassName={
-                  clientSubtabsNavActionButtonClassNames.secondary
+                trigger={
+                  <ClientSubtabsNavActionButton
+                    variant="secondary"
+                    icon={<Sparkles className="size-4" />}
+                    label="Smart Meal Planner"
+                  />
                 }
               />
               <CreateNutritionPlanDialog
-                triggerClassName={primaryActionButtonClassName}
                 libraryPlans={preset.mealPlans}
+                trigger={
+                  <ClientSubtabsNavActionButton
+                    variant="primary"
+                    icon={<Plus className="size-4" />}
+                    label="Add Meal Plan"
+                  />
+                }
               />
             </>
           ) : undefined

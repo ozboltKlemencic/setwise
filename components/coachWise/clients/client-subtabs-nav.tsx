@@ -34,10 +34,10 @@ type ClientSubtabsNavProps = {
 }
 
 const clientSubtabsNavTriggerClassName =
-  "h-8 bg-red-500 flex-none cursor-pointer gap-1 rounded-none border-0 bg-transparent px-0 py-1 text-[13px] font-normal leading-none text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+  "h-auto min-h-8 flex-none cursor-pointer gap-1 rounded-none border-0 bg-transparent px-0 py-1 text-[12px] font-normal leading-none text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
 const clientSubtabsNavActionButtonBaseClassName =
-  "h-8 cursor-pointer gap-1 px-2.5 text-[13px] font-medium [&_svg]:size-3"
+  "h-8 cursor-pointer gap-1 px-2.5 text-[12px] font-medium [&_svg]:size-3"
 
 export const clientSubtabsNavActionButtonClassNames = {
   primary:
@@ -63,7 +63,12 @@ export function ClientSubtabsNavActionButton({
 
   if (href) {
     return (
-      <Button asChild size="sm" variant={variant === "secondary" ? "outline" : "default"} className={resolvedClassName}>
+      <Button
+        asChild
+        size="sm"
+        variant={variant === "secondary" ? "outline" : "default"}
+        className={resolvedClassName}
+      >
         <Link href={href}>
           {icon}
           {label}
@@ -101,7 +106,7 @@ export function ClientSubtabsNav({
     Boolean(actions) || Boolean(actionButtons && actionButtons.length > 0)
 
   return (
-    <div className={cn("border-b border-neutral-200 bg-neutral-50  p-0", className)}>
+    <div className={cn("border-b border-neutral-200 bg-neutral-50", className)}>
       <div
         className={cn(
           "flex min-h-8 flex-col gap-x-2 gap-y-1 px-4 py-1 lg:flex-row lg:items-center",
@@ -109,11 +114,11 @@ export function ClientSubtabsNav({
         )}
       >
         {hasItems ? (
-          <div className="min-w-0   overflow-x-auto p-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <TabsList
               variant="line"
               className={cn(
-                "h-auto w-max min-w-max  justify-start gap-x-3 rounded-none bg-transparent p-0",
+                "h-auto w-max min-w-max justify-start gap-x-3 rounded-none bg-transparent p-0",
                 tabsListClassName
               )}
             >
