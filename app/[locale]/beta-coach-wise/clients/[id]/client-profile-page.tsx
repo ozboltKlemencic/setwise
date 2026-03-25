@@ -7,12 +7,12 @@ import {
   IconClipboardCheck,
   IconClipboardList,
   IconInfoCircle,
+  IconPencil,
   IconPill,
   IconPlus,
   IconRepeat,
 } from "@tabler/icons-react"
 import {
-  Clock3,
   FileText,
   Mail,
   Tag,
@@ -283,35 +283,19 @@ function SectionBody({ children }: { children: ReactNode }) {
   return <div className="space-y-4 bg-neutral-50">{children}</div>
 }
 
-function InfoActionSection({
-  icon,
-  title,
-  children,
-}: {
-  icon: ReactNode
-  title: string
-  children: ReactNode
-}) {
-  return (
-    <section className="space-y-2.5">
-      <div className="flex items-center gap-2 px-1">
-        <span className="text-neutral-400 [&_svg]:size-3.5">{icon}</span>
-        <h2 className="text-[10px] font-medium tracking-[0.1em] text-neutral-400 uppercase">
-          {title}
-        </h2>
-      </div>
-      <div className="grid gap-3">{children}</div>
-    </section>
-  )
+function InfoActionSection({ children }: { children: ReactNode }) {
+  return <section className="grid gap-3">{children}</section>
 }
 
 function InfoCreateCardContent({
   icon,
+  sectionLabel,
   title,
   description,
   tone,
 }: {
   icon: ReactNode
+  sectionLabel: string
   title: string
   description: string
   tone:
@@ -361,6 +345,9 @@ function InfoCreateCardContent({
         )}
       >
         <IconPlus className="size-5" />
+      </span>
+      <span className="mb-1.5 text-[10px] font-medium tracking-[0.1em] text-neutral-400 uppercase">
+        {sectionLabel}
       </span>
       <span className="text-[20px] font-semibold tracking-[-0.02em] text-neutral-950">
         {title}
@@ -607,11 +594,6 @@ export default async function ClientProfilePage({
       value: client.status === "Done" ? "1 day ago" : "3 hours ago",
     },
     {
-      icon: <Clock3 className="size-4" />,
-      label: "Last Active",
-      value: client.type === "Onboarding" ? "8 hours ago" : "1 day ago",
-    },
-    {
       icon: <IconCalendarEvent className="size-4" />,
       label: "Duration",
       value: (
@@ -740,27 +722,35 @@ export default async function ClientProfilePage({
         </div>
 
         <TabsContent value="info" className="mt-0 space-y-0">
-            <SectionSubHeader
-              items={[]}
-              actions={
-                <ClientEditDialog
-                  firstName={clientFirstName}
-                  lastName={clientLastName}
-                  email={contactEmail}
-                  phone={contactPhone}
-                  status={client.type}
-                  phase={client.phase}
-                />
-              }
-            />
-              <SectionBody>
-                <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
+          <SectionBody>
+            <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
                   <div className="xl:h-[calc(100vh-11.5rem)] xl:pr-1">
                     <Card className="flex h-full flex-col overflow-hidden gap-0! border-neutral-200 bg-white shadow-none">
                       <CardHeader className="border-b border-neutral-200 px-3.5 py-2 ">
-                        <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
-                          <IconClipboardList className="size-3.5 text-neutral-500" />
-                          <span>Client Details</span>
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
+                            <IconClipboardList className="size-3.5 text-neutral-500" />
+                            <span>Client Details</span>
+                          </div>
+                          <ClientEditDialog
+                            firstName={clientFirstName}
+                            lastName={clientLastName}
+                            email={contactEmail}
+                            phone={contactPhone}
+                            status={client.type}
+                            phase={client.phase}
+                            trigger={
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                className="size-8 rounded-md border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+                                aria-label="Edit client"
+                              >
+                                <IconPencil className="size-4" />
+                              </Button>
+                            }
+                          />
                         </div>
                       </CardHeader>
                       <CardContent className="flex min-h-0 flex-1 pt-0! pb-0! flex-col p-0!">
@@ -835,10 +825,7 @@ export default async function ClientProfilePage({
                   </div>
 
                   <div className="grid content-start gap-5 md:grid-cols-2 xl:h-[calc(100vh-11.5rem)] xl:overflow-y-auto xl:pr-1 [scrollbar-width:thin]">
-                    <InfoActionSection
-                      icon={<IconClipboardList className="size-4" />}
-                      title="Programi"
-                    >
+                    <InfoActionSection>
                       <AddProgramDialog
                         trigger={
                           <button
@@ -850,6 +837,7 @@ export default async function ClientProfilePage({
                           >
                             <InfoCreateCardContent
                               icon={<IconClipboardList className="size-4" />}
+                              sectionLabel="Programi"
                               title="Create Program"
                               description="Zgradi program od začetka ali uporabi library template."
                               tone="programs"
@@ -859,10 +847,7 @@ export default async function ClientProfilePage({
                       />
                     </InfoActionSection>
 
-                    <InfoActionSection
-                      icon={<IconChefHat className="size-4" />}
-                      title="Nutrition"
-                    >
+                    <InfoActionSection>
                       <CreateNutritionPlanAction
                         phase={client.phase}
                         trigger={
@@ -875,6 +860,7 @@ export default async function ClientProfilePage({
                           >
                             <InfoCreateCardContent
                               icon={<IconChefHat className="size-4" />}
+                              sectionLabel="Nutrition"
                               title="Create Meal Plan"
                               description="Zgradi jedilnik od začetka ali uporabi template."
                               tone="nutrition"
@@ -884,10 +870,7 @@ export default async function ClientProfilePage({
                       />
                     </InfoActionSection>
 
-                    <InfoActionSection
-                      icon={<IconPill className="size-4" />}
-                      title="Suplementi"
-                    >
+                    <InfoActionSection>
                       <Link
                         href={`${clientBasePath}/supplements`}
                         className={cn(
@@ -897,6 +880,7 @@ export default async function ClientProfilePage({
                       >
                         <InfoCreateCardContent
                           icon={<IconPill className="size-4" />}
+                          sectionLabel="Suplementi"
                           title="Create Supplement Stack"
                           description="Odpri suplemente in nastavi stack ter dnevni schedule."
                           tone="supplements"
@@ -904,10 +888,7 @@ export default async function ClientProfilePage({
                       </Link>
                     </InfoActionSection>
 
-                    <InfoActionSection
-                      icon={<IconClipboardCheck className="size-4" />}
-                      title="Check-ins"
-                    >
+                    <InfoActionSection>
                       <CreateAssignedCheckinDialog
                         trigger={
                           <button
@@ -919,6 +900,7 @@ export default async function ClientProfilePage({
                           >
                             <InfoCreateCardContent
                               icon={<IconClipboardCheck className="size-4" />}
+                              sectionLabel="Check-ins"
                               title="Create Check-in"
                               description="Dodaj nov check-in in pripravi naslednji feedback loop za stranko."
                               tone="checkins"
@@ -928,10 +910,7 @@ export default async function ClientProfilePage({
                       />
                     </InfoActionSection>
 
-                    <InfoActionSection
-                      icon={<IconRepeat className="size-4" />}
-                      title="Habbits"
-                    >
+                    <InfoActionSection>
                       <Link
                         href={`${clientBasePath}/habbits`}
                         className={cn(
@@ -941,6 +920,7 @@ export default async function ClientProfilePage({
                       >
                         <InfoCreateCardContent
                           icon={<IconRepeat className="size-4" />}
+                          sectionLabel="Habbits"
                           title="Create Habit"
                           description="Odpri habits in dodaj novo navado ali coaching cilj."
                           tone="habits"
@@ -949,7 +929,7 @@ export default async function ClientProfilePage({
                     </InfoActionSection>
                   </div>
                 </div>
-              </SectionBody>
+          </SectionBody>
         </TabsContent>
 
         <TabsContent value="habbits" className="mt-0 space-y-0">

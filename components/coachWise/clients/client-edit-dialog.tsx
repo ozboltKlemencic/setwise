@@ -29,6 +29,7 @@ type ClientEditDialogProps = {
   phone: string
   status: string
   phase: string
+  trigger?: React.ReactNode
 }
 
 export function ClientEditDialog({
@@ -38,6 +39,7 @@ export function ClientEditDialog({
   phone,
   status,
   phase,
+  trigger,
 }: ClientEditDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [form, setForm] = React.useState({
@@ -70,9 +72,11 @@ export function ClientEditDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
-          Edit client
-        </Button>
+        {trigger ?? (
+          <Button size="sm" className="border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700">
+            Edit client
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
