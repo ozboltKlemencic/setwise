@@ -31,9 +31,16 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table"
 import { usePathname, useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { z } from "zod"
 
+import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import {
+  ClientEditDialog,
+  type ClientEditFormValues,
+} from "@/components/coachWise/clients/client-edit-dialog"
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
+import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -69,6 +76,8 @@ const clientSchema = z.object({
   id: z.number(),
   avatar: z.string().optional(),
   header: z.string(),
+  email: z.string().optional(),
+  phone: z.string().optional(),
   type: z.string(),
   phase: z.string().optional(),
   status: z.string(),
@@ -83,9 +92,6 @@ type ClientSortOption =
   | "alphabetical-desc"
 type ClientGroupOption = "none" | "phase" | "type"
 type ClientStatusFilter = "all" | "active" | "completed"
-
-const clientsToolbarButtonClassName =
-  "h-9 cursor-pointer rounded-sm border-neutral-200/80 bg-neutral-100/85 px-3 text-[13px] font-normal text-neutral-600 shadow-[0_1px_2px_rgba(15,23,42,0.03)] hover:border-neutral-300/80 hover:bg-neutral-200/55 hover:text-neutral-800"
 
 const clientsToolbarDropdownCheckboxItemClassName =
   "cursor-pointer rounded-md py-2 pr-3 pl-8 text-[13px] font-normal text-neutral-800 focus:bg-neutral-50 focus:text-neutral-950"
@@ -117,6 +123,15 @@ function parseClientDate(value: string) {
   }
 
   return new Date(year, month - 1, day).getTime()
+}
+
+function splitClientName(name: string) {
+  const [firstName = "", ...lastNameParts] = name.split(" ").filter(Boolean)
+
+  return {
+    firstName,
+    lastName: lastNameParts.join(" "),
+  }
 }
 
 const clientColumnLabels: Record<string, string> = {
@@ -153,7 +168,8 @@ function ClientNameCell({ item }: { item: Client }) {
 }
 
 function getColumns(
-  onOpenClientProfile: (id: number) => void
+  onUpdateClient: (id: number, values: ClientEditFormValues) => void,
+  onDeleteClient: (client: Client) => void
 ): ColumnDef<Client>[] {
   return [
     {
@@ -210,33 +226,55 @@ function getColumns(
     {
       id: "actions",
       header: () => <div className="w-[3.5rem] text-center">Action</div>,
-      cell: ({ row }) => (
-        <div className="flex w-[3.5rem] justify-center gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-sm"
-            className={clientRowActionButtonClassName}
-            onClick={() => onOpenClientProfile(row.original.id)}
-          >
-            <IconPencil className="size-3.5" />
-            <span className="sr-only">Edit client</span>
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-sm"
-            className={cn(
-              clientRowActionButtonClassName,
-              clientRowDeleteActionButtonClassName
-            )}
-            onClick={() => { }}
-          >
-            <IconTrash className="size-3.5" />
-            <span className="sr-only">Delete client</span>
-          </Button>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const { firstName, lastName } = splitClientName(row.original.header)
+
+        return (
+          <div className="flex w-[3.5rem] justify-center gap-2">
+            <ClientEditDialog
+              firstName={firstName}
+              lastName={lastName}
+              email={row.original.email}
+              phone={row.original.phone}
+              status={row.original.type}
+              phase={row.original.phase ?? "Bulk"}
+              onSave={(values) => onUpdateClient(row.original.id, values)}
+              trigger={
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon-sm"
+                  className={clientRowActionButtonClassName}
+                >
+                  <IconPencil className="size-3.5" />
+                  <span className="sr-only">Edit client</span>
+                </Button>
+              }
+            />
+            <CoachWiseConfirmationDialog
+              title="Are you sure you want to delete this client?"
+              description={`${row.original.header} will be removed from the current clients list. This action can't be undone.`}
+              confirmLabel="Delete client"
+              variant="destructive"
+              onConfirm={() => onDeleteClient(row.original)}
+              trigger={
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon-sm"
+                  className={cn(
+                    clientRowActionButtonClassName,
+                    clientRowDeleteActionButtonClassName
+                  )}
+                >
+                  <IconTrash className="size-3.5" />
+                  <span className="sr-only">Delete client</span>
+                </Button>
+              }
+            />
+          </div>
+        )
+      },
     },
   ]
 }
@@ -309,6 +347,7 @@ export function CoachWiseClientsTable({
 }) {
   const router = useRouter()
   const pathname = usePathname()
+  const [data, setData] = React.useState<Client[]>(initialData)
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(() =>
       initialData.some((item) => item.phase)
@@ -337,8 +376,37 @@ export function CoachWiseClientsTable({
     },
     [pathname, router]
   )
+  const updateClient = React.useCallback(
+    (id: number, values: ClientEditFormValues) => {
+      setData((current) =>
+        current.map((item) =>
+          item.id === id
+            ? {
+              ...item,
+              header: `${values.firstName} ${values.lastName}`.trim(),
+              email: values.email,
+              phone: values.phone,
+              type: values.status,
+              phase: values.phase,
+            }
+            : item
+        )
+      )
+
+      toast.success("Client details were updated.", {
+        description: `For ${`${values.firstName} ${values.lastName}`.trim()}.`,
+      })
+    },
+    []
+  )
+  const deleteClient = React.useCallback((client: Client) => {
+    setData((current) => current.filter((item) => item.id !== client.id))
+    toast.success("Client was deleted successfully.", {
+      description: `${client.header} was removed from the clients list.`,
+    })
+  }, [])
   const preparedData = React.useMemo(() => {
-    const filteredData = initialData.filter((item) => {
+    const filteredData = data.filter((item) => {
       if (statusFilter === "active") {
         return item.type === "Aktiven"
       }
@@ -375,10 +443,10 @@ export function CoachWiseClientsTable({
           return parseClientDate(b.target) - parseClientDate(a.target)
       }
     })
-  }, [groupOption, initialData, sortOption, statusFilter])
+  }, [data, groupOption, sortOption, statusFilter])
   const columns = React.useMemo(
-    () => getColumns(openClientProfile),
-    [openClientProfile]
+    () => getColumns(updateClient, deleteClient),
+    [deleteClient, updateClient]
   )
   const table = useReactTable({
     data: preparedData,
@@ -410,7 +478,7 @@ export function CoachWiseClientsTable({
     setPagination((current) =>
       current.pageIndex === 0 ? current : { ...current, pageIndex: 0 }
     )
-  }, [clientSearch, groupOption, sortOption, statusFilter])
+  }, [clientSearch, groupOption, preparedData.length, sortOption, statusFilter])
 
   return (
     <div className="flex flex-col px-2 gap-4">
@@ -430,17 +498,11 @@ export function CoachWiseClientsTable({
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="default"
-                className={cn(
-                  clientsToolbarButtonClassName,
-                  "justify-start gap-2"
-                )}
-              >
-                <IconAdjustmentsHorizontal className="size-4" />
-                {filterButtonLabel}
-              </Button>
+              <SecondaryActionButton
+                label={filterButtonLabel}
+                icon={IconAdjustmentsHorizontal}
+                className="justify-start"
+              />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="start"
@@ -558,19 +620,17 @@ export function CoachWiseClientsTable({
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className={cn(
-                clientsToolbarButtonClassName,
-                "justify-start gap-2"
-              )}
-            >
-              <IconLayoutColumns />
-              <span className="hidden lg:inline">Customize columns</span>
-              <span className="lg:hidden">Columns</span>
-              <IconChevronDown />
-            </Button>
+            <SecondaryActionButton
+              icon={IconLayoutColumns}
+              label={
+                <>
+                  <span className="hidden lg:inline">Customize columns</span>
+                  <span className="lg:hidden">Columns</span>
+                  <IconChevronDown className="size-4" />
+                </>
+              }
+              className="justify-start"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"

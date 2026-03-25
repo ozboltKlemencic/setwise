@@ -13,12 +13,12 @@ import {
 } from "@tabler/icons-react"
 import { usePathname } from "next/navigation"
 
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { AddClientDialog } from "@/components/coachWise/clients/add-client-dialog"
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const coachWiseRoutes = [
@@ -137,20 +137,20 @@ export function SiteHeader() {
         </div>
         {headerAction ? (
           normalizedPathname === "/beta-coach-wise/clients" ? (
-            <AddClientDialog
-              label={headerAction.label}
-              icon={headerAction.icon}
-            />
-          ) : (
-            <Button
-              type="button"
-              size="sm"
-              className="shrink-0 border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-            >
-              <headerAction.icon className="size-4" />
-              {headerAction.label}
-            </Button>
-          )
+                <AddClientDialog
+                  trigger={
+                    <PrimaryActionButton
+                      label={headerAction.label}
+                      icon={headerAction.icon}
+                    />
+                  }
+                />
+              ) : (
+                <PrimaryActionButton
+                  label={headerAction.label}
+                  icon={headerAction.icon}
+                />
+              )
         ) : null}
       </div>
     </header>

@@ -8,8 +8,11 @@ import {
   IconUsersGroup,
   type Icon,
 } from "@tabler/icons-react"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, X } from "lucide-react"
 
+import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
+import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -17,6 +20,9 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
@@ -30,10 +36,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 type AddClientDialogProps = {
   label?: string
   icon?: Icon
+  trigger?: React.ReactNode
 }
 
 function FieldLabel({
@@ -44,9 +52,9 @@ function FieldLabel({
   required?: boolean
 }) {
   return (
-    <Label className="text-[13px] font-medium text-neutral-700">
+    <Label className="text-[13px] font-medium text-neutral-800">
       {children}
-      {required ? <span className="ml-1 text-red-500">*</span> : null}
+      {required ? <span className="ml-1 text-rose-500">*</span> : null}
     </Label>
   )
 }
@@ -133,6 +141,7 @@ function DatePickerField({
 export function AddClientDialog({
   label = "Add Client",
   icon: TriggerIcon = IconPlus,
+  trigger,
 }: AddClientDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [hasCustomDates, setHasCustomDates] = React.useState(false)
@@ -140,41 +149,88 @@ export function AddClientDialog({
   const [startDate, setStartDate] = React.useState<Date | undefined>()
   const [endDate, setEndDate] = React.useState<Date | undefined>()
 
+  const handleOverlayClick = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (event.target !== event.currentTarget) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      setOpen(false)
+    },
+    []
+  )
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          type="button"
-          size="sm"
-          className="shrink-0 rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-        >
-          <TriggerIcon className="size-4" />
-          {label}
-        </Button>
+        {trigger ?? (
+          <PrimaryActionButton
+            label={label}
+            icon={TriggerIcon}
+          />
+        )}
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="overflow-hidden rounded-sm border border-neutral-200/80 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]"
+        overlayProps={{
+          onClick: handleOverlayClick,
+          onMouseDown: (event) => {
+            event.stopPropagation()
+          },
+          onPointerDown: (event) => {
+            event.stopPropagation()
+          },
+        }}
+        onClick={(event) => {
+          event.stopPropagation()
+        }}
+        onMouseDown={(event) => {
+          event.stopPropagation()
+        }}
+        onPointerDown={(event) => {
+          event.stopPropagation()
+        }}
+        onPointerDownOutside={(event) => {
+          event.preventDefault()
+        }}
+        onInteractOutside={(event) => {
+          event.preventDefault()
+        }}
+        className={cn(
+          overflowActionsMenuSurfaceClassName,
+          "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 bg-white p-0 shadow-[0_24px_80px_rgba(15,23,42,0.12)] sm:max-w-[700px]"
+        )}
       >
-        <div className="flex items-center justify-between gap-4 border-b border-neutral-200/70 px-5 py-4 pt-5">
-          <div className="flex items-center gap-3">
-            <div className="flex size-8 items-center justify-center rounded-sm border border-neutral-200/80 bg-neutral-50 text-neutral-600">
-              <IconUsersGroup className="size-4" />
-            </div>
-            <DialogTitle className="text-base font-semibold text-neutral-950">
-              Add Client
-            </DialogTitle>
-          </div>
+        <DialogClose asChild>
           <Button
             type="button"
-            variant="outline"
-            size="sm"
-            className="rounded-sm border-neutral-200/80 text-[13px] font-medium text-neutral-600 shadow-none hover:bg-neutral-50"
+            variant="ghost"
+            size="icon-sm"
+            className="absolute top-3 right-3 z-20 size-8 cursor-pointer rounded-md text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
           >
-            <IconUsersGroup className="size-4" />
-            Add Multiple Clients
+            <X className="size-4" />
+            <span className="sr-only">Close dialog</span>
           </Button>
-        </div>
+        </DialogClose>
+
+        <DialogHeader className="gap-0 border-b border-neutral-200/80 px-5 pt-5 pb-4 text-left">
+          <div className="flex items-start gap-3 pr-10">
+            <div className="flex size-10 items-center justify-center rounded-md border border-neutral-200/80 bg-neutral-50/90 text-neutral-600">
+              <IconUsersGroup className="size-[18px]" />
+            </div>
+            <div className="space-y-1">
+              <DialogTitle className="text-[16px] font-semibold text-neutral-950">
+                Add client
+              </DialogTitle>
+              <DialogDescription className="text-[13px] leading-5 text-neutral-500">
+                Create a new client, assign onboarding details, and optionally
+                set custom dates.
+              </DialogDescription>
+            </div>
+          </div>
+        </DialogHeader>
 
         <form
           className="space-y-4 px-5 py-4"
@@ -187,7 +243,7 @@ export function AddClientDialog({
             <FieldLabel required>Full name</FieldLabel>
             <Input
               placeholder="Enter full name"
-              className="rounded-sm border-neutral-200/80 bg-white shadow-none focus-visible:border-neutral-500 focus-visible:ring-1"
+              className="h-10 rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
           </div>
 
@@ -196,14 +252,14 @@ export function AddClientDialog({
             <Input
               type="email"
               placeholder="Enter client email"
-              className="rounded-sm border-neutral-200/80 bg-white shadow-none focus-visible:border-neutral-500 focus-visible:ring-1"
+              className="h-10 rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
           </div>
 
           <div className="space-y-2">
             <FieldLabel>Client tag</FieldLabel>
             <Select>
-              <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200/80 bg-white text-sm shadow-none focus-visible:border-neutral-500 focus-visible:ring-1 data-[placeholder]:text-neutral-400">
+              <SelectTrigger className="h-10 w-full rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[placeholder]:text-neutral-400">
                 <SelectValue placeholder="Select tag" />
               </SelectTrigger>
               <SelectContent
@@ -221,7 +277,7 @@ export function AddClientDialog({
           <div className="space-y-2">
             <FieldLabel>Questionnaire</FieldLabel>
             <Select>
-              <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200/80 bg-white text-sm shadow-none focus-visible:border-neutral-500 focus-visible:ring-1 data-[placeholder]:text-neutral-400">
+              <SelectTrigger className="h-10 w-full rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[placeholder]:text-neutral-400">
                 <SelectValue placeholder="Select questionnaire" />
               </SelectTrigger>
               <SelectContent
@@ -239,7 +295,7 @@ export function AddClientDialog({
           <div className="space-y-2">
             <FieldLabel>Onboarding flow</FieldLabel>
             <Select>
-              <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200/80 bg-white text-sm shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[placeholder]:text-neutral-400">
+              <SelectTrigger className="h-10 w-full rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[placeholder]:text-neutral-400">
                 <SelectValue placeholder="Select onboarding flow" />
               </SelectTrigger>
               <SelectContent
@@ -309,23 +365,12 @@ export function AddClientDialog({
             </label>
           </div>
 
-          <div className="flex items-center justify-between pt-2">
+          <DialogFooter className="border-t border-neutral-200/80 px-0 pt-4 sm:flex-row sm:items-center sm:justify-end">
             <DialogClose asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              >
-                Close
-              </Button>
+              <SecondaryActionButton label="Cancel" />
             </DialogClose>
-            <Button
-              type="submit"
-              className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-            >
-              Add Client
-            </Button>
-          </div>
+            <PrimaryActionButton type="submit" label="Add Client" />
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

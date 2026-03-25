@@ -61,8 +61,11 @@ type OverflowActionsMenuProps = {
 export const overflowActionsMenuTriggerClassName =
   "size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
 
+export const overflowActionsMenuSurfaceClassName =
+  "rounded-lg border-neutral-200/60 bg-white/95 shadow-lg shadow-black/5 backdrop-blur-sm"
+
 export const overflowActionsMenuContentClassName =
-  "w-48 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
+  `${overflowActionsMenuSurfaceClassName} w-48 p-1.5`
 
 export const overflowActionsMenuItemClassName =
   "cursor-pointer rounded-md px-3 py-2 text-[13px]"
