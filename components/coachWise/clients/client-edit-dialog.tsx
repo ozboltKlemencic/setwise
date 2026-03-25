@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { UserRound, X } from "lucide-react"
+import { toast } from "sonner"
 
 import {
   ClientFormFields,
@@ -109,6 +110,9 @@ export function ClientEditDialog({
 
     try {
       await onSave?.(form)
+      toast.success("Client details were updated.", {
+        description: `For ${`${form.firstName} ${form.lastName}`.trim()}.`,
+      })
       setOpen(false)
     } finally {
       setIsPending(false)

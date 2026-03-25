@@ -392,10 +392,6 @@ export function CoachWiseClientsTable({
             : item
         )
       )
-
-      toast.success("Client details were updated.", {
-        description: `For ${`${values.firstName} ${values.lastName}`.trim()}.`,
-      })
     },
     []
   )

@@ -3,6 +3,7 @@
 import * as React from "react"
 import { IconPlus, IconUsersGroup, type Icon } from "@tabler/icons-react"
 import { X } from "lucide-react"
+import { toast } from "sonner"
 
 import {
   ClientFormFields,
@@ -156,6 +157,9 @@ export function AddClientDialog({
               return
             }
 
+            toast.success("Client was added successfully.", {
+              description: `For ${`${form.firstName} ${form.lastName}`.trim()}.`,
+            })
             setOpen(false)
           }}
         >
