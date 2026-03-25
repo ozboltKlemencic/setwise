@@ -9,7 +9,6 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconCircleCheckFilled,
-  IconKey,
   IconLayoutColumns,
   IconLoader,
   IconPencil,
@@ -46,10 +45,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
-  OverflowActionsMenu,
   overflowActionsMenuContentClassName,
   overflowActionsMenuItemClassName,
-  type OverflowActionsMenuItem,
 } from "@/components/coachWise/overflow-actions-menu"
 import {
   Select,
@@ -92,6 +89,12 @@ const clientsToolbarButtonClassName =
 
 const clientsToolbarDropdownCheckboxItemClassName =
   "cursor-pointer rounded-md py-2 pr-3 pl-8 text-[13px] font-normal text-neutral-800 focus:bg-neutral-50 focus:text-neutral-950"
+
+const clientRowActionButtonClassName =
+  "size-6 cursor-pointer rounded-md border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-colors hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground"
+
+const clientRowDeleteActionButtonClassName =
+  "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
 function formatClientCountLabel(count: number) {
   return `${count} client${count === 1 ? "" : "s"}`
@@ -206,43 +209,34 @@ function getColumns(
     },
     {
       id: "actions",
-      header: () => <div className="w-6 " />,
-      cell: ({ row }) => {
-        const items: OverflowActionsMenuItem[] = [
-          {
-            id: "open-client",
-            label: "Open client",
-            icon: IconKey,
-            onSelect: () => onOpenClientProfile(row.original.id),
-          },
-          {
-            id: "edit-client",
-            label: "Edit",
-            icon: IconPencil,
-            onSelect: () => { },
-          },
-          {
-            id: "actions-separator",
-            type: "separator",
-          },
-          {
-            id: "delete-client",
-            label: "Delete",
-            icon: IconTrash,
-            variant: "destructive",
-            onSelect: () => { },
-          },
-        ]
-
-        return (
-          <div className="flex w-6 justify-end">
-            <OverflowActionsMenu
-              items={items}
-              triggerLabel="Open client menu"
-            />
-          </div>
-        )
-      },
+      header: () => <div className="w-[3.5rem] text-center">Action</div>,
+      cell: ({ row }) => (
+        <div className="flex w-[3.5rem] justify-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            className={clientRowActionButtonClassName}
+            onClick={() => onOpenClientProfile(row.original.id)}
+          >
+            <IconPencil className="size-3.5" />
+            <span className="sr-only">Edit client</span>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            className={cn(
+              clientRowActionButtonClassName,
+              clientRowDeleteActionButtonClassName
+            )}
+            onClick={() => { }}
+          >
+            <IconTrash className="size-3.5" />
+            <span className="sr-only">Delete client</span>
+          </Button>
+        </div>
+      ),
     },
   ]
 }
