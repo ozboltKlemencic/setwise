@@ -9,7 +9,6 @@ import {
   IconChevronsLeft,
   IconChevronsRight,
   IconCircleCheckFilled,
-  IconDotsVertical,
   IconKey,
   IconLayoutColumns,
   IconLoader,
@@ -43,11 +42,15 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import {
+  OverflowActionsMenu,
+  overflowActionsMenuContentClassName,
+  overflowActionsMenuItemClassName,
+  type OverflowActionsMenuItem,
+} from "@/components/coachWise/overflow-actions-menu"
 import {
   Select,
   SelectContent,
@@ -84,23 +87,14 @@ type ClientSortOption =
 type ClientGroupOption = "none" | "phase" | "type"
 type ClientStatusFilter = "all" | "active" | "completed"
 
+const clientsToolbarButtonClassName =
+  "h-9 cursor-pointer rounded-sm border-neutral-200/80 bg-neutral-100/85 px-3 text-[13px] font-normal text-neutral-600 shadow-[0_1px_2px_rgba(15,23,42,0.03)] hover:border-neutral-300/80 hover:bg-neutral-200/55 hover:text-neutral-800"
+
+const clientsToolbarDropdownCheckboxItemClassName =
+  "cursor-pointer rounded-md py-2 pr-3 pl-8 text-[13px] font-normal text-neutral-800 focus:bg-neutral-50 focus:text-neutral-950"
+
 function formatClientCountLabel(count: number) {
-  const mod100 = count % 100
-  const mod10 = count % 10
-
-  if (mod100 !== 11 && mod10 === 1) {
-    return `${count} stranka`
-  }
-
-  if (mod100 !== 12 && mod10 === 2) {
-    return `${count} stranki`
-  }
-
-  if ((mod100 < 10 || mod100 > 14) && (mod10 === 3 || mod10 === 4)) {
-    return `${count} stranke`
-  }
-
-  return `${count} strank`
+  return `${count} client${count === 1 ? "" : "s"}`
 }
 
 function getInitials(name: string) {
@@ -123,11 +117,24 @@ function parseClientDate(value: string) {
 }
 
 const clientColumnLabels: Record<string, string> = {
-  header: "Stranke",
+  header: "Client",
   type: "Status",
-  phase: "Faza",
-  status: "Check in",
-  target: "Pridruzil",
+  phase: "Phase",
+  status: "Check-in",
+  target: "Joined",
+}
+
+function formatClientType(type: string) {
+  switch (type) {
+    case "Aktiven":
+      return "Active"
+    case "Na pavzi":
+      return "Paused"
+    case "Zakljucen":
+      return "Completed"
+    default:
+      return type
+  }
 }
 
 function ClientNameCell({ item }: { item: Client }) {
@@ -148,7 +155,7 @@ function getColumns(
   return [
     {
       accessorKey: "header",
-      header: () => <div className="w-[16rem] min-w-[16rem]">Stranke</div>,
+      header: () => <div className="w-[16rem] min-w-[16rem]">Client</div>,
       cell: ({ row }) => <ClientNameCell item={row.original} />,
       enableHiding: false,
     },
@@ -158,14 +165,14 @@ function getColumns(
       cell: ({ row }) => (
         <div className="w-32">
           <Badge variant="outline" className="px-1.5 text-muted-foreground">
-            {row.original.type}
+            {formatClientType(row.original.type)}
           </Badge>
         </div>
       ),
     },
     {
       accessorKey: "phase",
-      header: "Faza",
+      header: "Phase",
       cell: ({ row }) => (
         <div className="w-32">
           <Badge variant="outline" className="px-1.5 text-muted-foreground">
@@ -176,7 +183,7 @@ function getColumns(
     },
     {
       accessorKey: "status",
-      header: "Check in",
+      header: "Check-in",
       cell: ({ row }) => (
         <Badge variant="outline" className="px-1.5 text-muted-foreground">
           {row.original.status === "Done" ? (
@@ -190,7 +197,7 @@ function getColumns(
     },
     {
       accessorKey: "target",
-      header: () => <div className="w-28 text-left">Pridruzil</div>,
+      header: () => <div className="w-28 text-left">Joined</div>,
       cell: ({ row }) => (
         <div className="w-28 text-left text-sm text-foreground">
           {row.original.target}
@@ -200,47 +207,42 @@ function getColumns(
     {
       id: "actions",
       header: () => <div className="w-6 " />,
-      cell: ({ row }) => (
-        <div className="flex w-6  justify-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon-sm"
-                className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
-              >
-                <IconDotsVertical className="size-3" />
-                <span className="sr-only">Odpri meni stranke</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              sideOffset={8}
-              className="w-48 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
-            >
-              <DropdownMenuItem
-                className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
-                onSelect={() => onOpenClientProfile(row.original.id)}
-              >
-                <IconKey className="size-4 text-neutral-500" />
-                Dostop do stranke
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50 focus:text-neutral-950">
-                <IconPencil className="size-4 text-neutral-500" />
-                Uredi
-              </DropdownMenuItem>
-              <DropdownMenuSeparator className="bg-neutral-200/70" />
-              <DropdownMenuItem
-                variant="destructive"
-                className="cursor-pointer rounded-md px-3 py-2 text-[13px]"
-              >
-                <IconTrash className="size-4" />
-                Izbrisi
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      ),
+      cell: ({ row }) => {
+        const items: OverflowActionsMenuItem[] = [
+          {
+            id: "open-client",
+            label: "Open client",
+            icon: IconKey,
+            onSelect: () => onOpenClientProfile(row.original.id),
+          },
+          {
+            id: "edit-client",
+            label: "Edit",
+            icon: IconPencil,
+            onSelect: () => { },
+          },
+          {
+            id: "actions-separator",
+            type: "separator",
+          },
+          {
+            id: "delete-client",
+            label: "Delete",
+            icon: IconTrash,
+            variant: "destructive",
+            onSelect: () => { },
+          },
+        ]
+
+        return (
+          <div className="flex w-6 justify-end">
+            <OverflowActionsMenu
+              items={items}
+              triggerLabel="Open client menu"
+            />
+          </div>
+        )
+      },
     },
   ]
 }
@@ -424,7 +426,7 @@ export function CoachWiseClientsTable({
             <IconSearch className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               aria-label="Search clients"
-              placeholder="Isci stranke..."
+              placeholder="Search clients..."
               value={clientSearch}
               onChange={(event) =>
                 table.getColumn("header")?.setFilterValue(event.target.value)
@@ -437,7 +439,10 @@ export function CoachWiseClientsTable({
               <Button
                 variant="outline"
                 size="default"
-                className="h-9 justify-start gap-2 border-neutral-200/70 bg-white/80 px-3 text-[13px] font-normal text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700 rounded-sm"
+                className={cn(
+                  clientsToolbarButtonClassName,
+                  "justify-start gap-2"
+                )}
               >
                 <IconAdjustmentsHorizontal className="size-4" />
                 {filterButtonLabel}
@@ -451,7 +456,7 @@ export function CoachWiseClientsTable({
               <div className="space-y-2">
                 <div className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
                   <div className="text-[13px] font-medium text-neutral-900">
-                    Razvrsti po:
+                    Sort by:
                   </div>
                   <Select
                     value={sortOption}
@@ -464,16 +469,16 @@ export function CoachWiseClientsTable({
                     </SelectTrigger>
                     <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5 [&_[data-slot=select-item]]:py-2 [&_[data-slot=select-item]]:text-[13px] [&_[data-slot=select-item]]:font-normal">
                       <SelectItem value="recent-pridruzil">
-                        Najnovejsi vpis
+                        Newest join date
                       </SelectItem>
                       <SelectItem value="oldest-pridruzil">
-                        Najstarejsi vpis
+                        Oldest join date
                       </SelectItem>
                       <SelectItem value="alphabetical-asc">
-                        Abecedno (A-Z)
+                        Alphabetical (A-Z)
                       </SelectItem>
                       <SelectItem value="alphabetical-desc">
-                        Abecedno (Z-A)
+                        Alphabetical (Z-A)
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -481,7 +486,7 @@ export function CoachWiseClientsTable({
 
                 <div className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
                   <div className="text-[13px] font-medium text-neutral-900">
-                    Skupina:
+                    Group by:
                   </div>
                   <Select
                     value={groupOption}
@@ -493,9 +498,9 @@ export function CoachWiseClientsTable({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="rounded-md border-neutral-200/70 shadow-lg shadow-black/5 [&_[data-slot=select-item]]:py-2 [&_[data-slot=select-item]]:text-[13px] [&_[data-slot=select-item]]:font-normal">
-                      <SelectItem value="none">Brez</SelectItem>
-                      <SelectItem value="phase">Faza</SelectItem>
-                      <SelectItem value="type">Status stranke</SelectItem>
+                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="phase">Phase</SelectItem>
+                      <SelectItem value="type">Client status</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -519,7 +524,7 @@ export function CoachWiseClientsTable({
                         )
                       }
                     >
-                      Aktivni
+                      Active
                     </button>
                     <button
                       type="button"
@@ -535,7 +540,7 @@ export function CoachWiseClientsTable({
                         )
                       }
                     >
-                      Zakljuceni
+                      Completed
                     </button>
                   </div>
                 </div>
@@ -550,7 +555,7 @@ export function CoachWiseClientsTable({
                       setStatusFilter("all")
                     }}
                   >
-                    Pocisti filtre
+                    Clear filters
                   </button>
                 </div>
               </div>
@@ -559,14 +564,25 @@ export function CoachWiseClientsTable({
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              className={cn(
+                clientsToolbarButtonClassName,
+                "justify-start gap-2"
+              )}
+            >
               <IconLayoutColumns />
-              <span className="hidden lg:inline">Prilagodi stolpce</span>
-              <span className="lg:hidden">Stolpci</span>
+              <span className="hidden lg:inline">Customize columns</span>
+              <span className="lg:hidden">Columns</span>
               <IconChevronDown />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent
+            align="end"
+            sideOffset={8}
+            className={cn(overflowActionsMenuContentClassName, "w-56")}
+          >
             {table
               .getAllColumns()
               .filter(
@@ -577,7 +593,11 @@ export function CoachWiseClientsTable({
               .map((column) => (
                 <DropdownMenuCheckboxItem
                   key={column.id}
-                  className="capitalize"
+                  className={cn(
+                    overflowActionsMenuItemClassName,
+                    clientsToolbarDropdownCheckboxItemClassName,
+                    "capitalize"
+                  )}
                   checked={column.getIsVisible()}
                   onCheckedChange={(value) =>
                     column.toggleVisibility(!!value)
@@ -630,7 +650,7 @@ export function CoachWiseClientsTable({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    Ni najdenih strank.
+                    No clients found.
                   </TableCell>
                 </TableRow>
               )}
@@ -642,7 +662,7 @@ export function CoachWiseClientsTable({
         <div className="ml-auto flex w-full justify-end lg:w-fit">
           <div className="flex items-center gap-8">
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Stran {table.getState().pagination.pageIndex + 1} od{" "}
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
               {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">

@@ -4,7 +4,7 @@ import data from "../data.json"
 
 export default function ClientsPage() {
   return (
-    <section>
+    <section className="min-h-full ">
       <CoachWiseClientsTable data={data} />
     </section>
   )

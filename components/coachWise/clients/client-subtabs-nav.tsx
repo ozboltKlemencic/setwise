@@ -34,10 +34,10 @@ type ClientSubtabsNavProps = {
 }
 
 const clientSubtabsNavTriggerClassName =
-  "h-auto min-h-8 flex-none cursor-pointer gap-1 rounded-none border-0 bg-transparent px-0 py-1 text-[12px] font-normal leading-none text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+  "h-auto h-8 flex-none cursor-pointer gap-1 rounded-none border-0 bg-transparent px-0 py-1 text-[13px] font-normal leading-none text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
 const clientSubtabsNavActionButtonBaseClassName =
-  "h-8 cursor-pointer gap-1 px-2.5 text-[12px] font-medium [&_svg]:size-3"
+  "h-8 cursor-pointer gap-1 px-2.5 text-[13px] font-medium [&_svg]:size-3"
 
 export const clientSubtabsNavActionButtonClassNames = {
   primary:

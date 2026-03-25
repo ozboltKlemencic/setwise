@@ -31,7 +31,7 @@ export default function BetaCoachWiseLayout({
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-1 flex-col bg-neutral-50">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div
               className={cn(

@@ -59,7 +59,7 @@ const coachWiseRoutes = [
     exact: true,
   },
   {
-    title: "Stranke",
+    title: "Clients",
     href: "/beta-coach-wise/clients",
     icon: IconUsersGroup,
     exact: false,
@@ -76,7 +76,7 @@ const coachWiseHeaderActions: Record<
   { label: string; icon: Icon }
 > = {
   "/beta-coach-wise/clients": {
-    label: "Dodaj stranko",
+    label: "Add Client",
     icon: IconPlus,
   },
 }
@@ -110,7 +110,7 @@ export function SiteHeader() {
     <header
       className={cn(
         "sticky top-0 z-20 flex h-(--header-height) w-full shrink-0 items-center border-b border-neutral-200 transition-[height] duration-[360ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)",
-        activeClient ? "bg-neutral-50" : "bg-white"
+        activeClient ? "bg-neutral-50" : "bg-neutral-50"
       )}
     >
       <div className="flex w-full items-center justify-between gap-4 px-4 ">

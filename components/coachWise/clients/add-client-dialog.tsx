@@ -56,7 +56,7 @@ function formatPickerDate(date: Date | undefined) {
     return ""
   }
 
-  return date.toLocaleDateString("sl-SI", {
+  return date.toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -90,7 +90,7 @@ function DatePickerField({
         <Input
           value={formatPickerDate(value)}
           readOnly
-          placeholder="Izberi datum"
+          placeholder="Select date"
           className="cursor-pointer rounded-sm border-neutral-200/80 bg-white pr-10 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
           onClick={() => setOpen(true)}
         />
@@ -102,7 +102,7 @@ function DatePickerField({
               className="absolute top-1/2 right-1.5 size-6 -translate-y-1/2 rounded-sm text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-600"
             >
               <CalendarIcon className="size-3.5" />
-              <span className="sr-only">Izberi datum</span>
+              <span className="sr-only">Select date</span>
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -131,7 +131,7 @@ function DatePickerField({
 }
 
 export function AddClientDialog({
-  label = "Dodaj stranko",
+  label = "Add Client",
   icon: TriggerIcon = IconPlus,
 }: AddClientDialogProps) {
   const [open, setOpen] = React.useState(false)
@@ -162,7 +162,7 @@ export function AddClientDialog({
               <IconUsersGroup className="size-4" />
             </div>
             <DialogTitle className="text-base font-semibold text-neutral-950">
-              Dodaj stranko
+              Add Client
             </DialogTitle>
           </div>
           <Button
@@ -172,7 +172,7 @@ export function AddClientDialog({
             className="rounded-sm border-neutral-200/80 text-[13px] font-medium text-neutral-600 shadow-none hover:bg-neutral-50"
           >
             <IconUsersGroup className="size-4" />
-            Dodaj vec strank
+            Add Multiple Clients
           </Button>
         </div>
 
@@ -184,34 +184,34 @@ export function AddClientDialog({
           }}
         >
           <div className="space-y-2">
-            <FieldLabel required>Ime in priimek</FieldLabel>
+            <FieldLabel required>Full name</FieldLabel>
             <Input
-              placeholder="Vnesi ime in priimek"
+              placeholder="Enter full name"
               className="rounded-sm border-neutral-200/80 bg-white shadow-none focus-visible:border-neutral-500 focus-visible:ring-1"
             />
           </div>
 
           <div className="space-y-2">
-            <FieldLabel required>E-posta stranke</FieldLabel>
+            <FieldLabel required>Client email</FieldLabel>
             <Input
               type="email"
-              placeholder="Vnesi e-posto stranke"
+              placeholder="Enter client email"
               className="rounded-sm border-neutral-200/80 bg-white shadow-none focus-visible:border-neutral-500 focus-visible:ring-1"
             />
           </div>
 
           <div className="space-y-2">
-            <FieldLabel>Oznaka stranke</FieldLabel>
+            <FieldLabel>Client tag</FieldLabel>
             <Select>
               <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200/80 bg-white text-sm shadow-none focus-visible:border-neutral-500 focus-visible:ring-1 data-[placeholder]:text-neutral-400">
-                <SelectValue placeholder="Izberi oznako" />
+                <SelectValue placeholder="Select tag" />
               </SelectTrigger>
               <SelectContent
                 align="start"
                 position="popper"
                 className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
               >
-                <SelectItem value="aktivni">Aktivni</SelectItem>
+                <SelectItem value="aktivni">Active</SelectItem>
                 <SelectItem value="onboarding">Onboarding</SelectItem>
                 <SelectItem value="premium">Premium</SelectItem>
               </SelectContent>
@@ -219,19 +219,19 @@ export function AddClientDialog({
           </div>
 
           <div className="space-y-2">
-            <FieldLabel>Vprasalnik</FieldLabel>
+            <FieldLabel>Questionnaire</FieldLabel>
             <Select>
               <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200/80 bg-white text-sm shadow-none focus-visible:border-neutral-500 focus-visible:ring-1 data-[placeholder]:text-neutral-400">
-                <SelectValue placeholder="Izberi vprasalnik" />
+                <SelectValue placeholder="Select questionnaire" />
               </SelectTrigger>
               <SelectContent
                 align="start"
                 position="popper"
                 className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
               >
-                <SelectItem value="uvodni">Uvodni vprasalnik</SelectItem>
-                <SelectItem value="prehrana">Prehranski vprasalnik</SelectItem>
-                <SelectItem value="napredek">Tedenski napredek</SelectItem>
+                <SelectItem value="uvodni">Intro questionnaire</SelectItem>
+                <SelectItem value="prehrana">Nutrition questionnaire</SelectItem>
+                <SelectItem value="napredek">Weekly progress</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -240,16 +240,16 @@ export function AddClientDialog({
             <FieldLabel>Onboarding flow</FieldLabel>
             <Select>
               <SelectTrigger className="h-9 w-full rounded-sm border-neutral-200/80 bg-white text-sm shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[placeholder]:text-neutral-400">
-                <SelectValue placeholder="Izberi onboarding flow" />
+                <SelectValue placeholder="Select onboarding flow" />
               </SelectTrigger>
               <SelectContent
                 align="start"
                 position="popper"
                 className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
               >
-                <SelectItem value="brez">Brez</SelectItem>
-                <SelectItem value="osnovni">Osnovni onboarding</SelectItem>
-                <SelectItem value="napredni">Napredni onboarding</SelectItem>
+                <SelectItem value="brez">None</SelectItem>
+                <SelectItem value="osnovni">Basic onboarding</SelectItem>
+                <SelectItem value="napredni">Advanced onboarding</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -271,14 +271,14 @@ export function AddClientDialog({
                 className="rounded-[4px] border-neutral-300 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[state=checked]:border-brand-500 data-[state=checked]:bg-brand-500"
               />
               <span className="flex items-center gap-1.5">
-                Nastavi zacetni in koncni datum?
+                Set start and end date?
                 <IconInfoCircle className="size-3.5 text-neutral-400" />
               </span>
             </label>
             {hasCustomDates ? (
               <div className="grid gap-3 pl-7 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
                 <DatePickerField
-                  label="Zacetni datum"
+                  label="Start date"
                   value={startDate}
                   onChange={(date) => {
                     setStartDate(date)
@@ -292,7 +292,7 @@ export function AddClientDialog({
                   <IconArrowRight className="size-4" />
                 </div>
                 <DatePickerField
-                  label="Koncni datum"
+                  label="End date"
                   value={endDate}
                   disabled={(date) => Boolean(startDate && date < startDate)}
                   onChange={setEndDate}
@@ -305,7 +305,7 @@ export function AddClientDialog({
                 onCheckedChange={(checked) => setSendLoginEmail(checked === true)}
                 className="rounded-[4px] border-neutral-300 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0 data-[state=checked]:border-brand-500 data-[state=checked]:bg-brand-500"
               />
-              <span>Poslji navodila za prijavo po e-posti</span>
+              <span>Send login instructions by email</span>
             </label>
           </div>
 
@@ -316,14 +316,14 @@ export function AddClientDialog({
                 variant="ghost"
                 className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
               >
-                Zapri
+                Close
               </Button>
             </DialogClose>
             <Button
               type="submit"
               className="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
             >
-              Dodaj stranko
+              Add Client
             </Button>
           </div>
         </form>
