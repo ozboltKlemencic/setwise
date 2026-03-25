@@ -52,7 +52,7 @@ const infoCreateCardClassName =
   "group relative flex min-h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-5 py-6 text-center shadow-none transition-colors hover:shadow-none"
 
 function SectionBody({ children }: { children: ReactNode }) {
-  return <div className="space-y-4 bg-neutral-50">{children}</div>
+  return <div className="bg-neutral-50">{children}</div>
 }
 
 function InfoActionSection({ children }: { children: ReactNode }) {
@@ -300,9 +300,9 @@ export default async function Page({ params }: ClientDetailParamsProps) {
 
   return (
     <SectionBody>
-      <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
-        <div className="xl:h-[calc(100vh-11.5rem)] xl:pr-1">
-          <Card className="flex h-full flex-col overflow-hidden gap-0! border-neutral-200 bg-white shadow-none">
+      <div className="grid gap-0 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
+        <div className="xl:h-[calc(100dvh-5.5rem)]">
+          <Card className="flex h-full flex-col overflow-hidden gap-0! rounded-none border-t-0 border-l-0 border-neutral-200 bg-neutral-50 shadow-none">
             <CardHeader className="border-b border-neutral-200 px-3.5 py-2 ">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
@@ -362,7 +362,7 @@ export default async function Page({ params }: ClientDetailParamsProps) {
                   </div>
                 </div>
 
-                <div className="flex-1 min-h-0 space-y-3 overflow-y-auto px-3.5 py-3 pr-2.5 [scrollbar-width:thin]">
+                <div className="flex-1 min-h-0 space-y-3 overflow-y-auto px-3.5 py-3 pr-2.5 [scrollbar-color:rgba(212,212,216,0.65)_transparent] [scrollbar-width:thin]">
                   {generalNotes.map((note) => (
                     <div
                       key={note.title}
@@ -401,7 +401,7 @@ export default async function Page({ params }: ClientDetailParamsProps) {
           </Card>
         </div>
 
-        <div className="grid content-start gap-5 md:grid-cols-2 xl:h-[calc(100vh-11.5rem)] xl:overflow-y-auto xl:pr-1 [scrollbar-width:thin]">
+        <div className="grid content-start gap-5 p-4 md:grid-cols-2 xl:h-[calc(100dvh-5.5rem)] xl:overflow-y-auto [scrollbar-width:thin]">
           <InfoActionSection>
             <AddProgramDialog
               trigger={
