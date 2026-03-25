@@ -1,7 +1,17 @@
-import ClientProfilePage, {
-  type ClientProfileRouteProps,
-} from "../client-profile-page"
+import { ClientHabitsPanel } from "@/components/coachWise/clients/client-habits-panel"
 
-export default async function Page(props: ClientProfileRouteProps) {
-  return ClientProfilePage({ ...props, section: "habbits" })
+import { getSingleSearchParam, type ClientDetailPageProps } from "../_lib/client-detail-page"
+
+type HabitsSearchParams = {
+  habitTab?: string | string[]
+}
+
+export default async function Page({
+  searchParams,
+}: ClientDetailPageProps<HabitsSearchParams>) {
+  const resolvedSearchParams = await searchParams
+  const activeHabitTab = getSingleSearchParam(resolvedSearchParams.habitTab)
+  const resolvedHabitTab = activeHabitTab === "overview" ? "overview" : "habits"
+
+  return <ClientHabitsPanel initialSubTab={resolvedHabitTab} />
 }

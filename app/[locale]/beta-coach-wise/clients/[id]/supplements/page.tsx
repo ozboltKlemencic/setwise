@@ -1,7 +1,9 @@
-import ClientProfilePage, {
-  type ClientProfileRouteProps,
-} from "../client-profile-page"
+import { SupplementsPageContent } from "../_components/supplements-page-content"
 
-export default async function Page(props: ClientProfileRouteProps) {
-  return ClientProfilePage({ ...props, section: "supplements" })
+export default function Page() {
+  return (
+    <section className="min-w-0 bg-neutral-50">
+      <SupplementsPageContent />
+    </section>
+  )
 }
