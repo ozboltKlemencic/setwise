@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 
-import type { ClientNoteItem } from "@/components/coachWise/clients/client-notes-overview-dialog"
+import type { ClientNoteItem } from "@/components/coachWise/clients/info/client-notes-overview-dialog"
 import { cn } from "@/lib/utils"
 
 type ClientNoteCardProps = {
@@ -17,7 +17,7 @@ export function ClientNoteCard({
   return (
     <div
       className={cn(
-        "rounded-xl border border-neutral-200 bg-neutral-100/75",
+        "rounded-xl border border-neutral-200 bg-neutral-50",
         className
       )}
     >
@@ -35,7 +35,7 @@ export function ClientNoteCard({
           <p>{note.body[0]}</p>
         )}
       </div>
-      <div className="flex items-center justify-between rounded-b-xl border-t border-neutral-200 bg-neutral-200/55 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
+      <div className="flex items-center justify-between rounded-b-xl border-t border-neutral-200 bg-neutral-100/70 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
         <span>{note.date}</span>
         {footerActions ? <div className="flex items-center gap-2">{footerActions}</div> : null}
       </div>

@@ -41,7 +41,7 @@ import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation
 import {
   ClientEditDialog,
   type ClientEditFormValues,
-} from "@/components/coachWise/clients/client-edit-dialog"
+} from "@/components/coachWise/clients/shared/client-edit-dialog"
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { ToolbarSearchInput } from "@/components/coachWise/toolbar-search-input"

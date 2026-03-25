@@ -15,8 +15,8 @@ import {
 import { usePathname } from "next/navigation"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
-import { AddClientDialog } from "@/components/coachWise/clients/add-client-dialog"
-import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
+import { AddClientDialog } from "@/components/coachWise/clients/shared/add-client-dialog"
+import { ClientEditDialog } from "@/components/coachWise/clients/shared/client-edit-dialog"
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"

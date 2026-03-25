@@ -7,10 +7,10 @@ import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
   type ClientNoteItem,
-} from "@/components/coachWise/clients/client-notes-overview-dialog"
-import { ClientNoteCardActions } from "@/components/coachWise/clients/client-note-card-actions"
-import { ClientNoteCard } from "@/components/coachWise/clients/client-note-card"
-import { ClientSectionHeader } from "@/components/coachWise/clients/client-section-header"
+} from "@/components/coachWise/clients/info/client-notes-overview-dialog"
+import { ClientNoteCardActions } from "@/components/coachWise/clients/info/client-note-card-actions"
+import { ClientNoteCard } from "@/components/coachWise/clients/info/client-note-card"
+import { ClientSectionHeader } from "@/components/coachWise/clients/info/client-section-header"
 
 function formatNoteBody(description: string) {
   return description

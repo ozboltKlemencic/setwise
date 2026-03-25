@@ -13,11 +13,11 @@ import {
   SubmittedCheckinPhotosCompareDialog,
   SubmittedCheckinsCompareDialog,
   SubmittedCheckinsPanel,
-} from "@/components/coachWise/clients/client-checkins-panel"
+} from "@/components/coachWise/clients/checkins/client-checkins-panel"
 import {
   SubtabsNav,
   SubtabsNavActionButton,
-} from "@/components/coachWise/clients/subtabs-nav"
+} from "@/components/coachWise/clients/shared/subtabs-nav"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 
 import {

@@ -21,7 +21,7 @@ import {
 import {
   getClientProfileSectionHref,
   type ClientProfileSection,
-} from "@/components/coachWise/clients/client-profile-routes"
+} from "@/components/coachWise/clients/shared/client-profile-routes"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
 import { cn } from "@/lib/utils"
 

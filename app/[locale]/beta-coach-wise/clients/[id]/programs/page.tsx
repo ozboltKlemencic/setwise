@@ -5,7 +5,7 @@ import {
   IconClipboardCheck,
 } from "@tabler/icons-react"
 
-import { SubtabsNav } from "@/components/coachWise/clients/subtabs-nav"
+import { SubtabsNav } from "@/components/coachWise/clients/shared/subtabs-nav"
 import {
   CompletedWorkoutsPanel,
   ExerciseHistoryPanel,

@@ -1,4 +1,4 @@
-import { ClientHabitsPanel } from "@/components/coachWise/clients/client-habits-panel"
+import { ClientHabitsPanel } from "@/components/coachWise/clients/habits/client-habits-panel"
 
 import {
   getSingleSearchParam,

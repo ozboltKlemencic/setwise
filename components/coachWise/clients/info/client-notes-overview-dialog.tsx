@@ -5,7 +5,7 @@ import type { ReactNode } from "react"
 import { CheckSquare, FileText, Maximize2, Pencil, X } from "lucide-react"
 
 import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
-import { ClientNoteCard } from "@/components/coachWise/clients/client-note-card"
+import { ClientNoteCard } from "@/components/coachWise/clients/info/client-note-card"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Button } from "@/components/ui/button"

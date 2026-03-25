@@ -6,7 +6,7 @@ import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation
 import {
   ClientUpdateNoteDialog,
   type ClientNoteItem,
-} from "@/components/coachWise/clients/client-notes-overview-dialog"
+} from "@/components/coachWise/clients/info/client-notes-overview-dialog"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 

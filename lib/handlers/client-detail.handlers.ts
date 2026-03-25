@@ -2,7 +2,7 @@ import "server-only"
 
 import { notFound } from "next/navigation"
 
-import { getClientProfileBasePath } from "@/components/coachWise/clients/client-profile-routes"
+import { getClientProfileBasePath } from "@/components/coachWise/clients/shared/client-profile-routes"
 import { getCoachWiseClientById } from "@/lib/handlers/clients.handlers"
 
 export type ClientDetailSearchParams = Record<

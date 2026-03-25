@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { IconCalendarEvent, IconPill } from "@tabler/icons-react"
 
-import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements-schedule-calendar"
-import { SubtabsNav } from "@/components/coachWise/clients/subtabs-nav"
+import { SupplementsScheduleCalendar } from "@/components/coachWise/clients/supplements/supplements-schedule-calendar"
+import { SubtabsNav } from "@/components/coachWise/clients/shared/subtabs-nav"
 import {
   Table,
   TableBody,

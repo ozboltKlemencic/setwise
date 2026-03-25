@@ -16,7 +16,7 @@ import {
   type HabitPeriod,
   getMonthEnd,
   getMonthStart,
-} from "@/components/coachWise/clients/habit-period-picker"
+} from "@/components/coachWise/clients/habits/habit-period-picker"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {

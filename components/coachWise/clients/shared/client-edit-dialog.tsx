@@ -7,7 +7,7 @@ import { toast } from "sonner"
 import {
   ClientFormFields,
   type ClientFormValues,
-} from "@/components/coachWise/clients/client-form-fields"
+} from "@/components/coachWise/clients/shared/client-form-fields"
 import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"

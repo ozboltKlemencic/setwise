@@ -88,7 +88,7 @@ import {
   SubtabsNavActionButton,
   SubtabsNav,
   subtabsNavActionButtonClassNames,
-} from "@/components/coachWise/clients/subtabs-nav"
+} from "@/components/coachWise/clients/shared/subtabs-nav"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {

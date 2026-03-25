@@ -30,11 +30,11 @@ import {
   getWeekStart,
   type HabitPeriod,
   type HabitPeriodSelection,
-} from "@/components/coachWise/clients/habit-period-picker"
+} from "@/components/coachWise/clients/habits/habit-period-picker"
 import {
   SubtabsNavActionButton,
   subtabsNavActionButtonClassNames,
-} from "@/components/coachWise/clients/subtabs-nav"
+} from "@/components/coachWise/clients/shared/subtabs-nav"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {

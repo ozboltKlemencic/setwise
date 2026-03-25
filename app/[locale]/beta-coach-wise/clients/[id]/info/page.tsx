@@ -10,14 +10,14 @@ import {
 } from "@tabler/icons-react"
 import { FileText, Mail, Tag, UserRound } from "lucide-react"
 
-import { CreateAssignedCheckinDialog } from "@/components/coachWise/clients/client-checkins-panel"
-import { ClientNotesSection } from "@/components/coachWise/clients/client-notes-section"
+import { CreateAssignedCheckinDialog } from "@/components/coachWise/clients/checkins/client-checkins-panel"
+import { ClientNotesSection } from "@/components/coachWise/clients/info/client-notes-section"
 import {
   ClientQuickActionCard,
   type ClientQuickActionTone,
-} from "@/components/coachWise/clients/client-quick-action-card"
-import { ClientSectionHeader } from "@/components/coachWise/clients/client-section-header"
-import { CreateNutritionPlanAction } from "@/components/coachWise/clients/client-nutrition-panel"
+} from "@/components/coachWise/clients/info/client-quick-action-card"
+import { ClientSectionHeader } from "@/components/coachWise/clients/info/client-section-header"
+import { CreateNutritionPlanAction } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
 import { AddProgramDialog } from "@/components/coachWise/programs/exercise-history-panel"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"

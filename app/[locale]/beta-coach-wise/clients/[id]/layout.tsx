@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import { MessageSquareText } from "lucide-react"
 import { notFound } from "next/navigation"
 
-import { TabsNav } from "@/components/coachWise/clients/tabs-nav"
+import { TabsNav } from "@/components/coachWise/clients/shared/tabs-nav"
 import { SiteHeader } from "@/components/coachWise/sidebar/site-header"
 import { Button } from "@/components/ui/button"
 import {

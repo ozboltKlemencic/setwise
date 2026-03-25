@@ -1,7 +1,7 @@
 import {
   ClientNutritionPanel,
   MealPlanDetailView,
-} from "@/components/coachWise/clients/client-nutrition-panel"
+} from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
 
 import {
   getSingleSearchParam,

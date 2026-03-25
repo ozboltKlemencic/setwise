@@ -34,7 +34,7 @@ import { Button } from "@/components/ui/button"
 import {
   SubtabsNavActionButton,
   SubtabsNav,
-} from "@/components/coachWise/clients/subtabs-nav"
+} from "@/components/coachWise/clients/shared/subtabs-nav"
 import {
   ChartContainer,
   ChartTooltip,
@@ -77,7 +77,7 @@ import {
   HabitPeriodPicker,
   type HabitPeriod,
   type HabitPeriodSelection,
-} from "@/components/coachWise/clients/habit-period-picker"
+} from "@/components/coachWise/clients/habits/habit-period-picker"
 import { cn } from "@/lib/utils"
 import { type DateRange } from "react-day-picker"
 
