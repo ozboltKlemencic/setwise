@@ -52,6 +52,7 @@ const DialogContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     showCloseButton?: boolean
     overlayProps?: React.ComponentProps<typeof DialogPrimitive.Overlay>
+    portalContainerRef?: React.Ref<HTMLDivElement>
   }
 >(function DialogContent(
   {
@@ -59,6 +60,7 @@ const DialogContent = React.forwardRef<
     children,
     showCloseButton = true,
     overlayProps,
+    portalContainerRef,
     ...props
   },
   ref
@@ -68,6 +70,11 @@ const DialogContent = React.forwardRef<
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay className={overlayClassName} {...restOverlayProps} />
+      <div
+        ref={portalContainerRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-[60]"
+      />
       <DialogPrimitive.Content
         ref={ref}
         data-slot="dialog-content"

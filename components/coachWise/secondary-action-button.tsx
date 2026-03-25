@@ -33,7 +33,7 @@ export type SecondaryActionButtonProps =
   | SecondaryActionButtonButtonProps
 
 export const secondaryActionButtonClassName = cn(
-  buttonVariants({ variant: "outline", size: "default" }),
+  buttonVariants({ variant: "outline", size: "sm" }),
   "shrink-0 cursor-pointer rounded-sm border-neutral-200/80 bg-neutral-100/85 px-3 text-[13px] font-normal text-neutral-600 shadow-[0_1px_2px_rgba(15,23,42,0.03)] hover:border-neutral-300/80 hover:bg-neutral-200/55 hover:text-neutral-800"
 )
 
