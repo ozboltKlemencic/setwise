@@ -34,13 +34,16 @@ type ClientSubtabsNavProps = {
 }
 
 const clientSubtabsNavTriggerClassName =
-  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+  "h-8 bg-red-500 flex-none cursor-pointer gap-1 rounded-none border-0 bg-transparent px-0 py-1 text-[12px] font-normal leading-none text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
+
+const clientSubtabsNavActionButtonBaseClassName =
+  "h-8 cursor-pointer gap-1 px-2.5 text-[11px] font-medium [&_svg]:size-3"
 
 export const clientSubtabsNavActionButtonClassNames = {
   primary:
-    "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700",
+    `${clientSubtabsNavActionButtonBaseClassName} border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700`,
   secondary:
-    "rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900",
+    `${clientSubtabsNavActionButtonBaseClassName} rounded-sm border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50 hover:text-neutral-900`,
 } as const
 
 export function ClientSubtabsNavActionButton({
@@ -98,19 +101,19 @@ export function ClientSubtabsNav({
     Boolean(actions) || Boolean(actionButtons && actionButtons.length > 0)
 
   return (
-    <div className={cn("border-b border-neutral-200 bg-neutral-50", className)}>
+    <div className={cn("border-b border-neutral-200 bg-neutral-50  p-0", className)}>
       <div
         className={cn(
-          "flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center",
+          "flex min-h-8 flex-col gap-x-2 gap-y-1 px-4 py-1 lg:flex-row lg:items-center",
           hasItems ? "lg:justify-between" : "lg:justify-end"
         )}
       >
         {hasItems ? (
-          <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="min-w-0   overflow-x-auto p-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <TabsList
               variant="line"
               className={cn(
-                "h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0",
+                "h-auto w-max min-w-max  justify-start gap-x-3 rounded-none bg-transparent p-0",
                 tabsListClassName
               )}
             >

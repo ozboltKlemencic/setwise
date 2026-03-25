@@ -68,7 +68,7 @@ const clientProfileTabDefinitions: readonly ClientProfileTabDefinition[] = [
 ]
 
 const profileTabLinkClassName =
-  "inline-flex h-full flex-none items-center justify-center gap-1.5 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13px] font-normal whitespace-nowrap text-neutral-500 transition-colors hover:text-neutral-700 [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:text-neutral-400"
+  "inline-flex h-full flex-none cursor-pointer items-center justify-center gap-1.5 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13px] font-normal whitespace-nowrap text-neutral-500 transition-colors hover:text-neutral-700 [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:text-neutral-400"
 
 const profileTabLinkActiveClassName =
   "border-(--brand-500) text-neutral-900 [&_svg]:text-(--brand-600)"
