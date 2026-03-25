@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
+import type { ReactNode } from "react"
 import { CheckSquare, FileText, Maximize2, Pencil, X } from "lucide-react"
 
+import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -16,6 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 
 export type ClientNoteItem = {
   title: string
@@ -55,19 +58,23 @@ function NotesDialogCard({ note }: { note: ClientNoteItem }) {
 
 export function ClientNotesOverviewDialog({
   notes,
+  trigger,
 }: {
   notes: ClientNoteItem[]
+  trigger?: ReactNode
 }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
-        >
-          <Maximize2 className="size-3" />
-        </Button>
+        {trigger ?? (
+          <SecondaryActionButton
+            label={<span className="sr-only">Open notes overview</span>}
+            icon={Maximize2}
+            aria-label="Open notes overview"
+            className="size-7 px-0"
+            iconClassName="size-3.5"
+          />
+        )}
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
@@ -112,7 +119,11 @@ export function ClientNotesOverviewDialog({
   )
 }
 
-export function ClientAddNoteDialog() {
+export function ClientAddNoteDialog({
+  trigger,
+}: {
+  trigger?: ReactNode
+}) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState("")
   const [description, setDescription] = React.useState("")
@@ -140,14 +151,14 @@ export function ClientAddNoteDialog() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 rounded-md border-neutral-200 px-2.5 text-[13px] shadow-none"
-        >
-          <CheckSquare className="size-3.5" />
-          Add Note
-        </Button>
+        {trigger ?? (
+          <SecondaryActionButton
+            label="Add Note"
+            icon={CheckSquare}
+            className="h-8"
+            iconClassName="size-3.5"
+          />
+        )}
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
@@ -233,8 +244,14 @@ export function ClientAddNoteDialog() {
 
 export function ClientUpdateNoteDialog({
   note,
+  trigger,
+  triggerLabel,
+  showTriggerOnHover = false,
 }: {
   note: ClientNoteItem
+  trigger?: ReactNode
+  triggerLabel?: string
+  showTriggerOnHover?: boolean
 }) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState(note.title)
@@ -254,13 +271,19 @@ export function ClientUpdateNoteDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
-        >
-          <Pencil className="size-3" />
-        </Button>
+        {trigger ?? (
+          <SecondaryActionButton
+            label={<span className="sr-only">{triggerLabel ?? "Edit note"}</span>}
+            icon={Pencil}
+            aria-label={triggerLabel ?? "Edit note"}
+            className={cn(
+              "size-7 px-0",
+              showTriggerOnHover &&
+                "pointer-events-none opacity-0 transition-opacity group-hover/note:pointer-events-auto group-hover/note:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100"
+            )}
+            iconClassName="size-3"
+          />
+        )}
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}

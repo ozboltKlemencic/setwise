@@ -4,6 +4,7 @@ import {
   IconChefHat,
   IconClipboardList,
   IconInfoCircle,
+  IconPencil,
   IconPill,
   IconPlus,
   IconSettings,
@@ -15,6 +16,7 @@ import { usePathname } from "next/navigation"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { AddClientDialog } from "@/components/coachWise/clients/add-client-dialog"
+import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { isPathActive } from "@/i18n/navigation"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
@@ -105,6 +107,14 @@ export function SiteHeader() {
     ) ?? null
   const ActiveIcon = activeClient ? IconUsersGroup : activeRoute?.icon
   const headerAction = coachWiseHeaderActions[normalizedPathname]
+  const isClientInfoPage = /^\/beta-coach-wise\/clients\/\d+\/info$/.test(
+    normalizedPathname
+  )
+  const clientNameParts = activeClient
+    ? activeClient.header.split(" ")
+    : []
+  const clientFirstName = clientNameParts[0] ?? ""
+  const clientLastName = clientNameParts.slice(1).join(" ")
 
   return (
     <header
@@ -135,7 +145,22 @@ export function SiteHeader() {
             </h1>
           )}
         </div>
-        {headerAction ? (
+        {isClientInfoPage && activeClient ? (
+          <ClientEditDialog
+            firstName={clientFirstName}
+            lastName={clientLastName}
+            email={activeClient.email}
+            phone={activeClient.phone}
+            status={activeClient.type}
+            phase={activeClient.phase}
+            trigger={
+              <PrimaryActionButton
+                label="Edit Client"
+                icon={IconPencil}
+              />
+            }
+          />
+        ) : headerAction ? (
           normalizedPathname === "/beta-coach-wise/clients" ? (
             <AddClientDialog
               trigger={

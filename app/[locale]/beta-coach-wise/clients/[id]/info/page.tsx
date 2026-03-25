@@ -5,7 +5,6 @@ import {
   IconChefHat,
   IconClipboardCheck,
   IconClipboardList,
-  IconPencil,
   IconPill,
   IconPlus,
   IconRepeat,
@@ -18,7 +17,6 @@ import {
   ClientNotesOverviewDialog,
   ClientUpdateNoteDialog,
 } from "@/components/coachWise/clients/client-notes-overview-dialog"
-import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
 import { CreateAssignedCheckinDialog } from "@/components/coachWise/clients/client-checkins-panel"
 import { CreateNutritionPlanAction } from "@/components/coachWise/clients/client-nutrition-panel"
 import { AddProgramDialog } from "@/components/coachWise/programs/exercise-history-panel"
@@ -29,10 +27,8 @@ import {
   type CoachWiseClientProfile,
   getClientCoachingWeek,
   getClientContactEmail,
-  getClientContactPhone,
   getClientGoalSummary,
   getClientInjurySummary,
-  getClientNameParts,
   getClientTag,
 } from "@/lib/handlers/clients.handlers"
 import {
@@ -196,9 +192,6 @@ export default async function Page({ params }: ClientDetailParamsProps) {
     params
   )
   const contactEmail = getClientContactEmail(client.header)
-  const contactPhone = getClientContactPhone(clientId)
-  const { firstName: clientFirstName, lastName: clientLastName } =
-    getClientNameParts(client.header)
   const coachingWeek = getClientCoachingWeek(clientId)
   const clientTag = getClientTag(client.phase)
   const goalSummary = getClientGoalSummary(client.phase)
@@ -304,30 +297,9 @@ export default async function Page({ params }: ClientDetailParamsProps) {
         <div className="xl:h-[calc(100dvh-5.5rem)]">
           <Card className="flex h-full flex-col overflow-hidden gap-0! rounded-none border-t-0 border-l-0 border-neutral-200 bg-neutral-50 shadow-none">
             <CardHeader className="border-b border-neutral-200 px-3.5 py-2 ">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
-                  <IconClipboardList className="size-3.5 text-neutral-500" />
-                  <span>Client Details</span>
-                </div>
-                <ClientEditDialog
-                  firstName={clientFirstName}
-                  lastName={clientLastName}
-                  email={contactEmail}
-                  phone={contactPhone}
-                  status={client.type}
-                  phase={client.phase}
-                  trigger={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      className="size-8 rounded-md border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
-                      aria-label="Edit client"
-                    >
-                      <IconPencil className="size-4" />
-                    </Button>
-                  }
-                />
+              <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
+                <IconClipboardList className="size-3.5 text-neutral-500" />
+                <span>Client Details</span>
               </div>
             </CardHeader>
             <CardContent className="flex min-h-0 flex-1 pt-0! pb-0! flex-col p-0!">
@@ -366,13 +338,17 @@ export default async function Page({ params }: ClientDetailParamsProps) {
                   {generalNotes.map((note) => (
                     <div
                       key={note.title}
-                      className="rounded-xl border border-neutral-200 bg-white"
+                      className="group/note rounded-xl border border-neutral-200 bg-white"
                     >
                       <div className="flex items-start justify-between gap-3 px-3.5 pt-3.5">
                         <h3 className="text-[15px] font-semibold text-neutral-950">
                           {note.title}
                         </h3>
-                        <ClientUpdateNoteDialog note={note} />
+                        <ClientUpdateNoteDialog
+                          note={note}
+                          triggerLabel={`Edit ${note.title}`}
+                          showTriggerOnHover
+                        />
                       </div>
                       <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
                         {note.body.length > 1 ? (
