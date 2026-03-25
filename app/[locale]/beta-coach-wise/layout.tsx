@@ -30,13 +30,13 @@ export default function BetaCoachWiseLayout({
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        {!isClientDetailPage ? <SiteHeader /> : null}
         <div className="flex flex-1 flex-col bg-neutral-50">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div
               className={cn(
-                "flex flex-col gap-2 py-2 md:gap-2",
-                isClientDetailPage && "pt-0 md:pt-0"
+                "flex flex-col",
+                isClientDetailPage ? "gap-0 py-0" : "gap-2 py-2 md:gap-2"
               )}
             >
               {children}

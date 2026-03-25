@@ -1,3 +1,5 @@
+"use client"
+
 import type { MouseEventHandler, ReactNode } from "react"
 import Link from "next/link"
 import {
@@ -8,6 +10,7 @@ import {
   IconPill,
   IconRepeat,
 } from "@tabler/icons-react"
+import { usePathname } from "next/navigation"
 
 import {
   PrimaryActionButton,
@@ -15,16 +18,12 @@ import {
 import {
   SecondaryActionButton,
 } from "@/components/coachWise/secondary-action-button"
-import { routing } from "@/i18n/routing"
+import {
+  getClientProfileSectionHref,
+  type ClientProfileSection,
+} from "@/components/coachWise/clients/client-profile-routes"
+import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
 import { cn } from "@/lib/utils"
-
-export type ClientProfileSection =
-  | "info"
-  | "habbits"
-  | "checkins"
-  | "nutrition"
-  | "supplements"
-  | "programs"
 
 type ClientProfileTabDefinition = {
   label: string
@@ -46,7 +45,7 @@ export type TabsNavActionButtonProps = {
 type TabsNavProps = {
   locale: string
   clientId: number | string
-  activeSection: ClientProfileSection
+  activeSection?: ClientProfileSection
   actions?: ReactNode
   actionButtons?: TabsNavActionButtonProps[]
   className?: string
@@ -95,9 +94,9 @@ const profileTabLinkActiveClassName =
 const tabsNavActionButtonClassName =
   "gap-1 px-2.5 text-[13px] font-medium [&_svg]:size-3"
 
-function getLocalePrefix(locale: string) {
-  return locale === routing.defaultLocale ? "" : `/${locale}`
-}
+const clientProfileSections = clientProfileTabDefinitions.map(
+  (tab) => tab.value
+) as readonly ClientProfileSection[]
 
 function renderActionButtonContent(label: string, icon?: ReactNode) {
   return (
@@ -108,16 +107,21 @@ function renderActionButtonContent(label: string, icon?: ReactNode) {
   )
 }
 
-export function getClientProfileBasePath(locale: string, clientId: number | string) {
-  return `${getLocalePrefix(locale)}/beta-coach-wise/clients/${clientId}`
-}
+function resolveActiveSectionFromPathname(pathname: string): ClientProfileSection {
+  const normalizedPathname = normalizeCoachWisePathname(pathname)
+  const match = normalizedPathname.match(
+    /^\/beta-coach-wise\/clients\/[^/]+\/([^/?#]+)/
+  )
+  const matchedSection = match?.[1]
 
-export function getClientProfileSectionHref(
-  locale: string,
-  clientId: number | string,
-  section: ClientProfileSection
-) {
-  return `${getClientProfileBasePath(locale, clientId)}/${section}`
+  if (
+    matchedSection &&
+    clientProfileSections.includes(matchedSection as ClientProfileSection)
+  ) {
+    return matchedSection as ClientProfileSection
+  }
+
+  return "info"
 }
 
 export function TabsNav({
@@ -129,6 +133,9 @@ export function TabsNav({
   className,
   actionsClassName,
 }: TabsNavProps) {
+  const pathname = usePathname()
+  const resolvedActiveSection =
+    activeSection ?? resolveActiveSectionFromPathname(pathname)
   const hasActions =
     Boolean(actions) || Boolean(actionButtons && actionButtons.length > 0)
 
@@ -141,10 +148,11 @@ export function TabsNav({
               <Link
                 key={tab.value}
                 href={getClientProfileSectionHref(locale, clientId, tab.value)}
-                aria-current={activeSection === tab.value ? "page" : undefined}
+                aria-current={resolvedActiveSection === tab.value ? "page" : undefined}
                 className={cn(
                   profileTabLinkClassName,
-                  activeSection === tab.value && profileTabLinkActiveClassName
+                  resolvedActiveSection === tab.value &&
+                    profileTabLinkActiveClassName
                 )}
               >
                 {tab.icon}

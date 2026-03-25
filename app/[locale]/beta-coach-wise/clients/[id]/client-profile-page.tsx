@@ -16,7 +16,6 @@ import {
   Mail,
   Tag,
   UserRound,
-  MessageSquareText,
 } from "lucide-react"
 import { notFound } from "next/navigation"
 
@@ -34,9 +33,8 @@ import {
 import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
 import {
   getClientProfileBasePath,
-  TabsNav,
   type ClientProfileSection,
-} from "@/components/coachWise/clients/tabs-nav"
+} from "@/components/coachWise/clients/client-profile-routes"
 import {
   SubtabsNavActionButton,
   SubtabsNav,
@@ -84,7 +82,9 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
-import data from "../../data.json"
+import {
+  getCoachWiseClientById,
+} from "./client-profile-data"
 
 type ClientProfileSearchParams = {
   checkinTab?: string | string[]
@@ -151,12 +151,6 @@ function getNutritionFocus(phase?: string) {
         note: "Vzdrzevalni vnos za stabilno formo, dober recovery in enakomeren tempo.",
       }
   }
-}
-
-function getWhatsappLink(name: string) {
-  const message = `Pozdrav ${name}, javljam se glede tvojega check-ina.`
-
-  return `https://wa.me/?text=${encodeURIComponent(message)}`
 }
 
 function SectionBody({ children }: { children: ReactNode }) {
@@ -319,7 +313,7 @@ export default async function ClientProfilePage({
     notFound()
   }
 
-  const client = data.find((item) => item.id === clientId)
+  const client = getCoachWiseClientById(clientId)
   const resolvedCheckinTab =
     activeCheckinTab === "assigned" ? "assigned" : "submitted"
   const resolvedHabitTab =
@@ -558,29 +552,6 @@ export default async function ClientProfilePage({
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs value={section} className="min-w-0 w-full gap-0">
-        <TabsNav
-          locale={locale}
-          clientId={clientId}
-          activeSection={section}
-          actions={
-            <Button
-              asChild
-              variant="outline"
-              size="icon-sm"
-              className="rounded-sm border-neutral-200 bg-white px-2.5 py-2 text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
-            >
-              <a
-                href={getWhatsappLink(client.header)}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Odpri WhatsApp za ${client.header}`}
-              >
-                <MessageSquareText className="size-4" />
-              </a>
-            </Button>
-          }
-        />
-
         <TabsContent value="info" className="mt-0 space-y-0">
           <SectionBody>
             <div className="grid gap-4 p-4 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
