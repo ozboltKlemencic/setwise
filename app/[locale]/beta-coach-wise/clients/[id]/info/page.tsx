@@ -12,12 +12,8 @@ import {
 } from "@tabler/icons-react"
 import { FileText, Mail, Tag, UserRound } from "lucide-react"
 
-import {
-  ClientAddNoteDialog,
-  ClientNotesOverviewDialog,
-  ClientUpdateNoteDialog,
-} from "@/components/coachWise/clients/client-notes-overview-dialog"
 import { CreateAssignedCheckinDialog } from "@/components/coachWise/clients/client-checkins-panel"
+import { ClientNotesSection } from "@/components/coachWise/clients/client-notes-section"
 import { CreateNutritionPlanAction } from "@/components/coachWise/clients/client-nutrition-panel"
 import { AddProgramDialog } from "@/components/coachWise/programs/exercise-history-panel"
 import { Badge } from "@/components/ui/badge"
@@ -269,6 +265,7 @@ export default async function Page({ params }: ClientDetailParamsProps) {
   ]
   const generalNotes = [
     {
+      id: "coach-notes",
       title: "Coach Notes",
       body: [
         "Client responds well to concrete weekly tasks and shorter check-in feedback loops.",
@@ -278,12 +275,14 @@ export default async function Page({ params }: ClientDetailParamsProps) {
       private: false,
     },
     {
+      id: "goal",
       title: "Goal",
       body: [goalSummary],
       date: "16 November 2022",
       private: true,
     },
     {
+      id: "injuries",
       title: "Injuries",
       body: [injurySummary],
       date: "16 November 2022",
@@ -296,7 +295,7 @@ export default async function Page({ params }: ClientDetailParamsProps) {
       <div className="grid gap-0 xl:grid-cols-[1.05fr_minmax(0,1.6fr)]">
         <div className="xl:h-[calc(100dvh-5.5rem)]">
           <Card className="flex h-full flex-col overflow-hidden gap-0! rounded-none border-t-0 border-l-0 border-neutral-200 bg-neutral-50 shadow-none">
-            <CardHeader className="border-b border-neutral-200 px-3.5 py-2 ">
+            <CardHeader className="border-b border-neutral-200 bg-neutral-100/70 px-3.5 py-2 ">
               <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
                 <IconClipboardList className="size-3.5 text-neutral-500" />
                 <span>Client Details</span>
@@ -322,57 +321,7 @@ export default async function Page({ params }: ClientDetailParamsProps) {
                 ))}
               </div>
 
-              <div className="flex min-h-0 flex-1 flex-col border-t border-neutral-200">
-                <div className="flex items-center justify-between gap-3 border-b border-neutral-200 px-3.5 py-2.5">
-                  <div className="flex items-center gap-2 text-[14px] font-medium text-neutral-900">
-                    <FileText className="size-3.5 text-neutral-500" />
-                    <span>Notes</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <ClientNotesOverviewDialog notes={generalNotes} />
-                    <ClientAddNoteDialog />
-                  </div>
-                </div>
-
-                <div className="flex-1 min-h-0 space-y-3 overflow-y-auto px-3.5 py-3 pr-2.5 [scrollbar-color:rgba(212,212,216,0.65)_transparent] [scrollbar-width:thin]">
-                  {generalNotes.map((note) => (
-                    <div
-                      key={note.title}
-                      className="group/note rounded-xl border border-neutral-200 bg-white"
-                    >
-                      <div className="flex items-start justify-between gap-3 px-3.5 pt-3.5">
-                        <h3 className="text-[15px] font-semibold text-neutral-950">
-                          {note.title}
-                        </h3>
-                        <ClientUpdateNoteDialog
-                          note={note}
-                          triggerLabel={`Edit ${note.title}`}
-                          showTriggerOnHover
-                        />
-                      </div>
-                      <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
-                        {note.body.length > 1 ? (
-                          note.body.map((line) => (
-                            <p key={line} className="pl-4 -indent-4">
-                              - {line}
-                            </p>
-                          ))
-                        ) : (
-                          <p>{note.body[0]}</p>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between rounded-b-xl border-t border-neutral-200 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
-                        <span>{note.date}</span>
-                        {note.private ? (
-                          <Badge className="rounded-md border border-neutral-300 bg-neutral-800 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase shadow-none hover:bg-neutral-800">
-                            Private
-                          </Badge>
-                        ) : null}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <ClientNotesSection initialNotes={generalNotes} />
             </CardContent>
           </Card>
         </div>

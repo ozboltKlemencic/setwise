@@ -4,14 +4,15 @@ import * as React from "react"
 import type { ReactNode } from "react"
 import { CheckSquare, FileText, Maximize2, Pencil, X } from "lucide-react"
 
+import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,15 +22,56 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 export type ClientNoteItem = {
+  id: string
   title: string
   body: string[]
   date: string
   private: boolean
 }
 
+function useDialogCloseOnXOnly() {
+  const handleOverlayClick = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault()
+      event.stopPropagation()
+    },
+    []
+  )
+
+  return {
+    overlayProps: {
+      onClick: handleOverlayClick,
+      onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation()
+      },
+      onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => {
+        event.stopPropagation()
+      },
+    },
+    onClick: (event: React.MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation()
+    },
+    onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => {
+      event.stopPropagation()
+    },
+    onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => {
+      event.stopPropagation()
+    },
+    onPointerDownOutside: (event: Event) => {
+      event.preventDefault()
+    },
+    onInteractOutside: (event: Event) => {
+      event.preventDefault()
+    },
+    onEscapeKeyDown: (event: KeyboardEvent) => {
+      event.preventDefault()
+    },
+  }
+}
+
 function NotesDialogCard({ note }: { note: ClientNoteItem }) {
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white">
+    <div className="rounded-xl border border-neutral-200 bg-neutral-100/75">
       <div className="px-3.5 pt-3.5">
         <h3 className="text-[15px] font-semibold text-neutral-950">{note.title}</h3>
       </div>
@@ -44,13 +86,8 @@ function NotesDialogCard({ note }: { note: ClientNoteItem }) {
           <p>{note.body[0]}</p>
         )}
       </div>
-      <div className="flex items-center justify-between rounded-b-xl border-t border-neutral-200 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
+      <div className="rounded-b-xl border-t border-neutral-200 px-3.5 py-2.5 text-[12.5px] text-neutral-500">
         <span>{note.date}</span>
-        {note.private ? (
-          <Badge className="rounded-md border border-neutral-300 bg-neutral-800 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase shadow-none hover:bg-neutral-800">
-            Private
-          </Badge>
-        ) : null}
       </div>
     </div>
   )
@@ -63,8 +100,11 @@ export function ClientNotesOverviewDialog({
   notes: ClientNoteItem[]
   trigger?: ReactNode
 }) {
+  const [open, setOpen] = React.useState(false)
+  const closeOnlyOnXDialogProps = useDialogCloseOnXOnly()
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger ?? (
           <SecondaryActionButton
@@ -78,42 +118,45 @@ export function ClientNotesOverviewDialog({
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="overflow-hidden rounded-xl border-neutral-200 p-0 shadow-xl sm:max-w-[780px]"
+        {...closeOnlyOnXDialogProps}
+        className={cn(
+          overflowActionsMenuSurfaceClassName,
+          "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 bg-white p-0 shadow-[0_24px_80px_rgba(15,23,42,0.12)] sm:max-w-[720px]"
+        )}
       >
-        <DialogHeader className="border-b border-neutral-200 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <DialogTitle className="flex items-center gap-2 text-[15px] font-medium text-neutral-950">
-              <FileText className="size-4 text-neutral-500" />
-              <span>Note</span>
-            </DialogTitle>
-            <DialogClose asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              >
-                <X className="size-4" />
-              </Button>
-            </DialogClose>
+        <DialogClose asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="absolute top-3 right-3 z-20 size-8 cursor-pointer rounded-md text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+          >
+            <X className="size-4" />
+            <span className="sr-only">Close dialog</span>
+          </Button>
+        </DialogClose>
+
+        <DialogHeader className="gap-0 border-b border-neutral-200/80 px-5 pt-5 pb-4 text-left">
+          <div className="flex items-start gap-3 pr-10">
+            <div className="flex size-10 items-center justify-center rounded-md border border-neutral-200/80 bg-neutral-50/90 text-neutral-600">
+              <FileText className="size-[18px]" />
+            </div>
+            <div className="space-y-1">
+              <DialogTitle className="text-[16px] font-semibold text-neutral-950">
+                Client notes
+              </DialogTitle>
+              <DialogDescription className="text-[13px] leading-5 text-neutral-500">
+                Review all saved notes and coaching context for this client.
+              </DialogDescription>
+            </div>
           </div>
         </DialogHeader>
 
-        <div className="max-h-[70vh] space-y-4 overflow-y-auto px-4 py-4 [scrollbar-width:thin]">
+        <div className="max-h-[70vh] space-y-4 overflow-y-auto px-5 py-4 [scrollbar-width:thin]">
           {notes.map((note) => (
             <NotesDialogCard key={`${note.title}-${note.date}`} note={note} />
           ))}
         </div>
-
-        <DialogFooter className="border-t border-neutral-200 px-4 py-3 sm:justify-start">
-          <DialogClose asChild>
-            <Button
-              variant="ghost"
-              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
@@ -121,18 +164,20 @@ export function ClientNotesOverviewDialog({
 
 export function ClientAddNoteDialog({
   trigger,
+  onAdd,
 }: {
   trigger?: ReactNode
+  onAdd?: (values: { title: string; description: string }) => void | Promise<void>
 }) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState("")
   const [description, setDescription] = React.useState("")
-  const [isPrivate, setIsPrivate] = React.useState(false)
+  const [isPending, setIsPending] = React.useState(false)
+  const closeOnlyOnXDialogProps = useDialogCloseOnXOnly()
 
   const resetForm = React.useCallback(() => {
     setTitle("")
     setDescription("")
-    setIsPrivate(false)
   }, [])
 
   const handleOpenChange = React.useCallback(
@@ -147,6 +192,26 @@ export function ClientAddNoteDialog({
   )
 
   const canSubmit = title.trim().length > 0 && description.trim().length > 0
+  const handleCancel = React.useCallback(() => {
+    resetForm()
+  }, [resetForm])
+  const handleSubmit = React.useCallback(async () => {
+    if (!canSubmit) {
+      return
+    }
+
+    setIsPending(true)
+
+    try {
+      await onAdd?.({
+        title: title.trim(),
+        description: description.trim(),
+      })
+      handleOpenChange(false)
+    } finally {
+      setIsPending(false)
+    }
+  }, [canSubmit, description, handleOpenChange, onAdd, title])
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -162,27 +227,47 @@ export function ClientAddNoteDialog({
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="overflow-hidden rounded-xl border-neutral-200 p-0 shadow-xl sm:max-w-[700px]"
+        {...closeOnlyOnXDialogProps}
+        className={cn(
+          overflowActionsMenuSurfaceClassName,
+          "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 bg-white p-0 shadow-[0_24px_80px_rgba(15,23,42,0.12)] sm:max-w-[520px]"
+        )}
       >
-        <DialogHeader className="border-b border-neutral-200 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <DialogTitle className="flex items-center gap-2 text-[15px] font-medium text-neutral-950">
-              <CheckSquare className="size-4 text-neutral-500" />
-              <span>Add Note</span>
-            </DialogTitle>
-            <DialogClose asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              >
-                <X className="size-4" />
-              </Button>
-            </DialogClose>
+        <DialogClose asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="absolute top-3 right-3 z-20 size-8 cursor-pointer rounded-md text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+          >
+            <X className="size-4" />
+            <span className="sr-only">Close dialog</span>
+          </Button>
+        </DialogClose>
+
+        <DialogHeader className="gap-0 border-b border-neutral-200/80 px-5 pt-5 pb-4 text-left">
+          <div className="flex items-start gap-3 pr-10">
+            <div className="flex size-10 items-center justify-center rounded-md border border-neutral-200/80 bg-neutral-50/90 text-neutral-600">
+              <CheckSquare className="size-[18px]" />
+            </div>
+            <div className="space-y-1">
+              <DialogTitle className="text-[16px] font-semibold text-neutral-950">
+                Add note
+              </DialogTitle>
+              <DialogDescription className="text-[13px] leading-5 text-neutral-500">
+                Add a new internal note with the context you want to keep for this client.
+              </DialogDescription>
+            </div>
           </div>
         </DialogHeader>
 
-        <div className="space-y-5 px-4 py-4">
+        <form
+          className="space-y-5 px-5 py-4"
+          onSubmit={(event) => {
+            event.preventDefault()
+            void handleSubmit()
+          }}
+        >
           <div className="space-y-2">
             <label className="text-[13px] font-medium text-neutral-800">
               Title <span className="text-rose-500">*</span>
@@ -207,36 +292,19 @@ export function ClientAddNoteDialog({
             />
           </div>
 
-          <label className="flex items-center gap-2.5 text-[14px] text-neutral-900">
-            <Checkbox
-              checked={isPrivate}
-              onCheckedChange={(checked) => setIsPrivate(checked === true)}
-              className="rounded-[4px] border-neutral-300 data-[state=checked]:border-brand-600 data-[state=checked]:bg-brand-600"
+          <DialogFooter className="border-t border-neutral-200/80 px-0 pt-4 sm:flex-row sm:items-center sm:justify-end">
+            <SecondaryActionButton
+              label="Cancel"
+              onClick={handleCancel}
+              disabled={isPending}
             />
-            <span>
-              Private Note <span className="text-neutral-500">(only visible to you)</span>
-            </span>
-          </label>
-        </div>
-
-        <DialogFooter className="border-t border-neutral-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <DialogClose asChild>
-            <Button
-              variant="ghost"
-              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              Close
-            </Button>
-          </DialogClose>
-          <Button
-            type="button"
-            disabled={!canSubmit}
-            onClick={() => handleOpenChange(false)}
-            className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
-          >
-            Add Note
-          </Button>
-        </DialogFooter>
+            <PrimaryActionButton
+              type="submit"
+              label="Add Note"
+              disabled={!canSubmit || isPending}
+            />
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )
@@ -247,26 +315,49 @@ export function ClientUpdateNoteDialog({
   trigger,
   triggerLabel,
   showTriggerOnHover = false,
+  onUpdate,
 }: {
   note: ClientNoteItem
   trigger?: ReactNode
   triggerLabel?: string
   showTriggerOnHover?: boolean
+  onUpdate?: (values: { title: string; description: string }) => void | Promise<void>
 }) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState(note.title)
   const [description, setDescription] = React.useState(note.body.join("\n"))
-  const [isPrivate, setIsPrivate] = React.useState(note.private)
+  const [isPending, setIsPending] = React.useState(false)
+  const closeOnlyOnXDialogProps = useDialogCloseOnXOnly()
 
   React.useEffect(() => {
     if (open) {
       setTitle(note.title)
       setDescription(note.body.join("\n"))
-      setIsPrivate(note.private)
     }
   }, [note, open])
 
   const canSubmit = title.trim().length > 0 && description.trim().length > 0
+  const handleCancel = React.useCallback(() => {
+    setTitle(note.title)
+    setDescription(note.body.join("\n"))
+  }, [note.body, note.title])
+  const handleSubmit = React.useCallback(async () => {
+    if (!canSubmit) {
+      return
+    }
+
+    setIsPending(true)
+
+    try {
+      await onUpdate?.({
+        title: title.trim(),
+        description: description.trim(),
+      })
+      setOpen(false)
+    } finally {
+      setIsPending(false)
+    }
+  }, [canSubmit, description, onUpdate, title])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -287,27 +378,41 @@ export function ClientUpdateNoteDialog({
       </DialogTrigger>
       <DialogContent
         showCloseButton={false}
-        className="overflow-hidden rounded-xl border-neutral-200 p-0 shadow-xl sm:max-w-[700px]"
+        {...closeOnlyOnXDialogProps}
+        className={cn(
+          overflowActionsMenuSurfaceClassName,
+          "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 bg-white p-0 shadow-[0_24px_80px_rgba(15,23,42,0.12)] sm:max-w-[520px]"
+        )}
       >
-        <DialogHeader className="border-b border-neutral-200 px-4 py-3">
-          <div className="flex items-center justify-between gap-3">
-            <DialogTitle className="flex items-center gap-2 text-[15px] font-medium text-neutral-950">
-              <CheckSquare className="size-4 text-neutral-500" />
-              <span>Update Note</span>
-            </DialogTitle>
-            <DialogClose asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              >
-                <X className="size-4" />
-              </Button>
-            </DialogClose>
+        <DialogClose asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="absolute top-3 right-3 z-20 size-8 cursor-pointer rounded-md text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+          >
+            <X className="size-4" />
+            <span className="sr-only">Close dialog</span>
+          </Button>
+        </DialogClose>
+
+        <DialogHeader className="gap-0 border-b border-neutral-200/80 px-5 pt-5 pb-4 text-left">
+          <div className="flex items-start gap-3 pr-10">
+            <div className="flex size-10 items-center justify-center rounded-md border border-neutral-200/80 bg-neutral-50/90 text-neutral-600">
+              <Pencil className="size-[18px]" />
+            </div>
+            <div className="space-y-1">
+              <DialogTitle className="text-[16px] font-semibold text-neutral-950">
+                Edit note
+              </DialogTitle>
+              <DialogDescription className="text-[13px] leading-5 text-neutral-500">
+                Update the title and note content for this saved client note.
+              </DialogDescription>
+            </div>
           </div>
         </DialogHeader>
 
-        <div className="space-y-5 px-4 py-4">
+        <div className="space-y-5 px-5 py-4">
           <div className="space-y-2">
             <label className="text-[13px] font-medium text-neutral-800">
               Title <span className="text-rose-500">*</span>
@@ -330,42 +435,22 @@ export function ClientUpdateNoteDialog({
             />
           </div>
 
-          <label className="flex items-center gap-2.5 text-[14px] text-neutral-900">
-            <Checkbox
-              checked={isPrivate}
-              onCheckedChange={(checked) => setIsPrivate(checked === true)}
-              className="rounded-[4px] border-neutral-300 data-[state=checked]:border-brand-600 data-[state=checked]:bg-brand-600"
-            />
-            <span>
-              Private Note <span className="text-neutral-500">(only visible to you)</span>
-            </span>
-          </label>
         </div>
 
-        <DialogFooter className="border-t border-neutral-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-          <DialogClose asChild>
-            <Button
-              variant="ghost"
-              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              Close
-            </Button>
-          </DialogClose>
+        <DialogFooter className="border-t border-neutral-200/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-end">
           <div className="flex items-center gap-2">
-            <Button
+            <SecondaryActionButton
+              label="Cancel"
+              onClick={handleCancel}
+              disabled={isPending}
+            />
+            <PrimaryActionButton
               type="button"
-              className="rounded-sm border-transparent bg-rose-500 text-white shadow-none hover:bg-rose-600"
-            >
-              Delete
-            </Button>
-            <Button
-              type="button"
-              disabled={!canSubmit}
-              onClick={() => setOpen(false)}
-              className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700 disabled:opacity-45"
-            >
-              Update Note
-            </Button>
+              label="Update Note"
+              disabled={!canSubmit || isPending}
+              onClick={() => void handleSubmit()}
+              className="border border-brand-600 bg-brand-600 hover:border-brand-700 hover:bg-brand-700 disabled:opacity-45"
+            />
           </div>
         </DialogFooter>
       </DialogContent>
