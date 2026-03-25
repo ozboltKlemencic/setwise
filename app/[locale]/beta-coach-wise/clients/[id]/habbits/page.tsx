@@ -1,6 +1,9 @@
 import { ClientHabitsPanel } from "@/components/coachWise/clients/client-habits-panel"
 
-import { getSingleSearchParam, type ClientDetailPageProps } from "../_lib/client-detail-page"
+import {
+  getSingleSearchParam,
+  type ClientDetailPageProps,
+} from "@/lib/handlers/client-detail.handlers"
 
 type HabitsSearchParams = {
   habitTab?: string | string[]

@@ -21,7 +21,7 @@ import {
   getSingleSearchParam,
   resolveClientDetailContext,
   type ClientDetailPageProps,
-} from "../_lib/client-detail-page"
+} from "@/lib/handlers/client-detail.handlers"
 
 type ProgramsSearchParams = {
   programTab?: string | string[]

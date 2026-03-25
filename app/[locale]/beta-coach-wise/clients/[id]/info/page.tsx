@@ -13,7 +13,6 @@ import {
 } from "@tabler/icons-react"
 import { FileText, Mail, Tag, UserRound } from "lucide-react"
 
-import type { CoachWiseClientProfile } from "../client-profile-data"
 import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
@@ -27,6 +26,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
+  type CoachWiseClientProfile,
   getClientCoachingWeek,
   getClientContactEmail,
   getClientContactPhone,
@@ -35,12 +35,11 @@ import {
   getClientNameParts,
   getClientTag,
 } from "@/lib/handlers/clients.handlers"
-import { cn } from "@/lib/utils"
-
 import {
   resolveClientDetailContext,
   type ClientDetailParamsProps,
-} from "../_lib/client-detail-page"
+} from "@/lib/handlers/client-detail.handlers"
+import { cn } from "@/lib/utils"
 
 type InfoCreateCardTone =
   | "programs"

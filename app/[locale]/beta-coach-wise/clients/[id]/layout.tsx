@@ -5,11 +5,10 @@ import { notFound } from "next/navigation"
 import { TabsNav } from "@/components/coachWise/clients/tabs-nav"
 import { SiteHeader } from "@/components/coachWise/sidebar/site-header"
 import { Button } from "@/components/ui/button"
-
 import {
   getClientWhatsappLink,
   getCoachWiseClientById,
-} from "./client-profile-data"
+} from "@/lib/handlers/clients.handlers"
 
 type Props = {
   children: ReactNode

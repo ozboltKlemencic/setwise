@@ -3,8 +3,7 @@ import "server-only"
 import { notFound } from "next/navigation"
 
 import { getClientProfileBasePath } from "@/components/coachWise/clients/client-profile-routes"
-
-import { getCoachWiseClientById } from "../client-profile-data"
+import { getCoachWiseClientById } from "@/lib/handlers/clients.handlers"
 
 export type ClientDetailSearchParams = Record<
   string,
@@ -46,8 +45,6 @@ export async function resolveClientDetailContext(params: ClientDetailParams) {
   }
 }
 
-export function getSingleSearchParam(
-  value?: string | string[]
-) {
+export function getSingleSearchParam(value?: string | string[]) {
   return Array.isArray(value) ? value[0] : value
 }
