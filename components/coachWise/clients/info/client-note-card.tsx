@@ -24,7 +24,7 @@ export function ClientNoteCard({
       <div className="px-3.5 pt-3.5">
         <h3 className="text-[15px] font-semibold text-neutral-950">{note.title}</h3>
       </div>
-      <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] leading-6 text-neutral-700">
+      <div className="space-y-1.5 px-3.5 pb-3.5 pt-2 text-[13.5px] bg-neutral-50 leading-6 text-neutral-700">
         {note.body.length > 1 ? (
           note.body.map((line) => (
             <p key={line} className="pl-4 -indent-4">
