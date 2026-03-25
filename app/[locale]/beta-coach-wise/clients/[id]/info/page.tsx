@@ -26,6 +26,15 @@ import { AddProgramDialog } from "@/components/coachWise/programs/exercise-histo
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import {
+  getClientCoachingWeek,
+  getClientContactEmail,
+  getClientContactPhone,
+  getClientGoalSummary,
+  getClientInjurySummary,
+  getClientNameParts,
+  getClientTag,
+} from "@/lib/handlers/clients.handlers"
 import { cn } from "@/lib/utils"
 
 import {
@@ -118,44 +127,6 @@ function InfoCreateCardContent({
   )
 }
 
-function getClientContactEmail(client: CoachWiseClientProfile) {
-  return `${client.header.toLowerCase().replaceAll(" ", ".")}@hubfit.io`
-}
-
-function getClientContactPhone(clientId: number) {
-  return `+386 40 ${String(120 + clientId).padStart(3, "0")} ${String(310 + clientId).padStart(3, "0")}`
-}
-
-function getClientGoalSummary(client: CoachWiseClientProfile) {
-  switch (client.phase) {
-    case "Bulk":
-      return "Wants to improve strength numbers, stay consistent with food quality and keep recovery high through the week."
-    case "Cut":
-      return "Wants to go down from 95kg to 75kg while keeping training performance stable and energy predictable."
-    default:
-      return "Wants to maintain body composition, keep routine stable and improve overall daily energy."
-  }
-}
-
-function getClientInjurySummary(client: CoachWiseClientProfile) {
-  if (client.phase === "Bulk") {
-    return "Sensitive left shoulder after heavier pressing days, but no pain in daily movement. Extra warm-up remains important."
-  }
-
-  return "Occasional lower-back tightness after longer sitting blocks. Mobility before training keeps symptoms under control."
-}
-
-function getClientTag(client: CoachWiseClientProfile) {
-  switch (client.phase) {
-    case "Bulk":
-      return "Strength Focus"
-    case "Cut":
-      return "Fat Loss"
-    default:
-      return "In-Person"
-  }
-}
-
 function getPhaseBadgeClassName(phase?: string) {
   switch (phase) {
     case "Bulk":
@@ -225,14 +196,14 @@ export default async function Page({ params }: ClientDetailParamsProps) {
   const { client, clientId, clientBasePath } = await resolveClientDetailContext(
     params
   )
-  const contactEmail = getClientContactEmail(client)
+  const contactEmail = getClientContactEmail(client.header)
   const contactPhone = getClientContactPhone(clientId)
-  const [clientFirstName, ...clientLastNameParts] = client.header.split(" ")
-  const clientLastName = clientLastNameParts.join(" ")
-  const coachingWeek = `Week ${((clientId + 10) % 13) + 1} of 13`
-  const clientTag = getClientTag(client)
-  const goalSummary = getClientGoalSummary(client)
-  const injurySummary = getClientInjurySummary(client)
+  const { firstName: clientFirstName, lastName: clientLastName } =
+    getClientNameParts(client.header)
+  const coachingWeek = getClientCoachingWeek(clientId)
+  const clientTag = getClientTag(client.phase)
+  const goalSummary = getClientGoalSummary(client.phase)
+  const injurySummary = getClientInjurySummary(client.phase)
   const clientDetailRows = [
     {
       icon: <UserRound className="size-4" />,
