@@ -6,7 +6,6 @@ import {
   IconChefHat,
   IconClipboardCheck,
   IconClipboardList,
-  IconInfoCircle,
   IconPencil,
   IconPill,
   IconPlus,
@@ -33,6 +32,11 @@ import {
   ClientHabitsPanel,
 } from "@/components/coachWise/clients/client-habits-panel"
 import { ClientEditDialog } from "@/components/coachWise/clients/client-edit-dialog"
+import {
+  ClientProfileTabsNav,
+  getClientProfileBasePath,
+  type ClientProfileSection,
+} from "@/components/coachWise/clients/client-profile-tabs-nav"
 import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
@@ -73,7 +77,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { routing } from "@/i18n/routing"
 import { cn } from "@/lib/utils"
 
 import data from "../../data.json"
@@ -95,56 +98,9 @@ export type ClientProfileRouteProps = {
   searchParams: Promise<ClientProfileSearchParams>
 }
 
-export type ClientProfileSection =
-  | "info"
-  | "habbits"
-  | "checkins"
-  | "nutrition"
-  | "supplements"
-  | "programs"
-
 type Props = ClientProfileRouteProps & {
   section: ClientProfileSection
 }
-
-const profileTabs = [
-  {
-    label: "Info",
-    value: "info",
-    icon: <IconInfoCircle className="size-4" />,
-  },
-  {
-    label: "Habbits",
-    value: "habbits",
-    icon: <IconRepeat className="size-4" />,
-  },
-  {
-    label: "Check-ins",
-    value: "checkins",
-    icon: <IconClipboardCheck className="size-4" />,
-  },
-  {
-    label: "Nutrition",
-    value: "nutrition",
-    icon: <IconChefHat className="size-4" />,
-  },
-  {
-    label: "Supplements",
-    value: "supplements",
-    icon: <IconPill className="size-4" />,
-  },
-  {
-    label: "Programs",
-    value: "programs",
-    icon: <IconClipboardList className="size-4" />,
-  },
-] as const
-
-const profileTabLinkClassName =
-  "inline-flex h-full flex-none items-center justify-center gap-1.5 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal whitespace-nowrap text-neutral-500 transition-colors hover:text-neutral-700 [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:text-neutral-400"
-
-const profileTabLinkActiveClassName =
-  "border-(--brand-500) text-neutral-900 [&_svg]:text-(--brand-600)"
 
 const primaryActionButtonClassName =
   "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
@@ -202,18 +158,6 @@ function getWhatsappLink(name: string) {
   const message = `Pozdrav ${name}, javljam se glede tvojega check-ina.`
 
   return `https://wa.me/?text=${encodeURIComponent(message)}`
-}
-
-function getLocalePrefix(locale: string) {
-  return locale === routing.defaultLocale ? "" : `/${locale}`
-}
-
-function getClientSectionHref(
-  locale: string,
-  clientId: number,
-  section: ClientProfileSection
-) {
-  return `${getLocalePrefix(locale)}/beta-coach-wise/clients/${clientId}/${section}`
 }
 
 function SectionSubHeader({
@@ -459,7 +403,7 @@ export default async function ClientProfilePage({
     notFound()
   }
 
-  const clientBasePath = `${getLocalePrefix(locale)}/beta-coach-wise/clients/${clientId}`
+  const clientBasePath = getClientProfileBasePath(locale, clientId)
 
   if (assignedCheckinId) {
     return (
@@ -678,48 +622,28 @@ export default async function ClientProfilePage({
   return (
     <section className="min-w-0 bg-neutral-50">
       <Tabs value={section} className="min-w-0 w-full gap-0">
-        <div className="border-b border-neutral-200 bg-neutral-50">
-          <div className="flex min-w-0 items-center">
-            <div className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              <nav
-                aria-label="Client profile sections"
-                className="flex min-w-max items-center"
+        <ClientProfileTabsNav
+          locale={locale}
+          clientId={clientId}
+          activeSection={section}
+          actions={
+            <Button
+              asChild
+              variant="outline"
+              size="icon-sm"
+              className="rounded-sm border-neutral-200 bg-white px-2.5 py-2 text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900"
+            >
+              <a
+                href={getWhatsappLink(client.header)}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Odpri WhatsApp za ${client.header}`}
               >
-                {profileTabs.map((tab) => (
-                  <Link
-                    key={tab.value}
-                    href={getClientSectionHref(locale, clientId, tab.value)}
-                    aria-current={section === tab.value ? "page" : undefined}
-                    className={cn(
-                      profileTabLinkClassName,
-                      section === tab.value && profileTabLinkActiveClassName
-                    )}
-                  >
-                    {tab.icon}
-                    {tab.label}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-            <div className="flex shrink-0 items-center self-stretch pr-3">
-              <Button
-                asChild
-                variant="outline"
-                size="icon-sm"
-                className=" rounded-sm border-neutral-200 bg-white text-neutral-600 shadow-none hover:bg-neutral-50 hover:text-neutral-900 px-2.5 py-2 "
-              >
-                <a
-                  href={getWhatsappLink(client.header)}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Odpri WhatsApp za ${client.header}`}
-                >
-                  <MessageSquareText className="size-4" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
+                <MessageSquareText className="size-4" />
+              </a>
+            </Button>
+          }
+        />
 
         <TabsContent value="info" className="mt-0 space-y-0">
           <SectionBody>
