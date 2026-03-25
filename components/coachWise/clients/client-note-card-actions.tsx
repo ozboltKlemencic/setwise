@@ -28,7 +28,7 @@ export function ClientNoteCardActions({
   onDelete,
 }: ClientNoteCardActionsProps) {
   return (
-    <>
+    <div className="flex items-center gap-1">
       <ClientUpdateNoteDialog
         note={note}
         triggerLabel={`Edit ${note.title}`}
@@ -66,6 +66,6 @@ export function ClientNoteCardActions({
           </Button>
         }
       />
-    </>
+    </div>
   )
 }
