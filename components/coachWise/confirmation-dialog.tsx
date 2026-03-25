@@ -87,7 +87,7 @@ export function CoachWiseConfirmationDialog({
         }}
         className={cn(
           overflowActionsMenuSurfaceClassName,
-          "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 p-0 pt-2 sm:max-w-[360px]",
+          "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 p-0 pt-2 sm:max-w-[400px]",
           isDestructive
             ? "bg-white shadow-[0_24px_80px_rgba(244,63,94,0.16)]"
             : "bg-white shadow-[0_24px_80px_rgba(15,23,42,0.12)]"
@@ -137,7 +137,7 @@ export function CoachWiseConfirmationDialog({
               </>
             ) : null}
           </div>
-          <DialogTitle className="text-[22px] font-semibold text-center text-neutral-950">
+          <DialogTitle className="text-[22px]  px-2 font-semibold text-center text-neutral-950">
             {title}
           </DialogTitle>
           <DialogDescription className="mt-1 max-w-[260px] text-center text-[13px] leading-5 text-neutral-500">
@@ -145,7 +145,7 @@ export function CoachWiseConfirmationDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="grid grid-cols-2 gap-3 px-6 pb-4 pt-2 sm:grid-cols-2">
+        <DialogFooter className="grid grid-cols-2 gap-3 px-6 pb-4 pt-2.5 sm:grid-cols-2">
           <DialogClose asChild>
             <Button
               type="button"
