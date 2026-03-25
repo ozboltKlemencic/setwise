@@ -76,11 +76,13 @@ function DatePickerField({
   value,
   onChange,
   disabled,
+  container,
 }: {
   label: string
   value: Date | undefined
   onChange: (value: Date | undefined) => void
   disabled?: (date: Date) => boolean
+  container?: HTMLElement | null
 }) {
   const [open, setOpen] = React.useState(false)
   const [month, setMonth] = React.useState<Date | undefined>(value ?? new Date())
@@ -114,6 +116,7 @@ function DatePickerField({
             </Button>
           </PopoverTrigger>
           <PopoverContent
+            container={container}
             align="end"
             sideOffset={8}
             className="w-auto overflow-hidden rounded-sm border-neutral-200/80 p-0 shadow-lg shadow-black/5"
@@ -148,6 +151,7 @@ export function AddClientDialog({
   const [sendLoginEmail, setSendLoginEmail] = React.useState(true)
   const [startDate, setStartDate] = React.useState<Date | undefined>()
   const [endDate, setEndDate] = React.useState<Date | undefined>()
+  const [contentElement, setContentElement] = React.useState<HTMLDivElement | null>(null)
 
   const handleOverlayClick = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -173,6 +177,7 @@ export function AddClientDialog({
         )}
       </DialogTrigger>
       <DialogContent
+        ref={setContentElement}
         showCloseButton={false}
         overlayProps={{
           onClick: handleOverlayClick,
@@ -263,6 +268,7 @@ export function AddClientDialog({
                 <SelectValue placeholder="Select tag" />
               </SelectTrigger>
               <SelectContent
+                container={contentElement}
                 align="start"
                 position="popper"
                 className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
@@ -281,6 +287,7 @@ export function AddClientDialog({
                 <SelectValue placeholder="Select questionnaire" />
               </SelectTrigger>
               <SelectContent
+                container={contentElement}
                 align="start"
                 position="popper"
                 className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
@@ -299,6 +306,7 @@ export function AddClientDialog({
                 <SelectValue placeholder="Select onboarding flow" />
               </SelectTrigger>
               <SelectContent
+                container={contentElement}
                 align="start"
                 position="popper"
                 className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
@@ -334,6 +342,7 @@ export function AddClientDialog({
             {hasCustomDates ? (
               <div className="grid gap-3 pl-7 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
                 <DatePickerField
+                  container={contentElement}
                   label="Start date"
                   value={startDate}
                   onChange={(date) => {
@@ -348,6 +357,7 @@ export function AddClientDialog({
                   <IconArrowRight className="size-4" />
                 </div>
                 <DatePickerField
+                  container={contentElement}
                   label="End date"
                   value={endDate}
                   disabled={(date) => Boolean(startDate && date < startDate)}

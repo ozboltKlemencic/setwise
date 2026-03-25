@@ -74,6 +74,7 @@ export function ClientEditDialog({
 }: ClientEditDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [isPending, setIsPending] = React.useState(false)
+  const [contentElement, setContentElement] = React.useState<HTMLDivElement | null>(null)
   const showEmailField = email !== undefined
   const showPhoneField = phone !== undefined
   const [form, setForm] = React.useState({
@@ -144,6 +145,7 @@ export function ClientEditDialog({
         )}
       </DialogTrigger>
       <DialogContent
+        ref={setContentElement}
         showCloseButton={false}
         overlayProps={{
           onClick: handleOverlayClick,
@@ -265,7 +267,10 @@ export function ClientEditDialog({
               <SelectTrigger className="h-10 rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus:ring-0">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5">
+              <SelectContent
+                container={contentElement}
+                className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
+              >
                 <SelectItem value="Aktiven">Active</SelectItem>
                 <SelectItem value="Onboarding">Onboarding</SelectItem>
                 <SelectItem value="Na pavzi">Paused</SelectItem>
@@ -285,7 +290,10 @@ export function ClientEditDialog({
               <SelectTrigger className="h-10 rounded-sm border-neutral-200/80 bg-white text-[14px] shadow-none focus:ring-0">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5">
+              <SelectContent
+                container={contentElement}
+                className="rounded-sm border-neutral-200/80 shadow-lg shadow-black/5"
+              >
                 <SelectItem value="Bulk">Bulk</SelectItem>
                 <SelectItem value="Maintenance">Maintenance</SelectItem>
                 <SelectItem value="Cut">Cut</SelectItem>
