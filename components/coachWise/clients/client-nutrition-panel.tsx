@@ -84,6 +84,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  ClientSubtabsNav,
+  clientSubtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/client-subtabs-nav"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -231,11 +235,8 @@ type NutritionRecipeLibraryItem = {
   image: string
 }
 
-const nutritionSubTabTriggerClassName =
-  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
-
 const primaryActionButtonClassName =
-  "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
+  clientSubtabsNavActionButtonClassNames.primary
 
 const createNutritionTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
@@ -1238,45 +1239,6 @@ function getNutritionPreset(phase?: string): NutritionPreset {
       }
       }
   }
-}
-
-function NutritionSectionHeader({
-  items,
-  actions,
-}: {
-  items: {
-    icon: React.ReactNode
-    label: string
-    value: string
-  }[]
-  actions?: React.ReactNode
-}) {
-  return (
-    <div className="border-b border-neutral-200 bg-neutral-50">
-      <div className="flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <TabsList
-            variant="line"
-            className="h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0"
-          >
-            {items.map((item) => (
-              <TabsTrigger
-                key={item.value}
-                value={item.value}
-                className={nutritionSubTabTriggerClassName}
-              >
-                <span>{item.icon}</span>
-                <span>{item.label}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </div>
-        {actions ? (
-          <div className="flex flex-wrap items-center gap-1.5">{actions}</div>
-        ) : null}
-      </div>
-    </div>
-  )
 }
 
 function NutritionMetricCard({
@@ -3400,7 +3362,7 @@ export function ClientNutritionPanel({
       }
       className="gap-0"
     >
-      <NutritionSectionHeader
+      <ClientSubtabsNav
         items={[
           {
             icon: <UtensilsCrossed className="size-4" />,
@@ -3417,7 +3379,9 @@ export function ClientNutritionPanel({
           activeTab === "meal-plans" ? (
             <>
               <SmartMealPlannerDialog
-                triggerClassName="rounded-sm border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50"
+                triggerClassName={
+                  clientSubtabsNavActionButtonClassNames.secondary
+                }
               />
               <CreateNutritionPlanDialog
                 triggerClassName={primaryActionButtonClassName}

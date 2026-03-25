@@ -38,6 +38,10 @@ import {
   type ClientProfileSection,
 } from "@/components/coachWise/clients/client-profile-tabs-nav"
 import {
+  ClientSubtabsNav,
+  clientSubtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/client-subtabs-nav"
+import {
   ClientAddNoteDialog,
   ClientNotesOverviewDialog,
   ClientUpdateNoteDialog,
@@ -76,7 +80,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
 import data from "../../data.json"
@@ -101,12 +105,6 @@ export type ClientProfileRouteProps = {
 type Props = ClientProfileRouteProps & {
   section: ClientProfileSection
 }
-
-const primaryActionButtonClassName =
-  "border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-
-const sectionSubTabTriggerClassName =
-  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
 const infoCreateCardClassName =
   "group relative flex min-h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-5 py-6 text-center shadow-none transition-colors hover:shadow-none"
@@ -158,69 +156,6 @@ function getWhatsappLink(name: string) {
   const message = `Pozdrav ${name}, javljam se glede tvojega check-ina.`
 
   return `https://wa.me/?text=${encodeURIComponent(message)}`
-}
-
-function SectionSubHeader({
-  items,
-  actions,
-}: {
-  items: {
-    icon: ReactNode
-    label: string
-    value: string
-    href?: string
-  }[]
-  actions?: ReactNode
-}) {
-  const hasItems = items.length > 0
-
-  return (
-    <div className="border-b border-neutral-200 bg-neutral-50">
-      <div
-        className={cn(
-          "flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center",
-          hasItems ? "lg:justify-between" : "lg:justify-end"
-        )}
-      >
-        {hasItems ? (
-          <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <TabsList
-              variant="line"
-              className="h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0"
-            >
-              {items.map((item) => (
-                item.href ? (
-                  <TabsTrigger
-                    key={item.value}
-                    value={item.value}
-                    className={sectionSubTabTriggerClassName}
-                    asChild
-                  >
-                    <Link href={item.href}>
-                      <span>{item.icon}</span>
-                      <span>{item.label}</span>
-                    </Link>
-                  </TabsTrigger>
-                ) : (
-                  <TabsTrigger
-                    key={item.value}
-                    value={item.value}
-                    className={sectionSubTabTriggerClassName}
-                  >
-                    <span>{item.icon}</span>
-                    <span>{item.label}</span>
-                  </TabsTrigger>
-                )
-              ))}
-            </TabsList>
-          </div>
-        ) : null}
-        {actions ? (
-          <div className="flex flex-wrap items-center gap-1.5">{actions}</div>
-        ) : null}
-      </div>
-    </div>
-  )
 }
 
 function SectionBody({ children }: { children: ReactNode }) {
@@ -860,7 +795,7 @@ export default async function ClientProfilePage({
           <ClientHabitsPanel initialSubTab={resolvedHabitTab} />
           {false ? (
             <Tabs defaultValue="daily-habits" className="gap-0">
-              <SectionSubHeader
+              <ClientSubtabsNav
                 items={[
                   {
                     icon: <IconRepeat className="size-4" />,
@@ -879,7 +814,10 @@ export default async function ClientProfilePage({
                   },
                 ]}
                 actions={
-                  <Button size="sm" className={primaryActionButtonClassName}>
+                  <Button
+                    size="sm"
+                    className={clientSubtabsNavActionButtonClassNames.primary}
+                  >
                     <IconPlus className="size-4" />
                     Add habit
                   </Button>
@@ -999,7 +937,7 @@ export default async function ClientProfilePage({
             value={resolvedCheckinTab}
             className="gap-0"
           >
-            <SectionSubHeader
+            <ClientSubtabsNav
               items={[
                 {
                   icon: <IconClipboardCheck className="size-4" />,
@@ -1017,7 +955,9 @@ export default async function ClientProfilePage({
               actions={
                 resolvedCheckinTab === "assigned" ? (
                   <CreateAssignedCheckinDialog
-                    triggerClassName={primaryActionButtonClassName}
+                    triggerClassName={
+                      clientSubtabsNavActionButtonClassNames.primary
+                    }
                   />
                 ) : (
                   <>
@@ -1097,7 +1037,7 @@ export default async function ClientProfilePage({
             initialSubTab={resolvedNutritionTab}
           />
           {false ? <Tabs defaultValue="meal-plans" className="gap-0">
-            <SectionSubHeader
+            <ClientSubtabsNav
               items={[
                 {
                   icon: <IconChefHat className="size-4" />,
@@ -1111,7 +1051,10 @@ export default async function ClientProfilePage({
                 },
               ]}
               actions={
-                <Button size="sm" className={primaryActionButtonClassName}>
+                <Button
+                  size="sm"
+                  className={clientSubtabsNavActionButtonClassNames.primary}
+                >
                   <IconPlus className="size-4" />
                   Add Meal Plan
                 </Button>
@@ -1202,7 +1145,7 @@ export default async function ClientProfilePage({
 
         <TabsContent value="supplements" className="mt-0 space-y-0">
           <Tabs defaultValue="stack" className="gap-0">
-            <SectionSubHeader
+            <ClientSubtabsNav
               items={[
                 {
                   icon: <IconPill className="size-4" />,
@@ -1239,7 +1182,7 @@ export default async function ClientProfilePage({
 
         <TabsContent value="programs" className="mt-0 space-y-0">
           <Tabs value={resolvedProgramTab} className="gap-0">
-            <SectionSubHeader
+            <ClientSubtabsNav
               items={[
                 {
                   icon: <IconCalendarEvent className="size-4" />,

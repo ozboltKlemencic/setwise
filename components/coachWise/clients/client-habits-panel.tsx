@@ -32,6 +32,10 @@ import {
 
 import { Button } from "@/components/ui/button"
 import {
+  ClientSubtabsNav,
+  clientSubtabsNavActionButtonClassNames,
+} from "@/components/coachWise/clients/client-subtabs-nav"
+import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -113,9 +117,6 @@ type HabitDefinition = {
   yearlyData: HabitPoint[]
   entries: HabitEntry[]
 }
-
-const habitsSubTabTriggerClassName =
-  "h-auto flex-none gap-1.5 rounded-none border-0 bg-transparent px-0 py-2.5 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-brand-600"
 
 const createHabitTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
@@ -2461,40 +2462,38 @@ export function ClientHabitsPanel({
 
   return (
     <Tabs value={activeSubTab} onValueChange={(value) => setActiveSubTab(value as "habits" | "overview")} className="gap-0">
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex min-h-10 flex-col gap-2.5 px-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <TabsList
-              variant="line"
-              className="h-auto w-max min-w-max justify-start gap-4 rounded-none bg-transparent p-0"
-            >
-              <TabsTrigger
-                value="habits"
-                className={habitsSubTabTriggerClassName}
-              >
-                <BarChart3 className="size-4" />
-                Overview
-              </TabsTrigger>
-              <TabsTrigger
-                value="overview"
-                className={habitsSubTabTriggerClassName}
-              >
-                <Footprints className="size-4" />
-                Habits
-              </TabsTrigger>
-            </TabsList>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
+      <ClientSubtabsNav
+        items={[
+          {
+            icon: <BarChart3 className="size-4" />,
+            label: "Overview",
+            value: "habits",
+          },
+          {
+            icon: <Footprints className="size-4" />,
+            label: "Habits",
+            value: "overview",
+          },
+        ]}
+        actions={
+          <>
             {activeSubTab === "habits" ? (
               <EditHabitDialog
                 habit={selectedHabit}
-                triggerClassName="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+                triggerClassName={
+                  clientSubtabsNavActionButtonClassNames.secondary
+                }
               />
             ) : null}
-            <CreateHabitDialog triggerClassName="rounded-sm border-transparent bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700" />
-          </div>
-        </div>
-      </div>
+            <CreateHabitDialog
+              triggerClassName={
+                clientSubtabsNavActionButtonClassNames.primary
+              }
+            />
+          </>
+        }
+        actionsClassName="gap-2"
+      />
 
       <TabsContent value="habits" className="mt-0 space-y-0">
         <div className="grid gap-0 lg:grid-cols-[320px_minmax(0,1fr)]">
