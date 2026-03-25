@@ -31,13 +31,15 @@ type AddClientDialogProps = {
   trigger?: React.ReactNode
 }
 
-const INITIAL_ADD_CLIENT_FORM_VALUES: ClientFormValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phone: "",
-  status: "Onboarding",
-  phase: "Bulk",
+function createInitialAddClientFormValues(): ClientFormValues {
+  return {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    status: "Onboarding",
+    phase: "Bulk",
+  }
 }
 
 export function AddClientDialog({
@@ -49,24 +51,19 @@ export function AddClientDialog({
   const [portalContainerElement, setPortalContainerElement] =
     React.useState<HTMLDivElement | null>(null)
   const [form, setForm] = React.useState<ClientFormValues>(
-    INITIAL_ADD_CLIENT_FORM_VALUES
+    createInitialAddClientFormValues
   )
 
   React.useEffect(() => {
     if (open) {
-      setForm(INITIAL_ADD_CLIENT_FORM_VALUES)
+      setForm(createInitialAddClientFormValues())
     }
   }, [open])
 
   const handleOverlayClick = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (event.target !== event.currentTarget) {
-        return
-      }
-
       event.preventDefault()
       event.stopPropagation()
-      setOpen(false)
     },
     []
   )
@@ -82,6 +79,10 @@ export function AddClientDialog({
     form.firstName.trim().length > 0 &&
     form.lastName.trim().length > 0 &&
     form.email.trim().length > 0
+
+  const handleCancel = React.useCallback(() => {
+    setForm(createInitialAddClientFormValues())
+  }, [])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -113,6 +114,9 @@ export function AddClientDialog({
           event.preventDefault()
         }}
         onInteractOutside={(event) => {
+          event.preventDefault()
+        }}
+        onEscapeKeyDown={(event) => {
           event.preventDefault()
         }}
         className={cn(
@@ -170,9 +174,7 @@ export function AddClientDialog({
           />
 
           <DialogFooter className="border-t border-neutral-200/80 px-0 pt-4 sm:flex-row sm:items-center sm:justify-end">
-            <DialogClose asChild>
-              <SecondaryActionButton label="Cancel" />
-            </DialogClose>
+            <SecondaryActionButton label="Cancel" onClick={handleCancel} />
             <PrimaryActionButton
               type="submit"
               label="Add Client"

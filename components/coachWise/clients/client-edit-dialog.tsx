@@ -51,6 +51,17 @@ export function ClientEditDialog({
   const [isPending, setIsPending] = React.useState(false)
   const [portalContainerElement, setPortalContainerElement] =
     React.useState<HTMLDivElement | null>(null)
+  const initialFormValues = React.useMemo(
+    () => ({
+      firstName,
+      lastName,
+      email: email ?? "",
+      phone: phone ?? "",
+      status,
+      phase,
+    }),
+    [email, firstName, lastName, phone, phase, status]
+  )
   const [form, setForm] = React.useState<ClientEditFormValues>({
     firstName,
     lastName,
@@ -62,32 +73,17 @@ export function ClientEditDialog({
 
   const handleOverlayClick = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (event.target !== event.currentTarget) {
-        return
-      }
-
       event.preventDefault()
       event.stopPropagation()
-
-      if (!isPending) {
-        setOpen(false)
-      }
     },
-    [isPending]
+    []
   )
 
   React.useEffect(() => {
     if (open) {
-      setForm({
-        firstName,
-        lastName,
-        email: email ?? "",
-        phone: phone ?? "",
-        status,
-        phase,
-      })
+      setForm(initialFormValues)
     }
-  }, [email, firstName, lastName, open, phone, phase, status])
+  }, [initialFormValues, open])
 
   const canSubmit =
     form.firstName.trim().length > 0 &&
@@ -100,6 +96,10 @@ export function ClientEditDialog({
     },
     []
   )
+
+  const handleCancel = React.useCallback(() => {
+    setForm(initialFormValues)
+  }, [initialFormValues])
 
   const handleSubmit = React.useCallback(async () => {
     if (!canSubmit) {
@@ -151,6 +151,9 @@ export function ClientEditDialog({
         onInteractOutside={(event) => {
           event.preventDefault()
         }}
+        onEscapeKeyDown={(event) => {
+          event.preventDefault()
+        }}
         className={cn(
           overflowActionsMenuSurfaceClassName,
           "w-full max-w-[calc(100%-2rem)] gap-0 overflow-hidden border-white/70 bg-white p-0 shadow-[0_24px_80px_rgba(15,23,42,0.12)] sm:max-w-[520px]"
@@ -193,9 +196,11 @@ export function ClientEditDialog({
         />
 
         <DialogFooter className="border-t border-neutral-200/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-end">
-          <DialogClose asChild>
-            <SecondaryActionButton label="Cancel" disabled={isPending} />
-          </DialogClose>
+          <SecondaryActionButton
+            label="Cancel"
+            disabled={isPending}
+            onClick={handleCancel}
+          />
           <PrimaryActionButton
             type="button"
             label="Save changes"
