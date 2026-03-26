@@ -166,6 +166,14 @@ export const routing = defineRouting({
             sl: '/beta-coach-wise/clients/[id]/nutrition',
             en: '/beta-coach-wise/clients/[id]/nutrition',
         },
+        '/beta-coach-wise/nutrition': {
+            sl: '/beta-coach-wise/nutrition',
+            en: '/beta-coach-wise/nutrition',
+        },
+        '/beta-coach-wise/nutrition/edit/[mealPlanId]': {
+            sl: '/beta-coach-wise/nutrition/edit/[mealPlanId]',
+            en: '/beta-coach-wise/nutrition/edit/[mealPlanId]',
+        },
         '/beta-coach-wise/clients/[id]/supplements': {
             sl: '/beta-coach-wise/clients/[id]/supplements',
             en: '/beta-coach-wise/clients/[id]/supplements',

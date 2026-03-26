@@ -90,6 +90,7 @@ import {
 } from "@/components/coachWise/clients/shared/subtabs-nav"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { ClientQuickActionCard } from "@/components/coachWise/clients/info/client-quick-action-card"
+import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -101,6 +102,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { getNutritionPlanEditorHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -3214,14 +3216,19 @@ export function ClientNutritionMealPlansView({
 
   const handleOpenMealPlan = React.useCallback(
     (mealPlanId: string) => {
-      router.push(`${pathname}?nutritionTab=meal-plans&mealPlanId=${mealPlanId}`)
+      router.push(`${pathname}?nutritionTab=nutrition&mealPlanId=${mealPlanId}`)
     },
     [pathname, router]
   )
 
   const handleOpenMealPlanEditor = React.useCallback(
     (mealPlanId: string) => {
-      router.push(`${pathname}/edit/${mealPlanId}`)
+      router.push(
+        buildCoachWiseHref(
+          pathname,
+          getNutritionPlanEditorHref(mealPlanId, pathname)
+        )
+      )
     },
     [pathname, router]
   )
@@ -3906,13 +3913,16 @@ export function MealPlanDetailView({
     <div className="min-w-0 bg-neutral-50">
       <NutritionMealPlanHeader
         title={mealPlan.title}
-        backHref={backHref ?? `${pathname}?nutritionTab=meal-plans`}
+        backHref={backHref ?? `${pathname}?nutritionTab=nutrition`}
         actions={
           <>
             <SecondaryActionButton
               label="Edit Plan"
               icon={Pencil}
-              href={`${pathname}/edit/${mealPlan.id}`}
+              href={buildCoachWiseHref(
+                pathname,
+                getNutritionPlanEditorHref(mealPlan.id, pathname)
+              )}
             />
             <AddMealDialog
               trigger={
@@ -3950,6 +3960,7 @@ export function MealPlanEditPageView({
   phase?: string
   backHref: string
 }) {
+  const router = useRouter()
   const {
     macros,
     mealPlan,
@@ -4002,7 +4013,9 @@ export function MealPlanEditPageView({
     toast.success("Changes saved", {
       description: `For ${nextPlanName}.`,
     })
-  }, [hasValidName, planDescription, planName])
+
+    router.push(backHref)
+  }, [backHref, hasValidName, planDescription, planName, router])
 
   if (!mealPlan) {
     return (
@@ -4055,15 +4068,15 @@ export function MealPlanEditPageView({
 
 export function ClientNutritionPanel({
   phase,
-  initialSubTab = "meal-plans",
+  initialSubTab = "nutrition",
 }: {
   phase?: string
-  initialSubTab?: "meal-plans" | "nutrition-logger"
+  initialSubTab?: "nutrition" | "nutrition-logger"
 }) {
   const router = useRouter()
   const pathname = usePathname()
   const [activeTab, setActiveTab] = React.useState<
-    "meal-plans" | "nutrition-logger"
+    "nutrition" | "nutrition-logger"
   >(initialSubTab)
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
   const iifymWeeks = React.useMemo(
@@ -4163,7 +4176,7 @@ export function ClientNutritionPanel({
 
   return (
     <>
-      {activeTab === "meal-plans" ? (
+      {activeTab === "nutrition" ? (
         <div className="bg-neutral-50 px-4 py-4">
           <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
             <div className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 border-b border-neutral-200 bg-muted px-4 py-3 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5">
@@ -4183,14 +4196,14 @@ export function ClientNutritionPanel({
                   tabIndex={0}
                   onClick={() =>
                     router.push(
-                      `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                      `${pathname}?nutritionTab=nutrition&mealPlanId=${plan.id}`
                     )
                   }
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault()
                       router.push(
-                        `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                        `${pathname}?nutritionTab=nutrition&mealPlanId=${plan.id}`
                       )
                     }
                   }}
@@ -4241,7 +4254,7 @@ export function ClientNutritionPanel({
                         <DropdownMenuItem
                           onSelect={() =>
                             router.push(
-                              `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                              `${pathname}?nutritionTab=nutrition&mealPlanId=${plan.id}`
                             )
                           }
                           className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"

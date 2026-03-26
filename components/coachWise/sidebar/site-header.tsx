@@ -37,10 +37,10 @@ const coachWiseRoutes = [
     exact: true,
   },
   {
-    title: "Meal plani",
-    href: "/beta-coach-wise/meal-plani",
+    title: "Nutrition",
+    href: "/beta-coach-wise/nutrition",
     icon: IconChefHat,
-    exact: true,
+    exact: false,
   },
   {
     title: "Suplementi",

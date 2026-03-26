@@ -71,10 +71,10 @@ const data = {
       exact: true,
     },
     {
-      name: "Meal plani",
-      url: "/beta-coach-wise/meal-plani",
+      name: "Nutrition",
+      url: "/beta-coach-wise/nutrition",
       icon: IconChefHat,
-      exact: true,
+      exact: false,
     },
     {
       name: "Suplementi",
