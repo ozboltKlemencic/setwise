@@ -3020,10 +3020,7 @@ export function ClientNutritionMealPlansView({
 
   return (
     <div className="bg-neutral-50 px-4 py-4">
-      <div className="mb-5 space-y-3">
-        <div className="text-[11px] font-medium tracking-[0.12em] text-neutral-400 uppercase">
-          Prehrana
-        </div>
+      <div className="mb-5">
         <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch">
           <CreateNutritionPlanAction
             phase={phase}
