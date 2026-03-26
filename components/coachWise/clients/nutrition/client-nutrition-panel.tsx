@@ -984,28 +984,28 @@ function getNutritionPreset(phase?: string): NutritionPreset {
       return {
         dailyTarget: "3150 kcal",
         macroTarget: "190P / 390C / 80F",
-        mealCadence: "5 obrokov / dan",
+        mealCadence: "5 meals / day",
         coachNote:
-          "Fokus je na visjem vnosu okrog treninga, dovolj beljakovin in stabilnem apetitu skozi teden.",
-        planCoverage: "2 aktivna plana",
+          "The focus is on higher intake around training, enough protein, and stable appetite through the week.",
+        planCoverage: "2 active plans",
         loggerStats: {
           loggedDays: "12 / 14",
           proteinTarget: "95%",
           hydrationAverage: "2.9 L",
-          consistency: "Zelo dobra",
+          consistency: "Very good",
         },
         loggerNote:
-          "Logging je dovolj dosleden za coaching odlocitve. Najvec odstopanj je pri vikend snackih.",
+          "Logging is consistent enough for coaching decisions. The biggest deviations happen with weekend snacks.",
         loggerChecklist: [
-          "povecaj zelenjavo v zadnjem obroku",
-          "ohrani ogljikove hidrate pred treningom",
-          "vikend obroke zadrzi v istem ritmu",
+          "increase vegetables in the last meal",
+          "keep carbs before training",
+          "keep weekend meals on the same rhythm",
         ],
         mealPlans: [
           {
             id: "training-day",
             title: "Training Day Meal",
-            subtitle: "Vec carbs okoli treninga in 1 recovery meal po vadbi.",
+            subtitle: "More carbs around training and 1 recovery meal after the workout.",
             type: "Meal Plan",
             calories: 2100,
             macros: "185P / 250C / 50F",
@@ -1019,7 +1019,7 @@ function getNutritionPreset(phase?: string): NutritionPreset {
           {
             id: "rest-day",
             title: "Rest Day Meal",
-            subtitle: "Malo manj carbs, vec sitosti in stabilna energija.",
+            subtitle: "A bit fewer carbs, more satiety, and steadier energy.",
             type: "Meal Plan",
             calories: 1640,
             macros: "190P / 145C / 52F",
@@ -1034,29 +1034,29 @@ function getNutritionPreset(phase?: string): NutritionPreset {
         loggerEntries: [
           {
             id: "bulk-18",
-            day: "Tor, 18 Mar",
+            day: "Tue, 18 Mar",
             calories: "3020 kcal",
             protein: "188 g",
             hydration: "3.0 L",
-            note: "Dober trening dan, appetite steady.",
+            note: "Good training day, appetite steady.",
             status: "On target",
           },
           {
             id: "bulk-17",
-            day: "Pon, 17 Mar",
+            day: "Mon, 17 Mar",
             calories: "2870 kcal",
             protein: "180 g",
             hydration: "2.7 L",
-            note: "Malo manj carbs zvecer.",
+            note: "A bit fewer carbs in the evening.",
             status: "Slightly low",
           },
           {
             id: "bulk-16",
-            day: "Ned, 16 Mar",
+            day: "Sun, 16 Mar",
             calories: "3190 kcal",
             protein: "195 g",
             hydration: "3.1 L",
-            note: "Vikend ritem ostal pod kontrolo.",
+            note: "Weekend rhythm stayed under control.",
             status: "On target",
           },
         ],
@@ -1077,28 +1077,28 @@ function getNutritionPreset(phase?: string): NutritionPreset {
       return {
         dailyTarget: "2150 kcal",
         macroTarget: "185P / 190C / 65F",
-        mealCadence: "4 obroki / dan",
+        mealCadence: "4 meals / day",
         coachNote:
-          "Deficit ostaja zmeren. Prioriteta je sitost, visoke beljakovine in dober trening output.",
-        planCoverage: "2 aktivna plana",
+          "The deficit stays moderate. The priority is satiety, high protein, and solid training output.",
+        planCoverage: "2 active plans",
         loggerStats: {
           loggedDays: "11 / 14",
           proteinTarget: "92%",
           hydrationAverage: "2.4 L",
-          consistency: "Dobra",
+          consistency: "Good",
         },
         loggerNote:
-          "Logger je dovolj dober za odlocitve. Najvec odstopanj je pri vecernih snackih in vikendih.",
+          "The logger is good enough for decisions. The biggest deviations happen with evening snacks and weekends.",
         loggerChecklist: [
-          "drzi protein nad 180 g",
-          "ob vikendih pripravi 1 anchor meal vnaprej",
-          "dvigni vodo na 2.7 L ob tezjih treningih",
+          "keep protein above 180 g",
+          "prep 1 anchor meal ahead of time on weekends",
+          "increase water to 2.7 L on harder training days",
         ],
         mealPlans: [
           {
             id: "training-day",
             title: "Training Day Meal",
-            subtitle: "Vec hrane okoli treninga, deficit pa ostane pod kontrolo.",
+            subtitle: "More food around training while the deficit stays under control.",
             type: "Meal Plan",
             calories: 1600,
             macros: "180P / 145C / 42F",
@@ -1112,7 +1112,7 @@ function getNutritionPreset(phase?: string): NutritionPreset {
           {
             id: "rest-day",
             title: "Rest Day Meal",
-            subtitle: "Nizji carbs, vec sitosti in dober recovery med deficitom.",
+            subtitle: "Lower carbs, more satiety, and solid recovery during the deficit.",
             type: "Meal Plan",
             calories: 1004,
             macros: "155P / 68C / 36F",
@@ -1127,29 +1127,29 @@ function getNutritionPreset(phase?: string): NutritionPreset {
         loggerEntries: [
           {
             id: "cut-18",
-            day: "Tor, 18 Mar",
+            day: "Tue, 18 Mar",
             calories: "2115 kcal",
             protein: "186 g",
             hydration: "2.5 L",
-            note: "Dober dan, brez vecjih odstopanj.",
+            note: "Good day, without major deviations.",
             status: "On target",
           },
           {
             id: "cut-17",
-            day: "Pon, 17 Mar",
+            day: "Mon, 17 Mar",
             calories: "2260 kcal",
             protein: "174 g",
             hydration: "2.2 L",
-            note: "Vecerni snack je dvignil vnos.",
+            note: "An evening snack pushed intake higher.",
             status: "Above target",
           },
           {
             id: "cut-16",
-            day: "Ned, 16 Mar",
+            day: "Sun, 16 Mar",
             calories: "2050 kcal",
             protein: "182 g",
             hydration: "2.6 L",
-            note: "Vikend je bil bolj stabilen kot prej.",
+            note: "The weekend was more stable than before.",
             status: "On target",
           },
         ],
@@ -1170,28 +1170,28 @@ function getNutritionPreset(phase?: string): NutritionPreset {
       return {
         dailyTarget: "2450 kcal",
         macroTarget: "180P / 250C / 70F",
-        mealCadence: "4 obroki / dan",
+        mealCadence: "4 meals / day",
         coachNote:
-          "Vzdrzevalni plan drzi formo stabilno. Fokus je na rutini, hidraciji in dobrem recoveryju.",
-        planCoverage: "2 aktivna plana",
+          "The maintenance plan keeps physique stable. The focus is on routine, hydration, and good recovery.",
+        planCoverage: "2 active plans",
         loggerStats: {
           loggedDays: "10 / 14",
           proteinTarget: "89%",
           hydrationAverage: "2.6 L",
-          consistency: "Stabilna",
+          consistency: "Stable",
         },
         loggerNote:
-          "Najvec koristi pride iz bolj doslednega zajtrka in manj improvizacije v zadnjem obroku.",
+          "The biggest benefit comes from a more consistent breakfast and less improvisation in the last meal.",
         loggerChecklist: [
-          "zajtrk naj bo bolj predvidljiv",
-          "obdrzi 4 anchor obroke skozi teden",
-          "vnos vode dvigni ob bolj aktivnih dnevih",
+          "make breakfast more predictable",
+          "keep 4 anchor meals through the week",
+          "increase water intake on more active days",
         ],
         mealPlans: [
           {
             id: "training-day",
             title: "Training Day Meal",
-            subtitle: "Uravnotezen plan za performans in dober recovery.",
+            subtitle: "A balanced plan for performance and good recovery.",
             type: "Meal Plan",
             calories: 1840,
             macros: "175P / 185C / 52F",
@@ -1205,7 +1205,7 @@ function getNutritionPreset(phase?: string): NutritionPreset {
           {
             id: "rest-day",
             title: "Rest Day Meal",
-            subtitle: "Malo bolj sitostno naravnan plan za manj aktivne dni.",
+            subtitle: "A slightly more satiety-focused plan for less active days.",
             type: "Meal Plan",
             calories: 1260,
             macros: "165P / 102C / 40F",
@@ -1220,29 +1220,29 @@ function getNutritionPreset(phase?: string): NutritionPreset {
         loggerEntries: [
           {
             id: "maint-18",
-            day: "Tor, 18 Mar",
+            day: "Tue, 18 Mar",
             calories: "2420 kcal",
             protein: "178 g",
             hydration: "2.7 L",
-            note: "Ritem je stabilen, energija dobra.",
+            note: "Rhythm is stable and energy is good.",
             status: "On target",
           },
           {
             id: "maint-17",
-            day: "Pon, 17 Mar",
+            day: "Mon, 17 Mar",
             calories: "2360 kcal",
             protein: "171 g",
             hydration: "2.5 L",
-            note: "Manj apetita v drugem delu dneva.",
+            note: "Less appetite in the second part of the day.",
             status: "Slightly low",
           },
           {
             id: "maint-16",
-            day: "Ned, 16 Mar",
+            day: "Sun, 16 Mar",
             calories: "2510 kcal",
             protein: "183 g",
             hydration: "2.6 L",
-            note: "Dober vikend brez vecjih nihanj.",
+            note: "A good weekend without major swings.",
             status: "On target",
           },
         ],
@@ -2222,7 +2222,7 @@ function EditMealPlanDialog({
             size="sm"
             className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
           >
-            Uredi
+            Edit
           </Button>
         )}
       </DialogTrigger>
@@ -2402,7 +2402,7 @@ function AddMealDialog({
           {trigger ?? (
             <Button type="button" size="sm" className={primaryActionButtonClassName}>
               <Plus className="size-4" />
-              Dodaj obrok
+              Add Meal
             </Button>
           )}
         </DialogTrigger>
@@ -2764,7 +2764,7 @@ function MealSectionDragHandle({
       {...listeners}
     >
       <GripVertical className="size-3.5" />
-      <span className="sr-only">Premakni obrok</span>
+      <span className="sr-only">Move meal block</span>
     </Button>
   )
 }
@@ -2836,7 +2836,7 @@ function NutritionMealPlanSectionCard({
                 className="size-8 rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
               >
                 <MoreVertical className="size-4" />
-                <span className="sr-only">Odpri meni obroka</span>
+                <span className="sr-only">Open meal block menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -3027,15 +3027,15 @@ export function ClientNutritionMealPlansView({
   return (
     <div className="bg-neutral-50 px-4 py-4">
       <div className="mb-5">
-        <NutritionSectionTitle title="Kreiranje planov" />
+        <NutritionSectionTitle title="Create plans" />
         <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch">
           <CreateNutritionPlanAction
             phase={phase}
             trigger={
               <ClientQuickActionCard
-                sectionLabel="Prehrana"
-                title="Nov Meal Plan"
-                description="Zgradi jedilnik od zacetka ali uporabi template."
+                sectionLabel="Nutrition"
+                title="New Meal Plan"
+                description="Build a meal plan from scratch or start from a template."
                 icon={<UtensilsCrossed className="size-4" />}
                 tone="nutrition"
                 size="compact"
@@ -3044,9 +3044,9 @@ export function ClientNutritionMealPlansView({
             }
           />
           <ClientQuickActionCard
-            sectionLabel="Prehrana"
-            title="Makro Plan (IIFYM)"
-            description="Nastavi makro cilje za fleksibilen pristop."
+            sectionLabel="Nutrition"
+            title="Macro Plan (IIFYM)"
+            description="Set macro targets for a more flexible nutrition approach."
             icon={<Beef className="size-4" />}
             tone="programs"
             href={`${pathname}?nutritionTab=nutrition-logger`}
@@ -3057,7 +3057,7 @@ export function ClientNutritionMealPlansView({
       </div>
 
       <div>
-        <NutritionSectionTitle title="Obstojeci plani" />
+        <NutritionSectionTitle title="Existing plans" />
         <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
         <Table>
           <TableHeader className="bg-muted">
@@ -3692,7 +3692,7 @@ export function MealPlanDetailView({
     }
 
     reorderToastTimeoutRef.current = setTimeout(() => {
-      toast.success("Spremembe so shranjene", {
+      toast.success("Changes saved", {
         id: "nutrition-meal-plan-order-saved",
       })
     }, delay)
@@ -3742,7 +3742,7 @@ export function MealPlanDetailView({
   if (!mealPlan) {
     return (
       <div className="px-2 pt-2 text-sm text-neutral-500">
-        Meal plan ni najden.
+        Meal plan not found.
       </div>
     )
   }
@@ -3760,7 +3760,7 @@ export function MealPlanDetailView({
               onClick={() => router.push(`${pathname}?nutritionTab=meal-plans`)}
             >
               <ChevronLeft className="size-4" />
-              <span className="sr-only">Nazaj na meal plans</span>
+              <span className="sr-only">Back to meal plans</span>
             </Button>
             <div className="min-w-0">
               <div className="truncate text-[17px] font-semibold text-neutral-950">
@@ -3778,7 +3778,7 @@ export function MealPlanDetailView({
                   className={primaryActionButtonClassName}
                 >
                   <Plus className="size-4" />
-                  Dodaj obrok
+                  Add Meal
                 </Button>
               }
             />
@@ -4044,7 +4044,7 @@ export function ClientNutritionPanel({
                           className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
                         >
                           <MoreVertical className="size-3" />
-                          <span className="sr-only">Odpri meni plana</span>
+                          <span className="sr-only">Open meal plan menu</span>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
@@ -4061,17 +4061,17 @@ export function ClientNutritionPanel({
                           }
                           className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"
                         >
-                          Podrobnosti
+                          Details
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-                          Uredi plan
+                          Edit plan
                         </DropdownMenuItem>
                         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-                          Podvoji plan
+                          Duplicate plan
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
-                          Arhiviraj
+                          Archive
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

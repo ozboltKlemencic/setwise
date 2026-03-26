@@ -29,14 +29,14 @@ export default async function Page({
 
   if (mealPlanId) {
     return (
-      <section className="min-w-0 bg-neutral-500">
+      <section className="min-w-0 bg-neutral-50">
         <MealPlanDetailView mealPlanId={mealPlanId} phase={client.phase} />
       </section>
     )
   }
 
   return (
-    <section className="min-w-0 bg-neutral-500">
+    <section className="min-w-0 bg-neutral-50">
       {resolvedNutritionTab === "nutrition-logger" ? (
         <ClientNutritionLoggerView phase={client.phase} />
       ) : (
