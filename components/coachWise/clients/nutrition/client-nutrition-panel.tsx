@@ -247,6 +247,12 @@ const nutritionRowDeleteActionButtonClassName =
 const createNutritionTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
 
+function NutritionSectionTitle({ title }: { title: string }) {
+  return (
+    <div className="mb-3 text-[14px] font-medium text-neutral-700">{title}</div>
+  )
+}
+
 const mealPlanDonutConfig = {
   protein: {
     label: "Protein",
@@ -3021,6 +3027,7 @@ export function ClientNutritionMealPlansView({
   return (
     <div className="bg-neutral-50 px-4 py-4">
       <div className="mb-5">
+        <NutritionSectionTitle title="Kreiranje planov" />
         <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch">
           <CreateNutritionPlanAction
             phase={phase}
@@ -3049,7 +3056,9 @@ export function ClientNutritionMealPlansView({
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+      <div>
+        <NutritionSectionTitle title="Obstojeci plani" />
+        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
         <Table>
           <TableHeader className="bg-muted">
             <TableRow className="hover:bg-transparent">
@@ -3169,6 +3178,7 @@ export function ClientNutritionMealPlansView({
             )}
           </TableBody>
         </Table>
+        </div>
       </div>
     </div>
   )
