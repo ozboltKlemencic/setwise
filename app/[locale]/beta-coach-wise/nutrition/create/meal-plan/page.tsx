@@ -1,6 +1,4 @@
-import {
-  MealPlanCreatePageView,
-} from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
+import { MealPlanBuilderPageView } from "@/components/coachWise/clients/nutrition/meal-plan-builder"
 import { routing } from "@/i18n/routing"
 import {
   getSingleSearchParam,
@@ -24,7 +22,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <section className="min-w-0 bg-neutral-50">
-      <MealPlanCreatePageView backHref={backHref} />
+      <MealPlanBuilderPageView backHref={backHref} />
     </section>
   )
 }
