@@ -10,7 +10,9 @@ export type ClientDetailSearchParams = Record<
   string | string[] | undefined
 >
 
-export type ClientDetailParams = Promise<{ locale: string; id: string }>
+export type ClientDetailParamValues = { locale: string; id: string }
+
+export type ClientDetailParams = Promise<ClientDetailParamValues>
 
 export type ClientDetailParamsProps = {
   params: ClientDetailParams
@@ -23,7 +25,9 @@ export type ClientDetailPageProps<
   searchParams: Promise<TSearchParams>
 }
 
-export async function resolveClientDetailContext(params: ClientDetailParams) {
+export async function resolveClientDetailContext(
+  params: ClientDetailParamValues | ClientDetailParams
+) {
   const { locale, id } = await params
   const clientId = Number(id)
 

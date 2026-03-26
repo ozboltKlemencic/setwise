@@ -23,6 +23,7 @@ import {
   type ClientProfileSection,
 } from "@/components/coachWise/clients/shared/client-profile-routes"
 import { normalizeCoachWisePathname } from "@/components/coachWise/sidebar/route-utils"
+import { isClientNutritionMealPlanEditPath } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 
 type ClientProfileTabDefinition = {
@@ -134,6 +135,12 @@ export function TabsNav({
   actionsClassName,
 }: TabsNavProps) {
   const pathname = usePathname()
+  const normalizedPathname = normalizeCoachWisePathname(pathname)
+
+  if (isClientNutritionMealPlanEditPath(normalizedPathname)) {
+    return null
+  }
+
   const resolvedActiveSection =
     activeSection ?? resolveActiveSectionFromPathname(pathname)
   const hasActions =

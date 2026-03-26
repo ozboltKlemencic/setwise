@@ -83,6 +83,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
+import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import {
   subtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/shared/subtabs-nav"
@@ -2188,99 +2190,6 @@ function SmartMealPlannerDialog({
   )
 }
 
-function EditMealPlanDialog({
-  plan,
-  trigger,
-}: {
-  plan: NutritionMealPlan
-  trigger?: React.ReactElement
-}) {
-  const [open, setOpen] = React.useState(false)
-  const [planName, setPlanName] = React.useState(plan.title)
-  const [planDescription, setPlanDescription] = React.useState(
-    getMealPlanEditDescription(plan)
-  )
-
-  const resetDialog = React.useCallback(() => {
-    setPlanName(plan.title)
-    setPlanDescription(getMealPlanEditDescription(plan))
-  }, [plan])
-
-  React.useEffect(() => {
-    if (!open) {
-      resetDialog()
-    }
-  }, [open, resetDialog])
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger ?? (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="rounded-sm border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-          >
-            Edit
-          </Button>
-        )}
-      </DialogTrigger>
-      <DialogContent className="gap-0 overflow-hidden rounded-sm border-neutral-200 bg-white p-0 shadow-2xl shadow-black/10 sm:max-w-[700px]">
-        <div className="px-5 pt-4">
-          <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
-            <Droplets className="size-4 text-neutral-500" />
-            Edit Plan
-          </DialogTitle>
-        </div>
-
-        <div className="space-y-5 px-5 py-5">
-          <div className="space-y-2">
-            <label className="block text-[13px] font-medium text-neutral-800">
-              Plan Name <span className="text-rose-500">*</span>
-            </label>
-            <Input
-              value={planName}
-              onChange={(event) => setPlanName(event.target.value)}
-              className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-[13px] font-medium text-neutral-800">
-              Plan Description
-            </label>
-            <textarea
-              value={planDescription}
-              onChange={(event) => setPlanDescription(event.target.value)}
-              className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
-            />
-          </div>
-        </div>
-
-        <DialogFooter className="border-t border-neutral-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              className="rounded-sm px-2 text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              Close
-            </Button>
-          </DialogClose>
-          <Button
-            type="button"
-            onClick={() => setOpen(false)}
-            className="rounded-sm bg-linear-to-r from-brand-500 to-brand-600 text-white shadow-none hover:from-brand-600 hover:to-brand-700"
-          >
-            Save Changes
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
 function NutritionRecipeCaloriesDonut({
   calories,
 }: {
@@ -2976,6 +2885,319 @@ function SortableNutritionMealPlanSectionCard({
   )
 }
 
+type NutritionMealPlanWorkspaceProps = {
+  mealPlanId: string
+  phase?: string
+}
+
+function useNutritionMealPlanWorkspace({
+  mealPlanId,
+  phase,
+}: NutritionMealPlanWorkspaceProps) {
+  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+  const mealPlan = React.useMemo(
+    () => preset.mealPlans.find((plan) => plan.id === mealPlanId),
+    [mealPlanId, preset.mealPlans]
+  )
+  const baseSections = React.useMemo(
+    () => (mealPlan ? nutritionMealPlanSections[mealPlan.id] ?? [] : []),
+    [mealPlan]
+  )
+  const macros = React.useMemo(
+    () => parseMealPlanMacros(mealPlan?.macros ?? ""),
+    [mealPlan]
+  )
+  const [sections, setSections] = React.useState(baseSections)
+  const reorderToastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  )
+  const sensors = useSensors(
+    useSensor(MouseSensor, {}),
+    useSensor(TouchSensor, {}),
+    useSensor(KeyboardSensor, {})
+  )
+
+  React.useEffect(() => {
+    setSections(baseSections)
+  }, [baseSections])
+
+  React.useEffect(() => {
+    return () => {
+      if (reorderToastTimeoutRef.current) {
+        clearTimeout(reorderToastTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  const scheduleSavedToast = React.useCallback((delay = 0) => {
+    if (reorderToastTimeoutRef.current) {
+      clearTimeout(reorderToastTimeoutRef.current)
+    }
+
+    reorderToastTimeoutRef.current = setTimeout(() => {
+      toast.success("Changes saved", {
+        id: "nutrition-meal-plan-order-saved",
+      })
+    }, delay)
+  }, [])
+
+  const handleSectionDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+
+      if (active && over && active.id !== over.id) {
+        setSections((currentSections) => {
+          const oldIndex = currentSections.findIndex(
+            (section) => section.id === active.id
+          )
+          const newIndex = currentSections.findIndex(
+            (section) => section.id === over.id
+          )
+
+          return arrayMove(currentSections, oldIndex, newIndex)
+        })
+
+        scheduleSavedToast(650)
+      }
+    },
+    [scheduleSavedToast]
+  )
+
+  const handleRenameSection = React.useCallback(
+    (sectionId: string, nextLabel: string) => {
+      setSections((currentSections) =>
+        currentSections.map((section) =>
+          section.id === sectionId ? { ...section, label: nextLabel } : section
+        )
+      )
+      scheduleSavedToast()
+    },
+    [scheduleSavedToast]
+  )
+
+  const handleDeleteSection = React.useCallback(
+    (sectionId: string) => {
+      setSections((currentSections) =>
+        currentSections.filter((section) => section.id !== sectionId)
+      )
+      scheduleSavedToast()
+    },
+    [scheduleSavedToast]
+  )
+
+  return {
+    macros,
+    mealPlan,
+    sections,
+    sensors,
+    handleDeleteSection,
+    handleRenameSection,
+    handleSectionDragEnd,
+  }
+}
+
+function NutritionMealPlanHeader({
+  title,
+  backHref,
+  actions,
+}: {
+  title: string
+  backHref: string
+  actions?: React.ReactNode
+}) {
+  const router = useRouter()
+
+  return (
+    <div className="border-b border-neutral-200 bg-neutral-50">
+      <div className="flex min-h-10 flex-col gap-2 px-4 py-1.5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+            onClick={() => router.push(backHref)}
+          >
+            <ChevronLeft className="size-4" />
+            <span className="sr-only">Back to nutrition</span>
+          </Button>
+          <div className="min-w-0">
+            <div className="truncate text-[17px] font-semibold text-neutral-950">
+              {title}
+            </div>
+          </div>
+        </div>
+        {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+      </div>
+    </div>
+  )
+}
+
+function NutritionMealPlanMetaCard({
+  planName,
+  planDescription,
+  canSave,
+  onPlanNameChange,
+  onPlanDescriptionChange,
+  onReset,
+  onSave,
+}: {
+  planName: string
+  planDescription: string
+  canSave: boolean
+  onPlanNameChange: (nextValue: string) => void
+  onPlanDescriptionChange: (nextValue: string) => void
+  onReset: () => void
+  onSave: () => void
+}) {
+  return (
+    <Card className="rounded-xl border-neutral-200 shadow-none">
+      <CardHeader className="space-y-1 pb-3">
+        <CardTitle className="text-[16px] font-semibold text-neutral-950">
+          Plan settings
+        </CardTitle>
+        <CardDescription className="text-[13px] text-neutral-500">
+          Update the plan name and coaching summary before adjusting meals.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <label className="block text-[13px] font-medium text-neutral-800">
+            Plan Name <span className="text-rose-500">*</span>
+          </label>
+          <Input
+            value={planName}
+            onChange={(event) => onPlanNameChange(event.target.value)}
+            className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-[13px] font-medium text-neutral-800">
+            Plan Description
+          </label>
+          <textarea
+            value={planDescription}
+            onChange={(event) => onPlanDescriptionChange(event.target.value)}
+            className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+          />
+        </div>
+
+        <div className="flex items-center justify-end gap-2 border-t border-neutral-200 pt-4">
+          <SecondaryActionButton
+            label="Reset"
+            onClick={onReset}
+          />
+          <PrimaryActionButton
+            label="Save Changes"
+            onClick={onSave}
+            disabled={!canSave}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function NutritionMealPlanWorkspace({
+  mealPlan,
+  macros,
+  sections,
+  sensors,
+  onSectionDragEnd,
+  onRenameSection,
+  onDeleteSection,
+}: {
+  mealPlan: NutritionMealPlan
+  macros: ReturnType<typeof parseMealPlanMacros>
+  sections: NutritionMealPlanSection[]
+  sensors: ReturnType<typeof useSensors>
+  onSectionDragEnd: (event: DragEndEvent) => void
+  onRenameSection: (sectionId: string, nextLabel: string) => void
+  onDeleteSection: (sectionId: string) => void
+}) {
+  return (
+    <>
+      <Card className="rounded-xl border-neutral-200 shadow-none">
+        <CardContent className="space-y-5 p-5">
+          <div className="inline-flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
+            <Flame className="size-4.5 text-brand-600" />
+            {mealPlan.calories} kcal
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              {
+                label: "Carbs",
+                grams: macros.carbs,
+                percent:
+                  mealPlan.segments.find((segment) => segment.macro === "carbs")
+                    ?.value ?? 0,
+                barClassName: "bg-blue-500",
+              },
+              {
+                label: "Protein",
+                grams: macros.protein,
+                percent:
+                  mealPlan.segments.find((segment) => segment.macro === "protein")
+                    ?.value ?? 0,
+                barClassName: "bg-violet-400",
+              },
+              {
+                label: "Fat",
+                grams: macros.fats,
+                percent:
+                  mealPlan.segments.find((segment) => segment.macro === "fats")
+                    ?.value ?? 0,
+                barClassName: "bg-cyan-400",
+              },
+            ].map((item) => (
+              <div key={item.label} className="space-y-2">
+                <div className="flex items-center justify-between gap-3 text-[14px] font-medium text-neutral-900">
+                  <span>{item.label}</span>
+                  <span>{item.percent}%</span>
+                </div>
+                <div className="h-2 rounded-full bg-neutral-100">
+                  <div
+                    className={cn("h-2 rounded-full", item.barClassName)}
+                    style={{ width: `${item.percent}%` }}
+                  />
+                </div>
+                <div className="text-[14px] text-neutral-500">
+                  {item.grams}g
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <DndContext
+        collisionDetection={closestCenter}
+        modifiers={[restrictToVerticalAxis]}
+        onDragEnd={onSectionDragEnd}
+        sensors={sensors}
+      >
+        <SortableContext
+          items={sections.map((section) => section.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="space-y-4">
+            {sections.map((section) => (
+              <SortableNutritionMealPlanSectionCard
+                key={section.id}
+                section={section}
+                onRenameSection={onRenameSection}
+                onDeleteSection={onDeleteSection}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+    </>
+  )
+}
+
 export function ClientNutritionMealPlansView({
   phase,
 }: {
@@ -2993,6 +3215,13 @@ export function ClientNutritionMealPlansView({
   const handleOpenMealPlan = React.useCallback(
     (mealPlanId: string) => {
       router.push(`${pathname}?nutritionTab=meal-plans&mealPlanId=${mealPlanId}`)
+    },
+    [pathname, router]
+  )
+
+  const handleOpenMealPlanEditor = React.useCallback(
+    (mealPlanId: string) => {
+      router.push(`${pathname}/edit/${mealPlanId}`)
     },
     [pathname, router]
   )
@@ -3134,7 +3363,7 @@ export function ClientNutritionMealPlansView({
                       size="icon-sm"
                       onClick={(event) => {
                         event.stopPropagation()
-                        handleOpenMealPlan(plan.id)
+                        handleOpenMealPlanEditor(plan.id)
                       }}
                       className={nutritionRowActionButtonClassName}
                     >
@@ -3648,96 +3877,22 @@ export function SmartMealPlannerAction({
 export function MealPlanDetailView({
   mealPlanId,
   phase,
+  backHref,
 }: {
   mealPlanId: string
   phase?: string
+  backHref?: string
 }) {
-  const router = useRouter()
   const pathname = usePathname()
-  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
-  const mealPlan = preset.mealPlans.find((plan) => plan.id === mealPlanId)
-  const baseSections = React.useMemo(
-    () => (mealPlan ? nutritionMealPlanSections[mealPlan.id] ?? [] : []),
-    [mealPlan]
-  )
-  const macros = React.useMemo(
-    () => parseMealPlanMacros(mealPlan?.macros ?? ""),
-    [mealPlan]
-  )
-  const [sections, setSections] = React.useState(baseSections)
-  const reorderToastTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  )
-  const sensors = useSensors(
-    useSensor(MouseSensor, {}),
-    useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
-  )
-
-  React.useEffect(() => {
-    setSections(baseSections)
-  }, [baseSections])
-
-  React.useEffect(() => {
-    return () => {
-      if (reorderToastTimeoutRef.current) {
-        clearTimeout(reorderToastTimeoutRef.current)
-      }
-    }
-  }, [])
-
-  const scheduleSavedToast = React.useCallback((delay = 0) => {
-    if (reorderToastTimeoutRef.current) {
-      clearTimeout(reorderToastTimeoutRef.current)
-    }
-
-    reorderToastTimeoutRef.current = setTimeout(() => {
-      toast.success("Changes saved", {
-        id: "nutrition-meal-plan-order-saved",
-      })
-    }, delay)
-  }, [])
-
-  function handleSectionDragEnd(event: DragEndEvent) {
-    const { active, over } = event
-
-    if (active && over && active.id !== over.id) {
-      setSections((currentSections) => {
-        const oldIndex = currentSections.findIndex(
-          (section) => section.id === active.id
-        )
-        const newIndex = currentSections.findIndex(
-          (section) => section.id === over.id
-        )
-
-        return arrayMove(currentSections, oldIndex, newIndex)
-      })
-
-      scheduleSavedToast(650)
-    }
-  }
-
-  const handleRenameSection = React.useCallback(
-    (sectionId: string, nextLabel: string) => {
-      setSections((currentSections) =>
-        currentSections.map((section) =>
-          section.id === sectionId ? { ...section, label: nextLabel } : section
-        )
-      )
-      scheduleSavedToast()
-    },
-    [scheduleSavedToast]
-  )
-
-  const handleDeleteSection = React.useCallback(
-    (sectionId: string) => {
-      setSections((currentSections) =>
-        currentSections.filter((section) => section.id !== sectionId)
-      )
-      scheduleSavedToast()
-    },
-    [scheduleSavedToast]
-  )
+  const {
+    macros,
+    mealPlan,
+    sections,
+    sensors,
+    handleDeleteSection,
+    handleRenameSection,
+    handleSectionDragEnd,
+  } = useNutritionMealPlanWorkspace({ mealPlanId, phase })
 
   if (!mealPlan) {
     return (
@@ -3749,120 +3904,150 @@ export function MealPlanDetailView({
 
   return (
     <div className="min-w-0 bg-neutral-50">
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex min-h-10 flex-col gap-2 px-4 py-1.5 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-              onClick={() => router.push(`${pathname}?nutritionTab=meal-plans`)}
-            >
-              <ChevronLeft className="size-4" />
-              <span className="sr-only">Back to meal plans</span>
-            </Button>
-            <div className="min-w-0">
-              <div className="truncate text-[17px] font-semibold text-neutral-950">
-                {mealPlan.title}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <EditMealPlanDialog plan={mealPlan} />
+      <NutritionMealPlanHeader
+        title={mealPlan.title}
+        backHref={backHref ?? `${pathname}?nutritionTab=meal-plans`}
+        actions={
+          <>
+            <SecondaryActionButton
+              label="Edit Plan"
+              icon={Pencil}
+              href={`${pathname}/edit/${mealPlan.id}`}
+            />
             <AddMealDialog
               trigger={
-                <Button
-                  type="button"
-                  size="sm"
-                  className={primaryActionButtonClassName}
-                >
-                  <Plus className="size-4" />
-                  Add Meal
-                </Button>
+                <PrimaryActionButton
+                  label="Add Meal"
+                  icon={Plus}
+                />
               }
             />
-          </div>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       <div className="mx-auto max-w-[980px] space-y-4 px-4 py-4">
-        <Card className="rounded-xl border-neutral-200 shadow-none">
-          <CardContent className="space-y-5 p-5">
-            <div className="inline-flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
-              <Flame className="size-4.5 text-brand-600" />
-              {mealPlan.calories} kcal
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {[
-                {
-                  label: "Carbs",
-                  grams: macros.carbs,
-                  percent:
-                    mealPlan.segments.find((segment) => segment.macro === "carbs")
-                      ?.value ?? 0,
-                  barClassName: "bg-blue-500",
-                },
-                {
-                  label: "Protein",
-                  grams: macros.protein,
-                  percent:
-                    mealPlan.segments.find((segment) => segment.macro === "protein")
-                      ?.value ?? 0,
-                  barClassName: "bg-violet-400",
-                },
-                {
-                  label: "Fat",
-                  grams: macros.fats,
-                  percent:
-                    mealPlan.segments.find((segment) => segment.macro === "fats")
-                      ?.value ?? 0,
-                  barClassName: "bg-cyan-400",
-                },
-              ].map((item) => (
-                <div key={item.label} className="space-y-2">
-                  <div className="flex items-center justify-between gap-3 text-[14px] font-medium text-neutral-900">
-                    <span>{item.label}</span>
-                    <span>{item.percent}%</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-neutral-100">
-                    <div
-                      className={cn("h-2 rounded-full", item.barClassName)}
-                      style={{ width: `${item.percent}%` }}
-                    />
-                  </div>
-                  <div className="text-[14px] text-neutral-500">
-                    {item.grams}g
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <DndContext
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={handleSectionDragEnd}
+        <NutritionMealPlanWorkspace
+          mealPlan={mealPlan}
+          macros={macros}
+          sections={sections}
           sensors={sensors}
-        >
-          <SortableContext
-            items={sections.map((section) => section.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            <div className="space-y-4">
-              {sections.map((section) => (
-                <SortableNutritionMealPlanSectionCard
-                  key={section.id}
-                  section={section}
-                  onRenameSection={handleRenameSection}
-                  onDeleteSection={handleDeleteSection}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+          onSectionDragEnd={handleSectionDragEnd}
+          onRenameSection={handleRenameSection}
+          onDeleteSection={handleDeleteSection}
+        />
+      </div>
+    </div>
+  )
+}
+
+export function MealPlanEditPageView({
+  mealPlanId,
+  phase,
+  backHref,
+}: {
+  mealPlanId: string
+  phase?: string
+  backHref: string
+}) {
+  const {
+    macros,
+    mealPlan,
+    sections,
+    sensors,
+    handleDeleteSection,
+    handleRenameSection,
+    handleSectionDragEnd,
+  } = useNutritionMealPlanWorkspace({ mealPlanId, phase })
+  const [savedPlanName, setSavedPlanName] = React.useState("")
+  const [savedPlanDescription, setSavedPlanDescription] = React.useState("")
+  const [planName, setPlanName] = React.useState("")
+  const [planDescription, setPlanDescription] = React.useState("")
+
+  React.useEffect(() => {
+    const nextPlanName = mealPlan?.title ?? ""
+    const nextPlanDescription = mealPlan
+      ? getMealPlanEditDescription(mealPlan)
+      : ""
+
+    setSavedPlanName(nextPlanName)
+    setSavedPlanDescription(nextPlanDescription)
+    setPlanName(nextPlanName)
+    setPlanDescription(nextPlanDescription)
+  }, [mealPlan])
+
+  const hasValidName = planName.trim().length > 0
+  const isDirty =
+    planName.trim() !== savedPlanName ||
+    planDescription.trim() !== savedPlanDescription
+
+  const handleReset = React.useCallback(() => {
+    setPlanName(savedPlanName)
+    setPlanDescription(savedPlanDescription)
+  }, [savedPlanDescription, savedPlanName])
+
+  const handleSave = React.useCallback(() => {
+    if (!hasValidName) {
+      return
+    }
+
+    const nextPlanName = planName.trim()
+    const nextPlanDescription = planDescription.trim()
+
+    setSavedPlanName(nextPlanName)
+    setSavedPlanDescription(nextPlanDescription)
+    setPlanName(nextPlanName)
+    setPlanDescription(nextPlanDescription)
+
+    toast.success("Changes saved", {
+      description: `For ${nextPlanName}.`,
+    })
+  }, [hasValidName, planDescription, planName])
+
+  if (!mealPlan) {
+    return (
+      <div className="px-2 pt-2 text-sm text-neutral-500">
+        Meal plan not found.
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-w-0 bg-neutral-50">
+      <NutritionMealPlanHeader
+        title={planName.trim() || mealPlan.title}
+        backHref={backHref}
+        actions={
+          <AddMealDialog
+            trigger={
+              <PrimaryActionButton
+                label="Add Meal"
+                icon={Plus}
+              />
+            }
+          />
+        }
+      />
+
+      <div className="mx-auto max-w-[980px] space-y-4 px-4 py-4">
+        <NutritionMealPlanMetaCard
+          planName={planName}
+          planDescription={planDescription}
+          canSave={hasValidName && isDirty}
+          onPlanNameChange={setPlanName}
+          onPlanDescriptionChange={setPlanDescription}
+          onReset={handleReset}
+          onSave={handleSave}
+        />
+        <NutritionMealPlanWorkspace
+          mealPlan={mealPlan}
+          macros={macros}
+          sections={sections}
+          sensors={sensors}
+          onSectionDragEnd={handleSectionDragEnd}
+          onRenameSection={handleRenameSection}
+          onDeleteSection={handleDeleteSection}
+        />
       </div>
     </div>
   )
