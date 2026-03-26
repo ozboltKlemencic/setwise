@@ -1,14 +1,12 @@
 import type { ReactNode } from "react"
 import {
-  IconCalendarEvent,
   IconChefHat,
   IconClipboardCheck,
   IconClipboardList,
   IconPill,
-  IconPlus,
   IconRepeat,
 } from "@tabler/icons-react"
-import { FileText, Mail, Tag, UserRound } from "lucide-react"
+import { Mail, Scale, UserRound } from "lucide-react"
 
 import { CreateAssignedCheckinDialog } from "@/components/coachWise/clients/checkins/client-checkins-panel"
 import { ClientNotesSection } from "@/components/coachWise/clients/info/client-notes-section"
@@ -20,15 +18,13 @@ import { ClientSectionHeader } from "@/components/coachWise/clients/info/client-
 import { CreateNutritionPlanAction } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
 import { AddProgramDialog } from "@/components/coachWise/programs/exercise-history-panel"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   type CoachWiseClientProfile,
-  getClientCoachingWeek,
   getClientContactEmail,
   getClientGoalSummary,
   getClientInjurySummary,
-  getClientTag,
+  getClientWeeklyAvgWeight,
 } from "@/lib/handlers/clients.handlers"
 import {
   resolveClientDetailContext,
@@ -99,8 +95,7 @@ export default async function Page({ params }: ClientDetailParamsProps) {
     params
   )
   const contactEmail = getClientContactEmail(client.header)
-  const coachingWeek = getClientCoachingWeek(clientId)
-  const clientTag = getClientTag(client.phase)
+  const weeklyAvgWeight = getClientWeeklyAvgWeight(clientId, client.phase)
   const goalSummary = getClientGoalSummary(client.phase)
   const injurySummary = getClientInjurySummary(client.phase)
   const clientDetailRows = [
@@ -120,13 +115,9 @@ export default async function Page({ params }: ClientDetailParamsProps) {
       value: client.status === "Done" ? "1 day ago" : "3 hours ago",
     },
     {
-      icon: <IconCalendarEvent className="size-4" />,
-      label: "Duration",
-      value: (
-        <Badge className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50">
-          {coachingWeek}
-        </Badge>
-      ),
+      icon: <Scale className="size-4" />,
+      label: "Weekly Avg Weight",
+      value: weeklyAvgWeight,
     },
     {
       icon: <IconClipboardList className="size-4" />,
@@ -140,37 +131,6 @@ export default async function Page({ params }: ClientDetailParamsProps) {
         >
           {client.phase}
         </Badge>
-      ),
-    },
-    {
-      icon: <Tag className="size-4" />,
-      label: "Tags",
-      value: (
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
-          >
-            <IconPlus className="size-3.5" />
-          </Button>
-          <Badge className="rounded-md border border-red-200 bg-red-50 px-2 py-0.5 text-[12px] font-medium text-red-700 shadow-none hover:bg-red-50">
-            {clientTag}
-          </Badge>
-        </div>
-      ),
-    },
-    {
-      icon: <FileText className="size-4" />,
-      label: "Questionnaires",
-      value: (
-        <Button
-          variant="outline"
-          size="icon"
-          className="size-7 rounded-md border-neutral-200 text-neutral-500 shadow-none"
-        >
-          <IconPlus className="size-3.5" />
-        </Button>
       ),
     },
   ]

@@ -24,6 +24,15 @@ export function getClientCoachingWeek(clientId: number) {
   return `Week ${((clientId + 10) % 13) + 1} of 13`
 }
 
+export function getClientWeeklyAvgWeight(clientId: number, phase?: string) {
+  const baseWeight =
+    phase === "Bulk" ? 74.0 : phase === "Cut" ? 71.8 : 76.5
+  const offsets = [0.6, 0, -0.4]
+  const offset = offsets[clientId % offsets.length] ?? 0
+
+  return `${(baseWeight + offset).toFixed(1)} kg`
+}
+
 export function getClientNameParts(clientHeader: string) {
   const [firstName = "", ...lastNameParts] = clientHeader.split(" ")
 
