@@ -1,6 +1,4 @@
-import {
-  MacroPlanCreatePageView,
-} from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
+import { MacroPlanBuilderPageView } from "@/components/coachWise/clients/nutrition/macro-plan-builder"
 import { routing } from "@/i18n/routing"
 import {
   getSingleSearchParam,
@@ -24,7 +22,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <section className="min-w-0 bg-neutral-50">
-      <MacroPlanCreatePageView backHref={backHref} />
+      <MacroPlanBuilderPageView backHref={backHref} />
     </section>
   )
 }
