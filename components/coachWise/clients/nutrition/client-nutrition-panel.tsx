@@ -87,6 +87,7 @@ import {
   subtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/shared/subtabs-nav"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import { ClientQuickActionCard } from "@/components/coachWise/clients/info/client-quick-action-card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -3019,6 +3020,38 @@ export function ClientNutritionMealPlansView({
 
   return (
     <div className="bg-neutral-50 px-4 py-4">
+      <div className="mb-5 space-y-3">
+        <div className="text-[11px] font-medium tracking-[0.12em] text-neutral-400 uppercase">
+          Prehrana
+        </div>
+        <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch">
+          <CreateNutritionPlanAction
+            phase={phase}
+            trigger={
+              <ClientQuickActionCard
+                sectionLabel="Prehrana"
+                title="Nov Meal Plan"
+                description="Zgradi jedilnik od zacetka ali uporabi template."
+                icon={<UtensilsCrossed className="size-4" />}
+                tone="nutrition"
+                size="compact"
+                className="md:w-[21rem]"
+              />
+            }
+          />
+          <ClientQuickActionCard
+            sectionLabel="Prehrana"
+            title="Makro Plan (IIFYM)"
+            description="Nastavi makro cilje za fleksibilen pristop."
+            icon={<Beef className="size-4" />}
+            tone="programs"
+            href={`${pathname}?nutritionTab=nutrition-logger`}
+            size="compact"
+            className="md:w-[21rem]"
+          />
+        </div>
+      </div>
+
       <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
         <Table>
           <TableHeader className="bg-muted">

@@ -18,6 +18,7 @@ type ClientQuickActionCardBaseProps = {
   title: string
   description: string
   tone: ClientQuickActionTone
+  size?: "default" | "compact"
   className?: string
 }
 
@@ -84,13 +85,24 @@ function isLinkProps(
 }
 
 export function ClientQuickActionCard(props: ClientQuickActionCardProps) {
-  const { icon, sectionLabel, title, description, tone, className } = props
+  const {
+    icon,
+    sectionLabel,
+    title,
+    description,
+    tone,
+    size = "default",
+    className,
+  } = props
   const toneStyles = quickActionCardToneStyles[tone]
+  const isCompact = size === "compact"
   const content = (
     <>
       <span
         className={cn(
-          "pointer-events-none absolute right-4 top-4 [&_svg]:size-16",
+          isCompact
+            ? "pointer-events-none absolute right-3.5 top-3.5 [&_svg]:size-12"
+            : "pointer-events-none absolute right-4 top-4 [&_svg]:size-16",
           toneStyles.watermark
         )}
       >
@@ -98,25 +110,47 @@ export function ClientQuickActionCard(props: ClientQuickActionCardProps) {
       </span>
       <span
         className={cn(
-          "mb-4 flex size-12 items-center justify-center rounded-2xl border transition-colors",
+          isCompact
+            ? "mb-3 flex size-10 items-center justify-center rounded-xl border transition-colors"
+            : "mb-4 flex size-12 items-center justify-center rounded-2xl border transition-colors",
           toneStyles.badge
         )}
       >
-        <IconPlus className="size-5" />
+        <IconPlus className={cn(isCompact ? "size-4.5" : "size-5")} />
       </span>
-      <span className="mb-1.5 text-[10px] font-medium tracking-[0.1em] text-neutral-400 uppercase">
+      <span
+        className={cn(
+          isCompact
+            ? "mb-1 text-[9px] font-medium tracking-[0.12em] text-neutral-400 uppercase"
+            : "mb-1.5 text-[10px] font-medium tracking-[0.1em] text-neutral-400 uppercase"
+        )}
+      >
         {sectionLabel}
       </span>
-      <span className="text-[20px] font-semibold tracking-[-0.02em] text-neutral-950">
+      <span
+        className={cn(
+          isCompact
+            ? "text-[16px] font-semibold tracking-[-0.02em] text-neutral-950"
+            : "text-[20px] font-semibold tracking-[-0.02em] text-neutral-950"
+        )}
+      >
         {title}
       </span>
-      <span className="mt-2 max-w-[19rem] text-[13px] leading-5 text-neutral-500">
+      <span
+        className={cn(
+          isCompact
+            ? "mt-1.5 max-w-[16rem] text-[12px] leading-4.5 text-neutral-500"
+            : "mt-2 max-w-[19rem] text-[13px] leading-5 text-neutral-500"
+        )}
+      >
         {description}
       </span>
     </>
   )
   const sharedClassName = cn(
-    "group relative flex min-h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-5 py-6 text-center shadow-none transition-colors hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60",
+    isCompact
+      ? "group relative flex min-h-32 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-4 py-4 text-center shadow-none transition-colors hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
+      : "group relative flex min-h-48 w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-2xl border bg-white px-5 py-6 text-center shadow-none transition-colors hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60",
     toneStyles.container,
     className
   )
@@ -129,6 +163,7 @@ export function ClientQuickActionCard(props: ClientQuickActionCardProps) {
       title: _title,
       description: _description,
       tone: _tone,
+      size: _size,
       className: _className,
       ...linkProps
     } = props
@@ -147,6 +182,7 @@ export function ClientQuickActionCard(props: ClientQuickActionCardProps) {
     title: _title,
     description: _description,
     tone: _tone,
+    size: _size,
     className: _className,
     ...restButtonProps
   } = props
