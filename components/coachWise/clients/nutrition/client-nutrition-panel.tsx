@@ -103,6 +103,8 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
+  getNutritionCreateMacroPlanHref,
+  getNutritionCreateMealPlanHref,
   getNutritionPlanDetailHref,
   getNutritionPlanEditorHref,
 } from "@/lib/handlers/nutrition.handlers"
@@ -3273,19 +3275,18 @@ export function ClientNutritionMealPlansView({
       <div className="mb-5">
         <NutritionSectionTitle title="Create plans" />
         <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-stretch">
-          <CreateNutritionPlanAction
-            phase={phase}
-            trigger={
-              <ClientQuickActionCard
-                sectionLabel="Nutrition"
-                title="New Meal Plan"
-                description="Build a meal plan from scratch or start from a template."
-                icon={<UtensilsCrossed className="size-4" />}
-                tone="nutrition"
-                size="compact"
-                className="md:w-[21rem]"
-              />
-            }
+          <ClientQuickActionCard
+            sectionLabel="Nutrition"
+            title="New Meal Plan"
+            description="Build a meal plan from scratch or start from a template."
+            icon={<UtensilsCrossed className="size-4" />}
+            tone="nutrition"
+            href={buildCoachWiseHref(
+              pathname,
+              getNutritionCreateMealPlanHref(pathname)
+            )}
+            size="compact"
+            className="md:w-[21rem]"
           />
           <ClientQuickActionCard
             sectionLabel="Nutrition"
@@ -3293,7 +3294,10 @@ export function ClientNutritionMealPlansView({
             description="Set macro targets for a more flexible nutrition approach."
             icon={<Beef className="size-4" />}
             tone="programs"
-            href={`${pathname}?nutritionTab=nutrition-logger`}
+            href={buildCoachWiseHref(
+              pathname,
+              getNutritionCreateMacroPlanHref(pathname)
+            )}
             size="compact"
             className="md:w-[21rem]"
           />
@@ -4071,6 +4075,653 @@ export function MealPlanEditPageView({
           onRenameSection={handleRenameSection}
           onDeleteSection={handleDeleteSection}
         />
+      </div>
+    </div>
+  )
+}
+
+export function MealPlanCreatePageView({
+  phase,
+  backHref,
+}: {
+  phase?: string
+  backHref: string
+}) {
+  const router = useRouter()
+  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+  const templateItems = React.useMemo<NutritionPlanTemplate[]>(
+    () =>
+      preset.mealPlans.map((plan) => ({
+        id: plan.id,
+        title: plan.title,
+        subtitle: plan.subtitle,
+        type: "meal",
+      })),
+    [preset.mealPlans]
+  )
+  const [activeTab, setActiveTab] = React.useState<"new" | "library">("new")
+  const [planName, setPlanName] = React.useState("")
+  const [planDescription, setPlanDescription] = React.useState("")
+  const [selectedTemplateId, setSelectedTemplateId] = React.useState(
+    templateItems[0]?.id ?? ""
+  )
+
+  React.useEffect(() => {
+    setSelectedTemplateId(templateItems[0]?.id ?? "")
+  }, [templateItems])
+
+  const handleApplyTemplate = React.useCallback(
+    (template: NutritionPlanTemplate) => {
+      setSelectedTemplateId(template.id)
+      setPlanName(template.title)
+      setPlanDescription(template.subtitle)
+      setActiveTab("new")
+    },
+    []
+  )
+
+  const handleCreatePlan = React.useCallback(() => {
+    const nextPlanName = planName.trim()
+
+    if (!nextPlanName) {
+      return
+    }
+
+    toast.success("Meal plan created", {
+      description: `For ${nextPlanName}.`,
+    })
+
+    router.push(backHref)
+  }, [backHref, planName, router])
+
+  return (
+    <div className="min-w-0 bg-neutral-50">
+      <NutritionMealPlanHeader
+        title="Create Meal Plan"
+        backHref={backHref}
+      />
+
+      <div className="mx-auto max-w-[980px] px-4 py-4">
+        <Card className="overflow-hidden rounded-xl border-neutral-200 shadow-none">
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value as "new" | "library")}
+            className="gap-0"
+          >
+            <div className="border-b border-neutral-200 px-5 pt-4">
+              <div className="space-y-1 pb-4">
+                <div className="text-[18px] font-semibold text-neutral-950">
+                  Start a new meal plan
+                </div>
+                <div className="text-[13px] leading-5 text-neutral-500">
+                  Create a fresh structure or start from one of your existing
+                  templates.
+                </div>
+              </div>
+
+              <TabsList
+                variant="line"
+                className="h-auto w-full justify-start gap-6 rounded-none bg-transparent p-0"
+              >
+                <TabsTrigger
+                  value="new"
+                  className={createNutritionTabTriggerClassName}
+                >
+                  New plan
+                </TabsTrigger>
+                <TabsTrigger
+                  value="library"
+                  className={createNutritionTabTriggerClassName}
+                >
+                  Nutrition library
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="new" className="mt-0">
+              <div className="space-y-5 p-5">
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Plan name <span className="text-rose-500">*</span>
+                  </label>
+                  <Input
+                    value={planName}
+                    onChange={(event) => setPlanName(event.target.value)}
+                    placeholder="Name of the plan e.g. 2000kcal Plan"
+                    className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Plan description
+                  </label>
+                  <textarea
+                    value={planDescription}
+                    onChange={(event) =>
+                      setPlanDescription(event.target.value)
+                    }
+                    maxLength={1000}
+                    placeholder="Enter any additional info"
+                    className="min-h-[108px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
+                  />
+                </div>
+
+                <div className="rounded-xl border border-neutral-200 bg-neutral-50/80 px-4 py-4">
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-9 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700">
+                      <UtensilsCrossed className="size-4" />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-[14px] font-medium text-neutral-950">
+                        Meal plan flow
+                      </div>
+                      <div className="text-[13px] leading-5 text-neutral-500">
+                        After creating the plan, you can add meals, edit macros,
+                        and reorder sections from the nutrition workspace.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 border-t border-neutral-200 px-5 py-4">
+                <SecondaryActionButton
+                  label="Cancel"
+                  onClick={() => router.push(backHref)}
+                />
+                <PrimaryActionButton
+                  label="Create Plan"
+                  onClick={handleCreatePlan}
+                  disabled={!planName.trim()}
+                />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="library" className="mt-0">
+              <div className="grid gap-3 p-5 sm:grid-cols-2">
+                {templateItems.map((template) => {
+                  const isActive = template.id === selectedTemplateId
+
+                  return (
+                    <button
+                      key={template.id}
+                      type="button"
+                      onClick={() => setSelectedTemplateId(template.id)}
+                      className={cn(
+                        "rounded-sm border px-4 py-4 text-left transition-colors",
+                        isActive
+                          ? "border-brand-500 bg-brand-50/40"
+                          : "border-neutral-200 bg-white hover:bg-neutral-50"
+                      )}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-1">
+                          <div className="text-[15px] font-medium text-neutral-950">
+                            {template.title}
+                          </div>
+                          <div className="text-[13px] leading-5 text-neutral-500">
+                            {template.subtitle}
+                          </div>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11px] font-normal text-neutral-600"
+                        >
+                          Meal plan
+                        </Badge>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <div className="flex items-center justify-end gap-2 border-t border-neutral-200 px-5 py-4">
+                <SecondaryActionButton
+                  label="Cancel"
+                  onClick={() => router.push(backHref)}
+                />
+                <PrimaryActionButton
+                  label="Use Template"
+                  onClick={() => {
+                    const template = templateItems.find(
+                      (item) => item.id === selectedTemplateId
+                    )
+
+                    if (template) {
+                      handleApplyTemplate(template)
+                    }
+                  }}
+                  disabled={!selectedTemplateId}
+                />
+              </div>
+            </TabsContent>
+          </Tabs>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+export function MacroPlanCreatePageView({
+  backHref,
+}: {
+  backHref: string
+}) {
+  const router = useRouter()
+  const [generated, setGenerated] = React.useState(false)
+  const [calorieGoal, setCalorieGoal] = React.useState("2000")
+  const [selectedMacroId, setSelectedMacroId] = React.useState("balanced")
+  const [mealCount, setMealCount] = React.useState(4)
+  const [alternatives, setAlternatives] = React.useState(1)
+  const [restrictions, setRestrictions] = React.useState<string[]>([])
+  const [planName, setPlanName] = React.useState("Balanced Plan")
+  const [generationIndex, setGenerationIndex] = React.useState(0)
+  const selectedMacroPreset =
+    smartMacroPresets.find((preset) => preset.id === selectedMacroId) ??
+    smartMacroPresets[0]
+  const calorieGoalValue = Number.parseInt(calorieGoal || "0", 10) || 0
+  const generatedMeals = React.useMemo(
+    () => buildGeneratedMeals(mealCount, generationIndex),
+    [generationIndex, mealCount]
+  )
+  const totals = React.useMemo(
+    () =>
+      generatedMeals.reduce(
+        (accumulator, meal) => ({
+          calories: accumulator.calories + meal.calories,
+          carbs: accumulator.carbs + meal.carbs,
+          protein: accumulator.protein + meal.protein,
+          fats: accumulator.fats + meal.fats,
+        }),
+        { calories: 0, carbs: 0, protein: 0, fats: 0 }
+      ),
+    [generatedMeals]
+  )
+  const targets = React.useMemo(
+    () => ({
+      calories: calorieGoalValue,
+      carbs: Math.round((calorieGoalValue * selectedMacroPreset.carbsPct) / 400),
+      protein: Math.round(
+        (calorieGoalValue * selectedMacroPreset.proteinPct) / 400
+      ),
+      fats: Math.round((calorieGoalValue * selectedMacroPreset.fatsPct) / 900),
+    }),
+    [calorieGoalValue, selectedMacroPreset]
+  )
+
+  const handleGenerate = React.useCallback(() => {
+    setPlanName(`${selectedMacroPreset.title} Plan`)
+    setGenerated(true)
+    setGenerationIndex((current) => current + 1)
+  }, [selectedMacroPreset.title])
+
+  const handleRegenerate = React.useCallback(() => {
+    setGenerationIndex((current) => current + 1)
+  }, [])
+
+  const handleSavePlan = React.useCallback(() => {
+    const nextPlanName = planName.trim() || "Macro Plan (IIFYM)"
+
+    toast.success("Macro plan created", {
+      description: `For ${nextPlanName}.`,
+    })
+
+    router.push(backHref)
+  }, [backHref, planName, router])
+
+  return (
+    <div className="min-w-0 bg-neutral-50">
+      <NutritionMealPlanHeader
+        title={generated ? planName.trim() || "Macro Plan (IIFYM)" : "Create Macro Plan (IIFYM)"}
+        backHref={backHref}
+      />
+
+      <div className="mx-auto max-w-[1100px] px-4 py-4">
+        <Card className="overflow-hidden rounded-xl border-neutral-200 shadow-none">
+          <div className="border-b border-neutral-200 px-5 py-4">
+            <div className="flex items-center gap-3">
+              <span className="flex size-8 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                <Sparkles className="size-4.5" />
+              </span>
+              <div className="space-y-1">
+                <div className="text-[18px] font-semibold text-neutral-950">
+                  Smart Macro Planner
+                </div>
+                <div className="text-[13px] leading-5 text-neutral-500">
+                  Generate a flexible IIFYM setup and review the meal structure
+                  before saving it.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {!generated ? (
+            <>
+              <div className="space-y-6 p-5">
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Calorie goal <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Input
+                      value={calorieGoal}
+                      onChange={(event) => setCalorieGoal(event.target.value)}
+                      className="h-11 rounded-sm border-neutral-200 bg-white pr-16 pl-11 text-[18px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    />
+                    <Flame className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+                    <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
+                      kcal
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <label className="block text-[13px] font-medium text-neutral-800">
+                      Macro split <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="flex flex-wrap items-center gap-3 text-[13px] text-neutral-500">
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="size-1.5 rounded-full bg-blue-500" />
+                        Carbs {targets.carbs}g
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="size-1.5 rounded-full bg-violet-400" />
+                        Protein {targets.protein}g
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="size-1.5 rounded-full bg-cyan-400" />
+                        Fats {targets.fats}g
+                      </span>
+                    </div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    {smartMacroPresets.map((preset) => (
+                      <SmartMacroOptionCard
+                        key={preset.id}
+                        preset={preset}
+                        isActive={selectedMacroId === preset.id}
+                        onSelect={() => setSelectedMacroId(preset.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Total meals <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {[3, 4, 5, 6].map((count) => (
+                      <Button
+                        key={count}
+                        type="button"
+                        variant="outline"
+                        onClick={() => setMealCount(count)}
+                        className={cn(
+                          "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
+                          mealCount === count &&
+                            "border-brand-500 bg-brand-50 text-brand-700"
+                        )}
+                      >
+                        {count} Meals
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Alternatives per meal
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {[1, 2, 3, 4].map((count) => (
+                      <Button
+                        key={count}
+                        type="button"
+                        variant="outline"
+                        onClick={() => setAlternatives(count)}
+                        className={cn(
+                          "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
+                          alternatives === count &&
+                            "border-brand-500 bg-brand-50 text-brand-700"
+                        )}
+                      >
+                        {count} {count === 1 ? "option" : "options"}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Dietary restrictions
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {smartPlannerRestrictions.map((restriction) => {
+                      const isActive = restrictions.includes(restriction)
+
+                      return (
+                        <Button
+                          key={restriction}
+                          type="button"
+                          variant="outline"
+                          onClick={() =>
+                            setRestrictions((current) =>
+                              isActive
+                                ? current.filter((item) => item !== restriction)
+                                : [...current, restriction]
+                            )
+                          }
+                          className={cn(
+                            "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
+                            isActive &&
+                              "border-brand-500 bg-brand-50 text-brand-700"
+                          )}
+                        >
+                          {restriction}
+                        </Button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 border-t border-neutral-200 px-5 py-4">
+                <SecondaryActionButton
+                  label="Cancel"
+                  onClick={() => router.push(backHref)}
+                />
+                <PrimaryActionButton
+                  label="Generate Plan"
+                  onClick={handleGenerate}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="space-y-5 p-5">
+                <div className="space-y-2">
+                  <label className="block text-[13px] font-medium text-neutral-800">
+                    Plan name
+                  </label>
+                  <Input
+                    value={planName}
+                    onChange={(event) => setPlanName(event.target.value)}
+                    className="h-11 rounded-sm border-neutral-200 bg-white text-[18px] font-medium shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                </div>
+
+                <div className="grid gap-3 xl:grid-cols-4">
+                  {[
+                    {
+                      label: "Calories",
+                      value: `${totals.calories}`,
+                      target: `${targets.calories}kcal`,
+                      delta: totals.calories - targets.calories,
+                      accent: "bg-amber-500",
+                      bar: "bg-amber-500",
+                    },
+                    {
+                      label: "Protein",
+                      value: `${totals.protein}`,
+                      target: `${targets.protein}g`,
+                      delta: totals.protein - targets.protein,
+                      accent: "bg-violet-400",
+                      bar: "bg-violet-400",
+                    },
+                    {
+                      label: "Carbs",
+                      value: `${totals.carbs}`,
+                      target: `${targets.carbs}g`,
+                      delta: totals.carbs - targets.carbs,
+                      accent: "bg-blue-500",
+                      bar: "bg-blue-500",
+                    },
+                    {
+                      label: "Fats",
+                      value: `${totals.fats}`,
+                      target: `${targets.fats}g`,
+                      delta: totals.fats - targets.fats,
+                      accent: "bg-cyan-400",
+                      bar: "bg-cyan-400",
+                    },
+                  ].map((item) => (
+                    <Card
+                      key={item.label}
+                      className="rounded-xl border-neutral-200 shadow-none"
+                    >
+                      <CardHeader className="space-y-0 pb-2">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2 text-[13px] text-neutral-500">
+                            <span className={cn("size-2 rounded-full", item.accent)} />
+                            {item.label}
+                          </div>
+                          <span
+                            className={cn(
+                              "rounded-full px-2 py-0.5 text-[11px] font-medium",
+                              item.delta <= 0
+                                ? "bg-emerald-50 text-emerald-600"
+                                : "bg-amber-50 text-amber-600"
+                            )}
+                          >
+                            {item.delta > 0 ? `+${item.delta}` : item.delta}
+                            {item.label === "Calories" ? "kcal" : "g"}
+                          </span>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-3 pt-0">
+                        <div className="flex items-end justify-between gap-3">
+                          <div className="text-[16px] font-semibold text-neutral-950">
+                            {item.value}
+                            <span className="ml-1 text-[13px] font-normal text-neutral-400">
+                              {item.label === "Calories" ? "kcal" : "g"}
+                            </span>
+                          </div>
+                          <div className="text-[13px] text-neutral-400">
+                            / {item.target}
+                          </div>
+                        </div>
+                        <div className="h-1 rounded-full bg-neutral-100">
+                          <div
+                            className={cn("h-1 rounded-full", item.bar)}
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                Math.round(
+                                  (Number(item.value) /
+                                    Math.max(
+                                      1,
+                                      Number.parseInt(item.target, 10)
+                                    )) *
+                                    100
+                                )
+                              )}%`,
+                            }}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="text-[24px] font-semibold text-neutral-950">
+                      Generated Meals ({generatedMeals.length})
+                    </div>
+                    <SecondaryActionButton
+                      label="Regenerate"
+                      icon={RefreshCcw}
+                      onClick={handleRegenerate}
+                    />
+                  </div>
+
+                  <div className="grid gap-3 xl:grid-cols-4">
+                    {generatedMeals.map((meal) => (
+                      <Card
+                        key={`${meal.id}-${generationIndex}`}
+                        className="overflow-hidden rounded-xl border-neutral-200 shadow-none"
+                      >
+                        <div className="relative aspect-[1.18] overflow-hidden border-b border-neutral-200">
+                          <img
+                            src={meal.image}
+                            alt={meal.title}
+                            className="h-full w-full object-cover"
+                          />
+                          <div className="absolute left-3 bottom-3 rounded-md bg-black/60 px-2 py-1 text-[12px] font-medium text-white">
+                            {meal.slot}
+                          </div>
+                        </div>
+                        <CardContent className="space-y-3 p-3.5">
+                          <div className="min-h-[56px] text-[15px] font-medium leading-6 text-neutral-950">
+                            {meal.title}
+                          </div>
+                          <div className="text-[13px] text-neutral-500">
+                            {meal.calories} kcal
+                          </div>
+                          <div className="h-px bg-neutral-200" />
+                          <div className="grid grid-cols-3 gap-2 text-[12px] font-medium">
+                            <div className="text-blue-500">{meal.carbs}g C</div>
+                            <div className="text-violet-500">{meal.protein}g P</div>
+                            <div className="text-cyan-500">{meal.fats}g F</div>
+                          </div>
+                          <button
+                            type="button"
+                            className="inline-flex items-center gap-1 text-[13px] text-neutral-500 hover:text-neutral-700"
+                          >
+                            {meal.ingredients} ingredients
+                            <ChevronDown className="size-3.5" />
+                          </button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="w-full rounded-sm border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50"
+                          >
+                            <RefreshCcw className="size-4" />
+                            Swap
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 border-t border-neutral-200 px-5 py-4">
+                <SecondaryActionButton
+                  label="Back"
+                  onClick={() => setGenerated(false)}
+                />
+                <PrimaryActionButton
+                  label="Save Plan"
+                  onClick={handleSavePlan}
+                />
+              </div>
+            </>
+          )}
+        </Card>
       </div>
     </div>
   )

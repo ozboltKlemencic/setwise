@@ -15,10 +15,10 @@ import {
   type ClientQuickActionTone,
 } from "@/components/coachWise/clients/info/client-quick-action-card"
 import { ClientSectionHeader } from "@/components/coachWise/clients/info/client-section-header"
-import { CreateNutritionPlanAction } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
 import { AddProgramDialog } from "@/components/coachWise/programs/exercise-history-panel"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { routing } from "@/i18n/routing"
 import {
   type CoachWiseClientProfile,
   getClientContactEmail,
@@ -30,6 +30,7 @@ import {
   resolveClientDetailContext,
   type ClientDetailParamsProps,
 } from "@/lib/handlers/client-detail.handlers"
+import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 
 function SectionBody({ children }: { children: ReactNode }) {
@@ -91,9 +92,13 @@ function buildCreateCardProps(tone: ClientQuickActionTone): {
 }
 
 export default async function Page({ params }: ClientDetailParamsProps) {
-  const { client, clientId, clientBasePath } = await resolveClientDetailContext(
+  const { client, clientId, clientBasePath, locale } = await resolveClientDetailContext(
     params
   )
+  const localePrefix = locale === routing.defaultLocale ? "" : `/${locale}`
+  const nutritionCreateHref = `${localePrefix}${getNutritionCreateMealPlanHref(
+    `${clientBasePath}/info`
+  )}`
   const contactEmail = getClientContactEmail(client.header)
   const weeklyAvgWeight = getClientWeeklyAvgWeight(clientId, client.phase)
   const goalSummary = getClientGoalSummary(client.phase)
@@ -209,15 +214,11 @@ export default async function Page({ params }: ClientDetailParamsProps) {
           </InfoActionSection>
 
           <InfoActionSection>
-            <CreateNutritionPlanAction
-              phase={client.phase}
-              trigger={
-                <ClientQuickActionCard
-                  {...buildCreateCardProps("nutrition")}
-                  icon={<IconChefHat className="size-4" />}
-                  tone="nutrition"
-                />
-              }
+            <ClientQuickActionCard
+              {...buildCreateCardProps("nutrition")}
+              icon={<IconChefHat className="size-4" />}
+              tone="nutrition"
+              href={nutritionCreateHref}
             />
           </InfoActionSection>
 

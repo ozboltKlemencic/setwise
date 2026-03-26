@@ -99,6 +99,26 @@ export function getNutritionPlanDetailHref(
   return `${detailHref}?backTo=${encodeURIComponent(backTo)}`
 }
 
+export function getNutritionCreateMealPlanHref(backTo?: string) {
+  const createHref = "/beta-coach-wise/nutrition/create/meal-plan"
+
+  if (!backTo) {
+    return createHref
+  }
+
+  return `${createHref}?backTo=${encodeURIComponent(backTo)}`
+}
+
+export function getNutritionCreateMacroPlanHref(backTo?: string) {
+  const createHref = "/beta-coach-wise/nutrition/create/macro-plan-iifym"
+
+  if (!backTo) {
+    return createHref
+  }
+
+  return `${createHref}?backTo=${encodeURIComponent(backTo)}`
+}
+
 export function resolveNutritionEditorBackHref(
   backTo: string | undefined,
   fallbackHref = "/beta-coach-wise/nutrition"
