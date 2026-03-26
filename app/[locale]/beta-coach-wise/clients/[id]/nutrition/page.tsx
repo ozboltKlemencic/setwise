@@ -1,5 +1,6 @@
 import {
-  ClientNutritionPanel,
+  ClientNutritionLoggerView,
+  ClientNutritionMealPlansView,
   MealPlanDetailView,
 } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
 
@@ -8,6 +9,7 @@ import {
   resolveClientDetailContext,
   type ClientDetailPageProps,
 } from "@/lib/handlers/client-detail.handlers"
+import { resolveClientNutritionTab } from "@/lib/handlers/nutrition.handlers"
 
 type NutritionSearchParams = {
   mealPlanId?: string | string[]
@@ -21,28 +23,25 @@ export default async function Page({
   const { client } = await resolveClientDetailContext(params)
   const resolvedSearchParams = await searchParams
   const mealPlanId = getSingleSearchParam(resolvedSearchParams.mealPlanId)
-  const activeNutritionTab = getSingleSearchParam(
-    resolvedSearchParams.nutritionTab
+  const resolvedNutritionTab = resolveClientNutritionTab(
+    getSingleSearchParam(resolvedSearchParams.nutritionTab)
   )
-  const resolvedNutritionTab =
-    activeNutritionTab === "nutrition-logger"
-      ? "nutrition-logger"
-      : "meal-plans"
 
   if (mealPlanId) {
     return (
-      <section className="min-w-0 bg-neutral-50">
+      <section className="min-w-0 bg-neutral-500">
         <MealPlanDetailView mealPlanId={mealPlanId} phase={client.phase} />
       </section>
     )
   }
 
   return (
-    <section className="min-w-0 bg-neutral-50">
-      <ClientNutritionPanel
-        phase={client.phase}
-        initialSubTab={resolvedNutritionTab}
-      />
+    <section className="min-w-0 bg-neutral-500">
+      {resolvedNutritionTab === "nutrition-logger" ? (
+        <ClientNutritionLoggerView phase={client.phase} />
+      ) : (
+        <ClientNutritionMealPlansView phase={client.phase} />
+      )}
     </section>
   )
 }

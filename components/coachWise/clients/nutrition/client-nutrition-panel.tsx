@@ -23,11 +23,9 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
 import {
   Beef,
   CalendarDays,
-  CheckCircle2,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ChefHat,
   Droplets,
   Flame,
   GripVertical,
@@ -38,7 +36,6 @@ import {
   RefreshCcw,
   Search,
   Sparkles,
-  Target,
   Trash2,
   UtensilsCrossed,
   Filter,
@@ -85,8 +82,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
-  SubtabsNavActionButton,
-  SubtabsNav,
   subtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/shared/subtabs-nav"
 import { Input } from "@/components/ui/input"
@@ -1240,41 +1235,6 @@ function getNutritionPreset(phase?: string): NutritionPreset {
       }
       }
   }
-}
-
-function NutritionMetricCard({
-  icon: Icon,
-  label,
-  value,
-  hint,
-  iconClassName,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-  value: string
-  hint: string
-  iconClassName: string
-}) {
-  return (
-    <Card className="rounded-xl border-neutral-200 shadow-none">
-      <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0 pb-2">
-        <div className="space-y-1">
-          <CardDescription className="text-[12px] text-neutral-500">
-            {label}
-          </CardDescription>
-          <CardTitle className="text-[26px] font-semibold text-neutral-950">
-            {value}
-          </CardTitle>
-        </div>
-        <div className="rounded-full bg-neutral-50 p-2">
-          <Icon className={iconClassName} />
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0 text-[13px] text-neutral-500">
-        {hint}
-      </CardContent>
-    </Card>
-  )
 }
 
 function NutritionCaloriesDonut({ plan }: { plan: NutritionMealPlan }) {
@@ -3000,6 +2960,547 @@ function SortableNutritionMealPlanSectionCard({
   )
 }
 
+export function ClientNutritionMealPlansView({
+  phase,
+}: {
+  phase?: string
+}) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+
+  return (
+    <div className="bg-neutral-50 px-4 py-4">
+      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+        <div className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 border-b border-neutral-200 bg-muted px-4 py-3 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5">
+          <div className="text-sm font-medium text-foreground">Plan</div>
+          <div className="text-sm font-medium text-foreground">Type</div>
+          <div className="text-center text-sm font-medium text-foreground">
+            Calories
+          </div>
+          <div />
+        </div>
+
+        <div className="divide-y divide-neutral-200">
+          {preset.mealPlans.map((plan) => (
+            <div
+              key={plan.id}
+              role="button"
+              tabIndex={0}
+              onClick={() =>
+                router.push(
+                  `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                )
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  router.push(
+                    `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                  )
+                }
+              }}
+              className="grid cursor-pointer grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 bg-white px-4 py-4 transition-colors hover:bg-neutral-50/60 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5"
+            >
+              <div className="min-w-0 space-y-1">
+                <div className="text-[15px] font-medium text-neutral-950">
+                  {plan.title}
+                </div>
+                <div className="text-[13px] leading-5 text-neutral-500">
+                  {plan.subtitle}
+                </div>
+              </div>
+
+              <div>
+                <Badge
+                  variant="outline"
+                  className="rounded-md border-neutral-200 bg-white px-2.5 py-1 text-[12px] font-normal text-neutral-700"
+                >
+                  <UtensilsCrossed className="mr-1 size-3.5 text-neutral-500" />
+                  {plan.type}
+                </Badge>
+              </div>
+
+              <div className="flex justify-center">
+                <NutritionCaloriesDonut plan={plan} />
+              </div>
+
+              <div className="flex justify-end">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      onClick={(event) => event.stopPropagation()}
+                      className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
+                    >
+                      <MoreVertical className="size-3" />
+                      <span className="sr-only">Odpri meni plana</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    sideOffset={8}
+                    onClick={(event) => event.stopPropagation()}
+                    className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
+                  >
+                    <DropdownMenuItem
+                      onSelect={() =>
+                        router.push(
+                          `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
+                        )
+                      }
+                      className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"
+                    >
+                      Podrobnosti
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+                      Uredi plan
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+                      Podvoji plan
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
+                      Arhiviraj
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function ClientNutritionLoggerView({
+  phase,
+}: {
+  phase?: string
+}) {
+  const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+  const iifymWeeks = React.useMemo(
+    () => chunkNutritionWeeks(preset.iifymEntries),
+    [preset.iifymEntries]
+  )
+  const [iifymWeekIndex, setIifymWeekIndex] = React.useState(
+    Math.max(0, iifymWeeks.length - 1)
+  )
+  const [visibleIifymSeries, setVisibleIifymSeries] = React.useState<
+    Record<(typeof iifymSeries)[number]["key"], boolean>
+  >({
+    calories: true,
+    protein: true,
+    carbs: true,
+    fats: true,
+    fiber: true,
+  })
+
+  React.useEffect(() => {
+    setIifymWeekIndex(Math.max(0, iifymWeeks.length - 1))
+  }, [iifymWeeks.length])
+
+  const visibleIifymWeek = iifymWeeks[iifymWeekIndex] ?? []
+  const iifymWeekLabel = React.useMemo(
+    () => formatNutritionWeekRange(visibleIifymWeek),
+    [visibleIifymWeek]
+  )
+  const loggedDaysCount = React.useMemo(
+    () => visibleIifymWeek.filter((entry) => entry.loggedMeals > 0).length,
+    [visibleIifymWeek]
+  )
+  const weeklyCompliance = Math.round(
+    (loggedDaysCount / Math.max(1, visibleIifymWeek.length)) * 100
+  )
+  const iifymChartData = React.useMemo(
+    () =>
+      visibleIifymWeek.map((entry) => ({
+        day: `${entry.dayNumber} ${new Date(`${entry.date}T00:00:00`).toLocaleString("en-US", { month: "short" })}`,
+        dayLabel: nutritionMonthDayFormatter.format(
+          new Date(`${entry.date}T00:00:00`)
+        ),
+        calories: entry.calories,
+        protein: entry.protein,
+        carbs: entry.carbs,
+        fats: entry.fats,
+        fiber: entry.fiber,
+        rawCalories: entry.calories,
+        rawProtein: entry.protein,
+        rawCarbs: entry.carbs,
+        rawFats: entry.fats,
+        rawFiber: entry.fiber,
+      })),
+    [visibleIifymWeek]
+  )
+  const macroBreakdownRows = React.useMemo(
+    () =>
+      [
+        {
+          label: "Calories",
+          unit: "kcal",
+          values: visibleIifymWeek.map((entry) => entry.calories),
+        },
+        {
+          label: "Protein",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.protein),
+        },
+        {
+          label: "Carbs",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.carbs),
+        },
+        {
+          label: "Fat",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.fats),
+        },
+        {
+          label: "Fiber",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.fiber),
+        },
+        {
+          label: "Sugar",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.sugar),
+        },
+        {
+          label: "Sodium",
+          unit: "mg",
+          values: visibleIifymWeek.map((entry) => entry.sodium),
+        },
+        {
+          label: "Potassium",
+          unit: "mg",
+          values: visibleIifymWeek.map((entry) => entry.potassium),
+        },
+        {
+          label: "Saturated Fat",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.saturatedFat),
+        },
+        {
+          label: "Polyunsaturated Fat",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.polyunsaturatedFat),
+        },
+        {
+          label: "Monounsaturated Fat",
+          unit: "g",
+          values: visibleIifymWeek.map((entry) => entry.monounsaturatedFat),
+        },
+      ].map((row) => {
+        const total = row.values.reduce((sum, value) => sum + value, 0)
+
+        return {
+          label: row.label,
+          unit: row.unit,
+          avg: total / Math.max(1, row.values.length),
+          total,
+        }
+      }),
+    [visibleIifymWeek]
+  )
+
+  return (
+    <div className="space-y-4 bg-neutral-50 px-4 py-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="inline-flex items-center gap-2 rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[15px] font-medium text-neutral-900">
+          Macros Target
+          <Info className="size-4 text-neutral-400" />
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() =>
+              setIifymWeekIndex((current) => Math.max(0, current - 1))
+            }
+            disabled={iifymWeekIndex === 0}
+            className="rounded-sm border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50 disabled:opacity-45"
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <div className="inline-flex min-w-[178px] items-center justify-between gap-3 rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] font-medium text-neutral-900">
+            <span>{iifymWeekLabel}</span>
+            <CalendarDays className="size-4 text-neutral-400" />
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() =>
+              setIifymWeekIndex((current) =>
+                Math.min(iifymWeeks.length - 1, current + 1)
+              )
+            }
+            disabled={iifymWeekIndex >= iifymWeeks.length - 1}
+            className="rounded-sm border-neutral-200 text-neutral-700 shadow-none hover:bg-neutral-50 disabled:opacity-45"
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,1.45fr)_minmax(330px,0.55fr)]">
+        <Card className="rounded-xl border-neutral-200 shadow-none">
+          <CardContent className="space-y-4 p-5">
+            <div className="flex flex-wrap items-center gap-2.5">
+              {iifymSeries.map((series) => (
+                <button
+                  key={series.key}
+                  type="button"
+                  onClick={() =>
+                    setVisibleIifymSeries((current) => ({
+                      ...current,
+                      [series.key]: !current[series.key],
+                    }))
+                  }
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] transition-colors",
+                    visibleIifymSeries[series.key]
+                      ? "border-neutral-200 bg-white text-neutral-700"
+                      : "border-neutral-200 bg-neutral-100 text-neutral-400"
+                  )}
+                >
+                  <span
+                    className="size-1.5 rounded-full"
+                    style={{ backgroundColor: series.color }}
+                  />
+                  {series.label}
+                </button>
+              ))}
+            </div>
+
+            <ChartContainer config={iifymChartConfig} className="h-[360px] w-full">
+              <AreaChart
+                accessibilityLayer
+                data={iifymChartData}
+                margin={{ left: 10, right: 16, top: 10, bottom: 0 }}
+              >
+                <CartesianGrid vertical={false} stroke="#e5e7eb" />
+                <YAxis
+                  yAxisId="calories"
+                  hide
+                  domain={[
+                    0,
+                    (dataMax: number) => Math.max(2400, Math.ceil(dataMax * 1.12)),
+                  ]}
+                />
+                <YAxis
+                  yAxisId="macros"
+                  orientation="right"
+                  hide
+                  domain={[
+                    0,
+                    (dataMax: number) => Math.max(320, Math.ceil(dataMax * 1.18)),
+                  ]}
+                />
+                <XAxis
+                  dataKey="day"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={10}
+                  tick={{ fill: "#9ca3af", fontSize: 12 }}
+                />
+                <ChartTooltip cursor={false} content={<NutritionIifymTooltip />} />
+                <defs>
+                  <linearGradient id="fillCalories" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={iifymChartConfig.calories.color} stopOpacity={0.3} />
+                    <stop offset="95%" stopColor={iifymChartConfig.calories.color} stopOpacity={0.05} />
+                  </linearGradient>
+                  <linearGradient id="fillProtein" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={iifymChartConfig.protein.color} stopOpacity={0.25} />
+                    <stop offset="95%" stopColor={iifymChartConfig.protein.color} stopOpacity={0.04} />
+                  </linearGradient>
+                  <linearGradient id="fillCarbs" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={iifymChartConfig.carbs.color} stopOpacity={0.24} />
+                    <stop offset="95%" stopColor={iifymChartConfig.carbs.color} stopOpacity={0.04} />
+                  </linearGradient>
+                  <linearGradient id="fillFats" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={iifymChartConfig.fats.color} stopOpacity={0.2} />
+                    <stop offset="95%" stopColor={iifymChartConfig.fats.color} stopOpacity={0.04} />
+                  </linearGradient>
+                  <linearGradient id="fillFiber" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={iifymChartConfig.fiber.color} stopOpacity={0.18} />
+                    <stop offset="95%" stopColor={iifymChartConfig.fiber.color} stopOpacity={0.04} />
+                  </linearGradient>
+                </defs>
+                {visibleIifymSeries.calories ? (
+                  <Area
+                    yAxisId="calories"
+                    dataKey="calories"
+                    type="natural"
+                    stroke={iifymChartConfig.calories.color}
+                    fill="url(#fillCalories)"
+                    fillOpacity={1}
+                    strokeWidth={2.5}
+                  />
+                ) : null}
+                {visibleIifymSeries.protein ? (
+                  <Area
+                    yAxisId="macros"
+                    dataKey="protein"
+                    type="natural"
+                    stroke={iifymChartConfig.protein.color}
+                    fill="url(#fillProtein)"
+                    fillOpacity={1}
+                    strokeWidth={2}
+                  />
+                ) : null}
+                {visibleIifymSeries.carbs ? (
+                  <Area
+                    yAxisId="macros"
+                    dataKey="carbs"
+                    type="natural"
+                    stroke={iifymChartConfig.carbs.color}
+                    fill="url(#fillCarbs)"
+                    fillOpacity={1}
+                    strokeWidth={2}
+                  />
+                ) : null}
+                {visibleIifymSeries.fats ? (
+                  <Area
+                    yAxisId="macros"
+                    dataKey="fats"
+                    type="natural"
+                    stroke={iifymChartConfig.fats.color}
+                    fill="url(#fillFats)"
+                    fillOpacity={1}
+                    strokeWidth={2}
+                  />
+                ) : null}
+                {visibleIifymSeries.fiber ? (
+                  <Area
+                    yAxisId="macros"
+                    dataKey="fiber"
+                    type="natural"
+                    stroke={iifymChartConfig.fiber.color}
+                    fill="url(#fillFiber)"
+                    fillOpacity={1}
+                    strokeWidth={1.75}
+                  />
+                ) : null}
+              </AreaChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        <div className="space-y-3">
+          <Card className="rounded-xl border-neutral-200 shadow-none">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between gap-3">
+                <CardTitle className="text-[16px] font-semibold text-neutral-950">
+                  Logged Meals
+                </CardTitle>
+                <div className="text-[14px] font-medium text-brand-600">
+                  {loggedDaysCount}/{visibleIifymWeek.length}
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-7 gap-2">
+                {visibleIifymWeek.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="space-y-1 rounded-lg border border-neutral-200 bg-neutral-50 px-2 py-3 text-center"
+                  >
+                    <div className="text-[12px] font-medium text-neutral-500">
+                      {entry.dayShort}
+                    </div>
+                    <div
+                      className={cn(
+                        "text-[18px] font-semibold",
+                        entry.loggedMeals > 0
+                          ? "text-neutral-950"
+                          : "text-neutral-300"
+                      )}
+                    >
+                      {entry.dayNumber}
+                    </div>
+                    <div className="text-[11px] text-neutral-400">
+                      {entry.loggedMeals}/{4}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-between gap-3 border-t border-neutral-200 pt-4">
+                <div className="inline-flex items-center gap-1.5 text-[14px] text-neutral-700">
+                  Weekly Compliance
+                  <Info className="size-3.5 text-neutral-400" />
+                </div>
+                <div className="flex items-center gap-2 text-[14px] font-medium">
+                  <span className="text-neutral-500">
+                    {loggedDaysCount}/{visibleIifymWeek.length}
+                  </span>
+                  <span
+                    className={cn(
+                      weeklyCompliance >= 85
+                        ? "text-emerald-600"
+                        : "text-rose-500"
+                    )}
+                  >
+                    {weeklyCompliance}%
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-xl border-neutral-200 shadow-none">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-[16px] font-semibold text-neutral-950">
+                Macros Breakdown
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <Table>
+                <TableHeader className="bg-transparent">
+                  <TableRow className="border-neutral-200 hover:bg-transparent">
+                    <TableHead className="px-0 text-[13px] font-medium text-neutral-500">
+                      Macro
+                    </TableHead>
+                    <TableHead className="text-right text-[13px] font-medium text-neutral-500">
+                      Avg
+                    </TableHead>
+                    <TableHead className="pr-0 text-right text-[13px] font-medium text-neutral-500">
+                      Total
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {macroBreakdownRows.map((row) => (
+                    <TableRow
+                      key={row.label}
+                      className="border-neutral-200 hover:bg-transparent"
+                    >
+                      <TableCell className="px-0 py-2 text-[14px] text-neutral-800">
+                        {row.label}
+                      </TableCell>
+                      <TableCell className="py-2 text-right text-[14px] text-neutral-500">
+                        {formatMacroCellValue(row.avg, row.unit)}
+                      </TableCell>
+                      <TableCell className="pr-0 py-2 text-right text-[14px] text-neutral-800">
+                        {formatMacroCellValue(row.total, row.unit)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function CreateNutritionPlanAction({
   phase,
   triggerClassName,
@@ -3367,86 +3868,9 @@ export function ClientNutritionPanel({
   )
 
   return (
-    <Tabs
-      value={activeTab}
-      onValueChange={(value) =>
-        setActiveTab(value as "meal-plans" | "nutrition-logger")
-      }
-      className="gap-0"
-    >
-      <SubtabsNav
-        items={[
-          {
-            icon: <UtensilsCrossed className="size-4" />,
-            label: "Meal Plans",
-            value: "meal-plans",
-          },
-          {
-            icon: <Target className="size-4" />,
-            label: "IIFYM",
-            value: "nutrition-logger",
-          },
-        ]}
-        actions={
-          activeTab === "meal-plans" ? (
-            <>
-              <SmartMealPlannerDialog
-                trigger={
-                  <SubtabsNavActionButton
-                    variant="secondary"
-                    icon={<Sparkles className="size-4" />}
-                    label="Smart Meal Planner"
-                  />
-                }
-              />
-              <CreateNutritionPlanDialog
-                libraryPlans={preset.mealPlans}
-                trigger={
-                  <SubtabsNavActionButton
-                    variant="primary"
-                    icon={<Plus className="size-4" />}
-                    label="Add Meal Plan"
-                  />
-                }
-              />
-            </>
-          ) : undefined
-        }
-      />
-
-      <TabsContent value="meal-plans" className="mt-0 space-y-0">
-        <div className="space-y-4 bg-neutral-50 px-4 py-4">
-          <div className="grid gap-3 xl:grid-cols-4">
-            <NutritionMetricCard
-              icon={Target}
-              label="Dnevni cilj"
-              value={preset.dailyTarget}
-              hint="Aktualni cilj za trenutno fazo."
-              iconClassName="size-4 text-cyan-500"
-            />
-            <NutritionMetricCard
-              icon={Beef}
-              label="Makro target"
-              value={preset.macroTarget}
-              hint="Beljakovine ostajajo prioriteta."
-              iconClassName="size-4 text-violet-500"
-            />
-            <NutritionMetricCard
-              icon={ChefHat}
-              label="Meal cadence"
-              value={preset.mealCadence}
-              hint="Anchor obroki drzijo ritem tedna."
-              iconClassName="size-4 text-orange-500"
-            />
-            <NutritionMetricCard
-              icon={CheckCircle2}
-              label="Plan coverage"
-              value={preset.planCoverage}
-              hint="Training in rest day plan sta aktivna."
-              iconClassName="size-4 text-emerald-500"
-            />
-          </div>
-
+    <>
+      {activeTab === "meal-plans" ? (
+        <div className="bg-neutral-50 px-4 py-4">
           <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
             <div className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 border-b border-neutral-200 bg-muted px-4 py-3 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5">
               <div className="text-sm font-medium text-foreground">Plan</div>
@@ -3547,68 +3971,10 @@ export function ClientNutritionPanel({
               ))}
             </div>
           </div>
-
-          <div className="grid gap-3 xl:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-            <Card className="rounded-xl border-neutral-200 shadow-none">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-[16px] font-semibold text-neutral-950">
-                  Nutrition focus
-                </CardTitle>
-                <CardDescription className="text-[13px] text-neutral-500">
-                  Trenutna strategija prehrane za to fazo.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-[14px] leading-6 text-neutral-600">
-                  {preset.coachNote}
-                </div>
-                <div className="grid gap-3 md:grid-cols-2">
-                  {preset.mealPlans.map((plan) => (
-                    <div
-                      key={`${plan.id}-meta`}
-                      className="rounded-lg border border-neutral-200 bg-white p-4"
-                    >
-                      <div className="text-[13px] font-medium text-neutral-900">
-                        {plan.title}
-                      </div>
-                      <div className="mt-2 text-[13px] text-neutral-500">
-                        {plan.macros}
-                      </div>
-                      <div className="mt-1 text-[13px] text-neutral-500">
-                        {plan.schedule}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-xl border-neutral-200 shadow-none">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-[16px] font-semibold text-neutral-950">
-                  Meal plan notes
-                </CardTitle>
-                <CardDescription className="text-[13px] text-neutral-500">
-                  Kaj naj ostane dosledno cez teden.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 text-[14px] text-neutral-600">
-                <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3">
-                  Protein naj ostane enakomerno razporejen v vseh glavnih obrokih.
-                </div>
-                <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3">
-                  Vecji del ogljikovih hidratov naj bo pred in po treningu.
-                </div>
-                <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-3">
-                  Zadnji obrok naj bo sitosten, da vikend ne razbije ritma.
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
-      </TabsContent>
+      ) : null}
 
-      <TabsContent value="nutrition-logger" className="mt-0 space-y-0">
+      {activeTab === "nutrition-logger" ? (
         <div className="space-y-4 bg-neutral-50 px-4 py-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[15px] font-medium text-neutral-900">
@@ -3901,7 +4267,7 @@ export function ClientNutritionPanel({
             </div>
           </div>
         </div>
-      </TabsContent>
-    </Tabs>
+      ) : null}
+    </>
   )
 }
