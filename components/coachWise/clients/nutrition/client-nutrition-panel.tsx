@@ -26,12 +26,14 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Copy,
   Droplets,
   Flame,
   GripVertical,
   Info,
   MoreVertical,
   NotebookPen,
+  Pencil,
   Plus,
   RefreshCcw,
   Search,
@@ -84,6 +86,7 @@ import {
 import {
   subtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/shared/subtabs-nav"
+import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
@@ -233,6 +236,12 @@ type NutritionRecipeLibraryItem = {
 
 const primaryActionButtonClassName =
   subtabsNavActionButtonClassNames.primary
+
+const nutritionRowActionButtonClassName =
+  "size-6 cursor-pointer rounded-md border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-colors hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground"
+
+const nutritionRowDeleteActionButtonClassName =
+  "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
 const createNutritionTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
@@ -1241,7 +1250,7 @@ function NutritionCaloriesDonut({ plan }: { plan: NutritionMealPlan }) {
   return (
     <ChartContainer
       config={mealPlanDonutConfig}
-      className="mx-auto aspect-square size-[68px]"
+      className="mx-auto aspect-square size-[48px]"
     >
       <PieChart>
         <ChartTooltip
@@ -1252,8 +1261,8 @@ function NutritionCaloriesDonut({ plan }: { plan: NutritionMealPlan }) {
           data={plan.segments}
           dataKey="value"
           nameKey="macro"
-          innerRadius={20}
-          outerRadius={27}
+          innerRadius={14}
+          outerRadius={20}
           strokeWidth={2}
         >
           <Label
@@ -1269,7 +1278,7 @@ function NutritionCaloriesDonut({ plan }: { plan: NutritionMealPlan }) {
                     <tspan
                       x={viewBox.cx}
                       y={viewBox.cy}
-                      className="fill-neutral-950 text-[11px] font-semibold"
+                      className="fill-neutral-950 text-[9px] font-semibold"
                     >
                       {plan.calories}
                     </tspan>
@@ -2968,108 +2977,168 @@ export function ClientNutritionMealPlansView({
   const router = useRouter()
   const pathname = usePathname()
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+  const [mealPlans, setMealPlans] = React.useState(preset.mealPlans)
+
+  React.useEffect(() => {
+    setMealPlans(preset.mealPlans)
+  }, [preset.mealPlans])
+
+  const handleOpenMealPlan = React.useCallback(
+    (mealPlanId: string) => {
+      router.push(`${pathname}?nutritionTab=meal-plans&mealPlanId=${mealPlanId}`)
+    },
+    [pathname, router]
+  )
+
+  const handleCopyMealPlan = React.useCallback(async (plan: NutritionMealPlan) => {
+    const planSummary = [
+      plan.title,
+      plan.subtitle,
+      plan.macros,
+      plan.schedule,
+    ].join("\n")
+
+    try {
+      await navigator.clipboard.writeText(planSummary)
+      toast.success("Meal plan copied", {
+        description: `For ${plan.title}.`,
+      })
+    } catch {
+      toast.error("Could not copy meal plan", {
+        description: `For ${plan.title}.`,
+      })
+    }
+  }, [])
+
+  const handleDeleteMealPlan = React.useCallback((plan: NutritionMealPlan) => {
+    setMealPlans((current) => current.filter((item) => item.id !== plan.id))
+    toast.success("Meal plan deleted", {
+      description: `For ${plan.title}.`,
+    })
+  }, [])
 
   return (
     <div className="bg-neutral-50 px-4 py-4">
-      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-        <div className="grid grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 border-b border-neutral-200 bg-muted px-4 py-3 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5">
-          <div className="text-sm font-medium text-foreground">Plan</div>
-          <div className="text-sm font-medium text-foreground">Type</div>
-          <div className="text-center text-sm font-medium text-foreground">
-            Calories
-          </div>
-          <div />
-        </div>
-
-        <div className="divide-y divide-neutral-200">
-          {preset.mealPlans.map((plan) => (
-            <div
-              key={plan.id}
-              role="button"
-              tabIndex={0}
-              onClick={() =>
-                router.push(
-                  `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
-                )
-              }
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault()
-                  router.push(
-                    `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
-                  )
-                }
-              }}
-              className="grid cursor-pointer grid-cols-[minmax(0,1fr)_150px_120px_40px] items-center gap-4 bg-white px-4 py-4 transition-colors hover:bg-neutral-50/60 lg:grid-cols-[minmax(0,1fr)_180px_140px_44px] lg:px-5"
-            >
-              <div className="min-w-0 space-y-1">
-                <div className="text-[15px] font-medium text-neutral-950">
-                  {plan.title}
-                </div>
-                <div className="text-[13px] leading-5 text-neutral-500">
-                  {plan.subtitle}
-                </div>
-              </div>
-
-              <div>
-                <Badge
-                  variant="outline"
-                  className="rounded-md border-neutral-200 bg-white px-2.5 py-1 text-[12px] font-normal text-neutral-700"
-                >
-                  <UtensilsCrossed className="mr-1 size-3.5 text-neutral-500" />
-                  {plan.type}
-                </Badge>
-              </div>
-
-              <div className="flex justify-center">
-                <NutritionCaloriesDonut plan={plan} />
-              </div>
-
-              <div className="flex justify-end">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
+                Plan
+              </TableHead>
+              <TableHead className="w-[136px] px-3 text-[13px] font-medium">
+                Type
+              </TableHead>
+              <TableHead className="w-[112px] px-2 text-center text-[13px] font-medium">
+                Calories
+              </TableHead>
+              <TableHead className="w-[8rem] px-2 pr-4 text-center text-[13px] font-medium">
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {mealPlans.length ? mealPlans.map((plan) => (
+              <TableRow
+                key={plan.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => handleOpenMealPlan(plan.id)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault()
+                    handleOpenMealPlan(plan.id)
+                  }
+                }}
+                className="cursor-pointer bg-white hover:bg-neutral-50/60"
+              >
+                <TableCell className="py-3 pl-4 whitespace-normal lg:pl-5">
+                  <div className="min-w-0 space-y-1">
+                    <div className="text-[14px] font-medium text-neutral-950">
+                      {plan.title}
+                    </div>
+                    <div className="text-[12.5px] leading-5 text-neutral-500">
+                      {plan.subtitle}
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="px-3 py-3">
+                  <Badge
+                    variant="outline"
+                    className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
+                  >
+                    <UtensilsCrossed className="mr-1 size-3 text-neutral-500" />
+                    {plan.type}
+                  </Badge>
+                </TableCell>
+                <TableCell className="px-2 py-3 text-center">
+                  <NutritionCaloriesDonut plan={plan} />
+                </TableCell>
+                <TableCell className="px-2 py-3 pr-4">
+                  <div className="flex w-[8rem] justify-center gap-2.5">
                     <Button
+                      type="button"
                       variant="outline"
                       size="icon-sm"
-                      onClick={(event) => event.stopPropagation()}
-                      className="size-6 cursor-pointer rounded-md border-neutral-200/45 bg-transparent text-muted-foreground shadow-none transition-colors hover:border-neutral-200/70 hover:bg-neutral-50/70 hover:text-foreground data-[state=open]:border-neutral-200/70 data-[state=open]:bg-neutral-50/80"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        void handleCopyMealPlan(plan)
+                      }}
+                      className={nutritionRowActionButtonClassName}
                     >
-                      <MoreVertical className="size-3" />
-                      <span className="sr-only">Odpri meni plana</span>
+                      <Copy className="size-3.5" />
+                      <span className="sr-only">Copy meal plan</span>
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    sideOffset={8}
-                    onClick={(event) => event.stopPropagation()}
-                    className="w-44 rounded-lg border-neutral-200/60 bg-white/95 p-1.5 shadow-lg shadow-black/5 backdrop-blur-sm"
-                  >
-                    <DropdownMenuItem
-                      onSelect={() =>
-                        router.push(
-                          `${pathname}?nutritionTab=meal-plans&mealPlanId=${plan.id}`
-                        )
-                      }
-                      className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        handleOpenMealPlan(plan.id)
+                      }}
+                      className={nutritionRowActionButtonClassName}
                     >
-                      Podrobnosti
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-                      Uredi plan
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
-                      Podvoji plan
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-rose-600 focus:bg-rose-50 focus:text-rose-600">
-                      Arhiviraj
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          ))}
-        </div>
+                      <Pencil className="size-3.5" />
+                      <span className="sr-only">Edit meal plan</span>
+                    </Button>
+                    <CoachWiseConfirmationDialog
+                      title="Are you sure you want to delete this meal plan?"
+                      description={`${plan.title} will be removed from the current nutrition list. This action can't be undone.`}
+                      confirmLabel="Delete plan"
+                      variant="destructive"
+                      onConfirm={() => handleDeleteMealPlan(plan)}
+                      trigger={
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-sm"
+                          onClick={(event) => event.stopPropagation()}
+                          className={cn(
+                            nutritionRowActionButtonClassName,
+                            nutritionRowDeleteActionButtonClassName
+                          )}
+                        >
+                          <Trash2 className="size-3.5" />
+                          <span className="sr-only">Delete meal plan</span>
+                        </Button>
+                      }
+                    />
+                  </div>
+                </TableCell>
+              </TableRow>
+            )) : (
+              <TableRow className="hover:bg-transparent">
+                <TableCell
+                  colSpan={4}
+                  className="py-8 text-center text-[13px] text-neutral-500"
+                >
+                  No meal plans available.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )
