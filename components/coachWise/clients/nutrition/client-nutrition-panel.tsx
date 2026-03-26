@@ -102,7 +102,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getNutritionPlanEditorHref } from "@/lib/handlers/nutrition.handlers"
+import {
+  getNutritionPlanDetailHref,
+  getNutritionPlanEditorHref,
+} from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -3216,7 +3219,12 @@ export function ClientNutritionMealPlansView({
 
   const handleOpenMealPlan = React.useCallback(
     (mealPlanId: string) => {
-      router.push(`${pathname}?nutritionTab=nutrition&mealPlanId=${mealPlanId}`)
+      router.push(
+        buildCoachWiseHref(
+          pathname,
+          getNutritionPlanDetailHref(mealPlanId, pathname)
+        )
+      )
     },
     [pathname, router]
   )
@@ -3909,11 +3917,13 @@ export function MealPlanDetailView({
     )
   }
 
+  const resolvedBackHref = backHref ?? `${pathname}?nutritionTab=nutrition`
+
   return (
     <div className="min-w-0 bg-neutral-50">
       <NutritionMealPlanHeader
         title={mealPlan.title}
-        backHref={backHref ?? `${pathname}?nutritionTab=nutrition`}
+        backHref={resolvedBackHref}
         actions={
           <>
             <SecondaryActionButton
@@ -3921,7 +3931,7 @@ export function MealPlanDetailView({
               icon={Pencil}
               href={buildCoachWiseHref(
                 pathname,
-                getNutritionPlanEditorHref(mealPlan.id, pathname)
+                getNutritionPlanEditorHref(mealPlan.id, resolvedBackHref)
               )}
             />
             <AddMealDialog

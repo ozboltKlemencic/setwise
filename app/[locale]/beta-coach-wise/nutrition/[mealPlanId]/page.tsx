@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
-import { MealPlanEditPageView } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
-import { routing } from "@/i18n/routing"
 
+import { MealPlanDetailView } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
+import { routing } from "@/i18n/routing"
 import {
   getSingleSearchParam,
   type ClientDetailSearchParams,
@@ -32,7 +32,7 @@ export default async function Page({ params, searchParams }: Props) {
 
   return (
     <section className="min-w-0 bg-neutral-50">
-      <MealPlanEditPageView
+      <MealPlanDetailView
         mealPlanId={resolvedMealPlanId}
         backHref={backHref}
       />

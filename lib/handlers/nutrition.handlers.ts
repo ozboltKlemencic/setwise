@@ -1,5 +1,33 @@
 export type ClientNutritionTab = "nutrition" | "nutrition-logger"
 
+const nutritionPlanRouteIdMap = {
+  "training-day": "454354j534543",
+  "rest-day": "6384gk2209482",
+} as const
+
+const nutritionPlanRouteIdEntries = Object.entries(nutritionPlanRouteIdMap)
+
+function resolveNutritionPlanRouteIdValue(mealPlanId: string) {
+  const matchedRouteId =
+    nutritionPlanRouteIdMap[
+      mealPlanId as keyof typeof nutritionPlanRouteIdMap
+    ]
+
+  return matchedRouteId ?? mealPlanId
+}
+
+export function resolveNutritionPlanIdFromRouteId(routeId: string) {
+  if (routeId in nutritionPlanRouteIdMap) {
+    return routeId as keyof typeof nutritionPlanRouteIdMap
+  }
+
+  const matchedEntry = nutritionPlanRouteIdEntries.find(
+    ([, mappedRouteId]) => mappedRouteId === routeId
+  )
+
+  return matchedEntry?.[0] ?? null
+}
+
 export function resolveClientNutritionTab(
   value?: string
 ): ClientNutritionTab {
@@ -29,7 +57,10 @@ export function getClientNutritionMealPlanDetailHref(
   clientBasePath: string,
   mealPlanId: string
 ) {
-  return `${getClientNutritionMealPlansHref(clientBasePath)}?nutritionTab=nutrition&mealPlanId=${mealPlanId}`
+  return getNutritionPlanDetailHref(
+    mealPlanId,
+    `${clientBasePath}/nutrition`
+  )
 }
 
 export function getClientNutritionMealPlanEditHref(
@@ -46,13 +77,26 @@ export function getNutritionPlanEditorHref(
   mealPlanId: string,
   backTo?: string
 ) {
-  const editorHref = `/beta-coach-wise/nutrition/edit/${mealPlanId}`
+  const editorHref = `/beta-coach-wise/nutrition/edit/${resolveNutritionPlanRouteIdValue(mealPlanId)}`
 
   if (!backTo) {
     return editorHref
   }
 
   return `${editorHref}?backTo=${encodeURIComponent(backTo)}`
+}
+
+export function getNutritionPlanDetailHref(
+  mealPlanId: string,
+  backTo?: string
+) {
+  const detailHref = `/beta-coach-wise/nutrition/${resolveNutritionPlanRouteIdValue(mealPlanId)}`
+
+  if (!backTo) {
+    return detailHref
+  }
+
+  return `${detailHref}?backTo=${encodeURIComponent(backTo)}`
 }
 
 export function resolveNutritionEditorBackHref(
