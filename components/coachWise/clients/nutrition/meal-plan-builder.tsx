@@ -653,26 +653,8 @@ export function MealPlanBuilderPageView({
         </div>
       </div>
 
-      <div className="border-b border-neutral-200 bg-white">
-        <div className="grid gap-2 px-4 py-3 sm:grid-cols-2 xl:grid-cols-4">
-          {[
-            { label: "Calories", value: `${planTotals.cal}`, tone: "border-neutral-200 bg-neutral-50/70" },
-            { label: "Protein", value: `${planTotals.p.toFixed(0)}g`, tone: "border-emerald-200 bg-emerald-50/70" },
-            { label: "Carbs", value: `${planTotals.c.toFixed(0)}g`, tone: "border-sky-200 bg-sky-50/70" },
-            { label: "Fat", value: `${planTotals.f.toFixed(0)}g`, tone: "border-amber-200 bg-amber-50/70" },
-          ].map((item) => (
-            <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
-              <div className="text-[18px] font-semibold text-neutral-950">{item.value}</div>
-              <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
-                {item.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid gap-4 px-4 py-4 xl:grid-cols-[360px_minmax(0,1fr)]">
-        <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none">
+      <div className="grid gap-4 px-4 pb-4 pt-4 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-6 xl:pt-0">
+        <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none xl:rounded-t-none">
           <div className="border-b border-neutral-200 bg-neutral-50 p-2">
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -847,7 +829,23 @@ export function MealPlanBuilderPageView({
           </CardContent>
         </Card>
 
-        <div className="space-y-4">
+        <div className="space-y-4 xl:pl-1 xl:pt-4">
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              { label: "Calories", value: `${planTotals.cal}`, tone: "border-neutral-200 bg-neutral-50/70" },
+              { label: "Protein", value: `${planTotals.p.toFixed(0)}g`, tone: "border-emerald-200 bg-emerald-50/70" },
+              { label: "Carbs", value: `${planTotals.c.toFixed(0)}g`, tone: "border-sky-200 bg-sky-50/70" },
+              { label: "Fat", value: `${planTotals.f.toFixed(0)}g`, tone: "border-amber-200 bg-amber-50/70" },
+            ].map((item) => (
+              <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
+                <div className="text-[18px] font-semibold text-neutral-950">{item.value}</div>
+                <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
+                  {item.label}
+                </div>
+              </div>
+            ))}
+          </div>
+
           <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none">
             <div className="border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
               <div className="flex flex-wrap items-center gap-2">
