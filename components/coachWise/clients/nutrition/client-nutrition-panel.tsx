@@ -249,7 +249,7 @@ const createNutritionTabTriggerClassName =
 
 function NutritionSectionTitle({ title }: { title: string }) {
   return (
-    <div className="mb-3 text-[14px] font-medium text-neutral-700">{title}</div>
+    <div className="mb-3 text-[13px] font-medium text-neutral-500">{title}</div>
   )
 }
 
