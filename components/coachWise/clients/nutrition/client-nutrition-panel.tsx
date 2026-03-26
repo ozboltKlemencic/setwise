@@ -3026,13 +3026,13 @@ export function ClientNutritionMealPlansView({
               <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
                 Plan
               </TableHead>
-              <TableHead className="w-[136px] px-3 text-[13px] font-medium">
+              <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
                 Type
               </TableHead>
-              <TableHead className="w-[112px] px-2 text-center text-[13px] font-medium">
+              <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
                 Calories
               </TableHead>
-              <TableHead className="w-[8rem] px-2 pr-4 text-center text-[13px] font-medium">
+              <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
                 Action
               </TableHead>
             </TableRow>
@@ -3062,7 +3062,7 @@ export function ClientNutritionMealPlansView({
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="px-3 py-3">
+                <TableCell className="px-3.5 py-3">
                   <Badge
                     variant="outline"
                     className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
@@ -3071,11 +3071,11 @@ export function ClientNutritionMealPlansView({
                     {plan.type}
                   </Badge>
                 </TableCell>
-                <TableCell className="px-2 py-3 text-center">
+                <TableCell className="px-3 py-3 text-center">
                   <NutritionCaloriesDonut plan={plan} />
                 </TableCell>
-                <TableCell className="px-2 py-3 pr-4">
-                  <div className="flex w-[8rem] justify-center gap-2.5">
+                <TableCell className="px-3 py-3 pr-5">
+                  <div className="flex w-[9rem] justify-center gap-3">
                     <Button
                       type="button"
                       variant="outline"
