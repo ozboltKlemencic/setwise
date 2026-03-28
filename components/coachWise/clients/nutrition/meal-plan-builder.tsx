@@ -635,7 +635,21 @@ export function MealPlanBuilderPageView({
       />
 
       <div className="relative xl:flex xl:items-start">
-        <Card className="overflow-hidden gap-0 rounded-none border-0  border-r border-neutral-200 bg-neutral-50 py-0 shadow-none xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
+        <Card className="relative overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 py-0 shadow-none xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
+          {leftTab === "foods" && selectedFoods.size ? (
+            <div className="absolute inset-x-0 top-0 z-20  px-2 py-2 backdrop-blur-[2px]">
+              <div className="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/85 px-3 py-2">
+                <div className="text-[12px] font-medium text-brand-700">
+                  {selectedFoods.size} selected
+                </div>
+                <SecondaryActionButton
+                  label={`Add ${selectedFoods.size}`}
+                  onClick={addSelectedFoodsToMeal}
+                />
+              </div>
+            </div>
+          ) : null}
+
           <div className="border-b border-neutral-200 bg-neutral-50 px-2 ">
             <div className="grid grid-cols-2 gap-1.5">
               <button
@@ -683,18 +697,6 @@ export function MealPlanBuilderPageView({
                     className="h-10 rounded-sm border-neutral-200  pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                   />
                 </div>
-
-                {selectedFoods.size ? (
-                  <div className="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/60 px-3 py-2">
-                    <div className="text-[12px] font-medium text-brand-700">
-                      {selectedFoods.size} selected
-                    </div>
-                    <SecondaryActionButton
-                      label={`Add ${selectedFoods.size}`}
-                      onClick={addSelectedFoodsToMeal}
-                    />
-                  </div>
-                ) : null}
 
                 <div className="space-y-2 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                   <BuilderSectionTitle
