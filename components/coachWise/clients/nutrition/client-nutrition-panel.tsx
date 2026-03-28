@@ -982,282 +982,282 @@ function getNutritionPreset(phase?: string): NutritionPreset {
   switch (phase) {
     case "Bulk":
       {
-      const bulkIifymTargets: NutritionIifymTargets = {
-        calories: 3150,
-        protein: 190,
-        carbs: 390,
-        fats: 80,
-        fiber: 38,
-      }
+        const bulkIifymTargets: NutritionIifymTargets = {
+          calories: 3150,
+          protein: 190,
+          carbs: 390,
+          fats: 80,
+          fiber: 38,
+        }
 
-      return {
-        dailyTarget: "3150 kcal",
-        macroTarget: "190P / 390C / 80F",
-        mealCadence: "5 meals / day",
-        coachNote:
-          "The focus is on higher intake around training, enough protein, and stable appetite through the week.",
-        planCoverage: "2 active plans",
-        loggerStats: {
-          loggedDays: "12 / 14",
-          proteinTarget: "95%",
-          hydrationAverage: "2.9 L",
-          consistency: "Very good",
-        },
-        loggerNote:
-          "Logging is consistent enough for coaching decisions. The biggest deviations happen with weekend snacks.",
-        loggerChecklist: [
-          "increase vegetables in the last meal",
-          "keep carbs before training",
-          "keep weekend meals on the same rhythm",
-        ],
-        mealPlans: [
-          {
-            id: "training-day",
-            title: "Training Day Meal",
-            subtitle: "More carbs around training and 1 recovery meal after the workout.",
-            type: "Meal Plan",
-            calories: 2100,
-            macros: "185P / 250C / 50F",
-            schedule: "4 meals",
-            segments: [
-              { macro: "protein", value: 32, fill: "var(--color-protein)" },
-              { macro: "carbs", value: 48, fill: "var(--color-carbs)" },
-              { macro: "fats", value: 20, fill: "var(--color-fats)" },
-            ],
+        return {
+          dailyTarget: "3150 kcal",
+          macroTarget: "190P / 390C / 80F",
+          mealCadence: "5 meals / day",
+          coachNote:
+            "The focus is on higher intake around training, enough protein, and stable appetite through the week.",
+          planCoverage: "2 active plans",
+          loggerStats: {
+            loggedDays: "12 / 14",
+            proteinTarget: "95%",
+            hydrationAverage: "2.9 L",
+            consistency: "Very good",
           },
-          {
-            id: "rest-day",
-            title: "Rest Day Meal",
-            subtitle: "A bit fewer carbs, more satiety, and steadier energy.",
-            type: "Meal Plan",
-            calories: 1640,
-            macros: "190P / 145C / 52F",
-            schedule: "4 meals",
-            segments: [
-              { macro: "protein", value: 39, fill: "var(--color-protein)" },
-              { macro: "carbs", value: 31, fill: "var(--color-carbs)" },
-              { macro: "fats", value: 30, fill: "var(--color-fats)" },
-            ],
-          },
-        ],
-        loggerEntries: [
-          {
-            id: "bulk-18",
-            day: "Tue, 18 Mar",
-            calories: "3020 kcal",
-            protein: "188 g",
-            hydration: "3.0 L",
-            note: "Good training day, appetite steady.",
-            status: "On target",
-          },
-          {
-            id: "bulk-17",
-            day: "Mon, 17 Mar",
-            calories: "2870 kcal",
-            protein: "180 g",
-            hydration: "2.7 L",
-            note: "A bit fewer carbs in the evening.",
-            status: "Slightly low",
-          },
-          {
-            id: "bulk-16",
-            day: "Sun, 16 Mar",
-            calories: "3190 kcal",
-            protein: "195 g",
-            hydration: "3.1 L",
-            note: "Weekend rhythm stayed under control.",
-            status: "On target",
-          },
-        ],
-        iifymTargets: bulkIifymTargets,
-        iifymEntries: buildIifymEntries(bulkIifymTargets),
-      }
+          loggerNote:
+            "Logging is consistent enough for coaching decisions. The biggest deviations happen with weekend snacks.",
+          loggerChecklist: [
+            "increase vegetables in the last meal",
+            "keep carbs before training",
+            "keep weekend meals on the same rhythm",
+          ],
+          mealPlans: [
+            {
+              id: "training-day",
+              title: "Training Day Meal",
+              subtitle: "More carbs around training and 1 recovery meal after the workout.",
+              type: "Meal Plan",
+              calories: 2100,
+              macros: "185P / 250C / 50F",
+              schedule: "4 meals",
+              segments: [
+                { macro: "protein", value: 32, fill: "var(--color-protein)" },
+                { macro: "carbs", value: 48, fill: "var(--color-carbs)" },
+                { macro: "fats", value: 20, fill: "var(--color-fats)" },
+              ],
+            },
+            {
+              id: "rest-day",
+              title: "Rest Day Meal",
+              subtitle: "A bit fewer carbs, more satiety, and steadier energy.",
+              type: "Meal Plan",
+              calories: 1640,
+              macros: "190P / 145C / 52F",
+              schedule: "4 meals",
+              segments: [
+                { macro: "protein", value: 39, fill: "var(--color-protein)" },
+                { macro: "carbs", value: 31, fill: "var(--color-carbs)" },
+                { macro: "fats", value: 30, fill: "var(--color-fats)" },
+              ],
+            },
+          ],
+          loggerEntries: [
+            {
+              id: "bulk-18",
+              day: "Tue, 18 Mar",
+              calories: "3020 kcal",
+              protein: "188 g",
+              hydration: "3.0 L",
+              note: "Good training day, appetite steady.",
+              status: "On target",
+            },
+            {
+              id: "bulk-17",
+              day: "Mon, 17 Mar",
+              calories: "2870 kcal",
+              protein: "180 g",
+              hydration: "2.7 L",
+              note: "A bit fewer carbs in the evening.",
+              status: "Slightly low",
+            },
+            {
+              id: "bulk-16",
+              day: "Sun, 16 Mar",
+              calories: "3190 kcal",
+              protein: "195 g",
+              hydration: "3.1 L",
+              note: "Weekend rhythm stayed under control.",
+              status: "On target",
+            },
+          ],
+          iifymTargets: bulkIifymTargets,
+          iifymEntries: buildIifymEntries(bulkIifymTargets),
+        }
       }
     case "Cut":
       {
-      const cutIifymTargets: NutritionIifymTargets = {
-        calories: 2150,
-        protein: 185,
-        carbs: 190,
-        fats: 65,
-        fiber: 30,
-      }
+        const cutIifymTargets: NutritionIifymTargets = {
+          calories: 2150,
+          protein: 185,
+          carbs: 190,
+          fats: 65,
+          fiber: 30,
+        }
 
-      return {
-        dailyTarget: "2150 kcal",
-        macroTarget: "185P / 190C / 65F",
-        mealCadence: "4 meals / day",
-        coachNote:
-          "The deficit stays moderate. The priority is satiety, high protein, and solid training output.",
-        planCoverage: "2 active plans",
-        loggerStats: {
-          loggedDays: "11 / 14",
-          proteinTarget: "92%",
-          hydrationAverage: "2.4 L",
-          consistency: "Good",
-        },
-        loggerNote:
-          "The logger is good enough for decisions. The biggest deviations happen with evening snacks and weekends.",
-        loggerChecklist: [
-          "keep protein above 180 g",
-          "prep 1 anchor meal ahead of time on weekends",
-          "increase water to 2.7 L on harder training days",
-        ],
-        mealPlans: [
-          {
-            id: "training-day",
-            title: "Training Day Meal",
-            subtitle: "More food around training while the deficit stays under control.",
-            type: "Meal Plan",
-            calories: 1600,
-            macros: "180P / 145C / 42F",
-            schedule: "4 meals",
-            segments: [
-              { macro: "protein", value: 40, fill: "var(--color-protein)" },
-              { macro: "carbs", value: 37, fill: "var(--color-carbs)" },
-              { macro: "fats", value: 23, fill: "var(--color-fats)" },
-            ],
+        return {
+          dailyTarget: "2150 kcal",
+          macroTarget: "185P / 190C / 65F",
+          mealCadence: "4 meals / day",
+          coachNote:
+            "The deficit stays moderate. The priority is satiety, high protein, and solid training output.",
+          planCoverage: "2 active plans",
+          loggerStats: {
+            loggedDays: "11 / 14",
+            proteinTarget: "92%",
+            hydrationAverage: "2.4 L",
+            consistency: "Good",
           },
-          {
-            id: "rest-day",
-            title: "Rest Day Meal",
-            subtitle: "Lower carbs, more satiety, and solid recovery during the deficit.",
-            type: "Meal Plan",
-            calories: 1004,
-            macros: "155P / 68C / 36F",
-            schedule: "3 meals",
-            segments: [
-              { macro: "protein", value: 46, fill: "var(--color-protein)" },
-              { macro: "carbs", value: 24, fill: "var(--color-carbs)" },
-              { macro: "fats", value: 30, fill: "var(--color-fats)" },
-            ],
-          },
-        ],
-        loggerEntries: [
-          {
-            id: "cut-18",
-            day: "Tue, 18 Mar",
-            calories: "2115 kcal",
-            protein: "186 g",
-            hydration: "2.5 L",
-            note: "Good day, without major deviations.",
-            status: "On target",
-          },
-          {
-            id: "cut-17",
-            day: "Mon, 17 Mar",
-            calories: "2260 kcal",
-            protein: "174 g",
-            hydration: "2.2 L",
-            note: "An evening snack pushed intake higher.",
-            status: "Above target",
-          },
-          {
-            id: "cut-16",
-            day: "Sun, 16 Mar",
-            calories: "2050 kcal",
-            protein: "182 g",
-            hydration: "2.6 L",
-            note: "The weekend was more stable than before.",
-            status: "On target",
-          },
-        ],
-        iifymTargets: cutIifymTargets,
-        iifymEntries: buildIifymEntries(cutIifymTargets),
-      }
+          loggerNote:
+            "The logger is good enough for decisions. The biggest deviations happen with evening snacks and weekends.",
+          loggerChecklist: [
+            "keep protein above 180 g",
+            "prep 1 anchor meal ahead of time on weekends",
+            "increase water to 2.7 L on harder training days",
+          ],
+          mealPlans: [
+            {
+              id: "training-day",
+              title: "Training Day Meal",
+              subtitle: "More food around training while the deficit stays under control.",
+              type: "Meal Plan",
+              calories: 1600,
+              macros: "180P / 145C / 42F",
+              schedule: "4 meals",
+              segments: [
+                { macro: "protein", value: 40, fill: "var(--color-protein)" },
+                { macro: "carbs", value: 37, fill: "var(--color-carbs)" },
+                { macro: "fats", value: 23, fill: "var(--color-fats)" },
+              ],
+            },
+            {
+              id: "rest-day",
+              title: "Rest Day Meal",
+              subtitle: "Lower carbs, more satiety, and solid recovery during the deficit.",
+              type: "Meal Plan",
+              calories: 1004,
+              macros: "155P / 68C / 36F",
+              schedule: "3 meals",
+              segments: [
+                { macro: "protein", value: 46, fill: "var(--color-protein)" },
+                { macro: "carbs", value: 24, fill: "var(--color-carbs)" },
+                { macro: "fats", value: 30, fill: "var(--color-fats)" },
+              ],
+            },
+          ],
+          loggerEntries: [
+            {
+              id: "cut-18",
+              day: "Tue, 18 Mar",
+              calories: "2115 kcal",
+              protein: "186 g",
+              hydration: "2.5 L",
+              note: "Good day, without major deviations.",
+              status: "On target",
+            },
+            {
+              id: "cut-17",
+              day: "Mon, 17 Mar",
+              calories: "2260 kcal",
+              protein: "174 g",
+              hydration: "2.2 L",
+              note: "An evening snack pushed intake higher.",
+              status: "Above target",
+            },
+            {
+              id: "cut-16",
+              day: "Sun, 16 Mar",
+              calories: "2050 kcal",
+              protein: "182 g",
+              hydration: "2.6 L",
+              note: "The weekend was more stable than before.",
+              status: "On target",
+            },
+          ],
+          iifymTargets: cutIifymTargets,
+          iifymEntries: buildIifymEntries(cutIifymTargets),
+        }
       }
     default:
       {
-      const maintenanceIifymTargets: NutritionIifymTargets = {
-        calories: 2450,
-        protein: 180,
-        carbs: 250,
-        fats: 70,
-        fiber: 34,
-      }
+        const maintenanceIifymTargets: NutritionIifymTargets = {
+          calories: 2450,
+          protein: 180,
+          carbs: 250,
+          fats: 70,
+          fiber: 34,
+        }
 
-      return {
-        dailyTarget: "2450 kcal",
-        macroTarget: "180P / 250C / 70F",
-        mealCadence: "4 meals / day",
-        coachNote:
-          "The maintenance plan keeps physique stable. The focus is on routine, hydration, and good recovery.",
-        planCoverage: "2 active plans",
-        loggerStats: {
-          loggedDays: "10 / 14",
-          proteinTarget: "89%",
-          hydrationAverage: "2.6 L",
-          consistency: "Stable",
-        },
-        loggerNote:
-          "The biggest benefit comes from a more consistent breakfast and less improvisation in the last meal.",
-        loggerChecklist: [
-          "make breakfast more predictable",
-          "keep 4 anchor meals through the week",
-          "increase water intake on more active days",
-        ],
-        mealPlans: [
-          {
-            id: "training-day",
-            title: "Training Day Meal",
-            subtitle: "A balanced plan for performance and good recovery.",
-            type: "Meal Plan",
-            calories: 1840,
-            macros: "175P / 185C / 52F",
-            schedule: "4 meals",
-            segments: [
-              { macro: "protein", value: 38, fill: "var(--color-protein)" },
-              { macro: "carbs", value: 39, fill: "var(--color-carbs)" },
-              { macro: "fats", value: 23, fill: "var(--color-fats)" },
-            ],
+        return {
+          dailyTarget: "2450 kcal",
+          macroTarget: "180P / 250C / 70F",
+          mealCadence: "4 meals / day",
+          coachNote:
+            "The maintenance plan keeps physique stable. The focus is on routine, hydration, and good recovery.",
+          planCoverage: "2 active plans",
+          loggerStats: {
+            loggedDays: "10 / 14",
+            proteinTarget: "89%",
+            hydrationAverage: "2.6 L",
+            consistency: "Stable",
           },
-          {
-            id: "rest-day",
-            title: "Rest Day Meal",
-            subtitle: "A slightly more satiety-focused plan for less active days.",
-            type: "Meal Plan",
-            calories: 1260,
-            macros: "165P / 102C / 40F",
-            schedule: "3 meals",
-            segments: [
-              { macro: "protein", value: 44, fill: "var(--color-protein)" },
-              { macro: "carbs", value: 28, fill: "var(--color-carbs)" },
-              { macro: "fats", value: 28, fill: "var(--color-fats)" },
-            ],
-          },
-        ],
-        loggerEntries: [
-          {
-            id: "maint-18",
-            day: "Tue, 18 Mar",
-            calories: "2420 kcal",
-            protein: "178 g",
-            hydration: "2.7 L",
-            note: "Rhythm is stable and energy is good.",
-            status: "On target",
-          },
-          {
-            id: "maint-17",
-            day: "Mon, 17 Mar",
-            calories: "2360 kcal",
-            protein: "171 g",
-            hydration: "2.5 L",
-            note: "Less appetite in the second part of the day.",
-            status: "Slightly low",
-          },
-          {
-            id: "maint-16",
-            day: "Sun, 16 Mar",
-            calories: "2510 kcal",
-            protein: "183 g",
-            hydration: "2.6 L",
-            note: "A good weekend without major swings.",
-            status: "On target",
-          },
-        ],
-        iifymTargets: maintenanceIifymTargets,
-        iifymEntries: buildIifymEntries(maintenanceIifymTargets),
-      }
+          loggerNote:
+            "The biggest benefit comes from a more consistent breakfast and less improvisation in the last meal.",
+          loggerChecklist: [
+            "make breakfast more predictable",
+            "keep 4 anchor meals through the week",
+            "increase water intake on more active days",
+          ],
+          mealPlans: [
+            {
+              id: "training-day",
+              title: "Training Day Meal",
+              subtitle: "A balanced plan for performance and good recovery.",
+              type: "Meal Plan",
+              calories: 1840,
+              macros: "175P / 185C / 52F",
+              schedule: "4 meals",
+              segments: [
+                { macro: "protein", value: 38, fill: "var(--color-protein)" },
+                { macro: "carbs", value: 39, fill: "var(--color-carbs)" },
+                { macro: "fats", value: 23, fill: "var(--color-fats)" },
+              ],
+            },
+            {
+              id: "rest-day",
+              title: "Rest Day Meal",
+              subtitle: "A slightly more satiety-focused plan for less active days.",
+              type: "Meal Plan",
+              calories: 1260,
+              macros: "165P / 102C / 40F",
+              schedule: "3 meals",
+              segments: [
+                { macro: "protein", value: 44, fill: "var(--color-protein)" },
+                { macro: "carbs", value: 28, fill: "var(--color-carbs)" },
+                { macro: "fats", value: 28, fill: "var(--color-fats)" },
+              ],
+            },
+          ],
+          loggerEntries: [
+            {
+              id: "maint-18",
+              day: "Tue, 18 Mar",
+              calories: "2420 kcal",
+              protein: "178 g",
+              hydration: "2.7 L",
+              note: "Rhythm is stable and energy is good.",
+              status: "On target",
+            },
+            {
+              id: "maint-17",
+              day: "Mon, 17 Mar",
+              calories: "2360 kcal",
+              protein: "171 g",
+              hydration: "2.5 L",
+              note: "Less appetite in the second part of the day.",
+              status: "Slightly low",
+            },
+            {
+              id: "maint-16",
+              day: "Sun, 16 Mar",
+              calories: "2510 kcal",
+              protein: "183 g",
+              hydration: "2.6 L",
+              note: "A good weekend without major swings.",
+              status: "On target",
+            },
+          ],
+          iifymTargets: maintenanceIifymTargets,
+          iifymEntries: buildIifymEntries(maintenanceIifymTargets),
+        }
       }
   }
 }
@@ -1351,9 +1351,8 @@ function NutritionIifymTooltip({
   const items = [
     ...iifymSeries.map((series) => ({
       label: series.label,
-      value: `${point[`raw${series.label}`]} ${
-        series.key === "calories" ? "kcal" : "g"
-      }`,
+      value: `${point[`raw${series.label}`]} ${series.key === "calories" ? "kcal" : "g"
+        }`,
       color: series.color,
     })),
   ]
@@ -1921,7 +1920,7 @@ function SmartMealPlannerDialog({
                       className={cn(
                         "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                         mealCount === count &&
-                          "border-brand-500 bg-brand-50 text-brand-700"
+                        "border-brand-500 bg-brand-50 text-brand-700"
                       )}
                     >
                       {count} Meals
@@ -1944,7 +1943,7 @@ function SmartMealPlannerDialog({
                       className={cn(
                         "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                         alternatives === count &&
-                          "border-brand-500 bg-brand-50 text-brand-700"
+                        "border-brand-500 bg-brand-50 text-brand-700"
                       )}
                     >
                       {count} {count === 1 ? "option" : "options"}
@@ -1976,7 +1975,7 @@ function SmartMealPlannerDialog({
                         className={cn(
                           "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                           isActive &&
-                            "border-brand-500 bg-brand-50 text-brand-700"
+                          "border-brand-500 bg-brand-50 text-brand-700"
                         )}
                       >
                         {restriction}
@@ -2095,7 +2094,7 @@ function SmartMealPlannerDialog({
                               100,
                               Math.round(
                                 (Number(item.value) / Math.max(1, Number.parseInt(item.target, 10))) *
-                                  100
+                                100
                               )
                             )}%`,
                           }}
@@ -2431,7 +2430,7 @@ function AddMealDialog({
                     className={cn(
                       "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                       mealTypeFilter === type &&
-                        "border-brand-500 bg-brand-50 text-brand-700"
+                      "border-brand-500 bg-brand-50 text-brand-700"
                     )}
                   >
                     {type}
@@ -3306,126 +3305,126 @@ export function ClientNutritionMealPlansView({
 
       <div>
         <NutritionSectionTitle title="Existing plans" />
-        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-        <Table>
-          <TableHeader className="bg-muted">
-            <TableRow className="hover:bg-transparent">
-              <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
-                Plan
-              </TableHead>
-              <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
-                Type
-              </TableHead>
-              <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
-                Calories
-              </TableHead>
-              <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
-                Action
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {mealPlans.length ? mealPlans.map((plan) => (
-              <TableRow
-                key={plan.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => handleOpenMealPlan(plan.id)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault()
-                    handleOpenMealPlan(plan.id)
-                  }
-                }}
-                className="cursor-pointer bg-white hover:bg-neutral-50/60"
-              >
-                <TableCell className="py-3 pl-4 whitespace-normal lg:pl-5">
-                  <div className="min-w-0 space-y-1">
-                    <div className="text-[14px] font-medium text-neutral-950">
-                      {plan.title}
-                    </div>
-                    <div className="text-[12.5px] leading-5 text-neutral-500">
-                      {plan.subtitle}
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="px-3.5 py-3">
-                  <Badge
-                    variant="outline"
-                    className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
-                  >
-                    <UtensilsCrossed className="mr-1 size-3 text-neutral-500" />
-                    {plan.type}
-                  </Badge>
-                </TableCell>
-                <TableCell className="px-3 py-3 text-center">
-                  <NutritionCaloriesDonut plan={plan} />
-                </TableCell>
-                <TableCell className="px-3 py-3 pr-5">
-                  <div className="flex w-[9rem] justify-center gap-3">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        void handleCopyMealPlan(plan)
-                      }}
-                      className={nutritionRowActionButtonClassName}
-                    >
-                      <Copy className="size-3.5" />
-                      <span className="sr-only">Copy meal plan</span>
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        handleOpenMealPlanEditor(plan.id)
-                      }}
-                      className={nutritionRowActionButtonClassName}
-                    >
-                      <Pencil className="size-3.5" />
-                      <span className="sr-only">Edit meal plan</span>
-                    </Button>
-                    <CoachWiseConfirmationDialog
-                      title="Are you sure you want to delete this meal plan?"
-                      description={`${plan.title} will be removed from the current nutrition list. This action can't be undone.`}
-                      confirmLabel="Delete plan"
-                      variant="destructive"
-                      onConfirm={() => handleDeleteMealPlan(plan)}
-                      trigger={
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon-sm"
-                          onClick={(event) => event.stopPropagation()}
-                          className={cn(
-                            nutritionRowActionButtonClassName,
-                            nutritionRowDeleteActionButtonClassName
-                          )}
-                        >
-                          <Trash2 className="size-3.5" />
-                          <span className="sr-only">Delete meal plan</span>
-                        </Button>
-                      }
-                    />
-                  </div>
-                </TableCell>
-              </TableRow>
-            )) : (
+        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-neutral-50">
+          <Table>
+            <TableHeader className="bg-muted">
               <TableRow className="hover:bg-transparent">
-                <TableCell
-                  colSpan={4}
-                  className="py-8 text-center text-[13px] text-neutral-500"
-                >
-                  No meal plans available.
-                </TableCell>
+                <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
+                  Plan
+                </TableHead>
+                <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
+                  Type
+                </TableHead>
+                <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
+                  Calories
+                </TableHead>
+                <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
+                  Action
+                </TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {mealPlans.length ? mealPlans.map((plan) => (
+                <TableRow
+                  key={plan.id}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleOpenMealPlan(plan.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault()
+                      handleOpenMealPlan(plan.id)
+                    }
+                  }}
+                  className="cursor-pointer bg-white hover:bg-neutral-50/60"
+                >
+                  <TableCell className="py-3 pl-4 whitespace-normal lg:pl-5">
+                    <div className="min-w-0 space-y-1">
+                      <div className="text-[14px] font-medium text-neutral-950">
+                        {plan.title}
+                      </div>
+                      <div className="text-[12.5px] leading-5 text-neutral-500">
+                        {plan.subtitle}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3">
+                    <Badge
+                      variant="outline"
+                      className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
+                    >
+                      <UtensilsCrossed className="mr-1 size-3 text-neutral-500" />
+                      {plan.type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-3 py-3 text-center">
+                    <NutritionCaloriesDonut plan={plan} />
+                  </TableCell>
+                  <TableCell className="px-3 py-3 pr-5">
+                    <div className="flex w-[9rem] justify-center gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          void handleCopyMealPlan(plan)
+                        }}
+                        className={nutritionRowActionButtonClassName}
+                      >
+                        <Copy className="size-3.5" />
+                        <span className="sr-only">Copy meal plan</span>
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleOpenMealPlanEditor(plan.id)
+                        }}
+                        className={nutritionRowActionButtonClassName}
+                      >
+                        <Pencil className="size-3.5" />
+                        <span className="sr-only">Edit meal plan</span>
+                      </Button>
+                      <CoachWiseConfirmationDialog
+                        title="Are you sure you want to delete this meal plan?"
+                        description={`${plan.title} will be removed from the current nutrition list. This action can't be undone.`}
+                        confirmLabel="Delete plan"
+                        variant="destructive"
+                        onConfirm={() => handleDeleteMealPlan(plan)}
+                        trigger={
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon-sm"
+                            onClick={(event) => event.stopPropagation()}
+                            className={cn(
+                              nutritionRowActionButtonClassName,
+                              nutritionRowDeleteActionButtonClassName
+                            )}
+                          >
+                            <Trash2 className="size-3.5" />
+                            <span className="sr-only">Delete meal plan</span>
+                          </Button>
+                        }
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )) : (
+                <TableRow className="hover:bg-transparent">
+                  <TableCell
+                    colSpan={4}
+                    className="py-8 text-center text-[13px] text-neutral-500"
+                  >
+                    No meal plans available.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>
@@ -4239,7 +4238,7 @@ export function MacroPlanCreatePageView({
                         className={cn(
                           "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                           mealCount === count &&
-                            "border-brand-500 bg-brand-50 text-brand-700"
+                          "border-brand-500 bg-brand-50 text-brand-700"
                         )}
                       >
                         {count} Meals
@@ -4262,7 +4261,7 @@ export function MacroPlanCreatePageView({
                         className={cn(
                           "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                           alternatives === count &&
-                            "border-brand-500 bg-brand-50 text-brand-700"
+                          "border-brand-500 bg-brand-50 text-brand-700"
                         )}
                       >
                         {count} {count === 1 ? "option" : "options"}
@@ -4294,7 +4293,7 @@ export function MacroPlanCreatePageView({
                           className={cn(
                             "rounded-full border-neutral-200 bg-white px-4 text-neutral-600 shadow-none hover:bg-neutral-50",
                             isActive &&
-                              "border-brand-500 bg-brand-50 text-brand-700"
+                            "border-brand-500 bg-brand-50 text-brand-700"
                           )}
                         >
                           {restriction}
@@ -4412,7 +4411,7 @@ export function MacroPlanCreatePageView({
                                       1,
                                       Number.parseInt(item.target, 10)
                                     )) *
-                                    100
+                                  100
                                 )
                               )}%`,
                             }}

@@ -10,6 +10,7 @@ import {
   Minus,
   Pencil,
   Plus,
+  Save,
   Search,
   Trash2,
 } from "lucide-react"
@@ -609,7 +610,7 @@ export function MealPlanBuilderPageView({
   return (
     <div className="min-w-0 bg-neutral-50">
       <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex min-h-10 items-center justify-between gap-3 px-4 py-1.5">
+        <div className="flex h-14 items-center justify-between gap-3 px-4">
           <div className="flex min-w-0 items-center gap-2.5">
             <Button
               type="button"
@@ -640,7 +641,7 @@ export function MealPlanBuilderPageView({
                 <button
                   type="button"
                   onClick={() => setIsEditingName(true)}
-                  className="inline-flex max-w-full items-center gap-2 text-left text-[17px] font-semibold text-neutral-950"
+                  className="inline-flex h-9 max-w-full items-center gap-2 text-left text-[17px] font-semibold text-neutral-950"
                 >
                   <span className="truncate">{planName}</span>
                   <Pencil className="size-3.5 text-neutral-400" />
@@ -649,7 +650,11 @@ export function MealPlanBuilderPageView({
             </div>
           </div>
 
-          <PrimaryActionButton label="Save Plan" onClick={handleSavePlan} />
+          <PrimaryActionButton
+            label="Save Plan"
+            icon={Save}
+            onClick={handleSavePlan}
+          />
         </div>
       </div>
 

@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation"
 import {
-  ClientNutritionLoggerView,
   ClientNutritionMealPlansView,
 } from "@/components/coachWise/clients/nutrition/client-nutrition-panel"
 import { routing } from "@/i18n/routing"
@@ -10,14 +9,10 @@ import {
   resolveClientDetailContext,
   type ClientDetailPageProps,
 } from "@/lib/handlers/client-detail.handlers"
-import {
-  getNutritionPlanDetailHref,
-  resolveClientNutritionTab,
-} from "@/lib/handlers/nutrition.handlers"
+import { getNutritionPlanDetailHref } from "@/lib/handlers/nutrition.handlers"
 
 type NutritionSearchParams = {
   mealPlanId?: string | string[]
-  nutritionTab?: string | string[]
 }
 
 export default async function Page({
@@ -27,9 +22,6 @@ export default async function Page({
   const { locale, client, clientBasePath } = await resolveClientDetailContext(params)
   const resolvedSearchParams = await searchParams
   const mealPlanId = getSingleSearchParam(resolvedSearchParams.mealPlanId)
-  const resolvedNutritionTab = resolveClientNutritionTab(
-    getSingleSearchParam(resolvedSearchParams.nutritionTab)
-  )
 
   if (mealPlanId) {
     const localePrefix = locale === routing.defaultLocale ? "" : `/${locale}`
@@ -43,12 +35,8 @@ export default async function Page({
   }
 
   return (
-    <section className="min-w-0 bg-neutral-50">
-      {resolvedNutritionTab === "nutrition-logger" ? (
-        <ClientNutritionLoggerView phase={client.phase} />
-      ) : (
-        <ClientNutritionMealPlansView phase={client.phase} />
-      )}
+    <section className="min-w-0 ">
+      <ClientNutritionMealPlansView phase={client.phase} />
     </section>
   )
 }

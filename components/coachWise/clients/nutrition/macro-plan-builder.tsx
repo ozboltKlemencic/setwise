@@ -9,6 +9,7 @@ import {
   LockOpen,
   Pencil,
   Plus,
+  Save,
   Sparkles,
   Trash2,
 } from "lucide-react"
@@ -541,7 +542,7 @@ export function MacroPlanBuilderPageView({
   return (
     <div className="min-w-0 bg-neutral-50">
       <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex min-h-10 items-center justify-between gap-3 px-4 py-1.5">
+        <div className="flex h-14 items-center justify-between gap-3 px-4">
           <div className="flex min-w-0 items-center gap-2.5">
             <Button
               type="button"
@@ -572,7 +573,7 @@ export function MacroPlanBuilderPageView({
                 <button
                   type="button"
                   onClick={() => setIsEditingName(true)}
-                  className="inline-flex max-w-full items-center gap-2 text-left text-[17px] font-semibold text-neutral-950"
+                  className="inline-flex h-9 max-w-full items-center gap-2 text-left text-[17px] font-semibold text-neutral-950"
                 >
                   <span className="truncate">{planName}</span>
                   <Pencil className="size-3.5 text-neutral-400" />
@@ -583,6 +584,7 @@ export function MacroPlanBuilderPageView({
 
           <PrimaryActionButton
             label="Save Macro Plan"
+            icon={Save}
             onClick={handleSavePlan}
             disabled={!canSave}
           />
