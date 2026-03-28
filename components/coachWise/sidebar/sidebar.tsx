@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import {
-  IconChefHat,
+  IconApple,
   IconClipboardList,
   IconInfoCircle,
   IconPill,
@@ -73,7 +73,7 @@ const data = {
     {
       name: "Nutrition",
       url: "/beta-coach-wise/nutrition",
-      icon: IconChefHat,
+      icon: IconApple,
       exact: false,
     },
     {

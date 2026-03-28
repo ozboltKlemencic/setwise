@@ -3,17 +3,15 @@
 import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  ChevronLeft,
   Flame,
   Lock,
   LockOpen,
-  Pencil,
   Plus,
-  Save,
   Sparkles,
   Trash2,
 } from "lucide-react"
 
+import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
@@ -541,55 +539,23 @@ export function MacroPlanBuilderPageView({
 
   return (
     <div className="min-w-0 bg-neutral-50">
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex h-14 items-center justify-between gap-3 px-4">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => router.push(backHref)}
-              className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              <ChevronLeft className="size-4" />
-              <span className="sr-only">Back</span>
-            </Button>
-
-            <div className="min-w-0">
-              {isEditingName ? (
-                <Input
-                  autoFocus
-                  value={planName}
-                  onChange={(event) => setPlanName(event.target.value)}
-                  onBlur={() => setIsEditingName(false)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      setIsEditingName(false)
-                    }
-                  }}
-                  className="h-9 min-w-[240px] rounded-sm border-neutral-200 bg-white text-[15px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-                />
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setIsEditingName(true)}
-                  className="inline-flex h-9 max-w-full items-center gap-2 text-left text-[17px] font-semibold text-neutral-950"
-                >
-                  <span className="truncate">{planName}</span>
-                  <Pencil className="size-3.5 text-neutral-400" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <PrimaryActionButton
-            label="Save Macro Plan"
-            icon={Save}
-            onClick={handleSavePlan}
-            disabled={!canSave}
-          />
-        </div>
-      </div>
+      <NutritionBuilderNav
+        title={planName}
+        isEditingTitle={isEditingName}
+        inputValue={planName}
+        onBack={() => router.push(backHref)}
+        onStartEditing={() => setIsEditingName(true)}
+        onTitleChange={setPlanName}
+        onTitleBlur={() => setIsEditingName(false)}
+        onTitleKeyDown={(event) => {
+          if (event.key === "Enter") {
+            setIsEditingName(false)
+          }
+        }}
+        onSave={handleSavePlan}
+        saveLabel="Save Macro Plan"
+        saveDisabled={!canSave}
+      />
 
       <div className="mx-auto max-w-[1080px] space-y-4 px-4 py-4">
         <Card className="rounded-xl border-neutral-200 shadow-none">

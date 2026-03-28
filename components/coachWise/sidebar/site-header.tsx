@@ -1,7 +1,7 @@
 "use client"
 
 import {
-  IconChefHat,
+  IconApple,
   IconClipboardList,
   IconInfoCircle,
   IconPencil,
@@ -39,7 +39,7 @@ const coachWiseRoutes = [
   {
     title: "Nutrition",
     href: "/beta-coach-wise/nutrition",
-    icon: IconChefHat,
+    icon: IconApple,
     exact: false,
   },
   {

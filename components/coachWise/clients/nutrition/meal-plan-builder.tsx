@@ -4,17 +4,15 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
   ChefHat,
-  ChevronLeft,
   CopyPlus,
   GripVertical,
   Minus,
-  Pencil,
   Plus,
-  Save,
   Search,
   Trash2,
 } from "lucide-react"
 
+import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Badge } from "@/components/ui/badge"
@@ -181,74 +179,80 @@ function FoodLibraryRow({
       draggable
       onDragStart={() => onDragStart(qty)}
       onDragEnd={onDragEnd}
-      className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-3 transition-colors hover:bg-neutral-50"
+      className="flex items-stretch gap-2 rounded-xl border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
-      <button
-        type="button"
-        onClick={onToggle}
-        className={cn(
-          "flex size-5 shrink-0 items-center justify-center rounded-md border text-[11px] font-semibold transition-colors",
-          selected
-            ? "border-brand-500 bg-brand-500 text-white"
-            : "border-neutral-300 bg-white text-transparent"
-        )}
-      >
-        ✓
-      </button>
-
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-500">
-        <GripVertical className="size-4" />
+      <div className="flex w-5 shrink-0 items-center justify-center text-neutral-300">
+        <GripVertical className="size-3.5" />
       </div>
 
-      <div className="min-w-0 flex-1">
-        <div className="truncate text-[13px] font-medium text-neutral-950">
-          {food.name}
-        </div>
-        <div className="text-[11.5px] text-neutral-500">
-          {food.cal} kcal / 100
-          {food.unit}
-          {" · "}P{food.p} C{food.c} F{food.f}
-        </div>
-      </div>
+      <div className="min-w-0 flex-1 space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="truncate text-[13px] font-medium text-neutral-950">
+              {food.name}
+            </div>
+            <div className="mt-0.5 text-[11.5px] leading-5 text-neutral-500">
+              {food.cal} kcal / 100
+              {food.unit}
+              {" · "}P{food.p} C{food.c} F{food.f}
+            </div>
+          </div>
 
-      <div className="flex items-center gap-1.5">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onClick={() => setQty((current) => Math.max(food.step, current - food.step))}
-          className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-        >
-          <Minus className="size-3.5" />
-        </Button>
-        <Input
-          value={qty}
-          onChange={(event) => {
-            const nextValue = Number(event.target.value)
-            if (!Number.isNaN(nextValue) && nextValue >= 0) {
-              setQty(nextValue)
+          <button
+            type="button"
+            onClick={onToggle}
+            className={cn(
+              "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border text-[11px] font-semibold transition-colors",
+              selected
+                ? "border-brand-500 bg-brand-500 text-white"
+                : "border-neutral-300 bg-white text-transparent"
+            )}
+          >
+            ✓
+          </button>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-1.5">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() =>
+              setQty((current) => Math.max(food.step, current - food.step))
             }
-          }}
-          className="h-7 w-14 rounded-md border-neutral-200 px-2 text-center text-[12px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-        />
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onClick={() => setQty((current) => current + food.step)}
-          className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-        >
-          <Plus className="size-3.5" />
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onClick={() => onAdd(qty)}
-          className="size-7 rounded-md border-neutral-200 text-brand-600 shadow-none hover:bg-brand-50"
-        >
-          <CopyPlus className="size-3.5" />
-        </Button>
+            className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+          >
+            <Minus className="size-3.5" />
+          </Button>
+          <Input
+            value={qty}
+            onChange={(event) => {
+              const nextValue = Number(event.target.value)
+              if (!Number.isNaN(nextValue) && nextValue >= 0) {
+                setQty(nextValue)
+              }
+            }}
+            className="h-7 w-14 rounded-md border-neutral-200 px-2 text-center text-[12px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() => setQty((current) => current + food.step)}
+            className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
+          >
+            <Plus className="size-3.5" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() => onAdd(qty)}
+            className="size-7 rounded-md border-neutral-200 text-brand-600 shadow-none hover:bg-brand-50"
+          >
+            <CopyPlus className="size-3.5" />
+          </Button>
+        </div>
       </div>
     </div>
   )
@@ -608,58 +612,27 @@ export function MealPlanBuilderPageView({
   )
 
   return (
-    <div className="min-w-0 bg-neutral-50">
-      <div className="border-b border-neutral-200 bg-neutral-50">
-        <div className="flex h-14 items-center justify-between gap-3 px-4">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onClick={handleNavigateBack}
-              className="size-8 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-            >
-              <ChevronLeft className="size-4" />
-              <span className="sr-only">Back</span>
-            </Button>
-
-            <div className="min-w-0">
-              {isEditingName ? (
-                <Input
-                  ref={nameInputRef}
-                  value={planName}
-                  onChange={(event) => setPlanName(event.target.value)}
-                  onBlur={() => setIsEditingName(false)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      setIsEditingName(false)
-                    }
-                  }}
-                  className="h-9 min-w-[240px] rounded-sm border-neutral-200 bg-white text-[15px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-                />
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setIsEditingName(true)}
-                  className="inline-flex h-9 max-w-full items-center gap-2 text-left text-[17px] font-semibold text-neutral-950"
-                >
-                  <span className="truncate">{planName}</span>
-                  <Pencil className="size-3.5 text-neutral-400" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          <PrimaryActionButton
-            label="Save Plan"
-            icon={Save}
-            onClick={handleSavePlan}
-          />
-        </div>
-      </div>
+    <div className="min-w-0 bg-neutral-50 p-0 m-0">
+      <NutritionBuilderNav
+        title={planName}
+        isEditingTitle={isEditingName}
+        inputValue={planName}
+        inputRef={nameInputRef}
+        onBack={handleNavigateBack}
+        onStartEditing={() => setIsEditingName(true)}
+        onTitleChange={setPlanName}
+        onTitleBlur={() => setIsEditingName(false)}
+        onTitleKeyDown={(event) => {
+          if (event.key === "Enter") {
+            setIsEditingName(false)
+          }
+        }}
+        onSave={handleSavePlan}
+        saveLabel="Save Plan"
+      />
 
       <div className="grid gap-4 px-4 pb-4 pt-4 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-6 xl:pt-0">
-        <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none xl:rounded-t-none">
+        <Card className="overflow-hidden  border-neutral-200 bg-white shadow-none ">
           <div className="border-b border-neutral-200 bg-neutral-50 p-2">
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -952,13 +925,13 @@ export function MealPlanBuilderPageView({
                           currentMeals.map((meal) =>
                             meal.id === activeMeal.id
                               ? {
-                                  ...meal,
-                                  items: meal.items.map((mealItem) =>
-                                    mealItem.id === item.id
-                                      ? { ...mealItem, qty: nextQty }
-                                      : mealItem
-                                  ),
-                                }
+                                ...meal,
+                                items: meal.items.map((mealItem) =>
+                                  mealItem.id === item.id
+                                    ? { ...mealItem, qty: nextQty }
+                                    : mealItem
+                                ),
+                              }
                               : meal
                           )
                         )
@@ -968,11 +941,11 @@ export function MealPlanBuilderPageView({
                           currentMeals.map((meal) =>
                             meal.id === activeMeal.id
                               ? {
-                                  ...meal,
-                                  items: meal.items.filter(
-                                    (mealItem) => mealItem.id !== item.id
-                                  ),
-                                }
+                                ...meal,
+                                items: meal.items.filter(
+                                  (mealItem) => mealItem.id !== item.id
+                                ),
+                              }
                               : meal
                           )
                         )

@@ -36,7 +36,7 @@ export default function BetaCoachWiseLayout({
             <div
               className={cn(
                 "flex flex-col",
-                isClientDetailPage ? "gap-0 py-0" : "gap-2 py-2 md:gap-2"
+                isClientDetailPage ? "gap-0 py-0" : "gap-2 py-0 md:gap-2"
               )}
             >
               {children}
