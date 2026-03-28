@@ -37,7 +37,7 @@ export function NutritionBuilderNav({
   saveDisabled,
 }: NutritionBuilderNavProps) {
   return (
-    <div className="border-b  border-neutral-200 py-1 ">
+    <div className="border-b  border-neutral-200 py-2 ">
       <div className="flex  items-center justify-between gap-x-3 px-2">
         <div className="flex h-full min-w-0 items-center gap-x-2">
           <Button

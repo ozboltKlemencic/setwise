@@ -3,6 +3,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
+  Apple,
   ChefHat,
   CopyPlus,
   GripVertical,
@@ -10,6 +11,7 @@ import {
   Plus,
   Search,
   Trash2,
+  UtensilsCrossed,
 } from "lucide-react"
 
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
@@ -179,7 +181,7 @@ function FoodLibraryRow({
       draggable
       onDragStart={() => onDragStart(qty)}
       onDragEnd={onDragEnd}
-      className="flex items-stretch gap-2 rounded-xl border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
+      className="flex items-stretch gap-2 rounded-xl border border-neutral-200  py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
       <div className="flex w-5 shrink-0 items-center justify-center text-neutral-300">
         <GripVertical className="size-3.5" />
@@ -205,7 +207,7 @@ function FoodLibraryRow({
               "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border text-[11px] font-semibold transition-colors",
               selected
                 ? "border-brand-500 bg-brand-500 text-white"
-                : "border-neutral-300 bg-white text-transparent"
+                : "border-neutral-300  text-transparent"
             )}
           >
             ✓
@@ -270,7 +272,7 @@ function TemplateLibraryCard({
   const totals = getTemplateTotals(template)
 
   return (
-    <div className="rounded-xl border border-neutral-200 bg-white p-3">
+    <div className="rounded-xl border border-neutral-200  p-3">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
           <div className="text-[13px] font-medium text-neutral-950">
@@ -343,7 +345,7 @@ function MealItemRow({
   const nutrition = calcNutrition(item.foodId, item.qty)
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-3">
+    <div className="flex items-center gap-3 rounded-xl border border-neutral-200  px-3 py-3">
       <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-500">
         <GripVertical className="size-4" />
       </div>
@@ -631,47 +633,53 @@ export function MealPlanBuilderPageView({
         saveLabel="Save Plan"
       />
 
-      <div className="grid gap-4 px-4 pb-4 pt-4 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-6 xl:pt-0">
-        <Card className="overflow-hidden  border-neutral-200 bg-white shadow-none ">
-          <div className="border-b border-neutral-200 bg-neutral-50 p-2">
-            <div className="grid grid-cols-2 gap-2">
+      <div className="relative xl:min-h-[calc(100dvh-var(--header-height)-3rem)]">
+        <Card className="overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 bg-neutral-50 py-0 shadow-none xl:fixed xl:top-[calc(var(--header-height)+3.05rem)] xl:left-[calc(var(--sidebar-width)+0.05rem)] xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-col">
+          <div className="border-b border-neutral-200 bg-neutral-50 px-2 ">
+            <div className="grid grid-cols-2 gap-1.5">
               <button
                 type="button"
                 onClick={() => setLeftTab("foods")}
                 className={cn(
-                  "rounded-md px-3 py-2 text-[13px] transition-colors",
+                  "inline-flex items-center justify-center gap-1.5 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
                   leftTab === "foods"
-                    ? "bg-white font-medium text-neutral-950 shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+                    ? "border-brand-500 font-medium text-brand-600"
                     : "text-neutral-500 hover:text-neutral-800"
                 )}
               >
+                <Apple
+                  className="size-3.5 text-neutral-400"
+                />
                 Foods
               </button>
               <button
                 type="button"
                 onClick={() => setLeftTab("templates")}
                 className={cn(
-                  "rounded-md px-3 py-2 text-[13px] transition-colors",
+                  "inline-flex items-center justify-center gap-1.5 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
                   leftTab === "templates"
-                    ? "bg-white font-medium text-neutral-950 shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+                    ? "border-brand-500 font-medium text-brand-600"
                     : "text-neutral-500 hover:text-neutral-800"
                 )}
               >
+                <UtensilsCrossed
+                  className="size-3.5 text-neutral-400"
+                />
                 Meals
               </button>
             </div>
           </div>
 
-          <CardContent className="space-y-4 p-4">
+          <CardContent className="space-y-4 overflow-hidden bg-neutral-50 p-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
             {leftTab === "foods" ? (
-              <>
+              <div className="space-y-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                 <div className="relative">
                   <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
                   <Input
                     value={searchQuery}
                     onChange={(event) => setSearchQuery(event.target.value)}
                     placeholder="Search foods..."
-                    className="h-10 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    className="h-10 rounded-sm border-neutral-200  pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                   />
                 </div>
 
@@ -687,11 +695,11 @@ export function MealPlanBuilderPageView({
                   </div>
                 ) : null}
 
-                <div className="space-y-2">
+                <div className="space-y-2 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                   <BuilderSectionTitle
                     title={searchQuery.trim() ? "Search results" : "Recently added"}
                   />
-                  <div className="space-y-2">
+                  <div className="space-y-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:pr-3 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
                     {filteredFoods.length ? (
                       filteredFoods.map((food) => (
                         <FoodLibraryRow
@@ -726,16 +734,16 @@ export function MealPlanBuilderPageView({
                     )}
                   </div>
                 </div>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="space-y-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                 <div className="relative">
                   <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
                   <Input
                     value={templateSearchQuery}
                     onChange={(event) => setTemplateSearchQuery(event.target.value)}
                     placeholder="Search meals or foods..."
-                    className="h-10 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                    className="h-10 rounded-sm border-neutral-200  pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                   />
                 </div>
 
@@ -749,7 +757,7 @@ export function MealPlanBuilderPageView({
                         value={newTemplateName}
                         onChange={(event) => setNewTemplateName(event.target.value)}
                         placeholder={`${activeMeal.name} template`}
-                        className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                        className="h-9 rounded-sm border-neutral-200  shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                       />
                       <div className="flex items-center justify-end gap-2">
                         <SecondaryActionButton
@@ -777,9 +785,9 @@ export function MealPlanBuilderPageView({
                   )
                 ) : null}
 
-                <div className="space-y-2">
+                <div className="space-y-2 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                   <BuilderSectionTitle title="Saved templates" />
-                  <div className="space-y-2">
+                  <div className="space-y-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:pr-3 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
                     {filteredTemplates.length ? (
                       filteredTemplates.map((template) => (
                         <TemplateLibraryCard
@@ -802,12 +810,12 @@ export function MealPlanBuilderPageView({
                     )}
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </CardContent>
         </Card>
 
-        <div className="space-y-4 xl:pl-1 xl:pt-4">
+        <div className="space-y-4 xl:ml-[376px] xl:pl-1 xl:pt-4">
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
             {[
               { label: "Calories", value: `${planTotals.cal}`, tone: "border-neutral-200 bg-neutral-50/70" },
@@ -824,7 +832,7 @@ export function MealPlanBuilderPageView({
             ))}
           </div>
 
-          <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none">
+          <Card className="overflow-hidden rounded-xl border-neutral-200  shadow-none">
             <div className="border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
               <div className="flex flex-wrap items-center gap-2">
                 {meals.map((meal) => (
@@ -835,7 +843,7 @@ export function MealPlanBuilderPageView({
                     className={cn(
                       "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-[13px] transition-colors",
                       meal.id === activeMealId
-                        ? "border-brand-200 bg-white font-medium text-neutral-950"
+                        ? "border-brand-200  font-medium text-neutral-950"
                         : "border-transparent bg-transparent text-neutral-500 hover:text-neutral-800"
                     )}
                   >
@@ -864,7 +872,7 @@ export function MealPlanBuilderPageView({
             <CardContent
               className={cn(
                 "space-y-4 p-4 transition-colors",
-                dragOverMealId === activeMeal?.id ? "bg-brand-50/30" : "bg-white"
+                dragOverMealId === activeMeal?.id ? "bg-brand-50/30" : ""
               )}
               onDragOver={(event) => {
                 event.preventDefault()
@@ -955,7 +963,7 @@ export function MealPlanBuilderPageView({
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50 px-6 py-10 text-center">
-                  <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl border border-neutral-200 bg-white text-neutral-400">
+                  <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl border border-neutral-200  text-neutral-400">
                     <ChefHat className="size-5" />
                   </div>
                   <div className="text-[15px] font-medium text-neutral-900">
@@ -1001,7 +1009,7 @@ export function MealPlanBuilderPageView({
                         setDragOverMealId(null)
                       }}
                       className={cn(
-                        "flex w-full items-center justify-between rounded-xl border bg-white px-4 py-3 text-left shadow-none transition-colors",
+                        "flex w-full items-center justify-between rounded-xl border  px-4 py-3 text-left shadow-none transition-colors",
                         dragOverMealId === meal.id
                           ? "border-brand-300 bg-brand-50/40"
                           : "border-neutral-200 hover:bg-neutral-50"
