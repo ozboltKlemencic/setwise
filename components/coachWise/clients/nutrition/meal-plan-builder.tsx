@@ -4,6 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
   Apple,
+  Check,
   ChefHat,
   CopyPlus,
   GripVertical,
@@ -181,7 +182,7 @@ function FoodLibraryRow({
       draggable
       onDragStart={() => onDragStart(qty)}
       onDragEnd={onDragEnd}
-      className="flex w-full items-stretch gap-2 rounded-xl border border-neutral-200 py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
+      className="flex w-full items-stretch gap-2 rounded-md border border-neutral-200 py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
       <div className="flex w-5 shrink-0 items-center justify-center text-neutral-300">
         <GripVertical className="size-3.5" />
@@ -210,7 +211,7 @@ function FoodLibraryRow({
                 : "border-neutral-300  text-transparent"
             )}
           >
-            ✓
+            <Check className="size-3" />
           </button>
         </div>
 
