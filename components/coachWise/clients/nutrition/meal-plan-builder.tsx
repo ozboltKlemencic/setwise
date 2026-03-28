@@ -981,7 +981,7 @@ export function MealPlanBuilderPageView({
             </CardContent>
           </Card>
 
-          {meals.filter((meal) => meal.id !== activeMealId).length ? (
+          {false ? (
             <div className="space-y-2">
               <BuilderSectionTitle title="Other meals" />
               {meals
