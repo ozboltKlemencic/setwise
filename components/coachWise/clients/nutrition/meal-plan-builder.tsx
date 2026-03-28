@@ -181,7 +181,7 @@ function FoodLibraryRow({
       draggable
       onDragStart={() => onDragStart(qty)}
       onDragEnd={onDragEnd}
-      className="flex items-stretch gap-2 rounded-xl border border-neutral-200  py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
+      className="flex w-full items-stretch gap-2 rounded-xl border border-neutral-200 py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
       <div className="flex w-5 shrink-0 items-center justify-center text-neutral-300">
         <GripVertical className="size-3.5" />
@@ -272,7 +272,7 @@ function TemplateLibraryCard({
   const totals = getTemplateTotals(template)
 
   return (
-    <div className="rounded-xl border border-neutral-200  p-3">
+    <div className="w-full rounded-xl border border-neutral-200 p-3">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
           <div className="text-[13px] font-medium text-neutral-950">
@@ -633,8 +633,8 @@ export function MealPlanBuilderPageView({
         saveLabel="Save Plan"
       />
 
-      <div className="relative xl:min-h-[calc(100dvh-var(--header-height)-3rem)]">
-        <Card className="overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 bg-neutral-50 py-0 shadow-none xl:fixed xl:top-[calc(var(--header-height)+3.05rem)] xl:left-[calc(var(--sidebar-width)+0.05rem)] xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-col">
+      <div className="relative xl:flex xl:items-start">
+        <Card className="overflow-hidden gap-0 rounded-none border-0  border-r border-neutral-200 bg-neutral-50 py-0 shadow-none xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
           <div className="border-b border-neutral-200 bg-neutral-50 px-2 ">
             <div className="grid grid-cols-2 gap-1.5">
               <button
@@ -699,7 +699,7 @@ export function MealPlanBuilderPageView({
                   <BuilderSectionTitle
                     title={searchQuery.trim() ? "Search results" : "Recently added"}
                   />
-                  <div className="space-y-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:pr-3 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
+                  <div className="space-y-2 xl:-mr-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:[overflow-y:overlay] xl:pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
                     {filteredFoods.length ? (
                       filteredFoods.map((food) => (
                         <FoodLibraryRow
@@ -787,7 +787,7 @@ export function MealPlanBuilderPageView({
 
                 <div className="space-y-2 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                   <BuilderSectionTitle title="Saved templates" />
-                  <div className="space-y-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:pr-3 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
+                  <div className="space-y-2 xl:-mr-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:[overflow-y:overlay] xl:pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
                     {filteredTemplates.length ? (
                       filteredTemplates.map((template) => (
                         <TemplateLibraryCard
@@ -815,7 +815,7 @@ export function MealPlanBuilderPageView({
           </CardContent>
         </Card>
 
-        <div className="space-y-4 xl:ml-[376px] xl:pl-1 xl:pt-4">
+        <div className="space-y-4 xl:min-w-0 xl:flex-1 xl:pl-4 xl:pt-4">
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
             {[
               { label: "Calories", value: `${planTotals.cal}`, tone: "border-neutral-200 bg-neutral-50/70" },

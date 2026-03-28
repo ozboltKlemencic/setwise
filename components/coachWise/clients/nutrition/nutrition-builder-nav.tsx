@@ -37,8 +37,8 @@ export function NutritionBuilderNav({
   saveDisabled,
 }: NutritionBuilderNavProps) {
   return (
-    <div className="border-b  border-neutral-200 py-2 ">
-      <div className="flex  items-center justify-between gap-x-3 px-2">
+    <div className="bg-neutral-50">
+      <div className="flex h-12 items-center justify-between gap-x-3 border-b border-neutral-200 px-2">
         <div className="flex h-full min-w-0 items-center gap-x-2">
           <Button
             type="button"
@@ -65,7 +65,7 @@ export function NutritionBuilderNav({
               <button
                 type="button"
                 onClick={onStartEditing}
-                className="inline-flex h-8 max-w-full items-center gap-2 text-left text-[17px] leading-none font-semibold text-neutral-950"
+                className="inline-flex h-8 max-w-full items-center gap-2 text-left text-[15px] leading-none font-semibold text-neutral-950"
               >
                 <span className="truncate">{title}</span>
                 <Pencil className="size-3.5 text-neutral-400" />
