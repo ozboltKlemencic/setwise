@@ -670,7 +670,7 @@ export function MealPlanBuilderPageView({
             </div>
           </div>
 
-          <CardContent className="space-y-4 overflow-hidden bg-neutral-50 p-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
+          <CardContent className="space-y-4 overflow-hidden bg-neutral-50 py-2 px-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
             {leftTab === "foods" ? (
               <div className="space-y-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
                 <div className="relative">
