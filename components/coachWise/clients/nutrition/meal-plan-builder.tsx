@@ -1131,7 +1131,7 @@ export function MealPlanBuilderPageView({
                   className={cn(
                     "flex flex-wrap items-center gap-2",
                     dragOverMealTabId !== null && draggedMealId !== null
-                      ? "gap-2.5"
+                      ? "gap-5"
                       : null
                   )}
                 >
@@ -1162,8 +1162,8 @@ export function MealPlanBuilderPageView({
                           className={cn(
                             "pointer-events-none absolute top-1/2 z-[11] flex h-7 w-4 -translate-y-1/2 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500",
                             dragOverMealTabEdge === "before"
-                              ? "-left-2.5"
-                              : "-right-2.5"
+                              ? "left-[-1.35rem]"
+                              : "right-[-1.125rem]"
                           )}
                         >
                           <Plus className="size-2.5" />
