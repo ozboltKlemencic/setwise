@@ -1112,7 +1112,7 @@ export function MealPlanBuilderPageView({
                       onDragOver={(event) => handleMealTabDragOver(event, meal.id)}
                       onDrop={(event) => handleMealTabDrop(event, meal.id)}
                       className={cn(
-                        "group relative isolate inline-flex items-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
+                        "group relative isolate inline-flex min-w-[6.5rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
                         dragOverMealTabId === meal.id && draggedMealId !== meal.id
                           ? "border-brand-300 ring-1 ring-brand-200"
                           : null,
