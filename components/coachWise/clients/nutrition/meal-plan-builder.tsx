@@ -355,11 +355,11 @@ function FoodLibraryRow({
       draggable
       onDragStart={() => onDragStart(food.defaultQty)}
       onDragEnd={onDragEnd}
-      className="flex w-full items-stretch gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
+      className="flex w-full items-center gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
       <div
         className={cn(
-          "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg border",
+          "flex size-7 shrink-0 items-center justify-center rounded-lg border",
           gripToneClasses
         )}
       >
@@ -367,7 +367,7 @@ function FoodLibraryRow({
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
             <div className="truncate text-[13px] font-medium text-neutral-950">
               {food.name}
@@ -384,7 +384,7 @@ function FoodLibraryRow({
             variant="outline"
             size="icon-sm"
             onClick={() => onAdd(food.defaultQty)}
-            className="mt-0.5 size-7 shrink-0 rounded-md border-brand-200 bg-brand-50 text-brand-600 shadow-none hover:bg-brand-100"
+            className="size-7 shrink-0 rounded-md border-neutral-200 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100"
           >
             <Plus className="size-4" />
           </Button>
