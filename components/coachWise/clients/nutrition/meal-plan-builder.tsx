@@ -1134,7 +1134,7 @@ export function MealPlanBuilderPageView({
                           event.stopPropagation()
                         }}
                         className={cn(
-                          "absolute top-1/2 left-1.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
                           editingMealId === meal.id
                             ? "pointer-events-none opacity-0"
                             : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
