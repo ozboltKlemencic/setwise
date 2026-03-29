@@ -139,11 +139,9 @@ function formatBuilderDate() {
   }).format(new Date())
 }
 
-type FoodCardTone = "calories" | "protein" | "carbs" | "fat"
+type FoodCardTone = "protein" | "carbs" | "fat"
 
 const foodCardToneClasses: Record<FoodCardTone, string> = {
-  calories:
-    "border-orange-200/85 bg-linear-to-br from-orange-100/75 via-amber-50/45 to-white",
   protein:
     "border-emerald-200/80 bg-linear-to-br from-emerald-100/65 via-emerald-50/35 to-white",
   carbs:
@@ -153,19 +151,11 @@ const foodCardToneClasses: Record<FoodCardTone, string> = {
 }
 
 function getFoodCardTone(food: BuilderFood): FoodCardTone {
-  if (food.cal <= 45 && food.p < 5 && food.c < 10 && food.f < 2) {
-    return "calories"
-  }
-
   const macroRanking = [
     { key: "protein" as const, value: food.p },
     { key: "carbs" as const, value: food.c },
     { key: "fat" as const, value: food.f },
   ].sort((left, right) => right.value - left.value)
-
-  if (macroRanking[0].value - macroRanking[1].value <= 3) {
-    return "calories"
-  }
 
   return macroRanking[0].key
 }
