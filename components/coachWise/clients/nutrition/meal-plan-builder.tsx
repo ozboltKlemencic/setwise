@@ -534,6 +534,9 @@ export function MealPlanBuilderPageView({
   const [dragOverMealTabId, setDragOverMealTabId] = React.useState<number | null>(
     null
   )
+  const [dragOverMealTabEdge, setDragOverMealTabEdge] = React.useState<
+    "before" | "after" | null
+  >(null)
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
@@ -765,7 +768,11 @@ export function MealPlanBuilderPageView({
     setEditingMealName("")
   }, [])
   const reorderMeals = React.useCallback(
-    (sourceMealId: number, targetMealId: number) => {
+    (
+      sourceMealId: number,
+      targetMealId: number,
+      position: "before" | "after"
+    ) => {
       if (sourceMealId === targetMealId) {
         return
       }
@@ -780,8 +787,16 @@ export function MealPlanBuilderPageView({
 
         const nextMeals = [...currentMeals]
         const [movedMeal] = nextMeals.splice(sourceIndex, 1)
+        const nextTargetIndex = nextMeals.findIndex((meal) => meal.id === targetMealId)
 
-        nextMeals.splice(targetIndex, 0, movedMeal)
+        if (nextTargetIndex === -1) {
+          return currentMeals
+        }
+
+        const insertionIndex =
+          position === "before" ? nextTargetIndex : nextTargetIndex + 1
+
+        nextMeals.splice(insertionIndex, 0, movedMeal)
 
         return nextMeals
       })
@@ -805,15 +820,23 @@ export function MealPlanBuilderPageView({
   const handleMealTabDragEnd = React.useCallback(() => {
     setDraggedMealId(null)
     setDragOverMealTabId(null)
+    setDragOverMealTabEdge(null)
   }, [])
   const handleMealTabDragOver = React.useCallback(
     (event: React.DragEvent<HTMLButtonElement>, mealId: number) => {
       if (draggedMealId === null || draggedMealId === mealId) {
+        setDragOverMealTabId(null)
+        setDragOverMealTabEdge(null)
         return
       }
 
       event.preventDefault()
+      const bounds = event.currentTarget.getBoundingClientRect()
+      const nextEdge =
+        event.clientX < bounds.left + bounds.width / 2 ? "before" : "after"
+
       setDragOverMealTabId(mealId)
+      setDragOverMealTabEdge(nextEdge)
     },
     [draggedMealId]
   )
@@ -827,14 +850,16 @@ export function MealPlanBuilderPageView({
 
       if (!Number.isFinite(sourceMealId)) {
         setDragOverMealTabId(null)
+        setDragOverMealTabEdge(null)
         return
       }
 
-      reorderMeals(sourceMealId, mealId)
+      reorderMeals(sourceMealId, mealId, dragOverMealTabEdge ?? "before")
       setDraggedMealId(null)
       setDragOverMealTabId(null)
+      setDragOverMealTabEdge(null)
     },
-    [draggedMealId, reorderMeals]
+    [dragOverMealTabEdge, draggedMealId, reorderMeals]
   )
 
   return (
@@ -1102,7 +1127,14 @@ export function MealPlanBuilderPageView({
           <Card className="overflow-hidden rounded-xl border-neutral-200 bg-neutral-50 shadow-none">
             <div className="border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2">
+                <div
+                  className={cn(
+                    "flex flex-wrap items-center gap-2",
+                    dragOverMealTabId !== null && draggedMealId !== null
+                      ? "gap-2.5"
+                      : null
+                  )}
+                >
                   {meals.map((meal) => (
                     <button
                       key={meal.id}
@@ -1123,9 +1155,18 @@ export function MealPlanBuilderPageView({
                       {editingMealId !== meal.id ? (
                         <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
                       ) : null}
-                      {dragOverMealTabId === meal.id && draggedMealId !== meal.id ? (
-                        <span className="pointer-events-none absolute inset-0 z-[11] flex items-center justify-center rounded-md border border-dashed border-brand-300 bg-brand-50/65 text-brand-500">
-                          <Plus className="size-4" />
+                      {dragOverMealTabId === meal.id &&
+                      draggedMealId !== meal.id &&
+                      dragOverMealTabEdge ? (
+                        <span
+                          className={cn(
+                            "pointer-events-none absolute top-1/2 z-[11] flex h-7 w-4 -translate-y-1/2 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500",
+                            dragOverMealTabEdge === "before"
+                              ? "-left-2.5"
+                              : "-right-2.5"
+                          )}
+                        >
+                          <Plus className="size-2.5" />
                         </span>
                       ) : null}
                       <span
