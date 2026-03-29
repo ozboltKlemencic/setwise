@@ -20,6 +20,7 @@ import {
   Wheat,
 } from "lucide-react"
 
+import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -1079,15 +1080,23 @@ export function MealPlanBuilderPageView({
                         meal.name
                       )}
                       {editingMealId !== meal.id && meals.length > 1 ? (
-                        <span
-                          onClick={(event) => {
-                            event.stopPropagation()
-                            removeMeal(meal.id)
-                          }}
-                          className="absolute top-1/2 right-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-rose-200/70 bg-rose-50/70 text-rose-500 shadow-none transition-[opacity,colors] opacity-0 group-hover:opacity-100 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
-                        >
-                          <Trash2 className="size-3.5" />
-                        </span>
+                        <CoachWiseConfirmationDialog
+                          title="Delete this meal?"
+                          description={`${meal.name} will be removed from this meal plan. This action can't be undone.`}
+                          confirmLabel="Delete meal"
+                          variant="destructive"
+                          onConfirm={() => removeMeal(meal.id)}
+                          trigger={
+                            <span
+                              onClick={(event) => {
+                                event.stopPropagation()
+                              }}
+                              className="absolute top-1/2 right-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-rose-200/70 bg-rose-50/70 text-rose-500 shadow-none transition-[opacity,colors] opacity-0 group-hover:opacity-100 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </span>
+                          }
+                        />
                       ) : null}
                     </button>
                   ))}
