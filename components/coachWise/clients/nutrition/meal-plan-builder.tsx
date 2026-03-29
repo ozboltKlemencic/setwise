@@ -143,11 +143,11 @@ type FoodCardTone = "protein" | "carbs" | "fat"
 
 const foodGripToneClasses: Record<FoodCardTone, string> = {
   protein:
-    "border-emerald-200/80 bg-emerald-50/85 text-emerald-600",
+    "border-emerald-100/80 bg-emerald-50/40 text-emerald-600",
   carbs:
-    "border-sky-200/80 bg-sky-50/85 text-sky-600",
+    "border-sky-100/80 bg-sky-50/40 text-sky-600",
   fat:
-    "border-yellow-200/80 bg-yellow-50/90 text-yellow-700",
+    "border-yellow-100/90 bg-yellow-50/45 text-yellow-700",
 }
 
 function getFoodCardTone(food: BuilderFood): FoodCardTone {
