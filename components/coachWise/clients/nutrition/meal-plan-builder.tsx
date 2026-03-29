@@ -143,11 +143,11 @@ type FoodCardTone = "protein" | "carbs" | "fat"
 
 const foodCardToneClasses: Record<FoodCardTone, string> = {
   protein:
-    "border-emerald-200/80 bg-linear-to-br from-emerald-100/65 via-emerald-50/35 to-white",
+    "border-emerald-200/55 bg-linear-to-br from-emerald-50/70 via-emerald-50/25 to-white",
   carbs:
-    "border-sky-200/80 bg-linear-to-br from-sky-100/65 via-sky-50/35 to-white",
+    "border-sky-200/55 bg-linear-to-br from-sky-50/70 via-sky-50/25 to-white",
   fat:
-    "border-yellow-200/90 bg-linear-to-br from-yellow-100/80 via-amber-50/45 to-white",
+    "border-yellow-200/60 bg-linear-to-br from-yellow-50/80 via-amber-50/28 to-white",
 }
 
 function getFoodCardTone(food: BuilderFood): FoodCardTone {
@@ -354,7 +354,7 @@ function FoodLibraryRow({
         toneClasses
       )}
     >
-      <div className="flex w-5 shrink-0 items-center justify-center text-neutral-300">
+      <div className="flex w-5 shrink-0 items-center justify-center text-neutral-400">
         <GripVertical className="size-3.5" />
       </div>
 
@@ -503,7 +503,7 @@ function MealItemRow({
         toneClasses
       )}
     >
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-500">
+      <div className="flex size-9 shrink-0 items-center justify-center text-neutral-600">
         <GripVertical className="size-4" />
       </div>
 
