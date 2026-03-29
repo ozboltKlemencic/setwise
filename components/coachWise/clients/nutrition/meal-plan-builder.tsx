@@ -189,7 +189,7 @@ function BuilderMetricCard({
       <div className="flex items-center gap-2.5">
         <div
           className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-xl border bg-white/80",
+            "flex size-9 shrink-0 items-center justify-center rounded-xl border",
             tone.badge
           )}
         >
@@ -866,7 +866,7 @@ export function MealPlanBuilderPageView({
           </CardContent>
         </Card>
 
-        <div className="space-y-4 xl:min-w-0 xl:flex-1 xl:pl-4 xl:pt-4">
+        <div className="space-y-4 xl:min-w-0 xl:flex-1 xl:px-4 xl:pt-4">
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
             {[
               {
@@ -875,9 +875,9 @@ export function MealPlanBuilderPageView({
                 icon: <Flame className="size-4" />,
                 tone: {
                   container:
-                    "border-neutral-200/90 bg-linear-to-br from-neutral-100/80 to-white",
-                  badge: "border-neutral-200",
-                  icon: "text-neutral-600",
+                    "border-orange-300/75 bg-linear-to-br from-orange-100 via-orange-50/65 to-white",
+                  badge: "border-orange-300/75 bg-orange-100",
+                  icon: "text-orange-700",
                 },
               },
               {
@@ -886,8 +886,8 @@ export function MealPlanBuilderPageView({
                 icon: <Drumstick className="size-4" />,
                 tone: {
                   container:
-                    "border-emerald-200/90 bg-linear-to-br from-emerald-50/70 to-white",
-                  badge: "border-emerald-200",
+                    "border-emerald-200/65 bg-linear-to-br from-emerald-50/95 via-emerald-50/40 to-white",
+                  badge: "border-emerald-200/65 bg-emerald-50/80",
                   icon: "text-emerald-600",
                 },
               },
@@ -897,8 +897,8 @@ export function MealPlanBuilderPageView({
                 icon: <Wheat className="size-4" />,
                 tone: {
                   container:
-                    "border-sky-200/90 bg-linear-to-br from-sky-50/70 to-white",
-                  badge: "border-sky-200",
+                    "border-sky-200/65 bg-linear-to-br from-sky-50/95 via-sky-50/40 to-white",
+                  badge: "border-sky-200/65 bg-sky-50/80",
                   icon: "text-sky-600",
                 },
               },
@@ -908,9 +908,9 @@ export function MealPlanBuilderPageView({
                 icon: <Droplets className="size-4" />,
                 tone: {
                   container:
-                    "border-amber-200/90 bg-linear-to-br from-amber-50/70 to-white",
-                  badge: "border-amber-200",
-                  icon: "text-amber-600",
+                    "border-yellow-300/75 bg-linear-to-br from-yellow-100 via-amber-50/70 to-white",
+                  badge: "border-yellow-300/75 bg-yellow-100",
+                  icon: "text-amber-700",
                 },
               },
             ].map((item) => (
