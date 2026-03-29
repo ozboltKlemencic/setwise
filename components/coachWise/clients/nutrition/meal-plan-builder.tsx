@@ -1112,7 +1112,7 @@ export function MealPlanBuilderPageView({
                       onDragOver={(event) => handleMealTabDragOver(event, meal.id)}
                       onDrop={(event) => handleMealTabDrop(event, meal.id)}
                       className={cn(
-                        "group relative isolate inline-flex min-w-[6.5rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
+                        "group relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
                         dragOverMealTabId === meal.id && draggedMealId !== meal.id
                           ? "border-brand-300 ring-1 ring-brand-200"
                           : null,
@@ -1134,7 +1134,7 @@ export function MealPlanBuilderPageView({
                           event.stopPropagation()
                         }}
                         className={cn(
-                          "absolute top-1/2 -left-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          "absolute top-1/2 left-1.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
                           editingMealId === meal.id
                             ? "pointer-events-none opacity-0"
                             : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
@@ -1149,7 +1149,8 @@ export function MealPlanBuilderPageView({
                           startEditingMealName(meal)
                         }}
                         className={cn(
-                          "absolute top-1/2 left-5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          "absolute top-1/2 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          meals.length > 1 ? "right-8" : "right-1",
                           editingMealId === meal.id
                             ? "pointer-events-none opacity-0"
                             : "opacity-0 group-hover:opacity-100"
