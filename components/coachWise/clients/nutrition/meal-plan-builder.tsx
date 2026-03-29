@@ -141,13 +141,13 @@ function formatBuilderDate() {
 
 type FoodCardTone = "protein" | "carbs" | "fat"
 
-const foodCardToneClasses: Record<FoodCardTone, string> = {
+const foodGripToneClasses: Record<FoodCardTone, string> = {
   protein:
-    "border-emerald-200/55 bg-linear-to-br from-emerald-50/70 via-emerald-50/25 to-white",
+    "border-emerald-200/80 bg-emerald-50/85 text-emerald-600",
   carbs:
-    "border-sky-200/55 bg-linear-to-br from-sky-50/70 via-sky-50/25 to-white",
+    "border-sky-200/80 bg-sky-50/85 text-sky-600",
   fat:
-    "border-yellow-200/60 bg-linear-to-br from-yellow-50/80 via-amber-50/28 to-white",
+    "border-yellow-200/80 bg-yellow-50/90 text-yellow-700",
 }
 
 function getFoodCardTone(food: BuilderFood): FoodCardTone {
@@ -342,19 +342,21 @@ function FoodLibraryRow({
   onDragEnd: () => void
 }) {
   const [qty, setQty] = React.useState(food.defaultQty)
-  const toneClasses = foodCardToneClasses[getFoodCardTone(food)]
+  const gripToneClasses = foodGripToneClasses[getFoodCardTone(food)]
 
   return (
     <div
       draggable
       onDragStart={() => onDragStart(qty)}
       onDragEnd={onDragEnd}
-      className={cn(
-        "flex w-full items-stretch gap-2 rounded-md border py-3 pr-3 pl-2 transition-[filter,colors] hover:brightness-[0.99]",
-        toneClasses
-      )}
+      className="flex w-full items-stretch gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
-      <div className="flex w-5 shrink-0 items-center justify-center text-neutral-400">
+      <div
+        className={cn(
+          "mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-lg border",
+          gripToneClasses
+        )}
+      >
         <GripVertical className="size-3.5" />
       </div>
 
@@ -494,16 +496,16 @@ function MealItemRow({
   }
 
   const nutrition = calcNutrition(item.foodId, item.qty)
-  const toneClasses = foodCardToneClasses[getFoodCardTone(food)]
+  const gripToneClasses = foodGripToneClasses[getFoodCardTone(food)]
 
   return (
-    <div
-      className={cn(
-        "flex items-center gap-3 rounded-xl border px-3 py-3",
-        toneClasses
-      )}
-    >
-      <div className="flex size-9 shrink-0 items-center justify-center text-neutral-600">
+    <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-3">
+      <div
+        className={cn(
+          "flex size-9 shrink-0 items-center justify-center rounded-xl border",
+          gripToneClasses
+        )}
+      >
         <GripVertical className="size-4" />
       </div>
 
