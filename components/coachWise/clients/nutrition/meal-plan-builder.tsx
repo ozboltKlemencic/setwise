@@ -397,10 +397,12 @@ function FoodLibraryRow({
 function TemplateLibraryCard({
   template,
   onApply,
+  onCreateMeal,
   onDelete,
 }: {
   template: BuilderMealTemplate
   onApply: () => void
+  onCreateMeal: () => void
   onDelete: () => void
 }) {
   const totals = getTemplateTotals(template)
@@ -450,12 +452,21 @@ function TemplateLibraryCard({
         })}
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3 space-y-2">
         <SecondaryActionButton
           label="Add to current meal"
           onClick={onApply}
           className="w-full justify-center"
         />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCreateMeal}
+          className="h-9 w-full justify-center gap-1.5 rounded-md border-brand-200 bg-brand-50/60 text-[13px] font-medium text-brand-700 shadow-none hover:bg-brand-100/70 hover:text-brand-700"
+        >
+          <Plus className="size-4" />
+          Add to new meal
+        </Button>
       </div>
     </div>
   )
@@ -705,6 +716,32 @@ export function MealPlanBuilderPageView({
       })
     },
     [activeMeal?.name, activeMealId]
+  )
+  const createMealFromTemplate = React.useCallback(
+    (template: BuilderMealTemplate) => {
+      const nextMealId =
+        meals.length > 0 ? Math.max(...meals.map((meal) => meal.id)) + 1 : 1
+      const nextItems = template.items.map((item) => ({
+        id: itemIdCounter.current++,
+        foodId: item.foodId,
+        qty: item.qty,
+      }))
+
+      setMeals((currentMeals) => [
+        ...currentMeals,
+        {
+          id: nextMealId,
+          name: template.name,
+          items: nextItems,
+        },
+      ])
+      setActiveMealId(nextMealId)
+
+      toast.success("New meal created", {
+        description: `From ${template.name}.`,
+      })
+    },
+    [meals]
   )
 
   const saveCurrentMealAsTemplate = React.useCallback(() => {
@@ -1120,6 +1157,7 @@ export function MealPlanBuilderPageView({
                           key={template.id}
                           template={template}
                           onApply={() => addTemplateToMeal(template)}
+                          onCreateMeal={() => createMealFromTemplate(template)}
                           onDelete={() =>
                             setSavedTemplates((currentTemplates) =>
                               currentTemplates.filter(
