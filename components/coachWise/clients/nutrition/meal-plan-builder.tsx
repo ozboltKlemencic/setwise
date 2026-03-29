@@ -1188,7 +1188,7 @@ export function MealPlanBuilderPageView({
                               }
                             }}
                             onClick={(event) => event.stopPropagation()}
-                            className="h-6 min-w-[5.5rem] border-0 bg-transparent px-0 text-[13px] font-medium shadow-none focus-visible:ring-0"
+                            className="h-5! max-w-[7rem] border-0 bg-transparent px-0 text-[12px] font-medium shadow-none focus-visible:ring-0"
                           />
                         ) : (
                           meal.name
