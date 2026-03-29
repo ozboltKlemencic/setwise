@@ -530,6 +530,10 @@ export function MealPlanBuilderPageView({
   const [activeMealId, setActiveMealId] = React.useState(1)
   const [editingMealId, setEditingMealId] = React.useState<number | null>(null)
   const [editingMealName, setEditingMealName] = React.useState("")
+  const [draggedMealId, setDraggedMealId] = React.useState<number | null>(null)
+  const [dragOverMealTabId, setDragOverMealTabId] = React.useState<number | null>(
+    null
+  )
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
@@ -760,6 +764,78 @@ export function MealPlanBuilderPageView({
     setEditingMealId(null)
     setEditingMealName("")
   }, [])
+  const reorderMeals = React.useCallback(
+    (sourceMealId: number, targetMealId: number) => {
+      if (sourceMealId === targetMealId) {
+        return
+      }
+
+      setMeals((currentMeals) => {
+        const sourceIndex = currentMeals.findIndex((meal) => meal.id === sourceMealId)
+        const targetIndex = currentMeals.findIndex((meal) => meal.id === targetMealId)
+
+        if (sourceIndex === -1 || targetIndex === -1) {
+          return currentMeals
+        }
+
+        const nextMeals = [...currentMeals]
+        const [movedMeal] = nextMeals.splice(sourceIndex, 1)
+
+        nextMeals.splice(targetIndex, 0, movedMeal)
+
+        return nextMeals
+      })
+    },
+    []
+  )
+  const handleMealTabDragStart = React.useCallback(
+    (event: React.DragEvent<HTMLSpanElement>, mealId: number) => {
+      if (editingMealId !== null) {
+        event.preventDefault()
+        return
+      }
+
+      event.stopPropagation()
+      event.dataTransfer.effectAllowed = "move"
+      event.dataTransfer.setData("text/plain", String(mealId))
+      setDraggedMealId(mealId)
+    },
+    [editingMealId]
+  )
+  const handleMealTabDragEnd = React.useCallback(() => {
+    setDraggedMealId(null)
+    setDragOverMealTabId(null)
+  }, [])
+  const handleMealTabDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLButtonElement>, mealId: number) => {
+      if (draggedMealId === null || draggedMealId === mealId) {
+        return
+      }
+
+      event.preventDefault()
+      setDragOverMealTabId(mealId)
+    },
+    [draggedMealId]
+  )
+  const handleMealTabDrop = React.useCallback(
+    (event: React.DragEvent<HTMLButtonElement>, mealId: number) => {
+      event.preventDefault()
+      event.stopPropagation()
+
+      const sourceMealId =
+        draggedMealId ?? Number(event.dataTransfer.getData("text/plain"))
+
+      if (!Number.isFinite(sourceMealId)) {
+        setDragOverMealTabId(null)
+        return
+      }
+
+      reorderMeals(sourceMealId, mealId)
+      setDraggedMealId(null)
+      setDragOverMealTabId(null)
+    },
+    [draggedMealId, reorderMeals]
+  )
 
   return (
     <div className="min-w-0 bg-neutral-50 p-0 m-0">
@@ -1033,8 +1109,13 @@ export function MealPlanBuilderPageView({
                       type="button"
                       onClick={() => setActiveMealId(meal.id)}
                       onDoubleClick={() => startEditingMealName(meal)}
+                      onDragOver={(event) => handleMealTabDragOver(event, meal.id)}
+                      onDrop={(event) => handleMealTabDrop(event, meal.id)}
                       className={cn(
                         "group relative isolate inline-flex items-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
+                        dragOverMealTabId === meal.id && draggedMealId !== meal.id
+                          ? "border-brand-300 ring-1 ring-brand-200"
+                          : null,
                         editingMealId === meal.id
                           ? "border-brand-200 bg-brand-50/60 text-brand-700"
                           : meal.id === activeMealId
@@ -1046,12 +1127,29 @@ export function MealPlanBuilderPageView({
                         <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
                       ) : null}
                       <span
+                        draggable={editingMealId !== meal.id}
+                        onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
+                        onDragEnd={handleMealTabDragEnd}
+                        onClick={(event) => {
+                          event.stopPropagation()
+                        }}
+                        className={cn(
+                          "absolute top-1/2 -left-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          editingMealId === meal.id
+                            ? "pointer-events-none opacity-0"
+                            : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
+                        )}
+                        title="Drag to reorder meal"
+                      >
+                        <GripVertical className="size-3.5" />
+                      </span>
+                      <span
                         onClick={(event) => {
                           event.stopPropagation()
                           startEditingMealName(meal)
                         }}
                         className={cn(
-                          "absolute top-1/2 left-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          "absolute top-1/2 left-5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
                           editingMealId === meal.id
                             ? "pointer-events-none opacity-0"
                             : "opacity-0 group-hover:opacity-100"
