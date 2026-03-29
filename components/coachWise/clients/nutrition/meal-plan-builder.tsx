@@ -7,12 +7,16 @@ import {
   Check,
   ChefHat,
   CopyPlus,
+  Drumstick,
+  Droplets,
+  Flame,
   GripVertical,
   Minus,
   Plus,
   Search,
   Trash2,
   UtensilsCrossed,
+  Wheat,
 } from "lucide-react"
 
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
@@ -156,6 +160,50 @@ function BuilderSectionTitle({ title }: { title: string }) {
   return (
     <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
       {title}
+    </div>
+  )
+}
+
+function BuilderMetricCard({
+  label,
+  value,
+  icon,
+  tone,
+}: {
+  label: string
+  value: string
+  icon: React.ReactNode
+  tone: {
+    container: string
+    badge: string
+    icon: string
+  }
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border px-3 py-3 shadow-none",
+        tone.container
+      )}
+    >
+      <div className="flex items-center gap-2.5">
+        <div
+          className={cn(
+            "flex size-9 shrink-0 items-center justify-center rounded-xl border bg-white/80",
+            tone.badge
+          )}
+        >
+          <span className={tone.icon}>{icon}</span>
+        </div>
+        <div className="min-w-0">
+          <div className="text-[18px] leading-none font-semibold text-neutral-950">
+            {value}
+          </div>
+          <div className="mt-1 text-[11px] uppercase tracking-[0.12em] text-neutral-500">
+            {label}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -635,7 +683,7 @@ export function MealPlanBuilderPageView({
       />
 
       <div className="relative xl:flex xl:items-start">
-        <Card className="relative overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 py-0 shadow-none xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
+        <Card className="relative overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 py-0 shadow-none xl:sticky m xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
           {leftTab === "foods" && selectedFoods.size ? (
             <div className="absolute inset-x-0 top-0 z-20  px-2 py-2 backdrop-blur-[2px]">
               <div className="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/85 px-3 py-2">
@@ -821,17 +869,58 @@ export function MealPlanBuilderPageView({
         <div className="space-y-4 xl:min-w-0 xl:flex-1 xl:pl-4 xl:pt-4">
           <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
             {[
-              { label: "Calories", value: `${planTotals.cal}`, tone: "border-neutral-200 bg-neutral-50/70" },
-              { label: "Protein", value: `${planTotals.p.toFixed(0)}g`, tone: "border-emerald-200 bg-emerald-50/70" },
-              { label: "Carbs", value: `${planTotals.c.toFixed(0)}g`, tone: "border-sky-200 bg-sky-50/70" },
-              { label: "Fat", value: `${planTotals.f.toFixed(0)}g`, tone: "border-amber-200 bg-amber-50/70" },
+              {
+                label: "Calories",
+                value: `${planTotals.cal}`,
+                icon: <Flame className="size-4" />,
+                tone: {
+                  container:
+                    "border-neutral-200/90 bg-linear-to-br from-neutral-100/80 to-white",
+                  badge: "border-neutral-200",
+                  icon: "text-neutral-600",
+                },
+              },
+              {
+                label: "Protein",
+                value: `${planTotals.p.toFixed(0)}g`,
+                icon: <Drumstick className="size-4" />,
+                tone: {
+                  container:
+                    "border-emerald-200/90 bg-linear-to-br from-emerald-50/70 to-white",
+                  badge: "border-emerald-200",
+                  icon: "text-emerald-600",
+                },
+              },
+              {
+                label: "Carbs",
+                value: `${planTotals.c.toFixed(0)}g`,
+                icon: <Wheat className="size-4" />,
+                tone: {
+                  container:
+                    "border-sky-200/90 bg-linear-to-br from-sky-50/70 to-white",
+                  badge: "border-sky-200",
+                  icon: "text-sky-600",
+                },
+              },
+              {
+                label: "Fat",
+                value: `${planTotals.f.toFixed(0)}g`,
+                icon: <Droplets className="size-4" />,
+                tone: {
+                  container:
+                    "border-amber-200/90 bg-linear-to-br from-amber-50/70 to-white",
+                  badge: "border-amber-200",
+                  icon: "text-amber-600",
+                },
+              },
             ].map((item) => (
-              <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
-                <div className="text-[18px] font-semibold text-neutral-950">{item.value}</div>
-                <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
-                  {item.label}
-                </div>
-              </div>
+              <BuilderMetricCard
+                key={item.label}
+                label={item.label}
+                value={item.value}
+                icon={item.icon}
+                tone={item.tone}
+              />
             ))}
           </div>
 

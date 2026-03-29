@@ -37,7 +37,7 @@ export function NutritionBuilderNav({
   saveDisabled,
 }: NutritionBuilderNavProps) {
   return (
-    <div className="bg-neutral-50">
+    <div className="sticky top-(--header-height)  z-10 bg-neutral-50">
       <div className="flex h-12 items-center justify-between gap-x-3 border-b border-neutral-200 px-2">
         <div className="flex h-full min-w-0 items-center gap-x-2">
           <Button
