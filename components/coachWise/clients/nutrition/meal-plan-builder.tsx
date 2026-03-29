@@ -1162,7 +1162,7 @@ export function MealPlanBuilderPageView({
                           className={cn(
                             "pointer-events-none absolute top-1/2 z-[11] flex h-7 w-4 -translate-y-1/2 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500",
                             dragOverMealTabEdge === "before"
-                              ? "left-[-1.35rem]"
+                              ? "left-[-1.125rem]"
                               : "right-[-1.125rem]"
                           )}
                         >
