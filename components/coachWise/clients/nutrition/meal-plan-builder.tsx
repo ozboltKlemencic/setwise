@@ -12,6 +12,7 @@ import {
   Flame,
   GripVertical,
   Minus,
+  Pencil,
   Plus,
   Search,
   Trash2,
@@ -118,6 +119,17 @@ function calcNutrition(foodId: number, qty: number) {
   }
 }
 
+function formatFoodUnitLabel(unit: BuilderFood["unit"]) {
+  switch (unit) {
+    case "piece":
+      return "pc"
+    case "slice":
+      return "sl"
+    default:
+      return unit
+  }
+}
+
 function formatBuilderDate() {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -208,6 +220,90 @@ function BuilderMetricCard({
   )
 }
 
+function BuilderQuantityField({
+  value,
+  unit,
+  widthClassName = "w-20",
+  className,
+  onChange,
+}: {
+  value: number
+  unit: BuilderFood["unit"]
+  widthClassName?: string
+  className?: string
+  onChange: (nextValue: number) => void
+}) {
+  return (
+    <div
+      className={cn(
+        "flex h-7 items-center justify-center rounded-md border border-neutral-200 bg-white px-1.5 shadow-none",
+        widthClassName,
+        className
+      )}
+    >
+      <Input
+        value={value}
+        onChange={(event) => {
+          const nextValue = Number(event.target.value)
+          if (!Number.isNaN(nextValue) && nextValue >= 0) {
+            onChange(nextValue)
+          }
+        }}
+        className="h-full w-9 border-0 bg-transparent p-0 text-center text-[12px] shadow-none focus-visible:ring-0"
+      />
+      <span className="ml-0.5 shrink-0 text-[11px] text-neutral-400">
+        {formatFoodUnitLabel(unit)}
+      </span>
+    </div>
+  )
+}
+
+function BuilderQuantityStepper({
+  value,
+  unit,
+  widthClassName = "w-[4.75rem]",
+  onChange,
+  onDecrease,
+  onIncrease,
+}: {
+  value: number
+  unit: BuilderFood["unit"]
+  widthClassName?: string
+  onChange: (nextValue: number) => void
+  onDecrease: () => void
+  onIncrease: () => void
+}) {
+  return (
+    <div className="flex shrink-0 items-center">
+      <Button
+        type="button"
+        variant="outline"
+        size="icon-sm"
+        onClick={onDecrease}
+        className="size-7 rounded-r-none border-neutral-200 border-r-0 px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
+      >
+        <Minus className="size-3.5" />
+      </Button>
+      <BuilderQuantityField
+        value={value}
+        unit={unit}
+        widthClassName={widthClassName}
+        className="rounded-none"
+        onChange={onChange}
+      />
+      <Button
+        type="button"
+        variant="outline"
+        size="icon-sm"
+        onClick={onIncrease}
+        className="size-7 rounded-l-none border-neutral-200 border-l-0 px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
+      >
+        <Plus className="size-3.5" />
+      </Button>
+    </div>
+  )
+}
+
 function FoodLibraryRow({
   food,
   selected,
@@ -264,36 +360,16 @@ function FoodLibraryRow({
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-sm"
-            onClick={() =>
+          <BuilderQuantityStepper
+            value={qty}
+            unit={food.unit}
+            widthClassName="w-[4.75rem]"
+            onChange={setQty}
+            onDecrease={() =>
               setQty((current) => Math.max(food.step, current - food.step))
             }
-            className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-          >
-            <Minus className="size-3.5" />
-          </Button>
-          <Input
-            value={qty}
-            onChange={(event) => {
-              const nextValue = Number(event.target.value)
-              if (!Number.isNaN(nextValue) && nextValue >= 0) {
-                setQty(nextValue)
-              }
-            }}
-            className="h-7 w-14 rounded-md border-neutral-200 px-2 text-center text-[12px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            onIncrease={() => setQty((current) => current + food.step)}
           />
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-sm"
-            onClick={() => setQty((current) => current + food.step)}
-            className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-          >
-            <Plus className="size-3.5" />
-          </Button>
           <Button
             type="button"
             variant="outline"
@@ -409,35 +485,14 @@ function MealItemRow({
       </div>
 
       <div className="flex items-center gap-1.5">
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onClick={() => onChangeQty(Math.max(food.step, item.qty - food.step))}
-          className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-        >
-          <Minus className="size-3.5" />
-        </Button>
-        <Input
+        <BuilderQuantityStepper
           value={item.qty}
-          onChange={(event) => {
-            const nextValue = Number(event.target.value)
-            if (!Number.isNaN(nextValue) && nextValue >= 0) {
-              onChangeQty(nextValue)
-            }
-          }}
-          className="h-7 w-16 rounded-md border-neutral-200 px-2 text-center text-[12px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          unit={food.unit}
+          widthClassName="w-[4.75rem]"
+          onChange={onChangeQty}
+          onDecrease={() => onChangeQty(Math.max(food.step, item.qty - food.step))}
+          onIncrease={() => onChangeQty(item.qty + food.step)}
         />
-        <span className="min-w-8 text-[11px] text-neutral-400">{food.unit}</span>
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onClick={() => onChangeQty(item.qty + food.step)}
-          className="size-7 rounded-md border-neutral-200 text-neutral-600 shadow-none hover:bg-neutral-50"
-        >
-          <Plus className="size-3.5" />
-        </Button>
         <Button
           type="button"
           variant="outline"
@@ -465,12 +520,15 @@ export function MealPlanBuilderPageView({
   const itemIdCounter = React.useRef(1)
   const templateIdCounter = React.useRef(100)
   const nameInputRef = React.useRef<HTMLInputElement>(null)
+  const mealNameInputRef = React.useRef<HTMLInputElement>(null)
   const [planName, setPlanName] = React.useState(initialPlanName)
   const [isEditingName, setIsEditingName] = React.useState(false)
   const [meals, setMeals] = React.useState<BuilderMeal[]>([
     { id: 1, name: "Meal 1", items: [] },
   ])
   const [activeMealId, setActiveMealId] = React.useState(1)
+  const [editingMealId, setEditingMealId] = React.useState<number | null>(null)
+  const [editingMealName, setEditingMealName] = React.useState("")
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
@@ -493,6 +551,13 @@ export function MealPlanBuilderPageView({
       nameInputRef.current?.select()
     }
   }, [isEditingName])
+
+  React.useEffect(() => {
+    if (editingMealId !== null) {
+      mealNameInputRef.current?.focus()
+      mealNameInputRef.current?.select()
+    }
+  }, [editingMealId])
 
   const activeMeal = meals.find((meal) => meal.id === activeMealId) ?? meals[0]
   const filteredFoods = React.useMemo(() => {
@@ -538,6 +603,10 @@ export function MealPlanBuilderPageView({
         { cal: 0, p: 0, c: 0, f: 0 }
       ),
     [meals]
+  )
+  const activeMealTotals = React.useMemo(
+    () => (activeMeal ? getMealTotals(activeMeal) : null),
+    [activeMeal]
   )
 
   const handleNavigateBack = React.useCallback(() => {
@@ -661,6 +730,35 @@ export function MealPlanBuilderPageView({
     },
     [activeMealId, meals]
   )
+  const startEditingMealName = React.useCallback((meal: BuilderMeal) => {
+    setActiveMealId(meal.id)
+    setEditingMealId(meal.id)
+    setEditingMealName(meal.name)
+  }, [])
+  const commitMealName = React.useCallback(() => {
+    if (editingMealId === null) {
+      return
+    }
+
+    const nextMealName = editingMealName.trim()
+
+    if (nextMealName) {
+      setMeals((currentMeals) =>
+        currentMeals.map((meal) =>
+          meal.id === editingMealId
+            ? { ...meal, name: nextMealName }
+            : meal
+        )
+      )
+    }
+
+    setEditingMealId(null)
+    setEditingMealName("")
+  }, [editingMealId, editingMealName])
+  const cancelEditingMealName = React.useCallback(() => {
+    setEditingMealId(null)
+    setEditingMealName("")
+  }, [])
 
   return (
     <div className="min-w-0 bg-neutral-50 p-0 m-0">
@@ -926,38 +1024,96 @@ export function MealPlanBuilderPageView({
 
           <Card className="overflow-hidden rounded-xl border-neutral-200 bg-neutral-50 shadow-none">
             <div className="border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
-              <div className="flex flex-wrap items-center gap-2">
-                {meals.map((meal) => (
-                  <button
-                    key={meal.id}
-                    type="button"
-                    onClick={() => setActiveMealId(meal.id)}
-                    className={cn(
-                      "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-[13px] transition-colors",
-                      meal.id === activeMealId
-                        ? "border-brand-200  font-medium text-neutral-950"
-                        : "border-transparent bg-transparent text-neutral-500 hover:text-neutral-800"
-                    )}
-                  >
-                    {meal.name}
-                    {meals.length > 1 ? (
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap items-center gap-2">
+                  {meals.map((meal) => (
+                    <button
+                      key={meal.id}
+                      type="button"
+                      onClick={() => setActiveMealId(meal.id)}
+                      onDoubleClick={() => startEditingMealName(meal)}
+                      className={cn(
+                        "group relative isolate inline-flex items-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
+                        editingMealId === meal.id
+                          ? "border-brand-200 bg-brand-50/60 text-brand-700"
+                          : meal.id === activeMealId
+                            ? "border-brand-200 bg-brand-50/60 font-medium text-brand-700"
+                            : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
+                      )}
+                    >
+                      {editingMealId !== meal.id ? (
+                        <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
+                      ) : null}
                       <span
                         onClick={(event) => {
                           event.stopPropagation()
-                          removeMeal(meal.id)
+                          startEditingMealName(meal)
                         }}
-                        className="text-neutral-400 hover:text-rose-500"
+                        className={cn(
+                          "absolute top-1/2 left-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                          editingMealId === meal.id
+                            ? "pointer-events-none opacity-0"
+                            : "opacity-0 group-hover:opacity-100"
+                        )}
                       >
-                        ×
+                        <Pencil className="size-3" />
                       </span>
-                    ) : null}
-                  </button>
-                ))}
-                <SecondaryActionButton
-                  label="Add meal"
-                  icon={Plus}
-                  onClick={addMeal}
-                />
+                      {editingMealId === meal.id ? (
+                        <Input
+                          ref={mealNameInputRef}
+                          value={editingMealName}
+                          onChange={(event) => setEditingMealName(event.target.value)}
+                          onBlur={commitMealName}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                              commitMealName()
+                            }
+                            if (event.key === "Escape") {
+                              cancelEditingMealName()
+                            }
+                          }}
+                          onClick={(event) => event.stopPropagation()}
+                          className="h-6 min-w-[5.5rem] border-0 bg-transparent px-0 text-[13px] font-medium shadow-none focus-visible:ring-0"
+                        />
+                      ) : (
+                        meal.name
+                      )}
+                      {editingMealId !== meal.id && meals.length > 1 ? (
+                        <span
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            removeMeal(meal.id)
+                          }}
+                          className="absolute top-1/2 right-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-rose-200/70 bg-rose-50/70 text-rose-500 shadow-none transition-[opacity,colors] opacity-0 group-hover:opacity-100 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </span>
+                      ) : null}
+                    </button>
+                  ))}
+                  <SecondaryActionButton
+                    label="Add meal"
+                    icon={Plus}
+                    onClick={addMeal}
+                  />
+                </div>
+
+                {activeMealTotals ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant="outline" className="rounded-md border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-700">
+                      {activeMealTotals.cal} kcal
+                    </Badge>
+                    <Badge variant="outline" className="rounded-md border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700">
+                      P {activeMealTotals.p.toFixed(0)}g
+                    </Badge>
+                    <Badge variant="outline" className="rounded-md border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-medium text-sky-700">
+                      C {activeMealTotals.c.toFixed(0)}g
+                    </Badge>
+                    <Badge variant="outline" className="rounded-md border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-700">
+                      F {activeMealTotals.f.toFixed(0)}g
+                    </Badge>
+                  </div>
+                ) : null}
               </div>
             </div>
 
@@ -984,30 +1140,6 @@ export function MealPlanBuilderPageView({
                 setDragOverMealId(null)
               }}
             >
-              <div className="flex flex-wrap items-center gap-2">
-                {activeMeal ? (
-                  (() => {
-                    const totals = getMealTotals(activeMeal)
-                    return (
-                      <>
-                        <Badge variant="outline" className="rounded-md border-neutral-200 bg-neutral-50 px-2.5 py-1 text-[11px] font-medium text-neutral-700">
-                          {totals.cal} kcal
-                        </Badge>
-                        <Badge variant="outline" className="rounded-md border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-medium text-emerald-700">
-                          P {totals.p.toFixed(0)}g
-                        </Badge>
-                        <Badge variant="outline" className="rounded-md border-sky-200 bg-sky-50 px-2.5 py-1 text-[11px] font-medium text-sky-700">
-                          C {totals.c.toFixed(0)}g
-                        </Badge>
-                        <Badge variant="outline" className="rounded-md border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-700">
-                          F {totals.f.toFixed(0)}g
-                        </Badge>
-                      </>
-                    )
-                  })()
-                ) : null}
-              </div>
-
               {dragFoodPayload ? (
                 <div className="rounded-xl border border-dashed border-brand-300 bg-brand-50 px-4 py-3 text-[13px] text-brand-700">
                   Drop the selected food into this meal.
