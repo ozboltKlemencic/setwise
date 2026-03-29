@@ -1110,109 +1110,109 @@ export function MealPlanBuilderPageView({
                   className={cn(
                     "flex flex-wrap items-center gap-2",
                     dragInsertIndex !== null && draggedMealId !== null
-                      ? "gap-2.5"
+                      ? "gap-[6px]"
                       : null
                   )}
                 >
                   {meals.map((meal, mealIndex) => (
                     <React.Fragment key={meal.id}>
                       {dragInsertIndex === mealIndex && draggedMealId !== null ? (
-                        <span className="pointer-events-none flex h-7 w-4 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
+                        <span className="pointer-events-none flex h-8 w-4 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
                           <Plus className="size-2.5" />
                         </span>
                       ) : null}
-                    <button
-                      type="button"
-                      onClick={() => setActiveMealId(meal.id)}
-                      onDoubleClick={() => startEditingMealName(meal)}
-                      onDragOver={(event) =>
-                        handleMealTabDragOver(event, meal.id, mealIndex)
-                      }
-                      onDrop={handleMealTabDrop}
-                      className={cn(
-                        "group relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
-                        editingMealId === meal.id
-                          ? "border-brand-200 bg-brand-50/60 text-brand-700"
-                          : meal.id === activeMealId
-                            ? "border-brand-200 bg-brand-50/60 font-medium text-brand-700"
-                            : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
-                      )}
-                    >
-                      {editingMealId !== meal.id ? (
-                        <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
-                      ) : null}
-                      <span
-                        draggable={editingMealId !== meal.id}
-                        onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
-                        onDragEnd={handleMealTabDragEnd}
-                        onClick={(event) => {
-                          event.stopPropagation()
-                        }}
+                      <button
+                        type="button"
+                        onClick={() => setActiveMealId(meal.id)}
+                        onDoubleClick={() => startEditingMealName(meal)}
+                        onDragOver={(event) =>
+                          handleMealTabDragOver(event, meal.id, mealIndex)
+                        }
+                        onDrop={handleMealTabDrop}
                         className={cn(
-                          "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
+                          "group relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
                           editingMealId === meal.id
-                            ? "pointer-events-none opacity-0"
-                            : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
-                        )}
-                        title="Drag to reorder meal"
-                      >
-                        <GripVertical className="size-3.5" />
-                      </span>
-                      <span
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          startEditingMealName(meal)
-                        }}
-                        className={cn(
-                          "absolute top-1/2 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
-                          meals.length > 1 ? "right-8" : "right-1",
-                          editingMealId === meal.id
-                            ? "pointer-events-none opacity-0"
-                            : "opacity-0 group-hover:opacity-100"
+                            ? "border-brand-200 bg-brand-50/60 text-brand-700"
+                            : meal.id === activeMealId
+                              ? "border-brand-200 bg-brand-50/60 font-medium text-brand-700"
+                              : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
                         )}
                       >
-                        <Pencil className="size-3" />
-                      </span>
-                      {editingMealId === meal.id ? (
-                        <Input
-                          ref={mealNameInputRef}
-                          value={editingMealName}
-                          onChange={(event) => setEditingMealName(event.target.value)}
-                          onBlur={commitMealName}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter") {
-                              commitMealName()
-                            }
-                            if (event.key === "Escape") {
-                              cancelEditingMealName()
-                            }
+                        {editingMealId !== meal.id ? (
+                          <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
+                        ) : null}
+                        <span
+                          draggable={editingMealId !== meal.id}
+                          onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
+                          onDragEnd={handleMealTabDragEnd}
+                          onClick={(event) => {
+                            event.stopPropagation()
                           }}
-                          onClick={(event) => event.stopPropagation()}
-                          className="h-6 min-w-[5.5rem] border-0 bg-transparent px-0 text-[13px] font-medium shadow-none focus-visible:ring-0"
-                        />
-                      ) : (
-                        meal.name
-                      )}
-                      {editingMealId !== meal.id && meals.length > 1 ? (
-                        <CoachWiseConfirmationDialog
-                          title="Delete this meal?"
-                          description={`${meal.name} will be removed from this meal plan. This action can't be undone.`}
-                          confirmLabel="Delete meal"
-                          variant="destructive"
-                          onConfirm={() => removeMeal(meal.id)}
-                          trigger={
-                            <span
-                              onClick={(event) => {
-                                event.stopPropagation()
-                              }}
-                              className="absolute top-1/2 right-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-rose-200/70 bg-rose-50/70 text-rose-500 shadow-none transition-[opacity,colors] opacity-0 group-hover:opacity-100 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
-                            >
-                              <Trash2 className="size-3.5" />
-                            </span>
-                          }
-                        />
-                      ) : null}
-                    </button>
+                          className={cn(
+                            "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
+                            editingMealId === meal.id
+                              ? "pointer-events-none opacity-0"
+                              : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
+                          )}
+                          title="Drag to reorder meal"
+                        >
+                          <GripVertical className="size-3.5" />
+                        </span>
+                        <span
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            startEditingMealName(meal)
+                          }}
+                          className={cn(
+                            "absolute top-1/2 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
+                            meals.length > 1 ? "right-8" : "right-1",
+                            editingMealId === meal.id
+                              ? "pointer-events-none opacity-0"
+                              : "opacity-0 group-hover:opacity-100"
+                          )}
+                        >
+                          <Pencil className="size-3" />
+                        </span>
+                        {editingMealId === meal.id ? (
+                          <Input
+                            ref={mealNameInputRef}
+                            value={editingMealName}
+                            onChange={(event) => setEditingMealName(event.target.value)}
+                            onBlur={commitMealName}
+                            onKeyDown={(event) => {
+                              if (event.key === "Enter") {
+                                commitMealName()
+                              }
+                              if (event.key === "Escape") {
+                                cancelEditingMealName()
+                              }
+                            }}
+                            onClick={(event) => event.stopPropagation()}
+                            className="h-6 min-w-[5.5rem] border-0 bg-transparent px-0 text-[13px] font-medium shadow-none focus-visible:ring-0"
+                          />
+                        ) : (
+                          meal.name
+                        )}
+                        {editingMealId !== meal.id && meals.length > 1 ? (
+                          <CoachWiseConfirmationDialog
+                            title="Delete this meal?"
+                            description={`${meal.name} will be removed from this meal plan. This action can't be undone.`}
+                            confirmLabel="Delete meal"
+                            variant="destructive"
+                            onConfirm={() => removeMeal(meal.id)}
+                            trigger={
+                              <span
+                                onClick={(event) => {
+                                  event.stopPropagation()
+                                }}
+                                className="absolute top-1/2 right-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-rose-200/70 bg-rose-50/70 text-rose-500 shadow-none transition-[opacity,colors] opacity-0 group-hover:opacity-100 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
+                              >
+                                <Trash2 className="size-3.5" />
+                              </span>
+                            }
+                          />
+                        ) : null}
+                      </button>
                     </React.Fragment>
                   ))}
                   {dragInsertIndex === meals.length && draggedMealId !== null ? (
