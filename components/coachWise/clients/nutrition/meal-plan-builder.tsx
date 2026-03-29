@@ -1113,9 +1113,6 @@ export function MealPlanBuilderPageView({
                       onDrop={(event) => handleMealTabDrop(event, meal.id)}
                       className={cn(
                         "group relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
-                        dragOverMealTabId === meal.id && draggedMealId !== meal.id
-                          ? "border-brand-300 ring-1 ring-brand-200"
-                          : null,
                         editingMealId === meal.id
                           ? "border-brand-200 bg-brand-50/60 text-brand-700"
                           : meal.id === activeMealId
@@ -1125,6 +1122,11 @@ export function MealPlanBuilderPageView({
                     >
                       {editingMealId !== meal.id ? (
                         <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
+                      ) : null}
+                      {dragOverMealTabId === meal.id && draggedMealId !== meal.id ? (
+                        <span className="pointer-events-none absolute inset-0 z-[11] flex items-center justify-center rounded-md border border-dashed border-brand-300 bg-brand-50/65 text-brand-500">
+                          <Plus className="size-4" />
+                        </span>
                       ) : null}
                       <span
                         draggable={editingMealId !== meal.id}
