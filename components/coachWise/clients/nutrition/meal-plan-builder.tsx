@@ -4,9 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
   Apple,
-  Check,
   ChefHat,
-  CopyPlus,
   Drumstick,
   Droplets,
   Flame,
@@ -341,26 +339,21 @@ function BuilderQuantityStepper({
 
 function FoodLibraryRow({
   food,
-  selected,
-  onToggle,
   onAdd,
   onDragStart,
   onDragEnd,
 }: {
   food: BuilderFood
-  selected: boolean
-  onToggle: () => void
   onAdd: (qty: number) => void
   onDragStart: (qty: number) => void
   onDragEnd: () => void
 }) {
-  const [qty, setQty] = React.useState(food.defaultQty)
   const gripToneClasses = foodGripToneClasses[getFoodCardTone(food)]
 
   return (
     <div
       draggable
-      onDragStart={() => onDragStart(qty)}
+      onDragStart={() => onDragStart(food.defaultQty)}
       onDragEnd={onDragEnd}
       className="flex w-full items-stretch gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
     >
@@ -373,7 +366,7 @@ function FoodLibraryRow({
         <GripVertical className="size-3.5" />
       </div>
 
-      <div className="min-w-0 flex-1 space-y-3">
+      <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="truncate text-[13px] font-medium text-neutral-950">
@@ -386,39 +379,14 @@ function FoodLibraryRow({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={onToggle}
-            className={cn(
-              "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border text-[11px] font-semibold transition-colors",
-              selected
-                ? "border-brand-500 bg-brand-500 text-white"
-                : "border-neutral-300  text-transparent"
-            )}
-          >
-            <Check className="size-3" />
-          </button>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-1.5">
-          <BuilderQuantityStepper
-            value={qty}
-            unit={food.unit}
-            widthClassName="w-[4.75rem]"
-            onChange={setQty}
-            onDecrease={() =>
-              setQty((current) => Math.max(food.step, current - food.step))
-            }
-            onIncrease={() => setQty((current) => current + food.step)}
-          />
           <Button
             type="button"
             variant="outline"
             size="icon-sm"
-            onClick={() => onAdd(qty)}
-            className="size-7 rounded-md border-neutral-200 text-brand-600 shadow-none hover:bg-brand-50"
+            onClick={() => onAdd(food.defaultQty)}
+            className="mt-0.5 size-7 shrink-0 rounded-md border-brand-200 bg-brand-50 text-brand-600 shadow-none hover:bg-brand-100"
           >
-            <CopyPlus className="size-3.5" />
+            <Plus className="size-4" />
           </Button>
         </div>
       </div>
@@ -603,9 +571,6 @@ export function MealPlanBuilderPageView({
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
-  const [selectedFoods, setSelectedFoods] = React.useState<Set<number>>(
-    () => new Set()
-  )
   const [savedTemplates, setSavedTemplates] =
     React.useState<BuilderMealTemplate[]>(MEAL_TEMPLATES)
   const [showSaveTemplateForm, setShowSaveTemplateForm] = React.useState(false)
@@ -715,19 +680,9 @@ export function MealPlanBuilderPageView({
             : meal
         )
       )
-      setSelectedFoods((currentSelectedFoods) => {
-        const nextSelectedFoods = new Set(currentSelectedFoods)
-        nextSelectedFoods.delete(foodId)
-        return nextSelectedFoods
-      })
     },
     [activeMealId]
   )
-
-  const addSelectedFoodsToMeal = React.useCallback(() => {
-    selectedFoods.forEach((foodId) => addFoodToMeal(foodId))
-    setSelectedFoods(new Set())
-  }, [addFoodToMeal, selectedFoods])
 
   const addTemplateToMeal = React.useCallback(
     (template: BuilderMealTemplate) => {
@@ -1030,20 +985,6 @@ export function MealPlanBuilderPageView({
 
       <div className="relative xl:flex xl:items-start">
         <Card className="relative overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 py-0 shadow-none xl:sticky m xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
-          {leftTab === "foods" && selectedFoods.size ? (
-            <div className="absolute inset-x-0 top-0 z-20  px-2 py-2 backdrop-blur-[2px]">
-              <div className="flex items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/85 px-3 py-2">
-                <div className="text-[12px] font-medium text-brand-700">
-                  {selectedFoods.size} selected
-                </div>
-                <SecondaryActionButton
-                  label={`Add ${selectedFoods.size}`}
-                  onClick={addSelectedFoodsToMeal}
-                />
-              </div>
-            </div>
-          ) : null}
-
           <div className="border-b border-neutral-200 bg-neutral-50 px-2 ">
             <div className="grid grid-cols-2 gap-1.5">
               <button
@@ -1102,18 +1043,6 @@ export function MealPlanBuilderPageView({
                         <FoodLibraryRow
                           key={food.id}
                           food={food}
-                          selected={selectedFoods.has(food.id)}
-                          onToggle={() =>
-                            setSelectedFoods((currentSelectedFoods) => {
-                              const nextSelectedFoods = new Set(currentSelectedFoods)
-                              if (nextSelectedFoods.has(food.id)) {
-                                nextSelectedFoods.delete(food.id)
-                              } else {
-                                nextSelectedFoods.add(food.id)
-                              }
-                              return nextSelectedFoods
-                            })
-                          }
                           onAdd={(qty) => addFoodToMeal(food.id, activeMealId, qty)}
                           onDragStart={(qty) => {
                             setDragFoodPayload({ foodId: food.id, qty })
