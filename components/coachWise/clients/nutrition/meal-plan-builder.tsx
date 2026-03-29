@@ -531,12 +531,7 @@ export function MealPlanBuilderPageView({
   const [editingMealId, setEditingMealId] = React.useState<number | null>(null)
   const [editingMealName, setEditingMealName] = React.useState("")
   const [draggedMealId, setDraggedMealId] = React.useState<number | null>(null)
-  const [dragOverMealTabId, setDragOverMealTabId] = React.useState<number | null>(
-    null
-  )
-  const [dragOverMealTabEdge, setDragOverMealTabEdge] = React.useState<
-    "before" | "after" | null
-  >(null)
+  const [dragInsertIndex, setDragInsertIndex] = React.useState<number | null>(null)
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
@@ -767,42 +762,24 @@ export function MealPlanBuilderPageView({
     setEditingMealId(null)
     setEditingMealName("")
   }, [])
-  const reorderMeals = React.useCallback(
-    (
-      sourceMealId: number,
-      targetMealId: number,
-      position: "before" | "after"
-    ) => {
-      if (sourceMealId === targetMealId) {
-        return
+  const reorderMeals = React.useCallback((sourceMealId: number, insertIndex: number) => {
+    setMeals((currentMeals) => {
+      const sourceIndex = currentMeals.findIndex((meal) => meal.id === sourceMealId)
+
+      if (sourceIndex === -1) {
+        return currentMeals
       }
 
-      setMeals((currentMeals) => {
-        const sourceIndex = currentMeals.findIndex((meal) => meal.id === sourceMealId)
-        const targetIndex = currentMeals.findIndex((meal) => meal.id === targetMealId)
+      const nextMeals = [...currentMeals]
+      const [movedMeal] = nextMeals.splice(sourceIndex, 1)
+      const normalizedInsertIndex =
+        sourceIndex < insertIndex ? insertIndex - 1 : insertIndex
 
-        if (sourceIndex === -1 || targetIndex === -1) {
-          return currentMeals
-        }
+      nextMeals.splice(normalizedInsertIndex, 0, movedMeal)
 
-        const nextMeals = [...currentMeals]
-        const [movedMeal] = nextMeals.splice(sourceIndex, 1)
-        const nextTargetIndex = nextMeals.findIndex((meal) => meal.id === targetMealId)
-
-        if (nextTargetIndex === -1) {
-          return currentMeals
-        }
-
-        const insertionIndex =
-          position === "before" ? nextTargetIndex : nextTargetIndex + 1
-
-        nextMeals.splice(insertionIndex, 0, movedMeal)
-
-        return nextMeals
-      })
-    },
-    []
-  )
+      return nextMeals
+    })
+  }, [])
   const handleMealTabDragStart = React.useCallback(
     (event: React.DragEvent<HTMLSpanElement>, mealId: number) => {
       if (editingMealId !== null) {
@@ -819,29 +796,30 @@ export function MealPlanBuilderPageView({
   )
   const handleMealTabDragEnd = React.useCallback(() => {
     setDraggedMealId(null)
-    setDragOverMealTabId(null)
-    setDragOverMealTabEdge(null)
+    setDragInsertIndex(null)
   }, [])
   const handleMealTabDragOver = React.useCallback(
-    (event: React.DragEvent<HTMLButtonElement>, mealId: number) => {
+    (
+      event: React.DragEvent<HTMLButtonElement>,
+      mealId: number,
+      mealIndex: number
+    ) => {
       if (draggedMealId === null || draggedMealId === mealId) {
-        setDragOverMealTabId(null)
-        setDragOverMealTabEdge(null)
+        setDragInsertIndex(null)
         return
       }
 
       event.preventDefault()
       const bounds = event.currentTarget.getBoundingClientRect()
-      const nextEdge =
-        event.clientX < bounds.left + bounds.width / 2 ? "before" : "after"
+      const nextInsertIndex =
+        event.clientX < bounds.left + bounds.width / 2 ? mealIndex : mealIndex + 1
 
-      setDragOverMealTabId(mealId)
-      setDragOverMealTabEdge(nextEdge)
+      setDragInsertIndex(nextInsertIndex)
     },
     [draggedMealId]
   )
   const handleMealTabDrop = React.useCallback(
-    (event: React.DragEvent<HTMLButtonElement>, mealId: number) => {
+    (event: React.DragEvent<HTMLButtonElement>) => {
       event.preventDefault()
       event.stopPropagation()
 
@@ -849,17 +827,18 @@ export function MealPlanBuilderPageView({
         draggedMealId ?? Number(event.dataTransfer.getData("text/plain"))
 
       if (!Number.isFinite(sourceMealId)) {
-        setDragOverMealTabId(null)
-        setDragOverMealTabEdge(null)
+        setDragInsertIndex(null)
         return
       }
 
-      reorderMeals(sourceMealId, mealId, dragOverMealTabEdge ?? "before")
+      if (dragInsertIndex !== null) {
+        reorderMeals(sourceMealId, dragInsertIndex)
+      }
+
       setDraggedMealId(null)
-      setDragOverMealTabId(null)
-      setDragOverMealTabEdge(null)
+      setDragInsertIndex(null)
     },
-    [dragOverMealTabEdge, draggedMealId, reorderMeals]
+    [dragInsertIndex, draggedMealId, reorderMeals]
   )
 
   return (
@@ -1130,19 +1109,26 @@ export function MealPlanBuilderPageView({
                 <div
                   className={cn(
                     "flex flex-wrap items-center gap-2",
-                    dragOverMealTabId !== null && draggedMealId !== null
-                      ? "gap-5"
+                    dragInsertIndex !== null && draggedMealId !== null
+                      ? "gap-2.5"
                       : null
                   )}
                 >
-                  {meals.map((meal) => (
+                  {meals.map((meal, mealIndex) => (
+                    <React.Fragment key={meal.id}>
+                      {dragInsertIndex === mealIndex && draggedMealId !== null ? (
+                        <span className="pointer-events-none flex h-7 w-4 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
+                          <Plus className="size-2.5" />
+                        </span>
+                      ) : null}
                     <button
-                      key={meal.id}
                       type="button"
                       onClick={() => setActiveMealId(meal.id)}
                       onDoubleClick={() => startEditingMealName(meal)}
-                      onDragOver={(event) => handleMealTabDragOver(event, meal.id)}
-                      onDrop={(event) => handleMealTabDrop(event, meal.id)}
+                      onDragOver={(event) =>
+                        handleMealTabDragOver(event, meal.id, mealIndex)
+                      }
+                      onDrop={handleMealTabDrop}
                       className={cn(
                         "group relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
                         editingMealId === meal.id
@@ -1154,20 +1140,6 @@ export function MealPlanBuilderPageView({
                     >
                       {editingMealId !== meal.id ? (
                         <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
-                      ) : null}
-                      {dragOverMealTabId === meal.id &&
-                      draggedMealId !== meal.id &&
-                      dragOverMealTabEdge ? (
-                        <span
-                          className={cn(
-                            "pointer-events-none absolute top-1/2 z-[11] flex h-7 w-4 -translate-y-1/2 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500",
-                            dragOverMealTabEdge === "before"
-                              ? "left-[-1.125rem]"
-                              : "right-[-1.125rem]"
-                          )}
-                        >
-                          <Plus className="size-2.5" />
-                        </span>
                       ) : null}
                       <span
                         draggable={editingMealId !== meal.id}
@@ -1241,7 +1213,13 @@ export function MealPlanBuilderPageView({
                         />
                       ) : null}
                     </button>
+                    </React.Fragment>
                   ))}
+                  {dragInsertIndex === meals.length && draggedMealId !== null ? (
+                    <span className="pointer-events-none flex h-7 w-4 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
+                      <Plus className="size-2.5" />
+                    </span>
+                  ) : null}
                   <SecondaryActionButton
                     label="Add meal"
                     icon={Plus}
