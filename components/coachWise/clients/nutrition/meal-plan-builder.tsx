@@ -139,6 +139,37 @@ function formatBuilderDate() {
   }).format(new Date())
 }
 
+type FoodCardTone = "calories" | "protein" | "carbs" | "fat"
+
+const foodCardToneClasses: Record<FoodCardTone, string> = {
+  calories:
+    "border-orange-200/85 bg-linear-to-br from-orange-100/75 via-amber-50/45 to-white",
+  protein:
+    "border-emerald-200/80 bg-linear-to-br from-emerald-100/65 via-emerald-50/35 to-white",
+  carbs:
+    "border-sky-200/80 bg-linear-to-br from-sky-100/65 via-sky-50/35 to-white",
+  fat:
+    "border-yellow-200/90 bg-linear-to-br from-yellow-100/80 via-amber-50/45 to-white",
+}
+
+function getFoodCardTone(food: BuilderFood): FoodCardTone {
+  if (food.cal <= 45 && food.p < 5 && food.c < 10 && food.f < 2) {
+    return "calories"
+  }
+
+  const macroRanking = [
+    { key: "protein" as const, value: food.p },
+    { key: "carbs" as const, value: food.c },
+    { key: "fat" as const, value: food.f },
+  ].sort((left, right) => right.value - left.value)
+
+  if (macroRanking[0].value - macroRanking[1].value <= 3) {
+    return "calories"
+  }
+
+  return macroRanking[0].key
+}
+
 function getTemplateTotals(template: BuilderMealTemplate) {
   return template.items.reduce(
     (accumulator, item) => {
@@ -321,13 +352,17 @@ function FoodLibraryRow({
   onDragEnd: () => void
 }) {
   const [qty, setQty] = React.useState(food.defaultQty)
+  const toneClasses = foodCardToneClasses[getFoodCardTone(food)]
 
   return (
     <div
       draggable
       onDragStart={() => onDragStart(qty)}
       onDragEnd={onDragEnd}
-      className="flex w-full items-stretch gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
+      className={cn(
+        "flex w-full items-stretch gap-2 rounded-md border py-3 pr-3 pl-2 transition-[filter,colors] hover:brightness-[0.99]",
+        toneClasses
+      )}
     >
       <div className="flex w-5 shrink-0 items-center justify-center text-neutral-300">
         <GripVertical className="size-3.5" />
@@ -469,9 +504,15 @@ function MealItemRow({
   }
 
   const nutrition = calcNutrition(item.foodId, item.qty)
+  const toneClasses = foodCardToneClasses[getFoodCardTone(food)]
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-3">
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-xl border px-3 py-3",
+        toneClasses
+      )}
+    >
       <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-500">
         <GripVertical className="size-4" />
       </div>
