@@ -198,6 +198,19 @@ function BuilderSectionTitle({ title }: { title: string }) {
   )
 }
 
+function BuilderInsertPlaceholder({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "pointer-events-none flex h-8 items-center justify-center rounded-lg border border-dashed border-brand-300 bg-brand-50/60 text-brand-500",
+        className
+      )}
+    >
+      <Plus className="size-3" />
+    </div>
+  )
+}
+
 function BuilderMetricCard({
   label,
   value,
@@ -482,11 +495,21 @@ function TemplateLibraryCard({
 
 function MealItemRow({
   item,
+  isDragging = false,
   onChangeQty,
+  onDragEnd,
+  onDragOver,
+  onDragStart,
+  onDrop,
   onRemove,
 }: {
   item: BuilderMealItem
+  isDragging?: boolean
   onChangeQty: (nextQty: number) => void
+  onDragEnd?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDragOver?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void
+  onDrop?: (event: React.DragEvent<HTMLDivElement>) => void
   onRemove: () => void
 }) {
   const food = FOOD_DB.find((entry) => entry.id === item.foodId)
@@ -499,12 +522,22 @@ function MealItemRow({
   const gripToneClasses = foodGripToneClasses[getFoodCardTone(food)]
 
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-3">
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-3 transition-opacity",
+        isDragging && "opacity-45"
+      )}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       <div
         className={cn(
-          "flex size-9 shrink-0 items-center justify-center rounded-xl border",
+          "flex size-9 shrink-0 cursor-grab items-center justify-center rounded-xl border active:cursor-grabbing",
           gripToneClasses
         )}
+        draggable
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
       >
         <GripVertical className="size-4" />
       </div>
@@ -565,6 +598,8 @@ export function MealPlanBuilderPageView({
   const [editingMealName, setEditingMealName] = React.useState("")
   const [draggedMealId, setDraggedMealId] = React.useState<number | null>(null)
   const [dragInsertIndex, setDragInsertIndex] = React.useState<number | null>(null)
+  const [draggedMealItemId, setDraggedMealItemId] = React.useState<number | null>(null)
+  const [dragMealItemInsertIndex, setDragMealItemInsertIndex] = React.useState<number | null>(null)
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
@@ -813,6 +848,36 @@ export function MealPlanBuilderPageView({
       return nextMeals
     })
   }, [])
+  const reorderMealItems = React.useCallback(
+    (mealId: number, sourceItemId: number, insertIndex: number) => {
+      setMeals((currentMeals) =>
+        currentMeals.map((meal) => {
+          if (meal.id !== mealId) {
+            return meal
+          }
+
+          const sourceIndex = meal.items.findIndex((item) => item.id === sourceItemId)
+
+          if (sourceIndex === -1) {
+            return meal
+          }
+
+          const nextItems = [...meal.items]
+          const [movedItem] = nextItems.splice(sourceIndex, 1)
+          const normalizedInsertIndex =
+            sourceIndex < insertIndex ? insertIndex - 1 : insertIndex
+
+          nextItems.splice(normalizedInsertIndex, 0, movedItem)
+
+          return {
+            ...meal,
+            items: nextItems,
+          }
+        })
+      )
+    },
+    []
+  )
   const handleMealTabDragStart = React.useCallback(
     (event: React.DragEvent<HTMLSpanElement>, mealId: number) => {
       if (editingMealId !== null) {
@@ -872,6 +937,75 @@ export function MealPlanBuilderPageView({
       setDragInsertIndex(null)
     },
     [dragInsertIndex, draggedMealId, reorderMeals]
+  )
+  const handleMealItemDragStart = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>, itemId: number) => {
+      event.stopPropagation()
+      event.dataTransfer.effectAllowed = "move"
+      event.dataTransfer.setData("text/plain", String(itemId))
+      setDraggedMealItemId(itemId)
+      setDragMealItemInsertIndex(null)
+    },
+    []
+  )
+  const handleMealItemDragEnd = React.useCallback(() => {
+    setDraggedMealItemId(null)
+    setDragMealItemInsertIndex(null)
+  }, [])
+  const handleMealItemDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>, itemIndex: number) => {
+      if (draggedMealItemId === null) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      const bounds = event.currentTarget.getBoundingClientRect()
+      const nextInsertIndex =
+        event.clientY < bounds.top + bounds.height / 2 ? itemIndex : itemIndex + 1
+
+      setDragMealItemInsertIndex(nextInsertIndex)
+    },
+    [draggedMealItemId]
+  )
+  const handleMealItemListEndDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      if (draggedMealItemId === null || !activeMeal) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      setDragMealItemInsertIndex(activeMeal.items.length)
+    },
+    [activeMeal, draggedMealItemId]
+  )
+  const handleMealItemDrop = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      if (draggedMealItemId === null || !activeMeal) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      const sourceItemId =
+        draggedMealItemId ?? Number(event.dataTransfer.getData("text/plain"))
+
+      if (!Number.isFinite(sourceItemId)) {
+        setDraggedMealItemId(null)
+        setDragMealItemInsertIndex(null)
+        return
+      }
+
+      if (dragMealItemInsertIndex !== null) {
+        reorderMealItems(activeMeal.id, sourceItemId, dragMealItemInsertIndex)
+      }
+
+      setDraggedMealItemId(null)
+      setDragMealItemInsertIndex(null)
+    },
+    [activeMeal, dragMealItemInsertIndex, draggedMealItemId, reorderMealItems]
   )
 
   return (
@@ -1285,11 +1419,25 @@ export function MealPlanBuilderPageView({
                 dragOverMealId === activeMeal?.id ? "bg-brand-50/30" : ""
               )}
               onDragOver={(event) => {
+                if (!dragFoodPayload) {
+                  return
+                }
+
                 event.preventDefault()
                 setDragOverMealId(activeMeal?.id ?? null)
               }}
-              onDragLeave={() => setDragOverMealId(null)}
+              onDragLeave={() => {
+                if (!dragFoodPayload) {
+                  return
+                }
+
+                setDragOverMealId(null)
+              }}
               onDrop={(event) => {
+                if (!dragFoodPayload) {
+                  return
+                }
+
                 event.preventDefault()
                 if (dragFoodPayload && activeMeal) {
                   addFoodToMeal(
@@ -1309,43 +1457,63 @@ export function MealPlanBuilderPageView({
               ) : null}
 
               {activeMeal?.items.length ? (
-                <div className="space-y-2">
-                  {activeMeal.items.map((item) => (
-                    <MealItemRow
-                      key={item.id}
-                      item={item}
-                      onChangeQty={(nextQty) =>
-                        setMeals((currentMeals) =>
-                          currentMeals.map((meal) =>
-                            meal.id === activeMeal.id
-                              ? {
-                                ...meal,
-                                items: meal.items.map((mealItem) =>
-                                  mealItem.id === item.id
-                                    ? { ...mealItem, qty: nextQty }
-                                    : mealItem
-                                ),
-                              }
-                              : meal
+                <div className="flex flex-col gap-2">
+                  {activeMeal.items.map((item, itemIndex) => (
+                    <React.Fragment key={item.id}>
+                      {dragMealItemInsertIndex === itemIndex && draggedMealItemId !== null ? (
+                        <BuilderInsertPlaceholder />
+                      ) : null}
+                      <MealItemRow
+                        item={item}
+                        isDragging={draggedMealItemId === item.id}
+                        onDragStart={(event) => handleMealItemDragStart(event, item.id)}
+                        onDragEnd={handleMealItemDragEnd}
+                        onDragOver={(event) => handleMealItemDragOver(event, itemIndex)}
+                        onDrop={handleMealItemDrop}
+                        onChangeQty={(nextQty) =>
+                          setMeals((currentMeals) =>
+                            currentMeals.map((meal) =>
+                              meal.id === activeMeal.id
+                                ? {
+                                  ...meal,
+                                  items: meal.items.map((mealItem) =>
+                                    mealItem.id === item.id
+                                      ? { ...mealItem, qty: nextQty }
+                                      : mealItem
+                                  ),
+                                }
+                                : meal
+                            )
                           )
-                        )
-                      }
-                      onRemove={() =>
-                        setMeals((currentMeals) =>
-                          currentMeals.map((meal) =>
-                            meal.id === activeMeal.id
-                              ? {
-                                ...meal,
-                                items: meal.items.filter(
-                                  (mealItem) => mealItem.id !== item.id
-                                ),
-                              }
-                              : meal
+                        }
+                        onRemove={() =>
+                          setMeals((currentMeals) =>
+                            currentMeals.map((meal) =>
+                              meal.id === activeMeal.id
+                                ? {
+                                  ...meal,
+                                  items: meal.items.filter(
+                                    (mealItem) => mealItem.id !== item.id
+                                  ),
+                                }
+                                : meal
+                            )
                           )
-                        )
-                      }
-                    />
+                        }
+                      />
+                    </React.Fragment>
                   ))}
+                  {draggedMealItemId !== null ? (
+                    <div
+                      className="min-h-2"
+                      onDragOver={handleMealItemListEndDragOver}
+                      onDrop={handleMealItemDrop}
+                    >
+                      {dragMealItemInsertIndex === activeMeal.items.length ? (
+                        <BuilderInsertPlaceholder />
+                      ) : null}
+                    </div>
+                  ) : null}
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50 px-6 py-10 text-center">
