@@ -376,7 +376,7 @@ function FoodLibraryRow({
 }: {
   food: BuilderFood
   onAdd: (qty: number) => void
-  onDragStart: (qty: number) => void
+  onDragStart: (event: React.DragEvent<HTMLDivElement>, qty: number) => void
   onDragEnd: () => void
 }) {
   const gripToneClasses = foodGripToneClasses[getFoodCardTone(food)]
@@ -384,7 +384,7 @@ function FoodLibraryRow({
   return (
     <div
       draggable
-      onDragStart={() => onDragStart(food.defaultQty)}
+      onDragStart={(event) => onDragStart(event, food.defaultQty)}
       onDragEnd={onDragEnd}
       className="flex w-full items-center gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:border-brand-400 hover:bg-brand-50/35"
     >
@@ -1037,6 +1037,7 @@ export function MealPlanBuilderPageView({
     (event: React.DragEvent<HTMLDivElement>, itemId: number) => {
       event.stopPropagation()
       event.dataTransfer.effectAllowed = "move"
+      event.dataTransfer.dropEffect = "move"
       event.dataTransfer.setData("text/plain", String(itemId))
       setDraggedMealItemId(itemId)
       setDragMealItemInsertIndex(null)
@@ -1056,6 +1057,7 @@ export function MealPlanBuilderPageView({
 
       event.preventDefault()
       event.stopPropagation()
+      event.dataTransfer.dropEffect = "move"
       const bounds = event.currentTarget.getBoundingClientRect()
       const nextInsertIndex =
         event.clientY < bounds.top + bounds.height / 2 ? itemIndex : itemIndex + 1
@@ -1073,6 +1075,8 @@ export function MealPlanBuilderPageView({
 
       event.preventDefault()
       event.stopPropagation()
+      event.dataTransfer.dropEffect =
+        draggedMealItemId !== null ? "move" : "copy"
 
       if (draggedMealItemId !== null) {
         setDragMealItemInsertIndex(activeMeal.items.length)
@@ -1092,6 +1096,7 @@ export function MealPlanBuilderPageView({
 
       event.preventDefault()
       event.stopPropagation()
+      event.dataTransfer.dropEffect = "move"
       setDragMealItemInsertIndex(0)
       setDragFoodInsertIndex(null)
     },
@@ -1105,6 +1110,7 @@ export function MealPlanBuilderPageView({
 
       event.preventDefault()
       event.stopPropagation()
+      event.dataTransfer.dropEffect = "copy"
       setDragFoodInsertIndex(insertIndex)
     },
     [dragFoodPayload]
@@ -1242,7 +1248,13 @@ export function MealPlanBuilderPageView({
                           key={food.id}
                           food={food}
                           onAdd={(qty) => addFoodToMeal(food.id, activeMealId, qty)}
-                          onDragStart={(qty) => {
+                          onDragStart={(event, qty) => {
+                            event.dataTransfer.effectAllowed = "copy"
+                            event.dataTransfer.dropEffect = "copy"
+                            event.dataTransfer.setData(
+                              "application/x-setwise-food",
+                              String(food.id)
+                            )
                             setDragFoodPayload({ foodId: food.id, qty })
                             setDragFoodInsertIndex(null)
                           }}
@@ -1536,6 +1548,7 @@ export function MealPlanBuilderPageView({
                 }
 
                 event.preventDefault()
+                event.dataTransfer.dropEffect = "copy"
                 setDragOverMealId(activeMeal?.id ?? null)
               }}
               onDragLeave={() => {
@@ -1554,6 +1567,7 @@ export function MealPlanBuilderPageView({
                 }
 
                 event.preventDefault()
+                event.dataTransfer.dropEffect = "copy"
                 if (dragFoodPayload && activeMeal && !activeMeal.items.length) {
                   addFoodToMeal(
                     dragFoodPayload.foodId,
