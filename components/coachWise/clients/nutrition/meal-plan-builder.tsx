@@ -1509,10 +1509,7 @@ export function MealPlanBuilderPageView({
             </div>
 
             <CardContent
-              className={cn(
-                "space-y-0 bg-neutral-50 px-4 pb-3  transition-colors",
-                dragOverMealId === activeMeal?.id ? "bg-brand-50/30" : ""
-              )}
+              className="space-y-0 bg-neutral-50 px-4 pb-3 transition-colors"
               onDragOver={(event) => {
                 if (!dragFoodPayload) {
                   return
