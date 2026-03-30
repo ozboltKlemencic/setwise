@@ -757,7 +757,7 @@ export function MealPlanBuilderPageView({
   const handleCreateFood = React.useCallback(() => {
     const nextFoodName = searchQuery.trim()
 
-    toast("Create food", {
+    toast(nextFoodName ? `Create "${nextFoodName}"` : "Create food", {
       description: nextFoodName
         ? `Create flow for "${nextFoodName}" is coming soon.`
         : "Create flow is coming soon.",
@@ -1285,7 +1285,9 @@ export function MealPlanBuilderPageView({
                           className="inline-flex h-9 w-full cursor-pointer items-center justify-center gap-1.5 rounded-md border border-dashed border-brand-300 bg-brand-50/35 px-3 text-[13px] font-medium text-brand-700 transition-colors hover:border-brand-400 hover:bg-brand-50/55"
                         >
                           <Plus className="size-3.5" />
-                          Create food
+                          {searchQuery.trim()
+                            ? `Create "${searchQuery.trim()}"`
+                            : "Create food"}
                         </button>
                       </div>
                     )}
