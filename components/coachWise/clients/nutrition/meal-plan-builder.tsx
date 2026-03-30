@@ -630,6 +630,9 @@ export function MealPlanBuilderPageView({
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
   const [savedTemplates, setSavedTemplates] =
     React.useState<BuilderMealTemplate[]>(MEAL_TEMPLATES)
+  const [templatedMealIds, setTemplatedMealIds] = React.useState<Set<number>>(
+    () => new Set()
+  )
   const [showSaveTemplateForm, setShowSaveTemplateForm] = React.useState(false)
   const [isCreateFoodDialogOpen, setIsCreateFoodDialogOpen] = React.useState(false)
   const [newTemplateName, setNewTemplateName] = React.useState("")
@@ -911,6 +914,7 @@ export function MealPlanBuilderPageView({
     }
 
     setSavedTemplates((currentTemplates) => [nextTemplate, ...currentTemplates])
+    setTemplatedMealIds((currentIds) => new Set(currentIds).add(activeMeal.id))
     setShowSaveTemplateForm(false)
     setNewTemplateName("")
     toast.success("Meal template saved", {
@@ -1374,7 +1378,7 @@ export function MealPlanBuilderPageView({
                   />
                 </div>
 
-                {activeMeal?.items.length ? (
+                {activeMeal?.items.length && !templatedMealIds.has(activeMeal.id) ? (
                   showSaveTemplateForm ? null : (
                     <SecondaryActionButton
                       label={`Create "${activeMeal.name}" template`}
