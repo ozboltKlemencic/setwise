@@ -242,22 +242,24 @@ export function CreateFoodDialog({
                 {getCreateFoodMetricLabel(draftValue.unit)}
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="space-y-2.5">
                 {createFoodMacroFields.map((field) => (
                   <div
                     key={field.key}
                     className={cn(
-                      "rounded-lg border px-3 py-3",
+                      "flex items-center gap-3 rounded-lg border px-3.5 py-3",
                       field.toneClassName
                     )}
                   >
-                    <div
-                      className={cn(
-                        "mb-2 text-[12px] font-medium",
-                        field.labelClassName
-                      )}
-                    >
-                      {field.label}
+                    <div className="flex min-w-0 flex-1 items-center">
+                      <span
+                        className={cn(
+                          "truncate text-[14px] font-medium",
+                          field.labelClassName
+                        )}
+                      >
+                        {field.label}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Input
@@ -280,7 +282,7 @@ export function CreateFoodDialog({
                           field.inputClassName
                         )}
                       />
-                      <span className="shrink-0 text-[13px] text-neutral-400">
+                      <span className="w-8 shrink-0 text-[13px] text-neutral-400">
                         {field.unit}
                       </span>
                     </div>
