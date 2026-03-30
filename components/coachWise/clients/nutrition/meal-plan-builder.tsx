@@ -1089,6 +1089,25 @@ export function MealPlanBuilderPageView({
     },
     [activeMeal, dragFoodPayload, draggedMealItemId]
   )
+  const handleMealItemListStartDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      if (draggedMealItemId === null && !dragFoodPayload) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      if (draggedMealItemId !== null) {
+        setDragMealItemInsertIndex(0)
+        setDragFoodInsertIndex(null)
+        return
+      }
+
+      setDragFoodInsertIndex(0)
+    },
+    [dragFoodPayload, draggedMealItemId]
+  )
   const handleMealItemDrop = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       if ((draggedMealItemId === null && !dragFoodPayload) || !activeMeal) {
@@ -1532,7 +1551,7 @@ export function MealPlanBuilderPageView({
                 }
 
                 event.preventDefault()
-                if (dragFoodPayload && activeMeal) {
+                if (dragFoodPayload && activeMeal && !activeMeal.items.length) {
                   addFoodToMeal(
                     dragFoodPayload.foodId,
                     activeMeal.id,
@@ -1546,6 +1565,19 @@ export function MealPlanBuilderPageView({
             >
               {activeMeal?.items.length ? (
                 <div className="flex flex-col gap-2">
+                  {(draggedMealItemId !== null || dragFoodPayload) ? (
+                    <div
+                      className="min-h-2"
+                      onDragOver={handleMealItemListStartDragOver}
+                      onDrop={handleMealItemDrop}
+                    >
+                      {(draggedMealItemId !== null &&
+                        dragMealItemInsertIndex === 0) ||
+                      (dragFoodPayload && dragFoodInsertIndex === 0) ? (
+                        <BuilderInsertPlaceholder />
+                      ) : null}
+                    </div>
+                  ) : null}
                   {activeMeal.items.map((item, itemIndex) => (
                     <React.Fragment key={item.id}>
                       {(draggedMealItemId !== null &&
