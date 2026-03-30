@@ -206,7 +206,7 @@ export function MealPlanGoalsDialog({
         showCloseButton={false}
         className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-neutral-50 p-0 shadow-2xl shadow-black/12 sm:max-w-[440px]"
       >
-        <DialogHeader className="w-full gap-0 px-7 pt-6 pb-0 text-left">
+        <DialogHeader className="w-full gap-0 px-7 pt-6 pb-1 text-left">
           <DialogTitle className="text-[17px] font-semibold text-neutral-950">
             Nastavi cilje
           </DialogTitle>
@@ -215,7 +215,7 @@ export function MealPlanGoalsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="w-full space-y-4 px-7 pt-4 pb-5">
+        <div className="w-full space-y-5 px-7 pt-4 pb-5">
           <div className="grid grid-cols-3 gap-2.5">
             {mealPlanGoalPresets.map((preset) => {
               const isActive = draftValue.presetId === preset.id

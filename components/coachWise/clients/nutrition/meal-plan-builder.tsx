@@ -346,7 +346,7 @@ function BuilderQuantityStepper({
         onClick={onDecrease}
         className="size-7 rounded-r-none border-neutral-200 border-r-0 px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
       >
-        <Minus className="size-3.5" />
+        <Minus className="size-3" />
       </Button>
       <BuilderQuantityField
         value={value}
@@ -362,7 +362,7 @@ function BuilderQuantityStepper({
         onClick={onIncrease}
         className="size-7 rounded-l-none border-neutral-200 border-l-0 px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
       >
-        <Plus className="size-3.5" />
+        <Plus className="size-3" />
       </Button>
     </div>
   )
@@ -406,7 +406,7 @@ function FoodLibraryRow({
             <div className="mt-0.5 text-[11.5px] leading-5 text-neutral-500">
               {food.cal} kcal / 100
               {food.unit}
-              {" · "}P{food.p} C{food.c} F{food.f}
+              {"  -  "}P{food.p} C{food.c} F{food.f}
             </div>
           </div>
 
@@ -415,9 +415,9 @@ function FoodLibraryRow({
             variant="outline"
             size="icon-sm"
             onClick={() => onAdd(food.defaultQty)}
-            className="size-7 shrink-0 rounded-md border-neutral-200 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100"
+            className="size-7 shrink-0 rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100"
           >
-            <Plus className="size-4" />
+            <Plus className="size-3" />
           </Button>
         </div>
       </div>
@@ -446,8 +446,8 @@ function TemplateLibraryCard({
             {template.name}
           </div>
           <div className="text-[11.5px] text-neutral-500">
-            {totals.cal} kcal · P{totals.p.toFixed(0)}g · C{totals.c.toFixed(0)}g
-            {" · "}F{totals.f.toFixed(0)}g
+            {totals.cal} kcal  -  P{totals.p.toFixed(0)}g  -  C{totals.c.toFixed(0)}g
+            {"  -  "}F{totals.f.toFixed(0)}g
           </div>
         </div>
         {template.isCustom ? (
@@ -529,7 +529,8 @@ function MealItemRow({
   }
 
   const nutrition = calcNutrition(item.foodId, item.qty)
-  const gripToneClasses = foodGripToneClasses[getFoodCardTone(food)]
+  const tone = getFoodCardTone(food)
+  const gripToneClasses = foodGripToneClasses[tone]
 
   return (
     <div
@@ -553,11 +554,17 @@ function MealItemRow({
       </div>
 
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[13px] font-medium text-neutral-950">
+        <div className="truncate text-[13px] font-medium text-neutral-600">
           {food.name}
         </div>
         <div className="text-[11.5px] text-neutral-500">
-          {nutrition.cal} kcal · P{nutrition.p}g · C{nutrition.c}g · F{nutrition.f}g
+          <span>{nutrition.cal} kcal</span>
+          <span className="text-neutral-300">  -  </span>
+          <span className="text-emerald-600">P{nutrition.p}g</span>
+          <span className="text-neutral-300">  -  </span>
+          <span className="text-sky-600">C{nutrition.c}g</span>
+          <span className="text-neutral-300">  -  </span>
+          <span className="text-yellow-600">F{nutrition.f}g</span>
         </div>
       </div>
 
@@ -1313,15 +1320,19 @@ export function MealPlanBuilderPageView({
                       <div className="group relative">
                         <button
                           type="button"
+                          draggable={editingMealId !== meal.id}
                           onClick={() => setActiveMealId(meal.id)}
                           onDoubleClick={() => startEditingMealName(meal)}
+                          onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
+                          onDragEnd={handleMealTabDragEnd}
                           onDragOver={(event) =>
                             handleMealTabDragOver(event, meal.id, mealIndex)
                           }
                           onDrop={handleMealTabDrop}
                           className={cn(
                             "relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-lg border px-3 py-1.5 text-[13px] transition-colors",
-                            editingMealId !== meal.id ? "pr-8 pl-8" : null,
+                            editingMealId !== meal.id ? "pr-8" : null,
+                            editingMealId !== meal.id ? "cursor-grab active:cursor-grabbing" : null,
                             editingMealId === meal.id
                               ? "border-brand-200 bg-brand-50/60 text-brand-700"
                               : meal.id === activeMealId
@@ -1329,23 +1340,6 @@ export function MealPlanBuilderPageView({
                                 : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
                           )}
                         >
-                          <span
-                            draggable={editingMealId !== meal.id}
-                            onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
-                            onDragEnd={handleMealTabDragEnd}
-                            onClick={(event) => {
-                              event.stopPropagation()
-                            }}
-                            className={cn(
-                              "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-lg bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
-                              editingMealId === meal.id
-                                ? "pointer-events-none opacity-0"
-                                : "cursor-grab opacity-100 active:cursor-grabbing"
-                            )}
-                            title="Drag to reorder meal"
-                          >
-                            <GripVertical className="size-3.5" />
-                          </span>
                           {editingMealId === meal.id ? (
                             <Input
                               ref={mealNameInputRef}
@@ -1394,7 +1388,7 @@ export function MealPlanBuilderPageView({
                                   },
                                 },
                               ]}
-                              triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 border-transparent bg-transparent opacity-100 shadow-none hover:border-transparent hover:bg-transparent hover:text-foreground data-[state=open]:border-transparent data-[state=open]:bg-transparent data-[state=open]:opacity-100"
+                              triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 cursor-pointer border-transparent bg-transparent opacity-100 shadow-none hover:border-transparent hover:bg-transparent hover:text-foreground data-[state=open]:border-transparent data-[state=open]:bg-transparent data-[state=open]:opacity-100"
                             />
 
                             <CoachWiseConfirmationDialog
@@ -1614,7 +1608,7 @@ export function MealPlanBuilderPageView({
                           {meal.name}
                         </div>
                         <div className="text-[11.5px] text-neutral-500">
-                          {meal.items.length} items · {totals.cal} kcal
+                          {meal.items.length} items  -  {totals.cal} kcal
                         </div>
                       </div>
                       {dragFoodPayload ? (
