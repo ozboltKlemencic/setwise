@@ -136,15 +136,15 @@ function GoalToggle({
       type="button"
       onClick={onClick}
       className={cn(
-        "flex h-6 w-9 shrink-0 items-center rounded-full border bg-neutral-100 px-0.5 transition-colors",
+        "flex h-5.5 w-10 shrink-0 items-center rounded-full border bg-neutral-100 px-0.5 transition-colors",
         checked ? className : "border-neutral-200 bg-neutral-100",
       )}
       aria-pressed={checked}
     >
       <span
         className={cn(
-          "size-4 rounded-full bg-neutral-50 shadow-sm transition-transform",
-          checked ? "translate-x-[14px]" : "translate-x-0"
+          "size-3.5 rounded-full bg-neutral-50 shadow-sm transition-transform",
+          checked ? "translate-x-[18px]" : "translate-x-0"
         )}
       />
       <span className="sr-only">{checked ? "Disable goal" : "Enable goal"}</span>
@@ -204,7 +204,7 @@ export function MealPlanGoalsDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[440px]"
+        className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-neutral-50 p-0 shadow-2xl shadow-black/12 sm:max-w-[440px]"
       >
         <DialogHeader className="w-full gap-0 px-7 pt-6 pb-0 text-left">
           <DialogTitle className="text-[17px] font-semibold text-neutral-950">
@@ -215,7 +215,7 @@ export function MealPlanGoalsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="w-full space-y-5 px-7 pt-5 pb-6">
+        <div className="w-full space-y-4 px-7 pt-4 pb-5">
           <div className="grid grid-cols-3 gap-2.5">
             {mealPlanGoalPresets.map((preset) => {
               const isActive = draftValue.presetId === preset.id
@@ -226,14 +226,14 @@ export function MealPlanGoalsDialog({
                   type="button"
                   onClick={() => handlePresetClick(preset.id)}
                   className={cn(
-                    "rounded-xl border px-3 py-3 text-center transition-colors",
+                    "rounded-lg border px-2.5 py-2.5 text-center transition-colors",
                     isActive
                       ? "border-brand-500 bg-brand-50/35 text-neutral-950"
-                      : "border-neutral-200 bg-white text-neutral-900 hover:border-brand-300 hover:bg-brand-50/20"
+                      : "border-neutral-200 bg-white/30 text-neutral-900 hover:border-brand-300 hover:bg-brand-50/20"
                   )}
                 >
-                  <div className="text-[14px] font-semibold">{preset.label}</div>
-                  <div className="mt-1 text-[12px] text-neutral-400">
+                  <div className="text-[13px] font-semibold">{preset.label}</div>
+                  <div className="mt-0.5 text-[11px] text-neutral-400">
                     {preset.calories} kcal
                   </div>
                 </button>
@@ -251,7 +251,7 @@ export function MealPlanGoalsDialog({
                 <div
                   key={key}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-colors",
+                    "flex items-center gap-3 rounded-lg border px-3.5 py-3 transition-colors",
                     metric.enabled
                       ? tone.rowClassName
                       : "border-neutral-100 bg-neutral-50"
@@ -292,7 +292,7 @@ export function MealPlanGoalsDialog({
                       }
                     }}
                     className={cn(
-                      "h-10 w-[8.5rem] rounded-[10px] border bg-white text-[14px] font-semibold shadow-none focus-visible:ring-0",
+                      "h-10 w-[8.5rem] rounded-lg border bg-white/30 text-[14px] font-semibold shadow-none focus-visible:ring-0",
                       metric.enabled
                         ? "border-neutral-200 text-neutral-950 focus-visible:border-neutral-300"
                         : "border-transparent bg-transparent text-neutral-300 shadow-none"
@@ -312,11 +312,11 @@ export function MealPlanGoalsDialog({
           </div>
         </div>
 
-        <DialogFooter className="grid w-full grid-cols-2 gap-3 border-t border-neutral-100 bg-neutral-50 px-7 py-4 sm:grid-cols-2">
+        <DialogFooter className="grid w-full grid-cols-2 gap-3 border-t border-neutral-200/70 bg-neutral-100 px-7 py-4 sm:grid-cols-2">
           <SecondaryActionButton
             label="Preklici"
             onClick={() => onOpenChange(false)}
-            className="h-11 rounded-lg justify-center border-neutral-200 bg-white text-[14px] font-semibold text-neutral-500 hover:bg-white hover:text-neutral-800"
+            className="h-11 rounded-lg justify-center text-[14px] font-semibold"
           />
           <PrimaryActionButton
             label="Shrani cilje"
@@ -324,7 +324,7 @@ export function MealPlanGoalsDialog({
               onSave(draftValue)
               onOpenChange(false)
             }}
-            className="h-11 rounded-lg justify-center bg-neutral-900 from-neutral-900 to-neutral-900 text-[14px] font-semibold hover:bg-neutral-950 hover:from-neutral-950 hover:to-neutral-950"
+            className="h-11 rounded-lg justify-center text-[14px] font-semibold"
           />
         </DialogFooter>
       </DialogContent>
