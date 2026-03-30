@@ -5,20 +5,22 @@ import { useRouter } from "next/navigation"
 import {
   Apple,
   ChefHat,
-  Drumstick,
-  Droplets,
-  Flame,
   GripVertical,
   Minus,
   Pencil,
   Plus,
   Search,
+  Settings2,
   Trash2,
   UtensilsCrossed,
-  Wheat,
 } from "lucide-react"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import {
+  createDefaultMealPlanGoalSettings,
+  MealPlanGoalsDialog,
+  type MealPlanGoalSettings,
+} from "@/components/coachWise/clients/nutrition/meal-plan-goals-dialog"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
@@ -210,46 +212,74 @@ function BuilderInsertPlaceholder({ className }: { className?: string }) {
   )
 }
 
-function BuilderMetricCard({
+function BuilderGoalSummaryMetric({
   label,
-  value,
-  icon,
-  tone,
+  currentValue,
+  goalValue,
+  unit,
+  progressClassName,
 }: {
   label: string
-  value: string
-  icon: React.ReactNode
-  tone: {
-    container: string
-    badge: string
-    icon: string
-  }
+  currentValue: number
+  goalValue?: number
+  unit: string
+  progressClassName: string
 }) {
+  const roundedCurrentValue = Math.round(currentValue)
+  const hasGoal = typeof goalValue === "number" && goalValue > 0
+  const difference = hasGoal ? roundedCurrentValue - goalValue : null
+  const isOverGoal = Boolean(hasGoal && difference !== null && difference > 0)
+  const progressWidth = hasGoal
+    ? Math.min((roundedCurrentValue / goalValue) * 100, 100)
+    : 0
+
   return (
     <div
       className={cn(
-        "rounded-2xl border px-3 py-3 shadow-none",
-        tone.container
+        "relative min-h-[78px] border-b border-neutral-200 px-4 py-3 md:border-r md:border-b-0",
+        isOverGoal ? "bg-rose-50/50" : "bg-white"
       )}
     >
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-end gap-1.5">
         <div
           className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-xl border",
-            tone.badge
+            "text-[17px] leading-none font-semibold",
+            isOverGoal ? "text-rose-600" : "text-neutral-950"
           )}
         >
-          <span className={tone.icon}>{icon}</span>
+          {roundedCurrentValue}
         </div>
-        <div className="min-w-0">
-          <div className="text-[18px] leading-none font-semibold text-neutral-950">
-            {value}
-          </div>
-          <div className="mt-1 text-[11px] uppercase tracking-[0.12em] text-neutral-500">
-            {label}
-          </div>
+        <div className="text-[13px] leading-none font-medium text-neutral-300">
+          {hasGoal ? `/ ${goalValue}${unit}` : unit}
         </div>
       </div>
+
+      <div className="mt-2 text-[11px] uppercase tracking-[0.12em] text-neutral-400">
+        {label}
+      </div>
+
+      {hasGoal && difference !== null ? (
+        <div
+          className={cn(
+            "absolute right-4 bottom-3 text-[12px] font-medium",
+            isOverGoal ? "text-rose-600" : "text-neutral-500"
+          )}
+        >
+          {difference > 0 ? `+${difference}` : difference}
+        </div>
+      ) : null}
+
+      {hasGoal ? (
+        <div className="absolute right-0 bottom-0 left-0 h-[3px]">
+          <div
+            className={cn(
+              "h-full",
+              isOverGoal ? "bg-rose-500" : progressClassName
+            )}
+            style={{ width: `${progressWidth}%` }}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -588,6 +618,10 @@ export function MealPlanBuilderPageView({
     React.useState<BuilderMealTemplate[]>(MEAL_TEMPLATES)
   const [showSaveTemplateForm, setShowSaveTemplateForm] = React.useState(false)
   const [newTemplateName, setNewTemplateName] = React.useState("")
+  const [isGoalsDialogOpen, setIsGoalsDialogOpen] = React.useState(false)
+  const [mealPlanGoals, setMealPlanGoals] = React.useState<MealPlanGoalSettings>(() =>
+    createDefaultMealPlanGoalSettings()
+  )
   const [dragFoodPayload, setDragFoodPayload] = React.useState<{
     foodId: number
     qty: number
@@ -656,6 +690,47 @@ export function MealPlanBuilderPageView({
   const activeMealTotals = React.useMemo(
     () => (activeMeal ? getMealTotals(activeMeal) : null),
     [activeMeal]
+  )
+  const goalSummaryMetrics = React.useMemo(
+    () => [
+      {
+        key: "calories",
+        label: "Calories",
+        currentValue: planTotals.cal,
+        goalValue: mealPlanGoals.calories.enabled
+          ? mealPlanGoals.calories.value
+          : undefined,
+        unit: "kcal",
+        progressClassName: "bg-orange-500",
+      },
+      {
+        key: "protein",
+        label: "Protein",
+        currentValue: planTotals.p,
+        goalValue: mealPlanGoals.protein.enabled
+          ? mealPlanGoals.protein.value
+          : undefined,
+        unit: "g",
+        progressClassName: "bg-emerald-500",
+      },
+      {
+        key: "carbs",
+        label: "Carbs",
+        currentValue: planTotals.c,
+        goalValue: mealPlanGoals.carbs.enabled ? mealPlanGoals.carbs.value : undefined,
+        unit: "g",
+        progressClassName: "bg-sky-500",
+      },
+      {
+        key: "fat",
+        label: "Fat",
+        currentValue: planTotals.f,
+        goalValue: mealPlanGoals.fat.enabled ? mealPlanGoals.fat.value : undefined,
+        unit: "g",
+        progressClassName: "bg-yellow-500",
+      },
+    ],
+    [mealPlanGoals, planTotals]
   )
 
   const handleNavigateBack = React.useCallback(() => {
@@ -1182,66 +1257,44 @@ export function MealPlanBuilderPageView({
         </Card>
 
         <div className="space-y-4 xl:min-w-0 xl:flex-1 xl:px-4 xl:pt-4">
-          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            {[
-              {
-                label: "Calories",
-                value: `${planTotals.cal}`,
-                icon: <Flame className="size-4" />,
-                tone: {
-                  container:
-                    "border-orange-300/75 bg-linear-to-br from-orange-100 via-orange-50/65 to-white",
-                  badge: "border-orange-300/75 bg-orange-100",
-                  icon: "text-orange-700",
-                },
-              },
-              {
-                label: "Protein",
-                value: `${planTotals.p.toFixed(0)}g`,
-                icon: <Drumstick className="size-4" />,
-                tone: {
-                  container:
-                    "border-emerald-200/65 bg-linear-to-br from-emerald-50/95 via-emerald-50/40 to-white",
-                  badge: "border-emerald-200/65 bg-emerald-50/80",
-                  icon: "text-emerald-600",
-                },
-              },
-              {
-                label: "Carbs",
-                value: `${planTotals.c.toFixed(0)}g`,
-                icon: <Wheat className="size-4" />,
-                tone: {
-                  container:
-                    "border-sky-200/65 bg-linear-to-br from-sky-50/95 via-sky-50/40 to-white",
-                  badge: "border-sky-200/65 bg-sky-50/80",
-                  icon: "text-sky-600",
-                },
-              },
-              {
-                label: "Fat",
-                value: `${planTotals.f.toFixed(0)}g`,
-                icon: <Droplets className="size-4" />,
-                tone: {
-                  container:
-                    "border-yellow-300/75 bg-linear-to-br from-yellow-100 via-amber-50/70 to-white",
-                  badge: "border-yellow-300/75 bg-yellow-100",
-                  icon: "text-amber-700",
-                },
-              },
-            ].map((item) => (
-              <BuilderMetricCard
-                key={item.label}
-                label={item.label}
-                value={item.value}
-                icon={item.icon}
-                tone={item.tone}
-              />
-            ))}
+          <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-none">
+            <div className="grid grid-cols-1 md:grid-cols-[repeat(4,minmax(0,1fr))_3.5rem]">
+              {goalSummaryMetrics.map((metric) => (
+                <BuilderGoalSummaryMetric
+                  key={metric.key}
+                  label={metric.label}
+                  currentValue={metric.currentValue}
+                  goalValue={metric.goalValue}
+                  unit={metric.unit}
+                  progressClassName={metric.progressClassName}
+                />
+              ))}
+
+              <div className="flex min-h-[78px] items-center justify-center border-t border-neutral-200 bg-white md:border-t-0 md:border-l">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => setIsGoalsDialogOpen(true)}
+                  className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-800"
+                >
+                  <Settings2 className="size-4" />
+                  <span className="sr-only">Open meal plan goals</span>
+                </Button>
+              </div>
+            </div>
           </div>
 
-          <Card className="overflow-hidden rounded-xl border-0 bg-neutral-50 shadow-none">
-            <div className="bg-neutral-50 px-3 py-2.5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
+          <MealPlanGoalsDialog
+            open={isGoalsDialogOpen}
+            onOpenChange={setIsGoalsDialogOpen}
+            value={mealPlanGoals}
+            onSave={setMealPlanGoals}
+          />
+
+          <Card className="overflow-hidden rounded-xl gap-y-3 border-0 bg-neutral-50 shadow-none">
+            <div className="bg-neutral-50 px-3.5 py-2.5">
+              <div className="flex flex-wrap items-center justify-between gap-x-3">
                 <div
                   className={cn(
                     "flex flex-wrap items-center gap-2",
@@ -1403,7 +1456,7 @@ export function MealPlanBuilderPageView({
 
             <CardContent
               className={cn(
-                "space-y-4 bg-neutral-50 p-4 transition-colors",
+                "space-y-0 bg-neutral-50 px-4 pb-3  transition-colors",
                 dragOverMealId === activeMeal?.id ? "bg-brand-50/30" : ""
               )}
               onDragOver={(event) => {
