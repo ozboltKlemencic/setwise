@@ -20,6 +20,7 @@ import {
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
+import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Badge } from "@/components/ui/badge"
@@ -567,6 +568,7 @@ export function MealPlanBuilderPageView({
   const templateIdCounter = React.useRef(100)
   const nameInputRef = React.useRef<HTMLInputElement>(null)
   const mealNameInputRef = React.useRef<HTMLInputElement>(null)
+  const deleteMealTriggerRefs = React.useRef<Record<number, HTMLButtonElement | null>>({})
   const [planName, setPlanName] = React.useState(initialPlanName)
   const [isEditingName, setIsEditingName] = React.useState(false)
   const [meals, setMeals] = React.useState<BuilderMeal[]>([
@@ -1255,98 +1257,117 @@ export function MealPlanBuilderPageView({
                           <Plus className="size-2.5" />
                         </span>
                       ) : null}
-                      <button
-                        type="button"
-                        onClick={() => setActiveMealId(meal.id)}
-                        onDoubleClick={() => startEditingMealName(meal)}
-                        onDragOver={(event) =>
-                          handleMealTabDragOver(event, meal.id, mealIndex)
-                        }
-                        onDrop={handleMealTabDrop}
-                        className={cn(
-                          "group relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
-                          editingMealId === meal.id
-                            ? "border-brand-200 bg-brand-50/60 text-brand-700"
-                            : meal.id === activeMealId
-                              ? "border-brand-200 bg-brand-50/60 font-medium text-brand-700"
-                              : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
-                        )}
-                      >
-                        {editingMealId !== meal.id ? (
-                          <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
-                        ) : null}
-                        <span
-                          draggable={editingMealId !== meal.id}
-                          onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
-                          onDragEnd={handleMealTabDragEnd}
-                          onClick={(event) => {
-                            event.stopPropagation()
-                          }}
+                      <div className="group relative">
+                        <button
+                          type="button"
+                          onClick={() => setActiveMealId(meal.id)}
+                          onDoubleClick={() => startEditingMealName(meal)}
+                          onDragOver={(event) =>
+                            handleMealTabDragOver(event, meal.id, mealIndex)
+                          }
+                          onDrop={handleMealTabDrop}
                           className={cn(
-                            "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
+                            "relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
+                            editingMealId !== meal.id ? "pr-8" : null,
                             editingMealId === meal.id
-                              ? "pointer-events-none opacity-0"
-                              : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
-                          )}
-                          title="Drag to reorder meal"
-                        >
-                          <GripVertical className="size-3.5" />
-                        </span>
-                        <span
-                          onClick={(event) => {
-                            event.stopPropagation()
-                            startEditingMealName(meal)
-                          }}
-                          className={cn(
-                            "absolute top-1/2 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-[opacity,colors] hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground",
-                            meals.length > 1 ? "right-8" : "right-1",
-                            editingMealId === meal.id
-                              ? "pointer-events-none opacity-0"
-                              : "opacity-0 group-hover:opacity-100"
+                              ? "border-brand-200 bg-brand-50/60 text-brand-700"
+                              : meal.id === activeMealId
+                                ? "border-brand-200 bg-brand-50/60 font-medium text-brand-700"
+                                : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
                           )}
                         >
-                          <Pencil className="size-3" />
-                        </span>
-                        {editingMealId === meal.id ? (
-                          <Input
-                            ref={mealNameInputRef}
-                            value={editingMealName}
-                            onChange={(event) => setEditingMealName(event.target.value)}
-                            onBlur={commitMealName}
-                            onKeyDown={(event) => {
-                              if (event.key === "Enter") {
-                                commitMealName()
-                              }
-                              if (event.key === "Escape") {
-                                cancelEditingMealName()
-                              }
+                          {editingMealId !== meal.id ? (
+                            <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
+                          ) : null}
+                          <span
+                            draggable={editingMealId !== meal.id}
+                            onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
+                            onDragEnd={handleMealTabDragEnd}
+                            onClick={(event) => {
+                              event.stopPropagation()
                             }}
-                            onClick={(event) => event.stopPropagation()}
-                            className="h-5! max-w-[7rem] border-0 bg-transparent px-0 text-[12px] font-medium shadow-none focus-visible:ring-0"
-                          />
-                        ) : (
-                          meal.name
-                        )}
-                        {editingMealId !== meal.id && meals.length > 1 ? (
-                          <CoachWiseConfirmationDialog
-                            title="Delete this meal?"
-                            description={`${meal.name} will be removed from this meal plan. This action can't be undone.`}
-                            confirmLabel="Delete meal"
-                            variant="destructive"
-                            onConfirm={() => removeMeal(meal.id)}
-                            trigger={
-                              <span
-                                onClick={(event) => {
-                                  event.stopPropagation()
-                                }}
-                                className="absolute top-1/2 right-1 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md border border-rose-200/70 bg-rose-50/70 text-rose-500 shadow-none transition-[opacity,colors] opacity-0 group-hover:opacity-100 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
-                              >
-                                <Trash2 className="size-3.5" />
-                              </span>
-                            }
-                          />
+                            className={cn(
+                              "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
+                              editingMealId === meal.id
+                                ? "pointer-events-none opacity-0"
+                                : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
+                            )}
+                            title="Drag to reorder meal"
+                          >
+                            <GripVertical className="size-3.5" />
+                          </span>
+                          {editingMealId === meal.id ? (
+                            <Input
+                              ref={mealNameInputRef}
+                              value={editingMealName}
+                              onChange={(event) => setEditingMealName(event.target.value)}
+                              onBlur={commitMealName}
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter") {
+                                  commitMealName()
+                                }
+                                if (event.key === "Escape") {
+                                  cancelEditingMealName()
+                                }
+                              }}
+                              onClick={(event) => event.stopPropagation()}
+                              className="h-5! max-w-[7rem] border-0 bg-transparent px-0 text-[12px] font-medium shadow-none focus-visible:ring-0"
+                            />
+                          ) : (
+                            meal.name
+                          )}
+                        </button>
+
+                        {editingMealId !== meal.id ? (
+                          <>
+                            <OverflowActionsMenu
+                              triggerLabel={`Open actions for ${meal.name}`}
+                              items={[
+                                {
+                                  id: "edit",
+                                  label: "Edit meal",
+                                  icon: Pencil,
+                                  onSelect: () => startEditingMealName(meal),
+                                },
+                                {
+                                  id: "delete",
+                                  label: "Delete meal",
+                                  icon: Trash2,
+                                  variant: "destructive",
+                                  disabled: meals.length <= 1,
+                                  onSelect: () => {
+                                    if (meals.length <= 1) {
+                                      return
+                                    }
+
+                                    deleteMealTriggerRefs.current[meal.id]?.click()
+                                  },
+                                },
+                              ]}
+                              triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100"
+                            />
+
+                            <CoachWiseConfirmationDialog
+                              title="Delete this meal?"
+                              description={`${meal.name} will be removed from this meal plan. This action can't be undone.`}
+                              confirmLabel="Delete meal"
+                              variant="destructive"
+                              onConfirm={() => removeMeal(meal.id)}
+                              trigger={
+                                <button
+                                  ref={(node) => {
+                                    deleteMealTriggerRefs.current[meal.id] = node
+                                  }}
+                                  type="button"
+                                  tabIndex={-1}
+                                  aria-hidden="true"
+                                  className="sr-only"
+                                />
+                              }
+                            />
+                          </>
                         ) : null}
-                      </button>
+                      </div>
                     </React.Fragment>
                   ))}
                   {dragInsertIndex === meals.length && draggedMealId !== null ? (
