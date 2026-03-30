@@ -1580,9 +1580,10 @@ export function MealPlanBuilderPageView({
                   ) : null}
                   {activeMeal.items.map((item, itemIndex) => (
                     <React.Fragment key={item.id}>
-                      {(draggedMealItemId !== null &&
+                      {itemIndex > 0 &&
+                      ((draggedMealItemId !== null &&
                         dragMealItemInsertIndex === itemIndex) ||
-                      (dragFoodPayload && dragFoodInsertIndex === itemIndex) ? (
+                        (dragFoodPayload && dragFoodInsertIndex === itemIndex)) ? (
                         <BuilderInsertPlaceholder />
                       ) : null}
                       <MealItemRow
