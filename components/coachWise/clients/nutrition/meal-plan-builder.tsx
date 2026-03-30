@@ -618,6 +618,7 @@ export function MealPlanBuilderPageView({
   const [dragInsertIndex, setDragInsertIndex] = React.useState<number | null>(null)
   const [draggedMealItemId, setDraggedMealItemId] = React.useState<number | null>(null)
   const [dragMealItemInsertIndex, setDragMealItemInsertIndex] = React.useState<number | null>(null)
+  const [dragFoodInsertIndex, setDragFoodInsertIndex] = React.useState<number | null>(null)
   const [leftTab, setLeftTab] = React.useState<"foods" | "templates">("foods")
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
@@ -755,7 +756,12 @@ export function MealPlanBuilderPageView({
   }, [handleNavigateBack, initialPlanName, planName])
 
   const addFoodToMeal = React.useCallback(
-    (foodId: number, mealId = activeMealId, qty?: number) => {
+    (
+      foodId: number,
+      mealId = activeMealId,
+      qty?: number,
+      insertIndex?: number
+    ) => {
       const food = FOOD_DB.find((entry) => entry.id === foodId)
 
       if (!food) {
@@ -771,7 +777,20 @@ export function MealPlanBuilderPageView({
       setMeals((currentMeals) =>
         currentMeals.map((meal) =>
           meal.id === mealId
-            ? { ...meal, items: [...meal.items, nextItem] }
+            ? {
+                ...meal,
+                items: (() => {
+                  const nextItems = [...meal.items]
+                  const normalizedInsertIndex =
+                    typeof insertIndex === "number"
+                      ? Math.max(0, Math.min(insertIndex, nextItems.length))
+                      : nextItems.length
+
+                  nextItems.splice(normalizedInsertIndex, 0, nextItem)
+
+                  return nextItems
+                })(),
+              }
             : meal
         )
       )
@@ -1027,10 +1046,11 @@ export function MealPlanBuilderPageView({
   const handleMealItemDragEnd = React.useCallback(() => {
     setDraggedMealItemId(null)
     setDragMealItemInsertIndex(null)
+    setDragFoodInsertIndex(null)
   }, [])
   const handleMealItemDragOver = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>, itemIndex: number) => {
-      if (draggedMealItemId === null) {
+      if (draggedMealItemId === null && !dragFoodPayload) {
         return
       }
 
@@ -1040,30 +1060,58 @@ export function MealPlanBuilderPageView({
       const nextInsertIndex =
         event.clientY < bounds.top + bounds.height / 2 ? itemIndex : itemIndex + 1
 
-      setDragMealItemInsertIndex(nextInsertIndex)
+      if (draggedMealItemId !== null) {
+        setDragMealItemInsertIndex(nextInsertIndex)
+        setDragFoodInsertIndex(null)
+        return
+      }
+
+      setDragFoodInsertIndex(nextInsertIndex)
     },
-    [draggedMealItemId]
+    [dragFoodPayload, draggedMealItemId]
   )
   const handleMealItemListEndDragOver = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
-      if (draggedMealItemId === null || !activeMeal) {
+      if ((draggedMealItemId === null && !dragFoodPayload) || !activeMeal) {
         return
       }
 
       event.preventDefault()
       event.stopPropagation()
-      setDragMealItemInsertIndex(activeMeal.items.length)
+
+      if (draggedMealItemId !== null) {
+        setDragMealItemInsertIndex(activeMeal.items.length)
+        setDragFoodInsertIndex(null)
+        return
+      }
+
+      setDragFoodInsertIndex(activeMeal.items.length)
     },
-    [activeMeal, draggedMealItemId]
+    [activeMeal, dragFoodPayload, draggedMealItemId]
   )
   const handleMealItemDrop = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
-      if (draggedMealItemId === null || !activeMeal) {
+      if ((draggedMealItemId === null && !dragFoodPayload) || !activeMeal) {
         return
       }
 
       event.preventDefault()
       event.stopPropagation()
+
+      if (dragFoodPayload) {
+        addFoodToMeal(
+          dragFoodPayload.foodId,
+          activeMeal.id,
+          dragFoodPayload.qty,
+          dragFoodInsertIndex ?? activeMeal.items.length
+        )
+        setDragFoodPayload(null)
+        setDragFoodInsertIndex(null)
+        setDragOverMealId(null)
+        setDraggedMealItemId(null)
+        setDragMealItemInsertIndex(null)
+        return
+      }
 
       const sourceItemId =
         draggedMealItemId ?? Number(event.dataTransfer.getData("text/plain"))
@@ -1080,8 +1128,17 @@ export function MealPlanBuilderPageView({
 
       setDraggedMealItemId(null)
       setDragMealItemInsertIndex(null)
+      setDragFoodInsertIndex(null)
     },
-    [activeMeal, dragMealItemInsertIndex, draggedMealItemId, reorderMealItems]
+    [
+      activeMeal,
+      addFoodToMeal,
+      dragFoodInsertIndex,
+      dragFoodPayload,
+      dragMealItemInsertIndex,
+      draggedMealItemId,
+      reorderMealItems,
+    ]
   )
 
   return (
@@ -1167,9 +1224,11 @@ export function MealPlanBuilderPageView({
                           onAdd={(qty) => addFoodToMeal(food.id, activeMealId, qty)}
                           onDragStart={(qty) => {
                             setDragFoodPayload({ foodId: food.id, qty })
+                            setDragFoodInsertIndex(null)
                           }}
                           onDragEnd={() => {
                             setDragFoodPayload(null)
+                            setDragFoodInsertIndex(null)
                             setDragOverMealId(null)
                           }}
                         />
@@ -1468,6 +1527,7 @@ export function MealPlanBuilderPageView({
                 }
 
                 setDragOverMealId(null)
+                setDragFoodInsertIndex(null)
               }}
               onDrop={(event) => {
                 if (!dragFoodPayload) {
@@ -1483,20 +1543,17 @@ export function MealPlanBuilderPageView({
                   )
                 }
                 setDragFoodPayload(null)
+                setDragFoodInsertIndex(null)
                 setDragOverMealId(null)
               }}
             >
-              {dragFoodPayload ? (
-                <div className="rounded-xl border border-dashed border-brand-300 bg-brand-50 px-4 py-3 text-[13px] text-brand-700">
-                  Drop the selected food into this meal.
-                </div>
-              ) : null}
-
               {activeMeal?.items.length ? (
                 <div className="flex flex-col gap-2">
                   {activeMeal.items.map((item, itemIndex) => (
                     <React.Fragment key={item.id}>
-                      {dragMealItemInsertIndex === itemIndex && draggedMealItemId !== null ? (
+                      {(draggedMealItemId !== null &&
+                        dragMealItemInsertIndex === itemIndex) ||
+                      (dragFoodPayload && dragFoodInsertIndex === itemIndex) ? (
                         <BuilderInsertPlaceholder />
                       ) : null}
                       <MealItemRow
@@ -1549,20 +1606,50 @@ export function MealPlanBuilderPageView({
                         <BuilderInsertPlaceholder />
                       ) : null}
                     </div>
+                  ) : dragFoodPayload ? (
+                    <div
+                      className="min-h-2"
+                      onDragOver={handleMealItemListEndDragOver}
+                      onDrop={handleMealItemDrop}
+                    >
+                      {dragFoodInsertIndex === activeMeal.items.length ? (
+                        <BuilderInsertPlaceholder />
+                      ) : null}
+                    </div>
                   ) : null}
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50 px-6 py-10 text-center">
+                <div
+                  className={cn(
+                    "rounded-xl border border-dashed px-6 py-10 text-center",
+                    dragFoodPayload
+                      ? "border-brand-300 bg-brand-50 text-brand-700"
+                      : "border-neutral-200 bg-neutral-50"
+                  )}
+                >
                   <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl border border-neutral-200  text-neutral-400">
                     <ChefHat className="size-5" />
                   </div>
-                  <div className="text-[15px] font-medium text-neutral-900">
-                    This meal is empty
-                  </div>
-                  <div className="mt-1 text-[13px] text-neutral-500">
-                    Search foods on the left, apply a saved template, or drag a
-                    food directly into this area.
-                  </div>
+                  {dragFoodPayload ? (
+                    <>
+                      <div className="text-[15px] font-medium text-brand-700">
+                        Drop the selected food into this meal.
+                      </div>
+                      <div className="mt-1 text-[13px] text-brand-600">
+                        This will add the first item to the active meal.
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-[15px] font-medium text-neutral-900">
+                        This meal is empty
+                      </div>
+                      <div className="mt-1 text-[13px] text-neutral-500">
+                        Search foods on the left, apply a saved template, or drag a
+                        food directly into this area.
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </CardContent>
