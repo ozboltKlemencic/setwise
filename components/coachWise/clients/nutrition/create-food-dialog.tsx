@@ -31,22 +31,53 @@ const createFoodUnitOptions: Array<{
   label: string
   description: string
 }> = [
-  { value: "g", label: "100 g", description: "Default" },
-  { value: "ml", label: "100 ml", description: "Liquids" },
-  { value: "piece", label: "Piece", description: "Eggs / banana" },
-  { value: "slice", label: "Slice", description: "Bread" },
-]
+    { value: "g", label: "100 g", description: "Default" },
+    { value: "ml", label: "100 ml", description: "Liquids" },
+    { value: "piece", label: "Piece", description: "Eggs / banana" },
+    { value: "slice", label: "Slice", description: "Bread" },
+  ]
 
 const createFoodMacroFields: Array<{
   key: "cal" | "p" | "c" | "f"
   label: string
   unit: string
+  toneClassName: string
+  inputClassName: string
+  labelClassName: string
 }> = [
-  { key: "cal", label: "Calories", unit: "kcal" },
-  { key: "p", label: "Protein", unit: "g" },
-  { key: "c", label: "Carbs", unit: "g" },
-  { key: "f", label: "Fat", unit: "g" },
-]
+    {
+      key: "cal",
+      label: "Calories",
+      unit: "kcal",
+      toneClassName: "border-orange-200 bg-orange-50/55",
+      inputClassName: "focus-visible:border-orange-400",
+      labelClassName: "text-orange-700",
+    },
+    {
+      key: "p",
+      label: "Protein",
+      unit: "g",
+      toneClassName: "border-emerald-200 bg-emerald-50/55",
+      inputClassName: "focus-visible:border-emerald-400",
+      labelClassName: "text-emerald-700",
+    },
+    {
+      key: "c",
+      label: "Carbs",
+      unit: "g",
+      toneClassName: "border-sky-200 bg-sky-50/55",
+      inputClassName: "focus-visible:border-sky-400",
+      labelClassName: "text-sky-700",
+    },
+    {
+      key: "f",
+      label: "Fat",
+      unit: "g",
+      toneClassName: "border-yellow-200 bg-yellow-50/55",
+      inputClassName: "focus-visible:border-yellow-400",
+      labelClassName: "text-yellow-700",
+    },
+  ]
 
 function suggestCreateFoodUnit(name: string): CreateFoodUnit {
   const normalizedName = name.trim().toLowerCase()
@@ -215,9 +246,17 @@ export function CreateFoodDialog({
                 {createFoodMacroFields.map((field) => (
                   <div
                     key={field.key}
-                    className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-3"
+                    className={cn(
+                      "rounded-lg border px-3 py-3",
+                      field.toneClassName
+                    )}
                   >
-                    <div className="mb-2 text-[12px] font-medium text-neutral-500">
+                    <div
+                      className={cn(
+                        "mb-2 text-[12px] font-medium",
+                        field.labelClassName
+                      )}
+                    >
                       {field.label}
                     </div>
                     <div className="flex items-center gap-2">
@@ -236,7 +275,10 @@ export function CreateFoodDialog({
                               : 0,
                           }))
                         }}
-                        className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                        className={cn(
+                          "h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:ring-0",
+                          field.inputClassName
+                        )}
                       />
                       <span className="shrink-0 text-[13px] text-neutral-400">
                         {field.unit}
