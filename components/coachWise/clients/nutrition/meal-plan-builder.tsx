@@ -1334,28 +1334,18 @@ export function MealPlanBuilderPageView({
                 </div>
               </div>
             ) : (
-              <div className="space-y-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
-                <div className="relative">
-                  <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
-                  <Input
-                    value={templateSearchQuery}
-                    onChange={(event) => setTemplateSearchQuery(event.target.value)}
-                    placeholder="Search meals or foods..."
-                    className="h-10 rounded-sm border-neutral-200  pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-                  />
-                </div>
-
-                {activeMeal?.items.length ? (
-                  showSaveTemplateForm ? (
-                    <div className="space-y-3 rounded-xl border border-neutral-200 bg-neutral-50/70 p-3">
+              <div className="relative space-y-4 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
+                {showSaveTemplateForm ? (
+                  <div className="absolute inset-x-0 top-0 z-20 rounded-xl border border-neutral-200 bg-neutral-50 p-3 shadow-lg shadow-neutral-900/5">
+                    <div className="space-y-3">
                       <div className="text-[13px] font-medium text-neutral-900">
                         Save current meal as template
                       </div>
                       <Input
                         value={newTemplateName}
                         onChange={(event) => setNewTemplateName(event.target.value)}
-                        placeholder={`${activeMeal.name} template`}
-                        className="h-9 rounded-sm border-neutral-200  shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                        placeholder={`${activeMeal?.name ?? "Meal"} template`}
+                        className="h-9 rounded-sm border-neutral-200 bg-neutral-100 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
                       />
                       <div className="flex items-center justify-end gap-2">
                         <SecondaryActionButton
@@ -1371,9 +1361,23 @@ export function MealPlanBuilderPageView({
                         />
                       </div>
                     </div>
-                  ) : (
+                  </div>
+                ) : null}
+
+                <div className="relative">
+                  <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+                  <Input
+                    value={templateSearchQuery}
+                    onChange={(event) => setTemplateSearchQuery(event.target.value)}
+                    placeholder="Search meals or foods..."
+                    className="h-10 rounded-sm border-neutral-200  pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                </div>
+
+                {activeMeal?.items.length ? (
+                  showSaveTemplateForm ? null : (
                     <SecondaryActionButton
-                      label={`Save "${activeMeal.name}" as template`}
+                      label={`Create "${activeMeal.name}" template`}
                       onClick={() => {
                         setShowSaveTemplateForm(true)
                         setNewTemplateName(activeMeal.name)
