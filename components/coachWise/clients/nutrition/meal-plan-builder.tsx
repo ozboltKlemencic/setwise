@@ -1050,7 +1050,7 @@ export function MealPlanBuilderPageView({
   }, [])
   const handleMealItemDragOver = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>, itemIndex: number) => {
-      if (draggedMealItemId === null && !dragFoodPayload) {
+      if (draggedMealItemId === null) {
         return
       }
 
@@ -1060,15 +1060,10 @@ export function MealPlanBuilderPageView({
       const nextInsertIndex =
         event.clientY < bounds.top + bounds.height / 2 ? itemIndex : itemIndex + 1
 
-      if (draggedMealItemId !== null) {
-        setDragMealItemInsertIndex(nextInsertIndex)
-        setDragFoodInsertIndex(null)
-        return
-      }
-
-      setDragFoodInsertIndex(nextInsertIndex)
+      setDragMealItemInsertIndex(nextInsertIndex)
+      setDragFoodInsertIndex(null)
     },
-    [dragFoodPayload, draggedMealItemId]
+    [draggedMealItemId]
   )
   const handleMealItemListEndDragOver = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -1091,22 +1086,28 @@ export function MealPlanBuilderPageView({
   )
   const handleMealItemListStartDragOver = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
-      if (draggedMealItemId === null && !dragFoodPayload) {
+      if (draggedMealItemId === null) {
         return
       }
 
       event.preventDefault()
       event.stopPropagation()
-
-      if (draggedMealItemId !== null) {
-        setDragMealItemInsertIndex(0)
-        setDragFoodInsertIndex(null)
+      setDragMealItemInsertIndex(0)
+      setDragFoodInsertIndex(null)
+    },
+    [draggedMealItemId]
+  )
+  const handleFoodInsertZoneDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>, insertIndex: number) => {
+      if (!dragFoodPayload) {
         return
       }
 
-      setDragFoodInsertIndex(0)
+      event.preventDefault()
+      event.stopPropagation()
+      setDragFoodInsertIndex(insertIndex)
     },
-    [dragFoodPayload, draggedMealItemId]
+    [dragFoodPayload]
   )
   const handleMealItemDrop = React.useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
@@ -1543,7 +1544,9 @@ export function MealPlanBuilderPageView({
                 }
 
                 setDragOverMealId(null)
-                setDragFoodInsertIndex(null)
+                if (!activeMeal?.items.length) {
+                  setDragFoodInsertIndex(null)
+                }
               }}
               onDrop={(event) => {
                 if (!dragFoodPayload) {
@@ -1565,26 +1568,35 @@ export function MealPlanBuilderPageView({
             >
               {activeMeal?.items.length ? (
                 <div className="flex flex-col gap-2">
-                  {(draggedMealItemId !== null || dragFoodPayload) ? (
+                  {draggedMealItemId !== null ? (
                     <div
                       className="min-h-2"
                       onDragOver={handleMealItemListStartDragOver}
                       onDrop={handleMealItemDrop}
                     >
-                      {(draggedMealItemId !== null &&
-                        dragMealItemInsertIndex === 0) ||
-                      (dragFoodPayload && dragFoodInsertIndex === 0) ? (
+                      {dragMealItemInsertIndex === 0 ? (
                         <BuilderInsertPlaceholder />
                       ) : null}
                     </div>
                   ) : null}
                   {activeMeal.items.map((item, itemIndex) => (
                     <React.Fragment key={item.id}>
-                      {itemIndex > 0 &&
-                      ((draggedMealItemId !== null &&
-                        dragMealItemInsertIndex === itemIndex) ||
-                        (dragFoodPayload && dragFoodInsertIndex === itemIndex)) ? (
-                        <BuilderInsertPlaceholder />
+                      {dragFoodPayload ? (
+                        <div
+                          className="min-h-2"
+                          onDragOver={(event) =>
+                            handleFoodInsertZoneDragOver(event, itemIndex)
+                          }
+                          onDrop={handleMealItemDrop}
+                        >
+                          {dragFoodInsertIndex === itemIndex ? (
+                            <BuilderInsertPlaceholder />
+                          ) : null}
+                        </div>
+                      ) : itemIndex > 0 && draggedMealItemId !== null ? (
+                        dragMealItemInsertIndex === itemIndex ? (
+                          <BuilderInsertPlaceholder />
+                        ) : null
                       ) : null}
                       <MealItemRow
                         item={item}
@@ -1639,7 +1651,9 @@ export function MealPlanBuilderPageView({
                   ) : dragFoodPayload ? (
                     <div
                       className="min-h-2"
-                      onDragOver={handleMealItemListEndDragOver}
+                      onDragOver={(event) =>
+                        handleFoodInsertZoneDragOver(event, activeMeal.items.length)
+                      }
                       onDrop={handleMealItemDrop}
                     >
                       {dragFoodInsertIndex === activeMeal.items.length ? (
