@@ -10,7 +10,7 @@ import {
   Pencil,
   Plus,
   Search,
-  Settings2,
+  Target,
   Trash2,
   UtensilsCrossed,
 } from "lucide-react"
@@ -386,7 +386,7 @@ function FoodLibraryRow({
       draggable
       onDragStart={() => onDragStart(food.defaultQty)}
       onDragEnd={onDragEnd}
-      className="flex w-full items-center gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:bg-neutral-50"
+      className="flex w-full items-center gap-2 rounded-md border border-neutral-200 bg-white py-3 pr-3 pl-2 transition-colors hover:border-brand-400 hover:bg-brand-50/35"
     >
       <div
         className={cn(
@@ -1285,7 +1285,7 @@ export function MealPlanBuilderPageView({
                   onClick={() => setIsGoalsDialogOpen(true)}
                   className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-800"
                 >
-                  <Settings2 className="size-4" />
+                  <Target className="size-4" />
                   <span className="sr-only">Open meal plan goals</span>
                 </Button>
               </div>
