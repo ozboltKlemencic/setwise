@@ -1256,7 +1256,7 @@ export function MealPlanBuilderPageView({
           </CardContent>
         </Card>
 
-        <div className="space-y-4 xl:min-w-0 xl:flex-1 xl:px-4 xl:pt-4">
+        <div className="space- xl:min-w-0 xl:flex-1 xl:px-4 xl:pt-4">
           <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-none">
             <div className="grid grid-cols-1 md:grid-cols-[repeat(4,minmax(0,1fr))_3.5rem]">
               {goalSummaryMetrics.map((metric) => (
