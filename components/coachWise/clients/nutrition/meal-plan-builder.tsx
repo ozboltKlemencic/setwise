@@ -390,7 +390,7 @@ function FoodLibraryRow({
     >
       <div
         className={cn(
-          "flex size-7 shrink-0 items-center justify-center rounded-lg border",
+          "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-lg border hover:cursor-grab active:cursor-grabbing",
           gripToneClasses
         )}
       >
@@ -415,7 +415,7 @@ function FoodLibraryRow({
             variant="outline"
             size="icon-sm"
             onClick={() => onAdd(food.defaultQty)}
-            className="size-7 shrink-0 rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100"
+            className="size-7 shrink-0 cursor-pointer rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100"
           >
             <Plus className="size-3" />
           </Button>
@@ -1264,30 +1264,32 @@ export function MealPlanBuilderPageView({
         </Card>
 
         <div className="space- xl:min-w-0 xl:flex-1 xl:px-4 xl:pt-4">
-          <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-none">
-            <div className="grid grid-cols-1 md:grid-cols-[repeat(4,minmax(0,1fr))_3.5rem]">
-              {goalSummaryMetrics.map((metric) => (
-                <BuilderGoalSummaryMetric
-                  key={metric.key}
-                  label={metric.label}
-                  currentValue={metric.currentValue}
-                  goalValue={metric.goalValue}
-                  unit={metric.unit}
-                  progressClassName={metric.progressClassName}
-                />
-              ))}
+          <div className="px-4">
+            <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-none">
+              <div className="grid grid-cols-1 md:grid-cols-[repeat(4,minmax(0,1fr))_3.5rem]">
+                {goalSummaryMetrics.map((metric) => (
+                  <BuilderGoalSummaryMetric
+                    key={metric.key}
+                    label={metric.label}
+                    currentValue={metric.currentValue}
+                    goalValue={metric.goalValue}
+                    unit={metric.unit}
+                    progressClassName={metric.progressClassName}
+                  />
+                ))}
 
-              <div className="flex min-h-[78px] items-center justify-center border-t border-neutral-200 bg-white md:border-t-0 md:border-l">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  onClick={() => setIsGoalsDialogOpen(true)}
-                  className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-800"
-                >
-                  <Target className="size-4" />
-                  <span className="sr-only">Open meal plan goals</span>
-                </Button>
+                <div className="flex min-h-[78px] items-center justify-center border-t border-neutral-200 bg-white md:border-t-0 md:border-l">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => setIsGoalsDialogOpen(true)}
+                    className="size-8 rounded-md text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-800"
+                  >
+                    <Target className="size-4" />
+                    <span className="sr-only">Open meal plan goals</span>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -1300,7 +1302,7 @@ export function MealPlanBuilderPageView({
           />
 
           <Card className="overflow-hidden rounded-xl gap-y-3 border-0 bg-neutral-50 shadow-none">
-            <div className="bg-neutral-50 px-3.5 py-2.5">
+            <div className="bg-neutral-50 px-4 py-2.5">
               <div className="flex flex-wrap items-center justify-between gap-x-3">
                 <div
                   className={cn(
