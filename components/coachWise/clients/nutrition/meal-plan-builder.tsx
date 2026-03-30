@@ -754,6 +754,15 @@ export function MealPlanBuilderPageView({
 
     handleNavigateBack()
   }, [handleNavigateBack, initialPlanName, planName])
+  const handleCreateFood = React.useCallback(() => {
+    const nextFoodName = searchQuery.trim()
+
+    toast("Create food", {
+      description: nextFoodName
+        ? `Create flow for "${nextFoodName}" is coming soon.`
+        : "Create flow is coming soon.",
+    })
+  }, [searchQuery])
 
   const addFoodToMeal = React.useCallback(
     (
@@ -778,19 +787,19 @@ export function MealPlanBuilderPageView({
         currentMeals.map((meal) =>
           meal.id === mealId
             ? {
-                ...meal,
-                items: (() => {
-                  const nextItems = [...meal.items]
-                  const normalizedInsertIndex =
-                    typeof insertIndex === "number"
-                      ? Math.max(0, Math.min(insertIndex, nextItems.length))
-                      : nextItems.length
+              ...meal,
+              items: (() => {
+                const nextItems = [...meal.items]
+                const normalizedInsertIndex =
+                  typeof insertIndex === "number"
+                    ? Math.max(0, Math.min(insertIndex, nextItems.length))
+                    : nextItems.length
 
-                  nextItems.splice(normalizedInsertIndex, 0, nextItem)
+                nextItems.splice(normalizedInsertIndex, 0, nextItem)
 
-                  return nextItems
-                })(),
-              }
+                return nextItems
+              })(),
+            }
             : meal
         )
       )
@@ -1266,8 +1275,18 @@ export function MealPlanBuilderPageView({
                         />
                       ))
                     ) : (
-                      <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50 px-4 py-6 text-center text-[13px] text-neutral-500">
-                        No foods found.
+                      <div className="space-y-3">
+                        <div className="rounded-xl border border-dashed border-neutral-300 bg-neutral-100/70 px-4 py-6 text-center text-[13px] text-neutral-500">
+                          No foods found.
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleCreateFood}
+                          className="inline-flex h-9 w-full cursor-pointer items-center justify-center gap-1.5 rounded-md border border-dashed border-brand-300 bg-brand-50/35 px-3 text-[13px] font-medium text-brand-700 transition-colors hover:border-brand-400 hover:bg-brand-50/55"
+                        >
+                          <Plus className="size-3.5" />
+                          Create food
+                        </button>
                       </div>
                     )}
                   </div>
