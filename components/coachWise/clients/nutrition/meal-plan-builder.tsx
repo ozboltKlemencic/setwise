@@ -1321,7 +1321,7 @@ export function MealPlanBuilderPageView({
                           onDrop={handleMealTabDrop}
                           className={cn(
                             "relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-lg border px-3 py-1.5 text-[13px] transition-colors",
-                            editingMealId !== meal.id ? "pr-8" : null,
+                            editingMealId !== meal.id ? "pr-8 pl-8" : null,
                             editingMealId === meal.id
                               ? "border-brand-200 bg-brand-50/60 text-brand-700"
                               : meal.id === activeMealId
@@ -1329,9 +1329,6 @@ export function MealPlanBuilderPageView({
                                 : "border-neutral-200 bg-neutral-100 text-neutral-500 hover:border-neutral-200 hover:text-neutral-800"
                           )}
                         >
-                          {editingMealId !== meal.id ? (
-                            <span className="pointer-events-none absolute inset-0 z-[1] rounded-lg bg-neutral-50/70 opacity-0 transition-opacity group-hover:opacity-100" />
-                          ) : null}
                           <span
                             draggable={editingMealId !== meal.id}
                             onDragStart={(event) => handleMealTabDragStart(event, meal.id)}
@@ -1343,7 +1340,7 @@ export function MealPlanBuilderPageView({
                               "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-lg bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
                               editingMealId === meal.id
                                 ? "pointer-events-none opacity-0"
-                                : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
+                                : "cursor-grab opacity-100 active:cursor-grabbing"
                             )}
                             title="Drag to reorder meal"
                           >
@@ -1397,7 +1394,7 @@ export function MealPlanBuilderPageView({
                                   },
                                 },
                               ]}
-                              triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100"
+                              triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 border-transparent bg-transparent opacity-100 shadow-none hover:border-transparent hover:bg-transparent hover:text-foreground data-[state=open]:border-transparent data-[state=open]:bg-transparent data-[state=open]:opacity-100"
                             />
 
                             <CoachWiseConfirmationDialog
