@@ -1578,25 +1578,35 @@ export function MealPlanBuilderPageView({
                         <BuilderInsertPlaceholder />
                       ) : null}
                     </div>
+                  ) : dragFoodPayload ? (
+                    <div
+                      className="min-h-2"
+                      onDragOver={(event) => handleFoodInsertZoneDragOver(event, 0)}
+                      onDrop={handleMealItemDrop}
+                    >
+                      {dragFoodInsertIndex === 0 ? (
+                        <BuilderInsertPlaceholder />
+                      ) : null}
+                    </div>
                   ) : null}
                   {activeMeal.items.map((item, itemIndex) => (
-                    <React.Fragment key={item.id}>
-                      {dragFoodPayload ? (
+                    <div key={item.id} className="relative">
+                      {dragFoodPayload && itemIndex > 0 ? (
                         <div
-                          className="min-h-2"
+                          className="absolute inset-x-0 -top-2 z-10 h-2"
                           onDragOver={(event) =>
                             handleFoodInsertZoneDragOver(event, itemIndex)
                           }
                           onDrop={handleMealItemDrop}
-                        >
-                          {dragFoodInsertIndex === itemIndex ? (
-                            <BuilderInsertPlaceholder />
-                          ) : null}
-                        </div>
-                      ) : itemIndex > 0 && draggedMealItemId !== null ? (
+                        />
+                      ) : null}
+                      {itemIndex > 0 && draggedMealItemId !== null ? (
                         dragMealItemInsertIndex === itemIndex ? (
-                          <BuilderInsertPlaceholder />
+                          <BuilderInsertPlaceholder className="mb-2" />
                         ) : null
+                      ) : null}
+                      {dragFoodPayload && itemIndex > 0 && dragFoodInsertIndex === itemIndex ? (
+                        <BuilderInsertPlaceholder className="mb-2" />
                       ) : null}
                       <MealItemRow
                         item={item}
@@ -1636,7 +1646,7 @@ export function MealPlanBuilderPageView({
                           )
                         }
                       />
-                    </React.Fragment>
+                    </div>
                   ))}
                   {draggedMealItemId !== null ? (
                     <div
