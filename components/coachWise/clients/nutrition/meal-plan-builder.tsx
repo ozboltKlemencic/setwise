@@ -1580,13 +1580,11 @@ export function MealPlanBuilderPageView({
                     </div>
                   ) : dragFoodPayload ? (
                     <div
-                      className="min-h-2"
+                      className="rounded-xl border border-dashed border-brand-300 bg-brand-50/35 px-4 py-3 text-[13px] font-medium text-brand-700"
                       onDragOver={(event) => handleFoodInsertZoneDragOver(event, 0)}
                       onDrop={handleMealItemDrop}
                     >
-                      {dragFoodInsertIndex === 0 ? (
-                        <BuilderInsertPlaceholder />
-                      ) : null}
+                      Drop to this meal
                     </div>
                   ) : null}
                   {activeMeal.items.map((item, itemIndex) => (
