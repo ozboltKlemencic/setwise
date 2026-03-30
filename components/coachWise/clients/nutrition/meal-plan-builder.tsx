@@ -17,6 +17,10 @@ import {
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import {
+  CreateFoodDialog,
+  type CreateFoodDialogValue,
+} from "@/components/coachWise/clients/nutrition/create-food-dialog"
+import {
   createDefaultMealPlanGoalSettings,
   MealPlanGoalsDialog,
   type MealPlanGoalSettings,
@@ -602,10 +606,12 @@ export function MealPlanBuilderPageView({
     []
   )
   const itemIdCounter = React.useRef(1)
+  const foodIdCounter = React.useRef(Math.max(0, ...FOOD_DB.map((food) => food.id)) + 1)
   const templateIdCounter = React.useRef(100)
   const nameInputRef = React.useRef<HTMLInputElement>(null)
   const mealNameInputRef = React.useRef<HTMLInputElement>(null)
   const deleteMealTriggerRefs = React.useRef<Record<number, HTMLButtonElement | null>>({})
+  const [foodDbVersion, setFoodDbVersion] = React.useState(0)
   const [planName, setPlanName] = React.useState(initialPlanName)
   const [isEditingName, setIsEditingName] = React.useState(false)
   const [meals, setMeals] = React.useState<BuilderMeal[]>([
@@ -625,6 +631,7 @@ export function MealPlanBuilderPageView({
   const [savedTemplates, setSavedTemplates] =
     React.useState<BuilderMealTemplate[]>(MEAL_TEMPLATES)
   const [showSaveTemplateForm, setShowSaveTemplateForm] = React.useState(false)
+  const [isCreateFoodDialogOpen, setIsCreateFoodDialogOpen] = React.useState(false)
   const [newTemplateName, setNewTemplateName] = React.useState("")
   const [isGoalsDialogOpen, setIsGoalsDialogOpen] = React.useState(false)
   const [mealPlanGoals, setMealPlanGoals] = React.useState<MealPlanGoalSettings>(() =>
@@ -661,7 +668,7 @@ export function MealPlanBuilderPageView({
     return FOOD_DB.filter((food) =>
       food.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
-  }, [searchQuery])
+  }, [foodDbVersion, searchQuery])
   const filteredTemplates = React.useMemo(() => {
     if (!templateSearchQuery.trim()) {
       return savedTemplates
@@ -755,14 +762,46 @@ export function MealPlanBuilderPageView({
     handleNavigateBack()
   }, [handleNavigateBack, initialPlanName, planName])
   const handleCreateFood = React.useCallback(() => {
-    const nextFoodName = searchQuery.trim()
+    setIsCreateFoodDialogOpen(true)
+  }, [])
+  const handleCreateFoodSubmit = React.useCallback(
+    (value: CreateFoodDialogValue) => {
+      const nextDefaultQty =
+        value.unit === "piece" || value.unit === "slice"
+          ? 1
+          : 100
+      const nextStep =
+        value.unit === "piece" || value.unit === "slice"
+          ? 1
+          : value.unit === "ml"
+            ? 10
+            : 10
 
-    toast(nextFoodName ? `Create "${nextFoodName}"` : "Create food", {
-      description: nextFoodName
-        ? `Create flow for "${nextFoodName}" is coming soon.`
-        : "Create flow is coming soon.",
-    })
-  }, [searchQuery])
+      FOOD_DB.push({
+        id: foodIdCounter.current++,
+        name: value.name,
+        cal: value.cal,
+        p: value.p,
+        c: value.c,
+        f: value.f,
+        unit: value.unit,
+        step: nextStep,
+        defaultQty: nextDefaultQty,
+      })
+
+      setFoodDbVersion((currentValue) => currentValue + 1)
+      setSearchQuery(value.name)
+      setIsCreateFoodDialogOpen(false)
+
+      toast.success(`Created "${value.name}"`, {
+        description:
+          value.unit === "piece" || value.unit === "slice"
+            ? `Saved with values per ${formatFoodUnitLabel(value.unit)}.`
+            : `Saved with values per 100 ${value.unit}.`,
+      })
+    },
+    []
+  )
 
   const addFoodToMeal = React.useCallback(
     (
@@ -1411,6 +1450,12 @@ export function MealPlanBuilderPageView({
             onOpenChange={setIsGoalsDialogOpen}
             value={mealPlanGoals}
             onSave={setMealPlanGoals}
+          />
+          <CreateFoodDialog
+            open={isCreateFoodDialogOpen}
+            onOpenChange={setIsCreateFoodDialogOpen}
+            initialName={searchQuery.trim()}
+            onCreate={handleCreateFoodSubmit}
           />
 
           <Card className="overflow-hidden rounded-xl gap-y-3 border-0 bg-neutral-50 shadow-none">
