@@ -1239,8 +1239,8 @@ export function MealPlanBuilderPageView({
             ))}
           </div>
 
-          <Card className="overflow-hidden rounded-xl border-neutral-200 bg-neutral-50 shadow-none">
-            <div className="border-b border-neutral-200 bg-neutral-50 px-3 py-2.5">
+          <Card className="overflow-hidden rounded-xl border-0 bg-neutral-50 shadow-none">
+            <div className="bg-neutral-50 px-3 py-2.5">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div
                   className={cn(
@@ -1277,7 +1277,7 @@ export function MealPlanBuilderPageView({
                           )}
                         >
                           {editingMealId !== meal.id ? (
-                            <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/90 opacity-0 transition-opacity group-hover:opacity-100" />
+                            <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/70 opacity-0 transition-opacity group-hover:opacity-100" />
                           ) : null}
                           <span
                             draggable={editingMealId !== meal.id}
