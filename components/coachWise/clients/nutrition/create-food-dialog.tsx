@@ -50,7 +50,8 @@ const createFoodMacroFields: Array<{
       label: "Calories",
       unit: "kcal",
       toneClassName: "border-orange-200 bg-orange-50/55",
-      inputClassName: "focus-visible:border-orange-400",
+      inputClassName:
+        "border-orange-100 bg-orange-50/70 focus-visible:border-orange-300",
       labelClassName: "text-orange-700",
     },
     {
@@ -58,7 +59,8 @@ const createFoodMacroFields: Array<{
       label: "Protein",
       unit: "g",
       toneClassName: "border-emerald-200 bg-emerald-50/55",
-      inputClassName: "focus-visible:border-emerald-400",
+      inputClassName:
+        "border-emerald-100 bg-emerald-50/70 focus-visible:border-emerald-300",
       labelClassName: "text-emerald-700",
     },
     {
@@ -66,7 +68,8 @@ const createFoodMacroFields: Array<{
       label: "Carbs",
       unit: "g",
       toneClassName: "border-sky-200 bg-sky-50/55",
-      inputClassName: "focus-visible:border-sky-400",
+      inputClassName:
+        "border-sky-100 bg-sky-50/70 focus-visible:border-sky-300",
       labelClassName: "text-sky-700",
     },
     {
@@ -74,7 +77,8 @@ const createFoodMacroFields: Array<{
       label: "Fat",
       unit: "g",
       toneClassName: "border-yellow-200 bg-yellow-50/55",
-      inputClassName: "focus-visible:border-yellow-400",
+      inputClassName:
+        "border-yellow-100 bg-yellow-50/70 focus-visible:border-yellow-300",
       labelClassName: "text-yellow-700",
     },
   ]
@@ -278,7 +282,7 @@ export function CreateFoodDialog({
                           }))
                         }}
                         className={cn(
-                          "h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:ring-0",
+                          "h-10 rounded-sm text-neutral-950 shadow-none focus-visible:ring-0",
                           field.inputClassName
                         )}
                       />
