@@ -203,7 +203,7 @@ function BuilderInsertPlaceholder({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "pointer-events-none flex h-8 items-center justify-center rounded-lg border border-dashed border-brand-300 bg-brand-50/60 text-brand-500",
+        "pointer-events-none flex h-8 items-center justify-center rounded-lg border border-dashed border-brand-300 bg-brand-50/35 text-brand-500",
         className
       )}
     >
@@ -1592,21 +1592,30 @@ export function MealPlanBuilderPageView({
                   {activeMeal.items.map((item, itemIndex) => (
                     <div key={item.id} className="relative">
                       {dragFoodPayload && itemIndex > 0 ? (
-                        <div
-                          className="absolute inset-x-0 -top-2 z-10 h-2"
-                          onDragOver={(event) =>
-                            handleFoodInsertZoneDragOver(event, itemIndex)
-                          }
-                          onDrop={handleMealItemDrop}
-                        />
+                        dragFoodInsertIndex === itemIndex ? (
+                          <div
+                            className="mb-2"
+                            onDragOver={(event) =>
+                              handleFoodInsertZoneDragOver(event, itemIndex)
+                            }
+                            onDrop={handleMealItemDrop}
+                          >
+                            <BuilderInsertPlaceholder />
+                          </div>
+                        ) : (
+                          <div
+                            className="absolute inset-x-0 -top-2 z-10 h-3"
+                            onDragOver={(event) =>
+                              handleFoodInsertZoneDragOver(event, itemIndex)
+                            }
+                            onDrop={handleMealItemDrop}
+                          />
+                        )
                       ) : null}
                       {itemIndex > 0 && draggedMealItemId !== null ? (
                         dragMealItemInsertIndex === itemIndex ? (
                           <BuilderInsertPlaceholder className="mb-2" />
                         ) : null
-                      ) : null}
-                      {dragFoodPayload && itemIndex > 0 && dragFoodInsertIndex === itemIndex ? (
-                        <BuilderInsertPlaceholder className="mb-2" />
                       ) : null}
                       <MealItemRow
                         item={item}
