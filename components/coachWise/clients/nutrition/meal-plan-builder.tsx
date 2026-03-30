@@ -611,6 +611,7 @@ export function MealPlanBuilderPageView({
   const nameInputRef = React.useRef<HTMLInputElement>(null)
   const mealNameInputRef = React.useRef<HTMLInputElement>(null)
   const deleteMealTriggerRefs = React.useRef<Record<number, HTMLButtonElement | null>>({})
+  const deleteTemplateTriggerRefs = React.useRef<Record<string, HTMLButtonElement | null>>({})
   const [foodDbVersion, setFoodDbVersion] = React.useState(0)
   const [planName, setPlanName] = React.useState(initialPlanName)
   const [isEditingName, setIsEditingName] = React.useState(false)
@@ -1396,19 +1397,42 @@ export function MealPlanBuilderPageView({
                   <div className="space-y-2 xl:-mr-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:[overflow-y:overlay] xl:pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
                     {filteredTemplates.length ? (
                       filteredTemplates.map((template) => (
-                        <TemplateLibraryCard
-                          key={template.id}
-                          template={template}
-                          onApply={() => addTemplateToMeal(template)}
-                          onCreateMeal={() => createMealFromTemplate(template)}
-                          onDelete={() =>
-                            setSavedTemplates((currentTemplates) =>
-                              currentTemplates.filter(
-                                (currentTemplate) => currentTemplate.id !== template.id
-                              )
-                            )
-                          }
-                        />
+                        <React.Fragment key={template.id}>
+                          <TemplateLibraryCard
+                            template={template}
+                            onApply={() => addTemplateToMeal(template)}
+                            onCreateMeal={() => createMealFromTemplate(template)}
+                            onDelete={() => {
+                              deleteTemplateTriggerRefs.current[template.id]?.click()
+                            }}
+                          />
+                          {template.isCustom ? (
+                            <CoachWiseConfirmationDialog
+                              title="Delete this template?"
+                              description={`${template.name} will be removed from saved templates. This action can't be undone.`}
+                              confirmLabel="Delete template"
+                              variant="destructive"
+                              onConfirm={() =>
+                                setSavedTemplates((currentTemplates) =>
+                                  currentTemplates.filter(
+                                    (currentTemplate) => currentTemplate.id !== template.id
+                                  )
+                                )
+                              }
+                              trigger={
+                                <button
+                                  ref={(node) => {
+                                    deleteTemplateTriggerRefs.current[template.id] = node
+                                  }}
+                                  type="button"
+                                  tabIndex={-1}
+                                  aria-hidden="true"
+                                  className="sr-only"
+                                />
+                              }
+                            />
+                          ) : null}
+                        </React.Fragment>
                       ))
                     ) : (
                       <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-50 px-4 py-6 text-center text-[13px] text-neutral-500">
