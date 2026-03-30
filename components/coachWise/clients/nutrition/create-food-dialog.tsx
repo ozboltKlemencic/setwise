@@ -33,8 +33,8 @@ const createFoodUnitOptions: Array<{
 }> = [
   { value: "g", label: "100 g", description: "Default" },
   { value: "ml", label: "100 ml", description: "Liquids" },
-  { value: "piece", label: "Kos", description: "Eggs / banana" },
-  { value: "slice", label: "Rezina", description: "Bread" },
+  { value: "piece", label: "Piece", description: "Eggs / banana" },
+  { value: "slice", label: "Slice", description: "Bread" },
 ]
 
 const createFoodMacroFields: Array<{
@@ -134,8 +134,7 @@ export function CreateFoodDialog({
             Create food
           </DialogTitle>
           <DialogDescription className="mt-1 max-w-[320px] text-[13px] leading-5 text-neutral-500">
-            Add a food name and its macro values. By default values are entered per
-            100 g, but for foods like eggs or bananas you can switch to piece.
+            Add a food name and its macro values.
           </DialogDescription>
         </DialogHeader>
 
@@ -155,7 +154,7 @@ export function CreateFoodDialog({
         >
           <div className="w-full space-y-4 px-7 pt-4 pb-5">
             <div className="space-y-1.5">
-              <label className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+              <label className="text-[12px] font-medium capitalize text-neutral-700">
                 Food name
               </label>
               <Input
@@ -167,13 +166,13 @@ export function CreateFoodDialog({
                     name: event.target.value,
                   }))
                 }
-                placeholder="e.g. Kruh"
-                className="h-10 rounded-sm border-neutral-200 bg-neutral-50 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                placeholder="e.g. Bread"
+                className="h-10 rounded-sm border-neutral-100 bg-neutral-50 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
               />
             </div>
 
             <div className="space-y-2.5">
-              <div className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+              <div className="text-[12px] font-medium capitalize text-neutral-700">
                 Unit
               </div>
               <div className="grid grid-cols-4 gap-2">
@@ -208,7 +207,7 @@ export function CreateFoodDialog({
             </div>
 
             <div className="space-y-2.5">
-              <div className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+              <div className="text-[12px] font-medium text-neutral-700">
                 {getCreateFoodMetricLabel(draftValue.unit)}
               </div>
 
@@ -252,7 +251,7 @@ export function CreateFoodDialog({
           <DialogFooter className="w-full border-t border-neutral-200 bg-neutral-100/80 px-7 py-4 sm:justify-start">
             <div className="grid w-full grid-cols-2 gap-3">
               <SecondaryActionButton
-                label="Preklici"
+                label="Cancel"
                 onClick={() => onOpenChange(false)}
                 className="h-11 w-full justify-center rounded-lg border-neutral-200 bg-white text-[15px] font-medium text-neutral-500"
               />
