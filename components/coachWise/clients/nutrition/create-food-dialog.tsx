@@ -158,7 +158,7 @@ export function CreateFoodDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[440px]"
+        className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[480px]"
       >
         <DialogHeader className="w-full gap-0 px-7 pt-6 pb-1 text-left">
           <DialogTitle className="text-[17px] font-semibold text-neutral-950">
