@@ -1306,7 +1306,7 @@ export function MealPlanBuilderPageView({
                   {meals.map((meal, mealIndex) => (
                     <React.Fragment key={meal.id}>
                       {dragInsertIndex === mealIndex && draggedMealId !== null ? (
-                        <span className="pointer-events-none flex h-8 w-4 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
+                        <span className="pointer-events-none flex h-8 w-4 items-center justify-center rounded-md border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
                           <Plus className="size-2.5" />
                         </span>
                       ) : null}
@@ -1320,7 +1320,7 @@ export function MealPlanBuilderPageView({
                           }
                           onDrop={handleMealTabDrop}
                           className={cn(
-                            "relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-md border px-3 py-1.5 text-[13px] transition-colors",
+                            "relative isolate inline-flex min-w-[5.8rem] items-center justify-center gap-2 overflow-visible rounded-lg border px-3 py-1.5 text-[13px] transition-colors",
                             editingMealId !== meal.id ? "pr-8" : null,
                             editingMealId === meal.id
                               ? "border-brand-200 bg-brand-50/60 text-brand-700"
@@ -1330,7 +1330,7 @@ export function MealPlanBuilderPageView({
                           )}
                         >
                           {editingMealId !== meal.id ? (
-                            <span className="pointer-events-none absolute inset-0 z-[1] rounded-md bg-neutral-50/70 opacity-0 transition-opacity group-hover:opacity-100" />
+                            <span className="pointer-events-none absolute inset-0 z-[1] rounded-lg bg-neutral-50/70 opacity-0 transition-opacity group-hover:opacity-100" />
                           ) : null}
                           <span
                             draggable={editingMealId !== meal.id}
@@ -1340,7 +1340,7 @@ export function MealPlanBuilderPageView({
                               event.stopPropagation()
                             }}
                             className={cn(
-                              "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-md bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
+                              "absolute top-1/2 left-0.5 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-lg bg-transparent text-muted-foreground shadow-none transition-colors hover:bg-neutral-100/70 hover:text-foreground",
                               editingMealId === meal.id
                                 ? "pointer-events-none opacity-0"
                                 : "cursor-grab opacity-0 group-hover:opacity-100 active:cursor-grabbing"
@@ -1424,14 +1424,16 @@ export function MealPlanBuilderPageView({
                     </React.Fragment>
                   ))}
                   {dragInsertIndex === meals.length && draggedMealId !== null ? (
-                    <span className="pointer-events-none flex h-7 w-4 items-center justify-center rounded-sm border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
+                    <span className="pointer-events-none flex h-7 w-4 items-center justify-center rounded-md border border-dashed border-brand-300 bg-brand-50/70 text-brand-500">
                       <Plus className="size-2.5" />
                     </span>
                   ) : null}
                   <SecondaryActionButton
                     label="Add meal"
                     icon={Plus}
+                    iconClassName="size-3"
                     onClick={addMeal}
+                    className="h-8.5 rounded-lg border-dashed border-neutral-200 bg-neutral-50 px-3 text-[13px] font-medium text-neutral-600 hover:border-neutral-300 hover:bg-neutral-100/80 hover:text-neutral-800"
                   />
                 </div>
 

@@ -312,11 +312,11 @@ export function MealPlanGoalsDialog({
           </div>
         </div>
 
-        <DialogFooter className="grid w-full grid-cols-2 gap-3 border-t border-neutral-200/70 bg-neutral-100 px-7 py-4 sm:grid-cols-2">
+        <DialogFooter className="grid w-full grid-cols-2 gap-3 border-t border-neutral-200/70 bg-neutral-100/60 px-7 py-4 sm:grid-cols-2">
           <SecondaryActionButton
             label="Preklici"
             onClick={() => onOpenChange(false)}
-            className="h-11 rounded-lg justify-center text-[14px] font-semibold"
+            className="h-11 rounded-lg bg-neutral-50 justify-center text-[14px] font-semibold"
           />
           <PrimaryActionButton
             label="Shrani cilje"
@@ -324,7 +324,7 @@ export function MealPlanGoalsDialog({
               onSave(draftValue)
               onOpenChange(false)
             }}
-            className="h-11 rounded-lg justify-center text-[14px] font-semibold"
+            className="h-11 rounded-lg  justify-center text-[14px] font-semibold"
           />
         </DialogFooter>
       </DialogContent>
