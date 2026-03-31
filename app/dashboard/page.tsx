@@ -1,3 +1,5 @@
+import { Suspense } from "react"
+
 import { AppSidebar } from "@/components/coachWise/sidebar/sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
@@ -9,6 +11,12 @@ import {
 } from "@/components/ui/sidebar"
 
 import data from "./data.json"
+
+function SiteHeaderFallback() {
+  return (
+    <div className="sticky top-0 z-20 flex h-(--header-height) w-full shrink-0 items-center border-b border-neutral-200 bg-neutral-50" />
+  )
+}
 
 export default function Page() {
   return (
@@ -22,7 +30,9 @@ export default function Page() {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        <Suspense fallback={<SiteHeaderFallback />}>
+          <SiteHeader />
+        </Suspense>
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">

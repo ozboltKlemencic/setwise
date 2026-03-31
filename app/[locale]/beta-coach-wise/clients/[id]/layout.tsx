@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { Suspense } from "react"
 import { MessageSquareText } from "lucide-react"
 import { notFound } from "next/navigation"
 
@@ -9,6 +10,12 @@ import {
   getClientWhatsappLink,
   getCoachWiseClientById,
 } from "@/lib/handlers/clients.handlers"
+
+function SiteHeaderFallback() {
+  return (
+    <div className="sticky top-0 z-20 flex h-(--header-height) w-full shrink-0 items-center border-b border-neutral-200 bg-neutral-50" />
+  )
+}
 
 type Props = {
   children: ReactNode
@@ -31,7 +38,9 @@ export default async function ClientDetailLayout({ children, params }: Props) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <SiteHeader />
+      <Suspense fallback={<SiteHeaderFallback />}>
+        <SiteHeader />
+      </Suspense>
       <TabsNav
         locale={locale}
         clientId={clientId}
