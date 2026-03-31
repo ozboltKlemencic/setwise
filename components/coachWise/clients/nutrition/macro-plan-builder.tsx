@@ -671,18 +671,18 @@ export function MacroPlanBuilderPageView({
             <label className="block text-[13px] font-medium text-neutral-800">
               Daily calories
             </label>
-              <div className="relative rounded-xl border border-neutral-200 bg-neutral-100/70 px-4 py-3">
-                <Input
-                  type="number"
-                  value={calories}
-                  onChange={(event) =>
-                    setCalories(Number(event.target.value) || 0)
-                  }
-                  className="h-12 border-0 bg-transparent px-10 text-center text-[24px] font-semibold shadow-none focus-visible:ring-0"
-                />
-                <Flame className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-neutral-400" />
-                <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
-                  kcal
+            <div className="relative rounded-xl border border-neutral-200 bg-neutral-100/70 px-4 py-3">
+              <Input
+                type="number"
+                value={calories}
+                onChange={(event) =>
+                  setCalories(Number(event.target.value) || 0)
+                }
+                className="h-12 border-0 bg-transparent px-10 text-center text-[22px]! font-semibold shadow-none focus-visible:ring-0"
+              />
+              <Flame className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-neutral-400" />
+              <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
+                kcal
               </span>
             </div>
           </div>
