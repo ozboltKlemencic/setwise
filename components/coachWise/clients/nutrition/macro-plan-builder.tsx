@@ -6,11 +6,13 @@ import {
   Flame,
   Lock,
   LockOpen,
+  Pencil,
   Plus,
   Trash2,
 } from "lucide-react"
 
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
+import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
@@ -139,7 +141,7 @@ function MacroPresetChip({
         />
       ) : (
         <div
-          className="pr-4 text-[12.5px] font-medium"
+          className="pr-7 text-[12.5px] font-medium"
           onDoubleClick={(event) => {
             event.stopPropagation()
             onStartEditing()
@@ -153,20 +155,33 @@ function MacroPresetChip({
         {getPresetLabel(preset)}
       </div>
 
-      {canDelete ? (
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onClick={(event) => {
-            event.stopPropagation()
-            onDelete()
-          }}
-          className="absolute top-1.5 right-1.5 size-5 rounded-md border-neutral-200 bg-white/90 text-neutral-400 opacity-0 shadow-none transition-opacity hover:bg-neutral-50 hover:text-rose-500 group-hover:opacity-100"
-        >
-          <Trash2 className="size-3" />
-          <span className="sr-only">Delete preset</span>
-        </Button>
+      {!isEditing ? (
+        <OverflowActionsMenu
+          triggerLabel={`Open actions for ${preset.name}`}
+          items={[
+            {
+              id: "edit",
+              label: "Edit preset",
+              icon: Pencil,
+              onSelect: onStartEditing,
+            },
+            {
+              id: "delete",
+              label: "Delete preset",
+              icon: Trash2,
+              variant: "destructive",
+              disabled: !canDelete,
+              onSelect: () => {
+                if (!canDelete) {
+                  return
+                }
+
+                onDelete()
+              },
+            },
+          ]}
+          triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 cursor-pointer border-transparent bg-transparent opacity-100 shadow-none hover:border-transparent hover:bg-transparent hover:text-foreground data-[state=open]:border-transparent data-[state=open]:bg-transparent data-[state=open]:opacity-100"
+        />
       ) : null}
     </div>
   )
