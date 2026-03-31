@@ -15,7 +15,6 @@ import { PrimaryActionButton } from "@/components/coachWise/primary-action-butto
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
@@ -116,9 +115,9 @@ function MacroPresetChip({
       className={cn(
         "group relative min-w-[104px] rounded-xl border px-3 py-2 text-left transition-colors",
         isActive
-          ? "border-brand-500 bg-brand-50/70"
-          : "border-neutral-200 bg-white hover:bg-neutral-50",
-        isChanged && "border-amber-300 bg-amber-50/60"
+          ? "border-brand-300 bg-brand-50/60 text-brand-700"
+          : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100",
+        isChanged && "border-amber-300 bg-amber-50/60 text-amber-800"
       )}
     >
       {isEditing ? (
@@ -136,11 +135,11 @@ function MacroPresetChip({
             }
           }}
           onClick={(event) => event.stopPropagation()}
-          className="h-7 rounded-sm border-neutral-200 px-2 text-[12px] font-medium shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          className="h-7 rounded-sm border-neutral-200 bg-white px-2 text-[12px] font-medium shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
         />
       ) : (
         <div
-          className="pr-4 text-[12.5px] font-medium text-neutral-950"
+          className="pr-4 text-[12.5px] font-medium"
           onDoubleClick={(event) => {
             event.stopPropagation()
             onStartEditing()
@@ -150,7 +149,7 @@ function MacroPresetChip({
         </div>
       )}
 
-      <div className="mt-0.5 text-[11px] text-neutral-500">
+      <div className={cn("mt-0.5 text-[11px]", isActive ? "text-brand-500" : "text-neutral-500")}>
         {getPresetLabel(preset)}
       </div>
 
@@ -209,86 +208,82 @@ function MacroSliderCard({
   }, [draftValue, onChangeValue])
 
   return (
-    <Card
-      className="rounded-xl border-0 bg-neutral-100/70 shadow-none"
-    >
-      <CardContent className="space-y-4 p-4">
-        <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-sm"
-            onClick={onToggleLock}
-            className={cn(
-              "size-8 rounded-md shadow-none",
-              locked
-                ? "border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50"
-                : "border-neutral-200 bg-neutral-50 text-neutral-500 hover:bg-white"
-            )}
-          >
-            {locked ? <Lock className="size-3.5" /> : <LockOpen className="size-3.5" />}
-            <span className="sr-only">
-              {locked ? "Unlock macro" : "Lock macro"}
-            </span>
-          </Button>
-
-          <div className="min-w-0 flex-1">
-            <div className="text-[14px] font-medium text-neutral-950">
-              {meta.label}
-            </div>
-            <div className="text-[12px] text-neutral-500">
-              {grams}g target
-            </div>
-          </div>
-
-          {isEditingValue ? (
-            <Input
-              autoFocus
-              type="number"
-              min="5"
-              max="60"
-              value={draftValue}
-              onChange={(event) => setDraftValue(event.target.value)}
-              onBlur={commitDraftValue}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  commitDraftValue()
-                }
-
-                if (event.key === "Escape") {
-                  setDraftValue(String(value))
-                  setIsEditingValue(false)
-                }
-              }}
-              onFocus={(event) => event.target.select()}
-              className="h-8 w-[68px] rounded-sm border-neutral-200 px-2 text-center text-[14px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-            />
-          ) : (
-            <button
-              type="button"
-              onClick={() => setIsEditingValue(true)}
-              className={cn(
-                "rounded-md bg-neutral-50 px-2 py-1 text-[18px] font-semibold transition-colors hover:bg-neutral-100",
-                meta.text
-              )}
-            >
-              {value}%
-            </button>
+    <div className="space-y-2.5 py-1">
+      <div className="flex items-center gap-2.5">
+        <Button
+          type="button"
+          variant="outline"
+          size="icon-sm"
+          onClick={onToggleLock}
+          className={cn(
+            "size-7 rounded-md shadow-none",
+            locked
+              ? "border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50"
+              : "border-neutral-200 bg-neutral-50 text-neutral-500 hover:bg-white"
           )}
+        >
+          {locked ? <Lock className="size-3.5" /> : <LockOpen className="size-3.5" />}
+          <span className="sr-only">
+            {locked ? "Unlock macro" : "Lock macro"}
+          </span>
+        </Button>
+
+        <div className="min-w-0 flex-1">
+          <div className="text-[14px] font-medium text-neutral-950">
+            {meta.label}
+          </div>
+          <div className="text-[12px] text-neutral-500">
+            {grams}g target
+          </div>
         </div>
 
-        <input
-          type="range"
-          min="5"
-          max="60"
-          value={value}
-          onChange={(event) => onChangeValue(Number(event.target.value))}
-          disabled={locked}
-          className={cn("w-full cursor-pointer accent-current", locked && "opacity-45")}
-          style={{ accentColor: meta.ring }}
-        />
-      </CardContent>
-    </Card>
+        {isEditingValue ? (
+          <Input
+            autoFocus
+            type="number"
+            min="5"
+            max="60"
+            value={draftValue}
+            onChange={(event) => setDraftValue(event.target.value)}
+            onBlur={commitDraftValue}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                commitDraftValue()
+              }
+
+              if (event.key === "Escape") {
+                setDraftValue(String(value))
+                setIsEditingValue(false)
+              }
+            }}
+            onFocus={(event) => event.target.select()}
+            className="h-7 w-[66px] rounded-sm border-neutral-200 px-2 text-center text-[14px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsEditingValue(true)}
+            className={cn(
+              "rounded-md bg-neutral-50 px-2 py-0.5 text-[18px] font-semibold transition-colors hover:bg-neutral-100",
+              meta.text
+            )}
+          >
+            {value}%
+          </button>
+        )}
+      </div>
+
+      <input
+        type="range"
+        min="5"
+        max="60"
+        value={value}
+        onChange={(event) => onChangeValue(Number(event.target.value))}
+        disabled={locked}
+        className={cn("w-full cursor-pointer accent-current", locked && "opacity-45")}
+        style={{ accentColor: meta.ring }}
+      />
+    </div>
   )
 }
 
@@ -530,8 +525,8 @@ export function MacroPlanBuilderPageView({
         saveDisabled={!canSave}
       />
 
-      <div className="mx-auto max-w-[1080px] space-y-5 px-4 py-4">
-        <div className="space-y-2">
+      <div className="mx-auto max-w-md space-y-4 px-4 py-4">
+        <div className="space-y-1.5 px-4">
           <div className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-500">
             Daily Targets
           </div>
@@ -556,167 +551,167 @@ export function MacroPlanBuilderPageView({
         </div>
 
         <div className="space-y-5 rounded-xl bg-neutral-50/90 p-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between gap-3">
-                <div className="text-[13px] font-medium text-neutral-800">
-                  Presets
-                </div>
-                <div className="text-[11px] text-neutral-500">
-                  Lock up to 2 macros while adjusting the third
-                </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-[13px] font-medium text-neutral-800">
+                Presets
               </div>
+              <div className="text-[11px] text-neutral-500">
+                Lock up to 2 macros while adjusting the third
+              </div>
+            </div>
 
-              <div className="flex flex-wrap gap-2">
-                {presets.map((preset) => (
-                  <MacroPresetChip
-                    key={preset.id}
-                    preset={preset}
-                    isActive={selectedPresetId === preset.id && !hasPresetChanged}
-                    isChanged={selectedPresetId === preset.id && hasPresetChanged}
-                    isEditing={editingPresetId === preset.id}
-                    canDelete={presets.length > 1}
-                    editingName={editingPresetName}
-                    onSelect={() => applyPreset(preset)}
-                    onStartEditing={() => {
-                      setEditingPresetId(preset.id)
-                      setEditingPresetName(preset.name)
-                    }}
-                    onEditingNameChange={setEditingPresetName}
-                    onCommitEditing={() => {
-                      if (editingPresetName.trim()) {
-                        setPresets((currentPresets) =>
-                          currentPresets.map((currentPreset) =>
-                            currentPreset.id === preset.id
-                              ? { ...currentPreset, name: editingPresetName.trim() }
-                              : currentPreset
-                          )
+            <div className="flex flex-wrap gap-2">
+              {presets.map((preset) => (
+                <MacroPresetChip
+                  key={preset.id}
+                  preset={preset}
+                  isActive={selectedPresetId === preset.id && !hasPresetChanged}
+                  isChanged={selectedPresetId === preset.id && hasPresetChanged}
+                  isEditing={editingPresetId === preset.id}
+                  canDelete={presets.length > 1}
+                  editingName={editingPresetName}
+                  onSelect={() => applyPreset(preset)}
+                  onStartEditing={() => {
+                    setEditingPresetId(preset.id)
+                    setEditingPresetName(preset.name)
+                  }}
+                  onEditingNameChange={setEditingPresetName}
+                  onCommitEditing={() => {
+                    if (editingPresetName.trim()) {
+                      setPresets((currentPresets) =>
+                        currentPresets.map((currentPreset) =>
+                          currentPreset.id === preset.id
+                            ? { ...currentPreset, name: editingPresetName.trim() }
+                            : currentPreset
                         )
-                      }
-                      setEditingPresetId(null)
-                    }}
-                    onCancelEditing={() => setEditingPresetId(null)}
-                    onDelete={() => handleDeletePreset(preset.id)}
-                  />
-                ))}
-
-                {showCreatePresetInput ? (
-                  <div className="flex min-w-[120px] flex-col gap-1 rounded-xl border border-brand-300 bg-brand-50/50 px-3 py-2">
-                    <Input
-                      autoFocus
-                      value={newPresetName}
-                      onChange={(event) => setNewPresetName(event.target.value)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter") {
-                          handleCreatePreset()
-                        }
-                        if (event.key === "Escape") {
-                          setShowCreatePresetInput(false)
-                          setNewPresetName("")
-                        }
-                      }}
-                      onBlur={() => {
-                        if (!newPresetName.trim()) {
-                          setShowCreatePresetInput(false)
-                        }
-                      }}
-                      placeholder="Preset name"
-                      className="h-7 rounded-sm border-neutral-200 bg-white px-2 text-[12px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-                    />
-                    <div className="text-[11px] text-neutral-500">
-                      {getPresetLabel(macros)}
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setShowCreatePresetInput(true)}
-                    className="flex min-h-[58px] min-w-[58px] items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-white text-neutral-400 transition-colors hover:border-brand-300 hover:text-brand-600"
-                  >
-                    <Plus className="size-4" />
-                  </button>
-                )}
-              </div>
-
-              {hasPresetChanged && selectedPreset && canSave ? (
-                <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/60 px-3 py-2.5">
-                  <div className="text-[12px] text-amber-700">
-                    <span className="font-medium">{selectedPreset.name}</span>
-                    {" updated to "}
-                    <span className="font-medium">{getPresetLabel(macros)}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <SecondaryActionButton
-                      label="Save as new"
-                      onClick={() => {
-                        setShowCreatePresetInput(true)
-                        setNewPresetName("")
-                      }}
-                    />
-                    <PrimaryActionButton
-                      label="Update preset"
-                      onClick={handleSaveCurrentPreset}
-                    />
-                  </div>
-                </div>
-              ) : null}
-            </div>
-
-            <div className="space-y-2">
-              <label className="block text-[13px] font-medium text-neutral-800">
-                Daily calories
-              </label>
-              <div className="relative max-w-[240px]">
-                <Input
-                  type="number"
-                  value={calories}
-                  onChange={(event) =>
-                    setCalories(Number(event.target.value) || 0)
-                  }
-                  className="h-11 rounded-sm border-neutral-200 bg-neutral-100/70 pr-16 pl-11 text-[18px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-                />
-                <Flame className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
-                <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
-                  kcal
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              {(Object.keys(macros) as MacroKey[]).map((macroKey) => (
-                <MacroSliderCard
-                  key={macroKey}
-                  macroKey={macroKey}
-                  value={macros[macroKey]}
-                  grams={grams[macroKey]}
-                  locked={lockedMacros.has(macroKey)}
-                  onToggleLock={() => toggleLock(macroKey)}
-                  onChangeValue={(nextValue) =>
-                    updateMacroValue(macroKey, nextValue)
-                  }
+                      )
+                    }
+                    setEditingPresetId(null)
+                  }}
+                  onCancelEditing={() => setEditingPresetId(null)}
+                  onDelete={() => handleDeletePreset(preset.id)}
                 />
               ))}
+
+              {showCreatePresetInput ? (
+                <div className="flex min-w-[120px] flex-col gap-1 rounded-xl border border-brand-300 bg-brand-50/60 px-3 py-2">
+                  <Input
+                    autoFocus
+                    value={newPresetName}
+                    onChange={(event) => setNewPresetName(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        handleCreatePreset()
+                      }
+                      if (event.key === "Escape") {
+                        setShowCreatePresetInput(false)
+                        setNewPresetName("")
+                      }
+                    }}
+                    onBlur={() => {
+                      if (!newPresetName.trim()) {
+                        setShowCreatePresetInput(false)
+                      }
+                    }}
+                    placeholder="Preset name"
+                    className="h-7 rounded-sm border-neutral-200 bg-white px-2 text-[12px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  />
+                  <div className="text-[11px] text-neutral-500">
+                    {getPresetLabel(macros)}
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowCreatePresetInput(true)}
+                  className="flex min-h-[58px] min-w-[58px] items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-neutral-50 text-neutral-400 transition-colors hover:border-brand-300 hover:bg-brand-50/40 hover:text-brand-600"
+                >
+                  <Plus className="size-4" />
+                </button>
+              )}
             </div>
 
-            {totalPercent !== 100 ? (
-              <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-700">
-                Macro total is {totalPercent}%. It needs to equal 100% before
-                you can save the plan.
-              </div>
-            ) : null}
-
-            {lockedMacros.size ? (
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-3">
-                <div className="text-[12px] text-brand-700">
-                  {lockedMacros.size === 1
-                    ? "1 macro is locked. The other 2 rebalance automatically."
-                    : "2 macros are locked. Only the remaining one rebalances."}
+            {hasPresetChanged && selectedPreset && canSave ? (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/60 px-3 py-2.5">
+                <div className="text-[12px] text-amber-700">
+                  <span className="font-medium">{selectedPreset.name}</span>
+                  {" updated to "}
+                  <span className="font-medium">{getPresetLabel(macros)}</span>
                 </div>
-                <SecondaryActionButton
-                  label="Unlock all"
-                  onClick={() => setLockedMacros(new Set())}
-                />
+                <div className="flex items-center gap-2">
+                  <SecondaryActionButton
+                    label="Save as new"
+                    onClick={() => {
+                      setShowCreatePresetInput(true)
+                      setNewPresetName("")
+                    }}
+                  />
+                  <PrimaryActionButton
+                    label="Update preset"
+                    onClick={handleSaveCurrentPreset}
+                  />
+                </div>
               </div>
             ) : null}
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-[13px] font-medium text-neutral-800">
+              Daily calories
+            </label>
+            <div className="relative rounded-xl border border-neutral-200 bg-neutral-100/70 px-4 py-3">
+              <Input
+                type="number"
+                value={calories}
+                onChange={(event) =>
+                  setCalories(Number(event.target.value) || 0)
+                }
+                className="h-12 border-0 bg-transparent px-10 text-center text-[18px] font-semibold shadow-none focus-visible:ring-0"
+              />
+              <Flame className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-neutral-400" />
+              <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
+                kcal
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {(Object.keys(macros) as MacroKey[]).map((macroKey) => (
+              <MacroSliderCard
+                key={macroKey}
+                macroKey={macroKey}
+                value={macros[macroKey]}
+                grams={grams[macroKey]}
+                locked={lockedMacros.has(macroKey)}
+                onToggleLock={() => toggleLock(macroKey)}
+                onChangeValue={(nextValue) =>
+                  updateMacroValue(macroKey, nextValue)
+                }
+              />
+            ))}
+          </div>
+
+          {totalPercent !== 100 ? (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-700">
+              Macro total is {totalPercent}%. It needs to equal 100% before
+              you can save the plan.
+            </div>
+          ) : null}
+
+          {lockedMacros.size ? (
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-3">
+              <div className="text-[12px] text-brand-700">
+                {lockedMacros.size === 1
+                  ? "1 macro is locked. The other 2 rebalance automatically."
+                  : "2 macros are locked. Only the remaining one rebalances."}
+              </div>
+              <SecondaryActionButton
+                label="Unlock all"
+                onClick={() => setLockedMacros(new Set())}
+              />
+            </div>
+          ) : null}
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-2">
