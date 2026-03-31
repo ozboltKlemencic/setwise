@@ -607,7 +607,7 @@ export function MacroPlanBuilderPageView({
         }}
       />
 
-      <div className="fixed inset-x-0 top-0 z-30">
+      <div className="fixed inset-x-0 top-2 z-30">
         {hasPresetChanged && selectedPreset && canSave && !showCreatePresetInput ? (
           <div className="mx-auto max-w-md px-4">
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
