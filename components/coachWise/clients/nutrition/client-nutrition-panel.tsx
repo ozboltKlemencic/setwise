@@ -4738,10 +4738,7 @@ export function ClientNutritionPanel({
                         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
                           Edit plan
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onSelect={() => handleCopyMealPlan(plan)}
-                          className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"
-                        >
+                        <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
                           Duplicate plan
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
