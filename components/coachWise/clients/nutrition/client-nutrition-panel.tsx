@@ -119,6 +119,7 @@ import {
   readStoredNutritionMealPlans,
   removeStoredNutritionMealPlan,
   resolveNutritionClientIdFromPath,
+  upsertStoredNutritionMealPlan,
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
 import { cn } from "@/lib/utils"
@@ -292,6 +293,39 @@ function mergeNutritionMealPlans(
   })
 
   return Array.from(mergedMealPlans.values())
+}
+
+function normalizeDuplicatedMealPlanTitleBase(title: string) {
+  return title.replace(/\s*-\s*copy\s+\d+$/i, "").trim()
+}
+
+function buildNextDuplicatedMealPlanTitle(
+  sourceTitle: string,
+  existingTitles: string[]
+) {
+  const baseTitle = normalizeDuplicatedMealPlanTitleBase(sourceTitle)
+  const duplicatePattern = new RegExp(
+    `^${baseTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*-\\s*copy\\s+(\\d+)$`,
+    "i"
+  )
+
+  const highestCopyIndex = existingTitles.reduce((highestIndex, title) => {
+    const normalizedTitle = title.trim()
+
+    if (normalizedTitle.toLowerCase() === baseTitle.toLowerCase()) {
+      return Math.max(highestIndex, 0)
+    }
+
+    const match = normalizedTitle.match(duplicatePattern)
+    if (!match) {
+      return highestIndex
+    }
+
+    const nextIndex = Number.parseInt(match[1] ?? "0", 10)
+    return Number.isFinite(nextIndex) ? Math.max(highestIndex, nextIndex) : highestIndex
+  }, 0)
+
+  return `${baseTitle} - copy ${highestCopyIndex + 1}`
 }
 
 function useStoredNutritionMealPlans(pathHint?: string) {
@@ -3245,12 +3279,13 @@ export function ClientNutritionMealPlansView({
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
   const { clientId, storedMealPlans } = useStoredNutritionMealPlans(pathname)
   const [hiddenMealPlanIds, setHiddenMealPlanIds] = React.useState<string[]>([])
+  const allMealPlans = React.useMemo(
+    () => mergeNutritionMealPlans(preset.mealPlans, storedMealPlans),
+    [preset.mealPlans, storedMealPlans]
+  )
   const mealPlans = React.useMemo(
-    () =>
-      mergeNutritionMealPlans(preset.mealPlans, storedMealPlans).filter(
-        (plan) => !hiddenMealPlanIds.includes(plan.id)
-      ),
-    [hiddenMealPlanIds, preset.mealPlans, storedMealPlans]
+    () => allMealPlans.filter((plan) => !hiddenMealPlanIds.includes(plan.id)),
+    [allMealPlans, hiddenMealPlanIds]
   )
 
   const handleOpenMealPlan = React.useCallback(
@@ -3277,25 +3312,53 @@ export function ClientNutritionMealPlansView({
     [pathname, router]
   )
 
-  const handleCopyMealPlan = React.useCallback(async (plan: NutritionMealPlan) => {
-    const planSummary = [
-      plan.title,
-      plan.subtitle,
-      plan.macros,
-      plan.schedule,
-    ].join("\n")
-
-    try {
-      await navigator.clipboard.writeText(planSummary)
-      toast.success("Meal plan copied", {
+  const handleCopyMealPlan = React.useCallback((plan: NutritionMealPlan) => {
+    if (!clientId) {
+      toast.error("Could not duplicate meal plan", {
         description: `For ${plan.title}.`,
       })
-    } catch {
-      toast.error("Could not copy meal plan", {
-        description: `For ${plan.title}.`,
-      })
+      return
     }
-  }, [])
+
+    const sourceStoredMealPlan = storedMealPlans.find(
+      (storedPlan) => storedPlan.id === plan.id
+    )
+    const sourceSections =
+      sourceStoredMealPlan?.sections ?? nutritionMealPlanSections[plan.id] ?? []
+    const nextTitle = buildNextDuplicatedMealPlanTitle(
+      plan.title,
+      allMealPlans.map((mealPlan) => mealPlan.title)
+    )
+
+    const duplicatedPlan: StoredNutritionMealPlan = {
+      id:
+        globalThis.crypto?.randomUUID?.() ??
+        `custom-meal-plan-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+      title: nextTitle,
+      subtitle: plan.subtitle,
+      type: plan.type,
+      calories: plan.calories,
+      macros: plan.macros,
+      schedule: plan.schedule,
+      segments: plan.segments.map((segment) => ({ ...segment })),
+      sections: sourceSections.map((section) => ({
+        ...section,
+        options: section.options.map((option) => ({ ...option })),
+      })),
+      createdAt: new Date().toISOString(),
+      builderSnapshot: buildMealPlanBuilderSnapshotFromSections({
+        planName: nextTitle,
+        sections: sourceSections,
+        builderSnapshot: sourceStoredMealPlan?.builderSnapshot,
+      }),
+    }
+
+    upsertStoredNutritionMealPlan(clientId, duplicatedPlan)
+
+    toast.success("Meal plan duplicated", {
+      description: `Created ${nextTitle}.`,
+    })
+  }, [allMealPlans, clientId, storedMealPlans])
 
   const handleDeleteMealPlan = React.useCallback((plan: NutritionMealPlan) => {
     setHiddenMealPlanIds((currentIds) =>
@@ -3415,7 +3478,7 @@ export function ClientNutritionMealPlansView({
                         className={nutritionRowActionButtonClassName}
                       >
                         <Copy className="size-3.5" />
-                        <span className="sr-only">Copy meal plan</span>
+                        <span className="sr-only">Duplicate meal plan</span>
                       </Button>
                       <Button
                         type="button"
@@ -4675,7 +4738,10 @@ export function ClientNutritionPanel({
                         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
                           Edit plan
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50">
+                        <DropdownMenuItem
+                          onSelect={() => handleCopyMealPlan(plan)}
+                          className="cursor-pointer rounded-md px-3 py-2 text-[13px] focus:bg-neutral-50"
+                        >
                           Duplicate plan
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
