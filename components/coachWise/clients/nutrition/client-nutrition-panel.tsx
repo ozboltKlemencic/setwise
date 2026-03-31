@@ -3483,14 +3483,14 @@ export function ClientNutritionMealPlansView({
                       className={cn(
                         "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
                         isMacroPlan
-                          ? "border-sky-200 bg-sky-50/80 text-sky-700"
-                          : "border-emerald-200 bg-emerald-50/80 text-emerald-700"
+                          ? "border-sky-100 bg-sky-50/45 text-neutral-700"
+                          : "border-emerald-100 bg-emerald-50/45 text-neutral-700"
                       )}
                     >
                       {isMacroPlan ? (
-                        <Beef className="mr-1 size-3 text-sky-600" />
+                        <Beef className="mr-1 size-3 text-neutral-600" />
                       ) : (
-                        <UtensilsCrossed className="mr-1 size-3 text-emerald-600" />
+                        <UtensilsCrossed className="mr-1 size-3 text-neutral-600" />
                       )}
                       {plan.type}
                     </Badge>

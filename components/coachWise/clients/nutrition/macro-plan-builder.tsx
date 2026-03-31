@@ -11,13 +11,7 @@ import {
   Trash2,
 } from "lucide-react"
 
-import {
-  buildStoredNutritionMacroPlanFromBuilderState,
-  calcMacroPlanGrams,
-  DEFAULT_MACRO_BUILDER_PRESETS,
-  type MacroBuilderPreset,
-  type MacroKey,
-} from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
+import { buildStoredNutritionMacroPlanFromBuilderState } from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
@@ -25,15 +19,31 @@ import { SecondaryActionButton } from "@/components/coachWise/secondary-action-b
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useSidebar } from "@/components/ui/sidebar"
+import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import {
   resolveNutritionClientIdFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMacroPlanBuilderSnapshot,
 } from "@/lib/handlers/nutrition-plan-storage"
-import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+
+type MacroKey = "p" | "c" | "f"
+
+type MacroBuilderPreset = {
+  id: string
+  name: string
+  p: number
+  c: number
+  f: number
+}
+
+const defaultMacroPresets: MacroBuilderPreset[] = [
+  { id: "default-0", name: "High Protein", p: 40, c: 35, f: 25 },
+  { id: "default-1", name: "Balanced", p: 33, c: 33, f: 33 },
+  { id: "default-2", name: "Low Carb", p: 40, c: 20, f: 40 },
+  { id: "default-3", name: "High Carb", p: 30, c: 50, f: 20 },
+]
 
 const macroMeta = {
   p: {
@@ -85,8 +95,8 @@ const macroRangeStyles = `
         to right,
         var(--macro-accent) 0%,
         var(--macro-accent) var(--macro-progress),
-        #e5e7eb var(--macro-progress),
-        #e5e7eb 100%
+        #d4d4d8 var(--macro-progress),
+        #d4d4d8 100%
       );
     outline: none;
   }
@@ -381,20 +391,18 @@ export function MacroPlanBuilderPageView({
 }) {
   const router = useRouter()
   const pathname = usePathname()
-  const { isMobile, state: sidebarState } = useSidebar()
-  const initialPresets = React.useMemo(
-    () =>
-      initialSnapshot?.presets?.length
-        ? initialSnapshot.presets.map((preset) => ({ ...preset }))
-        : DEFAULT_MACRO_BUILDER_PRESETS.map((preset) => ({ ...preset })),
-    [initialSnapshot]
-  )
+  const initialPresets =
+    initialSnapshot?.presets?.length
+      ? initialSnapshot.presets.map((preset) => ({ ...preset }))
+      : defaultMacroPresets.map((preset) => ({ ...preset }))
   const presetIdRef = React.useRef(initialPresets.length)
   const [planName, setPlanName] = React.useState(
     initialSnapshot?.planName || "Macro Plan (IIFYM)"
   )
   const [isEditingName, setIsEditingName] = React.useState(false)
-  const [calories, setCalories] = React.useState(initialSnapshot?.calories ?? 2000)
+  const [calories, setCalories] = React.useState(
+    initialSnapshot?.calories ?? 2000
+  )
   const [macros, setMacros] = React.useState<Record<MacroKey, number>>({
     p: initialSnapshot?.macros.p ?? 40,
     c: initialSnapshot?.macros.c ?? 35,
@@ -431,7 +439,11 @@ export function MacroPlanBuilderPageView({
       selectedPreset.f !== macros.f)
 
   const grams = React.useMemo(
-    () => calcMacroPlanGrams(calories, macros),
+    () => ({
+      p: Math.round((calories * macros.p) / 100 / 4),
+      c: Math.round((calories * macros.c) / 100 / 4),
+      f: Math.round((calories * macros.f) / 100 / 9),
+    }),
     [calories, macros]
   )
 
@@ -582,7 +594,8 @@ export function MacroPlanBuilderPageView({
     }
 
     const nextPlanName = planName.trim() || "Macro Plan (IIFYM)"
-    const clientId = resolveNutritionClientIdFromPath(backHref) ??
+    const clientId =
+      resolveNutritionClientIdFromPath(backHref) ??
       resolveNutritionClientIdFromPath(pathname)
 
     if (clientId) {
@@ -650,18 +663,9 @@ export function MacroPlanBuilderPageView({
         }}
       />
 
-      <div
-        className="fixed right-0 bottom-4 z-30"
-        style={{
-          left: isMobile
-            ? "0px"
-            : sidebarState === "collapsed"
-              ? "var(--sidebar-width-icon)"
-              : "var(--sidebar-width)",
-        }}
-      >
+      <div className="sticky top-[calc(var(--header-height)+3rem+0.75rem)] z-20 mx-auto h-0 max-w-md px-4">
         {hasPresetChanged && selectedPreset && canSave && !showCreatePresetInput ? (
-          <div className="mx-auto max-w-md px-4">
+          <div className="absolute inset-x-4 top-0">
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
               <div className="text-[12px] text-neutral-700">
                 <span className="font-medium">{selectedPreset.name}</span>
