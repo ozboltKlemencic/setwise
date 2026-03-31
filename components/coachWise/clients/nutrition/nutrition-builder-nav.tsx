@@ -4,6 +4,10 @@ import * as React from "react"
 import { ChevronLeft, Pencil, Save } from "lucide-react"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
+import {
+  SecondaryActionButton,
+  type SecondaryActionButtonProps,
+} from "@/components/coachWise/secondary-action-button"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -20,6 +24,7 @@ type NutritionBuilderNavProps = {
   onSave: () => void
   saveLabel: string
   saveDisabled?: boolean
+  secondaryAction?: SecondaryActionButtonProps
 }
 
 export function NutritionBuilderNav({
@@ -35,6 +40,7 @@ export function NutritionBuilderNav({
   onSave,
   saveLabel,
   saveDisabled,
+  secondaryAction,
 }: NutritionBuilderNavProps) {
   return (
     <div className="sticky top-(--header-height)  z-10 bg-neutral-50">
@@ -74,13 +80,21 @@ export function NutritionBuilderNav({
           </div>
         </div>
 
-        <PrimaryActionButton
-          label={saveLabel}
-          icon={Save}
-          onClick={onSave}
-          disabled={saveDisabled}
-          className="h-8 self-center leading-none"
-        />
+        <div className="flex items-center gap-2">
+          {secondaryAction ? (
+            <SecondaryActionButton
+              {...secondaryAction}
+              className="h-8 self-center leading-none"
+            />
+          ) : null}
+          <PrimaryActionButton
+            label={saveLabel}
+            icon={Save}
+            onClick={onSave}
+            disabled={saveDisabled}
+            className="h-8 self-center leading-none"
+          />
+        </div>
       </div>
     </div>
   )

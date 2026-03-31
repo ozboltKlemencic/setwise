@@ -601,6 +601,10 @@ export function MacroPlanBuilderPageView({
         onSave={handleSavePlan}
         saveLabel="Save Macro Plan"
         saveDisabled={!canSave}
+        secondaryAction={{
+          label: "Create Meal Plan from Targets",
+          href: mealPlanBuilderHref,
+        }}
       />
 
       <div className="sticky top-[calc(var(--header-height)+3rem+0.75rem)] z-20 mx-auto h-0 max-w-md px-4">
@@ -794,18 +798,6 @@ export function MacroPlanBuilderPageView({
               />
             </div>
           ) : null}
-        </div>
-
-        <div className="flex flex-wrap items-center justify-end gap-2">
-          <SecondaryActionButton
-            label="Create Meal Plan from Targets"
-            href={mealPlanBuilderHref}
-          />
-          <PrimaryActionButton
-            label="Save Macro Plan"
-            onClick={handleSavePlan}
-            disabled={!canSave}
-          />
         </div>
       </div>
     </div>
