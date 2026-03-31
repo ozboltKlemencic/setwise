@@ -607,9 +607,9 @@ export function MacroPlanBuilderPageView({
         }}
       />
 
-      <div className="sticky top-[calc(var(--header-height)+3rem+0.75rem)] z-20 mx-auto h-0 max-w-md px-4">
+      <div className="fixed inset-x-0 top-0 z-20 pt-2">
         {hasPresetChanged && selectedPreset && canSave && !showCreatePresetInput ? (
-          <div className="absolute inset-x-4 top-0">
+          <div className="mx-auto max-w-md px-4">
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
               <div className="text-[12px] text-neutral-700">
                 <span className="font-medium">{selectedPreset.name}</span>
