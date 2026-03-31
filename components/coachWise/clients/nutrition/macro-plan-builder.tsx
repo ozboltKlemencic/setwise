@@ -89,8 +89,8 @@ const macroRangeStyles = `
         to right,
         var(--macro-accent) 0%,
         var(--macro-accent) var(--macro-progress),
-        #d4d4d8 var(--macro-progress),
-        #d4d4d8 100%
+        #e5e7eb var(--macro-progress),
+        #e5e7eb 100%
       );
     outline: none;
   }
@@ -607,7 +607,7 @@ export function MacroPlanBuilderPageView({
         }}
       />
 
-      <div className="fixed inset-x-0 top-0 z-20 pt-2">
+      <div className="fixed inset-x-0 top-0 z-30">
         {hasPresetChanged && selectedPreset && canSave && !showCreatePresetInput ? (
           <div className="mx-auto max-w-md px-4">
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
