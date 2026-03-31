@@ -19,7 +19,7 @@ import { SecondaryActionButton } from "@/components/coachWise/secondary-action-b
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
+import { getNutritionCreateMealPlanFromTargetsHref } from "@/lib/handlers/nutrition.handlers"
 import {
   resolveNutritionClientIdFromPath,
   upsertStoredNutritionMealPlan,
@@ -635,7 +635,12 @@ export function MacroPlanBuilderPageView({
 
   const mealPlanBuilderHref = buildCoachWiseHref(
     pathname,
-    getNutritionCreateMealPlanHref(backHref)
+    getNutritionCreateMealPlanFromTargetsHref(backHref, {
+      calories,
+      protein: grams.p,
+      carbs: grams.c,
+      fat: grams.f,
+    })
   )
 
   return (

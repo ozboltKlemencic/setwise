@@ -13,6 +13,13 @@ export type BuilderMeal = StoredNutritionMealPlanBuilderSnapshot["meals"][number
 export type BuilderMealPlanGoalSettings =
   StoredNutritionMealPlanBuilderSnapshot["mealPlanGoals"]
 
+export type BuilderMealPlanGoalTargets = {
+  calories?: number
+  protein?: number
+  carbs?: number
+  fat?: number
+}
+
 export type BuilderTemplateItem = {
   foodId: number
   qty: number
@@ -97,6 +104,46 @@ function createDefaultMealPlanGoalSettingsSnapshot(): BuilderMealPlanGoalSetting
   }
 }
 
+export function createMealPlanGoalSettingsFromTargets(
+  targets?: BuilderMealPlanGoalTargets
+): BuilderMealPlanGoalSettings {
+  const nextSettings = createDefaultMealPlanGoalSettingsSnapshot()
+
+  if (!targets) {
+    return nextSettings
+  }
+
+  if (typeof targets.calories === "number" && targets.calories > 0) {
+    nextSettings.calories = {
+      enabled: true,
+      value: Math.round(targets.calories),
+    }
+  }
+
+  if (typeof targets.protein === "number" && targets.protein > 0) {
+    nextSettings.protein = {
+      enabled: true,
+      value: Math.round(targets.protein),
+    }
+  }
+
+  if (typeof targets.carbs === "number" && targets.carbs > 0) {
+    nextSettings.carbs = {
+      enabled: true,
+      value: Math.round(targets.carbs),
+    }
+  }
+
+  if (typeof targets.fat === "number" && targets.fat > 0) {
+    nextSettings.fat = {
+      enabled: true,
+      value: Math.round(targets.fat),
+    }
+  }
+
+  return nextSettings
+}
+
 export function formatBuilderDate() {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
@@ -106,13 +153,14 @@ export function formatBuilderDate() {
 }
 
 export function createDefaultMealPlanBuilderSnapshot(
-  planName = `Meal Plan - ${formatBuilderDate()}`
+  planName = `Meal Plan - ${formatBuilderDate()}`,
+  goalTargets?: BuilderMealPlanGoalTargets
 ): StoredNutritionMealPlanBuilderSnapshot {
   return {
     planName,
     foods: cloneFoods(DEFAULT_BUILDER_FOODS),
     meals: [{ id: 1, name: "Meal 1", items: [] }],
-    mealPlanGoals: createDefaultMealPlanGoalSettingsSnapshot(),
+    mealPlanGoals: createMealPlanGoalSettingsFromTargets(goalTargets),
   }
 }
 

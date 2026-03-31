@@ -101,12 +101,34 @@ export function getNutritionPlanDetailHref(
 
 export function getNutritionCreateMealPlanHref(backTo?: string) {
   const createHref = "/beta-coach-wise/nutrition/create/meal-plan"
-
   if (!backTo) {
     return createHref
   }
 
   return `${createHref}?backTo=${encodeURIComponent(backTo)}`
+}
+
+export function getNutritionCreateMealPlanFromTargetsHref(
+  backTo: string | undefined,
+  targets: {
+    calories: number
+    protein: number
+    carbs: number
+    fat: number
+  }
+) {
+  const searchParams = new URLSearchParams()
+
+  if (backTo) {
+    searchParams.set("backTo", backTo)
+  }
+
+  searchParams.set("goalCalories", String(targets.calories))
+  searchParams.set("goalProtein", String(targets.protein))
+  searchParams.set("goalCarbs", String(targets.carbs))
+  searchParams.set("goalFat", String(targets.fat))
+
+  return `/beta-coach-wise/nutrition/create/meal-plan?${searchParams.toString()}`
 }
 
 export function getNutritionCreateMacroPlanHref(backTo?: string) {

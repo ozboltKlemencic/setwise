@@ -90,18 +90,20 @@ function BuilderSectionTitle({ title }: { title: string }) {
 
 export function MealPlanBuilderPageView({
   backHref,
+  initialSnapshot,
 }: {
   backHref: string
+  initialSnapshot?: StoredNutritionMealPlanBuilderSnapshot
 }) {
-  const initialSnapshot = React.useMemo(
-    () => createDefaultMealPlanBuilderSnapshot(),
-    []
+  const resolvedInitialSnapshot = React.useMemo(
+    () => initialSnapshot ?? createDefaultMealPlanBuilderSnapshot(),
+    [initialSnapshot]
   )
 
   return (
     <MealPlanBuilderScreen
       backHref={backHref}
-      initialSnapshot={initialSnapshot}
+      initialSnapshot={resolvedInitialSnapshot}
       mode="create"
     />
   )
