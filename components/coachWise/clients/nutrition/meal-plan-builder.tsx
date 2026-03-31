@@ -1219,6 +1219,71 @@ export function MealPlanBuilderPageView({
       reorderMealItems,
     ]
   )
+  const handleMealContentDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      if ((draggedMealItemId === null && !dragFoodPayload) || !activeMeal) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      event.dataTransfer.dropEffect =
+        draggedMealItemId !== null ? "move" : "copy"
+      setDragOverMealId(activeMeal.id)
+
+      if (draggedMealItemId !== null) {
+        setDragMealItemInsertIndex(activeMeal.items.length)
+        setDragFoodInsertIndex(null)
+        return
+      }
+
+      setDragFoodInsertIndex(activeMeal.items.length)
+    },
+    [activeMeal, dragFoodPayload, draggedMealItemId]
+  )
+  const handleMealContentDrop = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      if ((draggedMealItemId === null && !dragFoodPayload) || !activeMeal) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      if (dragFoodPayload) {
+        addFoodToMeal(
+          dragFoodPayload.foodId,
+          activeMeal.id,
+          dragFoodPayload.qty,
+          activeMeal.items.length
+        )
+        setDragFoodPayload(null)
+        setDragFoodInsertIndex(null)
+        setDragOverMealId(null)
+        setDraggedMealItemId(null)
+        setDragMealItemInsertIndex(null)
+        return
+      }
+
+      const sourceItemId =
+        draggedMealItemId ?? Number(event.dataTransfer.getData("text/plain"))
+
+      if (!Number.isFinite(sourceItemId)) {
+        setDraggedMealItemId(null)
+        setDragMealItemInsertIndex(null)
+        setDragFoodInsertIndex(null)
+        setDragOverMealId(null)
+        return
+      }
+
+      reorderMealItems(activeMeal.id, sourceItemId, activeMeal.items.length)
+      setDraggedMealItemId(null)
+      setDragMealItemInsertIndex(null)
+      setDragFoodInsertIndex(null)
+      setDragOverMealId(null)
+    },
+    [activeMeal, addFoodToMeal, dragFoodPayload, draggedMealItemId, reorderMealItems]
+  )
 
   return (
     <div className="min-w-0 bg-neutral-50 p-0 m-0">
@@ -1640,43 +1705,16 @@ export function MealPlanBuilderPageView({
 
             <CardContent
               className="space-y-0 bg-neutral-50 px-4 pb-3 transition-colors"
-              onDragOver={(event) => {
-                if (!dragFoodPayload) {
-                  return
-                }
-
-                event.preventDefault()
-                event.dataTransfer.dropEffect = "copy"
-                setDragOverMealId(activeMeal?.id ?? null)
-              }}
+              onDragOver={handleMealContentDragOver}
               onDragLeave={() => {
-                if (!dragFoodPayload) {
+                if (!dragFoodPayload && draggedMealItemId === null) {
                   return
                 }
 
                 setDragOverMealId(null)
-                if (!activeMeal?.items.length) {
-                  setDragFoodInsertIndex(null)
-                }
-              }}
-              onDrop={(event) => {
-                if (!dragFoodPayload) {
-                  return
-                }
-
-                event.preventDefault()
-                event.dataTransfer.dropEffect = "copy"
-                if (dragFoodPayload && activeMeal && !activeMeal.items.length) {
-                  addFoodToMeal(
-                    dragFoodPayload.foodId,
-                    activeMeal.id,
-                    dragFoodPayload.qty
-                  )
-                }
-                setDragFoodPayload(null)
                 setDragFoodInsertIndex(null)
-                setDragOverMealId(null)
               }}
+              onDrop={handleMealContentDrop}
             >
               {activeMeal?.items.length ? (
                 <div className="flex flex-col gap-2">
