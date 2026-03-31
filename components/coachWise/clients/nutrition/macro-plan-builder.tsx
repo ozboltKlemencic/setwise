@@ -247,45 +247,47 @@ function MacroSliderCard({
           <div className="text-[14px] font-medium text-neutral-950">
             {meta.label}
           </div>
-          <div className="text-[12px] text-neutral-500">
-            {grams}g target
-          </div>
         </div>
 
-        {isEditingValue ? (
-          <Input
-            autoFocus
-            type="number"
-            min="5"
-            max="60"
-            value={draftValue}
-            onChange={(event) => setDraftValue(event.target.value)}
-            onBlur={commitDraftValue}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                commitDraftValue()
-              }
+        <div className="flex items-center gap-2">
+          {isEditingValue ? (
+            <Input
+              autoFocus
+              type="number"
+              min="5"
+              max="60"
+              value={draftValue}
+              onChange={(event) => setDraftValue(event.target.value)}
+              onBlur={commitDraftValue}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  commitDraftValue()
+                }
 
-              if (event.key === "Escape") {
-                setDraftValue(String(value))
-                setIsEditingValue(false)
-              }
-            }}
-            onFocus={(event) => event.target.select()}
-            className="h-7 w-[66px] rounded-sm border-neutral-200 px-2 text-center text-[14px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={() => setIsEditingValue(true)}
-            className={cn(
-              "rounded-md bg-neutral-50 px-2 py-0.5 text-[18px] font-semibold transition-colors hover:bg-neutral-100",
-              meta.text
-            )}
-          >
-            {value}%
-          </button>
-        )}
+                if (event.key === "Escape") {
+                  setDraftValue(String(value))
+                  setIsEditingValue(false)
+                }
+              }}
+              onFocus={(event) => event.target.select()}
+              className="h-7 w-[66px] rounded-sm border-neutral-200 px-2 text-center text-[14px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsEditingValue(true)}
+              className={cn(
+                "rounded-md bg-neutral-50 px-2 py-0.5 text-[18px] font-semibold transition-colors hover:bg-neutral-100",
+                meta.text
+              )}
+            >
+              {value}%
+            </button>
+          )}
+          <span className="text-[12px] font-medium text-neutral-500">
+            {grams}g
+          </span>
+        </div>
       </div>
 
       <input
@@ -361,19 +363,11 @@ export function MacroPlanBuilderPageView({
 
   const toggleLock = React.useCallback((macroKey: MacroKey) => {
     setLockedMacros((currentLockedMacros) => {
-      const nextLockedMacros = new Set(currentLockedMacros)
-
-      if (nextLockedMacros.has(macroKey)) {
-        nextLockedMacros.delete(macroKey)
-        return nextLockedMacros
+      if (currentLockedMacros.has(macroKey)) {
+        return new Set()
       }
 
-      if (nextLockedMacros.size >= 2) {
-        return currentLockedMacros
-      }
-
-      nextLockedMacros.add(macroKey)
-      return nextLockedMacros
+      return new Set([macroKey])
     })
   }, [])
 
@@ -548,13 +542,18 @@ export function MacroPlanBuilderPageView({
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {[
-              { label: "Calories", value: `${calories}`, tone: "border-neutral-200 bg-neutral-50/70" },
+              {
+                label: "Calories",
+                value: `${calories}`,
+                tone: "border-neutral-200 bg-neutral-50/70",
+                valueClassName: "text-[28px] leading-none",
+              },
               { label: "Protein", value: `${grams.p}g`, tone: "border-emerald-200 bg-emerald-50/70" },
               { label: "Carbs", value: `${grams.c}g`, tone: "border-sky-200 bg-sky-50/70" },
               { label: "Fat", value: `${grams.f}g`, tone: "border-amber-200 bg-amber-50/70" },
             ].map((item) => (
               <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
-                <div className="text-[18px] font-semibold text-neutral-950">
+                <div className={cn("text-[18px] font-semibold text-neutral-950", item.valueClassName)}>
                   {item.value}
                 </div>
                 <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
@@ -570,9 +569,6 @@ export function MacroPlanBuilderPageView({
             <div className="flex items-center justify-between gap-3">
               <div className="text-[13px] font-medium text-neutral-800">
                 Presets
-              </div>
-              <div className="text-[11px] text-neutral-500">
-                Lock up to 2 macros while adjusting the third
               </div>
             </div>
 
@@ -675,18 +671,18 @@ export function MacroPlanBuilderPageView({
             <label className="block text-[13px] font-medium text-neutral-800">
               Daily calories
             </label>
-            <div className="relative rounded-xl border border-neutral-200 bg-neutral-100/70 px-4 py-3">
-              <Input
-                type="number"
-                value={calories}
-                onChange={(event) =>
-                  setCalories(Number(event.target.value) || 0)
-                }
-                className="h-12 border-0 bg-transparent px-10 text-center text-[18px] font-semibold shadow-none focus-visible:ring-0"
-              />
-              <Flame className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-neutral-400" />
-              <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
-                kcal
+              <div className="relative rounded-xl border border-neutral-200 bg-neutral-100/70 px-4 py-3">
+                <Input
+                  type="number"
+                  value={calories}
+                  onChange={(event) =>
+                    setCalories(Number(event.target.value) || 0)
+                  }
+                  className="h-12 border-0 bg-transparent px-10 text-center text-[24px] font-semibold shadow-none focus-visible:ring-0"
+                />
+                <Flame className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-neutral-400" />
+                <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
+                  kcal
               </span>
             </div>
           </div>
@@ -717,9 +713,7 @@ export function MacroPlanBuilderPageView({
           {lockedMacros.size ? (
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50/60 px-4 py-3">
               <div className="text-[12px] text-brand-700">
-                {lockedMacros.size === 1
-                  ? "1 macro is locked. The other 2 rebalance automatically."
-                  : "2 macros are locked. Only the remaining one rebalances."}
+                1 macro is locked. The other 2 rebalance automatically.
               </div>
               <SecondaryActionButton
                 label="Unlock all"
