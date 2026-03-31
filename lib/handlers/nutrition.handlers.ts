@@ -25,7 +25,7 @@ export function resolveNutritionPlanIdFromRouteId(routeId: string) {
     ([, mappedRouteId]) => mappedRouteId === routeId
   )
 
-  return matchedEntry?.[0] ?? null
+  return matchedEntry?.[0] ?? routeId
 }
 
 export function resolveClientNutritionTab(

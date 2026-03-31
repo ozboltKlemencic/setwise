@@ -36,6 +36,13 @@ import {
   CardContent,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import {
+  resolveNutritionClientIdFromPath,
+  upsertStoredNutritionMealPlan,
+  type StoredNutritionMacroSegment,
+  type StoredNutritionMealPlan,
+  type StoredNutritionMealPlanSection,
+} from "@/lib/handlers/nutrition-plan-storage"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -136,12 +143,106 @@ function formatFoodUnitLabel(unit: BuilderFood["unit"]) {
   }
 }
 
+function formatStoredFoodQuantity(qty: number, unit: BuilderFood["unit"]) {
+  return `${qty} ${formatFoodUnitLabel(unit)}`
+}
+
 function formatBuilderDate() {
   return new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   }).format(new Date())
+}
+
+function buildStoredMealPlanSegments(totals: {
+  p: number
+  c: number
+  f: number
+}): StoredNutritionMacroSegment[] {
+  const proteinCalories = totals.p * 4
+  const carbsCalories = totals.c * 4
+  const fatsCalories = totals.f * 9
+  const totalMacroCalories =
+    proteinCalories + carbsCalories + fatsCalories || 1
+
+  return [
+    {
+      macro: "protein",
+      value: Math.round((proteinCalories / totalMacroCalories) * 100),
+      fill: "var(--color-protein)",
+    },
+    {
+      macro: "carbs",
+      value: Math.round((carbsCalories / totalMacroCalories) * 100),
+      fill: "var(--color-carbs)",
+    },
+    {
+      macro: "fats",
+      value: Math.max(
+        0,
+        100 -
+          Math.round((proteinCalories / totalMacroCalories) * 100) -
+          Math.round((carbsCalories / totalMacroCalories) * 100)
+      ),
+      fill: "var(--color-fats)",
+    },
+  ]
+}
+
+function buildStoredMealPlanSections(
+  meals: BuilderMeal[]
+): StoredNutritionMealPlanSection[] {
+  const fallbackImages = [
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=80",
+  ]
+
+  return meals.map((meal, mealIndex) => {
+    const mealTotals = getMealTotals(meal)
+    const mealFoodNames = meal.items
+      .map((item) => FOOD_DB.find((food) => food.id === item.foodId)?.name)
+      .filter(Boolean) as string[]
+    const title =
+      mealFoodNames.length > 0
+        ? mealFoodNames.join(" + ")
+        : `${meal.name} foods`
+    const description =
+      meal.items.length > 0
+        ? meal.items
+            .map((item) => {
+              const food = FOOD_DB.find((entry) => entry.id === item.foodId)
+
+              if (!food) {
+                return null
+              }
+
+              return `${food.name} ${formatStoredFoodQuantity(item.qty, food.unit)}`
+            })
+            .filter(Boolean)
+            .join(", ")
+        : "No foods added yet."
+
+    return {
+      id: `section-${meal.id}`,
+      label: meal.name,
+      options: [
+        {
+          id: `section-${meal.id}-option-1`,
+          label: "Option 1",
+          title,
+          calories: mealTotals.cal,
+          carbs: Math.round(mealTotals.c),
+          protein: Math.round(mealTotals.p),
+          fats: Math.round(mealTotals.f),
+          description,
+          image: fallbackImages[mealIndex % fallbackImages.length],
+        },
+      ],
+    }
+  })
 }
 
 type FoodCardTone = "protein" | "carbs" | "fat"
@@ -601,6 +702,10 @@ export function MealPlanBuilderPageView({
   backHref: string
 }) {
   const router = useRouter()
+  const storageClientId = React.useMemo(
+    () => resolveNutritionClientIdFromPath(backHref),
+    [backHref]
+  )
   const initialPlanName = React.useMemo(
     () => `Meal Plan - ${formatBuilderDate()}`,
     []
@@ -758,13 +863,40 @@ export function MealPlanBuilderPageView({
 
   const handleSavePlan = React.useCallback(() => {
     const nextPlanName = planName.trim() || initialPlanName
+    const totalFoodCount = meals.reduce(
+      (totalCount, meal) => totalCount + meal.items.length,
+      0
+    )
+    const nextStoredMealPlan: StoredNutritionMealPlan = {
+      id: `custom-meal-plan-${Date.now()}`,
+      title: nextPlanName,
+      subtitle: `Custom plan with ${meals.length} meals and ${totalFoodCount} foods.`,
+      type: "Meal Plan",
+      calories: planTotals.cal,
+      macros: `${Math.round(planTotals.p)}P / ${Math.round(planTotals.c)}C / ${Math.round(planTotals.f)}F`,
+      schedule: `${meals.length} meal${meals.length === 1 ? "" : "s"}`,
+      segments: buildStoredMealPlanSegments(planTotals),
+      sections: buildStoredMealPlanSections(meals),
+      createdAt: new Date().toISOString(),
+    }
+
+    if (storageClientId) {
+      upsertStoredNutritionMealPlan(storageClientId, nextStoredMealPlan)
+    }
 
     toast.success("Meal plan created", {
       description: `For ${nextPlanName}.`,
     })
 
     handleNavigateBack()
-  }, [handleNavigateBack, initialPlanName, planName])
+  }, [
+    handleNavigateBack,
+    initialPlanName,
+    meals,
+    planName,
+    planTotals,
+    storageClientId,
+  ])
   const handleCreateFood = React.useCallback(() => {
     setIsCreateFoodDialogOpen(true)
   }, [])

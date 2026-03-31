@@ -108,6 +108,13 @@ import {
   getNutritionPlanDetailHref,
   getNutritionPlanEditorHref,
 } from "@/lib/handlers/nutrition.handlers"
+import {
+  NUTRITION_MEAL_PLANS_UPDATED_EVENT,
+  readStoredNutritionMealPlans,
+  removeStoredNutritionMealPlan,
+  resolveNutritionClientIdFromPath,
+  type StoredNutritionMealPlan,
+} from "@/lib/handlers/nutrition-plan-storage"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -260,6 +267,86 @@ function NutritionSectionTitle({ title }: { title: string }) {
   return (
     <div className="mb-3 text-[13px] font-medium text-neutral-500">{title}</div>
   )
+}
+
+function mergeNutritionMealPlans(
+  presetMealPlans: NutritionMealPlan[],
+  storedMealPlans: StoredNutritionMealPlan[]
+) {
+  const mergedMealPlans = new Map<string, NutritionMealPlan>()
+
+  storedMealPlans.forEach((mealPlan) => {
+    mergedMealPlans.set(mealPlan.id, mealPlan)
+  })
+
+  presetMealPlans.forEach((mealPlan) => {
+    if (!mergedMealPlans.has(mealPlan.id)) {
+      mergedMealPlans.set(mealPlan.id, mealPlan)
+    }
+  })
+
+  return Array.from(mergedMealPlans.values())
+}
+
+function useStoredNutritionMealPlans(pathHint?: string) {
+  const clientId = React.useMemo(
+    () => resolveNutritionClientIdFromPath(pathHint),
+    [pathHint]
+  )
+  const [storedMealPlans, setStoredMealPlans] = React.useState<StoredNutritionMealPlan[]>(
+    []
+  )
+  const [hasLoadedStoredMealPlans, setHasLoadedStoredMealPlans] = React.useState(
+    false
+  )
+
+  React.useEffect(() => {
+    if (!clientId) {
+      setStoredMealPlans([])
+      setHasLoadedStoredMealPlans(true)
+      return
+    }
+
+    setHasLoadedStoredMealPlans(false)
+
+    const syncStoredMealPlans = () => {
+      setStoredMealPlans(readStoredNutritionMealPlans(clientId))
+      setHasLoadedStoredMealPlans(true)
+    }
+
+    const handleStoredMealPlansUpdated = (event: Event) => {
+      const updatedClientId = (
+        event as CustomEvent<{ clientId?: string }>
+      ).detail?.clientId
+
+      if (updatedClientId && updatedClientId !== clientId) {
+        return
+      }
+
+      syncStoredMealPlans()
+    }
+
+    syncStoredMealPlans()
+    window.addEventListener("storage", syncStoredMealPlans)
+    window.addEventListener(
+      NUTRITION_MEAL_PLANS_UPDATED_EVENT,
+      handleStoredMealPlansUpdated as EventListener
+    )
+
+    return () => {
+      window.removeEventListener("storage", syncStoredMealPlans)
+      window.removeEventListener(
+        NUTRITION_MEAL_PLANS_UPDATED_EVENT,
+        handleStoredMealPlansUpdated as EventListener
+      )
+    }
+  }, [clientId])
+
+  return {
+    clientId,
+    hasLoadedStoredMealPlans,
+    storedMealPlans,
+  }
 }
 
 const mealPlanDonutConfig = {
@@ -2894,20 +2981,34 @@ function SortableNutritionMealPlanSectionCard({
 type NutritionMealPlanWorkspaceProps = {
   mealPlanId: string
   phase?: string
+  pathHint?: string
 }
 
 function useNutritionMealPlanWorkspace({
   mealPlanId,
   phase,
+  pathHint,
 }: NutritionMealPlanWorkspaceProps) {
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
+  const { hasLoadedStoredMealPlans, storedMealPlans } =
+    useStoredNutritionMealPlans(pathHint)
+  const availableMealPlans = React.useMemo(
+    () => mergeNutritionMealPlans(preset.mealPlans, storedMealPlans),
+    [preset.mealPlans, storedMealPlans]
+  )
+  const storedMealPlan = React.useMemo(
+    () => storedMealPlans.find((plan) => plan.id === mealPlanId),
+    [mealPlanId, storedMealPlans]
+  )
   const mealPlan = React.useMemo(
-    () => preset.mealPlans.find((plan) => plan.id === mealPlanId),
-    [mealPlanId, preset.mealPlans]
+    () => availableMealPlans.find((plan) => plan.id === mealPlanId),
+    [availableMealPlans, mealPlanId]
   )
   const baseSections = React.useMemo(
-    () => (mealPlan ? nutritionMealPlanSections[mealPlan.id] ?? [] : []),
-    [mealPlan]
+    () =>
+      storedMealPlan?.sections ??
+      (mealPlan ? nutritionMealPlanSections[mealPlan.id] ?? [] : []),
+    [mealPlan, storedMealPlan]
   )
   const macros = React.useMemo(
     () => parseMealPlanMacros(mealPlan?.macros ?? ""),
@@ -2992,6 +3093,7 @@ function useNutritionMealPlanWorkspace({
   )
 
   return {
+    hasLoadedStoredMealPlans,
     macros,
     mealPlan,
     sections,
@@ -3212,11 +3314,15 @@ export function ClientNutritionMealPlansView({
   const router = useRouter()
   const pathname = usePathname()
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
-  const [mealPlans, setMealPlans] = React.useState(preset.mealPlans)
-
-  React.useEffect(() => {
-    setMealPlans(preset.mealPlans)
-  }, [preset.mealPlans])
+  const { clientId, storedMealPlans } = useStoredNutritionMealPlans(pathname)
+  const [hiddenMealPlanIds, setHiddenMealPlanIds] = React.useState<string[]>([])
+  const mealPlans = React.useMemo(
+    () =>
+      mergeNutritionMealPlans(preset.mealPlans, storedMealPlans).filter(
+        (plan) => !hiddenMealPlanIds.includes(plan.id)
+      ),
+    [hiddenMealPlanIds, preset.mealPlans, storedMealPlans]
+  )
 
   const handleOpenMealPlan = React.useCallback(
     (mealPlanId: string) => {
@@ -3263,11 +3369,18 @@ export function ClientNutritionMealPlansView({
   }, [])
 
   const handleDeleteMealPlan = React.useCallback((plan: NutritionMealPlan) => {
-    setMealPlans((current) => current.filter((item) => item.id !== plan.id))
+    setHiddenMealPlanIds((currentIds) =>
+      currentIds.includes(plan.id) ? currentIds : [...currentIds, plan.id]
+    )
+
+    if (clientId) {
+      removeStoredNutritionMealPlan(clientId, plan.id)
+    }
+
     toast.success("Meal plan deleted", {
       description: `For ${plan.title}.`,
     })
-  }, [])
+  }, [clientId])
 
   return (
     <div className="bg-neutral-50 px-4 py-4">
@@ -3903,6 +4016,7 @@ export function MealPlanDetailView({
 }) {
   const pathname = usePathname()
   const {
+    hasLoadedStoredMealPlans,
     macros,
     mealPlan,
     sections,
@@ -3910,7 +4024,15 @@ export function MealPlanDetailView({
     handleDeleteSection,
     handleRenameSection,
     handleSectionDragEnd,
-  } = useNutritionMealPlanWorkspace({ mealPlanId, phase })
+  } = useNutritionMealPlanWorkspace({
+    mealPlanId,
+    phase,
+    pathHint: backHref ?? pathname,
+  })
+
+  if (!mealPlan && !hasLoadedStoredMealPlans) {
+    return null
+  }
 
   if (!mealPlan) {
     return (
@@ -3975,6 +4097,7 @@ export function MealPlanEditPageView({
 }) {
   const router = useRouter()
   const {
+    hasLoadedStoredMealPlans,
     macros,
     mealPlan,
     sections,
@@ -3982,7 +4105,11 @@ export function MealPlanEditPageView({
     handleDeleteSection,
     handleRenameSection,
     handleSectionDragEnd,
-  } = useNutritionMealPlanWorkspace({ mealPlanId, phase })
+  } = useNutritionMealPlanWorkspace({
+    mealPlanId,
+    phase,
+    pathHint: backHref,
+  })
   const [savedPlanName, setSavedPlanName] = React.useState("")
   const [savedPlanDescription, setSavedPlanDescription] = React.useState("")
   const [planName, setPlanName] = React.useState("")
@@ -4029,6 +4156,10 @@ export function MealPlanEditPageView({
 
     router.push(backHref)
   }, [backHref, hasValidName, planDescription, planName, router])
+
+  if (!mealPlan && !hasLoadedStoredMealPlans) {
+    return null
+  }
 
   if (!mealPlan) {
     return (

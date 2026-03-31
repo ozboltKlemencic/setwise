@@ -12,7 +12,7 @@ import {
   IconUsersGroup,
   type Icon,
 } from "@tabler/icons-react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { AddClientDialog } from "@/components/coachWise/clients/shared/add-client-dialog"
@@ -94,12 +94,22 @@ function getInitials(name: string) {
 
 export function SiteHeader() {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const normalizedPathname = normalizeCoachWisePathname(pathname)
+  const normalizedBackToPathname = normalizeCoachWisePathname(
+    searchParams.get("backTo") ?? ""
+  )
   const clientDetailMatch = normalizedPathname.match(
     /^\/beta-coach-wise\/clients\/(\d+)(?:\/.*)?$/
   )
+  const backToClientMatch = normalizedBackToPathname.match(
+    /^\/beta-coach-wise\/clients\/(\d+)(?:\/.*)?$/
+  )
+  const resolvedClientId = clientDetailMatch?.[1] ?? backToClientMatch?.[1]
   const activeClient = clientDetailMatch
     ? clientData.find((item) => item.id === Number(clientDetailMatch[1]))
+    : resolvedClientId
+      ? clientData.find((item) => item.id === Number(resolvedClientId))
     : undefined
   const activeRoute =
     coachWiseRoutes.find((route) =>
