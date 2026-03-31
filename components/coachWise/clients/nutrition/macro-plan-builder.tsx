@@ -7,7 +7,6 @@ import {
   Lock,
   LockOpen,
   Plus,
-  Sparkles,
   Trash2,
 } from "lucide-react"
 
@@ -15,15 +14,8 @@ import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nu
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
@@ -218,10 +210,7 @@ function MacroSliderCard({
 
   return (
     <Card
-      className={cn(
-        "rounded-xl border shadow-none",
-        locked ? meta.surface : "border-neutral-200 bg-white"
-      )}
+      className="rounded-xl border-0 bg-neutral-100/70 shadow-none"
     >
       <CardContent className="space-y-4 p-4">
         <div className="flex items-center gap-3">
@@ -243,7 +232,6 @@ function MacroSliderCard({
             </span>
           </Button>
 
-          <span className={cn("size-2 rounded-full", meta.accent)} />
           <div className="min-w-0 flex-1">
             <div className="text-[14px] font-medium text-neutral-950">
               {meta.label}
@@ -299,21 +287,6 @@ function MacroSliderCard({
           className={cn("w-full cursor-pointer accent-current", locked && "opacity-45")}
           style={{ accentColor: meta.ring }}
         />
-
-        <div className="flex items-center justify-between text-[11px] text-neutral-500">
-          <span>5%</span>
-          {locked ? (
-            <Badge
-              variant="outline"
-              className="rounded-md border-neutral-300 bg-white px-2 py-0.5 text-[10px] font-medium text-neutral-600"
-            >
-              Locked
-            </Badge>
-          ) : (
-            <span>Drag to rebalance</span>
-          )}
-          <span>60%</span>
-        </div>
       </CardContent>
     </Card>
   )
@@ -557,25 +530,32 @@ export function MacroPlanBuilderPageView({
         saveDisabled={!canSave}
       />
 
-      <div className="mx-auto max-w-[1080px] space-y-4 px-4 py-4">
-        <Card className="rounded-xl border-neutral-200 shadow-none">
-          <CardHeader className="space-y-1 pb-4">
-            <div className="flex items-center gap-3">
-              <span className="flex size-9 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
-                <Sparkles className="size-4.5" />
-              </span>
-              <div>
-                <CardTitle className="text-[18px] font-semibold text-neutral-950">
-                  Smart Macro Builder
-                </CardTitle>
-                <CardDescription className="text-[13px] text-neutral-500">
-                  Build a flexible IIFYM setup with presets, locks, and live
-                  macro balancing.
-                </CardDescription>
+      <div className="mx-auto max-w-[1080px] space-y-5 px-4 py-4">
+        <div className="space-y-2">
+          <div className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-500">
+            Daily Targets
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              { label: "Calories", value: `${calories}`, tone: "border-neutral-200 bg-neutral-50/70" },
+              { label: "Protein", value: `${grams.p}g`, tone: "border-emerald-200 bg-emerald-50/70" },
+              { label: "Carbs", value: `${grams.c}g`, tone: "border-sky-200 bg-sky-50/70" },
+              { label: "Fat", value: `${grams.f}g`, tone: "border-amber-200 bg-amber-50/70" },
+            ].map((item) => (
+              <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
+                <div className="text-[18px] font-semibold text-neutral-950">
+                  {item.value}
+                </div>
+                <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
+                  {item.label}
+                </div>
               </div>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-5">
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-5 rounded-xl bg-neutral-50/90 p-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between gap-3">
                 <div className="text-[13px] font-medium text-neutral-800">
@@ -692,7 +672,7 @@ export function MacroPlanBuilderPageView({
                   onChange={(event) =>
                     setCalories(Number(event.target.value) || 0)
                   }
-                  className="h-11 rounded-sm border-neutral-200 bg-white pr-16 pl-11 text-[18px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                  className="h-11 rounded-sm border-neutral-200 bg-neutral-100/70 pr-16 pl-11 text-[18px] font-semibold shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                 />
                 <Flame className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
                 <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[14px] text-neutral-400">
@@ -701,7 +681,7 @@ export function MacroPlanBuilderPageView({
               </div>
             </div>
 
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="space-y-3">
               {(Object.keys(macros) as MacroKey[]).map((macroKey) => (
                 <MacroSliderCard
                   key={macroKey}
@@ -737,38 +717,7 @@ export function MacroPlanBuilderPageView({
                 />
               </div>
             ) : null}
-          </CardContent>
-        </Card>
-
-        <Card className="rounded-xl border-neutral-200 shadow-none">
-          <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-[15px] font-semibold text-neutral-950">
-              Daily Targets
-            </CardTitle>
-            <CardDescription className="text-[12.5px] text-neutral-500">
-              Live gram targets update automatically as you rebalance calories and macro percentages.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {[
-                { label: "Calories", value: `${calories}`, tone: "border-neutral-200 bg-neutral-50/70" },
-                { label: "Protein", value: `${grams.p}g`, tone: "border-emerald-200 bg-emerald-50/70" },
-                { label: "Carbs", value: `${grams.c}g`, tone: "border-sky-200 bg-sky-50/70" },
-                { label: "Fat", value: `${grams.f}g`, tone: "border-amber-200 bg-amber-50/70" },
-              ].map((item) => (
-                <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
-                  <div className="text-[18px] font-semibold text-neutral-950">
-                    {item.value}
-                  </div>
-                  <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        </div>
 
         <div className="flex flex-wrap items-center justify-end gap-2">
           <SecondaryActionButton
