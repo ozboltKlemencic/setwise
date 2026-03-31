@@ -76,6 +76,68 @@ function getPresetLabel(preset: Pick<MacroBuilderPreset, MacroKey>) {
   return `${preset.p}/${preset.c}/${preset.f}`
 }
 
+const macroRangeStyles = `
+  .macro-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border: 0;
+    border-radius: 9999px;
+    background:
+      linear-gradient(
+        to right,
+        var(--macro-accent) 0%,
+        var(--macro-accent) var(--macro-progress),
+        #d4d4d8 var(--macro-progress),
+        #d4d4d8 100%
+      );
+    outline: none;
+  }
+
+  .macro-range::-webkit-slider-runnable-track {
+    height: 6px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+  }
+
+  .macro-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -5px;
+    border: 0;
+    border-radius: 9999px;
+    background: var(--macro-accent);
+    box-shadow: none;
+  }
+
+  .macro-range::-moz-range-track {
+    height: 6px;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+  }
+
+  .macro-range::-moz-range-progress {
+    height: 6px;
+    border: 0;
+    border-radius: 9999px;
+    background: var(--macro-accent);
+  }
+
+  .macro-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 9999px;
+    background: var(--macro-accent);
+    box-shadow: none;
+  }
+`
+
 function MacroPresetChip({
   preset,
   isActive,
@@ -205,6 +267,7 @@ function MacroSliderCard({
   const meta = macroMeta[macroKey]
   const [isEditingValue, setIsEditingValue] = React.useState(false)
   const [draftValue, setDraftValue] = React.useState(String(value))
+  const sliderProgress = `${((value - 5) / 55) * 100}%`
 
   React.useEffect(() => {
     if (!isEditingValue) {
@@ -297,8 +360,13 @@ function MacroSliderCard({
         value={value}
         onChange={(event) => onChangeValue(Number(event.target.value))}
         disabled={locked}
-        className={cn("w-full cursor-pointer accent-current", locked && "opacity-45")}
-        style={{ accentColor: meta.ring }}
+        className={cn("macro-range w-full cursor-pointer", locked && "opacity-45")}
+        style={
+          {
+            "--macro-accent": meta.ring,
+            "--macro-progress": sliderProgress,
+          } as React.CSSProperties
+        }
       />
     </div>
   )
@@ -516,6 +584,7 @@ export function MacroPlanBuilderPageView({
 
   return (
     <div className="min-w-0 bg-neutral-50">
+      <style>{macroRangeStyles}</style>
       <NutritionBuilderNav
         title={planName}
         isEditingTitle={isEditingName}
@@ -537,8 +606,8 @@ export function MacroPlanBuilderPageView({
       <div className="sticky top-[calc(var(--header-height)+3rem+0.75rem)] z-20 mx-auto h-0 max-w-md px-4">
         {hasPresetChanged && selectedPreset && canSave ? (
           <div className="absolute inset-x-4 top-0">
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
-              <div className="text-[12px] text-amber-700">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
+              <div className="text-[12px] text-neutral-700">
                 <span className="font-medium">{selectedPreset.name}</span>
                 {" updated to "}
                 <span className="font-medium">{getPresetLabel(macros)}</span>
@@ -572,15 +641,14 @@ export function MacroPlanBuilderPageView({
               {
                 label: "Calories",
                 value: `${calories}`,
-                tone: "border-neutral-200 bg-neutral-50/70",
-                valueClassName: "text-[28px] leading-none",
+                tone: "border-neutral-200 bg-neutral-50/70"
               },
               { label: "Protein", value: `${grams.p}g`, tone: "border-emerald-200 bg-emerald-50/70" },
               { label: "Carbs", value: `${grams.c}g`, tone: "border-sky-200 bg-sky-50/70" },
               { label: "Fat", value: `${grams.f}g`, tone: "border-amber-200 bg-amber-50/70" },
             ].map((item) => (
               <div key={item.label} className={cn("rounded-xl border px-3 py-2.5", item.tone)}>
-                <div className={cn("text-[18px] font-semibold text-neutral-950", item.valueClassName)}>
+                <div className={cn("text-[18px] font-semibold text-neutral-950")}>
                   {item.value}
                 </div>
                 <div className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">
