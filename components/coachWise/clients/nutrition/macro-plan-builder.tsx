@@ -18,6 +18,7 @@ import { SecondaryActionButton } from "@/components/coachWise/secondary-action-b
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useSidebar } from "@/components/ui/sidebar"
 import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -379,6 +380,7 @@ export function MacroPlanBuilderPageView({
 }) {
   const router = useRouter()
   const pathname = usePathname()
+  const { isMobile, state: sidebarState } = useSidebar()
   const presetIdRef = React.useRef(defaultMacroPresets.length)
   const [planName, setPlanName] = React.useState("Macro Plan (IIFYM)")
   const [isEditingName, setIsEditingName] = React.useState(false)
@@ -607,7 +609,16 @@ export function MacroPlanBuilderPageView({
         }}
       />
 
-      <div className="fixed inset-x-0 top-2 z-30">
+      <div
+        className="fixed right-0 bottom-4 z-30"
+        style={{
+          left: isMobile
+            ? "0px"
+            : sidebarState === "collapsed"
+              ? "var(--sidebar-width-icon)"
+              : "var(--sidebar-width)",
+        }}
+      >
         {hasPresetChanged && selectedPreset && canSave && !showCreatePresetInput ? (
           <div className="mx-auto max-w-md px-4">
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-neutral-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
