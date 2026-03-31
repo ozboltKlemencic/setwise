@@ -22,6 +22,56 @@ export type StoredNutritionMealPlanSection = {
   options: StoredNutritionMealPlanOption[]
 }
 
+export type StoredNutritionMealPlanBuilderFoodUnit =
+  | "g"
+  | "piece"
+  | "ml"
+  | "slice"
+
+export type StoredNutritionMealPlanBuilderFood = {
+  id: number
+  name: string
+  cal: number
+  p: number
+  c: number
+  f: number
+  unit: StoredNutritionMealPlanBuilderFoodUnit
+  step: number
+  defaultQty: number
+}
+
+export type StoredNutritionMealPlanBuilderMealItem = {
+  id: number
+  foodId: number
+  qty: number
+}
+
+export type StoredNutritionMealPlanBuilderMeal = {
+  id: number
+  name: string
+  items: StoredNutritionMealPlanBuilderMealItem[]
+}
+
+export type StoredNutritionMealPlanGoalMetricSettings = {
+  enabled: boolean
+  value: number
+}
+
+export type StoredNutritionMealPlanGoalSettings = {
+  presetId: "cut" | "maintain" | "bulk" | null
+  calories: StoredNutritionMealPlanGoalMetricSettings
+  protein: StoredNutritionMealPlanGoalMetricSettings
+  carbs: StoredNutritionMealPlanGoalMetricSettings
+  fat: StoredNutritionMealPlanGoalMetricSettings
+}
+
+export type StoredNutritionMealPlanBuilderSnapshot = {
+  planName: string
+  foods: StoredNutritionMealPlanBuilderFood[]
+  meals: StoredNutritionMealPlanBuilderMeal[]
+  mealPlanGoals: StoredNutritionMealPlanGoalSettings
+}
+
 export type StoredNutritionMealPlan = {
   id: string
   title: string
@@ -33,6 +83,7 @@ export type StoredNutritionMealPlan = {
   segments: StoredNutritionMacroSegment[]
   sections: StoredNutritionMealPlanSection[]
   createdAt: string
+  builderSnapshot?: StoredNutritionMealPlanBuilderSnapshot
 }
 
 const NUTRITION_MEAL_PLAN_STORAGE_KEY_PREFIX =

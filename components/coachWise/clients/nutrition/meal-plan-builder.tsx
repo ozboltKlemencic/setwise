@@ -17,11 +17,25 @@ import {
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import {
+  buildStoredNutritionMealPlanFromBuilderState,
+  calcBuilderNutrition,
+  createDefaultMealPlanBuilderSnapshot,
+  DEFAULT_BUILDER_MEAL_TEMPLATES,
+  formatFoodUnitLabel,
+  getBuilderMealTotals,
+  getBuilderPlanTotals,
+  getBuilderTemplateTotals,
+  RECENT_BUILDER_FOOD_IDS,
+  type BuilderFood,
+  type BuilderMeal,
+  type BuilderMealItem,
+  type BuilderMealTemplate,
+} from "@/components/coachWise/clients/nutrition/meal-plan-builder-data"
+import {
   CreateFoodDialog,
   type CreateFoodDialogValue,
 } from "@/components/coachWise/clients/nutrition/create-food-dialog"
 import {
-  createDefaultMealPlanGoalSettings,
   MealPlanGoalsDialog,
   type MealPlanGoalSettings,
 } from "@/components/coachWise/clients/nutrition/meal-plan-goals-dialog"
@@ -39,211 +53,11 @@ import { Input } from "@/components/ui/input"
 import {
   resolveNutritionClientIdFromPath,
   upsertStoredNutritionMealPlan,
-  type StoredNutritionMacroSegment,
+  type StoredNutritionMealPlanBuilderSnapshot,
   type StoredNutritionMealPlan,
-  type StoredNutritionMealPlanSection,
 } from "@/lib/handlers/nutrition-plan-storage"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-
-type BuilderFood = {
-  id: number
-  name: string
-  cal: number
-  p: number
-  c: number
-  f: number
-  unit: "g" | "piece" | "ml" | "slice"
-  step: number
-  defaultQty: number
-}
-
-type BuilderTemplateItem = {
-  foodId: number
-  qty: number
-}
-
-type BuilderMealTemplate = {
-  id: string
-  name: string
-  items: BuilderTemplateItem[]
-  isCustom?: boolean
-}
-
-type BuilderMealItem = {
-  id: number
-  foodId: number
-  qty: number
-}
-
-type BuilderMeal = {
-  id: number
-  name: string
-  items: BuilderMealItem[]
-}
-
-const FOOD_DB: BuilderFood[] = [
-  { id: 1, name: "Chicken breast", cal: 165, p: 31, c: 0, f: 3.6, unit: "g", step: 50, defaultQty: 150 },
-  { id: 2, name: "Cooked rice", cal: 130, p: 2.7, c: 28, f: 0.3, unit: "g", step: 50, defaultQty: 200 },
-  { id: 3, name: "Broccoli", cal: 34, p: 2.8, c: 7, f: 0.4, unit: "g", step: 50, defaultQty: 150 },
-  { id: 4, name: "Eggs", cal: 155, p: 13, c: 1.1, f: 11, unit: "piece", step: 1, defaultQty: 3 },
-  { id: 5, name: "Oats", cal: 389, p: 17, c: 66, f: 7, unit: "g", step: 10, defaultQty: 80 },
-  { id: 6, name: "Banana", cal: 89, p: 1.1, c: 23, f: 0.3, unit: "piece", step: 1, defaultQty: 1 },
-  { id: 7, name: "Whey protein", cal: 120, p: 24, c: 3, f: 1.5, unit: "g", step: 5, defaultQty: 30 },
-  { id: 8, name: "Tuna", cal: 116, p: 26, c: 0, f: 1, unit: "g", step: 50, defaultQty: 100 },
-  { id: 9, name: "Sweet potato", cal: 86, p: 1.6, c: 20, f: 0.1, unit: "g", step: 50, defaultQty: 200 },
-  { id: 10, name: "Cottage cheese", cal: 98, p: 11, c: 3.4, f: 4.3, unit: "g", step: 50, defaultQty: 200 },
-  { id: 11, name: "Avocado", cal: 160, p: 2, c: 9, f: 15, unit: "piece", step: 1, defaultQty: 1 },
-  { id: 12, name: "Almonds", cal: 579, p: 21, c: 22, f: 50, unit: "g", step: 5, defaultQty: 30 },
-  { id: 13, name: "Salmon", cal: 208, p: 20, c: 0, f: 13, unit: "g", step: 50, defaultQty: 150 },
-  { id: 14, name: "Spinach", cal: 23, p: 2.9, c: 3.6, f: 0.4, unit: "g", step: 50, defaultQty: 100 },
-  { id: 15, name: "Greek yogurt", cal: 59, p: 10, c: 3.6, f: 0.7, unit: "g", step: 50, defaultQty: 200 },
-  { id: 16, name: "Wholegrain bread", cal: 247, p: 13, c: 41, f: 3.4, unit: "slice", step: 1, defaultQty: 2 },
-  { id: 17, name: "Olive oil", cal: 884, p: 0, c: 0, f: 100, unit: "ml", step: 5, defaultQty: 10 },
-  { id: 18, name: "Turkey fillet", cal: 135, p: 30, c: 0, f: 1, unit: "g", step: 50, defaultQty: 150 },
-  { id: 19, name: "Quinoa", cal: 120, p: 4.4, c: 21, f: 1.9, unit: "g", step: 50, defaultQty: 150 },
-  { id: 20, name: "Strawberries", cal: 32, p: 0.7, c: 7.7, f: 0.3, unit: "g", step: 50, defaultQty: 150 },
-]
-
-const MEAL_TEMPLATES: BuilderMealTemplate[] = [
-  { id: "t1", name: "Breakfast A - Oat Bowl", items: [{ foodId: 5, qty: 80 }, { foodId: 7, qty: 30 }, { foodId: 6, qty: 1 }, { foodId: 12, qty: 20 }] },
-  { id: "t2", name: "Lunch - Chicken & Rice", items: [{ foodId: 1, qty: 200 }, { foodId: 2, qty: 250 }, { foodId: 3, qty: 150 }, { foodId: 17, qty: 10 }] },
-  { id: "t3", name: "Breakfast B - Eggs & Toast", items: [{ foodId: 4, qty: 3 }, { foodId: 16, qty: 2 }, { foodId: 11, qty: 1 }, { foodId: 14, qty: 50 }] },
-  { id: "t4", name: "Dinner - Salmon", items: [{ foodId: 13, qty: 180 }, { foodId: 9, qty: 200 }, { foodId: 14, qty: 100 }, { foodId: 17, qty: 10 }] },
-]
-
-const RECENT_FOOD_IDS = [1, 2, 5, 4, 7, 3, 15, 8, 13, 6]
-
-function calcNutrition(foodId: number, qty: number) {
-  const food = FOOD_DB.find((item) => item.id === foodId)
-
-  if (!food) {
-    return { cal: 0, p: 0, c: 0, f: 0 }
-  }
-
-  const isCountable = food.unit === "piece" || food.unit === "slice"
-  const multiplier = isCountable ? qty : qty / 100
-
-  return {
-    cal: Math.round(food.cal * multiplier),
-    p: +(food.p * multiplier).toFixed(1),
-    c: +(food.c * multiplier).toFixed(1),
-    f: +(food.f * multiplier).toFixed(1),
-  }
-}
-
-function formatFoodUnitLabel(unit: BuilderFood["unit"]) {
-  switch (unit) {
-    case "piece":
-      return "pc"
-    case "slice":
-      return "sl"
-    default:
-      return unit
-  }
-}
-
-function formatStoredFoodQuantity(qty: number, unit: BuilderFood["unit"]) {
-  return `${qty} ${formatFoodUnitLabel(unit)}`
-}
-
-function formatBuilderDate() {
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date())
-}
-
-function buildStoredMealPlanSegments(totals: {
-  p: number
-  c: number
-  f: number
-}): StoredNutritionMacroSegment[] {
-  const proteinCalories = totals.p * 4
-  const carbsCalories = totals.c * 4
-  const fatsCalories = totals.f * 9
-  const totalMacroCalories =
-    proteinCalories + carbsCalories + fatsCalories || 1
-
-  return [
-    {
-      macro: "protein",
-      value: Math.round((proteinCalories / totalMacroCalories) * 100),
-      fill: "var(--color-protein)",
-    },
-    {
-      macro: "carbs",
-      value: Math.round((carbsCalories / totalMacroCalories) * 100),
-      fill: "var(--color-carbs)",
-    },
-    {
-      macro: "fats",
-      value: Math.max(
-        0,
-        100 -
-          Math.round((proteinCalories / totalMacroCalories) * 100) -
-          Math.round((carbsCalories / totalMacroCalories) * 100)
-      ),
-      fill: "var(--color-fats)",
-    },
-  ]
-}
-
-function buildStoredMealPlanSections(
-  meals: BuilderMeal[]
-): StoredNutritionMealPlanSection[] {
-  const fallbackImages = [
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=80",
-  ]
-
-  return meals.map((meal, mealIndex) => {
-    const mealTotals = getMealTotals(meal)
-    const mealFoodNames = meal.items
-      .map((item) => FOOD_DB.find((food) => food.id === item.foodId)?.name)
-      .filter(Boolean) as string[]
-    const title =
-      mealFoodNames.length > 0
-        ? mealFoodNames.join(" + ")
-        : `${meal.name} foods`
-    const description =
-      meal.items.length > 0
-        ? meal.items
-            .map((item) => {
-              const food = FOOD_DB.find((entry) => entry.id === item.foodId)
-
-              if (!food) {
-                return null
-              }
-
-              return `${food.name} ${formatStoredFoodQuantity(item.qty, food.unit)}`
-            })
-            .filter(Boolean)
-            .join(", ")
-        : "No foods added yet."
-
-    return {
-      id: `section-${meal.id}`,
-      label: meal.name,
-      options: [
-        {
-          id: `section-${meal.id}-option-1`,
-          label: "Option 1",
-          title,
-          calories: mealTotals.cal,
-          carbs: Math.round(mealTotals.c),
-          protein: Math.round(mealTotals.p),
-          fats: Math.round(mealTotals.f),
-          description,
-          image: fallbackImages[mealIndex % fallbackImages.length],
-        },
-      ],
-    }
-  })
-}
 
 type FoodCardTone = "protein" | "carbs" | "fat"
 
@@ -266,41 +80,52 @@ function getFoodCardTone(food: BuilderFood): FoodCardTone {
   return macroRanking[0].key
 }
 
-function getTemplateTotals(template: BuilderMealTemplate) {
-  return template.items.reduce(
-    (accumulator, item) => {
-      const nutrition = calcNutrition(item.foodId, item.qty)
-      return {
-        cal: accumulator.cal + nutrition.cal,
-        p: accumulator.p + nutrition.p,
-        c: accumulator.c + nutrition.c,
-        f: accumulator.f + nutrition.f,
-      }
-    },
-    { cal: 0, p: 0, c: 0, f: 0 }
-  )
-}
-
-function getMealTotals(meal: BuilderMeal) {
-  return meal.items.reduce(
-    (accumulator, item) => {
-      const nutrition = calcNutrition(item.foodId, item.qty)
-      return {
-        cal: accumulator.cal + nutrition.cal,
-        p: accumulator.p + nutrition.p,
-        c: accumulator.c + nutrition.c,
-        f: accumulator.f + nutrition.f,
-      }
-    },
-    { cal: 0, p: 0, c: 0, f: 0 }
-  )
-}
-
 function BuilderSectionTitle({ title }: { title: string }) {
   return (
     <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
       {title}
     </div>
+  )
+}
+
+export function MealPlanBuilderPageView({
+  backHref,
+}: {
+  backHref: string
+}) {
+  const initialSnapshot = React.useMemo(
+    () => createDefaultMealPlanBuilderSnapshot(),
+    []
+  )
+
+  return (
+    <MealPlanBuilderScreen
+      backHref={backHref}
+      initialSnapshot={initialSnapshot}
+      mode="create"
+    />
+  )
+}
+
+export function MealPlanBuilderEditPageView({
+  backHref,
+  mealPlanId,
+  initialSnapshot,
+  createdAt,
+}: {
+  backHref: string
+  mealPlanId: string
+  initialSnapshot: StoredNutritionMealPlanBuilderSnapshot
+  createdAt?: string
+}) {
+  return (
+    <MealPlanBuilderScreen
+      backHref={backHref}
+      initialSnapshot={initialSnapshot}
+      mode="edit"
+      mealPlanId={mealPlanId}
+      createdAt={createdAt}
+    />
   )
 }
 
@@ -531,17 +356,19 @@ function FoodLibraryRow({
 }
 
 function TemplateLibraryCard({
+  foods,
   template,
   onApply,
   onCreateMeal,
   onDelete,
 }: {
+  foods: BuilderFood[]
   template: BuilderMealTemplate
   onApply: () => void
   onCreateMeal: () => void
   onDelete: () => void
 }) {
-  const totals = getTemplateTotals(template)
+  const totals = getBuilderTemplateTotals(foods, template)
 
   return (
     <div className="w-full rounded-xl border border-neutral-200 bg-white p-3">
@@ -570,7 +397,7 @@ function TemplateLibraryCard({
 
       <div className="mt-3 flex flex-wrap gap-1.5">
         {template.items.map((item) => {
-          const food = FOOD_DB.find((entry) => entry.id === item.foodId)
+          const food = foods.find((entry) => entry.id === item.foodId)
           if (!food) {
             return null
           }
@@ -609,6 +436,7 @@ function TemplateLibraryCard({
 }
 
 function MealItemRow({
+  foods,
   item,
   isDragging = false,
   onChangeQty,
@@ -618,6 +446,7 @@ function MealItemRow({
   onDrop,
   onRemove,
 }: {
+  foods: BuilderFood[]
   item: BuilderMealItem
   isDragging?: boolean
   onChangeQty: (nextQty: number) => void
@@ -627,13 +456,13 @@ function MealItemRow({
   onDrop?: (event: React.DragEvent<HTMLDivElement>) => void
   onRemove: () => void
 }) {
-  const food = FOOD_DB.find((entry) => entry.id === item.foodId)
+  const food = foods.find((entry) => entry.id === item.foodId)
 
   if (!food) {
     return null
   }
 
-  const nutrition = calcNutrition(item.foodId, item.qty)
+  const nutrition = calcBuilderNutrition(foods, item.foodId, item.qty)
   const tone = getFoodCardTone(food)
   const gripToneClasses = foodGripToneClasses[tone]
 
@@ -696,34 +525,55 @@ function MealItemRow({
   )
 }
 
-export function MealPlanBuilderPageView({
-  backHref,
-}: {
+type MealPlanBuilderScreenProps = {
   backHref: string
-}) {
+  initialSnapshot: StoredNutritionMealPlanBuilderSnapshot
+  mode: "create" | "edit"
+  mealPlanId?: string
+  createdAt?: string
+}
+
+function MealPlanBuilderScreen({
+  backHref,
+  initialSnapshot,
+  mode,
+  mealPlanId,
+  createdAt,
+}: MealPlanBuilderScreenProps) {
   const router = useRouter()
   const storageClientId = React.useMemo(
     () => resolveNutritionClientIdFromPath(backHref),
     [backHref]
   )
-  const initialPlanName = React.useMemo(
-    () => `Meal Plan - ${formatBuilderDate()}`,
-    []
+  const initialPlanName = initialSnapshot.planName
+  const itemIdCounter = React.useRef(
+    Math.max(
+      0,
+      ...initialSnapshot.meals.flatMap((meal) => meal.items.map((item) => item.id))
+    ) + 1
   )
-  const itemIdCounter = React.useRef(1)
-  const foodIdCounter = React.useRef(Math.max(0, ...FOOD_DB.map((food) => food.id)) + 1)
+  const foodIdCounter = React.useRef(
+    Math.max(0, ...initialSnapshot.foods.map((food) => food.id)) + 1
+  )
   const templateIdCounter = React.useRef(100)
   const nameInputRef = React.useRef<HTMLInputElement>(null)
   const mealNameInputRef = React.useRef<HTMLInputElement>(null)
   const deleteMealTriggerRefs = React.useRef<Record<number, HTMLButtonElement | null>>({})
   const deleteTemplateTriggerRefs = React.useRef<Record<string, HTMLButtonElement | null>>({})
-  const [foodDbVersion, setFoodDbVersion] = React.useState(0)
+  const [foods, setFoods] = React.useState<BuilderFood[]>(() =>
+    initialSnapshot.foods.map((food) => ({ ...food }))
+  )
   const [planName, setPlanName] = React.useState(initialPlanName)
   const [isEditingName, setIsEditingName] = React.useState(false)
-  const [meals, setMeals] = React.useState<BuilderMeal[]>([
-    { id: 1, name: "Meal 1", items: [] },
-  ])
-  const [activeMealId, setActiveMealId] = React.useState(1)
+  const [meals, setMeals] = React.useState<BuilderMeal[]>(() =>
+    initialSnapshot.meals.map((meal) => ({
+      ...meal,
+      items: meal.items.map((item) => ({ ...item })),
+    }))
+  )
+  const [activeMealId, setActiveMealId] = React.useState(
+    initialSnapshot.meals[0]?.id ?? 1
+  )
   const [editingMealId, setEditingMealId] = React.useState<number | null>(null)
   const [editingMealName, setEditingMealName] = React.useState("")
   const [draggedMealId, setDraggedMealId] = React.useState<number | null>(null)
@@ -735,7 +585,7 @@ export function MealPlanBuilderPageView({
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
   const [savedTemplates, setSavedTemplates] =
-    React.useState<BuilderMealTemplate[]>(MEAL_TEMPLATES)
+    React.useState<BuilderMealTemplate[]>(DEFAULT_BUILDER_MEAL_TEMPLATES)
   const [templatedMealIds, setTemplatedMealIds] = React.useState<Set<number>>(
     () => new Set()
   )
@@ -743,8 +593,14 @@ export function MealPlanBuilderPageView({
   const [isCreateFoodDialogOpen, setIsCreateFoodDialogOpen] = React.useState(false)
   const [newTemplateName, setNewTemplateName] = React.useState("")
   const [isGoalsDialogOpen, setIsGoalsDialogOpen] = React.useState(false)
-  const [mealPlanGoals, setMealPlanGoals] = React.useState<MealPlanGoalSettings>(() =>
-    createDefaultMealPlanGoalSettings()
+  const [mealPlanGoals, setMealPlanGoals] = React.useState<MealPlanGoalSettings>(
+    () => ({
+      presetId: initialSnapshot.mealPlanGoals.presetId,
+      calories: { ...initialSnapshot.mealPlanGoals.calories },
+      protein: { ...initialSnapshot.mealPlanGoals.protein },
+      carbs: { ...initialSnapshot.mealPlanGoals.carbs },
+      fat: { ...initialSnapshot.mealPlanGoals.fat },
+    })
   )
   const [dragFoodPayload, setDragFoodPayload] = React.useState<{
     foodId: number
@@ -769,15 +625,15 @@ export function MealPlanBuilderPageView({
   const activeMeal = meals.find((meal) => meal.id === activeMealId) ?? meals[0]
   const filteredFoods = React.useMemo(() => {
     if (!searchQuery.trim()) {
-      return RECENT_FOOD_IDS.map((id) => FOOD_DB.find((food) => food.id === id)).filter(
+      return RECENT_BUILDER_FOOD_IDS.map((id) => foods.find((food) => food.id === id)).filter(
         Boolean
       ) as BuilderFood[]
     }
 
-    return FOOD_DB.filter((food) =>
+    return foods.filter((food) =>
       food.name.toLowerCase().includes(searchQuery.toLowerCase())
     )
-  }, [foodDbVersion, searchQuery])
+  }, [foods, searchQuery])
   const filteredTemplates = React.useMemo(() => {
     if (!templateSearchQuery.trim()) {
       return savedTemplates
@@ -788,32 +644,20 @@ export function MealPlanBuilderPageView({
         .toLowerCase()
         .includes(templateSearchQuery.toLowerCase())
       const matchesFood = template.items.some((item) => {
-        const food = FOOD_DB.find((entry) => entry.id === item.foodId)
+        const food = foods.find((entry) => entry.id === item.foodId)
         return food?.name.toLowerCase().includes(templateSearchQuery.toLowerCase())
       })
 
       return matchesName || matchesFood
     })
-  }, [savedTemplates, templateSearchQuery])
+  }, [foods, savedTemplates, templateSearchQuery])
   const planTotals = React.useMemo(
-    () =>
-      meals.reduce(
-        (accumulator, meal) => {
-          const totals = getMealTotals(meal)
-          return {
-            cal: accumulator.cal + totals.cal,
-            p: accumulator.p + totals.p,
-            c: accumulator.c + totals.c,
-            f: accumulator.f + totals.f,
-          }
-        },
-        { cal: 0, p: 0, c: 0, f: 0 }
-      ),
-    [meals]
+    () => getBuilderPlanTotals(foods, meals),
+    [foods, meals]
   )
   const activeMealTotals = React.useMemo(
-    () => (activeMeal ? getMealTotals(activeMeal) : null),
-    [activeMeal]
+    () => (activeMeal ? getBuilderMealTotals(foods, activeMeal) : null),
+    [activeMeal, foods]
   )
   const goalSummaryMetrics = React.useMemo(
     () => [
@@ -863,38 +707,35 @@ export function MealPlanBuilderPageView({
 
   const handleSavePlan = React.useCallback(() => {
     const nextPlanName = planName.trim() || initialPlanName
-    const totalFoodCount = meals.reduce(
-      (totalCount, meal) => totalCount + meal.items.length,
-      0
-    )
-    const nextStoredMealPlan: StoredNutritionMealPlan = {
-      id: `custom-meal-plan-${Date.now()}`,
-      title: nextPlanName,
-      subtitle: `Custom plan with ${meals.length} meals and ${totalFoodCount} foods.`,
-      type: "Meal Plan",
-      calories: planTotals.cal,
-      macros: `${Math.round(planTotals.p)}P / ${Math.round(planTotals.c)}C / ${Math.round(planTotals.f)}F`,
-      schedule: `${meals.length} meal${meals.length === 1 ? "" : "s"}`,
-      segments: buildStoredMealPlanSegments(planTotals),
-      sections: buildStoredMealPlanSections(meals),
-      createdAt: new Date().toISOString(),
-    }
+    const nextStoredMealPlan: StoredNutritionMealPlan =
+      buildStoredNutritionMealPlanFromBuilderState({
+        planId: mode === "edit" ? mealPlanId : undefined,
+        planName: nextPlanName,
+        meals,
+        foods,
+        mealPlanGoals,
+        createdAt,
+      })
 
     if (storageClientId) {
       upsertStoredNutritionMealPlan(storageClientId, nextStoredMealPlan)
     }
 
-    toast.success("Meal plan created", {
+    toast.success(mode === "edit" ? "Meal plan updated" : "Meal plan created", {
       description: `For ${nextPlanName}.`,
     })
 
     handleNavigateBack()
   }, [
     handleNavigateBack,
+    createdAt,
+    foods,
     initialPlanName,
+    mealPlanGoals,
+    mealPlanId,
     meals,
+    mode,
     planName,
-    planTotals,
     storageClientId,
   ])
   const handleCreateFood = React.useCallback(() => {
@@ -913,19 +754,20 @@ export function MealPlanBuilderPageView({
             ? 10
             : 10
 
-      FOOD_DB.push({
-        id: foodIdCounter.current++,
-        name: value.name,
-        cal: value.cal,
-        p: value.p,
-        c: value.c,
-        f: value.f,
-        unit: value.unit,
-        step: nextStep,
-        defaultQty: nextDefaultQty,
-      })
-
-      setFoodDbVersion((currentValue) => currentValue + 1)
+      setFoods((currentFoods) => [
+        ...currentFoods,
+        {
+          id: foodIdCounter.current++,
+          name: value.name,
+          cal: value.cal,
+          p: value.p,
+          c: value.c,
+          f: value.f,
+          unit: value.unit,
+          step: nextStep,
+          defaultQty: nextDefaultQty,
+        },
+      ])
       setSearchQuery(value.name)
       setIsCreateFoodDialogOpen(false)
 
@@ -946,7 +788,7 @@ export function MealPlanBuilderPageView({
       qty?: number,
       insertIndex?: number
     ) => {
-      const food = FOOD_DB.find((entry) => entry.id === foodId)
+      const food = foods.find((entry) => entry.id === foodId)
 
       if (!food) {
         return
@@ -979,7 +821,7 @@ export function MealPlanBuilderPageView({
         )
       )
     },
-    [activeMealId]
+    [activeMealId, foods]
   )
 
   const addTemplateToMeal = React.useCallback(
@@ -1596,6 +1438,7 @@ export function MealPlanBuilderPageView({
                       filteredTemplates.map((template) => (
                         <React.Fragment key={template.id}>
                           <TemplateLibraryCard
+                            foods={foods}
                             template={template}
                             onApply={() => addTemplateToMeal(template)}
                             onCreateMeal={() => createMealFromTemplate(template)}
@@ -1898,6 +1741,7 @@ export function MealPlanBuilderPageView({
                         ) : null
                       ) : null}
                       <MealItemRow
+                        foods={foods}
                         item={item}
                         isDragging={draggedMealItemId === item.id}
                         onDragStart={(event) => handleMealItemDragStart(event, item.id)}
@@ -2004,7 +1848,7 @@ export function MealPlanBuilderPageView({
               {meals
                 .filter((meal) => meal.id !== activeMealId)
                 .map((meal) => {
-                  const totals = getMealTotals(meal)
+                  const totals = getBuilderMealTotals(foods, meal)
 
                   return (
                     <button

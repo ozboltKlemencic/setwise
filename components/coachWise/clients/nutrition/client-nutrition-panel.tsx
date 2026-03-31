@@ -86,6 +86,12 @@ import {
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import {
+  buildMealPlanBuilderSnapshotFromSections,
+} from "@/components/coachWise/clients/nutrition/meal-plan-builder-data"
+import {
+  MealPlanBuilderEditPageView as SharedMealPlanBuilderEditPageView,
+} from "@/components/coachWise/clients/nutrition/meal-plan-builder"
+import {
   subtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/shared/subtabs-nav"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
@@ -1051,18 +1057,6 @@ function parseMealPlanMacros(macros: string) {
     carbs: Number.parseInt(match[2] ?? "0", 10),
     fats: Number.parseInt(match[3] ?? "0", 10),
   }
-}
-
-function getMealPlanEditDescription(plan: NutritionMealPlan) {
-  if (plan.id === "training-day") {
-    return "Balanced meals designed for a training day with sufficient macros for muscle recovery and energy."
-  }
-
-  if (plan.id === "rest-day") {
-    return "Lower carb meals designed for easier days with stable energy and better satiety."
-  }
-
-  return plan.subtitle
 }
 
 function getNutritionPreset(phase?: string): NutritionPreset {
@@ -3096,6 +3090,7 @@ function useNutritionMealPlanWorkspace({
     hasLoadedStoredMealPlans,
     macros,
     mealPlan,
+    storedMealPlan,
     sections,
     sensors,
     handleDeleteSection,
@@ -3138,72 +3133,6 @@ function NutritionMealPlanHeader({
         {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
       </div>
     </div>
-  )
-}
-
-function NutritionMealPlanMetaCard({
-  planName,
-  planDescription,
-  canSave,
-  onPlanNameChange,
-  onPlanDescriptionChange,
-  onReset,
-  onSave,
-}: {
-  planName: string
-  planDescription: string
-  canSave: boolean
-  onPlanNameChange: (nextValue: string) => void
-  onPlanDescriptionChange: (nextValue: string) => void
-  onReset: () => void
-  onSave: () => void
-}) {
-  return (
-    <Card className="rounded-xl border-neutral-200 shadow-none">
-      <CardHeader className="space-y-1 pb-3">
-        <CardTitle className="text-[16px] font-semibold text-neutral-950">
-          Plan settings
-        </CardTitle>
-        <CardDescription className="text-[13px] text-neutral-500">
-          Update the plan name and coaching summary before adjusting meals.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <label className="block text-[13px] font-medium text-neutral-800">
-            Plan Name <span className="text-rose-500">*</span>
-          </label>
-          <Input
-            value={planName}
-            onChange={(event) => onPlanNameChange(event.target.value)}
-            className="h-10 rounded-sm border-neutral-200 bg-white text-[14px] shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-[13px] font-medium text-neutral-800">
-            Plan Description
-          </label>
-          <textarea
-            value={planDescription}
-            onChange={(event) => onPlanDescriptionChange(event.target.value)}
-            className="min-h-[92px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2 text-[14px] text-neutral-700 shadow-none outline-none placeholder:text-neutral-400 focus:border-neutral-300 focus:ring-0"
-          />
-        </div>
-
-        <div className="flex items-center justify-end gap-2 border-t border-neutral-200 pt-4">
-          <SecondaryActionButton
-            label="Reset"
-            onClick={onReset}
-          />
-          <PrimaryActionButton
-            label="Save Changes"
-            onClick={onSave}
-            disabled={!canSave}
-          />
-        </div>
-      </CardContent>
-    </Card>
   )
 }
 
@@ -4095,67 +4024,16 @@ export function MealPlanEditPageView({
   phase?: string
   backHref: string
 }) {
-  const router = useRouter()
   const {
     hasLoadedStoredMealPlans,
-    macros,
     mealPlan,
+    storedMealPlan,
     sections,
-    sensors,
-    handleDeleteSection,
-    handleRenameSection,
-    handleSectionDragEnd,
   } = useNutritionMealPlanWorkspace({
     mealPlanId,
     phase,
     pathHint: backHref,
   })
-  const [savedPlanName, setSavedPlanName] = React.useState("")
-  const [savedPlanDescription, setSavedPlanDescription] = React.useState("")
-  const [planName, setPlanName] = React.useState("")
-  const [planDescription, setPlanDescription] = React.useState("")
-
-  React.useEffect(() => {
-    const nextPlanName = mealPlan?.title ?? ""
-    const nextPlanDescription = mealPlan
-      ? getMealPlanEditDescription(mealPlan)
-      : ""
-
-    setSavedPlanName(nextPlanName)
-    setSavedPlanDescription(nextPlanDescription)
-    setPlanName(nextPlanName)
-    setPlanDescription(nextPlanDescription)
-  }, [mealPlan])
-
-  const hasValidName = planName.trim().length > 0
-  const isDirty =
-    planName.trim() !== savedPlanName ||
-    planDescription.trim() !== savedPlanDescription
-
-  const handleReset = React.useCallback(() => {
-    setPlanName(savedPlanName)
-    setPlanDescription(savedPlanDescription)
-  }, [savedPlanDescription, savedPlanName])
-
-  const handleSave = React.useCallback(() => {
-    if (!hasValidName) {
-      return
-    }
-
-    const nextPlanName = planName.trim()
-    const nextPlanDescription = planDescription.trim()
-
-    setSavedPlanName(nextPlanName)
-    setSavedPlanDescription(nextPlanDescription)
-    setPlanName(nextPlanName)
-    setPlanDescription(nextPlanDescription)
-
-    toast.success("Changes saved", {
-      description: `For ${nextPlanName}.`,
-    })
-
-    router.push(backHref)
-  }, [backHref, hasValidName, planDescription, planName, router])
 
   if (!mealPlan && !hasLoadedStoredMealPlans) {
     return null
@@ -4169,44 +4047,19 @@ export function MealPlanEditPageView({
     )
   }
 
-  return (
-    <div className="min-w-0 bg-neutral-50">
-      <NutritionMealPlanHeader
-        title={planName.trim() || mealPlan.title}
-        backHref={backHref}
-        actions={
-          <AddMealDialog
-            trigger={
-              <PrimaryActionButton
-                label="Add Meal"
-                icon={Plus}
-              />
-            }
-          />
-        }
-      />
+  const initialSnapshot = buildMealPlanBuilderSnapshotFromSections({
+    planName: mealPlan.title,
+    sections,
+    builderSnapshot: storedMealPlan?.builderSnapshot,
+  })
 
-      <div className="mx-auto max-w-[980px] space-y-4 px-4 py-4">
-        <NutritionMealPlanMetaCard
-          planName={planName}
-          planDescription={planDescription}
-          canSave={hasValidName && isDirty}
-          onPlanNameChange={setPlanName}
-          onPlanDescriptionChange={setPlanDescription}
-          onReset={handleReset}
-          onSave={handleSave}
-        />
-        <NutritionMealPlanWorkspace
-          mealPlan={mealPlan}
-          macros={macros}
-          sections={sections}
-          sensors={sensors}
-          onSectionDragEnd={handleSectionDragEnd}
-          onRenameSection={handleRenameSection}
-          onDeleteSection={handleDeleteSection}
-        />
-      </div>
-    </div>
+  return (
+    <SharedMealPlanBuilderEditPageView
+      backHref={backHref}
+      mealPlanId={mealPlan.id}
+      initialSnapshot={initialSnapshot}
+      createdAt={storedMealPlan?.createdAt}
+    />
   )
 }
 

@@ -31,7 +31,7 @@ export default async function Page({ params, searchParams }: Props) {
   }
 
   return (
-    <section className="min-w-0 bg-neutral-50">
+    <section className="min-w-0 bg-neutral-50 p-0 m-0">
       <MealPlanEditPageView
         mealPlanId={resolvedMealPlanId}
         backHref={backHref}
