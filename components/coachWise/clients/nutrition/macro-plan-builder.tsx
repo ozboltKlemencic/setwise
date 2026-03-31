@@ -534,30 +534,32 @@ export function MacroPlanBuilderPageView({
         saveDisabled={!canSave}
       />
 
-      {hasPresetChanged && selectedPreset && canSave ? (
-        <div className="fixed top-[calc(var(--header-height)+3rem+0.75rem)] left-1/2 z-20 w-full max-w-[720px] -translate-x-1/2 px-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
-            <div className="text-[12px] text-amber-700">
-              <span className="font-medium">{selectedPreset.name}</span>
-              {" updated to "}
-              <span className="font-medium">{getPresetLabel(macros)}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <SecondaryActionButton
-                label="Save as new"
-                onClick={() => {
-                  setShowCreatePresetInput(true)
-                  setNewPresetName("")
-                }}
-              />
-              <PrimaryActionButton
-                label="Update preset"
-                onClick={handleSaveCurrentPreset}
-              />
+      <div className="sticky top-[calc(var(--header-height)+3rem+0.75rem)] z-20 mx-auto h-0 max-w-md px-4">
+        {hasPresetChanged && selectedPreset && canSave ? (
+          <div className="absolute inset-x-4 top-0">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50/95 px-3 py-2.5 shadow-sm backdrop-blur-sm">
+              <div className="text-[12px] text-amber-700">
+                <span className="font-medium">{selectedPreset.name}</span>
+                {" updated to "}
+                <span className="font-medium">{getPresetLabel(macros)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <SecondaryActionButton
+                  label="Save as new"
+                  onClick={() => {
+                    setShowCreatePresetInput(true)
+                    setNewPresetName("")
+                  }}
+                />
+                <PrimaryActionButton
+                  label="Update preset"
+                  onClick={handleSaveCurrentPreset}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
       <div className="mx-auto max-w-md space-y-4 px-4 py-4">
         <div className="space-y-1.5 px-4">
