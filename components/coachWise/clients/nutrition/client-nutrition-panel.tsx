@@ -3450,7 +3450,10 @@ export function ClientNutritionMealPlansView({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mealPlans.length ? mealPlans.map((plan) => (
+              {mealPlans.length ? mealPlans.map((plan) => {
+                const isMacroPlan = plan.type.toLowerCase().includes("macro")
+
+                return (
                 <TableRow
                   key={plan.id}
                   role="button"
@@ -3477,12 +3480,17 @@ export function ClientNutritionMealPlansView({
                   <TableCell className="px-3.5 py-3">
                     <Badge
                       variant="outline"
-                      className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
+                      className={cn(
+                        "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
+                        isMacroPlan
+                          ? "border-sky-200 bg-sky-50/80 text-sky-700"
+                          : "border-emerald-200 bg-emerald-50/80 text-emerald-700"
+                      )}
                     >
-                      {plan.type.toLowerCase().includes("macro") ? (
-                        <Beef className="mr-1 size-3 text-neutral-500" />
+                      {isMacroPlan ? (
+                        <Beef className="mr-1 size-3 text-sky-600" />
                       ) : (
-                        <UtensilsCrossed className="mr-1 size-3 text-neutral-500" />
+                        <UtensilsCrossed className="mr-1 size-3 text-emerald-600" />
                       )}
                       {plan.type}
                     </Badge>
@@ -3543,7 +3551,7 @@ export function ClientNutritionMealPlansView({
                     </div>
                   </TableCell>
                 </TableRow>
-              )) : (
+              )}) : (
                 <TableRow className="hover:bg-transparent">
                   <TableCell
                     colSpan={4}
