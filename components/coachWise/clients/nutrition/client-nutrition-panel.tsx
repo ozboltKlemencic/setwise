@@ -3979,24 +3979,14 @@ export function MealPlanDetailView({
         title={mealPlan.title}
         backHref={resolvedBackHref}
         actions={
-          <>
-            <SecondaryActionButton
-              label="Edit Plan"
-              icon={Pencil}
-              href={buildCoachWiseHref(
-                pathname,
-                getNutritionPlanEditorHref(mealPlan.id, resolvedBackHref)
-              )}
-            />
-            <AddMealDialog
-              trigger={
-                <PrimaryActionButton
-                  label="Add Meal"
-                  icon={Plus}
-                />
-              }
-            />
-          </>
+          <PrimaryActionButton
+            label="Edit Plan"
+            icon={Pencil}
+            href={buildCoachWiseHref(
+              pathname,
+              getNutritionPlanEditorHref(mealPlan.id, resolvedBackHref)
+            )}
+          />
         }
       />
 
