@@ -3318,6 +3318,20 @@ export function ClientNutritionMealPlansView({
     [pathname, router]
   )
 
+  const isNutritionRowActionTarget = React.useCallback(
+    (target: EventTarget | null) =>
+      target instanceof Element &&
+      Boolean(target.closest("[data-nutrition-row-action='true']")),
+    []
+  )
+
+  const isNutritionRowOpenTarget = React.useCallback(
+    (target: EventTarget | null) =>
+      target instanceof Element &&
+      Boolean(target.closest("[data-nutrition-row-open='true']")),
+    []
+  )
+
   const handleCopyMealPlan = React.useCallback((plan: NutritionMealPlan) => {
     if (!clientId) {
       toast.error("Could not duplicate meal plan", {
@@ -3458,8 +3472,22 @@ export function ClientNutritionMealPlansView({
                   key={plan.id}
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleOpenMealPlan(plan.id)}
+                  onClick={(event) => {
+                    if (
+                      event.defaultPrevented ||
+                      isNutritionRowActionTarget(event.target) ||
+                      !isNutritionRowOpenTarget(event.target)
+                    ) {
+                      return
+                    }
+
+                    handleOpenMealPlan(plan.id)
+                  }}
                   onKeyDown={(event) => {
+                    if (isNutritionRowActionTarget(event.target)) {
+                      return
+                    }
+
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault()
                       handleOpenMealPlan(plan.id)
@@ -3467,7 +3495,10 @@ export function ClientNutritionMealPlansView({
                   }}
                   className="cursor-pointer bg-white hover:bg-neutral-50/60"
                 >
-                  <TableCell className="py-3 pl-4 whitespace-normal lg:pl-5">
+                  <TableCell
+                    className="py-3 pl-4 whitespace-normal lg:pl-5"
+                    data-nutrition-row-open="true"
+                  >
                     <div className="min-w-0 space-y-1">
                       <div className="text-[14px] font-medium text-neutral-950">
                         {plan.title}
@@ -3477,7 +3508,10 @@ export function ClientNutritionMealPlansView({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="px-3.5 py-3">
+                  <TableCell
+                    className="px-3.5 py-3"
+                    data-nutrition-row-open="true"
+                  >
                     <Badge
                       variant="outline"
                       className={cn(
@@ -3495,11 +3529,20 @@ export function ClientNutritionMealPlansView({
                       {plan.type}
                     </Badge>
                   </TableCell>
-                  <TableCell className="px-3 py-3 text-center">
+                  <TableCell
+                    className="px-3 py-3 text-center"
+                    data-nutrition-row-open="true"
+                  >
                     <NutritionCaloriesDonut plan={plan} />
                   </TableCell>
-                  <TableCell className="px-3 py-3 pr-5">
-                    <div className="flex w-[9rem] justify-center gap-3">
+                  <TableCell
+                    className="px-3 py-3 pr-5"
+                    data-nutrition-row-action="true"
+                  >
+                    <div
+                      className="flex w-[9rem] justify-center gap-3"
+                      data-nutrition-row-action="true"
+                    >
                       <Button
                         type="button"
                         variant="outline"
@@ -3537,7 +3580,9 @@ export function ClientNutritionMealPlansView({
                             type="button"
                             variant="outline"
                             size="icon-sm"
-                            onClick={(event) => event.stopPropagation()}
+                            onClick={(event) => {
+                              event.stopPropagation()
+                            }}
                             className={cn(
                               nutritionRowActionButtonClassName,
                               nutritionRowDeleteActionButtonClassName
