@@ -72,6 +72,25 @@ export type StoredNutritionMealPlanBuilderSnapshot = {
   mealPlanGoals: StoredNutritionMealPlanGoalSettings
 }
 
+export type StoredNutritionMacroPlanBuilderSnapshot = {
+  planName: string
+  calories: number
+  macros: {
+    p: number
+    c: number
+    f: number
+  }
+  presets: Array<{
+    id: string
+    name: string
+    p: number
+    c: number
+    f: number
+  }>
+  selectedPresetId: string | null
+  lockedMacroKey: "p" | "c" | "f" | null
+}
+
 export type StoredNutritionMealPlan = {
   id: string
   title: string
@@ -84,6 +103,7 @@ export type StoredNutritionMealPlan = {
   sections: StoredNutritionMealPlanSection[]
   createdAt: string
   builderSnapshot?: StoredNutritionMealPlanBuilderSnapshot
+  macroBuilderSnapshot?: StoredNutritionMacroPlanBuilderSnapshot
 }
 
 const NUTRITION_MEAL_PLAN_STORAGE_KEY_PREFIX =

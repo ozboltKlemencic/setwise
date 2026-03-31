@@ -11,6 +11,13 @@ import {
   Trash2,
 } from "lucide-react"
 
+import {
+  buildStoredNutritionMacroPlanFromBuilderState,
+  calcMacroPlanGrams,
+  DEFAULT_MACRO_BUILDER_PRESETS,
+  type MacroBuilderPreset,
+  type MacroKey,
+} from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
@@ -19,26 +26,14 @@ import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useSidebar } from "@/components/ui/sidebar"
+import {
+  resolveNutritionClientIdFromPath,
+  upsertStoredNutritionMealPlan,
+  type StoredNutritionMacroPlanBuilderSnapshot,
+} from "@/lib/handlers/nutrition-plan-storage"
 import { getNutritionCreateMealPlanHref } from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
-
-type MacroKey = "p" | "c" | "f"
-
-type MacroBuilderPreset = {
-  id: string
-  name: string
-  p: number
-  c: number
-  f: number
-}
-
-const defaultMacroPresets: MacroBuilderPreset[] = [
-  { id: "default-0", name: "High Protein", p: 40, c: 35, f: 25 },
-  { id: "default-1", name: "Balanced", p: 33, c: 33, f: 33 },
-  { id: "default-2", name: "Low Carb", p: 40, c: 20, f: 40 },
-  { id: "default-3", name: "High Carb", p: 30, c: 50, f: 20 },
-]
 
 const macroMeta = {
   p: {
@@ -375,28 +370,46 @@ function MacroSliderCard({
 
 export function MacroPlanBuilderPageView({
   backHref,
+  mealPlanId,
+  initialSnapshot,
+  createdAt,
 }: {
   backHref: string
+  mealPlanId?: string
+  initialSnapshot?: StoredNutritionMacroPlanBuilderSnapshot | null
+  createdAt?: string
 }) {
   const router = useRouter()
   const pathname = usePathname()
   const { isMobile, state: sidebarState } = useSidebar()
-  const presetIdRef = React.useRef(defaultMacroPresets.length)
-  const [planName, setPlanName] = React.useState("Macro Plan (IIFYM)")
+  const initialPresets = React.useMemo(
+    () =>
+      initialSnapshot?.presets?.length
+        ? initialSnapshot.presets.map((preset) => ({ ...preset }))
+        : DEFAULT_MACRO_BUILDER_PRESETS.map((preset) => ({ ...preset })),
+    [initialSnapshot]
+  )
+  const presetIdRef = React.useRef(initialPresets.length)
+  const [planName, setPlanName] = React.useState(
+    initialSnapshot?.planName || "Macro Plan (IIFYM)"
+  )
   const [isEditingName, setIsEditingName] = React.useState(false)
-  const [calories, setCalories] = React.useState(2000)
+  const [calories, setCalories] = React.useState(initialSnapshot?.calories ?? 2000)
   const [macros, setMacros] = React.useState<Record<MacroKey, number>>({
-    p: 40,
-    c: 35,
-    f: 25,
+    p: initialSnapshot?.macros.p ?? 40,
+    c: initialSnapshot?.macros.c ?? 35,
+    f: initialSnapshot?.macros.f ?? 25,
   })
   const [presets, setPresets] =
-    React.useState<MacroBuilderPreset[]>(defaultMacroPresets)
+    React.useState<MacroBuilderPreset[]>(initialPresets)
   const [selectedPresetId, setSelectedPresetId] = React.useState<string | null>(
-    defaultMacroPresets[0]?.id ?? null
+    initialSnapshot?.selectedPresetId ?? initialPresets[0]?.id ?? null
   )
   const [lockedMacros, setLockedMacros] = React.useState<Set<MacroKey>>(
-    () => new Set()
+    () =>
+      initialSnapshot?.lockedMacroKey
+        ? new Set<MacroKey>([initialSnapshot.lockedMacroKey])
+        : new Set()
   )
   const [editingPresetId, setEditingPresetId] = React.useState<string | null>(
     null
@@ -418,11 +431,7 @@ export function MacroPlanBuilderPageView({
       selectedPreset.f !== macros.f)
 
   const grams = React.useMemo(
-    () => ({
-      p: Math.round((calories * macros.p) / 100 / 4),
-      c: Math.round((calories * macros.c) / 100 / 4),
-      f: Math.round((calories * macros.f) / 100 / 9),
-    }),
+    () => calcMacroPlanGrams(calories, macros),
     [calories, macros]
   )
 
@@ -573,11 +582,43 @@ export function MacroPlanBuilderPageView({
     }
 
     const nextPlanName = planName.trim() || "Macro Plan (IIFYM)"
-    toast.success("Macro plan created", {
+    const clientId = resolveNutritionClientIdFromPath(backHref) ??
+      resolveNutritionClientIdFromPath(pathname)
+
+    if (clientId) {
+      upsertStoredNutritionMealPlan(
+        clientId,
+        buildStoredNutritionMacroPlanFromBuilderState({
+          planId: mealPlanId,
+          planName: nextPlanName,
+          calories,
+          macros,
+          presets,
+          selectedPresetId,
+          lockedMacroKey: Array.from(lockedMacros)[0] ?? null,
+          createdAt,
+        })
+      )
+    }
+
+    toast.success(mealPlanId ? "Macro plan updated" : "Macro plan created", {
       description: `For ${nextPlanName}.`,
     })
     router.push(backHref)
-  }, [backHref, canSave, planName, router])
+  }, [
+    backHref,
+    calories,
+    canSave,
+    createdAt,
+    lockedMacros,
+    macros,
+    mealPlanId,
+    pathname,
+    planName,
+    presets,
+    router,
+    selectedPresetId,
+  ])
 
   const mealPlanBuilderHref = buildCoachWiseHref(
     pathname,

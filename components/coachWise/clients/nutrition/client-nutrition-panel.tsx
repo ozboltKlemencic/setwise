@@ -89,6 +89,12 @@ import {
   buildMealPlanBuilderSnapshotFromSections,
 } from "@/components/coachWise/clients/nutrition/meal-plan-builder-data"
 import {
+  cloneStoredNutritionMacroPlanBuilderSnapshot,
+} from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
+import {
+  MacroPlanBuilderPageView as SharedMacroPlanBuilderPageView,
+} from "@/components/coachWise/clients/nutrition/macro-plan-builder"
+import {
   MealPlanBuilderEditPageView as SharedMealPlanBuilderEditPageView,
 } from "@/components/coachWise/clients/nutrition/meal-plan-builder"
 import {
@@ -3346,18 +3352,33 @@ export function ClientNutritionMealPlansView({
         options: section.options.map((option) => ({ ...option })),
       })),
       createdAt: new Date().toISOString(),
-      builderSnapshot: buildMealPlanBuilderSnapshotFromSections({
-        planName: nextTitle,
-        sections: sourceSections,
-        builderSnapshot: sourceStoredMealPlan?.builderSnapshot,
-      }),
+      builderSnapshot: sourceStoredMealPlan?.macroBuilderSnapshot
+        ? undefined
+        : buildMealPlanBuilderSnapshotFromSections({
+            planName: nextTitle,
+            sections: sourceSections,
+            builderSnapshot: sourceStoredMealPlan?.builderSnapshot,
+          }),
+      macroBuilderSnapshot: sourceStoredMealPlan?.macroBuilderSnapshot
+        ? cloneStoredNutritionMacroPlanBuilderSnapshot(
+            sourceStoredMealPlan.macroBuilderSnapshot,
+            {
+              planName: nextTitle,
+            }
+          )
+        : undefined,
     }
 
     upsertStoredNutritionMealPlan(clientId, duplicatedPlan)
 
-    toast.success("Meal plan duplicated", {
+    toast.success(
+      plan.type.toLowerCase().includes("macro")
+        ? "Macro plan duplicated"
+        : "Meal plan duplicated",
+      {
       description: `Created ${nextTitle}.`,
-    })
+      }
+    )
   }, [allMealPlans, clientId, storedMealPlans])
 
   const handleDeleteMealPlan = React.useCallback((plan: NutritionMealPlan) => {
@@ -3458,7 +3479,11 @@ export function ClientNutritionMealPlansView({
                       variant="outline"
                       className="rounded-md border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
                     >
-                      <UtensilsCrossed className="mr-1 size-3 text-neutral-500" />
+                      {plan.type.toLowerCase().includes("macro") ? (
+                        <Beef className="mr-1 size-3 text-neutral-500" />
+                      ) : (
+                        <UtensilsCrossed className="mr-1 size-3 text-neutral-500" />
+                      )}
                       {plan.type}
                     </Badge>
                   </TableCell>
@@ -4097,6 +4122,17 @@ export function MealPlanEditPageView({
       <div className="px-2 pt-2 text-sm text-neutral-500">
         Meal plan not found.
       </div>
+    )
+  }
+
+  if (storedMealPlan?.macroBuilderSnapshot) {
+    return (
+      <SharedMacroPlanBuilderPageView
+        backHref={backHref}
+        mealPlanId={mealPlan.id}
+        initialSnapshot={storedMealPlan.macroBuilderSnapshot}
+        createdAt={storedMealPlan.createdAt}
+      />
     )
   }
 
