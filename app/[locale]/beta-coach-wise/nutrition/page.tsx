@@ -9,12 +9,12 @@ import {
   IconChefHat,
   IconClipboardList,
   IconPlus,
-  IconTag,
 } from "@tabler/icons-react"
 
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
+import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -47,6 +47,10 @@ import {
   NutritionPlansTable,
   buildNutritionPlanSegments,
 } from "@/components/coachWise/tables/nutrition-plans-table"
+import {
+  getNutritionCreateMacroPlanHref,
+  getNutritionCreateMealPlanHref,
+} from "@/lib/handlers/nutrition.handlers"
 import { cn } from "@/lib/utils"
 
 type MealPlanTab = "plans" | "meals" | "food"
@@ -340,105 +344,20 @@ function PlannerTextarea({
   )
 }
 
-function AddPlanDialog() {
+function AddPlanDialog({ backToHref }: { backToHref: string }) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <PrimaryActionButton label="Plan" icon={IconPlus} />
-      </DialogTrigger>
-      <DialogContent className="max-w-[700px] rounded-sm border border-neutral-200 bg-white p-0 shadow-xl">
-        <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
-          <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
-            <IconClipboardList className="size-4.5 text-neutral-700" />
-            Add Plan
-          </DialogTitle>
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              className="size-8 rounded-sm p-0 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700"
-            >
-              <span className="text-lg leading-none">×</span>
-            </Button>
-          </DialogClose>
-        </div>
-        <div className="space-y-5 px-6 py-5">
-          <div className="space-y-2">
-            <label className="text-[14px] font-medium text-neutral-800">
-              Plan Name <span className="text-red-500">*</span>
-            </label>
-            <Input
-              placeholder="Name of the plan e.g. 2200kcal Recomp"
-              className="h-11 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-[14px] font-medium text-neutral-800">
-              Plan Description
-            </label>
-            <PlannerTextarea
-              placeholder="Enter any additional info"
-              className="min-h-[116px] rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-[14px] font-medium text-neutral-800">
-              Plan Type <span className="text-red-500">*</span>
-            </label>
-            <div className="grid gap-3 md:grid-cols-2">
-              <button
-                type="button"
-                className="rounded-sm border border-neutral-200 px-4 py-4 text-left transition hover:border-brand-300 hover:bg-brand-50/40"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
-                      <IconChefHat className="size-4 text-neutral-600" />
-                      Meal Plan
-                    </div>
-                    <p className="text-[13px] leading-6 text-neutral-600">
-                      Build meals with foods, recipes and meal timing structure.
-                    </p>
-                  </div>
-                  <span className="mt-1 size-4 rounded-full border border-neutral-300" />
-                </div>
-              </button>
-              <button
-                type="button"
-                className="rounded-sm border border-neutral-200 px-4 py-4 text-left transition hover:border-brand-300 hover:bg-brand-50/40"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
-                      <IconTag className="size-4 text-neutral-600" />
-                      Macros Plan
-                    </div>
-                    <p className="text-[13px] leading-6 text-neutral-600">
-                      Set calorie and macro targets without building meals.
-                    </p>
-                  </div>
-                  <span className="mt-1 size-4 rounded-full border border-neutral-300" />
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-        <DialogFooter className="flex items-center justify-between border-t border-neutral-200 px-6 py-4">
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-9 rounded-sm px-3 text-[14px] font-medium text-neutral-700 hover:bg-neutral-100"
-            >
-              Close
-            </Button>
-          </DialogClose>
-          <Button className="h-9 rounded-sm bg-brand-500 px-4 text-[14px] font-medium text-white shadow-none hover:bg-brand-600">
-            Add Plan
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <div className="flex items-center gap-2">
+      <PrimaryActionButton
+        label="Meal Plan"
+        icon={IconPlus}
+        href={getNutritionCreateMealPlanHref(backToHref)}
+      />
+      <SecondaryActionButton
+        label="Macro Plan (IIFYM)"
+        icon={IconPlus}
+        href={getNutritionCreateMacroPlanHref(backToHref)}
+      />
+    </div>
   )
 }
 
@@ -893,6 +812,13 @@ function MealPlaniPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const activeTab = (searchParams.get("tab") as MealPlanTab) || "plans"
+  const plansBackToHref = React.useMemo(() => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", "plans")
+    const query = params.toString()
+
+    return query ? `${pathname}?${query}` : pathname
+  }, [pathname, searchParams])
 
   const setTab = React.useCallback(
     (value: MealPlanTab) => {
@@ -904,7 +830,7 @@ function MealPlaniPageContent() {
   )
 
   const tabsAction = (() => {
-    if (activeTab === "plans") return <AddPlanDialog />
+    if (activeTab === "plans") return <AddPlanDialog backToHref={plansBackToHref} />
     if (activeTab === "meals") return <AddMealDialog />
     return <AddFoodDialog />
   })()
