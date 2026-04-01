@@ -277,18 +277,20 @@ export function readStoredNutritionMealPlanEntries(
     storageScopeId,
     plan,
   }))
-  const globallyAssignedEntries = readStoredNutritionMealPlans(
-    GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE
-  )
-    .filter((plan) => plan.assignedClientIds?.includes(storageScopeId))
-    .map((plan) => ({
-      storageScopeId: GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
-      plan,
-    }))
+  const assignedEntries = listStoredNutritionMealPlanScopes()
+    .filter((scopeId) => scopeId !== storageScopeId)
+    .flatMap((scopeId) =>
+      readStoredNutritionMealPlans(scopeId)
+        .filter((plan) => plan.assignedClientIds?.includes(storageScopeId))
+        .map((plan) => ({
+          storageScopeId: scopeId,
+          plan,
+        }))
+    )
 
   const dedupedEntries = new Map<string, StoredNutritionMealPlanEntry>()
 
-  ;[...ownEntries, ...globallyAssignedEntries].forEach((entry) => {
+  ;[...ownEntries, ...assignedEntries].forEach((entry) => {
     if (!dedupedEntries.has(entry.plan.id)) {
       dedupedEntries.set(entry.plan.id, entry)
     }
