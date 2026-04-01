@@ -453,7 +453,20 @@ function useStoredNutritionMealPlanEntries(pathHint?: string) {
         event as CustomEvent<{ clientId?: string }>
       ).detail?.clientId
 
-      if (updatedStorageScopeId && updatedStorageScopeId !== storageScopeId) {
+      if (!updatedStorageScopeId) {
+        syncStoredMealPlans()
+        return
+      }
+
+      if (storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE) {
+        syncStoredMealPlans()
+        return
+      }
+
+      if (
+        updatedStorageScopeId !== storageScopeId &&
+        updatedStorageScopeId !== GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE
+      ) {
         return
       }
 
