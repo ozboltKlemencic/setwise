@@ -1311,6 +1311,11 @@ function MealPlaniPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const activeTab = (searchParams.get("tab") as MealPlanTab) || "plans"
+  const normalizedGlobalSearchParams = React.useMemo(() => {
+    const nextSearchParams = new URLSearchParams(searchParams.toString())
+    nextSearchParams.delete("storageScope")
+    return nextSearchParams
+  }, [searchParams])
   const [planRows, setPlanRows] = React.useState(initialMealPlanRows)
   const [editingMeal, setEditingMeal] = React.useState<MealRow | null>(null)
   const [editingFood, setEditingFood] = React.useState<FoodRow | null>(null)
@@ -1338,12 +1343,12 @@ function MealPlaniPageContent() {
     [customFoods]
   )
   const plansBackToHref = React.useMemo(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(normalizedGlobalSearchParams.toString())
     params.set("tab", "plans")
     const query = params.toString()
 
     return query ? `${pathname}?${query}` : pathname
-  }, [pathname, searchParams])
+  }, [normalizedGlobalSearchParams, pathname])
   const { storedMealPlanEntries } =
     useStoredNutritionMealPlanEntries(plansBackToHref)
   const storedPlanRows = React.useMemo(
@@ -1368,11 +1373,11 @@ function MealPlaniPageContent() {
 
   const setTab = React.useCallback(
     (value: MealPlanTab) => {
-      const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(normalizedGlobalSearchParams.toString())
       params.set("tab", value)
       router.replace(`${pathname}?${params.toString()}`, { scroll: false })
     },
-    [pathname, router, searchParams],
+    [normalizedGlobalSearchParams, pathname, router],
   )
 
   const handleOpenPlan = React.useCallback(
