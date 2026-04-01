@@ -240,7 +240,7 @@ export function NutritionPlansTable({
               Plan
             </TableHead>
             {hasClientColumn ? (
-              <TableHead className="w-[240px] px-3.5 text-[13px] font-medium">
+              <TableHead className="w-[280px] px-3.5 text-[13px] font-medium">
                 Client
               </TableHead>
             ) : null}
