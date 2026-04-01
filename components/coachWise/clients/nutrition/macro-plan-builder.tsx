@@ -3,6 +3,7 @@
 import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import {
+  ChevronDown,
   Flame,
   Lock,
   LockOpen,
@@ -12,6 +13,8 @@ import {
 } from "lucide-react"
 
 import { buildStoredNutritionMacroPlanFromBuilderState } from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
+import type { NutritionBuilderClientOption } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
+import { NutritionBuilderClientPicker } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-picker"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
@@ -21,6 +24,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getNutritionCreateMealPlanFromTargetsHref } from "@/lib/handlers/nutrition.handlers"
 import {
+  GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
   resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMacroPlanBuilderSnapshot,
@@ -383,14 +387,24 @@ export function MacroPlanBuilderPageView({
   mealPlanId,
   initialSnapshot,
   createdAt,
+  clientOptions,
+  initialAssignedClientIds,
 }: {
   backHref: string
   mealPlanId?: string
   initialSnapshot?: StoredNutritionMacroPlanBuilderSnapshot | null
   createdAt?: string
+  clientOptions?: NutritionBuilderClientOption[]
+  initialAssignedClientIds?: string[]
 }) {
   const router = useRouter()
   const pathname = usePathname()
+  const storageScopeId = React.useMemo(
+    () =>
+      resolveNutritionMealPlanStorageScopeFromPath(backHref) ??
+      resolveNutritionMealPlanStorageScopeFromPath(pathname),
+    [backHref, pathname]
+  )
   const initialPresets =
     initialSnapshot?.presets?.length
       ? initialSnapshot.presets.map((preset) => ({ ...preset }))
@@ -425,6 +439,9 @@ export function MacroPlanBuilderPageView({
   const [editingPresetName, setEditingPresetName] = React.useState("")
   const [showCreatePresetInput, setShowCreatePresetInput] = React.useState(false)
   const [newPresetName, setNewPresetName] = React.useState("")
+  const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(
+    () => initialAssignedClientIds ?? []
+  )
 
   const selectedPreset = React.useMemo(
     () => presets.find((preset) => preset.id === selectedPresetId) ?? null,
@@ -437,6 +454,9 @@ export function MacroPlanBuilderPageView({
     (selectedPreset.p !== macros.p ||
       selectedPreset.c !== macros.c ||
       selectedPreset.f !== macros.f)
+  const showClientPicker =
+    storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE &&
+    Boolean(clientOptions?.length)
 
   const grams = React.useMemo(
     () => ({
@@ -594,10 +614,6 @@ export function MacroPlanBuilderPageView({
     }
 
     const nextPlanName = planName.trim() || "Macro Plan (IIFYM)"
-    const storageScopeId =
-      resolveNutritionMealPlanStorageScopeFromPath(backHref) ??
-      resolveNutritionMealPlanStorageScopeFromPath(pathname)
-
     if (storageScopeId) {
       upsertStoredNutritionMealPlan(
         storageScopeId,
@@ -609,6 +625,7 @@ export function MacroPlanBuilderPageView({
           presets,
           selectedPresetId,
           lockedMacroKey: Array.from(lockedMacros)[0] ?? null,
+          assignedClientIds,
           createdAt,
         })
       )
@@ -623,14 +640,15 @@ export function MacroPlanBuilderPageView({
     calories,
     canSave,
     createdAt,
+    assignedClientIds,
     lockedMacros,
     macros,
     mealPlanId,
-    pathname,
     planName,
     presets,
     router,
     selectedPresetId,
+    storageScopeId,
   ])
 
   const mealPlanBuilderHref = buildCoachWiseHref(
@@ -640,6 +658,7 @@ export function MacroPlanBuilderPageView({
       protein: grams.p,
       carbs: grams.c,
       fat: grams.f,
+      clientIds: assignedClientIds,
     })
   )
 
@@ -662,6 +681,15 @@ export function MacroPlanBuilderPageView({
         onSave={handleSavePlan}
         saveLabel="Save Macro Plan"
         saveDisabled={!canSave}
+        clientPicker={
+          showClientPicker && clientOptions ? (
+            <NutritionBuilderClientPicker
+              clients={clientOptions}
+              selectedClientIds={assignedClientIds}
+              onSelectedClientIdsChange={setAssignedClientIds}
+            />
+          ) : null
+        }
         secondaryAction={{
           label: "Create Meal Plan from Targets",
           href: mealPlanBuilderHref,

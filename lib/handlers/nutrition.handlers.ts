@@ -115,6 +115,7 @@ export function getNutritionCreateMealPlanFromTargetsHref(
     protein: number
     carbs: number
     fat: number
+    clientIds?: string[]
   }
 ) {
   const searchParams = new URLSearchParams()
@@ -127,6 +128,9 @@ export function getNutritionCreateMealPlanFromTargetsHref(
   searchParams.set("goalProtein", String(targets.protein))
   searchParams.set("goalCarbs", String(targets.carbs))
   searchParams.set("goalFat", String(targets.fat))
+  if (targets.clientIds?.length) {
+    searchParams.set("clientIds", targets.clientIds.join(","))
+  }
 
   return `/beta-coach-wise/nutrition/create/meal-plan?${searchParams.toString()}`
 }

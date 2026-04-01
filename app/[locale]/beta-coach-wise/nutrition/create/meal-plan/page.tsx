@@ -1,4 +1,5 @@
 import { MealPlanBuilderPageView } from "@/components/coachWise/clients/nutrition/meal-plan-builder"
+import { nutritionBuilderClientOptions } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
 import { createDefaultMealPlanBuilderSnapshot } from "@/components/coachWise/clients/nutrition/meal-plan-builder-data"
 import { routing } from "@/i18n/routing"
 import {
@@ -24,6 +25,12 @@ export default async function Page({ params, searchParams }: Props) {
     const nextValue = Number.parseInt(getSingleSearchParam(value) ?? "", 10)
     return Number.isFinite(nextValue) && nextValue > 0 ? nextValue : undefined
   }
+  const initialAssignedClientIds = (getSingleSearchParam(
+    resolvedSearchParams.clientIds
+  ) ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean)
   const initialSnapshot = createDefaultMealPlanBuilderSnapshot(undefined, {
     calories: parseGoalValue(resolvedSearchParams.goalCalories),
     protein: parseGoalValue(resolvedSearchParams.goalProtein),
@@ -36,6 +43,8 @@ export default async function Page({ params, searchParams }: Props) {
       <MealPlanBuilderPageView
         backHref={backHref}
         initialSnapshot={initialSnapshot}
+        clientOptions={nutritionBuilderClientOptions}
+        initialAssignedClientIds={initialAssignedClientIds}
       />
     </section>
   )

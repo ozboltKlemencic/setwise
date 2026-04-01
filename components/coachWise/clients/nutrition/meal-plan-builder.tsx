@@ -32,6 +32,12 @@ import {
   type BuilderMealTemplate,
 } from "@/components/coachWise/clients/nutrition/meal-plan-builder-data"
 import {
+  type NutritionBuilderClientOption,
+} from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
+import {
+  NutritionBuilderClientPicker,
+} from "@/components/coachWise/clients/nutrition/nutrition-builder-client-picker"
+import {
   CreateFoodDialog,
   type CreateFoodDialogValue,
 } from "@/components/coachWise/clients/nutrition/create-food-dialog"
@@ -51,6 +57,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import {
+  GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
   resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMealPlanBuilderSnapshot,
@@ -91,9 +98,13 @@ function BuilderSectionTitle({ title }: { title: string }) {
 export function MealPlanBuilderPageView({
   backHref,
   initialSnapshot,
+  clientOptions,
+  initialAssignedClientIds,
 }: {
   backHref: string
   initialSnapshot?: StoredNutritionMealPlanBuilderSnapshot
+  clientOptions?: NutritionBuilderClientOption[]
+  initialAssignedClientIds?: string[]
 }) {
   const resolvedInitialSnapshot = React.useMemo(
     () => initialSnapshot ?? createDefaultMealPlanBuilderSnapshot(),
@@ -104,6 +115,8 @@ export function MealPlanBuilderPageView({
     <MealPlanBuilderScreen
       backHref={backHref}
       initialSnapshot={resolvedInitialSnapshot}
+      clientOptions={clientOptions}
+      initialAssignedClientIds={initialAssignedClientIds}
       mode="create"
     />
   )
@@ -114,11 +127,15 @@ export function MealPlanBuilderEditPageView({
   mealPlanId,
   initialSnapshot,
   createdAt,
+  clientOptions,
+  initialAssignedClientIds,
 }: {
   backHref: string
   mealPlanId: string
   initialSnapshot: StoredNutritionMealPlanBuilderSnapshot
   createdAt?: string
+  clientOptions?: NutritionBuilderClientOption[]
+  initialAssignedClientIds?: string[]
 }) {
   return (
     <MealPlanBuilderScreen
@@ -127,6 +144,8 @@ export function MealPlanBuilderEditPageView({
       mode="edit"
       mealPlanId={mealPlanId}
       createdAt={createdAt}
+      clientOptions={clientOptions}
+      initialAssignedClientIds={initialAssignedClientIds}
     />
   )
 }
@@ -533,6 +552,8 @@ type MealPlanBuilderScreenProps = {
   mode: "create" | "edit"
   mealPlanId?: string
   createdAt?: string
+  clientOptions?: NutritionBuilderClientOption[]
+  initialAssignedClientIds?: string[]
 }
 
 function MealPlanBuilderScreen({
@@ -541,6 +562,8 @@ function MealPlanBuilderScreen({
   mode,
   mealPlanId,
   createdAt,
+  clientOptions = [],
+  initialAssignedClientIds = [],
 }: MealPlanBuilderScreenProps) {
   const router = useRouter()
   const storageScopeId = React.useMemo(
@@ -609,6 +632,9 @@ function MealPlanBuilderScreen({
     qty: number
   } | null>(null)
   const [dragOverMealId, setDragOverMealId] = React.useState<number | null>(null)
+  const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(
+    () => initialAssignedClientIds
+  )
 
   React.useEffect(() => {
     if (isEditingName) {
@@ -625,6 +651,9 @@ function MealPlanBuilderScreen({
   }, [editingMealId])
 
   const activeMeal = meals.find((meal) => meal.id === activeMealId) ?? meals[0]
+  const showClientPicker =
+    storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE &&
+    clientOptions.length > 0
   const filteredFoods = React.useMemo(() => {
     if (!searchQuery.trim()) {
       return RECENT_BUILDER_FOOD_IDS.map((id) => foods.find((food) => food.id === id)).filter(
@@ -716,6 +745,7 @@ function MealPlanBuilderScreen({
         meals,
         foods,
         mealPlanGoals,
+        assignedClientIds,
         createdAt,
       })
 
@@ -738,6 +768,7 @@ function MealPlanBuilderScreen({
     meals,
     mode,
     planName,
+    assignedClientIds,
     storageScopeId,
   ])
   const handleCreateFood = React.useCallback(() => {
@@ -1279,6 +1310,15 @@ function MealPlanBuilderScreen({
         }}
         onSave={handleSavePlan}
         saveLabel="Save Plan"
+        clientPicker={
+          showClientPicker ? (
+            <NutritionBuilderClientPicker
+              clients={clientOptions}
+              selectedClientIds={assignedClientIds}
+              onSelectedClientIdsChange={setAssignedClientIds}
+            />
+          ) : null
+        }
       />
 
       <div className="relative xl:flex xl:items-start">
