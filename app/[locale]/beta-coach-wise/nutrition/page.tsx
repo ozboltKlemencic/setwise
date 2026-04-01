@@ -10,8 +10,6 @@ import {
   IconClipboardList,
   IconFilter,
   IconPlus,
-  IconSalad,
-  IconSoup,
   IconTag,
 } from "@tabler/icons-react"
 
@@ -79,6 +77,10 @@ type MealRow = {
 type FoodRow = {
   id: string
   name: string
+  calories: number
+  protein: number
+  carbs: number
+  fats: number
   category: string
   custom: boolean
 }
@@ -180,12 +182,12 @@ const mealRows: MealRow[] = [
 ]
 
 const foodRows: FoodRow[] = [
-  { id: "chicken-breast", name: "Chicken Breast", category: "Protein", custom: false },
-  { id: "white-rice", name: "White Rice", category: "Carbs", custom: false },
-  { id: "olive-oil", name: "Olive Oil", category: "Fats", custom: false },
-  { id: "banana", name: "Banana", category: "Fruit", custom: false },
-  { id: "whey-isolate", name: "Whey Isolate", category: "Supplements", custom: true },
-  { id: "rice-cream", name: "Cream of Rice", category: "Carbs", custom: true },
+  { id: "chicken-breast", name: "Chicken breast", calories: 165, protein: 31, carbs: 0, fats: 3.6, category: "Protein", custom: false },
+  { id: "white-rice", name: "White rice", calories: 130, protein: 2.7, carbs: 28, fats: 0.3, category: "Carbs", custom: false },
+  { id: "olive-oil", name: "Olive oil", calories: 884, protein: 0, carbs: 0, fats: 100, category: "Fats", custom: false },
+  { id: "banana", name: "Banana", calories: 89, protein: 1.1, carbs: 23, fats: 0.3, category: "Fruit", custom: false },
+  { id: "whey-isolate", name: "Whey isolate", calories: 120, protein: 24, carbs: 3, fats: 1.5, category: "Supplements", custom: true },
+  { id: "rice-cream", name: "Cream of rice", calories: 366, protein: 6, carbs: 81, fats: 1.2, category: "Carbs", custom: true },
 ]
 
 const profileTabTriggerClassName =
@@ -244,13 +246,15 @@ function NutritionPageTableActionButtons({
 function MealPlannerSearchBar({
   placeholder,
   action,
+  inputWrapperClassName,
 }: {
   placeholder: string
   action?: React.ReactNode
+  inputWrapperClassName?: string
 }) {
   return (
     <div className="flex items-center gap-2">
-      <div className="relative w-full max-w-sm">
+      <div className={cn("relative w-full max-w-sm", inputWrapperClassName)}>
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
         <Input
           placeholder={placeholder}
@@ -689,17 +693,7 @@ function PlansTable() {
 function MealsTable() {
   return (
     <div className="space-y-4">
-      <MealPlannerSearchBar
-        placeholder="Isci obroke..."
-        action={
-          <Button
-            variant="outline"
-            className="h-9 rounded-sm border-neutral-200 px-3 text-[14px] font-medium text-neutral-700 shadow-none hover:bg-neutral-100"
-          >
-            <IconFilter className="size-4" />
-          </Button>
-        }
-      />
+      <MealPlannerSearchBar placeholder="Isci obroke..." inputWrapperClassName="max-w-[17rem]" />
       <div className={nutritionPageTableWrapperClassName}>
         <Table>
           <TableHeader className="bg-muted">
@@ -709,9 +703,6 @@ function MealsTable() {
               </TableHead>
               <TableHead className="w-[152px] px-3.5 text-center text-[13px] font-medium">
                 Calories
-              </TableHead>
-              <TableHead className="w-[260px] px-3.5 text-[13px] font-medium">
-                Tags
               </TableHead>
               <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
                 Action
@@ -725,16 +716,8 @@ function MealsTable() {
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
               >
                 <TableCell className="py-3 pl-4 lg:pl-5">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={cn(
-                        "size-10 rounded-sm border border-neutral-200 bg-gradient-to-br",
-                        row.color,
-                      )}
-                    />
-                    <div className="text-[14px] font-medium text-neutral-950">
+                  <div className="text-[14px] font-medium text-neutral-950">
                       {row.name}
-                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="px-3.5 py-3">
@@ -753,19 +736,6 @@ function MealsTable() {
                         }),
                       }}
                     />
-                  </div>
-                </TableCell>
-                <TableCell className="px-3.5 py-3">
-                  <div className="flex flex-wrap gap-2">
-                    {row.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="outline"
-                        className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
                   </div>
                 </TableCell>
                 <TableCell className="px-3 py-3 pr-5">
@@ -819,19 +789,19 @@ function FoodTable() {
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
               >
                 <TableCell className="py-3 pl-4 lg:pl-5">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-sm border border-neutral-200 bg-neutral-50">
-                      {row.category === "Protein" ? (
-                        <IconSalad className="size-4.5 text-neutral-600" />
-                      ) : row.category === "Carbs" ? (
-                        <IconSoup className="size-4.5 text-neutral-600" />
-                      ) : (
-                        <IconBottle className="size-4.5 text-neutral-600" />
-                      )}
-                    </div>
-                    <span className="text-[14px] font-medium text-neutral-950">
+                  <div className="space-y-0.5">
+                    <div className="text-[14px] font-medium text-neutral-950">
                       {row.name}
-                    </span>
+                    </div>
+                    <div className="text-[13px] text-neutral-500">
+                      <span>{row.calories} kcal</span>
+                      <span className="px-1.5 text-neutral-300">-</span>
+                      <span className="text-emerald-600">P{row.protein}g</span>
+                      <span className="px-1.5 text-neutral-300">-</span>
+                      <span className="text-sky-600">C{row.carbs}g</span>
+                      <span className="px-1.5 text-neutral-300">-</span>
+                      <span className="text-amber-600">F{row.fats}g</span>
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="px-3.5 py-3 text-[14px] text-neutral-700">
