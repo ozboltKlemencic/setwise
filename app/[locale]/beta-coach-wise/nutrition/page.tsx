@@ -707,7 +707,7 @@ function MealsTable() {
               <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
                 Meal
               </TableHead>
-              <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
+              <TableHead className="w-[152px] px-3.5 text-center text-[13px] font-medium">
                 Calories
               </TableHead>
               <TableHead className="w-[260px] px-3.5 text-[13px] font-medium">
@@ -737,21 +737,23 @@ function MealsTable() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="px-3 py-3 text-center">
-                  <NutritionCaloriesDonut
-                    row={{
-                      id: row.id,
-                      title: row.name,
-                      subtitle: "",
-                      type: "Meal",
-                      calories: row.calories,
-                      segments: buildNutritionPlanSegments({
-                        protein: row.protein,
-                        carbs: row.carbs,
-                        fats: row.fats,
-                      }),
-                    }}
-                  />
+                <TableCell className="px-3.5 py-3">
+                  <div className="flex justify-center">
+                    <NutritionCaloriesDonut
+                      row={{
+                        id: row.id,
+                        title: row.name,
+                        subtitle: "",
+                        type: "Meal",
+                        calories: row.calories,
+                        segments: buildNutritionPlanSegments({
+                          protein: row.protein,
+                          carbs: row.carbs,
+                          fats: row.fats,
+                        }),
+                      }}
+                    />
+                  </div>
                 </TableCell>
                 <TableCell className="px-3.5 py-3">
                   <div className="flex flex-wrap gap-2">
