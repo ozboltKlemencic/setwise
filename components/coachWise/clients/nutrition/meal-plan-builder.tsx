@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Apple,
   ChefHat,
@@ -593,9 +593,12 @@ function MealPlanBuilderScreen({
   initialAssignedClientIds = [],
 }: MealPlanBuilderScreenProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const storageScopeId = React.useMemo(
-    () => resolveNutritionMealPlanStorageScopeFromPath(backHref),
-    [backHref]
+    () =>
+      resolveNutritionMealPlanStorageScopeFromPath(backHref) ??
+      resolveNutritionMealPlanStorageScopeFromPath(pathname),
+    [backHref, pathname]
   )
   const initialCustomFoods = React.useMemo(
     () => readStoredNutritionCustomFoods().map((food) => ({ ...food })),
