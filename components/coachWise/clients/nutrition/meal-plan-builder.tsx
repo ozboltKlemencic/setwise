@@ -51,7 +51,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import {
-  resolveNutritionClientIdFromPath,
+  resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMealPlanBuilderSnapshot,
   type StoredNutritionMealPlan,
@@ -543,8 +543,8 @@ function MealPlanBuilderScreen({
   createdAt,
 }: MealPlanBuilderScreenProps) {
   const router = useRouter()
-  const storageClientId = React.useMemo(
-    () => resolveNutritionClientIdFromPath(backHref),
+  const storageScopeId = React.useMemo(
+    () => resolveNutritionMealPlanStorageScopeFromPath(backHref),
     [backHref]
   )
   const initialPlanName = initialSnapshot.planName
@@ -719,8 +719,8 @@ function MealPlanBuilderScreen({
         createdAt,
       })
 
-    if (storageClientId) {
-      upsertStoredNutritionMealPlan(storageClientId, nextStoredMealPlan)
+    if (storageScopeId) {
+      upsertStoredNutritionMealPlan(storageScopeId, nextStoredMealPlan)
     }
 
     toast.success(mode === "edit" ? "Meal plan updated" : "Meal plan created", {
@@ -738,7 +738,7 @@ function MealPlanBuilderScreen({
     meals,
     mode,
     planName,
-    storageClientId,
+    storageScopeId,
   ])
   const handleCreateFood = React.useCallback(() => {
     setIsCreateFoodDialogOpen(true)

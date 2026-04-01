@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getNutritionCreateMealPlanFromTargetsHref } from "@/lib/handlers/nutrition.handlers"
 import {
-  resolveNutritionClientIdFromPath,
+  resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMacroPlanBuilderSnapshot,
 } from "@/lib/handlers/nutrition-plan-storage"
@@ -594,13 +594,13 @@ export function MacroPlanBuilderPageView({
     }
 
     const nextPlanName = planName.trim() || "Macro Plan (IIFYM)"
-    const clientId =
-      resolveNutritionClientIdFromPath(backHref) ??
-      resolveNutritionClientIdFromPath(pathname)
+    const storageScopeId =
+      resolveNutritionMealPlanStorageScopeFromPath(backHref) ??
+      resolveNutritionMealPlanStorageScopeFromPath(pathname)
 
-    if (clientId) {
+    if (storageScopeId) {
       upsertStoredNutritionMealPlan(
-        clientId,
+        storageScopeId,
         buildStoredNutritionMacroPlanFromBuilderState({
           planId: mealPlanId,
           planName: nextPlanName,

@@ -128,7 +128,7 @@ import {
   NUTRITION_MEAL_PLANS_UPDATED_EVENT,
   readStoredNutritionMealPlans,
   removeStoredNutritionMealPlan,
-  resolveNutritionClientIdFromPath,
+  resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
@@ -334,7 +334,7 @@ function buildNextDuplicatedMealPlanTitle(
 
 function useStoredNutritionMealPlans(pathHint?: string) {
   const clientId = React.useMemo(
-    () => resolveNutritionClientIdFromPath(pathHint),
+    () => resolveNutritionMealPlanStorageScopeFromPath(pathHint),
     [pathHint]
   )
   const [storedMealPlans, setStoredMealPlans] = React.useState<StoredNutritionMealPlan[]>(

@@ -46,27 +46,38 @@ import {
   NutritionCaloriesDonut,
   NutritionPlansTable,
   buildNutritionPlanSegments,
+  type NutritionPlansTableSegment,
 } from "@/components/coachWise/tables/nutrition-plans-table"
 import {
   getNutritionCreateMacroPlanHref,
   getNutritionCreateMealPlanHref,
+  getNutritionPlanDetailHref,
+  getNutritionPlanEditorHref,
 } from "@/lib/handlers/nutrition.handlers"
+import {
+  NUTRITION_MEAL_PLANS_UPDATED_EVENT,
+  readStoredNutritionMealPlans,
+  removeStoredNutritionMealPlan,
+  resolveNutritionMealPlanStorageScopeFromPath,
+  upsertStoredNutritionMealPlan,
+  type StoredNutritionMealPlan,
+} from "@/lib/handlers/nutrition-plan-storage"
 import { cn } from "@/lib/utils"
 
 type MealPlanTab = "plans" | "meals" | "food"
-
-type PlanType = "Meal Plan" | "Macros Plan"
 
 type MealPlanRow = {
   id: string
   title: string
   subtitle: string
-  type: PlanType
+  type: string
   calories: number
   protein: number
   carbs: number
   fats: number
   clients: number[]
+  segments?: NutritionPlansTableSegment[]
+  storageScopeId?: string
 }
 
 type MealRow = {
@@ -250,6 +261,126 @@ function buildNextDuplicatedPlanTitle(sourceTitle: string, existingTitles: strin
   }, 0)
 
   return `${baseTitle} - copy ${highestCopyIndex + 1}`
+}
+
+function cloneStoredNutritionMealPlanForDuplicate(
+  sourcePlan: StoredNutritionMealPlan,
+  nextTitle: string
+): StoredNutritionMealPlan {
+  return {
+    ...sourcePlan,
+    id:
+      globalThis.crypto?.randomUUID?.() ??
+      `custom-nutrition-plan-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+    title: nextTitle,
+    segments: sourcePlan.segments.map((segment) => ({ ...segment })),
+    sections: sourcePlan.sections.map((section) => ({
+      ...section,
+      options: section.options.map((option) => ({ ...option })),
+    })),
+    createdAt: new Date().toISOString(),
+    builderSnapshot: sourcePlan.builderSnapshot
+      ? {
+          planName: nextTitle,
+          foods: sourcePlan.builderSnapshot.foods.map((food) => ({ ...food })),
+          meals: sourcePlan.builderSnapshot.meals.map((meal) => ({
+            ...meal,
+            items: meal.items.map((item) => ({ ...item })),
+          })),
+          mealPlanGoals: {
+            presetId: sourcePlan.builderSnapshot.mealPlanGoals.presetId,
+            calories: { ...sourcePlan.builderSnapshot.mealPlanGoals.calories },
+            protein: { ...sourcePlan.builderSnapshot.mealPlanGoals.protein },
+            carbs: { ...sourcePlan.builderSnapshot.mealPlanGoals.carbs },
+            fat: { ...sourcePlan.builderSnapshot.mealPlanGoals.fat },
+          },
+        }
+      : undefined,
+    macroBuilderSnapshot: sourcePlan.macroBuilderSnapshot
+      ? {
+          planName: nextTitle,
+          calories: sourcePlan.macroBuilderSnapshot.calories,
+          macros: { ...sourcePlan.macroBuilderSnapshot.macros },
+          presets: sourcePlan.macroBuilderSnapshot.presets.map((preset) => ({
+            ...preset,
+          })),
+          selectedPresetId: sourcePlan.macroBuilderSnapshot.selectedPresetId,
+          lockedMacroKey: sourcePlan.macroBuilderSnapshot.lockedMacroKey,
+        }
+      : undefined,
+  }
+}
+
+function mapStoredNutritionMealPlanToRow(
+  plan: StoredNutritionMealPlan,
+  storageScopeId: string
+): MealPlanRow {
+  return {
+    id: plan.id,
+    title: plan.title,
+    subtitle: plan.subtitle,
+    type: plan.type,
+    calories: plan.calories,
+    protein: 0,
+    carbs: 0,
+    fats: 0,
+    clients: [],
+    segments: plan.segments.map((segment) => ({ ...segment })),
+    storageScopeId,
+  }
+}
+
+function useStoredNutritionMealPlans(pathHint?: string) {
+  const storageScopeId = React.useMemo(
+    () => resolveNutritionMealPlanStorageScopeFromPath(pathHint),
+    [pathHint]
+  )
+  const [storedMealPlans, setStoredMealPlans] = React.useState<StoredNutritionMealPlan[]>(
+    []
+  )
+
+  React.useEffect(() => {
+    if (!storageScopeId) {
+      setStoredMealPlans([])
+      return
+    }
+
+    const syncStoredMealPlans = () => {
+      setStoredMealPlans(readStoredNutritionMealPlans(storageScopeId))
+    }
+
+    const handleStoredMealPlansUpdated = (event: Event) => {
+      const updatedStorageScopeId = (
+        event as CustomEvent<{ clientId?: string }>
+      ).detail?.clientId
+
+      if (updatedStorageScopeId && updatedStorageScopeId !== storageScopeId) {
+        return
+      }
+
+      syncStoredMealPlans()
+    }
+
+    syncStoredMealPlans()
+    window.addEventListener("storage", syncStoredMealPlans)
+    window.addEventListener(
+      NUTRITION_MEAL_PLANS_UPDATED_EVENT,
+      handleStoredMealPlansUpdated as EventListener
+    )
+
+    return () => {
+      window.removeEventListener("storage", syncStoredMealPlans)
+      window.removeEventListener(
+        NUTRITION_MEAL_PLANS_UPDATED_EVENT,
+        handleStoredMealPlansUpdated as EventListener
+      )
+    }
+  }, [storageScopeId])
+
+  return {
+    storageScopeId,
+    storedMealPlans,
+  }
 }
 
 function NutritionPageTableActionButtons({
@@ -765,12 +896,14 @@ function AddFoodDialog({
 
 function PlansTable({
   rows: sourceRows,
-  backToHref,
+  onOpenRow,
+  onEditRow,
   onDuplicateRow,
   onDeleteRow,
 }: {
   rows: MealPlanRow[]
-  backToHref: string
+  onOpenRow: (row: MealPlanRow) => void
+  onEditRow: (row: MealPlanRow) => void
   onDuplicateRow: (row: MealPlanRow) => void
   onDeleteRow: (row: MealPlanRow) => void
 }) {
@@ -797,11 +930,13 @@ function PlansTable({
         subtitle: row.subtitle,
         type: row.type,
         calories: row.calories,
-        segments: buildNutritionPlanSegments({
-          protein: row.protein,
-          carbs: row.carbs,
-          fats: row.fats,
-        }),
+        segments:
+          row.segments ??
+          buildNutritionPlanSegments({
+            protein: row.protein,
+            carbs: row.carbs,
+            fats: row.fats,
+          }),
         clients: row.clients
           .map((clientId) => planClientsById.get(clientId))
           .filter((client): client is NonNullable<typeof client> => Boolean(client)),
@@ -820,11 +955,7 @@ function PlansTable({
             return
           }
 
-          const href = sourceRow.type.toLowerCase().includes("macro")
-            ? getNutritionCreateMacroPlanHref(backToHref)
-            : getNutritionCreateMealPlanHref(backToHref)
-
-          window.location.href = href
+          onOpenRow(sourceRow)
         }}
         onEditRow={(row) => {
           const sourceRow = sourceRows.find((entry) => entry.id === row.id)
@@ -832,11 +963,7 @@ function PlansTable({
             return
           }
 
-          const href = sourceRow.type.toLowerCase().includes("macro")
-            ? getNutritionCreateMacroPlanHref(backToHref)
-            : getNutritionCreateMealPlanHref(backToHref)
-
-          window.location.href = href
+          onEditRow(sourceRow)
         }}
         onDuplicateRow={(row) => {
           const sourceRow = sourceRows.find((entry) => entry.id === row.id)
@@ -1023,6 +1150,29 @@ function MealPlaniPageContent() {
 
     return query ? `${pathname}?${query}` : pathname
   }, [pathname, searchParams])
+  const { storageScopeId: plansStorageScopeId, storedMealPlans } =
+    useStoredNutritionMealPlans(plansBackToHref)
+  const storedPlanRows = React.useMemo(
+    () =>
+      plansStorageScopeId
+        ? storedMealPlans.map((plan) =>
+            mapStoredNutritionMealPlanToRow(plan, plansStorageScopeId)
+          )
+        : [],
+    [plansStorageScopeId, storedMealPlans]
+  )
+  const allPlanRows = React.useMemo(() => {
+    const storedPlanIds = new Set(storedPlanRows.map((row) => row.id))
+
+    return [
+      ...storedPlanRows,
+      ...planRows.filter((row) => !storedPlanIds.has(row.id)),
+    ]
+  }, [planRows, storedPlanRows])
+  const allPlanTitles = React.useMemo(
+    () => allPlanRows.map((row) => row.title),
+    [allPlanRows]
+  )
 
   const setTab = React.useCallback(
     (value: MealPlanTab) => {
@@ -1033,25 +1183,84 @@ function MealPlaniPageContent() {
     [pathname, router, searchParams],
   )
 
-  const handleDuplicatePlan = React.useCallback((row: MealPlanRow) => {
-    setPlanRows((currentRows) => {
-      const nextTitle = buildNextDuplicatedPlanTitle(
-        row.title,
-        currentRows.map((entry) => entry.title)
-      )
+  const handleOpenPlan = React.useCallback(
+    (row: MealPlanRow) => {
+      if (row.storageScopeId) {
+        router.push(getNutritionPlanDetailHref(row.id, plansBackToHref))
+        return
+      }
 
-      return [
-        {
-          ...row,
-          id: `${row.id}-copy-${Date.now()}`,
-          title: nextTitle,
-        },
-        ...currentRows,
-      ]
-    })
-  }, [])
+      router.push(
+        row.type.toLowerCase().includes("macro")
+          ? getNutritionCreateMacroPlanHref(plansBackToHref)
+          : getNutritionCreateMealPlanHref(plansBackToHref)
+      )
+    },
+    [plansBackToHref, router]
+  )
+
+  const handleEditPlan = React.useCallback(
+    (row: MealPlanRow) => {
+      if (row.storageScopeId) {
+        router.push(getNutritionPlanEditorHref(row.id, plansBackToHref))
+        return
+      }
+
+      router.push(
+        row.type.toLowerCase().includes("macro")
+          ? getNutritionCreateMacroPlanHref(plansBackToHref)
+          : getNutritionCreateMealPlanHref(plansBackToHref)
+      )
+    },
+    [plansBackToHref, router]
+  )
+
+  const handleDuplicatePlan = React.useCallback(
+    (row: MealPlanRow) => {
+      if (row.storageScopeId) {
+        const sourcePlan = storedMealPlans.find((plan) => plan.id === row.id)
+
+        if (!sourcePlan) {
+          return
+        }
+
+        const nextTitle = buildNextDuplicatedPlanTitle(
+          sourcePlan.title,
+          allPlanTitles
+        )
+
+        upsertStoredNutritionMealPlan(
+          row.storageScopeId,
+          cloneStoredNutritionMealPlanForDuplicate(sourcePlan, nextTitle)
+        )
+        return
+      }
+
+      setPlanRows((currentRows) => {
+        const nextTitle = buildNextDuplicatedPlanTitle(
+          row.title,
+          currentRows.map((entry) => entry.title)
+        )
+
+        return [
+          {
+            ...row,
+            id: `${row.id}-copy-${Date.now()}`,
+            title: nextTitle,
+          },
+          ...currentRows,
+        ]
+      })
+    },
+    [allPlanTitles, storedMealPlans]
+  )
 
   const handleDeletePlan = React.useCallback((row: MealPlanRow) => {
+    if (row.storageScopeId) {
+      removeStoredNutritionMealPlan(row.storageScopeId, row.id)
+      return
+    }
+
     setPlanRows((currentRows) => currentRows.filter((entry) => entry.id !== row.id))
   }, [])
 
@@ -1175,8 +1384,9 @@ function MealPlaniPageContent() {
 
         <TabsContent value="plans" className="mt-0 p-4">
           <PlansTable
-            rows={planRows}
-            backToHref={plansBackToHref}
+            rows={allPlanRows}
+            onOpenRow={handleOpenPlan}
+            onEditRow={handleEditPlan}
             onDuplicateRow={handleDuplicatePlan}
             onDeleteRow={handleDeletePlan}
           />

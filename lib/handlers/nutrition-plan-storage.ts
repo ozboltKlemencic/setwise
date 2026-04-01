@@ -112,6 +112,8 @@ const NUTRITION_MEAL_PLAN_STORAGE_KEY_PREFIX =
 export const NUTRITION_MEAL_PLANS_UPDATED_EVENT =
   "coachwise:nutrition-meal-plans-updated"
 
+export const GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE = "global-nutrition"
+
 export function resolveNutritionClientIdFromPath(path?: string | null) {
   if (!path) {
     return null
@@ -119,6 +121,28 @@ export function resolveNutritionClientIdFromPath(path?: string | null) {
 
   const clientMatch = path.match(/\/clients\/([^/?#]+)\/nutrition(?:\/|$|\?)/)
   return clientMatch?.[1] ?? null
+}
+
+export function resolveNutritionMealPlanStorageScopeFromPath(
+  path?: string | null
+) {
+  const clientId = resolveNutritionClientIdFromPath(path)
+
+  if (clientId) {
+    return clientId
+  }
+
+  if (!path) {
+    return null
+  }
+
+  if (
+    /(?:^|\/)(?:[a-z]{2}\/)?beta-coach-wise\/nutrition(?:\/|$|\?)/i.test(path)
+  ) {
+    return GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE
+  }
+
+  return null
 }
 
 function getNutritionMealPlanStorageKey(clientId: string) {
