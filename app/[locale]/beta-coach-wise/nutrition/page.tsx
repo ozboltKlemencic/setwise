@@ -8,7 +8,6 @@ import {
   IconBottle,
   IconChefHat,
   IconClipboardList,
-  IconFilter,
   IconPlus,
   IconTag,
 } from "@tabler/icons-react"
@@ -680,20 +679,23 @@ function PlansTable() {
   )
 
   return (
-    <NutritionPlansTable
-      rows={rows}
-      onOpenRow={() => {}}
-      onEditRow={() => {}}
-      onDuplicateRow={() => {}}
-      onDeleteRow={() => {}}
-    />
+    <div className="space-y-4">
+      <MealPlannerSearchBar placeholder="Search plans" inputWrapperClassName="max-w-[17rem]" />
+      <NutritionPlansTable
+        rows={rows}
+        onOpenRow={() => {}}
+        onEditRow={() => {}}
+        onDuplicateRow={() => {}}
+        onDeleteRow={() => {}}
+      />
+    </div>
   )
 }
 
 function MealsTable() {
   return (
     <div className="space-y-4">
-      <MealPlannerSearchBar placeholder="Isci obroke..." inputWrapperClassName="max-w-[17rem]" />
+      <MealPlannerSearchBar placeholder="Search meals" inputWrapperClassName="max-w-[17rem]" />
       <div className={nutritionPageTableWrapperClassName}>
         <Table>
           <TableHeader className="bg-muted">
@@ -753,17 +755,7 @@ function MealsTable() {
 function FoodTable() {
   return (
     <div className="space-y-4">
-      <MealPlannerSearchBar
-        placeholder="Search food"
-        action={
-          <Button
-            variant="outline"
-            className="h-9 rounded-sm border-neutral-200 px-3 text-[14px] font-medium text-neutral-700 shadow-none hover:bg-neutral-100"
-          >
-            <IconFilter className="size-4" />
-          </Button>
-        }
-      />
+      <MealPlannerSearchBar placeholder="Search food" inputWrapperClassName="max-w-[17rem]" />
       <div className={nutritionPageTableWrapperClassName}>
         <Table>
           <TableHeader className="bg-muted">
@@ -790,14 +782,14 @@ function FoodTable() {
                     <div className="text-[14px] font-medium text-neutral-950">
                       {row.name}
                     </div>
-                    <div className="text-[13px] text-neutral-500">
+                    <div className="text-[12px] text-neutral-500">
                       <span>{row.calories} kcal</span>
                       <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-emerald-500">P{row.protein}g</span>
+                      <span className="text-emerald-400">P{row.protein}g</span>
                       <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-sky-500">C{row.carbs}g</span>
+                      <span className="text-sky-400">C{row.carbs}g</span>
                       <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-amber-500">F{row.fats}g</span>
+                      <span className="text-amber-400">F{row.fats}g</span>
                     </div>
                   </div>
                 </TableCell>
