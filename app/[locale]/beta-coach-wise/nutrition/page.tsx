@@ -774,9 +774,6 @@ function FoodTable() {
               <TableHead className="w-[220px] px-3.5 text-[13px] font-medium">
                 Category
               </TableHead>
-              <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
-                Custom
-              </TableHead>
               <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
                 Action
               </TableHead>
@@ -796,33 +793,16 @@ function FoodTable() {
                     <div className="text-[13px] text-neutral-500">
                       <span>{row.calories} kcal</span>
                       <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-emerald-600">P{row.protein}g</span>
+                      <span className="text-emerald-500">P{row.protein}g</span>
                       <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-sky-600">C{row.carbs}g</span>
+                      <span className="text-sky-500">C{row.carbs}g</span>
                       <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-amber-600">F{row.fats}g</span>
+                      <span className="text-amber-500">F{row.fats}g</span>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell className="px-3.5 py-3 text-[14px] text-neutral-700">
                   {row.category}
-                </TableCell>
-                <TableCell className="px-3 py-3 text-center">
-                  {row.custom ? (
-                    <Badge
-                      variant="outline"
-                      className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
-                    >
-                      Custom
-                    </Badge>
-                  ) : (
-                    <Badge
-                      variant="outline"
-                      className="rounded-md border border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-500"
-                    >
-                      Base
-                    </Badge>
-                  )}
                 </TableCell>
                 <TableCell className="px-3 py-3 pr-5">
                   <NutritionPageTableActionButtons itemLabel="food" />
