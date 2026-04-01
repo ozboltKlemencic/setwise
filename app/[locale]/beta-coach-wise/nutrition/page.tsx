@@ -91,6 +91,16 @@ type FoodRow = {
   custom: boolean
 }
 
+type MealDialogValues = {
+  name: string
+  subtitle: string
+}
+
+type FoodDialogValues = {
+  name: string
+  category: string
+}
+
 const mealPlanTabs: Array<{
   value: MealPlanTab
   label: string
@@ -101,7 +111,7 @@ const mealPlanTabs: Array<{
     { value: "food", label: "Food", icon: IconApple },
   ]
 
-const mealPlanRows: MealPlanRow[] = [
+const initialMealPlanRows: MealPlanRow[] = [
   {
     id: "lean-gain",
     title: "Lean Gain Plan",
@@ -148,7 +158,7 @@ const mealPlanRows: MealPlanRow[] = [
   },
 ]
 
-const mealRows: MealRow[] = [
+const initialMealRows: MealRow[] = [
   {
     id: "oats-breakfast",
     name: "Protein Oats Breakfast",
@@ -191,7 +201,7 @@ const mealRows: MealRow[] = [
   },
 ]
 
-const foodRows: FoodRow[] = [
+const initialFoodRows: FoodRow[] = [
   { id: "chicken-breast", name: "Chicken breast", calories: 165, protein: 31, carbs: 0, fats: 3.6, category: "Protein", custom: false },
   { id: "white-rice", name: "White rice", calories: 130, protein: 2.7, carbs: 28, fats: 0.3, category: "Carbs", custom: false },
   { id: "olive-oil", name: "Olive oil", calories: 884, protein: 0, carbs: 0, fats: 100, category: "Fats", custom: false },
@@ -212,10 +222,44 @@ const nutritionPageRowActionButtonClassName =
 const nutritionPageRowDeleteActionButtonClassName =
   "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
+function normalizeDuplicatedPlanTitleBase(title: string) {
+  return title.replace(/\s*-\s*copy\s+\d+$/i, "").trim()
+}
+
+function buildNextDuplicatedPlanTitle(sourceTitle: string, existingTitles: string[]) {
+  const baseTitle = normalizeDuplicatedPlanTitleBase(sourceTitle)
+  const duplicatePattern = new RegExp(
+    `^${baseTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*-\\s*copy\\s+(\\d+)$`,
+    "i"
+  )
+
+  const highestCopyIndex = existingTitles.reduce((highestIndex, title) => {
+    const normalizedTitle = title.trim()
+
+    if (normalizedTitle.toLowerCase() === baseTitle.toLowerCase()) {
+      return Math.max(highestIndex, 0)
+    }
+
+    const match = normalizedTitle.match(duplicatePattern)
+    if (!match) {
+      return highestIndex
+    }
+
+    const nextIndex = Number.parseInt(match[1] ?? "0", 10)
+    return Number.isFinite(nextIndex) ? Math.max(highestIndex, nextIndex) : highestIndex
+  }, 0)
+
+  return `${baseTitle} - copy ${highestCopyIndex + 1}`
+}
+
 function NutritionPageTableActionButtons({
   itemLabel,
+  onEdit,
+  onDelete,
 }: {
   itemLabel: string
+  onEdit: () => void
+  onDelete: () => void
 }) {
   return (
     <div className="flex w-[9rem] justify-center gap-3">
@@ -223,6 +267,7 @@ function NutritionPageTableActionButtons({
         type="button"
         variant="outline"
         size="icon-sm"
+        onClick={onEdit}
         className={nutritionPageRowActionButtonClassName}
       >
         <Pencil className="size-3.5" />
@@ -233,7 +278,7 @@ function NutritionPageTableActionButtons({
         description={`This ${itemLabel} will be removed from the current list. This action can't be undone.`}
         confirmLabel={`Delete ${itemLabel}`}
         variant="destructive"
-        onConfirm={() => { }}
+        onConfirm={onDelete}
         trigger={
           <Button
             type="button"
@@ -347,33 +392,63 @@ function PlannerTextarea({
 function AddPlanDialog({ backToHref }: { backToHref: string }) {
   return (
     <div className="flex items-center gap-2">
-      <PrimaryActionButton
-        label="Meal Plan"
-        icon={IconPlus}
-        href={getNutritionCreateMealPlanHref(backToHref)}
-      />
       <SecondaryActionButton
         label="Macro Plan (IIFYM)"
         icon={IconPlus}
         href={getNutritionCreateMacroPlanHref(backToHref)}
       />
+      <PrimaryActionButton
+        label="Meal Plan"
+        icon={IconPlus}
+        href={getNutritionCreateMealPlanHref(backToHref)}
+      />
     </div>
   )
 }
 
-function AddMealDialog() {
+function AddMealDialog({
+  trigger,
+  open,
+  onOpenChange,
+  initialValues,
+  onSubmit,
+  title = "Add Meal",
+  submitLabel = "Add Meal",
+}: {
+  trigger?: React.ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  initialValues?: MealDialogValues
+  onSubmit?: (values: MealDialogValues) => void
+  title?: string
+  submitLabel?: string
+}) {
   const [activeTab, setActiveTab] = React.useState<"new" | "ai">("new")
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
+  const [name, setName] = React.useState(initialValues?.name ?? "")
+  const [subtitle, setSubtitle] = React.useState(initialValues?.subtitle ?? "")
+  const isControlled = typeof open === "boolean"
+  const resolvedOpen = isControlled ? open : uncontrolledOpen
+  const handleOpenChange = onOpenChange ?? setUncontrolledOpen
+
+  React.useEffect(() => {
+    if (!resolvedOpen) {
+      return
+    }
+
+    setActiveTab("new")
+    setName(initialValues?.name ?? "")
+    setSubtitle(initialValues?.subtitle ?? "")
+  }, [initialValues, resolvedOpen])
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <PrimaryActionButton label="Meal" icon={IconPlus} />
-      </DialogTrigger>
+    <Dialog open={resolvedOpen} onOpenChange={handleOpenChange}>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
       <DialogContent className="max-w-[840px] rounded-sm border border-neutral-200 bg-white p-0 shadow-xl">
         <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
           <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
             <IconChefHat className="size-4.5 text-neutral-700" />
-            Add Meal
+            {title}
           </DialogTitle>
           <DialogClose asChild>
             <Button
@@ -407,6 +482,8 @@ function AddMealDialog() {
                       Meal Name <span className="text-red-500">*</span>
                     </label>
                     <Input
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
                       placeholder="Name of the meal e.g. Chicken Bowl"
                       className="h-11 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                     />
@@ -415,9 +492,11 @@ function AddMealDialog() {
                     <label className="text-[14px] font-medium text-neutral-800">
                       Meal Description
                     </label>
-                    <PlannerTextarea
+                    <textarea
+                      value={subtitle}
+                      onChange={(event) => setSubtitle(event.target.value)}
                       placeholder="Enter any additional info"
-                      className="min-h-[120px] rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+                      className="min-h-[120px] w-full rounded-sm border border-neutral-200 px-3 py-3 text-[14px] text-neutral-900 shadow-none outline-none transition-colors placeholder:text-neutral-400 focus:border-neutral-300"
                     />
                   </div>
                 </div>
@@ -476,8 +555,18 @@ function AddMealDialog() {
             </Button>
           </DialogClose>
           {activeTab === "new" ? (
-            <Button className="h-9 rounded-sm bg-brand-500 px-4 text-[14px] font-medium text-white shadow-none hover:bg-brand-600">
-              Add Meal
+            <Button
+              className="h-9 rounded-sm bg-brand-500 px-4 text-[14px] font-medium text-white shadow-none hover:bg-brand-600"
+              onClick={() => {
+                onSubmit?.({
+                  name: name.trim(),
+                  subtitle: subtitle.trim(),
+                })
+                handleOpenChange(false)
+              }}
+              disabled={!name.trim()}
+            >
+              {submitLabel}
             </Button>
           ) : null}
         </DialogFooter>
@@ -486,19 +575,49 @@ function AddMealDialog() {
   )
 }
 
-function AddFoodDialog() {
+function AddFoodDialog({
+  trigger,
+  open,
+  onOpenChange,
+  initialValues,
+  onSubmit,
+  title = "Add Food",
+  submitLabel = "Add Food",
+}: {
+  trigger?: React.ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  initialValues?: FoodDialogValues
+  onSubmit?: (values: FoodDialogValues) => void
+  title?: string
+  submitLabel?: string
+}) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
+  const [name, setName] = React.useState(initialValues?.name ?? "")
+  const [category, setCategory] = React.useState(initialValues?.category ?? "protein")
+  const isControlled = typeof open === "boolean"
+  const resolvedOpen = isControlled ? open : uncontrolledOpen
+  const handleOpenChange = onOpenChange ?? setUncontrolledOpen
+
+  React.useEffect(() => {
+    if (!resolvedOpen) {
+      return
+    }
+
+    setName(initialValues?.name ?? "")
+    setCategory(initialValues?.category?.toLowerCase() ?? "protein")
+  }, [initialValues, resolvedOpen])
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <PrimaryActionButton label="Food" icon={IconPlus} />
-      </DialogTrigger>
+    <Dialog open={resolvedOpen} onOpenChange={handleOpenChange}>
+      {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
       <DialogContent className="max-w-[860px] rounded-sm border border-neutral-200 bg-white p-0 shadow-xl">
         <div className="grid md:grid-cols-[1.5fr_1fr]">
           <div className="border-r border-neutral-200 px-6 py-5">
             <div className="mb-5 flex items-center justify-between">
               <DialogTitle className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
                 <IconApple className="size-4.5 text-neutral-700" />
-                Add Food
+                {title}
               </DialogTitle>
             </div>
             <div className="space-y-5">
@@ -507,6 +626,8 @@ function AddFoodDialog() {
                   Name <span className="text-red-500">*</span>
                 </label>
                 <Input
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
                   placeholder="Name of the food e.g. Greek Yogurt"
                   className="h-11 rounded-sm border-neutral-200 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
                 />
@@ -523,7 +644,7 @@ function AddFoodDialog() {
               <div className="space-y-3">
                 <label className="text-[14px] font-medium text-neutral-800">Filters</label>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <Select>
+                  <Select value={category} onValueChange={setCategory}>
                     <SelectTrigger className="h-10 rounded-sm border-neutral-200 shadow-none focus:ring-0">
                       <SelectValue placeholder="Select Category" />
                     </SelectTrigger>
@@ -531,6 +652,8 @@ function AddFoodDialog() {
                       <SelectItem value="protein">Protein</SelectItem>
                       <SelectItem value="carbs">Carbs</SelectItem>
                       <SelectItem value="fats">Fats</SelectItem>
+                      <SelectItem value="fruit">Fruit</SelectItem>
+                      <SelectItem value="supplements">Supplements</SelectItem>
                     </SelectContent>
                   </Select>
                   <Select>
@@ -621,8 +744,18 @@ function AddFoodDialog() {
               Close
             </Button>
           </DialogClose>
-          <Button className="h-9 rounded-sm bg-brand-500 px-4 text-[14px] font-medium text-white shadow-none hover:bg-brand-600">
-            Add Food
+          <Button
+            className="h-9 rounded-sm bg-brand-500 px-4 text-[14px] font-medium text-white shadow-none hover:bg-brand-600"
+            onClick={() => {
+              onSubmit?.({
+                name: name.trim(),
+                category: category.trim(),
+              })
+              handleOpenChange(false)
+            }}
+            disabled={!name.trim()}
+          >
+            {submitLabel}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -630,7 +763,17 @@ function AddFoodDialog() {
   )
 }
 
-function PlansTable() {
+function PlansTable({
+  rows: sourceRows,
+  backToHref,
+  onDuplicateRow,
+  onDeleteRow,
+}: {
+  rows: MealPlanRow[]
+  backToHref: string
+  onDuplicateRow: (row: MealPlanRow) => void
+  onDeleteRow: (row: MealPlanRow) => void
+}) {
   const planClientsById = React.useMemo(
     () =>
       new Map(
@@ -646,9 +789,9 @@ function PlansTable() {
     []
   )
 
-  const rows = React.useMemo(
+  const tableRows = React.useMemo(
     () =>
-      mealPlanRows.map((row) => ({
+      sourceRows.map((row) => ({
         id: row.id,
         title: row.title,
         subtitle: row.subtitle,
@@ -663,24 +806,64 @@ function PlansTable() {
           .map((clientId) => planClientsById.get(clientId))
           .filter((client): client is NonNullable<typeof client> => Boolean(client)),
       })),
-    [planClientsById]
+    [planClientsById, sourceRows]
   )
 
   return (
     <div className="space-y-4">
       <MealPlannerSearchBar placeholder="Search plans" inputWrapperClassName="max-w-[17rem]" />
       <NutritionPlansTable
-        rows={rows}
-        onOpenRow={() => { }}
-        onEditRow={() => { }}
-        onDuplicateRow={() => { }}
-        onDeleteRow={() => { }}
+        rows={tableRows}
+        onOpenRow={(row) => {
+          const sourceRow = sourceRows.find((entry) => entry.id === row.id)
+          if (!sourceRow) {
+            return
+          }
+
+          const href = sourceRow.type.toLowerCase().includes("macro")
+            ? getNutritionCreateMacroPlanHref(backToHref)
+            : getNutritionCreateMealPlanHref(backToHref)
+
+          window.location.href = href
+        }}
+        onEditRow={(row) => {
+          const sourceRow = sourceRows.find((entry) => entry.id === row.id)
+          if (!sourceRow) {
+            return
+          }
+
+          const href = sourceRow.type.toLowerCase().includes("macro")
+            ? getNutritionCreateMacroPlanHref(backToHref)
+            : getNutritionCreateMealPlanHref(backToHref)
+
+          window.location.href = href
+        }}
+        onDuplicateRow={(row) => {
+          const sourceRow = sourceRows.find((entry) => entry.id === row.id)
+          if (sourceRow) {
+            onDuplicateRow(sourceRow)
+          }
+        }}
+        onDeleteRow={(row) => {
+          const sourceRow = sourceRows.find((entry) => entry.id === row.id)
+          if (sourceRow) {
+            onDeleteRow(sourceRow)
+          }
+        }}
       />
     </div>
   )
 }
 
-function MealsTable() {
+function MealsTable({
+  rows,
+  onEditRow,
+  onDeleteRow,
+}: {
+  rows: MealRow[]
+  onEditRow: (row: MealRow) => void
+  onDeleteRow: (row: MealRow) => void
+}) {
   return (
     <div className="space-y-4">
       <MealPlannerSearchBar placeholder="Search meals" inputWrapperClassName="max-w-[17rem]" />
@@ -703,7 +886,7 @@ function MealsTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mealRows.map((row) => (
+            {rows.map((row) => (
               <TableRow
                 key={row.id}
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
@@ -740,7 +923,11 @@ function MealsTable() {
                   </div>
                 </TableCell>
                 <TableCell className="px-3 py-3 pr-5">
-                  <NutritionPageTableActionButtons itemLabel="meal" />
+                  <NutritionPageTableActionButtons
+                    itemLabel="meal"
+                    onEdit={() => onEditRow(row)}
+                    onDelete={() => onDeleteRow(row)}
+                  />
                 </TableCell>
               </TableRow>
             ))}
@@ -751,7 +938,15 @@ function MealsTable() {
   )
 }
 
-function FoodTable() {
+function FoodTable({
+  rows,
+  onEditRow,
+  onDeleteRow,
+}: {
+  rows: FoodRow[]
+  onEditRow: (row: FoodRow) => void
+  onDeleteRow: (row: FoodRow) => void
+}) {
   return (
     <div className="space-y-4">
       <MealPlannerSearchBar placeholder="Search food" inputWrapperClassName="max-w-[17rem]" />
@@ -771,7 +966,7 @@ function FoodTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {foodRows.map((row) => (
+            {rows.map((row) => (
               <TableRow
                 key={row.id}
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
@@ -796,7 +991,11 @@ function FoodTable() {
                   {row.category}
                 </TableCell>
                 <TableCell className="px-3 py-3 pr-5">
-                  <NutritionPageTableActionButtons itemLabel="food" />
+                  <NutritionPageTableActionButtons
+                    itemLabel="food"
+                    onEdit={() => onEditRow(row)}
+                    onDelete={() => onDeleteRow(row)}
+                  />
                 </TableCell>
               </TableRow>
             ))}
@@ -812,6 +1011,11 @@ function MealPlaniPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const activeTab = (searchParams.get("tab") as MealPlanTab) || "plans"
+  const [planRows, setPlanRows] = React.useState(initialMealPlanRows)
+  const [mealRows, setMealRows] = React.useState(initialMealRows)
+  const [foodRows, setFoodRows] = React.useState(initialFoodRows)
+  const [editingMeal, setEditingMeal] = React.useState<MealRow | null>(null)
+  const [editingFood, setEditingFood] = React.useState<FoodRow | null>(null)
   const plansBackToHref = React.useMemo(() => {
     const params = new URLSearchParams(searchParams.toString())
     params.set("tab", "plans")
@@ -829,10 +1033,114 @@ function MealPlaniPageContent() {
     [pathname, router, searchParams],
   )
 
+  const handleDuplicatePlan = React.useCallback((row: MealPlanRow) => {
+    setPlanRows((currentRows) => {
+      const nextTitle = buildNextDuplicatedPlanTitle(
+        row.title,
+        currentRows.map((entry) => entry.title)
+      )
+
+      return [
+        {
+          ...row,
+          id: `${row.id}-copy-${Date.now()}`,
+          title: nextTitle,
+        },
+        ...currentRows,
+      ]
+    })
+  }, [])
+
+  const handleDeletePlan = React.useCallback((row: MealPlanRow) => {
+    setPlanRows((currentRows) => currentRows.filter((entry) => entry.id !== row.id))
+  }, [])
+
+  const handleCreateMeal = React.useCallback((values: MealDialogValues) => {
+    setMealRows((currentRows) => [
+      {
+        id: `meal-${Date.now()}`,
+        name: values.name,
+        subtitle: values.subtitle || "Custom meal created from the nutrition tab.",
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fats: 0,
+        foods: [],
+      },
+      ...currentRows,
+    ])
+  }, [])
+
+  const handleUpdateMeal = React.useCallback((values: MealDialogValues) => {
+    setMealRows((currentRows) =>
+      currentRows.map((row) =>
+        editingMeal && row.id === editingMeal.id
+          ? {
+              ...row,
+              name: values.name,
+              subtitle: values.subtitle || row.subtitle,
+            }
+          : row
+      )
+    )
+    setEditingMeal(null)
+  }, [editingMeal])
+
+  const handleDeleteMeal = React.useCallback((row: MealRow) => {
+    setMealRows((currentRows) => currentRows.filter((entry) => entry.id !== row.id))
+  }, [])
+
+  const handleCreateFood = React.useCallback((values: FoodDialogValues) => {
+    setFoodRows((currentRows) => [
+      {
+        id: `food-${Date.now()}`,
+        name: values.name,
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fats: 0,
+        category: values.category,
+        custom: true,
+      },
+      ...currentRows,
+    ])
+  }, [])
+
+  const handleUpdateFood = React.useCallback((values: FoodDialogValues) => {
+    setFoodRows((currentRows) =>
+      currentRows.map((row) =>
+        editingFood && row.id === editingFood.id
+          ? {
+              ...row,
+              name: values.name,
+              category: values.category,
+            }
+          : row
+      )
+    )
+    setEditingFood(null)
+  }, [editingFood])
+
+  const handleDeleteFood = React.useCallback((row: FoodRow) => {
+    setFoodRows((currentRows) => currentRows.filter((entry) => entry.id !== row.id))
+  }, [])
+
   const tabsAction = (() => {
     if (activeTab === "plans") return <AddPlanDialog backToHref={plansBackToHref} />
-    if (activeTab === "meals") return <AddMealDialog />
-    return <AddFoodDialog />
+    if (activeTab === "meals") {
+      return (
+        <AddMealDialog
+          trigger={<PrimaryActionButton label="Meal" icon={IconPlus} />}
+          onSubmit={handleCreateMeal}
+        />
+      )
+    }
+    return (
+      <AddFoodDialog
+        trigger={<PrimaryActionButton label="Food" icon={IconPlus} />}
+        onSubmit={handleCreateFood}
+      />
+    )
   })()
 
   return (
@@ -866,15 +1174,68 @@ function MealPlaniPageContent() {
         </div>
 
         <TabsContent value="plans" className="mt-0 p-4">
-          <PlansTable />
+          <PlansTable
+            rows={planRows}
+            backToHref={plansBackToHref}
+            onDuplicateRow={handleDuplicatePlan}
+            onDeleteRow={handleDeletePlan}
+          />
         </TabsContent>
         <TabsContent value="meals" className="mt-0 p-4">
-          <MealsTable />
+          <MealsTable
+            rows={mealRows}
+            onEditRow={setEditingMeal}
+            onDeleteRow={handleDeleteMeal}
+          />
         </TabsContent>
         <TabsContent value="food" className="mt-0 p-4">
-          <FoodTable />
+          <FoodTable
+            rows={foodRows}
+            onEditRow={setEditingFood}
+            onDeleteRow={handleDeleteFood}
+          />
         </TabsContent>
       </Tabs>
+
+      <AddMealDialog
+        open={Boolean(editingMeal)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditingMeal(null)
+          }
+        }}
+        initialValues={
+          editingMeal
+            ? {
+                name: editingMeal.name,
+                subtitle: editingMeal.subtitle,
+              }
+            : undefined
+        }
+        onSubmit={handleUpdateMeal}
+        title="Edit Meal"
+        submitLabel="Update Meal"
+      />
+
+      <AddFoodDialog
+        open={Boolean(editingFood)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditingFood(null)
+          }
+        }}
+        initialValues={
+          editingFood
+            ? {
+                name: editingFood.name,
+                category: editingFood.category,
+              }
+            : undefined
+        }
+        onSubmit={handleUpdateFood}
+        title="Edit Food"
+        submitLabel="Update Food"
+      />
     </section>
   )
 }
