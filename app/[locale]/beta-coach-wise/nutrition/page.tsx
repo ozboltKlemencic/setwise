@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
+  NutritionCaloriesDonut,
   NutritionPlansTable,
   buildNutritionPlanSegments,
 } from "@/components/coachWise/tables/nutrition-plans-table"
@@ -67,7 +68,10 @@ type MealPlanRow = {
 type MealRow = {
   id: string
   name: string
-  calories: string
+  calories: number
+  protein: number
+  carbs: number
+  fats: number
   tags: string[]
   color: string
 }
@@ -136,28 +140,40 @@ const mealRows: MealRow[] = [
   {
     id: "oats-breakfast",
     name: "Protein Oats Breakfast",
-    calories: "520 kcal",
+    calories: 520,
+    protein: 42,
+    carbs: 55,
+    fats: 12,
     tags: ["Breakfast", "High Protein"],
     color: "from-orange-200 via-amber-100 to-white",
   },
   {
     id: "chicken-bowl",
     name: "Chicken Rice Bowl",
-    calories: "690 kcal",
+    calories: 690,
+    protein: 48,
+    carbs: 79,
+    fats: 18,
     tags: ["Lunch", "Post Workout"],
     color: "from-sky-200 via-cyan-100 to-white",
   },
   {
     id: "salmon-dinner",
     name: "Salmon & Potatoes",
-    calories: "740 kcal",
+    calories: 740,
+    protein: 45,
+    carbs: 58,
+    fats: 31,
     tags: ["Dinner", "Omega 3"],
     color: "from-violet-200 via-fuchsia-100 to-white",
   },
   {
     id: "smoothie",
     name: "Blueberry Recovery Smoothie",
-    calories: "330 kcal",
+    calories: 330,
+    protein: 27,
+    carbs: 36,
+    fats: 8,
     tags: ["Snack", "Recovery"],
     color: "from-emerald-200 via-lime-100 to-white",
   },
@@ -721,8 +737,21 @@ function MealsTable() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="px-3.5 py-3 text-[14px] font-medium text-neutral-950">
-                  {row.calories}
+                <TableCell className="px-3 py-3 text-center">
+                  <NutritionCaloriesDonut
+                    row={{
+                      id: row.id,
+                      title: row.name,
+                      subtitle: "",
+                      type: "Meal",
+                      calories: row.calories,
+                      segments: buildNutritionPlanSegments({
+                        protein: row.protein,
+                        carbs: row.carbs,
+                        fats: row.fats,
+                      }),
+                    }}
+                  />
                 </TableCell>
                 <TableCell className="px-3.5 py-3">
                   <div className="flex flex-wrap gap-2">

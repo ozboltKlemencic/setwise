@@ -68,7 +68,11 @@ const nutritionRowActionButtonClassName =
 const nutritionRowDeleteActionButtonClassName =
   "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
-function NutritionCaloriesDonut({ row }: { row: NutritionPlansTableRow }) {
+export function NutritionCaloriesDonut({
+  row,
+}: {
+  row: NutritionPlansTableRow
+}) {
   return (
     <ChartContainer
       config={mealPlanDonutConfig}
