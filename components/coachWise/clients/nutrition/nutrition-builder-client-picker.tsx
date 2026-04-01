@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Search } from "lucide-react"
 
 import type { NutritionBuilderClientOption } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
 import {
@@ -46,10 +46,22 @@ export function NutritionBuilderClientPicker({
   onSelectedClientIdsChange: (nextClientIds: string[]) => void
   className?: string
 }) {
+  const [searchQuery, setSearchQuery] = React.useState("")
   const selectedClients = React.useMemo(
     () => clients.filter((client) => selectedClientIds.includes(client.id)),
     [clients, selectedClientIds]
   )
+  const filteredClients = React.useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLowerCase()
+
+    if (!normalizedQuery) {
+      return clients
+    }
+
+    return clients.filter((client) =>
+      client.name.toLowerCase().includes(normalizedQuery)
+    )
+  }, [clients, searchQuery])
   const visibleClients = selectedClients.slice(0, 3)
   const remainingClients = selectedClients.length - visibleClients.length
   const triggerLabel =
@@ -120,8 +132,19 @@ export function NutritionBuilderClientPicker({
         <DropdownMenuLabel className="px-3 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
           Clients
         </DropdownMenuLabel>
+        <div className="px-1.5 pb-1.5">
+          <div className="relative">
+            <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-neutral-400" />
+            <input
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search clients"
+              className="h-8 w-full rounded-md border border-neutral-200 bg-neutral-50 pr-3 pl-8 text-[13px] text-neutral-700 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-300 focus:bg-white"
+            />
+          </div>
+        </div>
         <DropdownMenuSeparator className="bg-neutral-200/70" />
-        {clients.map((client) => (
+        {filteredClients.map((client) => (
           <DropdownMenuCheckboxItem
             key={client.id}
             checked={selectedClientIds.includes(client.id)}
@@ -140,6 +163,11 @@ export function NutritionBuilderClientPicker({
             </div>
           </DropdownMenuCheckboxItem>
         ))}
+        {!filteredClients.length ? (
+          <div className="px-3 py-3 text-[12.5px] text-neutral-500">
+            No clients found.
+          </div>
+        ) : null}
         {selectedClientIds.length ? (
           <>
             <DropdownMenuSeparator className="bg-neutral-200/70" />
