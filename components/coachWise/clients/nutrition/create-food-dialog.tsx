@@ -125,11 +125,17 @@ export function CreateFoodDialog({
   open,
   onOpenChange,
   initialName,
+  initialValue,
+  title = "Create food",
+  submitLabel = "Create food",
   onCreate,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
   initialName: string
+  initialValue?: Partial<CreateFoodDialogValue>
+  title?: string
+  submitLabel?: string
   onCreate: (value: CreateFoodDialogValue) => void
 }) {
   const nameInputRef = React.useRef<HTMLInputElement>(null)
@@ -142,8 +148,15 @@ export function CreateFoodDialog({
       return
     }
 
-    setDraftValue(createInitialDraft(initialName))
-  }, [initialName, open])
+    setDraftValue({
+      ...createInitialDraft(initialName),
+      ...initialValue,
+      name: initialValue?.name ?? initialName.trim(),
+      unit:
+        initialValue?.unit ??
+        suggestCreateFoodUnit(initialValue?.name ?? initialName),
+    })
+  }, [initialName, initialValue, open])
 
   React.useEffect(() => {
     if (!open) {
@@ -166,7 +179,7 @@ export function CreateFoodDialog({
       >
         <DialogHeader className="w-full gap-0 px-7 pt-6 pb-1 text-left">
           <DialogTitle className="text-[17px] font-semibold text-neutral-950">
-            Create food
+            {title}
           </DialogTitle>
           <DialogDescription className="mt-1 max-w-[320px] text-[13px] leading-5 text-neutral-500">
             Add a food name and its macro values.
@@ -305,7 +318,7 @@ export function CreateFoodDialog({
               />
               <PrimaryActionButton
                 type="submit"
-                label="Create food"
+                label={submitLabel}
                 disabled={!canCreate}
                 className="h-11 w-full justify-center rounded-lg text-[15px] font-medium disabled:pointer-events-none disabled:opacity-50"
               />

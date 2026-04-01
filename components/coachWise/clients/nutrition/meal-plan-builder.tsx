@@ -57,12 +57,20 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import {
+  readStoredNutritionCustomFoods,
+  readStoredNutritionMealTemplates,
+  removeStoredNutritionMealTemplate,
+  upsertStoredNutritionCustomFood,
+  upsertStoredNutritionMealTemplate,
+} from "@/lib/handlers/nutrition-library-storage"
+import {
   GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
   resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
   type StoredNutritionMealPlanBuilderSnapshot,
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
+import { DEFAULT_NUTRITION_LIBRARY_FOODS } from "@/lib/nutrition/nutrition-library-catalog"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 
@@ -85,6 +93,26 @@ function getFoodCardTone(food: BuilderFood): FoodCardTone {
   ].sort((left, right) => right.value - left.value)
 
   return macroRanking[0].key
+}
+
+function createBuilderFoodIndex(foods: BuilderFood[]) {
+  return new Map(foods.map((food) => [food.id, { ...food }]))
+}
+
+function mergeBuilderFoods(
+  ...foodCollections: Array<BuilderFood[] | undefined>
+) {
+  const mergedFoods = createBuilderFoodIndex(
+    DEFAULT_NUTRITION_LIBRARY_FOODS as BuilderFood[]
+  )
+
+  foodCollections.forEach((foods) => {
+    foods?.forEach((food) => {
+      mergedFoods.set(food.id, { ...food })
+    })
+  })
+
+  return Array.from(mergedFoods.values()).sort((left, right) => left.id - right.id)
 }
 
 function BuilderSectionTitle({ title }: { title: string }) {
@@ -570,6 +598,18 @@ function MealPlanBuilderScreen({
     () => resolveNutritionMealPlanStorageScopeFromPath(backHref),
     [backHref]
   )
+  const initialCustomFoods = React.useMemo(
+    () => readStoredNutritionCustomFoods().map((food) => ({ ...food })),
+    []
+  )
+  const initialTemplateLibrary = React.useMemo(
+    () =>
+      readStoredNutritionMealTemplates().map((template) => ({
+        ...template,
+        items: template.items.map((item) => ({ ...item })),
+      })),
+    []
+  )
   const initialPlanName = initialSnapshot.planName
   const itemIdCounter = React.useRef(
     Math.max(
@@ -578,15 +618,26 @@ function MealPlanBuilderScreen({
     ) + 1
   )
   const foodIdCounter = React.useRef(
-    Math.max(0, ...initialSnapshot.foods.map((food) => food.id)) + 1
+    Math.max(
+      0,
+      ...mergeBuilderFoods(initialSnapshot.foods, initialCustomFoods).map(
+        (food) => food.id
+      )
+    ) + 1
   )
-  const templateIdCounter = React.useRef(100)
+  const templateIdCounter = React.useRef(
+    initialTemplateLibrary.reduce((highestId, template) => {
+      const match = template.id.match(/(\d+)$/)
+      const nextId = match ? Number.parseInt(match[1] ?? "0", 10) : 0
+      return Number.isFinite(nextId) ? Math.max(highestId, nextId) : highestId
+    }, 100) + 1
+  )
   const nameInputRef = React.useRef<HTMLInputElement>(null)
   const mealNameInputRef = React.useRef<HTMLInputElement>(null)
   const deleteMealTriggerRefs = React.useRef<Record<number, HTMLButtonElement | null>>({})
   const deleteTemplateTriggerRefs = React.useRef<Record<string, HTMLButtonElement | null>>({})
   const [foods, setFoods] = React.useState<BuilderFood[]>(() =>
-    initialSnapshot.foods.map((food) => ({ ...food }))
+    mergeBuilderFoods(initialSnapshot.foods, initialCustomFoods)
   )
   const [planName, setPlanName] = React.useState(initialPlanName)
   const [isEditingName, setIsEditingName] = React.useState(false)
@@ -610,7 +661,7 @@ function MealPlanBuilderScreen({
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
   const [savedTemplates, setSavedTemplates] =
-    React.useState<BuilderMealTemplate[]>(DEFAULT_BUILDER_MEAL_TEMPLATES)
+    React.useState<BuilderMealTemplate[]>(() => initialTemplateLibrary)
   const [templatedMealIds, setTemplatedMealIds] = React.useState<Set<number>>(
     () => new Set()
   )
@@ -776,6 +827,7 @@ function MealPlanBuilderScreen({
   }, [])
   const handleCreateFoodSubmit = React.useCallback(
     (value: CreateFoodDialogValue) => {
+      const nextFoodId = foodIdCounter.current++
       const nextDefaultQty =
         value.unit === "piece" || value.unit === "slice"
           ? 1
@@ -787,20 +839,23 @@ function MealPlanBuilderScreen({
             ? 10
             : 10
 
-      setFoods((currentFoods) => [
-        ...currentFoods,
-        {
-          id: foodIdCounter.current++,
-          name: value.name,
-          cal: value.cal,
-          p: value.p,
-          c: value.c,
-          f: value.f,
-          unit: value.unit,
-          step: nextStep,
-          defaultQty: nextDefaultQty,
-        },
-      ])
+      const nextFood: BuilderFood = {
+        id: nextFoodId,
+        name: value.name,
+        cal: value.cal,
+        p: value.p,
+        c: value.c,
+        f: value.f,
+        unit: value.unit,
+        step: nextStep,
+        defaultQty: nextDefaultQty,
+      }
+
+      setFoods((currentFoods) => [...currentFoods, nextFood])
+      upsertStoredNutritionCustomFood({
+        ...nextFood,
+        createdAt: new Date().toISOString(),
+      })
       setSearchQuery(value.name)
       setIsCreateFoodDialogOpen(false)
 
@@ -912,8 +967,9 @@ function MealPlanBuilderScreen({
     }
 
     const nextTemplate: BuilderMealTemplate = {
-      id: `custom-${templateIdCounter.current++}`,
+      id: `custom-template-${templateIdCounter.current++}`,
       name: newTemplateName.trim() || `${activeMeal.name} template`,
+      subtitle: `Saved from ${activeMeal.name}.`,
       isCustom: true,
       items: activeMeal.items.map((item) => ({
         foodId: item.foodId,
@@ -922,6 +978,10 @@ function MealPlanBuilderScreen({
     }
 
     setSavedTemplates((currentTemplates) => [nextTemplate, ...currentTemplates])
+    upsertStoredNutritionMealTemplate({
+      ...nextTemplate,
+      createdAt: new Date().toISOString(),
+    })
     setTemplatedMealIds((currentIds) => new Set(currentIds).add(activeMeal.id))
     setShowSaveTemplateForm(false)
     setNewTemplateName("")
@@ -1494,13 +1554,14 @@ function MealPlanBuilderScreen({
                               description={`${template.name} will be removed from saved templates. This action can't be undone.`}
                               confirmLabel="Delete template"
                               variant="destructive"
-                              onConfirm={() =>
+                              onConfirm={() => {
                                 setSavedTemplates((currentTemplates) =>
                                   currentTemplates.filter(
                                     (currentTemplate) => currentTemplate.id !== template.id
                                   )
                                 )
-                              }
+                                removeStoredNutritionMealTemplate(template.id)
+                              }}
                               trigger={
                                 <button
                                   ref={(node) => {

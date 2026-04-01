@@ -5,6 +5,13 @@ import type {
   StoredNutritionMealPlanOption,
   StoredNutritionMealPlanSection,
 } from "@/lib/handlers/nutrition-plan-storage"
+import {
+  cloneNutritionLibraryFoods,
+  cloneNutritionMealTemplates,
+  DEFAULT_NUTRITION_LIBRARY_FOODS,
+  DEFAULT_NUTRITION_MEAL_TEMPLATES,
+  type NutritionLibraryMealTemplate,
+} from "@/lib/nutrition/nutrition-library-catalog"
 
 export type BuilderFood = StoredNutritionMealPlanBuilderSnapshot["foods"][number]
 export type BuilderMealItem =
@@ -25,12 +32,7 @@ export type BuilderTemplateItem = {
   qty: number
 }
 
-export type BuilderMealTemplate = {
-  id: string
-  name: string
-  items: BuilderTemplateItem[]
-  isCustom?: boolean
-}
+export type BuilderMealTemplate = NutritionLibraryMealTemplate
 
 type BuilderMealPlanSectionLike = {
   label: string
@@ -44,35 +46,11 @@ type BuilderMealPlanSectionLike = {
   }>
 }
 
-export const DEFAULT_BUILDER_FOODS: BuilderFood[] = [
-  { id: 1, name: "Chicken breast", cal: 165, p: 31, c: 0, f: 3.6, unit: "g", step: 50, defaultQty: 150 },
-  { id: 2, name: "Cooked rice", cal: 130, p: 2.7, c: 28, f: 0.3, unit: "g", step: 50, defaultQty: 200 },
-  { id: 3, name: "Broccoli", cal: 34, p: 2.8, c: 7, f: 0.4, unit: "g", step: 50, defaultQty: 150 },
-  { id: 4, name: "Eggs", cal: 155, p: 13, c: 1.1, f: 11, unit: "piece", step: 1, defaultQty: 3 },
-  { id: 5, name: "Oats", cal: 389, p: 17, c: 66, f: 7, unit: "g", step: 10, defaultQty: 80 },
-  { id: 6, name: "Banana", cal: 89, p: 1.1, c: 23, f: 0.3, unit: "piece", step: 1, defaultQty: 1 },
-  { id: 7, name: "Whey protein", cal: 120, p: 24, c: 3, f: 1.5, unit: "g", step: 5, defaultQty: 30 },
-  { id: 8, name: "Tuna", cal: 116, p: 26, c: 0, f: 1, unit: "g", step: 50, defaultQty: 100 },
-  { id: 9, name: "Sweet potato", cal: 86, p: 1.6, c: 20, f: 0.1, unit: "g", step: 50, defaultQty: 200 },
-  { id: 10, name: "Cottage cheese", cal: 98, p: 11, c: 3.4, f: 4.3, unit: "g", step: 50, defaultQty: 200 },
-  { id: 11, name: "Avocado", cal: 160, p: 2, c: 9, f: 15, unit: "piece", step: 1, defaultQty: 1 },
-  { id: 12, name: "Almonds", cal: 579, p: 21, c: 22, f: 50, unit: "g", step: 5, defaultQty: 30 },
-  { id: 13, name: "Salmon", cal: 208, p: 20, c: 0, f: 13, unit: "g", step: 50, defaultQty: 150 },
-  { id: 14, name: "Spinach", cal: 23, p: 2.9, c: 3.6, f: 0.4, unit: "g", step: 50, defaultQty: 100 },
-  { id: 15, name: "Greek yogurt", cal: 59, p: 10, c: 3.6, f: 0.7, unit: "g", step: 50, defaultQty: 200 },
-  { id: 16, name: "Wholegrain bread", cal: 247, p: 13, c: 41, f: 3.4, unit: "slice", step: 1, defaultQty: 2 },
-  { id: 17, name: "Olive oil", cal: 884, p: 0, c: 0, f: 100, unit: "ml", step: 5, defaultQty: 10 },
-  { id: 18, name: "Turkey fillet", cal: 135, p: 30, c: 0, f: 1, unit: "g", step: 50, defaultQty: 150 },
-  { id: 19, name: "Quinoa", cal: 120, p: 4.4, c: 21, f: 1.9, unit: "g", step: 50, defaultQty: 150 },
-  { id: 20, name: "Strawberries", cal: 32, p: 0.7, c: 7.7, f: 0.3, unit: "g", step: 50, defaultQty: 150 },
-]
+export const DEFAULT_BUILDER_FOODS: BuilderFood[] =
+  cloneNutritionLibraryFoods(DEFAULT_NUTRITION_LIBRARY_FOODS)
 
-export const DEFAULT_BUILDER_MEAL_TEMPLATES: BuilderMealTemplate[] = [
-  { id: "t1", name: "Breakfast A - Oat Bowl", items: [{ foodId: 5, qty: 80 }, { foodId: 7, qty: 30 }, { foodId: 6, qty: 1 }, { foodId: 12, qty: 20 }] },
-  { id: "t2", name: "Lunch - Chicken & Rice", items: [{ foodId: 1, qty: 200 }, { foodId: 2, qty: 250 }, { foodId: 3, qty: 150 }, { foodId: 17, qty: 10 }] },
-  { id: "t3", name: "Breakfast B - Eggs & Toast", items: [{ foodId: 4, qty: 3 }, { foodId: 16, qty: 2 }, { foodId: 11, qty: 1 }, { foodId: 14, qty: 50 }] },
-  { id: "t4", name: "Dinner - Salmon", items: [{ foodId: 13, qty: 180 }, { foodId: 9, qty: 200 }, { foodId: 14, qty: 100 }, { foodId: 17, qty: 10 }] },
-]
+export const DEFAULT_BUILDER_MEAL_TEMPLATES: BuilderMealTemplate[] =
+  cloneNutritionMealTemplates(DEFAULT_NUTRITION_MEAL_TEMPLATES)
 
 export const RECENT_BUILDER_FOOD_IDS = [1, 2, 5, 4, 7, 3, 15, 8, 13, 6]
 

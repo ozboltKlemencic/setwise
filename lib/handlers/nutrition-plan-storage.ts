@@ -115,6 +115,23 @@ export const NUTRITION_MEAL_PLANS_UPDATED_EVENT =
 
 export const GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE = "global-nutrition"
 
+export type StoredNutritionMealPlanEntry = {
+  storageScopeId: string
+  plan: StoredNutritionMealPlan
+}
+
+function readStorageScopeFromPathQuery(path?: string | null) {
+  if (!path || !path.includes("?")) {
+    return null
+  }
+
+  const query = path.split("?")[1] ?? ""
+  const searchParams = new URLSearchParams(query)
+  const storageScopeId = searchParams.get("storageScope")
+
+  return storageScopeId?.trim() || null
+}
+
 export function resolveNutritionClientIdFromPath(path?: string | null) {
   if (!path) {
     return null
@@ -127,6 +144,12 @@ export function resolveNutritionClientIdFromPath(path?: string | null) {
 export function resolveNutritionMealPlanStorageScopeFromPath(
   path?: string | null
 ) {
+  const storageScopeFromQuery = readStorageScopeFromPathQuery(path)
+
+  if (storageScopeFromQuery) {
+    return storageScopeFromQuery
+  }
+
   const clientId = resolveNutritionClientIdFromPath(path)
 
   if (clientId) {
@@ -148,6 +171,26 @@ export function resolveNutritionMealPlanStorageScopeFromPath(
 
 function getNutritionMealPlanStorageKey(clientId: string) {
   return `${NUTRITION_MEAL_PLAN_STORAGE_KEY_PREFIX}${clientId}`
+}
+
+export function listStoredNutritionMealPlanScopes() {
+  if (typeof window === "undefined") {
+    return [] as string[]
+  }
+
+  const scopes = new Set<string>()
+
+  for (let index = 0; index < window.localStorage.length; index += 1) {
+    const key = window.localStorage.key(index)
+
+    if (!key?.startsWith(NUTRITION_MEAL_PLAN_STORAGE_KEY_PREFIX)) {
+      continue
+    }
+
+    scopes.add(key.slice(NUTRITION_MEAL_PLAN_STORAGE_KEY_PREFIX.length))
+  }
+
+  return Array.from(scopes)
 }
 
 function isStoredNutritionMealPlan(value: unknown): value is StoredNutritionMealPlan {
@@ -210,6 +253,52 @@ export function readStoredNutritionMealPlans(clientId: string) {
   } catch {
     return []
   }
+}
+
+export function readStoredNutritionMealPlanEntries(
+  storageScopeId: string
+): StoredNutritionMealPlanEntry[] {
+  if (storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE) {
+    return listStoredNutritionMealPlanScopes()
+      .flatMap((scopeId) =>
+        readStoredNutritionMealPlans(scopeId).map((plan) => ({
+          storageScopeId: scopeId,
+          plan,
+        }))
+      )
+      .sort((left, right) => {
+        const leftCreatedAt = left.plan.createdAt ?? ""
+        const rightCreatedAt = right.plan.createdAt ?? ""
+        return rightCreatedAt.localeCompare(leftCreatedAt)
+      })
+  }
+
+  const ownEntries = readStoredNutritionMealPlans(storageScopeId).map((plan) => ({
+    storageScopeId,
+    plan,
+  }))
+  const globallyAssignedEntries = readStoredNutritionMealPlans(
+    GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE
+  )
+    .filter((plan) => plan.assignedClientIds?.includes(storageScopeId))
+    .map((plan) => ({
+      storageScopeId: GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
+      plan,
+    }))
+
+  const dedupedEntries = new Map<string, StoredNutritionMealPlanEntry>()
+
+  ;[...ownEntries, ...globallyAssignedEntries].forEach((entry) => {
+    if (!dedupedEntries.has(entry.plan.id)) {
+      dedupedEntries.set(entry.plan.id, entry)
+    }
+  })
+
+  return Array.from(dedupedEntries.values()).sort((left, right) => {
+    const leftCreatedAt = left.plan.createdAt ?? ""
+    const rightCreatedAt = right.plan.createdAt ?? ""
+    return rightCreatedAt.localeCompare(leftCreatedAt)
+  })
 }
 
 export function writeStoredNutritionMealPlans(

@@ -12,6 +12,10 @@ import {
 } from "@tabler/icons-react"
 
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
+import {
+  CreateFoodDialog,
+  type CreateFoodDialogValue,
+} from "@/components/coachWise/clients/nutrition/create-food-dialog"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -55,13 +59,31 @@ import {
   getNutritionPlanEditorHref,
 } from "@/lib/handlers/nutrition.handlers"
 import {
+  NUTRITION_LIBRARY_UPDATED_EVENT,
+  readStoredNutritionCustomFoods,
+  readStoredNutritionMealTemplates,
+  removeStoredNutritionCustomFood,
+  removeStoredNutritionMealTemplate,
+  upsertStoredNutritionCustomFood,
+  upsertStoredNutritionMealTemplate,
+  type StoredNutritionCustomFood,
+  type StoredNutritionMealTemplate,
+} from "@/lib/handlers/nutrition-library-storage"
+import {
   NUTRITION_MEAL_PLANS_UPDATED_EVENT,
-  readStoredNutritionMealPlans,
+  GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
+  readStoredNutritionMealPlanEntries,
   removeStoredNutritionMealPlan,
   resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
+  type StoredNutritionMealPlanEntry,
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
+import {
+  deriveNutritionFoodCategory,
+  formatNutritionFoodUnitShortLabel,
+  type NutritionLibraryFood,
+} from "@/lib/nutrition/nutrition-library-catalog"
 import { cn } from "@/lib/utils"
 
 type MealPlanTab = "plans" | "meals" | "food"
@@ -92,14 +114,14 @@ type MealRow = {
 }
 
 type FoodRow = {
-  id: string
+  id: number
   name: string
   calories: number
   protein: number
   carbs: number
   fats: number
   category: string
-  custom: boolean
+  unit: NutritionLibraryFood["unit"]
 }
 
 type MealDialogValues = {
@@ -327,31 +349,111 @@ function mapStoredNutritionMealPlanToRow(
     protein: 0,
     carbs: 0,
     fats: 0,
-    clients: (plan.assignedClientIds ?? [])
-      .map((clientId) => Number.parseInt(clientId, 10))
-      .filter((clientId) => Number.isFinite(clientId)),
+    clients:
+      plan.assignedClientIds?.length
+        ? plan.assignedClientIds
+            .map((clientId) => Number.parseInt(clientId, 10))
+            .filter((clientId) => Number.isFinite(clientId))
+        : (() => {
+            const numericScopeId = Number.parseInt(storageScopeId, 10)
+            return Number.isFinite(numericScopeId) ? [numericScopeId] : []
+          })(),
     segments: plan.segments.map((segment) => ({ ...segment })),
     storageScopeId,
   }
 }
 
-function useStoredNutritionMealPlans(pathHint?: string) {
+function buildBackToHrefWithStorageScope(
+  backToHref: string,
+  storageScopeId?: string
+) {
+  if (!storageScopeId || storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE) {
+    return backToHref
+  }
+
+  const [pathname, queryString = ""] = backToHref.split("?")
+  const searchParams = new URLSearchParams(queryString)
+  searchParams.set("storageScope", storageScopeId)
+  const nextQuery = searchParams.toString()
+
+  return nextQuery ? `${pathname}?${nextQuery}` : pathname
+}
+
+function mapMealTemplateToMealRow(
+  template: StoredNutritionMealTemplate,
+  foods: NutritionLibraryFood[]
+): MealRow {
+  const totals = template.items.reduce(
+    (accumulator, item) => {
+      const food = foods.find((entry) => entry.id === item.foodId)
+      if (!food) {
+        return accumulator
+      }
+
+      const multiplier =
+        food.unit === "piece" || food.unit === "slice" ? item.qty : item.qty / 100
+
+      return {
+        calories: accumulator.calories + Math.round(food.cal * multiplier),
+        protein: accumulator.protein + food.p * multiplier,
+        carbs: accumulator.carbs + food.c * multiplier,
+        fats: accumulator.fats + food.f * multiplier,
+      }
+    },
+    { calories: 0, protein: 0, carbs: 0, fats: 0 }
+  )
+
+  return {
+    id: template.id,
+    name: template.name,
+    subtitle: template.subtitle,
+    calories: totals.calories,
+    protein: totals.protein,
+    carbs: totals.carbs,
+    fats: totals.fats,
+    foods: template.items
+      .map((item) => {
+        const food = foods.find((entry) => entry.id === item.foodId)
+        if (!food) {
+          return null
+        }
+
+        return `${food.name} ${item.qty}${formatNutritionFoodUnitShortLabel(food.unit)}`
+      })
+      .filter(Boolean) as string[],
+  }
+}
+
+function mapCustomFoodToRow(food: StoredNutritionCustomFood): FoodRow {
+  return {
+    id: food.id,
+    name: food.name,
+    calories: food.cal,
+    protein: food.p,
+    carbs: food.c,
+    fats: food.f,
+    category: deriveNutritionFoodCategory(food),
+    unit: food.unit,
+  }
+}
+
+function useStoredNutritionMealPlanEntries(pathHint?: string) {
   const storageScopeId = React.useMemo(
     () => resolveNutritionMealPlanStorageScopeFromPath(pathHint),
     [pathHint]
   )
-  const [storedMealPlans, setStoredMealPlans] = React.useState<StoredNutritionMealPlan[]>(
-    []
-  )
+  const [storedMealPlanEntries, setStoredMealPlanEntries] = React.useState<
+    StoredNutritionMealPlanEntry[]
+  >([])
 
   React.useEffect(() => {
     if (!storageScopeId) {
-      setStoredMealPlans([])
+      setStoredMealPlanEntries([])
       return
     }
 
     const syncStoredMealPlans = () => {
-      setStoredMealPlans(readStoredNutritionMealPlans(storageScopeId))
+      setStoredMealPlanEntries(readStoredNutritionMealPlanEntries(storageScopeId))
     }
 
     const handleStoredMealPlansUpdated = (event: Event) => {
@@ -384,8 +486,82 @@ function useStoredNutritionMealPlans(pathHint?: string) {
 
   return {
     storageScopeId,
-    storedMealPlans,
+    storedMealPlanEntries,
   }
+}
+
+function useStoredNutritionMealTemplates() {
+  const [templates, setTemplates] = React.useState<StoredNutritionMealTemplate[]>([])
+
+  React.useEffect(() => {
+    const syncTemplates = () => {
+      setTemplates(readStoredNutritionMealTemplates())
+    }
+
+    const handleLibraryUpdated = (event: Event) => {
+      const updatedKind = (event as CustomEvent<{ kind?: string }>).detail?.kind
+
+      if (updatedKind && updatedKind !== "meal-templates") {
+        return
+      }
+
+      syncTemplates()
+    }
+
+    syncTemplates()
+    window.addEventListener("storage", syncTemplates)
+    window.addEventListener(
+      NUTRITION_LIBRARY_UPDATED_EVENT,
+      handleLibraryUpdated as EventListener
+    )
+
+    return () => {
+      window.removeEventListener("storage", syncTemplates)
+      window.removeEventListener(
+        NUTRITION_LIBRARY_UPDATED_EVENT,
+        handleLibraryUpdated as EventListener
+      )
+    }
+  }, [])
+
+  return templates
+}
+
+function useStoredNutritionCustomFoods() {
+  const [foods, setFoods] = React.useState<StoredNutritionCustomFood[]>([])
+
+  React.useEffect(() => {
+    const syncFoods = () => {
+      setFoods(readStoredNutritionCustomFoods())
+    }
+
+    const handleLibraryUpdated = (event: Event) => {
+      const updatedKind = (event as CustomEvent<{ kind?: string }>).detail?.kind
+
+      if (updatedKind && updatedKind !== "custom-foods") {
+        return
+      }
+
+      syncFoods()
+    }
+
+    syncFoods()
+    window.addEventListener("storage", syncFoods)
+    window.addEventListener(
+      NUTRITION_LIBRARY_UPDATED_EVENT,
+      handleLibraryUpdated as EventListener
+    )
+
+    return () => {
+      window.removeEventListener("storage", syncFoods)
+      window.removeEventListener(
+        NUTRITION_LIBRARY_UPDATED_EVENT,
+        handleLibraryUpdated as EventListener
+      )
+    }
+  }, [])
+
+  return foods
 }
 
 function NutritionPageTableActionButtons({
@@ -1144,10 +1320,31 @@ function MealPlaniPageContent() {
   const searchParams = useSearchParams()
   const activeTab = (searchParams.get("tab") as MealPlanTab) || "plans"
   const [planRows, setPlanRows] = React.useState(initialMealPlanRows)
-  const [mealRows, setMealRows] = React.useState(initialMealRows)
-  const [foodRows, setFoodRows] = React.useState(initialFoodRows)
   const [editingMeal, setEditingMeal] = React.useState<MealRow | null>(null)
   const [editingFood, setEditingFood] = React.useState<FoodRow | null>(null)
+  const [isCreateFoodDialogOpen, setIsCreateFoodDialogOpen] = React.useState(false)
+  const mealTemplates = useStoredNutritionMealTemplates()
+  const customFoods = useStoredNutritionCustomFoods()
+  const allLibraryFoods = React.useMemo(
+    () => [
+      ...DEFAULT_NUTRITION_LIBRARY_FOODS,
+      ...customFoods.filter(
+        (food) =>
+          !DEFAULT_NUTRITION_LIBRARY_FOODS.some(
+            (defaultFood) => defaultFood.id === food.id
+          )
+      ),
+    ],
+    [customFoods]
+  )
+  const mealRows = React.useMemo(
+    () => mealTemplates.map((template) => mapMealTemplateToMealRow(template, allLibraryFoods)),
+    [allLibraryFoods, mealTemplates]
+  )
+  const foodRows = React.useMemo(
+    () => customFoods.map((food) => mapCustomFoodToRow(food)),
+    [customFoods]
+  )
   const plansBackToHref = React.useMemo(() => {
     const params = new URLSearchParams(searchParams.toString())
     params.set("tab", "plans")
@@ -1155,16 +1352,14 @@ function MealPlaniPageContent() {
 
     return query ? `${pathname}?${query}` : pathname
   }, [pathname, searchParams])
-  const { storageScopeId: plansStorageScopeId, storedMealPlans } =
-    useStoredNutritionMealPlans(plansBackToHref)
+  const { storedMealPlanEntries } =
+    useStoredNutritionMealPlanEntries(plansBackToHref)
   const storedPlanRows = React.useMemo(
     () =>
-      plansStorageScopeId
-        ? storedMealPlans.map((plan) =>
-            mapStoredNutritionMealPlanToRow(plan, plansStorageScopeId)
-          )
-        : [],
-    [plansStorageScopeId, storedMealPlans]
+      storedMealPlanEntries.map(({ plan, storageScopeId }) =>
+        mapStoredNutritionMealPlanToRow(plan, storageScopeId)
+      ),
+    [storedMealPlanEntries]
   )
   const allPlanRows = React.useMemo(() => {
     const storedPlanIds = new Set(storedPlanRows.map((row) => row.id))
@@ -1191,7 +1386,12 @@ function MealPlaniPageContent() {
   const handleOpenPlan = React.useCallback(
     (row: MealPlanRow) => {
       if (row.storageScopeId) {
-        router.push(getNutritionPlanDetailHref(row.id, plansBackToHref))
+        router.push(
+          getNutritionPlanDetailHref(
+            row.id,
+            buildBackToHrefWithStorageScope(plansBackToHref, row.storageScopeId)
+          )
+        )
         return
       }
 
@@ -1207,7 +1407,12 @@ function MealPlaniPageContent() {
   const handleEditPlan = React.useCallback(
     (row: MealPlanRow) => {
       if (row.storageScopeId) {
-        router.push(getNutritionPlanEditorHref(row.id, plansBackToHref))
+        router.push(
+          getNutritionPlanEditorHref(
+            row.id,
+            buildBackToHrefWithStorageScope(plansBackToHref, row.storageScopeId)
+          )
+        )
         return
       }
 
@@ -1223,7 +1428,11 @@ function MealPlaniPageContent() {
   const handleDuplicatePlan = React.useCallback(
     (row: MealPlanRow) => {
       if (row.storageScopeId) {
-        const sourcePlan = storedMealPlans.find((plan) => plan.id === row.id)
+        const sourceEntry = storedMealPlanEntries.find(
+          (entry) =>
+            entry.plan.id === row.id && entry.storageScopeId === row.storageScopeId
+        )
+        const sourcePlan = sourceEntry?.plan
 
         if (!sourcePlan) {
           return
@@ -1257,7 +1466,7 @@ function MealPlaniPageContent() {
         ]
       })
     },
-    [allPlanTitles, storedMealPlans]
+    [allPlanTitles, storedMealPlanEntries]
   )
 
   const handleDeletePlan = React.useCallback((row: MealPlanRow) => {
@@ -1270,73 +1479,89 @@ function MealPlaniPageContent() {
   }, [])
 
   const handleCreateMeal = React.useCallback((values: MealDialogValues) => {
-    setMealRows((currentRows) => [
-      {
-        id: `meal-${Date.now()}`,
-        name: values.name,
-        subtitle: values.subtitle || "Custom meal created from the nutrition tab.",
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        fats: 0,
-        foods: [],
-      },
-      ...currentRows,
-    ])
+    upsertStoredNutritionMealTemplate({
+      id: `template-${Date.now()}`,
+      name: values.name,
+      subtitle: values.subtitle || "Custom meal template created from the nutrition tab.",
+      items: [],
+      isCustom: true,
+      createdAt: new Date().toISOString(),
+    })
   }, [])
 
   const handleUpdateMeal = React.useCallback((values: MealDialogValues) => {
-    setMealRows((currentRows) =>
-      currentRows.map((row) =>
-        editingMeal && row.id === editingMeal.id
-          ? {
-              ...row,
-              name: values.name,
-              subtitle: values.subtitle || row.subtitle,
-            }
-          : row
-      )
-    )
+    if (!editingMeal) {
+      return
+    }
+
+    const sourceTemplate = mealTemplates.find((template) => template.id === editingMeal.id)
+    if (!sourceTemplate) {
+      setEditingMeal(null)
+      return
+    }
+
+    upsertStoredNutritionMealTemplate({
+      ...sourceTemplate,
+      name: values.name,
+      subtitle: values.subtitle || sourceTemplate.subtitle,
+    })
     setEditingMeal(null)
-  }, [editingMeal])
+  }, [editingMeal, mealTemplates])
 
   const handleDeleteMeal = React.useCallback((row: MealRow) => {
-    setMealRows((currentRows) => currentRows.filter((entry) => entry.id !== row.id))
+    removeStoredNutritionMealTemplate(row.id)
   }, [])
 
-  const handleCreateFood = React.useCallback((values: FoodDialogValues) => {
-    setFoodRows((currentRows) => [
-      {
-        id: `food-${Date.now()}`,
-        name: values.name,
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        fats: 0,
-        category: values.category,
-        custom: true,
-      },
-      ...currentRows,
-    ])
-  }, [])
+  const handleCreateFood = React.useCallback((values: CreateFoodDialogValue) => {
+    const nextFoodId =
+      Math.max(
+        0,
+        ...DEFAULT_NUTRITION_LIBRARY_FOODS.map((food) => food.id),
+        ...customFoods.map((food) => food.id)
+      ) + 1
 
-  const handleUpdateFood = React.useCallback((values: FoodDialogValues) => {
-    setFoodRows((currentRows) =>
-      currentRows.map((row) =>
-        editingFood && row.id === editingFood.id
-          ? {
-              ...row,
-              name: values.name,
-              category: values.category,
-            }
-          : row
-      )
-    )
+    upsertStoredNutritionCustomFood({
+      id: nextFoodId,
+      name: values.name,
+      cal: values.cal,
+      p: values.p,
+      c: values.c,
+      f: values.f,
+      unit: values.unit,
+      step: values.unit === "piece" || values.unit === "slice" ? 1 : 10,
+      defaultQty: values.unit === "piece" || values.unit === "slice" ? 1 : 100,
+      createdAt: new Date().toISOString(),
+    })
+    setIsCreateFoodDialogOpen(false)
+  }, [customFoods])
+
+  const handleUpdateFood = React.useCallback((values: CreateFoodDialogValue) => {
+    if (!editingFood) {
+      return
+    }
+
+    const sourceFood = customFoods.find((food) => food.id === editingFood.id)
+    if (!sourceFood) {
+      setEditingFood(null)
+      return
+    }
+
+    upsertStoredNutritionCustomFood({
+      ...sourceFood,
+      name: values.name,
+      cal: values.cal,
+      p: values.p,
+      c: values.c,
+      f: values.f,
+      unit: values.unit,
+      step: values.unit === "piece" || values.unit === "slice" ? 1 : 10,
+      defaultQty: values.unit === "piece" || values.unit === "slice" ? 1 : 100,
+    })
     setEditingFood(null)
-  }, [editingFood])
+  }, [customFoods, editingFood])
 
   const handleDeleteFood = React.useCallback((row: FoodRow) => {
-    setFoodRows((currentRows) => currentRows.filter((entry) => entry.id !== row.id))
+    removeStoredNutritionCustomFood(row.id)
   }, [])
 
   const tabsAction = (() => {
@@ -1350,9 +1575,10 @@ function MealPlaniPageContent() {
       )
     }
     return (
-      <AddFoodDialog
-        trigger={<PrimaryActionButton label="Food" icon={IconPlus} />}
-        onSubmit={handleCreateFood}
+      <PrimaryActionButton
+        label="Food"
+        icon={IconPlus}
+        onClick={() => setIsCreateFoodDialogOpen(true)}
       />
     )
   })()
@@ -1432,24 +1658,30 @@ function MealPlaniPageContent() {
         submitLabel="Update Meal"
       />
 
-      <AddFoodDialog
-        open={Boolean(editingFood)}
+      <CreateFoodDialog
+        open={isCreateFoodDialogOpen || Boolean(editingFood)}
         onOpenChange={(open) => {
           if (!open) {
+            setIsCreateFoodDialogOpen(false)
             setEditingFood(null)
           }
         }}
-        initialValues={
+        initialName={editingFood?.name ?? ""}
+        initialValue={
           editingFood
             ? {
                 name: editingFood.name,
-                category: editingFood.category,
+                cal: editingFood.calories,
+                p: editingFood.protein,
+                c: editingFood.carbs,
+                f: editingFood.fats,
+                unit: editingFood.unit,
               }
             : undefined
         }
-        onSubmit={handleUpdateFood}
-        title="Edit Food"
-        submitLabel="Update Food"
+        title={editingFood ? "Edit food" : "Create food"}
+        submitLabel={editingFood ? "Update food" : "Create food"}
+        onCreate={editingFood ? handleUpdateFood : handleCreateFood}
       />
     </section>
   )

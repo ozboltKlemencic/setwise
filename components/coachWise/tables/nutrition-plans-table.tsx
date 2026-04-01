@@ -43,6 +43,7 @@ export type NutritionPlansTableRow = {
   type: string
   calories: number
   segments: NutritionPlansTableSegment[]
+  storageScopeId?: string
   clients?: Array<{
     id: string
     name: string
