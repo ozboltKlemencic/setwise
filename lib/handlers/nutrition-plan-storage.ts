@@ -102,6 +102,7 @@ export type StoredNutritionMealPlan = {
   segments: StoredNutritionMacroSegment[]
   sections: StoredNutritionMealPlanSection[]
   createdAt: string
+  assignedClientIds?: string[]
   builderSnapshot?: StoredNutritionMealPlanBuilderSnapshot
   macroBuilderSnapshot?: StoredNutritionMacroPlanBuilderSnapshot
 }
@@ -163,6 +164,11 @@ function isStoredNutritionMealPlan(value: unknown): value is StoredNutritionMeal
     typeof candidate.calories === "number" &&
     typeof candidate.macros === "string" &&
     typeof candidate.schedule === "string" &&
+    (typeof candidate.assignedClientIds === "undefined" ||
+      (Array.isArray(candidate.assignedClientIds) &&
+        candidate.assignedClientIds.every(
+          (assignedClientId) => typeof assignedClientId === "string"
+        ))) &&
     Array.isArray(candidate.segments) &&
     Array.isArray(candidate.sections)
   )

@@ -337,6 +337,7 @@ export function buildStoredNutritionMealPlanFromBuilderState({
   meals,
   foods,
   mealPlanGoals,
+  assignedClientIds,
   createdAt,
 }: {
   planId?: string
@@ -344,6 +345,7 @@ export function buildStoredNutritionMealPlanFromBuilderState({
   meals: BuilderMeal[]
   foods: BuilderFood[]
   mealPlanGoals: BuilderMealPlanGoalSettings
+  assignedClientIds?: string[]
   createdAt?: string
 }): StoredNutritionMealPlan {
   const planTotals = getBuilderPlanTotals(foods, meals)
@@ -363,6 +365,10 @@ export function buildStoredNutritionMealPlanFromBuilderState({
     segments: buildStoredNutritionMealPlanSegments(planTotals),
     sections: buildStoredNutritionMealPlanSections(meals, foods),
     createdAt: createdAt ?? new Date().toISOString(),
+    assignedClientIds:
+      assignedClientIds?.length
+        ? Array.from(new Set(assignedClientIds))
+        : undefined,
     builderSnapshot: {
       planName,
       foods: cloneFoods(foods),

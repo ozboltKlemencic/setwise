@@ -116,6 +116,7 @@ export function buildStoredNutritionMacroPlanFromBuilderState({
   presets,
   selectedPresetId,
   lockedMacroKey,
+  assignedClientIds,
   createdAt,
 }: {
   planId?: string
@@ -125,6 +126,7 @@ export function buildStoredNutritionMacroPlanFromBuilderState({
   presets: MacroBuilderPreset[]
   selectedPresetId: string | null
   lockedMacroKey: MacroKey | null
+  assignedClientIds?: string[]
   createdAt?: string
 }): StoredNutritionMealPlan {
   const grams = calcMacroPlanGrams(calories, macros)
@@ -147,6 +149,10 @@ export function buildStoredNutritionMacroPlanFromBuilderState({
       grams,
     }),
     createdAt: createdAt ?? new Date().toISOString(),
+    assignedClientIds:
+      assignedClientIds?.length
+        ? Array.from(new Set(assignedClientIds))
+        : undefined,
     macroBuilderSnapshot: {
       planName,
       calories,
