@@ -156,6 +156,19 @@ export function resolveNutritionEditorBackHref(
   return backTo
 }
 
+export function isGlobalNutritionBuilderBackHref(backHref?: string) {
+  if (!backHref) {
+    return false
+  }
+
+  const [pathname = ""] = backHref.split("?")
+
+  return (
+    /\/beta-coach-wise\/nutrition(?:\/|$)/.test(pathname) &&
+    !/\/beta-coach-wise\/clients\/[^/]+\/nutrition(?:\/|$)/.test(pathname)
+  )
+}
+
 export function isClientNutritionMealPlanEditPath(pathname: string) {
   return /^\/beta-coach-wise\/clients\/[^/]+\/nutrition\/edit\/[^/?#]+$/.test(
     pathname

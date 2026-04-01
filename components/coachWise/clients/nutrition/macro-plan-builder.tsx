@@ -21,7 +21,10 @@ import { SecondaryActionButton } from "@/components/coachWise/secondary-action-b
 import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { getNutritionCreateMealPlanFromTargetsHref } from "@/lib/handlers/nutrition.handlers"
+import {
+  getNutritionCreateMealPlanFromTargetsHref,
+  isGlobalNutritionBuilderBackHref,
+} from "@/lib/handlers/nutrition.handlers"
 import {
   GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
   resolveNutritionMealPlanStorageScopeFromPath,
@@ -438,8 +441,23 @@ export function MacroPlanBuilderPageView({
   const [editingPresetName, setEditingPresetName] = React.useState("")
   const [showCreatePresetInput, setShowCreatePresetInput] = React.useState(false)
   const [newPresetName, setNewPresetName] = React.useState("")
+  const resolvedAssignedClientIds = React.useMemo(() => {
+    if (initialAssignedClientIds?.length) {
+      return initialAssignedClientIds
+    }
+
+    if (
+      storageScopeId &&
+      storageScopeId !== GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE &&
+      /^\d+$/.test(storageScopeId)
+    ) {
+      return [storageScopeId]
+    }
+
+    return []
+  }, [initialAssignedClientIds, storageScopeId])
   const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(
-    () => initialAssignedClientIds ?? []
+    () => resolvedAssignedClientIds
   )
 
   const selectedPreset = React.useMemo(
@@ -454,7 +472,7 @@ export function MacroPlanBuilderPageView({
       selectedPreset.c !== macros.c ||
       selectedPreset.f !== macros.f)
   const showClientPicker =
-    storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE &&
+    isGlobalNutritionBuilderBackHref(backHref) &&
     Boolean(clientOptions?.length)
 
   const grams = React.useMemo(

@@ -69,6 +69,7 @@ import {
   type StoredNutritionMealPlanBuilderSnapshot,
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
+import { isGlobalNutritionBuilderBackHref } from "@/lib/handlers/nutrition.handlers"
 import { DEFAULT_NUTRITION_LIBRARY_FOODS } from "@/lib/nutrition/nutrition-library-catalog"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -685,8 +686,23 @@ function MealPlanBuilderScreen({
     qty: number
   } | null>(null)
   const [dragOverMealId, setDragOverMealId] = React.useState<number | null>(null)
+  const resolvedAssignedClientIds = React.useMemo(() => {
+    if (initialAssignedClientIds.length > 0) {
+      return initialAssignedClientIds
+    }
+
+    if (
+      storageScopeId &&
+      storageScopeId !== GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE &&
+      /^\d+$/.test(storageScopeId)
+    ) {
+      return [storageScopeId]
+    }
+
+    return []
+  }, [initialAssignedClientIds, storageScopeId])
   const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(
-    () => initialAssignedClientIds
+    () => resolvedAssignedClientIds
   )
 
   React.useEffect(() => {
@@ -705,8 +721,7 @@ function MealPlanBuilderScreen({
 
   const activeMeal = meals.find((meal) => meal.id === activeMealId) ?? meals[0]
   const showClientPicker =
-    storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE &&
-    clientOptions.length > 0
+    isGlobalNutritionBuilderBackHref(backHref) && clientOptions.length > 0
   const filteredFoods = React.useMemo(() => {
     if (!searchQuery.trim()) {
       return RECENT_BUILDER_FOOD_IDS.map((id) => foods.find((food) => food.id === id)).filter(
