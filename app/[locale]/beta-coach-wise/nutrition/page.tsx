@@ -2,21 +2,20 @@
 
 import * as React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { Search } from "lucide-react"
+import { Pencil, Search, Trash2 } from "lucide-react"
 import {
   IconApple,
   IconBottle,
   IconChefHat,
   IconClipboardList,
-  IconDots,
   IconFilter,
-  IconLayoutGrid,
   IconPlus,
   IconSalad,
   IconSoup,
   IconTag,
 } from "@tabler/icons-react"
 
+import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,7 +34,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  NutritionPlansTable,
+  buildNutritionPlanSegments,
+} from "@/components/coachWise/tables/nutrition-plans-table"
 import { cn } from "@/lib/utils"
 
 type MealPlanTab = "plans" | "meals" | "food"
@@ -44,8 +55,13 @@ type PlanType = "Meal Plan" | "Macros Plan"
 
 type MealPlanRow = {
   id: string
-  name: string
+  title: string
+  subtitle: string
   type: PlanType
+  calories: number
+  protein: number
+  carbs: number
+  fats: number
 }
 
 type MealRow = {
@@ -74,10 +90,46 @@ const mealPlanTabs: Array<{
 ]
 
 const mealPlanRows: MealPlanRow[] = [
-  { id: "lean-gain", name: "Lean Gain Plan", type: "Meal Plan" },
-  { id: "recomp", name: "Recomp Plan", type: "Macros Plan" },
-  { id: "cut-phase", name: "Cut Phase Spring", type: "Meal Plan" },
-  { id: "maintenance", name: "Maintenance Template", type: "Macros Plan" },
+  {
+    id: "lean-gain",
+    title: "Lean Gain Plan",
+    subtitle: "Structured meal plan focused on a steady calorie surplus.",
+    type: "Meal Plan",
+    calories: 2100,
+    protein: 190,
+    carbs: 230,
+    fats: 55,
+  },
+  {
+    id: "recomp",
+    title: "Recomp Plan",
+    subtitle: "Macro targets set to support body recomposition.",
+    type: "Macros Plan",
+    calories: 2000,
+    protein: 170,
+    carbs: 165,
+    fats: 73,
+  },
+  {
+    id: "cut-phase",
+    title: "Cut Phase Spring",
+    subtitle: "Slightly lower calories with tighter food structure.",
+    type: "Meal Plan",
+    calories: 1640,
+    protein: 155,
+    carbs: 110,
+    fats: 48,
+  },
+  {
+    id: "maintenance",
+    title: "Maintenance Template",
+    subtitle: "Balanced macro targets for stable energy and recovery.",
+    type: "Macros Plan",
+    calories: 2000,
+    protein: 165,
+    carbs: 205,
+    fats: 62,
+  },
 ]
 
 const mealRows: MealRow[] = [
@@ -123,10 +175,54 @@ const foodRows: FoodRow[] = [
 const profileTabTriggerClassName =
   "h-full flex-none gap-1.5 rounded-none border-0 border-b-2 border-transparent bg-transparent px-3.5 py-2 text-[13.5px] font-normal text-neutral-500 after:hidden hover:text-neutral-700 data-[state=active]:border-(--brand-500) data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none [&_svg]:size-3.5 [&_svg]:text-neutral-400 data-[state=active]:[&_svg]:text-(--brand-600)"
 
-function getTypeBadgeClassName(type: PlanType) {
-  return type === "Meal Plan"
-    ? "border-sky-200 bg-sky-50 text-sky-700"
-    : "border-violet-200 bg-violet-50 text-violet-700"
+const nutritionPageTableWrapperClassName =
+  "overflow-hidden rounded-sm border border-neutral-200 bg-neutral-50"
+
+const nutritionPageRowActionButtonClassName =
+  "size-6 cursor-pointer rounded-md border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-colors hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground"
+
+const nutritionPageRowDeleteActionButtonClassName =
+  "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
+
+function NutritionPageTableActionButtons({
+  itemLabel,
+}: {
+  itemLabel: string
+}) {
+  return (
+    <div className="flex w-[9rem] justify-center gap-3">
+      <Button
+        type="button"
+        variant="outline"
+        size="icon-sm"
+        className={nutritionPageRowActionButtonClassName}
+      >
+        <Pencil className="size-3.5" />
+        <span className="sr-only">Edit {itemLabel}</span>
+      </Button>
+      <CoachWiseConfirmationDialog
+        title={`Are you sure you want to delete this ${itemLabel}?`}
+        description={`This ${itemLabel} will be removed from the current list. This action can't be undone.`}
+        confirmLabel={`Delete ${itemLabel}`}
+        variant="destructive"
+        onConfirm={() => {}}
+        trigger={
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            className={cn(
+              nutritionPageRowActionButtonClassName,
+              nutritionPageRowDeleteActionButtonClassName
+            )}
+          >
+            <Trash2 className="size-3.5" />
+            <span className="sr-only">Delete {itemLabel}</span>
+          </Button>
+        }
+      />
+    </div>
+  )
 }
 
 function MealPlannerSearchBar({
@@ -546,53 +642,31 @@ function AddFoodDialog() {
 }
 
 function PlansTable() {
+  const rows = React.useMemo(
+    () =>
+      mealPlanRows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        subtitle: row.subtitle,
+        type: row.type,
+        calories: row.calories,
+        segments: buildNutritionPlanSegments({
+          protein: row.protein,
+          carbs: row.carbs,
+          fats: row.fats,
+        }),
+      })),
+    []
+  )
+
   return (
-    <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-      <table className="w-full border-collapse">
-        <thead className="bg-muted/60">
-          <tr className="border-b border-neutral-200">
-            <th className="px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
-              Program
-            </th>
-            <th className="w-[220px] px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
-              Type
-            </th>
-            <th className="w-[56px] px-4 py-4 text-right text-[14px] font-medium text-neutral-950" />
-          </tr>
-        </thead>
-        <tbody>
-          {mealPlanRows.map((row) => (
-            <tr
-              key={row.id}
-              className="border-b border-neutral-200 last:border-b-0 hover:bg-neutral-50/60"
-            >
-              <td className="px-5 py-5 text-[16px] font-medium text-neutral-950">
-                {row.name}
-              </td>
-              <td className="px-5 py-5">
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "h-7 rounded-sm border px-2.5 text-[13px] font-medium",
-                    getTypeBadgeClassName(row.type),
-                  )}
-                >
-                  {row.type}
-                </Badge>
-              </td>
-              <td className="px-4 py-5 text-right">
-                <Button
-                  variant="ghost"
-                  className="size-8 rounded-sm border border-neutral-200 bg-white p-0 text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
-                >
-                  <IconDots className="size-4" />
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <NutritionPlansTable
+      rows={rows}
+      onOpenRow={() => {}}
+      onEditRow={() => {}}
+      onDuplicateRow={() => {}}
+      onDeleteRow={() => {}}
+    />
   )
 }
 
@@ -610,29 +684,31 @@ function MealsTable() {
           </Button>
         }
       />
-      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-        <table className="w-full border-collapse">
-          <thead className="bg-muted/60">
-            <tr className="border-b border-neutral-200">
-              <th className="px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
+      <div className={nutritionPageTableWrapperClassName}>
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
                 Meal
-              </th>
-              <th className="w-[160px] px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
+              </TableHead>
+              <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
                 Calories
-              </th>
-              <th className="w-[260px] px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
+              </TableHead>
+              <TableHead className="w-[260px] px-3.5 text-[13px] font-medium">
                 Tags
-              </th>
-              <th className="w-[56px] px-4 py-4 text-right text-[14px] font-medium text-neutral-950" />
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+              <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {mealRows.map((row) => (
-              <tr
+              <TableRow
                 key={row.id}
-                className="border-b border-neutral-200 last:border-b-0 hover:bg-neutral-50/60"
+                className="cursor-pointer bg-white hover:bg-neutral-50/60"
               >
-                <td className="px-5 py-4">
+                <TableCell className="py-3 pl-4 lg:pl-5">
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
@@ -640,39 +716,34 @@ function MealsTable() {
                         row.color,
                       )}
                     />
-                    <div className="text-[15px] font-medium text-neutral-950">
+                    <div className="text-[14px] font-medium text-neutral-950">
                       {row.name}
                     </div>
                   </div>
-                </td>
-                <td className="px-5 py-4 text-[15px] font-medium text-neutral-950">
+                </TableCell>
+                <TableCell className="px-3.5 py-3 text-[14px] font-medium text-neutral-950">
                   {row.calories}
-                </td>
-                <td className="px-5 py-4">
+                </TableCell>
+                <TableCell className="px-3.5 py-3">
                   <div className="flex flex-wrap gap-2">
                     {row.tags.map((tag) => (
                       <Badge
                         key={tag}
                         variant="outline"
-                        className="h-7 rounded-sm border border-neutral-200 bg-neutral-50 px-2.5 text-[13px] font-medium text-neutral-700"
+                        className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
                       >
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                </td>
-                <td className="px-4 py-4 text-right">
-                  <Button
-                    variant="ghost"
-                    className="size-8 rounded-sm border border-neutral-200 bg-white p-0 text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
-                  >
-                    <IconDots className="size-4" />
-                  </Button>
-                </td>
-              </tr>
+                </TableCell>
+                <TableCell className="px-3 py-3 pr-5">
+                  <NutritionPageTableActionButtons itemLabel="meal" />
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   )
@@ -692,28 +763,31 @@ function FoodTable() {
           </Button>
         }
       />
-      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-        <table className="w-full border-collapse">
-          <thead className="bg-muted/60">
-            <tr className="border-b border-neutral-200">
-              <th className="px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
+      <div className={nutritionPageTableWrapperClassName}>
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
                 Food
-              </th>
-              <th className="w-[220px] px-5 py-4 text-left text-[14px] font-medium text-neutral-950">
+              </TableHead>
+              <TableHead className="w-[220px] px-3.5 text-[13px] font-medium">
                 Category
-              </th>
-              <th className="w-[96px] px-5 py-4 text-center text-[14px] font-medium text-neutral-950">
+              </TableHead>
+              <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
                 Custom
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+              <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {foodRows.map((row) => (
-              <tr
+              <TableRow
                 key={row.id}
-                className="border-b border-neutral-200 last:border-b-0 hover:bg-neutral-50/60"
+                className="cursor-pointer bg-white hover:bg-neutral-50/60"
               >
-                <td className="px-5 py-4">
+                <TableCell className="py-3 pl-4 lg:pl-5">
                   <div className="flex items-center gap-3">
                     <div className="flex size-10 items-center justify-center rounded-sm border border-neutral-200 bg-neutral-50">
                       {row.category === "Protein" ? (
@@ -724,26 +798,38 @@ function FoodTable() {
                         <IconBottle className="size-4.5 text-neutral-600" />
                       )}
                     </div>
-                    <span className="text-[15px] font-medium text-neutral-950">
+                    <span className="text-[14px] font-medium text-neutral-950">
                       {row.name}
                     </span>
                   </div>
-                </td>
-                <td className="px-5 py-4 text-[15px] text-neutral-700">
+                </TableCell>
+                <TableCell className="px-3.5 py-3 text-[14px] text-neutral-700">
                   {row.category}
-                </td>
-                <td className="px-5 py-4 text-center">
-                  <Button
-                    variant="ghost"
-                    className="mx-auto flex size-8 items-center justify-center rounded-sm border border-neutral-200 bg-white p-0 text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
-                  >
-                    <IconLayoutGrid className="size-4" />
-                  </Button>
-                </td>
-              </tr>
+                </TableCell>
+                <TableCell className="px-3 py-3 text-center">
+                  {row.custom ? (
+                    <Badge
+                      variant="outline"
+                      className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
+                    >
+                      Custom
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="outline"
+                      className="rounded-md border border-neutral-200 bg-white px-2 py-0.5 text-[11.5px] font-normal text-neutral-500"
+                    >
+                      Base
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell className="px-3 py-3 pr-5">
+                  <NutritionPageTableActionButtons itemLabel="food" />
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   )
@@ -778,7 +864,7 @@ function MealPlaniPageContent() {
         className="min-w-0 w-full gap-0"
       >
         <div className="border-b border-neutral-200 bg-neutral-50">
-          <div className="flex min-w-0 items-center justify-between gap-4 px-4">
+          <div className="flex min-w-0 items-center justify-between gap-4 pl-0 pr-4">
             <div className="min-w-0 flex-1 overflow-x-auto">
               <TabsList
                 variant="line"

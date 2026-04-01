@@ -92,6 +92,10 @@ import {
   cloneStoredNutritionMacroPlanBuilderSnapshot,
 } from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
 import {
+  NutritionPlansTable,
+  type NutritionPlansTableRow,
+} from "@/components/coachWise/tables/nutrition-plans-table"
+import {
   MacroPlanBuilderPageView as SharedMacroPlanBuilderPageView,
 } from "@/components/coachWise/clients/nutrition/macro-plan-builder"
 import {
@@ -267,12 +271,6 @@ type NutritionRecipeLibraryItem = {
 const primaryActionButtonClassName =
   subtabsNavActionButtonClassNames.primary
 
-const nutritionRowActionButtonClassName =
-  "size-6 cursor-pointer rounded-md border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-colors hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground"
-
-const nutritionRowDeleteActionButtonClassName =
-  "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
-
 const createNutritionTabTriggerClassName =
   "relative top-[2px] -mb-[6px] h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 py-2 text-[13px] font-normal text-neutral-500 shadow-none after:hidden hover:text-neutral-700 data-[state=active]:border-brand-500 data-[state=active]:bg-transparent data-[state=active]:text-neutral-900 data-[state=active]:shadow-none"
 
@@ -398,7 +396,7 @@ function useStoredNutritionMealPlans(pathHint?: string) {
 const mealPlanDonutConfig = {
   protein: {
     label: "Protein",
-    color: "#8b5cf6",
+    color: "#22c55e",
   },
   carbs: {
     label: "Carbs",
@@ -406,7 +404,7 @@ const mealPlanDonutConfig = {
   },
   fats: {
     label: "Fats",
-    color: "#22c55e",
+    color: "#f59e0b",
   },
 } satisfies ChartConfig
 
@@ -3318,20 +3316,6 @@ export function ClientNutritionMealPlansView({
     [pathname, router]
   )
 
-  const isNutritionRowActionTarget = React.useCallback(
-    (target: EventTarget | null) =>
-      target instanceof Element &&
-      Boolean(target.closest("[data-nutrition-row-action='true']")),
-    []
-  )
-
-  const isNutritionRowOpenTarget = React.useCallback(
-    (target: EventTarget | null) =>
-      target instanceof Element &&
-      Boolean(target.closest("[data-nutrition-row-open='true']")),
-    []
-  )
-
   const handleCopyMealPlan = React.useCallback((plan: NutritionMealPlan) => {
     if (!clientId) {
       toast.error("Could not duplicate meal plan", {
@@ -3409,6 +3393,19 @@ export function ClientNutritionMealPlansView({
     })
   }, [clientId])
 
+  const tableRows = React.useMemo<NutritionPlansTableRow[]>(
+    () =>
+      mealPlans.map((plan) => ({
+        id: plan.id,
+        title: plan.title,
+        subtitle: plan.subtitle,
+        type: plan.type,
+        calories: plan.calories,
+        segments: plan.segments,
+      })),
+    [mealPlans]
+  )
+
   return (
     <div className="bg-neutral-50 px-4 py-4">
       <div className="mb-5">
@@ -3445,170 +3442,23 @@ export function ClientNutritionMealPlansView({
 
       <div>
         <NutritionSectionTitle title="Existing plans" />
-        <div className="overflow-hidden rounded-sm border border-neutral-200 bg-neutral-50">
-          <Table>
-            <TableHeader className="bg-muted">
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
-                  Plan
-                </TableHead>
-                <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
-                  Type
-                </TableHead>
-                <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
-                  Calories
-                </TableHead>
-                <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
-                  Action
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mealPlans.length ? mealPlans.map((plan) => {
-                const isMacroPlan = plan.type.toLowerCase().includes("macro")
-
-                return (
-                <TableRow
-                  key={plan.id}
-                  role="button"
-                  tabIndex={0}
-                  onClick={(event) => {
-                    if (
-                      event.defaultPrevented ||
-                      isNutritionRowActionTarget(event.target) ||
-                      !isNutritionRowOpenTarget(event.target)
-                    ) {
-                      return
-                    }
-
-                    handleOpenMealPlan(plan.id)
-                  }}
-                  onKeyDown={(event) => {
-                    if (isNutritionRowActionTarget(event.target)) {
-                      return
-                    }
-
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault()
-                      handleOpenMealPlan(plan.id)
-                    }
-                  }}
-                  className="cursor-pointer bg-white hover:bg-neutral-50/60"
-                >
-                  <TableCell
-                    className="py-3 pl-4 whitespace-normal lg:pl-5"
-                    data-nutrition-row-open="true"
-                  >
-                    <div className="min-w-0 space-y-1">
-                      <div className="text-[14px] font-medium text-neutral-950">
-                        {plan.title}
-                      </div>
-                      <div className="text-[12.5px] leading-5 text-neutral-500">
-                        {plan.subtitle}
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell
-                    className="px-3.5 py-3"
-                    data-nutrition-row-open="true"
-                  >
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
-                        isMacroPlan
-                          ? "border-sky-100 bg-sky-50/45 text-neutral-700"
-                          : "border-emerald-100 bg-emerald-50/45 text-neutral-700"
-                      )}
-                    >
-                      {isMacroPlan ? (
-                        <Beef className="mr-1 size-3 text-neutral-600" />
-                      ) : (
-                        <UtensilsCrossed className="mr-1 size-3 text-neutral-600" />
-                      )}
-                      {plan.type}
-                    </Badge>
-                  </TableCell>
-                  <TableCell
-                    className="px-3 py-3 text-center"
-                    data-nutrition-row-open="true"
-                  >
-                    <NutritionCaloriesDonut plan={plan} />
-                  </TableCell>
-                  <TableCell
-                    className="px-3 py-3 pr-5"
-                    data-nutrition-row-action="true"
-                  >
-                    <div
-                      className="flex w-[9rem] justify-center gap-3"
-                      data-nutrition-row-action="true"
-                    >
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-sm"
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          void handleCopyMealPlan(plan)
-                        }}
-                        className={nutritionRowActionButtonClassName}
-                      >
-                        <Copy className="size-3.5" />
-                        <span className="sr-only">Duplicate meal plan</span>
-                      </Button>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon-sm"
-                        onClick={(event) => {
-                          event.stopPropagation()
-                          handleOpenMealPlanEditor(plan.id)
-                        }}
-                        className={nutritionRowActionButtonClassName}
-                      >
-                        <Pencil className="size-3.5" />
-                        <span className="sr-only">Edit meal plan</span>
-                      </Button>
-                      <CoachWiseConfirmationDialog
-                        title="Are you sure you want to delete this meal plan?"
-                        description={`${plan.title} will be removed from the current nutrition list. This action can't be undone.`}
-                        confirmLabel="Delete plan"
-                        variant="destructive"
-                        onConfirm={() => handleDeleteMealPlan(plan)}
-                        trigger={
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon-sm"
-                            onClick={(event) => {
-                              event.stopPropagation()
-                            }}
-                            className={cn(
-                              nutritionRowActionButtonClassName,
-                              nutritionRowDeleteActionButtonClassName
-                            )}
-                          >
-                            <Trash2 className="size-3.5" />
-                            <span className="sr-only">Delete meal plan</span>
-                          </Button>
-                        }
-                      />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              )}) : (
-                <TableRow className="hover:bg-transparent">
-                  <TableCell
-                    colSpan={4}
-                    className="py-8 text-center text-[13px] text-neutral-500"
-                  >
-                    No meal plans available.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+        <NutritionPlansTable
+          rows={tableRows}
+          onOpenRow={(row) => handleOpenMealPlan(row.id)}
+          onEditRow={(row) => handleOpenMealPlanEditor(row.id)}
+          onDuplicateRow={(row) => {
+            const plan = mealPlans.find((entry) => entry.id === row.id)
+            if (plan) {
+              return handleCopyMealPlan(plan)
+            }
+          }}
+          onDeleteRow={(row) => {
+            const plan = mealPlans.find((entry) => entry.id === row.id)
+            if (plan) {
+              return handleDeleteMealPlan(plan)
+            }
+          }}
+        />
       </div>
     </div>
   )
