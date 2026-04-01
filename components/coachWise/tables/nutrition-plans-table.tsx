@@ -5,6 +5,13 @@ import { Beef, Copy, Pencil, Trash2, UtensilsCrossed } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -36,6 +43,11 @@ export type NutritionPlansTableRow = {
   type: string
   calories: number
   segments: NutritionPlansTableSegment[]
+  clients?: Array<{
+    id: string
+    name: string
+    avatar?: string
+  }>
 }
 
 type NutritionPlansTableProps = {
@@ -67,6 +79,57 @@ const nutritionRowActionButtonClassName =
 
 const nutritionRowDeleteActionButtonClassName =
   "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+}
+
+function NutritionPlanClientsCell({
+  clients,
+}: {
+  clients: NonNullable<NutritionPlansTableRow["clients"]>
+}) {
+  const visibleClients = clients.slice(0, 3)
+  const remainingClients = clients.length - visibleClients.length
+  const primaryClient = clients[0]
+  const clientLabel =
+    clients.length > 1
+      ? `${primaryClient.name} +${clients.length - 1} others`
+      : primaryClient.name
+
+  return (
+    <div className="flex items-center gap-3">
+      <AvatarGroup className="shrink-0">
+        {visibleClients.map((client) => (
+          <Avatar
+            key={client.id}
+            size="sm"
+            className="ring-neutral-50"
+          >
+            <AvatarImage src={client.avatar} alt={client.name} />
+            <AvatarFallback className="bg-neutral-200 text-[10px] text-neutral-700">
+              {getInitials(client.name)}
+            </AvatarFallback>
+          </Avatar>
+        ))}
+        {remainingClients > 0 ? (
+          <AvatarGroupCount className="size-6 bg-neutral-100 text-[11px] text-neutral-600 ring-neutral-50">
+            +{remainingClients}
+          </AvatarGroupCount>
+        ) : null}
+      </AvatarGroup>
+
+      <div className="min-w-0 text-[13px] text-neutral-700">
+        <span className="truncate">{clientLabel}</span>
+      </div>
+    </div>
+  )
+}
 
 export function NutritionCaloriesDonut({
   row,
@@ -166,6 +229,7 @@ export function NutritionPlansTable({
       Boolean(target.closest("[data-nutrition-row-open='true']")),
     []
   )
+  const hasClientColumn = rows.some((row) => row.clients?.length)
 
   return (
     <div className="overflow-hidden rounded-sm border border-neutral-200 bg-neutral-50">
@@ -175,6 +239,11 @@ export function NutritionPlansTable({
             <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
               Plan
             </TableHead>
+            {hasClientColumn ? (
+              <TableHead className="w-[240px] px-3.5 text-[13px] font-medium">
+                Client
+              </TableHead>
+            ) : null}
             <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
               Type
             </TableHead>
@@ -236,6 +305,18 @@ export function NutritionPlansTable({
                       </div>
                     </div>
                   </TableCell>
+                  {hasClientColumn ? (
+                    <TableCell
+                      className="px-3.5 py-3"
+                      data-nutrition-row-open="true"
+                    >
+                      {row.clients?.length ? (
+                        <NutritionPlanClientsCell clients={row.clients} />
+                      ) : (
+                        <span className="text-[13px] text-neutral-400">-</span>
+                      )}
+                    </TableCell>
+                  ) : null}
                   <TableCell
                     className="px-3.5 py-3"
                     data-nutrition-row-open="true"
@@ -335,7 +416,7 @@ export function NutritionPlansTable({
           ) : (
             <TableRow className="hover:bg-transparent">
               <TableCell
-                colSpan={4}
+                colSpan={hasClientColumn ? 5 : 4}
                 className="py-8 text-center text-[13px] text-neutral-500"
               >
                 {emptyMessage}

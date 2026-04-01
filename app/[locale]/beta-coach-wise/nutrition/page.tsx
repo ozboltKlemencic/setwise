@@ -12,6 +12,7 @@ import {
   IconTag,
 } from "@tabler/icons-react"
 
+import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -60,6 +61,7 @@ type MealPlanRow = {
   protein: number
   carbs: number
   fats: number
+  clients: number[]
 }
 
 type MealRow = {
@@ -104,6 +106,7 @@ const mealPlanRows: MealPlanRow[] = [
     protein: 190,
     carbs: 230,
     fats: 55,
+    clients: [1],
   },
   {
     id: "recomp",
@@ -114,6 +117,7 @@ const mealPlanRows: MealPlanRow[] = [
     protein: 170,
     carbs: 165,
     fats: 73,
+    clients: [2, 3, 4, 5],
   },
   {
     id: "cut-phase",
@@ -124,6 +128,7 @@ const mealPlanRows: MealPlanRow[] = [
     protein: 155,
     carbs: 110,
     fats: 48,
+    clients: [6, 7],
   },
   {
     id: "maintenance",
@@ -134,6 +139,7 @@ const mealPlanRows: MealPlanRow[] = [
     protein: 165,
     carbs: 205,
     fats: 62,
+    clients: [1, 4, 8, 9, 10],
   },
 ]
 
@@ -711,6 +717,21 @@ function AddFoodDialog() {
 }
 
 function PlansTable() {
+  const planClientsById = React.useMemo(
+    () =>
+      new Map(
+        clientData.map((client) => [
+          client.id,
+          {
+            id: String(client.id),
+            name: client.header,
+            avatar: client.avatar,
+          },
+        ])
+      ),
+    []
+  )
+
   const rows = React.useMemo(
     () =>
       mealPlanRows.map((row) => ({
@@ -724,8 +745,11 @@ function PlansTable() {
           carbs: row.carbs,
           fats: row.fats,
         }),
+        clients: row.clients
+          .map((clientId) => planClientsById.get(clientId))
+          .filter((client): client is NonNullable<typeof client> => Boolean(client)),
       })),
-    []
+    [planClientsById]
   )
 
   return (
