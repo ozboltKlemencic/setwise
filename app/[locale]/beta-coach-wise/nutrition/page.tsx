@@ -14,6 +14,7 @@ import {
 
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -343,9 +344,7 @@ function AddPlanDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="h-9 rounded-sm bg-brand-500 px-3 text-[14px] font-medium text-white shadow-none hover:bg-brand-600">
-          <IconPlus className="size-4" />+ Plan
-        </Button>
+        <PrimaryActionButton label="Plan" icon={IconPlus} />
       </DialogTrigger>
       <DialogContent className="max-w-[700px] rounded-sm border border-neutral-200 bg-white p-0 shadow-xl">
         <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
@@ -449,9 +448,7 @@ function AddMealDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="h-9 rounded-sm bg-brand-500 px-3 text-[14px] font-medium text-white shadow-none hover:bg-brand-600">
-          <IconPlus className="size-4" />+ Meal
-        </Button>
+        <PrimaryActionButton label="Meal" icon={IconPlus} />
       </DialogTrigger>
       <DialogContent className="max-w-[840px] rounded-sm border border-neutral-200 bg-white p-0 shadow-xl">
         <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
@@ -574,9 +571,7 @@ function AddFoodDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="h-9 rounded-sm bg-brand-500 px-3 text-[14px] font-medium text-white shadow-none hover:bg-brand-600">
-          <IconPlus className="size-4" />+ Food
-        </Button>
+        <PrimaryActionButton label="Food" icon={IconPlus} />
       </DialogTrigger>
       <DialogContent className="max-w-[860px] rounded-sm border border-neutral-200 bg-white p-0 shadow-xl">
         <div className="grid md:grid-cols-[1.5fr_1fr]">
