@@ -65,12 +65,12 @@ type MealPlanRow = {
 type MealRow = {
   id: string
   name: string
+  subtitle: string
   calories: number
   protein: number
   carbs: number
   fats: number
-  tags: string[]
-  color: string
+  foods: string[]
 }
 
 type FoodRow = {
@@ -141,42 +141,42 @@ const mealRows: MealRow[] = [
   {
     id: "oats-breakfast",
     name: "Protein Oats Breakfast",
+    subtitle: "Balanced breakfast bowl for steady energy and an easy protein start.",
     calories: 520,
     protein: 42,
     carbs: 55,
     fats: 12,
-    tags: ["Breakfast", "High Protein"],
-    color: "from-orange-200 via-amber-100 to-white",
+    foods: ["Oats 80g", "Whey isolate 30g", "Banana 1pc", "Almond butter 15g"],
   },
   {
     id: "chicken-bowl",
     name: "Chicken Rice Bowl",
+    subtitle: "Simple high-carb lunch built around lean protein and fast recovery.",
     calories: 690,
     protein: 48,
     carbs: 79,
     fats: 18,
-    tags: ["Lunch", "Post Workout"],
-    color: "from-sky-200 via-cyan-100 to-white",
+    foods: ["Chicken breast 180g", "White rice 250g", "Olive oil 10g", "Cucumber 100g"],
   },
   {
     id: "salmon-dinner",
     name: "Salmon & Potatoes",
+    subtitle: "Higher-fat evening meal with omega-3 rich fish and slow carbs.",
     calories: 740,
     protein: 45,
     carbs: 58,
     fats: 31,
-    tags: ["Dinner", "Omega 3"],
-    color: "from-violet-200 via-fuchsia-100 to-white",
+    foods: ["Salmon 180g", "Potatoes 300g", "Green beans 120g"],
   },
   {
     id: "smoothie",
     name: "Blueberry Recovery Smoothie",
+    subtitle: "Quick snack option with fruit carbs and an easy protein top-up.",
     calories: 330,
     protein: 27,
     carbs: 36,
     fats: 8,
-    tags: ["Snack", "Recovery"],
-    color: "from-emerald-200 via-lime-100 to-white",
+    foods: ["Blueberries 100g", "Greek yogurt 200g", "Whey isolate 20g", "Honey 10g"],
   },
 ]
 
@@ -261,6 +261,56 @@ function MealPlannerSearchBar({
         />
       </div>
       {action}
+    </div>
+  )
+}
+
+function MealTableFoodsCell({ foods }: { foods: string[] }) {
+  const contentRef = React.useRef<HTMLDivElement>(null)
+  const [isOverflowing, setIsOverflowing] = React.useState(false)
+
+  React.useEffect(() => {
+    const element = contentRef.current
+    if (!element) return
+
+    const updateOverflow = () => {
+      setIsOverflowing(element.scrollHeight > element.clientHeight + 1)
+    }
+
+    updateOverflow()
+
+    const resizeObserver = new ResizeObserver(updateOverflow)
+    resizeObserver.observe(element)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [foods])
+
+  return (
+    <div className="relative max-w-[26rem]">
+      <div
+        ref={contentRef}
+        className="flex max-h-[3.5rem] flex-wrap gap-2 overflow-hidden pr-10"
+      >
+        {foods.map((food) => (
+          <Badge
+            key={food}
+            variant="outline"
+            className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11.5px] font-normal text-neutral-700"
+          >
+            {food}
+          </Badge>
+        ))}
+      </div>
+
+      {isOverflowing ? (
+        <div className="pointer-events-none absolute right-0 bottom-0 flex items-end bg-gradient-to-l from-white via-white to-transparent pl-6">
+          <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-md border border-neutral-200 bg-neutral-50 px-1.5 text-[12px] leading-none text-neutral-500">
+            ...
+          </span>
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -703,6 +753,9 @@ function MealsTable() {
               <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
                 Meal
               </TableHead>
+              <TableHead className="w-[380px] px-3.5 text-[13px] font-medium">
+                Food
+              </TableHead>
               <TableHead className="w-[152px] px-3.5 text-center text-[13px] font-medium">
                 Calories
               </TableHead>
@@ -718,9 +771,17 @@ function MealsTable() {
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
               >
                 <TableCell className="py-3 pl-4 lg:pl-5">
-                  <div className="text-[14px] font-medium text-neutral-950">
+                  <div className="space-y-0.5">
+                    <div className="text-[14px] font-medium text-neutral-950">
                       {row.name}
+                    </div>
+                    <div className="text-[12px] text-neutral-500">
+                      {row.subtitle}
+                    </div>
                   </div>
+                </TableCell>
+                <TableCell className="px-3.5 py-3">
+                  <MealTableFoodsCell foods={row.foods} />
                 </TableCell>
                 <TableCell className="px-3.5 py-3">
                   <div className="flex justify-center">
