@@ -20,7 +20,6 @@ import {
   buildStoredNutritionMealPlanFromBuilderState,
   calcBuilderNutrition,
   createDefaultMealPlanBuilderSnapshot,
-  DEFAULT_BUILDER_MEAL_TEMPLATES,
   formatFoodUnitLabel,
   getBuilderMealTotals,
   getBuilderPlanTotals,

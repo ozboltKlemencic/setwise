@@ -129,10 +129,12 @@ import {
 } from "@/lib/handlers/nutrition.handlers"
 import {
   NUTRITION_MEAL_PLANS_UPDATED_EVENT,
-  readStoredNutritionMealPlans,
+  GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
+  readStoredNutritionMealPlanEntries,
   removeStoredNutritionMealPlan,
   resolveNutritionMealPlanStorageScopeFromPath,
   upsertStoredNutritionMealPlan,
+  type StoredNutritionMealPlanEntry,
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
 import { cn } from "@/lib/utils"
@@ -335,21 +337,40 @@ function buildNextDuplicatedMealPlanTitle(
   return `${baseTitle} - copy ${highestCopyIndex + 1}`
 }
 
+function buildNutritionBackHrefWithStorageScope(
+  backHref: string,
+  storageScopeId?: string
+) {
+  if (
+    !storageScopeId ||
+    storageScopeId === GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE
+  ) {
+    return backHref
+  }
+
+  const [pathname, queryString = ""] = backHref.split("?")
+  const searchParams = new URLSearchParams(queryString)
+  searchParams.set("storageScope", storageScopeId)
+  const nextQuery = searchParams.toString()
+
+  return nextQuery ? `${pathname}?${nextQuery}` : pathname
+}
+
 function useStoredNutritionMealPlans(pathHint?: string) {
   const clientId = React.useMemo(
     () => resolveNutritionMealPlanStorageScopeFromPath(pathHint),
     [pathHint]
   )
-  const [storedMealPlans, setStoredMealPlans] = React.useState<StoredNutritionMealPlan[]>(
-    []
-  )
+  const [storedMealPlanEntries, setStoredMealPlanEntries] = React.useState<
+    StoredNutritionMealPlanEntry[]
+  >([])
   const [hasLoadedStoredMealPlans, setHasLoadedStoredMealPlans] = React.useState(
     false
   )
 
   React.useEffect(() => {
     if (!clientId) {
-      setStoredMealPlans([])
+      setStoredMealPlanEntries([])
       setHasLoadedStoredMealPlans(true)
       return
     }
@@ -357,7 +378,7 @@ function useStoredNutritionMealPlans(pathHint?: string) {
     setHasLoadedStoredMealPlans(false)
 
     const syncStoredMealPlans = () => {
-      setStoredMealPlans(readStoredNutritionMealPlans(clientId))
+      setStoredMealPlanEntries(readStoredNutritionMealPlanEntries(clientId))
       setHasLoadedStoredMealPlans(true)
     }
 
@@ -392,7 +413,8 @@ function useStoredNutritionMealPlans(pathHint?: string) {
   return {
     clientId,
     hasLoadedStoredMealPlans,
-    storedMealPlans,
+    storedMealPlanEntries,
+    storedMealPlans: storedMealPlanEntries.map((entry) => entry.plan),
   }
 }
 
@@ -3284,7 +3306,8 @@ export function ClientNutritionMealPlansView({
   const router = useRouter()
   const pathname = usePathname()
   const preset = React.useMemo(() => getNutritionPreset(phase), [phase])
-  const { clientId, storedMealPlans } = useStoredNutritionMealPlans(pathname)
+  const { clientId, storedMealPlanEntries, storedMealPlans } =
+    useStoredNutritionMealPlans(pathname)
   const [hiddenMealPlanIds, setHiddenMealPlanIds] = React.useState<string[]>([])
   const allMealPlans = React.useMemo(
     () => mergeNutritionMealPlans(preset.mealPlans, storedMealPlans),
@@ -3294,13 +3317,23 @@ export function ClientNutritionMealPlansView({
     () => allMealPlans.filter((plan) => !hiddenMealPlanIds.includes(plan.id)),
     [allMealPlans, hiddenMealPlanIds]
   )
+  const storedMealPlanEntriesById = React.useMemo(
+    () =>
+      new Map(
+        storedMealPlanEntries.map((entry) => [entry.plan.id, entry] as const)
+      ),
+    [storedMealPlanEntries]
+  )
 
   const handleOpenMealPlan = React.useCallback(
-    (mealPlanId: string) => {
+    (row: NutritionPlansTableRow) => {
       router.push(
         buildCoachWiseHref(
           pathname,
-          getNutritionPlanDetailHref(mealPlanId, pathname)
+          getNutritionPlanDetailHref(
+            row.id,
+            buildNutritionBackHrefWithStorageScope(pathname, row.storageScopeId)
+          )
         )
       )
     },
@@ -3308,11 +3341,14 @@ export function ClientNutritionMealPlansView({
   )
 
   const handleOpenMealPlanEditor = React.useCallback(
-    (mealPlanId: string) => {
+    (row: NutritionPlansTableRow) => {
       router.push(
         buildCoachWiseHref(
           pathname,
-          getNutritionPlanEditorHref(mealPlanId, pathname)
+          getNutritionPlanEditorHref(
+            row.id,
+            buildNutritionBackHrefWithStorageScope(pathname, row.storageScopeId)
+          )
         )
       )
     },
@@ -3320,16 +3356,17 @@ export function ClientNutritionMealPlansView({
   )
 
   const handleCopyMealPlan = React.useCallback((plan: NutritionMealPlan) => {
-    if (!clientId) {
+    const sourceEntry = storedMealPlanEntriesById.get(plan.id)
+    const targetStorageScopeId = sourceEntry?.storageScopeId ?? clientId
+
+    if (!targetStorageScopeId) {
       toast.error("Could not duplicate meal plan", {
         description: `For ${plan.title}.`,
       })
       return
     }
 
-    const sourceStoredMealPlan = storedMealPlans.find(
-      (storedPlan) => storedPlan.id === plan.id
-    )
+    const sourceStoredMealPlan = sourceEntry?.plan
     const sourceSections =
       sourceStoredMealPlan?.sections ?? nutritionMealPlanSections[plan.id] ?? []
     const nextTitle = buildNextDuplicatedMealPlanTitle(
@@ -3370,7 +3407,7 @@ export function ClientNutritionMealPlansView({
         : undefined,
     }
 
-    upsertStoredNutritionMealPlan(clientId, duplicatedPlan)
+    upsertStoredNutritionMealPlan(targetStorageScopeId, duplicatedPlan)
 
     toast.success(
       plan.type.toLowerCase().includes("macro")
@@ -3380,21 +3417,23 @@ export function ClientNutritionMealPlansView({
       description: `Created ${nextTitle}.`,
       }
     )
-  }, [allMealPlans, clientId, storedMealPlans])
+  }, [allMealPlans, clientId, storedMealPlanEntriesById])
 
   const handleDeleteMealPlan = React.useCallback((plan: NutritionMealPlan) => {
     setHiddenMealPlanIds((currentIds) =>
       currentIds.includes(plan.id) ? currentIds : [...currentIds, plan.id]
     )
 
-    if (clientId) {
-      removeStoredNutritionMealPlan(clientId, plan.id)
+    const sourceEntry = storedMealPlanEntriesById.get(plan.id)
+
+    if (sourceEntry) {
+      removeStoredNutritionMealPlan(sourceEntry.storageScopeId, plan.id)
     }
 
     toast.success("Meal plan deleted", {
       description: `For ${plan.title}.`,
     })
-  }, [clientId])
+  }, [storedMealPlanEntriesById])
 
   const tableRows = React.useMemo<NutritionPlansTableRow[]>(
     () =>
@@ -3405,8 +3444,9 @@ export function ClientNutritionMealPlansView({
         type: plan.type,
         calories: plan.calories,
         segments: plan.segments,
+        storageScopeId: storedMealPlanEntriesById.get(plan.id)?.storageScopeId,
       })),
-    [mealPlans]
+    [mealPlans, storedMealPlanEntriesById]
   )
 
   return (
@@ -3447,8 +3487,8 @@ export function ClientNutritionMealPlansView({
         <NutritionSectionTitle title="Existing plans" />
         <NutritionPlansTable
           rows={tableRows}
-          onOpenRow={(row) => handleOpenMealPlan(row.id)}
-          onEditRow={(row) => handleOpenMealPlanEditor(row.id)}
+          onOpenRow={handleOpenMealPlan}
+          onEditRow={handleOpenMealPlanEditor}
           onDuplicateRow={(row) => {
             const plan = mealPlans.find((entry) => entry.id === row.id)
             if (plan) {

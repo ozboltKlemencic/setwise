@@ -80,6 +80,7 @@ import {
   type StoredNutritionMealPlan,
 } from "@/lib/handlers/nutrition-plan-storage"
 import {
+  DEFAULT_NUTRITION_LIBRARY_FOODS,
   deriveNutritionFoodCategory,
   formatNutritionFoodUnitShortLabel,
   type NutritionLibraryFood,
@@ -232,15 +233,6 @@ const initialMealRows: MealRow[] = [
     fats: 8,
     foods: ["Blueberries 100g", "Greek yogurt 200g", "Whey isolate 20g", "Honey 10g"],
   },
-]
-
-const initialFoodRows: FoodRow[] = [
-  { id: "chicken-breast", name: "Chicken breast", calories: 165, protein: 31, carbs: 0, fats: 3.6, category: "Protein", custom: false },
-  { id: "white-rice", name: "White rice", calories: 130, protein: 2.7, carbs: 28, fats: 0.3, category: "Carbs", custom: false },
-  { id: "olive-oil", name: "Olive oil", calories: 884, protein: 0, carbs: 0, fats: 100, category: "Fats", custom: false },
-  { id: "banana", name: "Banana", calories: 89, protein: 1.1, carbs: 23, fats: 0.3, category: "Fruit", custom: false },
-  { id: "whey-isolate", name: "Whey isolate", calories: 120, protein: 24, carbs: 3, fats: 1.5, category: "Supplements", custom: true },
-  { id: "rice-cream", name: "Cream of rice", calories: 366, protein: 6, carbs: 81, fats: 1.2, category: "Carbs", custom: true },
 ]
 
 const profileTabTriggerClassName =
