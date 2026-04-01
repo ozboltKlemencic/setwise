@@ -89,10 +89,10 @@ const mealPlanTabs: Array<{
   label: string
   icon: React.ComponentType<{ className?: string }>
 }> = [
-  { value: "plans", label: "Plans", icon: IconClipboardList },
-  { value: "meals", label: "Meals", icon: IconChefHat },
-  { value: "food", label: "Food", icon: IconApple },
-]
+    { value: "plans", label: "Plans", icon: IconClipboardList },
+    { value: "meals", label: "Meals", icon: IconChefHat },
+    { value: "food", label: "Food", icon: IconApple },
+  ]
 
 const mealPlanRows: MealPlanRow[] = [
   {
@@ -222,7 +222,7 @@ function NutritionPageTableActionButtons({
         description={`This ${itemLabel} will be removed from the current list. This action can't be undone.`}
         confirmLabel={`Delete ${itemLabel}`}
         variant="destructive"
-        onConfirm={() => {}}
+        onConfirm={() => { }}
         trigger={
           <Button
             type="button"
@@ -288,7 +288,7 @@ function MealTableFoodsCell({ foods }: { foods: string[] }) {
   }, [foods])
 
   return (
-    <div className="relative max-w-[26rem]">
+    <div className="relative max-w-[20rem]">
       <div
         ref={contentRef}
         className="flex max-h-[3.5rem] flex-wrap gap-2 overflow-hidden pr-10"
@@ -733,10 +733,10 @@ function PlansTable() {
       <MealPlannerSearchBar placeholder="Search plans" inputWrapperClassName="max-w-[17rem]" />
       <NutritionPlansTable
         rows={rows}
-        onOpenRow={() => {}}
-        onEditRow={() => {}}
-        onDuplicateRow={() => {}}
-        onDeleteRow={() => {}}
+        onOpenRow={() => { }}
+        onEditRow={() => { }}
+        onDuplicateRow={() => { }}
+        onDeleteRow={() => { }}
       />
     </div>
   )
