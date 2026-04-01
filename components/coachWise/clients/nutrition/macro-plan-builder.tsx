@@ -3,7 +3,6 @@
 import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import {
-  ChevronDown,
   Flame,
   Lock,
   LockOpen,

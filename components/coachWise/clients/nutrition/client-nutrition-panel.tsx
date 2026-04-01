@@ -89,6 +89,9 @@ import {
   buildMealPlanBuilderSnapshotFromSections,
 } from "@/components/coachWise/clients/nutrition/meal-plan-builder-data"
 import {
+  nutritionBuilderClientOptions,
+} from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
+import {
   cloneStoredNutritionMacroPlanBuilderSnapshot,
 } from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
 import {
@@ -4035,6 +4038,8 @@ export function MealPlanEditPageView({
         mealPlanId={mealPlan.id}
         initialSnapshot={storedMealPlan.macroBuilderSnapshot}
         createdAt={storedMealPlan.createdAt}
+        clientOptions={nutritionBuilderClientOptions}
+        initialAssignedClientIds={storedMealPlan.assignedClientIds}
       />
     )
   }
@@ -4051,6 +4056,8 @@ export function MealPlanEditPageView({
       mealPlanId={mealPlan.id}
       initialSnapshot={initialSnapshot}
       createdAt={storedMealPlan?.createdAt}
+      clientOptions={nutritionBuilderClientOptions}
+      initialAssignedClientIds={storedMealPlan?.assignedClientIds}
     />
   )
 }

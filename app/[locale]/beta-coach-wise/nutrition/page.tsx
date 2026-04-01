@@ -273,6 +273,9 @@ function cloneStoredNutritionMealPlanForDuplicate(
       globalThis.crypto?.randomUUID?.() ??
       `custom-nutrition-plan-${Date.now()}-${Math.round(Math.random() * 10000)}`,
     title: nextTitle,
+    assignedClientIds: sourcePlan.assignedClientIds
+      ? [...sourcePlan.assignedClientIds]
+      : undefined,
     segments: sourcePlan.segments.map((segment) => ({ ...segment })),
     sections: sourcePlan.sections.map((section) => ({
       ...section,
@@ -324,7 +327,9 @@ function mapStoredNutritionMealPlanToRow(
     protein: 0,
     carbs: 0,
     fats: 0,
-    clients: [],
+    clients: (plan.assignedClientIds ?? [])
+      .map((clientId) => Number.parseInt(clientId, 10))
+      .filter((clientId) => Number.isFinite(clientId)),
     segments: plan.segments.map((segment) => ({ ...segment })),
     storageScopeId,
   }
