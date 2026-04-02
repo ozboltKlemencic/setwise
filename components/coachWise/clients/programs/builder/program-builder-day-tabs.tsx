@@ -47,10 +47,10 @@ export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
               builder.setDragDayOverIndex(null)
             }}
             className={cn(
-              "relative flex h-8 shrink-0 cursor-grab items-center rounded-md border pr-8 pl-4 text-[13px] font-medium transition-colors active:cursor-grabbing",
+              "relative flex h-8 shrink-0 cursor-grab items-center rounded-sm border pr-8 pl-4 text-[13px] transition-colors active:cursor-grabbing",
               index === builder.activeDayIndex
                 ? "border-brand-300 bg-brand-50 text-brand-700"
-                : "border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50",
+                : "border-neutral-200/80 bg-neutral-100/85 font-normal text-neutral-600 shadow-[0_1px_2px_rgba(15,23,42,0.03)] hover:border-neutral-300/80 hover:bg-neutral-200/55 hover:text-neutral-800",
               day.isRest && "italic text-neutral-500",
               builder.draggedDayIndex === index && "opacity-40"
             )}

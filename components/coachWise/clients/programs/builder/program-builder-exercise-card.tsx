@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GripVertical, Minus, Plus, X } from "lucide-react"
+import { GripVertical, Minus, Plus, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -205,7 +205,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
           }}
           className="size-7 rounded-md border-rose-200 bg-rose-50 text-rose-600 shadow-none hover:bg-rose-100"
         >
-          <X className="size-3.5" />
+          <Trash2 className="size-3.5" />
         </Button>
       </div>
 
