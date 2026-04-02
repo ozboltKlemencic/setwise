@@ -316,7 +316,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
               event.preventDefault()
             }}
             onClick={() => setShowAdvancedOptions((currentState) => !currentState)}
-            className="mt-3 inline-flex w-full items-center justify-between gap-3 text-[12px] font-medium text-neutral-600 transition-colors hover:text-neutral-900"
+            className="mt-3 inline-flex items-center gap-2 text-[12px] font-medium text-neutral-600 transition-colors hover:text-neutral-900"
           >
             <span>More advanced options</span>
             <ChevronDown
