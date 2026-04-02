@@ -58,7 +58,7 @@ function buildNextDuplicatedProgramTitle(title: string, existingTitles: string[]
 function deriveProgramStatus(
   program: ReturnType<typeof getFixedPrograms>[number],
 ): ProgramPlanStatus {
-  return program.workouts.length > 0 ? "Active" : "Inactive"
+  return program.workouts.length > 0 ? "Active" : "Disabled"
 }
 
 function ClientProgramsOverviewComponent() {

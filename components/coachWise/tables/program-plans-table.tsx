@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-export type ProgramPlanStatus = "Active" | "Inactive"
+export type ProgramPlanStatus = "Active" | "Disabled"
 
 export type ProgramPlansTableRow = {
   id: string
@@ -38,8 +38,8 @@ const rowDeleteActionButtonClassName =
 
 function getProgramStatusBadgeClassName(status: ProgramPlanStatus) {
   return status === "Active"
-    ? "border-emerald-100 bg-linear-to-r from-emerald-50/55 to-white text-neutral-700"
-    : "border-rose-100 bg-linear-to-r from-rose-50/55 to-white text-neutral-700"
+    ? "border-emerald-200 bg-linear-to-r from-emerald-50/90 to-emerald-100/65 text-neutral-700"
+    : "border-rose-200 bg-linear-to-r from-rose-50/90 to-rose-100/65 text-neutral-700"
 }
 
 function ProgramPlansTableComponent({
@@ -60,10 +60,10 @@ function ProgramPlansTableComponent({
 
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <div className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_140px_96px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
-        <div>Program</div>
+      <div className="grid grid-cols-[minmax(260px,0.85fr)_minmax(280px,340px)_128px_96px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+        <div className="text-left">Program</div>
         <div className="text-left">Workouts</div>
-        <div>Status</div>
+        <div className="text-left">Status</div>
         <div className="text-center">Action</div>
       </div>
 
@@ -71,7 +71,7 @@ function ProgramPlansTableComponent({
         {rows.map((row) => (
           <div
             key={row.id}
-            className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_140px_96px] items-start gap-4 border-b border-neutral-200 px-5 py-4 last:border-b-0"
+            className="grid grid-cols-[minmax(260px,0.85fr)_minmax(280px,340px)_128px_96px] items-start gap-4 border-b border-neutral-200 px-5 py-4 last:border-b-0"
           >
             <FixedProgramEditorDialog
               program={row.program}
@@ -107,7 +107,7 @@ function ProgramPlansTableComponent({
               )}
             </div>
 
-            <div className="flex min-h-10 items-center">
+            <div className="flex min-h-10 items-center justify-start">
               <Badge
                 variant="outline"
                 className={cn(
