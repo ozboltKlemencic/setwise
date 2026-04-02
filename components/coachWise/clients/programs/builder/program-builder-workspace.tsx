@@ -1,9 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Copy, Sparkles, Trash2 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 
@@ -37,37 +35,6 @@ export function ProgramBuilderWorkspace({
               </div>
               <div className="text-[12px] text-neutral-500">
                 {builder.activeDay.exercises.length} exercises · {builder.totalSets} sets
-              </div>
-              <div className="ml-auto flex items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={builder.duplicateActiveDay}
-                  className="h-8 rounded-md border-neutral-200 bg-white px-3 text-[12px] text-neutral-700 shadow-none hover:bg-neutral-50"
-                >
-                  <Copy className="mr-1 size-3.5" />
-                  Duplicate
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={builder.saveActiveDayAsTemplate}
-                  className="h-8 rounded-md border-neutral-200 bg-white px-3 text-[12px] text-neutral-700 shadow-none hover:bg-neutral-50"
-                >
-                  <Sparkles className="mr-1 size-3.5" />
-                  Save template
-                </Button>
-                {builder.days.length > 1 ? (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={builder.deleteActiveDay}
-                    className="h-8 rounded-md border-rose-200 bg-rose-50 px-3 text-[12px] text-rose-600 shadow-none hover:bg-rose-100"
-                  >
-                    <Trash2 className="mr-1 size-3.5" />
-                    Delete
-                  </Button>
-                ) : null}
               </div>
             </div>
           ) : null}
