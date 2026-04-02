@@ -394,17 +394,14 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                     {definition.short}
                   </button>
                 ))}
-              </div>
-
-              {editingSet?.int && editingIntensifier?.params.length ? (
-                <div className="mt-3 flex flex-wrap gap-2 pl-[76px]">
-                  {editingIntensifier.params.map((parameter) => {
+                {editingSet?.int && editingIntensifier?.params.length
+                  ? editingIntensifier.params.map((parameter) => {
                     const currentValue = editingSet.int?.params[parameter.key] ?? 0
 
                     return (
                       <div
                         key={parameter.key}
-                        className="flex items-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-1.5"
+                        className="flex h-7 items-center gap-x-3 rounded-md border border-neutral-200 bg-neutral-100  px-2.5"
                       >
                         <span className="text-[11px] text-neutral-500">{parameter.label}</span>
                         <Button
@@ -420,11 +417,11 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.max(parameter.min, currentValue - parameter.step)
                             )
                           }}
-                          className="size-6 rounded-md border-neutral-300 bg-neutral-50 text-neutral-800 shadow-none hover:border-neutral-400 hover:bg-neutral-100"
+                          className="size-7  border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none rounded-none hover:border-neutral-400 hover:bg-neutral-100 cursor-pointer"
                         >
                           <Minus className="size-3" />
                         </Button>
-                        <span className="min-w-8 text-center font-mono text-[12px] font-semibold text-neutral-900">
+                        <span className="min-w-4 text-center font-mono text-[12px] font-semibold text-neutral-900">
                           {currentValue}
                           {parameter.unit ?? ""}
                         </span>
@@ -441,15 +438,15 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.min(parameter.max, currentValue + parameter.step)
                             )
                           }}
-                          className="size-6 rounded-md border-neutral-300 bg-neutral-50 text-neutral-800 shadow-none hover:border-neutral-400 hover:bg-neutral-100"
+                          className="size-7  border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none rounded-none hover:border-neutral-400 hover:bg-neutral-100 cursor-pointer"
                         >
                           <Plus className="size-3" />
                         </Button>
                       </div>
                     )
-                  })}
-                </div>
-              ) : null}
+                  })
+                  : null}
+              </div>
 
               <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
                 <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Tempo</span>
