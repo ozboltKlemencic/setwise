@@ -3,15 +3,8 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
-  Apple,
-  Beef,
-  ChevronDown,
   ChevronLeft,
-  Coffee,
-  Flame,
   Pencil,
-  Sun,
-  UtensilsCrossed,
 } from "lucide-react"
 
 import {
@@ -86,8 +79,6 @@ type NutritionMealPlanDetailModel = {
   }
   meals: NutritionMealPlanDetailMeal[]
 }
-
-const detailMealIcons = [Sun, Coffee, UtensilsCrossed, Beef, Apple, Flame]
 
 function parsePlanMacroValues(macros: string) {
   const match = macros.match(/(\d+(?:\.\d+)?)P\s*\/\s*(\d+(?:\.\d+)?)C\s*\/\s*(\d+(?:\.\d+)?)F/i)
@@ -349,28 +340,13 @@ function NutritionDetailMetricCard({
 
 function NutritionMealDetailCard({
   meal,
-  mealIndex,
-  expanded,
-  onToggle,
 }: {
   meal: NutritionMealPlanDetailMeal
-  mealIndex: number
-  expanded: boolean
-  onToggle: () => void
 }) {
-  const MealIcon = detailMealIcons[mealIndex % detailMealIcons.length] ?? UtensilsCrossed
-
   return (
     <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 bg-brand-50/25 px-4 py-3 text-left transition-colors hover:bg-brand-50/40"
-      >
+      <div className="flex w-full items-center justify-between gap-4 border-b border-neutral-200 bg-neutral-100/70 px-4 py-3 text-left">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-brand-100 bg-white/85 text-brand-600">
-            <MealIcon className="size-4.5" />
-          </span>
           <span className="truncate text-[15px] font-semibold text-neutral-950">
             {meal.label}
           </span>
@@ -392,62 +368,52 @@ function NutritionMealDetailCard({
             </span>
             <span>{Math.round(meal.calories)} kcal</span>
           </div>
-          <ChevronDown
+        </div>
+      </div>
+
+      <div className="bg-white">
+        {meal.ingredients.map((ingredient, ingredientIndex) => (
+          <div
+            key={ingredient.id}
             className={cn(
-              "size-4 text-neutral-400 transition-transform",
-              expanded && "rotate-180"
+              "flex items-center justify-between gap-4 px-4 py-4 md:px-5",
+              ingredientIndex > 0 && "border-t border-neutral-200/80"
             )}
-          />
-        </div>
-      </button>
-
-      {expanded ? (
-        <div className="space-y-4 p-4 md:p-5">
-          <div className="overflow-hidden rounded-xl border border-neutral-200/80 bg-white">
-            {meal.ingredients.map((ingredient, ingredientIndex) => (
-              <div
-                key={ingredient.id}
-                className={cn(
-                  "flex items-center justify-between gap-4 px-4 py-3",
-                  ingredientIndex > 0 && "border-t border-neutral-200/80"
-                )}
-              >
-                <div className="min-w-0 space-y-1">
-                  <div className="truncate text-[14px] font-semibold text-neutral-900">
-                    {ingredient.name}
-                  </div>
-                  <div className="flex flex-wrap items-center gap-x-1 text-[12px] text-neutral-500">
-                    <span>{ingredient.calories} kcal</span>
-                    <span className="px-1.5 text-neutral-300">-</span>
-                    <span className="text-emerald-500/90">
-                      P{formatNutritionNumber(ingredient.protein)}g
-                    </span>
-                    <span className="px-1.5 text-neutral-300">-</span>
-                    <span className="text-sky-500/90">
-                      C{formatNutritionNumber(ingredient.carbs)}g
-                    </span>
-                    <span className="px-1.5 text-neutral-300">-</span>
-                    <span className="text-amber-500/90">
-                      F{formatNutritionNumber(ingredient.fats)}g
-                    </span>
-                  </div>
-                  {ingredient.description ? (
-                    <div className="text-[12px] leading-5 text-neutral-500">
-                      {ingredient.description}
-                    </div>
-                  ) : null}
-                </div>
-
-                {ingredient.badgeLabel ? (
-                  <div className="shrink-0 rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2 text-[13px] font-semibold text-neutral-900">
-                    {ingredient.badgeLabel}
-                  </div>
-                ) : null}
+          >
+            <div className="min-w-0 space-y-1">
+              <div className="truncate text-[14px] font-semibold text-neutral-900">
+                {ingredient.name}
               </div>
-            ))}
+              <div className="flex flex-wrap items-center gap-x-1 text-[12px] text-neutral-500">
+                <span>{ingredient.calories} kcal</span>
+                <span className="px-1.5 text-neutral-300">-</span>
+                <span className="text-emerald-500/80">
+                  P{formatNutritionNumber(ingredient.protein)}g
+                </span>
+                <span className="px-1.5 text-neutral-300">-</span>
+                <span className="text-sky-500/80">
+                  C{formatNutritionNumber(ingredient.carbs)}g
+                </span>
+                <span className="px-1.5 text-neutral-300">-</span>
+                <span className="text-amber-500/80">
+                  F{formatNutritionNumber(ingredient.fats)}g
+                </span>
+              </div>
+              {ingredient.description ? (
+                <div className="text-[12px] leading-5 text-neutral-500">
+                  {ingredient.description}
+                </div>
+              ) : null}
+            </div>
+
+            {ingredient.badgeLabel ? (
+              <div className="shrink-0 rounded-lg border border-neutral-200 bg-neutral-50 px-4 py-2 text-[13px] font-semibold text-neutral-900">
+                {ingredient.badgeLabel}
+              </div>
+            ) : null}
           </div>
-        </div>
-      ) : null}
+        ))}
+      </div>
     </Card>
   )
 }
@@ -463,14 +429,6 @@ export function NutritionMealPlanDetailPage({
   editHref: string
   detail: NutritionMealPlanDetailModel
 }) {
-  const [expandedMealIds, setExpandedMealIds] = React.useState<string[]>(() =>
-    detail.meals.map((meal) => meal.id)
-  )
-
-  React.useEffect(() => {
-    setExpandedMealIds(detail.meals.map((meal) => meal.id))
-  }, [detail.meals])
-
   return (
     <div className="min-w-0 bg-neutral-50">
       <NutritionMealPlanDetailNav
@@ -480,10 +438,6 @@ export function NutritionMealPlanDetailPage({
       />
 
       <div className="mx-auto max-w-[1040px] space-y-6 px-4 py-5">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-600">
-          Personalized Nutrition
-        </div>
-
         <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
           <div className="grid md:grid-cols-4">
             <div className="border-b border-neutral-200 md:border-r md:border-b-0">
@@ -529,19 +483,10 @@ export function NutritionMealPlanDetailPage({
           </h2>
 
           <div className="space-y-4">
-            {detail.meals.map((meal, mealIndex) => (
+            {detail.meals.map((meal) => (
               <NutritionMealDetailCard
                 key={meal.id}
                 meal={meal}
-                mealIndex={mealIndex}
-                expanded={expandedMealIds.includes(meal.id)}
-                onToggle={() =>
-                  setExpandedMealIds((current) =>
-                    current.includes(meal.id)
-                      ? current.filter((id) => id !== meal.id)
-                      : [...current, meal.id]
-                  )
-                }
               />
             ))}
           </div>
