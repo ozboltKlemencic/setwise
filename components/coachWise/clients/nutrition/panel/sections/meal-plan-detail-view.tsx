@@ -29,9 +29,10 @@ function MealPlanDetailViewComponent({
             mealPlan,
             sections,
             builderSnapshot: storedMealPlan?.builderSnapshot,
+            macroBuilderSnapshot: storedMealPlan?.macroBuilderSnapshot,
           })
         : null,
-    [mealPlan, sections, storedMealPlan?.builderSnapshot]
+    [mealPlan, sections, storedMealPlan?.builderSnapshot, storedMealPlan?.macroBuilderSnapshot]
   )
 
   if (!mealPlan && !hasLoadedStoredMealPlans) return null

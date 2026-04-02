@@ -17,13 +17,21 @@ import { PrimaryActionButton } from "@/components/coachWise/primary-action-butto
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-import { type StoredNutritionMealPlanBuilderSnapshot } from "@/lib/handlers/nutrition-plan-storage"
+import {
+  type StoredNutritionMacroPlanBuilderSnapshot,
+  type StoredNutritionMealPlanBuilderSnapshot,
+} from "@/lib/handlers/nutrition-plan-storage"
 
 type NutritionMealPlanDetailSourcePlan = {
   id: string
   title: string
+  type?: string
   calories: number
   macros: string
+  segments?: Array<{
+    macro: "protein" | "carbs" | "fats"
+    value: number
+  }>
 }
 
 type NutritionMealPlanDetailSourceOption = {
@@ -71,6 +79,7 @@ type NutritionMealPlanDetailMeal = {
 }
 
 type NutritionMealPlanDetailModel = {
+  planType: "meal" | "macro"
   metrics: {
     calories: NutritionMealPlanDetailMetric
     protein: NutritionMealPlanDetailMetric
@@ -78,6 +87,12 @@ type NutritionMealPlanDetailModel = {
     fat: NutritionMealPlanDetailMetric
   }
   meals: NutritionMealPlanDetailMeal[]
+  macroDistribution: Array<{
+    key: "protein" | "carbs" | "fat"
+    label: string
+    value: number
+    segmentClassName: string
+  }>
 }
 
 function parsePlanMacroValues(macros: string) {
@@ -180,12 +195,15 @@ export function buildNutritionMealPlanDetailModel({
   mealPlan,
   sections,
   builderSnapshot,
+  macroBuilderSnapshot,
 }: {
   mealPlan: NutritionMealPlanDetailSourcePlan
   sections: NutritionMealPlanDetailSourceSection[]
   builderSnapshot?: StoredNutritionMealPlanBuilderSnapshot
+  macroBuilderSnapshot?: StoredNutritionMacroPlanBuilderSnapshot
 }): NutritionMealPlanDetailModel {
   const fallbackMacros = parsePlanMacroValues(mealPlan.macros)
+  const isMacroPlan = mealPlan.type?.toLowerCase().includes("macro") ?? false
   const meals = builderSnapshot
     ? buildMealsFromBuilderSnapshot(builderSnapshot)
     : buildMealsFromSections(sections)
@@ -200,8 +218,56 @@ export function buildNutritionMealPlanDetailModel({
     }
 
   const goalSettings = builderSnapshot?.mealPlanGoals
+  const macroDistribution = macroBuilderSnapshot
+    ? [
+      {
+        key: "protein" as const,
+        label: "P",
+        value: macroBuilderSnapshot.macros.p,
+        segmentClassName: "bg-emerald-600",
+      },
+      {
+        key: "carbs" as const,
+        label: "C",
+        value: macroBuilderSnapshot.macros.c,
+        segmentClassName: "bg-sky-600",
+      },
+      {
+        key: "fat" as const,
+        label: "F",
+        value: macroBuilderSnapshot.macros.f,
+        segmentClassName: "bg-orange-500",
+      },
+    ]
+    : [
+      {
+        key: "protein" as const,
+        label: "P",
+        value:
+          mealPlan.segments?.find((segment) => segment.macro === "protein")?.value ??
+          0,
+        segmentClassName: "bg-emerald-600",
+      },
+      {
+        key: "carbs" as const,
+        label: "C",
+        value:
+          mealPlan.segments?.find((segment) => segment.macro === "carbs")?.value ??
+          0,
+        segmentClassName: "bg-sky-600",
+      },
+      {
+        key: "fat" as const,
+        label: "F",
+        value:
+          mealPlan.segments?.find((segment) => segment.macro === "fats")?.value ??
+          0,
+        segmentClassName: "bg-orange-500",
+      },
+    ]
 
   return {
+    planType: isMacroPlan ? "macro" : "meal",
     metrics: {
       calories: {
         current: currentTotals.cal,
@@ -221,6 +287,7 @@ export function buildNutritionMealPlanDetailModel({
       },
     },
     meals,
+    macroDistribution,
   }
 }
 
@@ -417,6 +484,39 @@ function NutritionMealDetailCard({
   )
 }
 
+function NutritionMacroDistributionCard({
+  segments,
+}: {
+  segments: NutritionMealPlanDetailModel["macroDistribution"]
+}) {
+  return (
+    <div className="space-y-3">
+      <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-neutral-950">
+        Macro Distribution
+      </h2>
+
+      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
+        <div className="flex h-10 w-full overflow-hidden rounded-xl">
+          {segments.map((segment) => (
+            <div
+              key={segment.key}
+              className={cn(
+                "flex min-w-0 items-center justify-center px-3 text-center text-[12px] font-semibold text-white",
+                segment.segmentClassName
+              )}
+              style={{ width: `${segment.value}%` }}
+            >
+              <span className="truncate">
+                {segment.label}: {Math.round(segment.value)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function NutritionMealPlanDetailPage({
   title,
   backHref,
@@ -476,20 +576,24 @@ export function NutritionMealPlanDetailPage({
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-neutral-950">
-            Scheduled Meals
-          </h2>
-
+        {detail.planType === "macro" ? (
+          <NutritionMacroDistributionCard segments={detail.macroDistribution} />
+        ) : (
           <div className="space-y-4">
-            {detail.meals.map((meal) => (
-              <NutritionMealDetailCard
-                key={meal.id}
-                meal={meal}
-              />
-            ))}
+            <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-neutral-950">
+              Scheduled Meals
+            </h2>
+
+            <div className="space-y-4">
+              {detail.meals.map((meal) => (
+                <NutritionMealDetailCard
+                  key={meal.id}
+                  meal={meal}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
