@@ -101,6 +101,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
                     onDragEnd={() => builder.setDraggedLibraryExercise(null)}
                     className={cn(
                       "flex items-center gap-2 rounded-md border py-3 pr-3 pl-2 transition-colors",
+                      isDisabled && "cursor-not-allowed",
                       isAddedToDay
                         ? "border-neutral-200 bg-neutral-50 text-neutral-500"
                         : "border-neutral-200 bg-white hover:border-brand-400 hover:bg-brand-50/35"
@@ -111,7 +112,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
                         "flex size-7 shrink-0 items-center justify-center rounded-lg border",
                         PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle],
                         isAddedToDay
-                          ? "cursor-default opacity-55"
+                          ? "cursor-not-allowed opacity-55"
                           : "cursor-grab active:cursor-grabbing"
                       )}
                     >
@@ -143,7 +144,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
                       size="icon-sm"
                       onClick={() => builder.addExercise(exercise)}
                       disabled={isDisabled}
-                      className="size-7 rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100"
+                      className="size-7 rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100 disabled:cursor-not-allowed"
                     >
                       <Plus className="size-3" />
                     </Button>
