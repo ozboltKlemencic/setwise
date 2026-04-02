@@ -193,11 +193,11 @@ export function buildNutritionMealPlanDetailModel({
   const currentTotals = builderSnapshot
     ? getBuilderPlanTotals(builderSnapshot.foods, builderSnapshot.meals)
     : {
-        cal: mealPlan.calories,
-        p: fallbackMacros.protein,
-        c: fallbackMacros.carbs,
-        f: fallbackMacros.fats,
-      }
+      cal: mealPlan.calories,
+      p: fallbackMacros.protein,
+      c: fallbackMacros.carbs,
+      f: fallbackMacros.fats,
+    }
 
   const goalSettings = builderSnapshot?.mealPlanGoals
 
@@ -344,7 +344,7 @@ function NutritionMealDetailCard({
   meal: NutritionMealPlanDetailMeal
 }) {
   return (
-    <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white shadow-none">
+    <Card className="overflow-hidden rounded-sm py-0! border-neutral-200  shadow-none">
       <div className="flex w-full items-center justify-between gap-4 border-b border-neutral-200 bg-neutral-100/70 px-4 py-3 text-left">
         <div className="flex min-w-0 items-center gap-3">
           <span className="truncate text-[15px] font-semibold text-neutral-950">
@@ -371,13 +371,12 @@ function NutritionMealDetailCard({
         </div>
       </div>
 
-      <div className="bg-white">
-        {meal.ingredients.map((ingredient, ingredientIndex) => (
+      <div className="space-y-3  p-4 md:p-5">
+        {meal.ingredients.map((ingredient) => (
           <div
             key={ingredient.id}
             className={cn(
-              "flex items-center justify-between gap-4 px-4 py-4 md:px-5",
-              ingredientIndex > 0 && "border-t border-neutral-200/80"
+              "flex items-center justify-between gap-4 rounded-xl border border-neutral-200  px-4 py-4"
             )}
           >
             <div className="min-w-0 space-y-1">
