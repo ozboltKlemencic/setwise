@@ -112,7 +112,7 @@ function ProgramBuilderSetChip({
         </button>
       )}
 
-      {builder.useIntensifiers && intensifier ? (
+      {intensifier ? (
         <button
           type="button"
           onMouseDown={(event) => {
@@ -128,19 +128,19 @@ function ProgramBuilderSetChip({
         </button>
       ) : null}
 
-      {builder.useTempo && set.tempo ? (
+      {set.tempo ? (
         <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
           {formatProgramBuilderTempo(set.tempo)}
         </span>
       ) : null}
 
-      {builder.useRpe && typeof set.rpe === "number" ? (
+      {typeof set.rpe === "number" ? (
         <span className="rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-[10px] font-semibold text-violet-700">
           RPE {set.rpe}
         </span>
       ) : null}
 
-      {builder.useRir && typeof set.rir === "number" ? (
+      {typeof set.rir === "number" ? (
         <span className="rounded-md border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-[10px] font-semibold text-fuchsia-700">
           RIR {set.rir}
         </span>
@@ -280,41 +280,39 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             ))}
           </div>
 
-          {builder.useIntensifiers ? (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="text-[11px] text-neutral-500">Intensifier</span>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="text-[11px] text-neutral-500">Intensifier</span>
+            <button
+              type="button"
+              onMouseDown={(event) => {
+                event.preventDefault()
+                builder.setIntensifier(entry.uid, editingSetIndex, null)
+              }}
+              className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+            >
+              None
+            </button>
+            {Object.entries(PROGRAM_BUILDER_INTENSIFIERS).map(([type, definition]) => (
               <button
+                key={type}
                 type="button"
                 onMouseDown={(event) => {
                   event.preventDefault()
-                  builder.setIntensifier(entry.uid, editingSetIndex, null)
+                  builder.setIntensifier(
+                    entry.uid,
+                    editingSetIndex,
+                    type as keyof typeof PROGRAM_BUILDER_INTENSIFIERS
+                  )
                 }}
-                className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+                className={cn(
+                  "rounded-md border px-2.5 py-1 text-[11px] font-medium",
+                  definition.className
+                )}
               >
-                None
+                {definition.short}
               </button>
-              {Object.entries(PROGRAM_BUILDER_INTENSIFIERS).map(([type, definition]) => (
-                <button
-                  key={type}
-                  type="button"
-                  onMouseDown={(event) => {
-                    event.preventDefault()
-                    builder.setIntensifier(
-                      entry.uid,
-                      editingSetIndex,
-                      type as keyof typeof PROGRAM_BUILDER_INTENSIFIERS
-                    )
-                  }}
-                  className={cn(
-                    "rounded-md border px-2.5 py-1 text-[11px] font-medium",
-                    definition.className
-                  )}
-                >
-                  {definition.short}
-                </button>
-              ))}
-            </div>
-          ) : null}
+            ))}
+          </div>
 
           {editingSet?.int && editingIntensifier?.params.length ? (
             <div className="mt-3 flex flex-wrap gap-2">
@@ -371,58 +369,52 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             </div>
           ) : null}
 
-          {builder.useTempo ? (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="text-[11px] text-neutral-500">Tempo</span>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="text-[11px] text-neutral-500">Tempo</span>
+            <button
+              type="button"
+              onMouseDown={(event) => {
+                event.preventDefault()
+                builder.setTempo(entry.uid, editingSetIndex, null)
+              }}
+              className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+            >
+              None
+            </button>
+            {builder.myTempos.map((tempo) => (
               <button
+                key={tempo}
                 type="button"
                 onMouseDown={(event) => {
                   event.preventDefault()
-                  builder.setTempo(entry.uid, editingSetIndex, null)
+                  builder.setTempo(entry.uid, editingSetIndex, tempo)
                 }}
-                className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+                className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-medium text-emerald-700"
               >
-                None
+                {tempo}
               </button>
-              {builder.myTempos.map((tempo) => (
-                <button
-                  key={tempo}
-                  type="button"
-                  onMouseDown={(event) => {
-                    event.preventDefault()
-                    builder.setTempo(entry.uid, editingSetIndex, tempo)
-                  }}
-                  className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-medium text-emerald-700"
-                >
-                  {tempo}
-                </button>
-              ))}
-            </div>
-          ) : null}
+            ))}
+          </div>
 
-          {builder.useRpe ? (
-            <SetOptionRow
-              label="RPE"
-              onClear={() => builder.setRpe(entry.uid, editingSetIndex, null)}
-              options={builder.rpeOptions}
-              selectedValue={editingSet?.rpe}
-              onSelect={(value) => builder.setRpe(entry.uid, editingSetIndex, value)}
-              activeClassName="border-violet-300 bg-violet-50 text-violet-700"
-              idleClassName="border-violet-200/80 bg-violet-50/60 text-violet-700"
-            />
-          ) : null}
+          <SetOptionRow
+            label="RPE"
+            onClear={() => builder.setRpe(entry.uid, editingSetIndex, null)}
+            options={builder.rpeOptions}
+            selectedValue={editingSet?.rpe}
+            onSelect={(value) => builder.setRpe(entry.uid, editingSetIndex, value)}
+            activeClassName="border-violet-300 bg-violet-50 text-violet-700"
+            idleClassName="border-violet-200/80 bg-violet-50/60 text-violet-700"
+          />
 
-          {builder.useRir ? (
-            <SetOptionRow
-              label="RIR"
-              onClear={() => builder.setRir(entry.uid, editingSetIndex, null)}
-              options={builder.rirOptions}
-              selectedValue={editingSet?.rir}
-              onSelect={(value) => builder.setRir(entry.uid, editingSetIndex, value)}
-              activeClassName="border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
-              idleClassName="border-fuchsia-200/80 bg-fuchsia-50/60 text-fuchsia-700"
-            />
-          ) : null}
+          <SetOptionRow
+            label="RIR"
+            onClear={() => builder.setRir(entry.uid, editingSetIndex, null)}
+            options={builder.rirOptions}
+            selectedValue={editingSet?.rir}
+            onSelect={(value) => builder.setRir(entry.uid, editingSetIndex, value)}
+            activeClassName="border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
+            idleClassName="border-fuchsia-200/80 bg-fuchsia-50/60 text-fuchsia-700"
+          />
         </div>
       ) : null}
     </div>

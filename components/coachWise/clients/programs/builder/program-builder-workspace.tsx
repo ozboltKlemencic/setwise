@@ -18,51 +18,6 @@ type ProgramBuilderWorkspaceProps = {
   initialProgram: FixedProgramEditorProgram
 }
 
-function ToggleMenu({
-  label,
-  enabled,
-  onChange,
-  toneClassName,
-}: {
-  label: string
-  enabled: boolean
-  onChange: (value: boolean) => void
-  toneClassName: string
-}) {
-  return (
-    <ProgramBuilderToolbarMenu label={label} triggerClassName={toneClassName}>
-      <div className="flex gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => onChange(true)}
-          className={cn(
-            "h-8 rounded-md px-3 text-[12px] shadow-none",
-            enabled
-              ? "border-neutral-300 bg-neutral-50 text-neutral-950"
-              : "border-neutral-200 bg-white text-neutral-700"
-          )}
-        >
-          Enabled
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => onChange(false)}
-          className={cn(
-            "h-8 rounded-md px-3 text-[12px] shadow-none",
-            !enabled
-              ? "border-neutral-300 bg-neutral-50 text-neutral-950"
-              : "border-neutral-200 bg-white text-neutral-700"
-          )}
-        >
-          Disabled
-        </Button>
-      </div>
-    </ProgramBuilderToolbarMenu>
-  )
-}
-
 export function ProgramBuilderWorkspace({
   initialProgram,
 }: ProgramBuilderWorkspaceProps) {
@@ -135,36 +90,8 @@ export function ProgramBuilderWorkspace({
               </div>
             </ProgramBuilderToolbarMenu>
 
-            <ToggleMenu
-              label="Intensifiers"
-              enabled={builder.useIntensifiers}
-              onChange={builder.setUseIntensifiers}
-              toneClassName="border-orange-200 bg-orange-50/70 text-orange-700 hover:border-orange-300 hover:bg-orange-50/90 data-[state=open]:border-orange-300 data-[state=open]:bg-orange-50"
-            />
-
-            <ToggleMenu
-              label="Tempo"
-              enabled={builder.useTempo}
-              onChange={builder.setUseTempo}
-              toneClassName="border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/90 data-[state=open]:border-emerald-300 data-[state=open]:bg-emerald-50"
-            />
-
-            <ToggleMenu
-              label="RPE"
-              enabled={builder.useRpe}
-              onChange={builder.setUseRpe}
-              toneClassName="border-violet-200 bg-violet-50/70 text-violet-700 hover:border-violet-300 hover:bg-violet-50/90 data-[state=open]:border-violet-300 data-[state=open]:bg-violet-50"
-            />
-
-            <ToggleMenu
-              label="RIR"
-              enabled={builder.useRir}
-              onChange={builder.setUseRir}
-              toneClassName="border-fuchsia-200 bg-fuchsia-50/70 text-fuchsia-700 hover:border-fuchsia-300 hover:bg-fuchsia-50/90 data-[state=open]:border-fuchsia-300 data-[state=open]:bg-fuchsia-50"
-            />
-
             <ProgramBuilderToolbarMenu
-              label="My tempos"
+              label="Tempo"
               open={builder.showMyTempos}
               onOpenChange={(open) => {
                 builder.setShowMyTempos(open)
