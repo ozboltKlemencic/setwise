@@ -34,7 +34,7 @@ export function ProgramBuilderToolbarMenu({
         <button
           type="button"
           className={cn(
-            "inline-flex h-8 min-w-[132px] items-center justify-between gap-2 rounded-sm border bg-white px-2.5 text-[13px] font-normal shadow-none transition-colors data-[state=open]:shadow-sm",
+            "inline-flex h-8 min-w-[132px] items-center justify-between gap-2 rounded-sm border bg-neutral-50 px-2.5 text-[13px] font-normal shadow-none transition-colors data-[state=open]:shadow-sm",
             triggerClassName
           )}
         >

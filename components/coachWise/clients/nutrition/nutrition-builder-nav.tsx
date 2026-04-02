@@ -24,6 +24,7 @@ type NutritionBuilderNavProps = {
   onSave: () => void
   saveLabel: string
   saveDisabled?: boolean
+  leadingActions?: React.ReactNode
   clientPicker?: React.ReactNode
   secondaryAction?: SecondaryActionButtonProps
 }
@@ -41,6 +42,7 @@ export function NutritionBuilderNav({
   onSave,
   saveLabel,
   saveDisabled,
+  leadingActions,
   clientPicker,
   secondaryAction,
 }: NutritionBuilderNavProps) {
@@ -83,6 +85,7 @@ export function NutritionBuilderNav({
         </div>
 
         <div className="flex items-center gap-2">
+          {leadingActions}
           {clientPicker}
           {secondaryAction ? (
             <SecondaryActionButton
