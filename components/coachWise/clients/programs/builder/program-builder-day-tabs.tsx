@@ -148,7 +148,7 @@ export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
         type="button"
         variant="outline"
         onClick={builder.addDay}
-        className="h-8 shrink-0 rounded-md border-dashed border-neutral-300 bg-neutral-50 px-3 text-neutral-700 shadow-none hover:border-brand-300 hover:bg-brand-50/35"
+        className="h-8 shrink-0 rounded-md border-dashed border-neutral-300 bg-neutral-50 px-3 text-neutral-700 shadow-none hover:border-neutral-700 hover:bg-neutral-50 hover:text-neutral-950"
       >
         <Plus className="size-3.5" />
         Add workout
@@ -158,7 +158,7 @@ export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
         type="button"
         variant="outline"
         onClick={builder.addRestDay}
-        className="h-8 shrink-0 rounded-md border-dashed border-neutral-300 bg-white px-3 text-neutral-600 shadow-none hover:border-neutral-400 hover:bg-neutral-50"
+        className="h-8 shrink-0 rounded-md border-dashed border-neutral-300 bg-neutral-50 px-3 text-neutral-600 shadow-none hover:border-neutral-700 hover:bg-neutral-50 hover:text-neutral-950"
       >
         + Rest
       </Button>
