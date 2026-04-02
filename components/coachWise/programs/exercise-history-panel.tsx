@@ -1252,7 +1252,7 @@ type FixedProgramBuilderWorkout = {
   sections: FixedProgramBuilderSection[]
 }
 
-type FixedProgramEditorProgram = {
+export type FixedProgramEditorProgram = {
   id: string
   title: string
   description: string
@@ -1345,6 +1345,10 @@ const fixedPrograms: FixedProgramEditorProgram[] = [
     ],
   },
 ]
+
+export function getFixedPrograms(): FixedProgramEditorProgram[] {
+  return fixedPrograms
+}
 
 export function getFixedProgramEditorProgram(
   programId: string,

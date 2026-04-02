@@ -5,16 +5,14 @@ import {
   IconClipboardCheck,
 } from "@tabler/icons-react"
 
+import { ClientProgramsOverview } from "@/components/coachWise/clients/programs/client-programs-overview"
 import { SubtabsNav } from "@/components/coachWise/clients/shared/subtabs-nav"
 import {
   CompletedWorkoutsPanel,
   ExerciseHistoryPanel,
-  FixedProgramsTable,
-  ProgramsOverviewActions,
   ProgramsPeriodPicker,
   WorkoutDetailView,
 } from "@/components/coachWise/programs/exercise-history-panel"
-import { WorkoutCalendar } from "@/components/coachWise/programs/workout-calendar"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 
 import {
@@ -25,7 +23,6 @@ import {
 
 type ProgramsSearchParams = {
   programTab?: string | string[]
-  programType?: string | string[]
   workoutId?: string | string[]
 }
 
@@ -41,13 +38,11 @@ export default async function Page({
   const resolvedSearchParams = await searchParams
   const workoutId = getSingleSearchParam(resolvedSearchParams.workoutId)
   const activeProgramTab = getSingleSearchParam(resolvedSearchParams.programTab)
-  const activeProgramType = getSingleSearchParam(resolvedSearchParams.programType)
   const resolvedProgramTab =
     activeProgramTab === "exercise-history" ||
       activeProgramTab === "completed-workouts"
       ? activeProgramTab
       : "calendar"
-  const resolvedProgramType = activeProgramType === "fixed" ? "fixed" : "calendar"
 
   if (workoutId) {
     return (
@@ -82,9 +77,7 @@ export default async function Page({
             },
           ]}
           actions={
-            resolvedProgramTab === "calendar" ? (
-              <ProgramsOverviewActions programType={resolvedProgramType} />
-            ) : resolvedProgramTab === "exercise-history" ||
+            resolvedProgramTab === "exercise-history" ||
               resolvedProgramTab === "completed-workouts" ? (
               <ProgramsPeriodPicker />
             ) : null
@@ -93,11 +86,7 @@ export default async function Page({
 
         <TabsContent value="calendar" className="mt-0 space-y-0">
           <SectionBody>
-            {resolvedProgramType === "fixed" ? (
-              <FixedProgramsTable />
-            ) : (
-              <WorkoutCalendar />
-            )}
+            <ClientProgramsOverview />
           </SectionBody>
         </TabsContent>
 
