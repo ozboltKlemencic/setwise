@@ -41,8 +41,8 @@ function SetOptionRow({
   idleClassName,
 }: SetOptionRowProps) {
   return (
-    <div className="mt-3 flex flex-wrap items-center gap-2">
-      <span className="text-[11px] text-neutral-500">{label}</span>
+    <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
+      <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">{label}</span>
       <button
         type="button"
         onMouseDown={(event) => {
@@ -283,8 +283,8 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
 
       {isEditingExercise ? (
         <div className="border-t border-neutral-200 px-4 py-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] text-neutral-500">Range</span>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+            <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Range</span>
             {builder.myReps.map((range) => (
               <button
                 key={`custom-${range}`}
@@ -305,8 +305,8 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             ))}
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="text-[11px] text-neutral-500">Intensifier</span>
+          <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
+            <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Intensifier</span>
             <button
               type="button"
               onMouseDown={(event) => {
@@ -401,8 +401,8 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             </div>
           ) : null}
 
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="text-[11px] text-neutral-500">Tempo</span>
+          <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
+            <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Tempo</span>
             <button
               type="button"
               onMouseDown={(event) => {
