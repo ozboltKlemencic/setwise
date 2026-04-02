@@ -261,9 +261,6 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     if (parsedValue) {
       commitRange(editTarget.uid, editTarget.si, parsedValue)
     }
-
-    setEditTarget(null)
-    setEditValue("")
   }, [commitRange, editTarget, editValue])
 
   const handleSetInputKeyDown = React.useCallback(

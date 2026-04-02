@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GripVertical, Minus, Plus, Trash2 } from "lucide-react"
+import { ChevronDown, GripVertical, Minus, Plus, Trash2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -190,6 +190,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
   entry,
   index,
 }: ProgramBuilderExerciseCardProps) {
+  const [showAdvancedOptions, setShowAdvancedOptions] = React.useState(false)
   const isEditingExercise = builder.editTarget?.uid === entry.uid
   const editingSet =
     isEditingExercise && builder.editTarget ? entry.sets[builder.editTarget.si] : null
@@ -201,6 +202,10 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
   const selectedRepRange = editingSet ? formatProgramBuilderRepRange(editingSet) : null
   const selectedTempo = editingSet?.tempo ? formatProgramBuilderTempo(editingSet.tempo) : null
   const selectedIntensifierType = editingSet?.int?.type ?? null
+
+  React.useEffect(() => {
+    setShowAdvancedOptions(false)
+  }, [editingSetIndex, isEditingExercise])
 
   return (
     <div
@@ -305,158 +310,179 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             ))}
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
-            <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Intensifier</span>
-            <button
-              type="button"
-              onMouseDown={(event) => {
-                event.preventDefault()
-                builder.setIntensifier(entry.uid, editingSetIndex, null)
-              }}
+          <button
+            type="button"
+            onMouseDown={(event) => {
+              event.preventDefault()
+            }}
+            onClick={() => setShowAdvancedOptions((currentState) => !currentState)}
+            className="mt-3 inline-flex w-full items-center justify-between gap-3 text-[12px] font-medium text-neutral-600 transition-colors hover:text-neutral-900"
+          >
+            <span>More advanced options</span>
+            <ChevronDown
               className={cn(
-                "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
-                selectedIntensifierType == null
-                  ? "border-neutral-300 bg-neutral-100 text-neutral-700"
-                  : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                "size-3.5 shrink-0 transition-transform",
+                showAdvancedOptions && "rotate-180"
               )}
-            >
-              None
-            </button>
-            {Object.entries(PROGRAM_BUILDER_INTENSIFIERS).map(([type, definition]) => (
-              <button
-                key={type}
-                type="button"
-                onMouseDown={(event) => {
-                  event.preventDefault()
-                  builder.setIntensifier(
-                    entry.uid,
-                    editingSetIndex,
-                    type as keyof typeof PROGRAM_BUILDER_INTENSIFIERS
-                  )
-                }}
-                className={cn(
-                  "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
-                  selectedIntensifierType === type
-                    ? definition.className
-                    : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
-                )}
-              >
-                {definition.short}
-              </button>
-            ))}
-          </div>
+            />
+          </button>
 
-          {editingSet?.int && editingIntensifier?.params.length ? (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {editingIntensifier.params.map((parameter) => {
-                const currentValue = editingSet.int?.params[parameter.key] ?? 0
-
-                return (
-                  <div
-                    key={parameter.key}
-                    className="flex items-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-1.5"
+          {showAdvancedOptions ? (
+            <>
+              <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
+                <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Intensifier</span>
+                <button
+                  type="button"
+                  onMouseDown={(event) => {
+                    event.preventDefault()
+                    builder.setIntensifier(entry.uid, editingSetIndex, null)
+                  }}
+                  className={cn(
+                    "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                    selectedIntensifierType == null
+                      ? "border-neutral-300 bg-neutral-100 text-neutral-700"
+                      : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                  )}
+                >
+                  None
+                </button>
+                {Object.entries(PROGRAM_BUILDER_INTENSIFIERS).map(([type, definition]) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onMouseDown={(event) => {
+                      event.preventDefault()
+                      builder.setIntensifier(
+                        entry.uid,
+                        editingSetIndex,
+                        type as keyof typeof PROGRAM_BUILDER_INTENSIFIERS
+                      )
+                    }}
+                    className={cn(
+                      "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                      selectedIntensifierType === type
+                        ? definition.className
+                        : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                    )}
                   >
-                    <span className="text-[11px] text-neutral-500">{parameter.label}</span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      onMouseDown={(event) => {
-                        event.preventDefault()
-                        builder.updateIntensifierParam(
-                          entry.uid,
-                          editingSetIndex,
-                          parameter.key,
-                          Math.max(parameter.min, currentValue - parameter.step)
-                        )
-                      }}
-                      className="size-6 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
-                    >
-                      <Minus className="size-3" />
-                    </Button>
-                    <span className="min-w-8 text-center font-mono text-[12px] font-semibold text-neutral-900">
-                      {currentValue}
-                      {parameter.unit ?? ""}
-                    </span>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      onMouseDown={(event) => {
-                        event.preventDefault()
-                        builder.updateIntensifierParam(
-                          entry.uid,
-                          editingSetIndex,
-                          parameter.key,
-                          Math.min(parameter.max, currentValue + parameter.step)
-                        )
-                      }}
-                      className="size-6 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
-                    >
-                      <Plus className="size-3" />
-                    </Button>
-                  </div>
-                )
-              })}
-            </div>
+                    {definition.short}
+                  </button>
+                ))}
+              </div>
+
+              {editingSet?.int && editingIntensifier?.params.length ? (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {editingIntensifier.params.map((parameter) => {
+                    const currentValue = editingSet.int?.params[parameter.key] ?? 0
+
+                    return (
+                      <div
+                        key={parameter.key}
+                        className="flex items-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-1.5"
+                      >
+                        <span className="text-[11px] text-neutral-500">{parameter.label}</span>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-sm"
+                          onMouseDown={(event) => {
+                            event.preventDefault()
+                            builder.updateIntensifierParam(
+                              entry.uid,
+                              editingSetIndex,
+                              parameter.key,
+                              Math.max(parameter.min, currentValue - parameter.step)
+                            )
+                          }}
+                          className="size-6 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
+                        >
+                          <Minus className="size-3" />
+                        </Button>
+                        <span className="min-w-8 text-center font-mono text-[12px] font-semibold text-neutral-900">
+                          {currentValue}
+                          {parameter.unit ?? ""}
+                        </span>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon-sm"
+                          onMouseDown={(event) => {
+                            event.preventDefault()
+                            builder.updateIntensifierParam(
+                              entry.uid,
+                              editingSetIndex,
+                              parameter.key,
+                              Math.min(parameter.max, currentValue + parameter.step)
+                            )
+                          }}
+                          className="size-6 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
+                        >
+                          <Plus className="size-3" />
+                        </Button>
+                      </div>
+                    )
+                  })}
+                </div>
+              ) : null}
+
+              <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
+                <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Tempo</span>
+                <button
+                  type="button"
+                  onMouseDown={(event) => {
+                    event.preventDefault()
+                    builder.setTempo(entry.uid, editingSetIndex, null)
+                  }}
+                  className={cn(
+                    "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                    selectedTempo == null
+                      ? "border-neutral-300 bg-neutral-100 text-neutral-700"
+                      : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                  )}
+                >
+                  None
+                </button>
+                {builder.myTempos.map((tempo) => (
+                  <button
+                    key={tempo}
+                    type="button"
+                    onMouseDown={(event) => {
+                      event.preventDefault()
+                      builder.setTempo(entry.uid, editingSetIndex, tempo)
+                    }}
+                    className={cn(
+                      "rounded-md border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors",
+                      selectedTempo === tempo
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                        : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                    )}
+                  >
+                    {tempo}
+                  </button>
+                ))}
+              </div>
+
+              <SetOptionRow
+                label="RPE"
+                onClear={() => builder.setRpe(entry.uid, editingSetIndex, null)}
+                options={builder.rpeOptions}
+                selectedValue={editingSet?.rpe}
+                onSelect={(value) => builder.setRpe(entry.uid, editingSetIndex, value)}
+                activeClassName="border-violet-300 bg-violet-50 text-violet-700"
+                idleClassName="border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+              />
+
+              <SetOptionRow
+                label="RIR"
+                onClear={() => builder.setRir(entry.uid, editingSetIndex, null)}
+                options={builder.rirOptions}
+                selectedValue={editingSet?.rir}
+                onSelect={(value) => builder.setRir(entry.uid, editingSetIndex, value)}
+                activeClassName="border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
+                idleClassName="border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+              />
+            </>
           ) : null}
-
-          <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
-            <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Tempo</span>
-            <button
-              type="button"
-              onMouseDown={(event) => {
-                event.preventDefault()
-                builder.setTempo(entry.uid, editingSetIndex, null)
-              }}
-              className={cn(
-                "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
-                selectedTempo == null
-                  ? "border-neutral-300 bg-neutral-100 text-neutral-700"
-                  : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
-              )}
-            >
-              None
-            </button>
-            {builder.myTempos.map((tempo) => (
-              <button
-                key={tempo}
-                type="button"
-                onMouseDown={(event) => {
-                  event.preventDefault()
-                  builder.setTempo(entry.uid, editingSetIndex, tempo)
-                }}
-                className={cn(
-                  "rounded-md border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors",
-                  selectedTempo === tempo
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                    : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
-                )}
-              >
-                {tempo}
-              </button>
-            ))}
-          </div>
-
-          <SetOptionRow
-            label="RPE"
-            onClear={() => builder.setRpe(entry.uid, editingSetIndex, null)}
-            options={builder.rpeOptions}
-            selectedValue={editingSet?.rpe}
-            onSelect={(value) => builder.setRpe(entry.uid, editingSetIndex, value)}
-            activeClassName="border-violet-300 bg-violet-50 text-violet-700"
-            idleClassName="border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
-          />
-
-          <SetOptionRow
-            label="RIR"
-            onClear={() => builder.setRir(entry.uid, editingSetIndex, null)}
-            options={builder.rirOptions}
-            selectedValue={editingSet?.rir}
-            onSelect={(value) => builder.setRir(entry.uid, editingSetIndex, value)}
-            activeClassName="border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
-            idleClassName="border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
-          />
         </div>
       ) : null}
     </div>
