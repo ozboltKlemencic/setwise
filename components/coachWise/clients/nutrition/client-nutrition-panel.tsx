@@ -105,6 +105,10 @@ import {
   MealPlanBuilderEditPageView as SharedMealPlanBuilderEditPageView,
 } from "@/components/coachWise/clients/nutrition/meal-plan-builder"
 import {
+  buildNutritionMealPlanDetailModel,
+  NutritionMealPlanDetailPage,
+} from "@/components/coachWise/clients/nutrition/nutrition-meal-plan-detail-page"
+import {
   subtabsNavActionButtonClassNames,
 } from "@/components/coachWise/clients/shared/subtabs-nav"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
@@ -3993,13 +3997,9 @@ export function MealPlanDetailView({
   const pathname = usePathname()
   const {
     hasLoadedStoredMealPlans,
-    macros,
     mealPlan,
+    storedMealPlan,
     sections,
-    sensors,
-    handleDeleteSection,
-    handleRenameSection,
-    handleSectionDragEnd,
   } = useNutritionMealPlanWorkspace({
     mealPlanId,
     phase,
@@ -4019,36 +4019,27 @@ export function MealPlanDetailView({
   }
 
   const resolvedBackHref = backHref ?? `${pathname}?nutritionTab=nutrition`
+  const editHref = buildCoachWiseHref(
+    pathname,
+    getNutritionPlanEditorHref(mealPlan.id, resolvedBackHref)
+  )
+  const detail = React.useMemo(
+    () =>
+      buildNutritionMealPlanDetailModel({
+        mealPlan,
+        sections,
+        builderSnapshot: storedMealPlan?.builderSnapshot,
+      }),
+    [mealPlan, sections, storedMealPlan?.builderSnapshot]
+  )
 
   return (
-    <div className="min-w-0 bg-neutral-50">
-      <NutritionMealPlanHeader
-        title={mealPlan.title}
-        backHref={resolvedBackHref}
-        actions={
-          <PrimaryActionButton
-            label="Edit Plan"
-            icon={Pencil}
-            href={buildCoachWiseHref(
-              pathname,
-              getNutritionPlanEditorHref(mealPlan.id, resolvedBackHref)
-            )}
-          />
-        }
-      />
-
-      <div className="mx-auto max-w-[980px] space-y-4 px-4 py-4">
-        <NutritionMealPlanWorkspace
-          mealPlan={mealPlan}
-          macros={macros}
-          sections={sections}
-          sensors={sensors}
-          onSectionDragEnd={handleSectionDragEnd}
-          onRenameSection={handleRenameSection}
-          onDeleteSection={handleDeleteSection}
-        />
-      </div>
-    </div>
+    <NutritionMealPlanDetailPage
+      title={mealPlan.title}
+      backHref={resolvedBackHref}
+      editHref={editHref}
+      detail={detail}
+    />
   )
 }
 
