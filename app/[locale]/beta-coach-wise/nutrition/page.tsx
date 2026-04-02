@@ -16,6 +16,10 @@ import {
   CreateFoodDialog,
   type CreateFoodDialogValue,
 } from "@/components/coachWise/clients/nutrition/create-food-dialog"
+import {
+  buildStoredNutritionMacroPlanFromBuilderState,
+  DEFAULT_MACRO_BUILDER_PRESETS,
+} from "@/components/coachWise/clients/nutrition/macro-plan-builder-data"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -328,6 +332,69 @@ function cloneStoredNutritionMealPlanForDuplicate(
         }
       : undefined,
   }
+}
+
+function deriveMacroPercentagesFromMealPlanRow(row: MealPlanRow) {
+  const macroCalories = [
+    { key: "p" as const, calories: row.protein * 4 },
+    { key: "c" as const, calories: row.carbs * 4 },
+    { key: "f" as const, calories: row.fats * 9 },
+  ]
+  const totalMacroCalories = macroCalories.reduce(
+    (sum, segment) => sum + segment.calories,
+    0
+  )
+
+  if (totalMacroCalories <= 0) {
+    return { p: 33, c: 34, f: 33 }
+  }
+
+  const exactPercentages = macroCalories.map((segment) => ({
+    key: segment.key,
+    exact: (segment.calories / totalMacroCalories) * 100,
+  }))
+  const normalizedPercentages = exactPercentages.map((segment) => ({
+    key: segment.key,
+    value: Math.floor(segment.exact),
+    remainder: segment.exact - Math.floor(segment.exact),
+  }))
+
+  let remainingPoints =
+    100 -
+    normalizedPercentages.reduce((sum, segment) => sum + segment.value, 0)
+
+  normalizedPercentages
+    .sort((left, right) => right.remainder - left.remainder)
+    .forEach((segment) => {
+      if (remainingPoints <= 0) {
+        return
+      }
+
+      segment.value += 1
+      remainingPoints -= 1
+    })
+
+  return {
+    p:
+      normalizedPercentages.find((segment) => segment.key === "p")?.value ?? 0,
+    c:
+      normalizedPercentages.find((segment) => segment.key === "c")?.value ?? 0,
+    f:
+      normalizedPercentages.find((segment) => segment.key === "f")?.value ?? 0,
+  }
+}
+
+function buildStoredLegacyMacroPlanFromRow(row: MealPlanRow): StoredNutritionMealPlan {
+  return buildStoredNutritionMacroPlanFromBuilderState({
+    planId: row.id,
+    planName: row.title,
+    calories: row.calories,
+    macros: deriveMacroPercentagesFromMealPlanRow(row),
+    presets: DEFAULT_MACRO_BUILDER_PRESETS,
+    selectedPresetId: null,
+    lockedMacroKey: null,
+    assignedClientIds: row.clients.map((clientId) => String(clientId)),
+  })
 }
 
 function mapStoredNutritionMealPlanToRow(
@@ -1569,11 +1636,16 @@ function MealPlaniPageContent() {
         return
       }
 
-      router.push(
-        row.type.toLowerCase().includes("macro")
-          ? getNutritionCreateMacroPlanHref(plansBackToHref)
-          : getNutritionCreateMealPlanHref(plansBackToHref)
-      )
+      if (row.type.toLowerCase().includes("macro")) {
+        upsertStoredNutritionMealPlan(
+          GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
+          buildStoredLegacyMacroPlanFromRow(row)
+        )
+        router.push(getNutritionPlanDetailHref(row.id, plansBackToHref))
+        return
+      }
+
+      router.push(getNutritionCreateMealPlanHref(plansBackToHref))
     },
     [plansBackToHref, router]
   )
@@ -1590,11 +1662,16 @@ function MealPlaniPageContent() {
         return
       }
 
-      router.push(
-        row.type.toLowerCase().includes("macro")
-          ? getNutritionCreateMacroPlanHref(plansBackToHref)
-          : getNutritionCreateMealPlanHref(plansBackToHref)
-      )
+      if (row.type.toLowerCase().includes("macro")) {
+        upsertStoredNutritionMealPlan(
+          GLOBAL_NUTRITION_MEAL_PLANS_STORAGE_SCOPE,
+          buildStoredLegacyMacroPlanFromRow(row)
+        )
+        router.push(getNutritionPlanEditorHref(row.id, plansBackToHref))
+        return
+      }
+
+      router.push(getNutritionCreateMealPlanHref(plansBackToHref))
     },
     [plansBackToHref, router]
   )

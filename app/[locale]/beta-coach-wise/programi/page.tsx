@@ -1116,61 +1116,61 @@ function TemplatesTable() {
       <ProgramsSearchBar placeholder="Isci template..." />
 
       <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-      <div className="grid grid-cols-[minmax(0,1fr)_120px_220px_56px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
-        <div>Workout</div>
-        <div className="flex items-center gap-2">
-          <Search className="size-3.5 text-neutral-400" />
-          <span>Exercises</span>
+        <div className="grid grid-cols-[minmax(0,1fr)_120px_220px_56px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+          <div>Workout</div>
+          <div className="flex items-center gap-2">
+            <Search className="size-3.5 text-neutral-400" />
+            <span>Exercises</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span>Tags</span>
+            <IconFilter className="size-3.5 text-neutral-400" />
+          </div>
+          <div />
         </div>
-        <div className="flex items-center gap-2">
-          <span>Tags</span>
-          <IconFilter className="size-3.5 text-neutral-400" />
-        </div>
-        <div />
-      </div>
 
-      {templateRows.map((template) => (
-        <div
-          key={template.id}
-          className="grid grid-cols-[minmax(0,1fr)_120px_220px_56px] items-center border-b border-neutral-200 px-5 py-3.5 last:border-b-0"
-        >
-          <div className="flex min-w-0 items-center gap-3">
-            <div
-              className={`flex size-7 shrink-0 items-center justify-center rounded-md bg-gradient-to-br ${template.tone} text-[11px] font-semibold text-white`}
-            >
-              {template.name
-                .split(" ")
-                .slice(0, 2)
-                .map((part) => part[0])
-                .join("")}
-            </div>
-            <div className="min-w-0 truncate text-[15px] font-medium text-neutral-950">
-              {template.name}
-            </div>
-          </div>
-          <div className="text-[15px] text-neutral-900">{template.exercises}</div>
-          <div className="flex flex-wrap items-center gap-2">
-            {template.tags.map((tag) => (
-              <Badge
-                key={`${template.id}-${tag}`}
-                className="rounded-sm border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50"
+        {templateRows.map((template) => (
+          <div
+            key={template.id}
+            className="grid grid-cols-[minmax(0,1fr)_120px_220px_56px] items-center border-b border-neutral-200 px-5 py-3.5 last:border-b-0"
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <div
+                className={`flex size-7 shrink-0 items-center justify-center rounded-md bg-gradient-to-br ${template.tone} text-[11px] font-semibold text-white`}
               >
-                {tag}
-              </Badge>
-            ))}
+                {template.name
+                  .split(" ")
+                  .slice(0, 2)
+                  .map((part) => part[0])
+                  .join("")}
+              </div>
+              <div className="min-w-0 truncate text-[15px] font-medium text-neutral-950">
+                {template.name}
+              </div>
+            </div>
+            <div className="text-[15px] text-neutral-900">{template.exercises}</div>
+            <div className="flex flex-wrap items-center gap-2">
+              {template.tags.map((tag) => (
+                <Badge
+                  key={`${template.id}-${tag}`}
+                  className="rounded-sm border border-blue-200 bg-blue-50 px-2 py-0.5 text-[12px] font-medium text-blue-700 shadow-none hover:bg-blue-50"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
+              >
+                <IconDots className="size-4" />
+              </Button>
+            </div>
           </div>
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon"
-              className="size-8 rounded-sm border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-700"
-            >
-              <IconDots className="size-4" />
-            </Button>
-          </div>
-        </div>
-      ))}
+        ))}
       </div>
     </div>
   )
@@ -1222,9 +1222,8 @@ function ExercisesTable() {
                     className="flex h-8 w-8 items-center justify-center rounded-sm text-neutral-400 transition-colors hover:bg-neutral-50 hover:text-brand-500"
                   >
                     <IconUser
-                      className={`size-4 ${
-                        exercise.custom ? "text-brand-500" : "text-neutral-300"
-                      }`}
+                      className={`size-4 ${exercise.custom ? "text-brand-500" : "text-neutral-300"
+                        }`}
                     />
                   </button>
                 }
@@ -1431,9 +1430,9 @@ function ProgramiPageContent() {
                     {tab.icon}
                     {tab.label}
                   </TabsTrigger>
-                  ))}
-                </TabsList>
-              </div>
+                ))}
+              </TabsList>
+            </div>
             {tabsAction}
           </div>
         </div>
@@ -1454,9 +1453,9 @@ function ProgramiPageContent() {
               <ProgramSection
                 heading={tab.label}
                 description={tab.description}
-                >
-                  {tab.value === "programs" ? (
-                    <ProgramsTable onOpenProgram={handleOpenProgram} />
+              >
+                {tab.value === "programs" ? (
+                  <ProgramsTable onOpenProgram={handleOpenProgram} />
                 ) : tab.value === "templates" ? (
                   <TemplatesTable />
                 ) : tab.value === "exercises" ? (

@@ -44,7 +44,7 @@ export default async function Page({
   const activeProgramType = getSingleSearchParam(resolvedSearchParams.programType)
   const resolvedProgramTab =
     activeProgramTab === "exercise-history" ||
-    activeProgramTab === "completed-workouts"
+      activeProgramTab === "completed-workouts"
       ? activeProgramTab
       : "calendar"
   const resolvedProgramType = activeProgramType === "fixed" ? "fixed" : "calendar"
