@@ -226,11 +226,11 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="truncate text-[14px] font-semibold text-neutral-950">{entry.name}</div>
-          <div className="mt-0.5">
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="truncate text-[14px] font-semibold text-neutral-950">{entry.name}</div>
             <span
               className={cn(
-                "inline-flex rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em]",
+                "inline-flex shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em]",
                 PROGRAM_BUILDER_MUSCLE_CLASSES[entry.muscle]
               )}
             >
