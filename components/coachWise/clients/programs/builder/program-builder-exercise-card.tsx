@@ -394,7 +394,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.max(parameter.min, currentValue - parameter.step)
                             )
                           }}
-                          className="size-6 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
+                          className="size-6 rounded-md border-neutral-300 bg-neutral-50 text-neutral-800 shadow-none hover:border-neutral-400 hover:bg-neutral-100"
                         >
                           <Minus className="size-3" />
                         </Button>
@@ -415,7 +415,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.min(parameter.max, currentValue + parameter.step)
                             )
                           }}
-                          className="size-6 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
+                          className="size-6 rounded-md border-neutral-300 bg-neutral-50 text-neutral-800 shadow-none hover:border-neutral-400 hover:bg-neutral-100"
                         >
                           <Plus className="size-3" />
                         </Button>
