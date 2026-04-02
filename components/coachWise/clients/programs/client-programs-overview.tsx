@@ -26,7 +26,10 @@ import {
   cloneStoredProgramPlan,
   createInitialStoredProgramPlans,
 } from "@/lib/programs/program-plan-storage.utils"
-import { programBuilderPresets } from "@/lib/programs/program-builder.utils"
+import {
+  formatProgramPresetSummary,
+  programBuilderPresets,
+} from "@/lib/programs/program-builder.utils"
 import type { StoredProgramPlan } from "@/types"
 
 function buildNextDuplicatedProgramTitle(title: string, existingTitles: string[]) {
@@ -159,7 +162,7 @@ function ClientProgramsOverviewComponent({
                   presetId: preset.id,
                 })}
                 title={preset.title}
-                description={preset.description}
+                description={formatProgramPresetSummary(preset)}
                 className="md:w-[15.5rem]"
               />
             ))}

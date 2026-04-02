@@ -47,6 +47,23 @@ export function getProgramBuilderPreset(
   return programBuilderPresets.find((preset) => preset.id === presetId)
 }
 
+function formatProgramPresetWorkoutLabel(workout: string) {
+  return workout
+    .replace(/\b1\b/g, "A")
+    .replace(/\b2\b/g, "B")
+    .replace(/\b3\b/g, "C")
+    .replace(/\b4\b/g, "D")
+}
+
+export function formatProgramPresetSummary(preset: ProgramBuilderPreset) {
+  const dayLabel = preset.workouts.length === 1 ? "dan" : "dni"
+  const workoutsLabel = preset.workouts
+    .map(formatProgramPresetWorkoutLabel)
+    .join(", ")
+
+  return `${preset.workouts.length} ${dayLabel} · ${workoutsLabel}`
+}
+
 export function createProgramBuilderInitialProgram(
   basePrograms: FixedProgramEditorProgram[],
   presetId?: string | null

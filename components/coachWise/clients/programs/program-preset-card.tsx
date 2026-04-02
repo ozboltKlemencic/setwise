@@ -48,7 +48,7 @@ export const ProgramPresetCard = React.memo(
           <span className="w-full truncate text-[14px] font-medium text-neutral-950">
             {title}
           </span>
-          <span className="line-clamp-2 w-full whitespace-normal break-words text-[12px] leading-5 text-neutral-500">
+          <span className="block w-full truncate text-[12px] leading-5 text-neutral-500">
             {description}
           </span>
         </>
