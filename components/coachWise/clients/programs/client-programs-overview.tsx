@@ -163,7 +163,7 @@ function ClientProgramsOverviewComponent({
                 })}
                 title={preset.title}
                 description={formatProgramPresetSummary(preset)}
-                className="md:w-[15.5rem]"
+                className="md:w-[14.25rem]"
               />
             ))}
           </div>

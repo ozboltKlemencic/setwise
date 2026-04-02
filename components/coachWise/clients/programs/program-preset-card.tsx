@@ -38,7 +38,7 @@ export const ProgramPresetCard = React.memo(
       const { title, description, className } = allProps
       const sharedClassName = cn(
         secondaryActionButtonClassName,
-        "flex h-auto min-h-20 w-full min-w-0 flex-col items-start justify-start gap-1 overflow-hidden rounded-xl px-4 py-3 text-left",
+        "flex h-auto min-h-[4.5rem] w-full min-w-0 flex-col items-start justify-start gap-0.5 overflow-hidden rounded-xl px-4 py-2.5 text-left",
         "bg-neutral-100/85 hover:border-brand-300/80 hover:bg-brand-50/35 hover:text-neutral-800",
         className
       )
