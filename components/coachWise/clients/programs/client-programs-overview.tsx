@@ -12,6 +12,7 @@ import {
 } from "@/components/coachWise/programs/exercise-history-panel"
 import {
   ProgramPlansTable,
+  type ProgramPlanStatus,
   type ProgramPlansTableRow,
 } from "@/components/coachWise/tables/program-plans-table"
 
@@ -21,6 +22,7 @@ function cloneProgramRow(row: ProgramPlansTableRow, title: string): ProgramPlans
     title,
     description: row.description,
     workouts: [...row.workouts],
+    status: row.status,
     program: {
       ...row.program,
       id: globalThis.crypto?.randomUUID?.() ?? `program-editor-${Date.now()}-${Math.round(Math.random() * 10000)}`,
@@ -53,14 +55,23 @@ function buildNextDuplicatedProgramTitle(title: string, existingTitles: string[]
   return nextTitle
 }
 
+function deriveProgramStatus(
+  program: ReturnType<typeof getFixedPrograms>[number],
+  index: number
+): ProgramPlanStatus {
+  if (program.workouts.length === 0) return "Onboarding"
+  return index % 3 === 2 ? "Paused" : "Active"
+}
+
 function ClientProgramsOverviewComponent() {
   const initialRows = React.useMemo<ProgramPlansTableRow[]>(
     () =>
-      getFixedPrograms().map((program) => ({
+      getFixedPrograms().map((program, index) => ({
         id: program.id,
         title: program.title,
         description: program.description,
         workouts: program.workouts,
+        status: deriveProgramStatus(program, index),
         program,
       })),
     []

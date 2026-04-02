@@ -12,11 +12,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+export type ProgramPlanStatus = "Onboarding" | "Active" | "Paused"
+
 export type ProgramPlansTableRow = {
   id: string
   title: string
   description: string
   workouts: string[]
+  status: ProgramPlanStatus
   program: FixedProgramEditorProgram
 }
 
@@ -51,9 +54,10 @@ function ProgramPlansTableComponent({
 
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <div className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_96px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_140px_96px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
         <div>Program</div>
         <div>Workouts</div>
+        <div>Status</div>
         <div className="text-center">Action</div>
       </div>
 
@@ -61,7 +65,7 @@ function ProgramPlansTableComponent({
         {rows.map((row) => (
           <div
             key={row.id}
-            className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_96px] items-start gap-4 border-b border-neutral-200 px-5 py-4 last:border-b-0"
+            className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_140px_96px] items-start gap-4 border-b border-neutral-200 px-5 py-4 last:border-b-0"
           >
             <FixedProgramEditorDialog
               program={row.program}
@@ -95,6 +99,12 @@ function ProgramPlansTableComponent({
                   No workouts
                 </Badge>
               )}
+            </div>
+
+            <div className="flex min-h-10 items-center">
+              <Badge variant="outline" className="px-1.5 text-muted-foreground">
+                {row.status}
+              </Badge>
             </div>
 
             <div className="flex self-center items-center justify-center gap-2">
