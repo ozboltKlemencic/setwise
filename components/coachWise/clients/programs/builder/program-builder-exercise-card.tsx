@@ -191,6 +191,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
   index,
 }: ProgramBuilderExerciseCardProps) {
   const [showAdvancedOptions, setShowAdvancedOptions] = React.useState(false)
+  const editorRef = React.useRef<HTMLDivElement | null>(null)
   const isEditingExercise = builder.editTarget?.uid === entry.uid
   const editingSet =
     isEditingExercise && builder.editTarget ? entry.sets[builder.editTarget.si] : null
@@ -206,6 +207,31 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
   React.useEffect(() => {
     setShowAdvancedOptions(false)
   }, [editingSetIndex, isEditingExercise])
+
+  React.useEffect(() => {
+    if (!isEditingExercise) {
+      return
+    }
+
+    function handleDocumentMouseDown(event: MouseEvent) {
+      const target = event.target
+      if (!(target instanceof Node)) {
+        return
+      }
+
+      if (editorRef.current?.contains(target)) {
+        return
+      }
+
+      builder.closeSetEditor()
+    }
+
+    document.addEventListener("mousedown", handleDocumentMouseDown)
+
+    return () => {
+      document.removeEventListener("mousedown", handleDocumentMouseDown)
+    }
+  }, [builder, isEditingExercise])
 
   return (
     <div
@@ -287,7 +313,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
       </div>
 
       {isEditingExercise ? (
-        <div className="border-t border-neutral-200 px-4 py-3">
+        <div ref={editorRef} className="border-t border-neutral-200 px-4 py-3">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
             <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Range</span>
             {builder.myReps.map((range) => (

@@ -247,6 +247,21 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     [commitRange, editTarget]
   )
 
+  const closeSetEditor = React.useCallback(() => {
+    if (!editTarget) {
+      return
+    }
+
+    const parsedValue = parseProgramBuilderRepRange(editValue)
+    if (parsedValue) {
+      commitRange(editTarget.uid, editTarget.si, parsedValue)
+    }
+
+    setEditTarget(null)
+    setEditValue("")
+    setIntensifierEditor(null)
+  }, [commitRange, editTarget, editValue])
+
   const handleSetInputBlur = React.useCallback(() => {
     if (skipBlurRef.current) {
       skipBlurRef.current = false
@@ -271,8 +286,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
 
       if (event.key === "Escape") {
         event.preventDefault()
-        setEditTarget(null)
-        setEditValue("")
+        closeSetEditor()
         return
       }
 
@@ -295,11 +309,10 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
         setEditTarget({ uid: editTarget.uid, si: nextSetIndex })
         setEditValue(formatProgramBuilderRepRange(nextSet))
       } else {
-        setEditTarget(null)
-        setEditValue("")
+        closeSetEditor()
       }
     },
-    [activeDay, commitRange, editTarget, editValue]
+    [activeDay, closeSetEditor, commitRange, editTarget, editValue]
   )
 
   const addSet = React.useCallback(
@@ -721,6 +734,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     addExercise,
     removeExercise,
     openSetEditor,
+    closeSetEditor,
     handleSetInputBlur,
     handleSetInputKeyDown,
     applyQuickRepRange,
