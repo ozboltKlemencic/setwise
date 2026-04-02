@@ -25,7 +25,7 @@ export function ProgramBuilderWorkspace({
       </div>
 
       <div className="flex min-h-[calc(100vh-var(--header-height)-3rem)] min-w-0 flex-1 flex-col border-t border-neutral-200 bg-neutral-50">
-        <div className="border-b border-neutral-200 bg-neutral-50">
+        <div className="bg-neutral-50">
           <ProgramBuilderDayTabs builder={builder} />
         </div>
 

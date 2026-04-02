@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Plus } from "lucide-react"
+import { Copy, Plus, Sparkles, Trash2 } from "lucide-react"
 
+import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import { OverflowActionsMenu } from "@/components/coachWise/overflow-actions-menu"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -15,6 +17,8 @@ type ProgramBuilderDayTabsProps = {
 export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
   builder,
 }: ProgramBuilderDayTabsProps) {
+  const deleteDayTriggerRefs = React.useRef<Record<string, HTMLButtonElement | null>>({})
+
   return (
     <div className="flex items-center gap-2 overflow-x-auto px-4 py-3">
       {builder.days.map((day, index) => (
@@ -23,11 +27,8 @@ export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
             <div className="h-8 w-1 shrink-0 rounded-full bg-brand-500" />
           ) : null}
 
-          <button
-            type="button"
+          <div
             draggable
-            onClick={() => builder.setActiveDayIndex(index)}
-            onDoubleClick={() => builder.setRenamingDayIndex(index)}
             onDragStart={(event) => {
               event.dataTransfer.effectAllowed = "move"
               event.dataTransfer.setData("text/plain", day.id)
@@ -46,7 +47,7 @@ export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
               builder.setDragDayOverIndex(null)
             }}
             className={cn(
-              "flex h-8 shrink-0 cursor-grab items-center rounded-md border px-4 text-[13px] font-medium transition-colors active:cursor-grabbing",
+              "relative flex h-8 shrink-0 cursor-grab items-center rounded-md border pr-8 pl-4 text-[13px] font-medium transition-colors active:cursor-grabbing",
               index === builder.activeDayIndex
                 ? "border-brand-300 bg-brand-50 text-brand-700"
                 : "border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-50",
@@ -54,23 +55,92 @@ export const ProgramBuilderDayTabs = React.memo(function ProgramBuilderDayTabs({
               builder.draggedDayIndex === index && "opacity-40"
             )}
           >
-            {builder.renamingDayIndex === index ? (
-              <Input
-                autoFocus
-                value={day.name}
-                onChange={(event) => builder.setDayName(index, event.target.value)}
-                onBlur={() => builder.setRenamingDayIndex(null)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    builder.setRenamingDayIndex(null)
+            <button
+              type="button"
+              onClick={() => builder.setActiveDayIndex(index)}
+              onDoubleClick={() => builder.setRenamingDayIndex(index)}
+              className="min-w-0 truncate text-left"
+            >
+              {builder.renamingDayIndex === index ? (
+                <Input
+                  autoFocus
+                  value={day.name}
+                  onChange={(event) => builder.setDayName(index, event.target.value)}
+                  onBlur={() => builder.setRenamingDayIndex(null)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      builder.setRenamingDayIndex(null)
+                    }
+                  }}
+                  onClick={(event) => event.stopPropagation()}
+                  className="h-5! min-w-[84px] border-0 bg-transparent px-0 text-[13px] font-medium shadow-none focus-visible:ring-0"
+                />
+              ) : (
+                day.name
+              )}
+            </button>
+
+            {builder.renamingDayIndex !== index ? (
+              <>
+                <OverflowActionsMenu
+                  triggerLabel={`Open actions for ${day.name}`}
+                  items={[
+                    {
+                      id: "duplicate",
+                      label: "Duplicate workout",
+                      icon: Copy,
+                      onSelect: () => builder.duplicateDay(index),
+                    },
+                    {
+                      id: "template",
+                      label: "Save as template",
+                      icon: Sparkles,
+                      disabled: day.isRest || day.exercises.length === 0,
+                      onSelect: () => {
+                        if (day.isRest || day.exercises.length === 0) {
+                          return
+                        }
+                        builder.saveDayAsTemplate(index)
+                      },
+                    },
+                    {
+                      id: "delete",
+                      label: "Delete workout",
+                      icon: Trash2,
+                      variant: "destructive",
+                      disabled: builder.days.length <= 1,
+                      onSelect: () => {
+                        if (builder.days.length <= 1) {
+                          return
+                        }
+                        deleteDayTriggerRefs.current[day.id]?.click()
+                      },
+                    },
+                  ]}
+                  triggerClassName="absolute top-1/2 right-1 z-10 -translate-y-1/2 cursor-pointer border-transparent bg-transparent opacity-100 shadow-none hover:border-transparent hover:bg-transparent hover:text-foreground data-[state=open]:border-transparent data-[state=open]:bg-transparent data-[state=open]:opacity-100"
+                />
+
+                <CoachWiseConfirmationDialog
+                  title="Delete this workout?"
+                  description={`${day.name} will be removed from this program. This action can't be undone.`}
+                  confirmLabel="Delete workout"
+                  variant="destructive"
+                  onConfirm={() => builder.deleteDay(index)}
+                  trigger={
+                    <button
+                      ref={(node) => {
+                        deleteDayTriggerRefs.current[day.id] = node
+                      }}
+                      type="button"
+                      tabIndex={-1}
+                      aria-hidden="true"
+                      className="sr-only"
+                    />
                   }
-                }}
-                className="h-6 min-w-[84px] border-0 bg-transparent px-0 text-[13px] font-medium shadow-none focus-visible:ring-0"
-              />
-            ) : (
-              day.name
-            )}
-          </button>
+                />
+              </>
+            ) : null}
+          </div>
         </React.Fragment>
       ))}
 

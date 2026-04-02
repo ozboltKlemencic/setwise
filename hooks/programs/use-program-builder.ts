@@ -474,14 +474,15 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     ])
   }, [])
 
-  const duplicateActiveDay = React.useCallback(() => {
-    if (!activeDay) {
+  const duplicateDay = React.useCallback((dayIndex: number) => {
+    const sourceDay = days[dayIndex]
+    if (!sourceDay) {
       return
     }
 
-    const nextDay = cloneProgramBuilderDay(activeDay)
+    const nextDay = cloneProgramBuilderDay(sourceDay)
     nextDay.id = createProgramBuilderId("program-day")
-    nextDay.name = `${activeDay.name} B`
+    nextDay.name = `${sourceDay.name} B`
     nextDay.exercises = nextDay.exercises.map((exercise) => ({
       ...exercise,
       uid: createProgramBuilderId("program-exercise"),
@@ -489,35 +490,62 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
 
     setDays((currentDays) => {
       const nextDays = [...currentDays]
-      nextDays.splice(activeDayIndex + 1, 0, nextDay)
+      nextDays.splice(dayIndex + 1, 0, nextDay)
       return nextDays
     })
-    setActiveDayIndex(activeDayIndex + 1)
-  }, [activeDay, activeDayIndex])
+    setActiveDayIndex(dayIndex + 1)
+  }, [days])
 
-  const deleteActiveDay = React.useCallback(() => {
+  const deleteDay = React.useCallback((dayIndex: number) => {
     if (days.length <= 1) {
       return
     }
 
-    setDays((currentDays) => currentDays.filter((_, index) => index !== activeDayIndex))
-    setActiveDayIndex((currentIndex) => Math.max(0, currentIndex - 1))
-  }, [activeDayIndex, days.length])
+    setDays((currentDays) => currentDays.filter((_, index) => index !== dayIndex))
+    setActiveDayIndex((currentIndex) => {
+      if (currentIndex === dayIndex) {
+        return Math.max(0, currentIndex - 1)
+      }
+      if (dayIndex < currentIndex) {
+        return currentIndex - 1
+      }
+      return currentIndex
+    })
+  }, [days.length])
 
-  const saveActiveDayAsTemplate = React.useCallback(() => {
-    if (!activeDay || activeDay.isRest || activeDay.exercises.length === 0) {
+  const saveDayAsTemplate = React.useCallback((dayIndex: number) => {
+    const sourceDay = days[dayIndex]
+    if (!sourceDay || sourceDay.isRest || sourceDay.exercises.length === 0) {
       return
     }
 
     setDayTemplates((currentTemplates) => [
       {
         id: createProgramBuilderId("program-template"),
-        name: activeDay.name,
-        exercises: activeDay.exercises.map(cloneProgramBuilderExercise),
+        name: sourceDay.name,
+        exercises: sourceDay.exercises.map(cloneProgramBuilderExercise),
       },
       ...currentTemplates,
     ])
-  }, [activeDay])
+  }, [days])
+
+  const duplicateActiveDay = React.useCallback(() => {
+    if (!activeDay) {
+      return
+    }
+    duplicateDay(activeDayIndex)
+  }, [activeDay, activeDayIndex, duplicateDay])
+
+  const deleteActiveDay = React.useCallback(() => {
+    deleteDay(activeDayIndex)
+  }, [activeDayIndex, deleteDay])
+
+  const saveActiveDayAsTemplate = React.useCallback(() => {
+    if (!activeDay) {
+      return
+    }
+    saveDayAsTemplate(activeDayIndex)
+  }, [activeDay, activeDayIndex, saveDayAsTemplate])
 
   const applyTemplate = React.useCallback(
     (template: ProgramBuilderDayTemplate) => {
@@ -708,6 +736,9 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     setRir,
     addDay,
     addRestDay,
+    duplicateDay,
+    deleteDay,
+    saveDayAsTemplate,
     duplicateActiveDay,
     deleteActiveDay,
     saveActiveDayAsTemplate,
