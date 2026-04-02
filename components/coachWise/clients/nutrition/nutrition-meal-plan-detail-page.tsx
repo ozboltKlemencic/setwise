@@ -344,7 +344,7 @@ function NutritionMealDetailCard({
   meal: NutritionMealPlanDetailMeal
 }) {
   return (
-    <Card className="overflow-hidden rounded-sm py-0! border-neutral-200  shadow-none">
+    <Card className="overflow-hidden rounded-sm py-0! space-y-0! pt-0! border-neutral-200 bg-transparent shadow-none">
       <div className="flex w-full items-center justify-between gap-4 border-b border-neutral-200 bg-neutral-100/70 px-4 py-3 text-left">
         <div className="flex min-w-0 items-center gap-3">
           <span className="truncate text-[15px] font-semibold text-neutral-950">
@@ -371,12 +371,12 @@ function NutritionMealDetailCard({
         </div>
       </div>
 
-      <div className="space-y-3  p-4 md:p-5">
+      <div className="space-y-3  px-4 md:px-5 ">
         {meal.ingredients.map((ingredient) => (
           <div
             key={ingredient.id}
             className={cn(
-              "flex items-center justify-between gap-4 rounded-xl border border-neutral-200  px-4 py-4"
+              "flex items-center justify-between gap-4 rounded-xl border border-neutral-200 bg-white px-4 py-4"
             )}
           >
             <div className="min-w-0 space-y-1">
