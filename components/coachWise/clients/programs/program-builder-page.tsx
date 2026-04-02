@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
-import {
-  FixedProgramEditorBuilder,
-} from "@/components/coachWise/programs/exercise-history-panel"
 import type { FixedProgramEditorProgram } from "@/types"
 
 type ProgramBuilderPageViewProps = {
   initialProgram: FixedProgramEditorProgram
   backHref: string
 }
+
+const ProgramBuilderWorkspace = React.lazy(async () => {
+  const module = await import("@/components/coachWise/clients/programs/builder")
+
+  return { default: module.ProgramBuilderWorkspace }
+})
 
 export function ProgramBuilderPageView({
   initialProgram,
@@ -83,7 +86,15 @@ export function ProgramBuilderPageView({
       />
 
       <div className="min-h-[calc(100vh-var(--header-height)-3rem)] bg-neutral-50">
-        <FixedProgramEditorBuilder program={resolvedProgram} />
+        <React.Suspense
+          fallback={
+            <div className="flex min-h-[calc(100vh-var(--header-height)-3rem)] items-center justify-center text-[14px] text-neutral-500">
+              Loading program builder...
+            </div>
+          }
+        >
+          <ProgramBuilderWorkspace initialProgram={resolvedProgram} />
+        </React.Suspense>
       </div>
     </div>
   )
