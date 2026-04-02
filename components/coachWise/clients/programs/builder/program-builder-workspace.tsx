@@ -23,10 +23,12 @@ export function ProgramBuilderWorkspace({
   const builder = useProgramBuilder(initialProgram)
 
   return (
-    <div className="grid min-h-[calc(100vh-var(--header-height)-3rem)] grid-cols-[320px_minmax(0,1fr)] overflow-hidden border-t border-neutral-200 bg-neutral-50">
-      <ProgramBuilderSidebar builder={builder} />
+    <div className="relative xl:flex xl:items-start">
+      <div className="xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[320px] xl:flex xl:flex-none xl:flex-col xl:self-start">
+        <ProgramBuilderSidebar builder={builder} />
+      </div>
 
-      <div className="flex min-h-0 flex-col bg-neutral-50">
+      <div className="flex min-h-[calc(100vh-var(--header-height)-3rem)] min-w-0 flex-1 flex-col border-t border-neutral-200 bg-neutral-50">
         <div className="border-b border-neutral-200 bg-white">
           <div className="px-4 py-4">
             <textarea

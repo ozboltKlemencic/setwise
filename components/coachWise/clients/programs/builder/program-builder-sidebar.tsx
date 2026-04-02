@@ -17,7 +17,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
   builder,
 }: ProgramBuilderSidebarProps) {
   return (
-    <div className="flex min-h-0 flex-col border-r border-neutral-200 bg-neutral-50">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden border-r border-neutral-200 bg-neutral-50">
       <div className="border-b border-neutral-200 bg-neutral-50 px-2">
         <div className="grid grid-cols-2 gap-1.5">
           {(["exercises", "templates"] as const).map((tab) => (
@@ -79,7 +79,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
 
         {builder.leftTab === "exercises" ? (
           <div className="mt-4 min-h-0 flex-1 overflow-hidden">
-            <div className="space-y-2 overflow-y-auto pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
+            <div className="space-y-2 xl:-mr-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:[overflow-y:overlay] xl:pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
               {builder.filteredExercises.map((exercise) => (
                 <div
                   key={exercise.id}
@@ -130,7 +130,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
           </div>
         ) : (
           <div className="mt-4 min-h-0 flex-1 overflow-hidden">
-            <div className="space-y-3 overflow-y-auto pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
+            <div className="space-y-3 xl:-mr-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:[overflow-y:overlay] xl:pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
               {builder.filteredTemplates.map((template) => (
                 <div
                   key={template.id}
