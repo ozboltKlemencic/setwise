@@ -249,6 +249,10 @@ export function NutritionPlansTable({
   )
 
   React.useEffect(() => {
+    setCurrentPage(1)
+  }, [rows])
+
+  React.useEffect(() => {
     setCurrentPage((current) => Math.min(current, totalPages))
   }, [totalPages])
 

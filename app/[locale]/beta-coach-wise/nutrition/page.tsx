@@ -619,10 +619,14 @@ function NutritionPageTableActionButtons({
 
 function MealPlannerSearchBar({
   placeholder,
+  value,
+  onValueChange,
   action,
   inputWrapperClassName,
 }: {
   placeholder: string
+  value: string
+  onValueChange: (value: string) => void
   action?: React.ReactNode
   inputWrapperClassName?: string
 }) {
@@ -631,6 +635,8 @@ function MealPlannerSearchBar({
       <div className={cn("relative w-full max-w-sm", inputWrapperClassName)}>
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
         <Input
+          value={value}
+          onChange={(event) => onValueChange(event.target.value)}
           placeholder={placeholder}
           className="h-9 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
         />
@@ -1084,12 +1090,16 @@ function AddFoodDialog({
 
 function PlansTable({
   rows: sourceRows,
+  searchValue,
+  onSearchChange,
   onOpenRow,
   onEditRow,
   onDuplicateRow,
   onDeleteRow,
 }: {
   rows: MealPlanRow[]
+  searchValue: string
+  onSearchChange: (value: string) => void
   onOpenRow: (row: MealPlanRow) => void
   onEditRow: (row: MealPlanRow) => void
   onDuplicateRow: (row: MealPlanRow) => void
@@ -1131,12 +1141,31 @@ function PlansTable({
       })),
     [planClientsById, sourceRows]
   )
+  const normalizedSearchValue = searchValue.trim().toLowerCase()
+  const filteredTableRows = React.useMemo(() => {
+    if (!normalizedSearchValue) {
+      return tableRows
+    }
+
+    return tableRows.filter((row) => {
+      const clientNames = row.clients?.map((client) => client.name).join(" ") ?? ""
+      return [row.title, row.subtitle, row.type, clientNames]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedSearchValue)
+    })
+  }, [normalizedSearchValue, tableRows])
 
   return (
     <div className="space-y-4">
-      <MealPlannerSearchBar placeholder="Search plans" inputWrapperClassName="max-w-[17rem]" />
+      <MealPlannerSearchBar
+        placeholder="Search plans"
+        value={searchValue}
+        onValueChange={onSearchChange}
+        inputWrapperClassName="max-w-[17rem]"
+      />
       <NutritionPlansTable
-        rows={tableRows}
+        rows={filteredTableRows}
         onOpenRow={(row) => {
           const sourceRow = sourceRows.find((entry) => entry.id === row.id)
           if (!sourceRow) {
@@ -1172,23 +1201,47 @@ function PlansTable({
 
 function MealsTable({
   rows,
+  searchValue,
+  onSearchChange,
   onEditRow,
   onDeleteRow,
 }: {
   rows: MealRow[]
+  searchValue: string
+  onSearchChange: (value: string) => void
   onEditRow: (row: MealRow) => void
   onDeleteRow: (row: MealRow) => void
 }) {
+  const normalizedSearchValue = searchValue.trim().toLowerCase()
+  const filteredRows = React.useMemo(() => {
+    if (!normalizedSearchValue) {
+      return rows
+    }
+
+    return rows.filter((row) =>
+      [row.name, row.subtitle, row.foods.join(" ")]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedSearchValue)
+    )
+  }, [normalizedSearchValue, rows])
   const [currentPage, setCurrentPage] = React.useState(1)
-  const totalPages = Math.max(1, Math.ceil(rows.length / NUTRITION_TABLE_PAGE_SIZE))
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredRows.length / NUTRITION_TABLE_PAGE_SIZE)
+  )
   const paginatedRows = React.useMemo(
     () =>
-      rows.slice(
+      filteredRows.slice(
         (currentPage - 1) * NUTRITION_TABLE_PAGE_SIZE,
         currentPage * NUTRITION_TABLE_PAGE_SIZE
       ),
-    [currentPage, rows]
+    [currentPage, filteredRows]
   )
+
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [filteredRows])
 
   React.useEffect(() => {
     setCurrentPage((current) => Math.min(current, totalPages))
@@ -1196,7 +1249,12 @@ function MealsTable({
 
   return (
     <div className="space-y-4">
-      <MealPlannerSearchBar placeholder="Search meals" inputWrapperClassName="max-w-[17rem]" />
+      <MealPlannerSearchBar
+        placeholder="Search meals"
+        value={searchValue}
+        onValueChange={onSearchChange}
+        inputWrapperClassName="max-w-[17rem]"
+      />
       <div className={nutritionPageTableWrapperClassName}>
         <Table>
           <TableHeader className="bg-muted">
@@ -1216,51 +1274,62 @@ function MealsTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedRows.map((row) => (
-              <TableRow
-                key={row.id}
-                className="cursor-pointer bg-white hover:bg-neutral-50/60"
-              >
-                <TableCell className="py-3 pl-4 lg:pl-5">
-                  <div className="space-y-0.5">
-                    <div className="text-[14px] font-medium text-neutral-950">
-                      {row.name}
+            {paginatedRows.length ? (
+              paginatedRows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="cursor-pointer bg-white hover:bg-neutral-50/60"
+                >
+                  <TableCell className="py-3 pl-4 lg:pl-5">
+                    <div className="space-y-0.5">
+                      <div className="text-[14px] font-medium text-neutral-950">
+                        {row.name}
+                      </div>
+                      <div className="text-[12px] text-neutral-500">
+                        {row.subtitle}
+                      </div>
                     </div>
-                    <div className="text-[12px] text-neutral-500">
-                      {row.subtitle}
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3">
+                    <MealTableFoodsCell foods={row.foods} />
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3">
+                    <div className="flex justify-center">
+                      <NutritionCaloriesDonut
+                        row={{
+                          id: row.id,
+                          title: row.name,
+                          subtitle: "",
+                          type: "Meal",
+                          calories: row.calories,
+                          segments: buildNutritionPlanSegments({
+                            protein: row.protein,
+                            carbs: row.carbs,
+                            fats: row.fats,
+                          }),
+                        }}
+                      />
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell className="px-3.5 py-3">
-                  <MealTableFoodsCell foods={row.foods} />
-                </TableCell>
-                <TableCell className="px-3.5 py-3">
-                  <div className="flex justify-center">
-                    <NutritionCaloriesDonut
-                      row={{
-                        id: row.id,
-                        title: row.name,
-                        subtitle: "",
-                        type: "Meal",
-                        calories: row.calories,
-                        segments: buildNutritionPlanSegments({
-                          protein: row.protein,
-                          carbs: row.carbs,
-                          fats: row.fats,
-                        }),
-                      }}
+                  </TableCell>
+                  <TableCell className="px-3 py-3 pr-5">
+                    <NutritionPageTableActionButtons
+                      itemLabel="meal"
+                      onEdit={() => onEditRow(row)}
+                      onDelete={() => onDeleteRow(row)}
                     />
-                  </div>
-                </TableCell>
-                <TableCell className="px-3 py-3 pr-5">
-                  <NutritionPageTableActionButtons
-                    itemLabel="meal"
-                    onEdit={() => onEditRow(row)}
-                    onDelete={() => onDeleteRow(row)}
-                  />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow className="hover:bg-transparent">
+                <TableCell
+                  colSpan={4}
+                  className="py-8 text-center text-[13px] text-neutral-500"
+                >
+                  No meals found.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </div>
@@ -1280,23 +1349,47 @@ function MealsTable({
 
 function FoodTable({
   rows,
+  searchValue,
+  onSearchChange,
   onEditRow,
   onDeleteRow,
 }: {
   rows: FoodRow[]
+  searchValue: string
+  onSearchChange: (value: string) => void
   onEditRow: (row: FoodRow) => void
   onDeleteRow: (row: FoodRow) => void
 }) {
+  const normalizedSearchValue = searchValue.trim().toLowerCase()
+  const filteredRows = React.useMemo(() => {
+    if (!normalizedSearchValue) {
+      return rows
+    }
+
+    return rows.filter((row) =>
+      [row.name, row.category]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedSearchValue)
+    )
+  }, [normalizedSearchValue, rows])
   const [currentPage, setCurrentPage] = React.useState(1)
-  const totalPages = Math.max(1, Math.ceil(rows.length / NUTRITION_TABLE_PAGE_SIZE))
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredRows.length / NUTRITION_TABLE_PAGE_SIZE)
+  )
   const paginatedRows = React.useMemo(
     () =>
-      rows.slice(
+      filteredRows.slice(
         (currentPage - 1) * NUTRITION_TABLE_PAGE_SIZE,
         currentPage * NUTRITION_TABLE_PAGE_SIZE
       ),
-    [currentPage, rows]
+    [currentPage, filteredRows]
   )
+
+  React.useEffect(() => {
+    setCurrentPage(1)
+  }, [filteredRows])
 
   React.useEffect(() => {
     setCurrentPage((current) => Math.min(current, totalPages))
@@ -1304,7 +1397,12 @@ function FoodTable({
 
   return (
     <div className="space-y-4">
-      <MealPlannerSearchBar placeholder="Search food" inputWrapperClassName="max-w-[17rem]" />
+      <MealPlannerSearchBar
+        placeholder="Search food"
+        value={searchValue}
+        onValueChange={onSearchChange}
+        inputWrapperClassName="max-w-[17rem]"
+      />
       <div className={nutritionPageTableWrapperClassName}>
         <Table>
           <TableHeader className="bg-muted">
@@ -1321,39 +1419,50 @@ function FoodTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedRows.map((row) => (
-              <TableRow
-                key={row.id}
-                className="cursor-pointer bg-white hover:bg-neutral-50/60"
-              >
-                <TableCell className="py-3 pl-4 lg:pl-5">
-                  <div className="space-y-0.5">
-                    <div className="text-[14px] font-medium text-neutral-950">
-                      {row.name}
+            {paginatedRows.length ? (
+              paginatedRows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  className="cursor-pointer bg-white hover:bg-neutral-50/60"
+                >
+                  <TableCell className="py-3 pl-4 lg:pl-5">
+                    <div className="space-y-0.5">
+                      <div className="text-[14px] font-medium text-neutral-950">
+                        {row.name}
+                      </div>
+                      <div className="text-[12px] text-neutral-500">
+                        <span>{row.calories} kcal</span>
+                        <span className="px-1.5 text-neutral-300">-</span>
+                        <span className="text-emerald-400">P{row.protein}g</span>
+                        <span className="px-1.5 text-neutral-300">-</span>
+                        <span className="text-sky-400">C{row.carbs}g</span>
+                        <span className="px-1.5 text-neutral-300">-</span>
+                        <span className="text-amber-400">F{row.fats}g</span>
+                      </div>
                     </div>
-                    <div className="text-[12px] text-neutral-500">
-                      <span>{row.calories} kcal</span>
-                      <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-emerald-400">P{row.protein}g</span>
-                      <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-sky-400">C{row.carbs}g</span>
-                      <span className="px-1.5 text-neutral-300">-</span>
-                      <span className="text-amber-400">F{row.fats}g</span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="px-3.5 py-3 text-[14px] text-neutral-700">
-                  {row.category}
-                </TableCell>
-                <TableCell className="px-3 py-3 pr-5">
-                  <NutritionPageTableActionButtons
-                    itemLabel="food"
-                    onEdit={() => onEditRow(row)}
-                    onDelete={() => onDeleteRow(row)}
-                  />
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3 text-[14px] text-neutral-700">
+                    {row.category}
+                  </TableCell>
+                  <TableCell className="px-3 py-3 pr-5">
+                    <NutritionPageTableActionButtons
+                      itemLabel="food"
+                      onEdit={() => onEditRow(row)}
+                      onDelete={() => onDeleteRow(row)}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow className="hover:bg-transparent">
+                <TableCell
+                  colSpan={3}
+                  className="py-8 text-center text-[13px] text-neutral-500"
+                >
+                  No food found.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </div>
@@ -1382,6 +1491,9 @@ function MealPlaniPageContent() {
     return nextSearchParams
   }, [searchParams])
   const [planRows, setPlanRows] = React.useState(initialMealPlanRows)
+  const [plansSearchValue, setPlansSearchValue] = React.useState("")
+  const [mealsSearchValue, setMealsSearchValue] = React.useState("")
+  const [foodSearchValue, setFoodSearchValue] = React.useState("")
   const [editingMeal, setEditingMeal] = React.useState<MealRow | null>(null)
   const [editingFood, setEditingFood] = React.useState<FoodRow | null>(null)
   const [isCreateFoodDialogOpen, setIsCreateFoodDialogOpen] = React.useState(false)
@@ -1678,6 +1790,8 @@ function MealPlaniPageContent() {
         <TabsContent value="plans" className="mt-0 p-4">
           <PlansTable
             rows={allPlanRows}
+            searchValue={plansSearchValue}
+            onSearchChange={setPlansSearchValue}
             onOpenRow={handleOpenPlan}
             onEditRow={handleEditPlan}
             onDuplicateRow={handleDuplicatePlan}
@@ -1687,6 +1801,8 @@ function MealPlaniPageContent() {
         <TabsContent value="meals" className="mt-0 p-4">
           <MealsTable
             rows={mealRows}
+            searchValue={mealsSearchValue}
+            onSearchChange={setMealsSearchValue}
             onEditRow={setEditingMeal}
             onDeleteRow={handleDeleteMeal}
           />
@@ -1694,6 +1810,8 @@ function MealPlaniPageContent() {
         <TabsContent value="food" className="mt-0 p-4">
           <FoodTable
             rows={foodRows}
+            searchValue={foodSearchValue}
+            onSearchChange={setFoodSearchValue}
             onEditRow={setEditingFood}
             onDeleteRow={handleDeleteFood}
           />
