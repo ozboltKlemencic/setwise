@@ -225,7 +225,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
           <GripVertical className="size-3.5" />
         </div>
 
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 pl-1">
           <div className="flex min-w-0 items-center gap-2">
             <div className="truncate text-[14px] font-semibold text-neutral-950">{entry.name}</div>
             <span
