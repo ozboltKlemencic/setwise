@@ -10,18 +10,10 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import type { FixedProgramEditorProgram } from "@/types"
+import type { StoredProgramPlan, StoredProgramPlanStatus } from "@/types"
 
-export type ProgramPlanStatus = "Active" | "Disabled"
-
-export type ProgramPlansTableRow = {
-  id: string
-  title: string
-  description: string
-  workouts: string[]
-  status: ProgramPlanStatus
-  program: FixedProgramEditorProgram
-}
+export type ProgramPlanStatus = StoredProgramPlanStatus
+export type ProgramPlansTableRow = StoredProgramPlan
 
 type ProgramPlansTableProps = {
   rows: ProgramPlansTableRow[]

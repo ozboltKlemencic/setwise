@@ -118,3 +118,24 @@ export type ProgramBuilderSetEditTarget = {
   uid: string
   si: number
 }
+
+export type StoredProgramPlanStatus = "Active" | "Disabled"
+
+export type StoredProgramBuilderSnapshot = {
+  description: string
+  days: ProgramBuilderDay[]
+  myReps: string[]
+  myTempos: string[]
+  showAdvancedSetOptions: boolean
+}
+
+export type StoredProgramPlan = {
+  id: string
+  title: string
+  description: string
+  workouts: string[]
+  status: StoredProgramPlanStatus
+  createdAt: string
+  program: FixedProgramEditorProgram
+  builderSnapshot?: StoredProgramBuilderSnapshot
+}

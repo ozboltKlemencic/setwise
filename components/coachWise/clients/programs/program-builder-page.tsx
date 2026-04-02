@@ -1,13 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 import { ProgramBuilderToolbarMenu } from "@/components/coachWise/clients/programs/builder/program-builder-toolbar-menu"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  resolveProgramPlanStorageScopeFromPath,
+  upsertStoredProgramPlan,
+} from "@/lib/handlers/program-plan-storage"
+import { buildStoredProgramPlanFromBuilderState } from "@/lib/programs/program-plan-storage.utils"
 import { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 import type { FixedProgramEditorProgram } from "@/types"
 
@@ -27,6 +32,7 @@ export function ProgramBuilderPageView({
   backHref,
 }: ProgramBuilderPageViewProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const builder = useProgramBuilder(initialProgram)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [title, setTitle] = React.useState(initialProgram.title)
@@ -68,11 +74,48 @@ export function ProgramBuilderPageView({
     [handleTitleBlur, initialProgram.title]
   )
 
+  const storageScopeId = React.useMemo(
+    () =>
+      resolveProgramPlanStorageScopeFromPath(backHref) ??
+      resolveProgramPlanStorageScopeFromPath(pathname),
+    [backHref, pathname]
+  )
+
   const handleSave = React.useCallback(() => {
-    toast.success("Program builder ready", {
-      description: "Save logic is the next step, but the full-page builder is now in place.",
+    if (!storageScopeId) {
+      toast.error("Unable to save program", {
+        description: "No valid storage scope was found for this program.",
+      })
+      return
+    }
+
+    const nextStoredProgram = buildStoredProgramPlanFromBuilderState({
+      planId: initialProgram.id,
+      title,
+      description: builder.description,
+      days: builder.days,
+      myReps: builder.myReps,
+      myTempos: builder.myTempos,
+      showAdvancedSetOptions: builder.showAdvancedSetOptions,
     })
-  }, [])
+
+    upsertStoredProgramPlan(storageScopeId, nextStoredProgram)
+    toast.success("Program saved", {
+      description: `${nextStoredProgram.title} is now available in Existing programs.`,
+    })
+    router.push(backHref)
+  }, [
+    backHref,
+    builder.days,
+    builder.description,
+    builder.myReps,
+    builder.myTempos,
+    builder.showAdvancedSetOptions,
+    initialProgram.id,
+    router,
+    storageScopeId,
+    title,
+  ])
 
   return (
     <div className="min-h-0 bg-neutral-50">
