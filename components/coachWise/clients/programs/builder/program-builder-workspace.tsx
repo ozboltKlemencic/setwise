@@ -12,9 +12,55 @@ import type { FixedProgramEditorProgram } from "@/types"
 import { ProgramBuilderDayTabs } from "./program-builder-day-tabs"
 import { ProgramBuilderExerciseCard } from "./program-builder-exercise-card"
 import { ProgramBuilderSidebar } from "./program-builder-sidebar"
+import { ProgramBuilderToolbarMenu } from "./program-builder-toolbar-menu"
 
 type ProgramBuilderWorkspaceProps = {
   initialProgram: FixedProgramEditorProgram
+}
+
+function ToggleMenu({
+  label,
+  enabled,
+  onChange,
+  toneClassName,
+}: {
+  label: string
+  enabled: boolean
+  onChange: (value: boolean) => void
+  toneClassName: string
+}) {
+  return (
+    <ProgramBuilderToolbarMenu label={label} triggerClassName={toneClassName}>
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => onChange(true)}
+          className={cn(
+            "h-8 rounded-md px-3 text-[12px] shadow-none",
+            enabled
+              ? "border-neutral-300 bg-neutral-50 text-neutral-950"
+              : "border-neutral-200 bg-white text-neutral-700"
+          )}
+        >
+          Enabled
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => onChange(false)}
+          className={cn(
+            "h-8 rounded-md px-3 text-[12px] shadow-none",
+            !enabled
+              ? "border-neutral-300 bg-neutral-50 text-neutral-950"
+              : "border-neutral-200 bg-white text-neutral-700"
+          )}
+        >
+          Disabled
+        </Button>
+      </div>
+    </ProgramBuilderToolbarMenu>
+  )
 }
 
 export function ProgramBuilderWorkspace({
@@ -35,132 +81,37 @@ export function ProgramBuilderWorkspace({
 
         <div className="border-b border-neutral-200 bg-white px-4 py-3">
           <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                builder.setShowMyReps(!builder.showMyReps)
-                builder.setShowMyTempos(false)
+            <ProgramBuilderToolbarMenu
+              label="Rep ranges"
+              open={builder.showMyReps}
+              onOpenChange={(open) => {
+                builder.setShowMyReps(open)
+                if (open) {
+                  builder.setShowMyTempos(false)
+                }
               }}
-              className="rounded-md border border-brand-200 bg-brand-50/50 px-3 py-1.5 text-[12px] font-medium text-brand-700"
+              triggerClassName="border-brand-200 bg-brand-50/70 text-brand-700 hover:border-brand-300 hover:bg-brand-50/90 data-[state=open]:border-brand-300 data-[state=open]:bg-brand-50"
             >
-              Rep ranges
-            </button>
-
-            <div className="flex flex-wrap gap-1.5">
-              {builder.myReps.map((range, index) => (
-                <span
-                  key={`${range}-${index}`}
-                  className="inline-flex items-center gap-1 rounded-md border border-brand-200 bg-brand-50/50 px-2 py-0.5 font-mono text-[11px] text-brand-700"
-                >
-                  {range}
-                  {builder.showMyReps ? (
-                    <button
-                      type="button"
-                      onClick={() => builder.removeCustomRepRange(index)}
-                      className="text-brand-500"
-                    >
-                      ×
-                    </button>
-                  ) : null}
-                </span>
-              ))}
-            </div>
-
-            <div className="mx-1 h-5 w-px bg-neutral-200" />
-
-            <button
-              type="button"
-              onClick={() => builder.setUseIntensifiers(!builder.useIntensifiers)}
-              className={cn(
-                "rounded-md border px-3 py-1.5 text-[12px] font-medium",
-                builder.useIntensifiers
-                  ? "border-orange-200 bg-orange-50 text-orange-700"
-                  : "border-neutral-200 bg-white text-neutral-500"
-              )}
-            >
-              Intensifiers
-            </button>
-
-            <button
-              type="button"
-              onClick={() => builder.setUseTempo(!builder.useTempo)}
-              className={cn(
-                "rounded-md border px-3 py-1.5 text-[12px] font-medium",
-                builder.useTempo
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                  : "border-neutral-200 bg-white text-neutral-500"
-              )}
-            >
-              Tempo
-            </button>
-
-            <button
-              type="button"
-              onClick={() => builder.setUseRpe(!builder.useRpe)}
-              className={cn(
-                "rounded-md border px-3 py-1.5 text-[12px] font-medium",
-                builder.useRpe
-                  ? "border-violet-200 bg-violet-50 text-violet-700"
-                  : "border-neutral-200 bg-white text-neutral-500"
-              )}
-            >
-              RPE
-            </button>
-
-            <button
-              type="button"
-              onClick={() => builder.setUseRir(!builder.useRir)}
-              className={cn(
-                "rounded-md border px-3 py-1.5 text-[12px] font-medium",
-                builder.useRir
-                  ? "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700"
-                  : "border-neutral-200 bg-white text-neutral-500"
-              )}
-            >
-              RIR
-            </button>
-
-            {builder.useTempo ? (
-              <>
-                <div className="mx-1 h-5 w-px bg-neutral-200" />
-                <button
-                  type="button"
-                  onClick={() => {
-                    builder.setShowMyTempos(!builder.showMyTempos)
-                    builder.setShowMyReps(false)
-                  }}
-                  className="rounded-md border border-emerald-200 bg-emerald-50/50 px-3 py-1.5 text-[12px] font-medium text-emerald-700"
-                >
-                  My tempos
-                </button>
-
+              <div className="space-y-3">
                 <div className="flex flex-wrap gap-1.5">
-                  {builder.myTempos.map((tempo, index) => (
+                  {builder.myReps.map((range, index) => (
                     <span
-                      key={`${tempo}-${index}`}
-                      className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-mono text-[11px] text-emerald-700"
+                      key={`${range}-${index}`}
+                      className="inline-flex items-center gap-1 rounded-md border border-brand-200 bg-brand-50/60 px-2 py-0.5 font-mono text-[11px] text-brand-700"
                     >
-                      {tempo}
-                      {builder.showMyTempos ? (
-                        <button
-                          type="button"
-                          onClick={() => builder.removeCustomTempo(index)}
-                          className="text-emerald-500"
-                        >
-                          ×
-                        </button>
-                      ) : null}
+                      {range}
+                      <button
+                        type="button"
+                        onClick={() => builder.removeCustomRepRange(index)}
+                        className="text-brand-500"
+                      >
+                        x
+                      </button>
                     </span>
                   ))}
                 </div>
-              </>
-            ) : null}
-          </div>
 
-          {builder.showMyReps || builder.showMyTempos ? (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              {builder.showMyReps ? (
-                <>
+                <div className="flex items-center gap-2">
                   <Input
                     value={builder.newRepRange}
                     onChange={(event) => builder.setNewRepRange(event.target.value)}
@@ -180,11 +131,69 @@ export function ProgramBuilderWorkspace({
                   >
                     Add range
                   </Button>
-                </>
-              ) : null}
+                </div>
+              </div>
+            </ProgramBuilderToolbarMenu>
 
-              {builder.showMyTempos ? (
-                <>
+            <ToggleMenu
+              label="Intensifiers"
+              enabled={builder.useIntensifiers}
+              onChange={builder.setUseIntensifiers}
+              toneClassName="border-orange-200 bg-orange-50/70 text-orange-700 hover:border-orange-300 hover:bg-orange-50/90 data-[state=open]:border-orange-300 data-[state=open]:bg-orange-50"
+            />
+
+            <ToggleMenu
+              label="Tempo"
+              enabled={builder.useTempo}
+              onChange={builder.setUseTempo}
+              toneClassName="border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/90 data-[state=open]:border-emerald-300 data-[state=open]:bg-emerald-50"
+            />
+
+            <ToggleMenu
+              label="RPE"
+              enabled={builder.useRpe}
+              onChange={builder.setUseRpe}
+              toneClassName="border-violet-200 bg-violet-50/70 text-violet-700 hover:border-violet-300 hover:bg-violet-50/90 data-[state=open]:border-violet-300 data-[state=open]:bg-violet-50"
+            />
+
+            <ToggleMenu
+              label="RIR"
+              enabled={builder.useRir}
+              onChange={builder.setUseRir}
+              toneClassName="border-fuchsia-200 bg-fuchsia-50/70 text-fuchsia-700 hover:border-fuchsia-300 hover:bg-fuchsia-50/90 data-[state=open]:border-fuchsia-300 data-[state=open]:bg-fuchsia-50"
+            />
+
+            <ProgramBuilderToolbarMenu
+              label="My tempos"
+              open={builder.showMyTempos}
+              onOpenChange={(open) => {
+                builder.setShowMyTempos(open)
+                if (open) {
+                  builder.setShowMyReps(false)
+                }
+              }}
+              triggerClassName="border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/90 data-[state=open]:border-emerald-300 data-[state=open]:bg-emerald-50"
+            >
+              <div className="space-y-3">
+                <div className="flex flex-wrap gap-1.5">
+                  {builder.myTempos.map((tempo, index) => (
+                    <span
+                      key={`${tempo}-${index}`}
+                      className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50/60 px-2 py-0.5 font-mono text-[11px] text-emerald-700"
+                    >
+                      {tempo}
+                      <button
+                        type="button"
+                        onClick={() => builder.removeCustomTempo(index)}
+                        className="text-emerald-500"
+                      >
+                        x
+                      </button>
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2">
                   <Input
                     value={builder.newTempo}
                     onChange={(event) => builder.setNewTempo(event.target.value)}
@@ -204,16 +213,18 @@ export function ProgramBuilderWorkspace({
                   >
                     Add tempo
                   </Button>
-                </>
-              ) : null}
-            </div>
-          ) : null}
+                </div>
+              </div>
+            </ProgramBuilderToolbarMenu>
+          </div>
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
           {builder.activeDay ? (
             <div className="mb-4 flex flex-wrap items-center gap-2">
-              <div className="text-[16px] font-semibold text-neutral-950">{builder.activeDay.name}</div>
+              <div className="text-[16px] font-semibold text-neutral-950">
+                {builder.activeDay.name}
+              </div>
               <div className="text-[12px] text-neutral-500">
                 {builder.activeDay.exercises.length} exercises · {builder.totalSets} sets
               </div>
@@ -311,9 +322,12 @@ export function ProgramBuilderWorkspace({
               }}
               className="flex min-h-[420px] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-200 bg-white px-6 text-center"
             >
-              <div className="text-[16px] font-semibold text-neutral-900">This workout is empty</div>
+              <div className="text-[16px] font-semibold text-neutral-900">
+                This workout is empty
+              </div>
               <div className="mt-2 max-w-md text-[14px] text-neutral-500">
-                Search exercises on the left, click to add them, or drag an exercise directly into this area.
+                Search exercises on the left, click to add them, or drag an exercise directly into
+                this area.
               </div>
             </div>
           )}
