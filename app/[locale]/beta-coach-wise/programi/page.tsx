@@ -49,8 +49,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   FixedProgramDetailView,
-  getFixedProgramEditorProgram,
 } from "@/components/coachWise/programs/exercise-history-panel"
+import { getFixedProgramEditorProgram } from "@/lib/programs/fixed-programs-data"
 import { cn } from "@/lib/utils"
 
 const profileTabTriggerClassName =

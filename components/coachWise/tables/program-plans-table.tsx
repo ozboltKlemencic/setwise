@@ -6,11 +6,11 @@ import { Copy, Pencil, Trash2 } from "lucide-react"
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import {
   FixedProgramEditorDialog,
-  type FixedProgramEditorProgram,
 } from "@/components/coachWise/programs/exercise-history-panel"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import type { FixedProgramEditorProgram } from "@/types"
 
 export type ProgramPlanStatus = "Active" | "Disabled"
 

@@ -86,7 +86,7 @@ export default async function Page({
 
         <TabsContent value="calendar" className="mt-0 space-y-0">
           <SectionBody>
-            <ClientProgramsOverview />
+            <ClientProgramsOverview clientBasePath={clientBasePath} />
           </SectionBody>
         </TabsContent>
 
