@@ -371,7 +371,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
               </div>
 
               {editingSet?.int && editingIntensifier?.params.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-2 pl-[76px]">
                   {editingIntensifier.params.map((parameter) => {
                     const currentValue = editingSet.int?.params[parameter.key] ?? 0
 
