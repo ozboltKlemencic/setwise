@@ -419,7 +419,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.max(parameter.min, currentValue - parameter.step)
                             )
                           }}
-                          className="h-full w-7 rounded-none border-0 border-l border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none hover:bg-neutral-100 cursor-pointer"
+                          className="h-full w-7 rounded-l-md rounded-r-none border-0 border-l border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none hover:bg-neutral-100 cursor-pointer"
                         >
                           <Minus className="size-3" />
                         </Button>
