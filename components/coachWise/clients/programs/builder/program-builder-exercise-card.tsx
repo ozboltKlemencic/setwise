@@ -401,9 +401,11 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                     return (
                       <div
                         key={parameter.key}
-                        className="flex h-7 items-center gap-x-3 rounded-md border border-neutral-200 bg-neutral-100  px-2.5"
+                        className="flex h-7 items-stretch overflow-hidden rounded-md border border-neutral-200 bg-neutral-100"
                       >
-                        <span className="text-[11px] text-neutral-500">{parameter.label}</span>
+                        <span className="flex items-center px-2.5 text-[11px] text-neutral-500">
+                          {parameter.label}
+                        </span>
                         <Button
                           type="button"
                           variant="outline"
@@ -417,11 +419,11 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.max(parameter.min, currentValue - parameter.step)
                             )
                           }}
-                          className="size-7  border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none rounded-none hover:border-neutral-400 hover:bg-neutral-100 cursor-pointer"
+                          className="h-full w-7 rounded-none border-0 border-l border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none hover:bg-neutral-100 cursor-pointer"
                         >
                           <Minus className="size-3" />
                         </Button>
-                        <span className="min-w-4 text-center font-mono text-[12px] font-semibold text-neutral-900">
+                        <span className="flex min-w-10 items-center justify-center px-2 text-center font-mono text-[12px] font-semibold text-neutral-900">
                           {currentValue}
                           {parameter.unit ?? ""}
                         </span>
@@ -438,7 +440,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                               Math.min(parameter.max, currentValue + parameter.step)
                             )
                           }}
-                          className="size-7  border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none rounded-none hover:border-neutral-400 hover:bg-neutral-100 cursor-pointer"
+                          className="h-full w-7 rounded-none border-0 border-l border-neutral-200 bg-neutral-50 text-neutral-800 shadow-none hover:bg-neutral-100 cursor-pointer"
                         >
                           <Plus className="size-3" />
                         </Button>
