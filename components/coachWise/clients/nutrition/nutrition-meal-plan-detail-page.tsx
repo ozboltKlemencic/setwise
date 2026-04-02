@@ -403,10 +403,6 @@ function NutritionMealDetailCard({
 
       {expanded ? (
         <div className="space-y-4 p-4 md:p-5">
-          <h3 className="text-[20px] font-semibold tracking-[-0.02em] text-neutral-950">
-            {meal.title}
-          </h3>
-
           <div className="overflow-hidden rounded-xl border border-neutral-200/80 bg-white">
             {meal.ingredients.map((ingredient, ingredientIndex) => (
               <div
