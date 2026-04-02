@@ -24,7 +24,7 @@ export function ProgramBuilderWorkspace({
 
   return (
     <div className="relative xl:flex xl:items-start">
-      <div className="xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[320px] xl:flex xl:flex-none xl:flex-col xl:self-start">
+      <div className="xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
         <ProgramBuilderSidebar builder={builder} />
       </div>
 
