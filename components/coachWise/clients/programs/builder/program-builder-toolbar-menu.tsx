@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { ChevronDown } from "lucide-react"
 
 import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
 import {
@@ -33,11 +34,12 @@ export function ProgramBuilderToolbarMenu({
         <button
           type="button"
           className={cn(
-            "inline-flex h-8 items-center rounded-md border px-3 text-[12px] font-medium shadow-none transition-colors data-[state=open]:shadow-sm",
+            "inline-flex h-8 min-w-[132px] items-center justify-between gap-2 rounded-sm border bg-white px-2.5 text-[13px] font-normal shadow-none transition-colors data-[state=open]:shadow-sm",
             triggerClassName
           )}
         >
-          {label}
+          <span className="truncate">{label}</span>
+          <ChevronDown className="size-3.5 shrink-0 text-neutral-400" />
         </button>
       </DropdownMenuTrigger>
 
@@ -46,7 +48,7 @@ export function ProgramBuilderToolbarMenu({
         sideOffset={8}
         className={cn(
           overflowActionsMenuSurfaceClassName,
-          "min-w-[220px] p-2",
+          "w-64 p-1.5",
           contentClassName
         )}
       >

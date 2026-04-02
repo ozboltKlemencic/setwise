@@ -48,25 +48,29 @@ export function ProgramBuilderWorkspace({
               triggerClassName="border-brand-200 bg-brand-50/70 text-brand-700 hover:border-brand-300 hover:bg-brand-50/90 data-[state=open]:border-brand-300 data-[state=open]:bg-brand-50"
             >
               <div className="space-y-3">
-                <div className="flex flex-wrap gap-1.5">
+                <div className="px-3 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+                  Rep ranges
+                </div>
+                <div className="border-t border-neutral-200/70" />
+                <div className="max-h-64 space-y-1 overflow-y-auto px-1.5">
                   {builder.myReps.map((range, index) => (
-                    <span
+                    <div
                       key={`${range}-${index}`}
-                      className="inline-flex items-center gap-1 rounded-md border border-brand-200 bg-brand-50/60 px-2 py-0.5 font-mono text-[11px] text-brand-700"
+                      className="flex items-center justify-between rounded-md px-3 py-2 text-[13px] text-neutral-700 transition-colors hover:bg-neutral-50"
                     >
-                      {range}
+                      <span className="font-mono text-[12px]">{range}</span>
                       <button
                         type="button"
                         onClick={() => builder.removeCustomRepRange(index)}
-                        className="text-brand-500"
+                        className="text-[12px] text-neutral-400 transition-colors hover:text-neutral-700"
                       >
                         x
                       </button>
-                    </span>
+                    </div>
                   ))}
                 </div>
-
-                <div className="flex items-center gap-2">
+                <div className="border-t border-neutral-200/70" />
+                <div className="flex items-center gap-2 px-1.5 pb-1.5">
                   <Input
                     value={builder.newRepRange}
                     onChange={(event) => builder.setNewRepRange(event.target.value)}
@@ -102,25 +106,29 @@ export function ProgramBuilderWorkspace({
               triggerClassName="border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/90 data-[state=open]:border-emerald-300 data-[state=open]:bg-emerald-50"
             >
               <div className="space-y-3">
-                <div className="flex flex-wrap gap-1.5">
+                <div className="px-3 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+                  Tempo
+                </div>
+                <div className="border-t border-neutral-200/70" />
+                <div className="max-h-64 space-y-1 overflow-y-auto px-1.5">
                   {builder.myTempos.map((tempo, index) => (
-                    <span
+                    <div
                       key={`${tempo}-${index}`}
-                      className="inline-flex items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50/60 px-2 py-0.5 font-mono text-[11px] text-emerald-700"
+                      className="flex items-center justify-between rounded-md px-3 py-2 text-[13px] text-neutral-700 transition-colors hover:bg-neutral-50"
                     >
-                      {tempo}
+                      <span className="font-mono text-[12px]">{tempo}</span>
                       <button
                         type="button"
                         onClick={() => builder.removeCustomTempo(index)}
-                        className="text-emerald-500"
+                        className="text-[12px] text-neutral-400 transition-colors hover:text-neutral-700"
                       >
                         x
                       </button>
-                    </span>
+                    </div>
                   ))}
                 </div>
-
-                <div className="flex items-center gap-2">
+                <div className="border-t border-neutral-200/70" />
+                <div className="flex items-center gap-2 px-1.5 pb-1.5">
                   <Input
                     value={builder.newTempo}
                     onChange={(event) => builder.setNewTempo(event.target.value)}
