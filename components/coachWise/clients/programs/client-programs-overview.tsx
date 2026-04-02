@@ -7,7 +7,13 @@ import { toast } from "sonner"
 import { ClientQuickActionCard } from "@/components/coachWise/clients/info/client-quick-action-card"
 import { NutritionSectionTitle } from "@/components/coachWise/clients/nutrition/panel/components"
 import {
+  ProgramPresetCard,
+  type ProgramPresetCardData,
+} from "@/components/coachWise/clients/programs/program-preset-card"
+import {
   AddProgramDialog,
+  FixedProgramEditorDialog,
+  type FixedProgramEditorProgram,
   getFixedPrograms,
 } from "@/components/coachWise/programs/exercise-history-panel"
 import {
@@ -61,10 +67,90 @@ function deriveProgramStatus(
   return program.workouts.length > 0 ? "Active" : "Disabled"
 }
 
+const PROGRAM_PRESET_CARDS: ProgramPresetCardData[] = [
+  {
+    id: "upper-lower",
+    title: "Upper / Lower",
+    description: "A simple 4-day split alternating upper and lower body sessions.",
+    workouts: ["Upper 1", "Lower 1", "Upper 2", "Lower 2"],
+  },
+  {
+    id: "bro-split",
+    title: "Bro Split",
+    description: "A classic 5-day bodybuilding split with one main focus per day.",
+    workouts: ["Chest", "Back", "Shoulders", "Arms", "Legs"],
+  },
+  {
+    id: "push-pull-legs",
+    title: "Push Pull Legs",
+    description: "Balanced strength and hypertrophy setup with clear movement patterns.",
+    workouts: ["Push", "Pull", "Legs", "Push 2", "Pull 2"],
+  },
+  {
+    id: "full-body",
+    title: "Full Body",
+    description: "A flexible full-body structure for beginners and busy schedules.",
+    workouts: ["Workout A", "Workout B", "Workout C"],
+  },
+  {
+    id: "glute-lower",
+    title: "Glute / Lower Focus",
+    description: "Lower-body focused template with extra volume for glutes and legs.",
+    workouts: ["Glutes", "Lower Body", "Upper Support", "Glutes 2"],
+  },
+]
+
+function buildPresetProgram(
+  preset: ProgramPresetCardData,
+  sampleProgram: FixedProgramEditorProgram
+): FixedProgramEditorProgram {
+  const presetEditorWorkouts =
+    sampleProgram.editorWorkouts.length > 0
+      ? preset.workouts.map((label, index) => {
+          const sourceWorkout =
+            sampleProgram.editorWorkouts[index % sampleProgram.editorWorkouts.length]
+
+          return {
+            ...sourceWorkout,
+            id:
+              globalThis.crypto?.randomUUID?.() ??
+              `program-preset-workout-${preset.id}-${index}-${Date.now()}`,
+            label,
+            intro: `Build out the ${label.toLowerCase()} session with your preferred exercises, sets, and notes.`,
+            sections: sourceWorkout.sections.map((section) => ({
+              ...section,
+              exercises: section.exercises.map((exercise) => ({
+                ...exercise,
+                fields: [...exercise.fields],
+                values: [...exercise.values],
+              })),
+            })),
+          }
+        })
+      : []
+
+  return {
+    ...sampleProgram,
+    id:
+      globalThis.crypto?.randomUUID?.() ??
+      `program-preset-${preset.id}-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+    title: preset.title,
+    description: preset.description,
+    workouts: [...preset.workouts],
+    editorWorkouts: presetEditorWorkouts,
+  }
+}
+
 function ClientProgramsOverviewComponent() {
+  const basePrograms = React.useMemo(() => getFixedPrograms(), [])
+  const sampleProgram = React.useMemo(
+    () => basePrograms.find((program) => program.workouts.length > 0) ?? basePrograms[0],
+    [basePrograms]
+  )
+
   const initialRows = React.useMemo<ProgramPlansTableRow[]>(
     () =>
-      getFixedPrograms().map((program) => ({
+      basePrograms.map((program) => ({
         id: program.id,
         title: program.title,
         description: program.description,
@@ -72,7 +158,7 @@ function ClientProgramsOverviewComponent() {
         status: deriveProgramStatus(program),
         program,
       })),
-    []
+    [basePrograms]
   )
   const [rows, setRows] = React.useState<ProgramPlansTableRow[]>(initialRows)
 
@@ -108,6 +194,25 @@ function ClientProgramsOverviewComponent() {
               />
             }
           />
+        </div>
+
+        <div className="mt-5">
+          <NutritionSectionTitle title="Presets" />
+          <div className="flex flex-wrap gap-3">
+            {PROGRAM_PRESET_CARDS.map((preset) => (
+              <FixedProgramEditorDialog
+                key={preset.id}
+                program={buildPresetProgram(preset, sampleProgram)}
+                trigger={
+                  <ProgramPresetCard
+                    title={preset.title}
+                    description={preset.description}
+                    className="md:w-[15.5rem]"
+                  />
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
 
