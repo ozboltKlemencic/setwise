@@ -283,7 +283,8 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
 
       {isEditingExercise ? (
         <div className="border-t border-neutral-200 px-4 py-3">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[11px] text-neutral-500">Range</span>
             {builder.myReps.map((range) => (
               <button
                 key={`custom-${range}`}
