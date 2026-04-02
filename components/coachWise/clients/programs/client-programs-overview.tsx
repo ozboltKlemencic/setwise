@@ -57,21 +57,19 @@ function buildNextDuplicatedProgramTitle(title: string, existingTitles: string[]
 
 function deriveProgramStatus(
   program: ReturnType<typeof getFixedPrograms>[number],
-  index: number
 ): ProgramPlanStatus {
-  if (program.workouts.length === 0) return "Onboarding"
-  return index % 3 === 2 ? "Paused" : "Active"
+  return program.workouts.length > 0 ? "Active" : "Inactive"
 }
 
 function ClientProgramsOverviewComponent() {
   const initialRows = React.useMemo<ProgramPlansTableRow[]>(
     () =>
-      getFixedPrograms().map((program, index) => ({
+      getFixedPrograms().map((program) => ({
         id: program.id,
         title: program.title,
         description: program.description,
         workouts: program.workouts,
-        status: deriveProgramStatus(program, index),
+        status: deriveProgramStatus(program),
         program,
       })),
     []

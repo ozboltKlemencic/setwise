@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-export type ProgramPlanStatus = "Onboarding" | "Active" | "Paused"
+export type ProgramPlanStatus = "Active" | "Inactive"
 
 export type ProgramPlansTableRow = {
   id: string
@@ -36,6 +36,12 @@ const rowActionButtonClassName =
 const rowDeleteActionButtonClassName =
   "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
+function getProgramStatusBadgeClassName(status: ProgramPlanStatus) {
+  return status === "Active"
+    ? "border-emerald-100 bg-linear-to-r from-emerald-50/55 to-white text-neutral-700"
+    : "border-rose-100 bg-linear-to-r from-rose-50/55 to-white text-neutral-700"
+}
+
 function ProgramPlansTableComponent({
   rows,
   emptyMessage = "No programs available.",
@@ -56,7 +62,7 @@ function ProgramPlansTableComponent({
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
       <div className="grid grid-cols-[minmax(0,1fr)_minmax(280px,360px)_140px_96px] items-center border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
         <div>Program</div>
-        <div>Workouts</div>
+        <div className="text-left">Workouts</div>
         <div>Status</div>
         <div className="text-center">Action</div>
       </div>
@@ -84,7 +90,7 @@ function ProgramPlansTableComponent({
               }
             />
 
-            <div className="flex min-h-10 flex-wrap items-center gap-2 pt-0.5">
+            <div className="flex min-h-10 w-full justify-self-start flex-wrap items-center justify-start gap-2 pt-0.5 text-left">
               {row.workouts.length > 0 ? (
                 row.workouts.map((workout) => (
                   <Badge
@@ -102,7 +108,13 @@ function ProgramPlansTableComponent({
             </div>
 
             <div className="flex min-h-10 items-center">
-              <Badge variant="outline" className="px-1.5 text-muted-foreground">
+              <Badge
+                variant="outline"
+                className={cn(
+                  "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
+                  getProgramStatusBadgeClassName(row.status)
+                )}
+              >
                 {row.status}
               </Badge>
             </div>
