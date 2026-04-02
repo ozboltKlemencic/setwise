@@ -56,7 +56,7 @@ function ProgramPlansTableComponent({
         <div className="text-left">Program</div>
         <div className="text-left">Workouts</div>
         <div className="text-left">Status</div>
-        <div className="justify-self-end text-right">Action</div>
+        <div className="justify-self-center text-center">Action</div>
       </div>
 
       <div>
