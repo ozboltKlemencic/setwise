@@ -253,7 +253,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-end gap-2 px-4 py-4">
+      <div className="flex flex-wrap items-start gap-2 px-4 py-4">
         {entry.sets.map((_, setIndex) => (
           <ProgramBuilderSetChip
             key={`${entry.uid}-${setIndex}`}
