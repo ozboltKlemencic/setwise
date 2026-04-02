@@ -4,6 +4,7 @@ import * as React from "react"
 import { ChevronDown } from "lucide-react"
 
 import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
+import { secondaryActionButtonClassName } from "@/components/coachWise/secondary-action-button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,7 +35,8 @@ export function ProgramBuilderToolbarMenu({
         <button
           type="button"
           className={cn(
-            "inline-flex h-8 min-w-[132px] items-center justify-between gap-2 rounded-sm border bg-neutral-50 px-2.5 text-[13px] font-normal shadow-none transition-colors data-[state=open]:shadow-sm",
+            secondaryActionButtonClassName,
+            "h-8 min-w-[132px] justify-between gap-2 px-2.5 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-neutral-200/55 data-[state=open]:text-neutral-800",
             triggerClassName
           )}
         >

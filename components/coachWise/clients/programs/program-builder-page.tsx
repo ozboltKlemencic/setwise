@@ -99,7 +99,6 @@ export function ProgramBuilderPageView({
                   builder.setShowMyTempos(false)
                 }
               }}
-              triggerClassName="border-brand-200 bg-brand-50/70 text-brand-700 hover:border-brand-300 hover:bg-brand-50/90 data-[state=open]:border-brand-300 data-[state=open]:bg-brand-50"
             >
               <div className="space-y-3">
                 <div className="px-3 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
@@ -157,7 +156,6 @@ export function ProgramBuilderPageView({
                   builder.setShowMyReps(false)
                 }
               }}
-              triggerClassName="border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50/90 data-[state=open]:border-emerald-300 data-[state=open]:bg-emerald-50"
             >
               <div className="space-y-3">
                 <div className="px-3 py-2 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
