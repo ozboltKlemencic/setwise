@@ -30,15 +30,6 @@ export function ProgramBuilderWorkspace({
 
       <div className="flex min-h-[calc(100vh-var(--header-height)-3rem)] min-w-0 flex-1 flex-col border-t border-neutral-200 bg-neutral-50">
         <div className="border-b border-neutral-200 bg-white">
-          <div className="px-4 py-4">
-            <textarea
-              value={builder.description}
-              onChange={(event) => builder.setDescription(event.target.value)}
-              className="min-h-[76px] w-full resize-none rounded-md border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-[14px] text-neutral-700 shadow-none outline-none focus:border-neutral-300"
-              placeholder="Build a fixed training program from scratch."
-            />
-          </div>
-
           <ProgramBuilderDayTabs builder={builder} />
         </div>
 
