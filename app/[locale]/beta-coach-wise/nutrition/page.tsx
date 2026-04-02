@@ -49,6 +49,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   NutritionCaloriesDonut,
   NutritionPlansTable,
+  NutritionTablePagination,
+  NUTRITION_TABLE_PAGE_SIZE,
   buildNutritionPlanSegments,
   type NutritionPlansTableSegment,
 } from "@/components/coachWise/tables/nutrition-plans-table"
@@ -1177,6 +1179,21 @@ function MealsTable({
   onEditRow: (row: MealRow) => void
   onDeleteRow: (row: MealRow) => void
 }) {
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const totalPages = Math.max(1, Math.ceil(rows.length / NUTRITION_TABLE_PAGE_SIZE))
+  const paginatedRows = React.useMemo(
+    () =>
+      rows.slice(
+        (currentPage - 1) * NUTRITION_TABLE_PAGE_SIZE,
+        currentPage * NUTRITION_TABLE_PAGE_SIZE
+      ),
+    [currentPage, rows]
+  )
+
+  React.useEffect(() => {
+    setCurrentPage((current) => Math.min(current, totalPages))
+  }, [totalPages])
+
   return (
     <div className="space-y-4">
       <MealPlannerSearchBar placeholder="Search meals" inputWrapperClassName="max-w-[17rem]" />
@@ -1199,7 +1216,7 @@ function MealsTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map((row) => (
+            {paginatedRows.map((row) => (
               <TableRow
                 key={row.id}
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
@@ -1247,6 +1264,16 @@ function MealsTable({
           </TableBody>
         </Table>
       </div>
+      <NutritionTablePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onFirstPage={() => setCurrentPage(1)}
+        onPreviousPage={() => setCurrentPage((current) => Math.max(1, current - 1))}
+        onNextPage={() =>
+          setCurrentPage((current) => Math.min(totalPages, current + 1))
+        }
+        onLastPage={() => setCurrentPage(totalPages)}
+      />
     </div>
   )
 }
@@ -1260,6 +1287,21 @@ function FoodTable({
   onEditRow: (row: FoodRow) => void
   onDeleteRow: (row: FoodRow) => void
 }) {
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const totalPages = Math.max(1, Math.ceil(rows.length / NUTRITION_TABLE_PAGE_SIZE))
+  const paginatedRows = React.useMemo(
+    () =>
+      rows.slice(
+        (currentPage - 1) * NUTRITION_TABLE_PAGE_SIZE,
+        currentPage * NUTRITION_TABLE_PAGE_SIZE
+      ),
+    [currentPage, rows]
+  )
+
+  React.useEffect(() => {
+    setCurrentPage((current) => Math.min(current, totalPages))
+  }, [totalPages])
+
   return (
     <div className="space-y-4">
       <MealPlannerSearchBar placeholder="Search food" inputWrapperClassName="max-w-[17rem]" />
@@ -1279,7 +1321,7 @@ function FoodTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.map((row) => (
+            {paginatedRows.map((row) => (
               <TableRow
                 key={row.id}
                 className="cursor-pointer bg-white hover:bg-neutral-50/60"
@@ -1315,6 +1357,16 @@ function FoodTable({
           </TableBody>
         </Table>
       </div>
+      <NutritionTablePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onFirstPage={() => setCurrentPage(1)}
+        onPreviousPage={() => setCurrentPage((current) => Math.max(1, current - 1))}
+        onNextPage={() =>
+          setCurrentPage((current) => Math.min(totalPages, current + 1))
+        }
+        onLastPage={() => setCurrentPage(totalPages)}
+      />
     </div>
   )
 }

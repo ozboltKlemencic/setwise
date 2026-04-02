@@ -2,6 +2,12 @@
 
 import * as React from "react"
 import { Beef, Copy, Pencil, Trash2, UtensilsCrossed } from "lucide-react"
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconChevronsLeft,
+  IconChevronsRight,
+} from "@tabler/icons-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
@@ -54,11 +60,14 @@ export type NutritionPlansTableRow = {
 type NutritionPlansTableProps = {
   rows: NutritionPlansTableRow[]
   emptyMessage?: string
+  pageSize?: number
   onOpenRow?: (row: NutritionPlansTableRow) => void
   onEditRow?: (row: NutritionPlansTableRow) => void
   onDuplicateRow?: (row: NutritionPlansTableRow) => void | Promise<void>
   onDeleteRow?: (row: NutritionPlansTableRow) => void | Promise<void>
 }
+
+export const NUTRITION_TABLE_PAGE_SIZE = 20
 
 const mealPlanDonutConfig = {
   protein: {
@@ -212,6 +221,7 @@ export function buildNutritionPlanSegments(values: {
 export function NutritionPlansTable({
   rows,
   emptyMessage = "No meal plans available.",
+  pageSize = NUTRITION_TABLE_PAGE_SIZE,
   onOpenRow,
   onEditRow,
   onDuplicateRow,
@@ -230,35 +240,46 @@ export function NutritionPlansTable({
       Boolean(target.closest("[data-nutrition-row-open='true']")),
     []
   )
+  const [currentPage, setCurrentPage] = React.useState(1)
   const hasClientColumn = rows.some((row) => row.clients?.length)
+  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize))
+  const paginatedRows = React.useMemo(
+    () => rows.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+    [currentPage, pageSize, rows]
+  )
+
+  React.useEffect(() => {
+    setCurrentPage((current) => Math.min(current, totalPages))
+  }, [totalPages])
 
   return (
-    <div className="overflow-hidden rounded-sm border border-neutral-200 bg-neutral-50">
-      <Table>
-        <TableHeader className="bg-muted">
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
-              Plan
-            </TableHead>
-            {hasClientColumn ? (
-              <TableHead className="w-[280px] px-3.5 text-[13px] font-medium">
-                Client
+    <div className="space-y-4">
+      <div className="overflow-hidden rounded-sm border border-neutral-200 bg-neutral-50">
+        <Table>
+          <TableHeader className="bg-muted">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="pl-4 text-[13px] font-medium lg:pl-5">
+                Plan
               </TableHead>
-            ) : null}
-            <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
-              Type
-            </TableHead>
-            <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
-              Calories
-            </TableHead>
-            <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
-              Action
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rows.length ? (
-            rows.map((row) => {
+              {hasClientColumn ? (
+                <TableHead className="w-[280px] px-3.5 text-[13px] font-medium">
+                  Client
+                </TableHead>
+              ) : null}
+              <TableHead className="w-[152px] px-3.5 text-[13px] font-medium">
+                Type
+              </TableHead>
+              <TableHead className="w-[128px] px-3 text-center text-[13px] font-medium">
+                Calories
+              </TableHead>
+              <TableHead className="w-[9rem] px-3 pr-5 text-center text-[13px] font-medium">
+                Action
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.length ? (
+              paginatedRows.map((row) => {
               const isMacroPlan = row.type.toLowerCase().includes("macro")
 
               return (
@@ -413,19 +434,104 @@ export function NutritionPlansTable({
                   </TableCell>
                 </TableRow>
               )
-            })
-          ) : (
-            <TableRow className="hover:bg-transparent">
-              <TableCell
-                colSpan={hasClientColumn ? 5 : 4}
-                className="py-8 text-center text-[13px] text-neutral-500"
-              >
-                {emptyMessage}
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+              })
+            ) : (
+              <TableRow className="hover:bg-transparent">
+                <TableCell
+                  colSpan={hasClientColumn ? 5 : 4}
+                  className="py-8 text-center text-[13px] text-neutral-500"
+                >
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      <NutritionTablePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onFirstPage={() => setCurrentPage(1)}
+        onPreviousPage={() => setCurrentPage((current) => Math.max(1, current - 1))}
+        onNextPage={() =>
+          setCurrentPage((current) => Math.min(totalPages, current + 1))
+        }
+        onLastPage={() => setCurrentPage(totalPages)}
+      />
+    </div>
+  )
+}
+
+export function NutritionTablePagination({
+  currentPage,
+  totalPages,
+  onFirstPage,
+  onPreviousPage,
+  onNextPage,
+  onLastPage,
+}: {
+  currentPage: number
+  totalPages: number
+  onFirstPage: () => void
+  onPreviousPage: () => void
+  onNextPage: () => void
+  onLastPage: () => void
+}) {
+  const canGoPrevious = currentPage > 1
+  const canGoNext = currentPage < totalPages
+
+  return (
+    <div className="flex items-center justify-between px-4 lg:px-6">
+      <div className="ml-auto flex w-full justify-end lg:w-fit">
+        <div className="flex items-center gap-8">
+          <div className="flex w-fit items-center justify-center text-sm font-medium">
+            Page {currentPage} of {totalPages}
+          </div>
+          <div className="ml-auto flex items-center gap-2 lg:ml-0">
+            <Button
+              variant="outline"
+              className="hidden size-8 lg:flex"
+              size="icon"
+              onClick={onFirstPage}
+              disabled={!canGoPrevious}
+            >
+              <span className="sr-only">Go to first page</span>
+              <IconChevronsLeft className="size-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="size-8"
+              size="icon"
+              onClick={onPreviousPage}
+              disabled={!canGoPrevious}
+            >
+              <span className="sr-only">Go to previous page</span>
+              <IconChevronLeft className="size-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="size-8"
+              size="icon"
+              onClick={onNextPage}
+              disabled={!canGoNext}
+            >
+              <span className="sr-only">Go to next page</span>
+              <IconChevronRight className="size-4" />
+            </Button>
+            <Button
+              variant="outline"
+              className="hidden size-8 lg:flex"
+              size="icon"
+              onClick={onLastPage}
+              disabled={!canGoNext}
+            >
+              <span className="sr-only">Go to last page</span>
+              <IconChevronsRight className="size-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
