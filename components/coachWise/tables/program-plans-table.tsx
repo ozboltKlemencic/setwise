@@ -111,7 +111,7 @@ function ProgramPlansTableComponent({
               </Badge>
             </div>
 
-            <div className="flex w-[8.5rem] justify-self-end self-center items-center justify-end gap-2">
+            <div className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2">
               <Button
                 type="button"
                 variant="outline"
