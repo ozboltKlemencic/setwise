@@ -72,6 +72,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
   const [showMyTempos, setShowMyTempos] = React.useState(false)
   const [myTempos, setMyTempos] = React.useState(PROGRAM_BUILDER_DEFAULT_TEMPOS)
   const [newTempo, setNewTempo] = React.useState("")
+  const [showAdvancedSetOptions, setShowAdvancedSetOptions] = React.useState(false)
   const [useIntensifiers, setUseIntensifiers] = React.useState(true)
   const [useTempo, setUseTempo] = React.useState(true)
   const [useRpe, setUseRpe] = React.useState(true)
@@ -720,6 +721,8 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     setShowMyTempos,
     newTempo,
     setNewTempo,
+    showAdvancedSetOptions,
+    setShowAdvancedSetOptions,
     otherTempos,
     useIntensifiers,
     setUseIntensifiers,

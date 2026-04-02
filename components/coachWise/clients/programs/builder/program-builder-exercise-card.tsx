@@ -190,7 +190,6 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
   entry,
   index,
 }: ProgramBuilderExerciseCardProps) {
-  const [showAdvancedOptions, setShowAdvancedOptions] = React.useState(false)
   const editorRef = React.useRef<HTMLDivElement | null>(null)
   const isEditingExercise = builder.editTarget?.uid === entry.uid
   const editingSet =
@@ -203,10 +202,6 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
   const selectedRepRange = editingSet ? formatProgramBuilderRepRange(editingSet) : null
   const selectedTempo = editingSet?.tempo ? formatProgramBuilderTempo(editingSet.tempo) : null
   const selectedIntensifierType = editingSet?.int?.type ?? null
-
-  React.useEffect(() => {
-    setShowAdvancedOptions(false)
-  }, [editingSetIndex, isEditingExercise])
 
   React.useEffect(() => {
     if (!isEditingExercise) {
@@ -341,19 +336,19 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             onMouseDown={(event) => {
               event.preventDefault()
             }}
-            onClick={() => setShowAdvancedOptions((currentState) => !currentState)}
+            onClick={() => builder.setShowAdvancedSetOptions(!builder.showAdvancedSetOptions)}
             className="mt-3 inline-flex items-center gap-2 text-[12px] font-medium text-neutral-600 transition-colors hover:text-neutral-900"
           >
             <span>More advanced options</span>
             <ChevronDown
               className={cn(
                 "size-3.5 shrink-0 transition-transform",
-                showAdvancedOptions && "rotate-180"
+                builder.showAdvancedSetOptions && "rotate-180"
               )}
             />
           </button>
 
-          {showAdvancedOptions ? (
+          {builder.showAdvancedSetOptions ? (
             <>
               <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-2">
                 <span className="w-[68px] shrink-0 text-[11px] text-neutral-500">Intensifier</span>
