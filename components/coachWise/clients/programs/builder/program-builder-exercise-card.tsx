@@ -149,6 +149,37 @@ function ProgramBuilderSetChip({
   )
 }
 
+function ProgramBuilderSetAction({
+  children,
+  className,
+  onMouseDown,
+}: {
+  children: React.ReactNode
+  className?: string
+  onMouseDown: React.MouseEventHandler<HTMLButtonElement>
+}) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <span
+        aria-hidden="true"
+        className="text-[10px] font-medium uppercase tracking-[0.08em] text-transparent select-none"
+      >
+        Set
+      </span>
+
+      <Button
+        type="button"
+        variant="outline"
+        size="icon-sm"
+        onMouseDown={onMouseDown}
+        className={cn("h-10 w-10 rounded-lg shadow-none", className)}
+      >
+        {children}
+      </Button>
+    </div>
+  )
+}
+
 export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExerciseCard({
   builder,
   entry,
@@ -219,34 +250,27 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
           />
         ))}
 
-        <div className="ml-auto flex items-center gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="icon-sm"
+        <ProgramBuilderSetAction
+          onMouseDown={(event) => {
+            event.preventDefault()
+            builder.addSet(entry.uid)
+          }}
+          className="border-dashed border-neutral-200 bg-transparent text-neutral-500 hover:border-neutral-800 hover:bg-transparent hover:text-neutral-950"
+        >
+          <Plus className="size-3.5" />
+        </ProgramBuilderSetAction>
+
+        {entry.sets.length > 1 ? (
+          <ProgramBuilderSetAction
             onMouseDown={(event) => {
               event.preventDefault()
-              builder.addSet(entry.uid)
+              builder.removeSet(entry.uid)
             }}
-            className="size-7 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
+            className="border-neutral-200 bg-transparent text-neutral-500 hover:border-neutral-800 hover:bg-transparent hover:text-neutral-950"
           >
-            <Plus className="size-3.5" />
-          </Button>
-          {entry.sets.length > 1 ? (
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onMouseDown={(event) => {
-                event.preventDefault()
-                builder.removeSet(entry.uid)
-              }}
-              className="size-7 rounded-md border-neutral-200 bg-white text-neutral-700 shadow-none hover:bg-neutral-50"
-            >
-              <Minus className="size-3.5" />
-            </Button>
-          ) : null}
-        </div>
+            <Minus className="size-3.5" />
+          </ProgramBuilderSetAction>
+        ) : null}
       </div>
 
       {isEditingExercise ? (
