@@ -81,6 +81,8 @@ export type ProgramBuilderSetIntensifier = {
 export type ProgramBuilderExerciseSet = ProgramBuilderRepRange & {
   int?: ProgramBuilderSetIntensifier
   tempo?: ProgramBuilderTempo | null
+  rpe?: number | null
+  rir?: number | null
 }
 
 export type ProgramBuilderExerciseLibraryItem = {

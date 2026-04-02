@@ -94,6 +94,32 @@ export function ProgramBuilderWorkspace({
               Tempo
             </button>
 
+            <button
+              type="button"
+              onClick={() => builder.setUseRpe(!builder.useRpe)}
+              className={cn(
+                "rounded-md border px-3 py-1.5 text-[12px] font-medium",
+                builder.useRpe
+                  ? "border-violet-200 bg-violet-50 text-violet-700"
+                  : "border-neutral-200 bg-white text-neutral-500"
+              )}
+            >
+              RPE
+            </button>
+
+            <button
+              type="button"
+              onClick={() => builder.setUseRir(!builder.useRir)}
+              className={cn(
+                "rounded-md border px-3 py-1.5 text-[12px] font-medium",
+                builder.useRir
+                  ? "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700"
+                  : "border-neutral-200 bg-white text-neutral-500"
+              )}
+            >
+              RIR
+            </button>
+
             {builder.useTempo ? (
               <>
                 <div className="mx-1 h-5 w-px bg-neutral-200" />

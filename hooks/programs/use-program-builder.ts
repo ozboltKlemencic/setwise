@@ -20,7 +20,8 @@ import {
   PROGRAM_BUILDER_EXERCISES,
   PROGRAM_BUILDER_INTENSIFIERS,
   PROGRAM_BUILDER_MUSCLE_FILTERS,
-  PROGRAM_BUILDER_PATTERNS,
+  PROGRAM_BUILDER_RIR_OPTIONS,
+  PROGRAM_BUILDER_RPE_OPTIONS,
 } from "@/lib/programs/program-builder-data"
 import type {
   FixedProgramEditorProgram,
@@ -73,6 +74,8 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
   const [newTempo, setNewTempo] = React.useState("")
   const [useIntensifiers, setUseIntensifiers] = React.useState(true)
   const [useTempo, setUseTempo] = React.useState(true)
+  const [useRpe, setUseRpe] = React.useState(true)
+  const [useRir, setUseRir] = React.useState(true)
 
   React.useEffect(() => {
     setDescription(initialProgram.description)
@@ -331,24 +334,6 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     [updateActiveDay]
   )
 
-  const applyPattern = React.useCallback(
-    (exerciseUid: string, patternId: string) => {
-      const pattern = PROGRAM_BUILDER_PATTERNS.find((item) => item.id === patternId)
-      if (!pattern) {
-        return
-      }
-
-      updateActiveDay((currentExercises) =>
-        currentExercises.map((exercise) =>
-          exercise.uid === exerciseUid
-            ? { ...exercise, sets: pattern.build(exercise.sets.length) }
-            : exercise
-        )
-      )
-    },
-    [updateActiveDay]
-  )
-
   const setIntensifier = React.useCallback(
     (exerciseUid: string, setIndex: number, type: ProgramBuilderIntensifierType | null) => {
       updateActiveDay((currentExercises) =>
@@ -419,6 +404,42 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
                   index === setIndex
                     ? { ...set, tempo: tempoValue ? parseProgramBuilderTempo(tempoValue) : null }
                     : set
+                ),
+              }
+            : exercise
+        )
+      )
+    },
+    [updateActiveDay]
+  )
+
+  const setRpe = React.useCallback(
+    (exerciseUid: string, setIndex: number, value: number | null) => {
+      updateActiveDay((currentExercises) =>
+        currentExercises.map((exercise) =>
+          exercise.uid === exerciseUid
+            ? {
+                ...exercise,
+                sets: exercise.sets.map((set, index) =>
+                  index === setIndex ? { ...set, rpe: value } : set
+                ),
+              }
+            : exercise
+        )
+      )
+    },
+    [updateActiveDay]
+  )
+
+  const setRir = React.useCallback(
+    (exerciseUid: string, setIndex: number, value: number | null) => {
+      updateActiveDay((currentExercises) =>
+        currentExercises.map((exercise) =>
+          exercise.uid === exerciseUid
+            ? {
+                ...exercise,
+                sets: exercise.sets.map((set, index) =>
+                  index === setIndex ? { ...set, rir: value } : set
                 ),
               }
             : exercise
@@ -666,6 +687,12 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     setUseIntensifiers,
     useTempo,
     setUseTempo,
+    useRpe,
+    setUseRpe,
+    useRir,
+    setUseRir,
+    rpeOptions: PROGRAM_BUILDER_RPE_OPTIONS,
+    rirOptions: PROGRAM_BUILDER_RIR_OPTIONS,
     addExercise,
     removeExercise,
     openSetEditor,
@@ -674,10 +701,11 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     applyQuickRepRange,
     addSet,
     removeSet,
-    applyPattern,
     setIntensifier,
     updateIntensifierParam,
     setTempo,
+    setRpe,
+    setRir,
     addDay,
     addRestDay,
     duplicateActiveDay,

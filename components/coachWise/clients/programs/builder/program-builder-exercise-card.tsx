@@ -5,21 +5,73 @@ import { GripVertical, Minus, Plus, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 import {
   formatProgramBuilderRepRange,
   formatProgramBuilderTempo,
   PROGRAM_BUILDER_INTENSIFIERS,
   PROGRAM_BUILDER_MUSCLE_CLASSES,
-  PROGRAM_BUILDER_PATTERNS,
 } from "@/lib/programs/program-builder-data"
-import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
+import { cn } from "@/lib/utils"
 import type { ProgramBuilderExercise } from "@/types"
 
 type ProgramBuilderExerciseCardProps = {
   builder: ReturnType<typeof useProgramBuilder>
   entry: ProgramBuilderExercise
   index: number
+}
+
+type SetOptionRowProps = {
+  label: string
+  onClear: () => void
+  options: number[]
+  selectedValue: number | null | undefined
+  onSelect: (value: number) => void
+  activeClassName: string
+  idleClassName: string
+}
+
+function SetOptionRow({
+  label,
+  onClear,
+  options,
+  selectedValue,
+  onSelect,
+  activeClassName,
+  idleClassName,
+}: SetOptionRowProps) {
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2">
+      <span className="text-[11px] text-neutral-500">{label}</span>
+      <button
+        type="button"
+        onMouseDown={(event) => {
+          event.preventDefault()
+          onClear()
+        }}
+        className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+      >
+        None
+      </button>
+
+      {options.map((value) => (
+        <button
+          key={value}
+          type="button"
+          onMouseDown={(event) => {
+            event.preventDefault()
+            onSelect(value)
+          }}
+          className={cn(
+            "rounded-md border px-2.5 py-1 text-[11px] font-medium",
+            selectedValue === value ? activeClassName : idleClassName
+          )}
+        >
+          {value}
+        </button>
+      ))}
+    </div>
+  )
 }
 
 function ProgramBuilderSetChip({
@@ -65,10 +117,7 @@ function ProgramBuilderSetChip({
           type="button"
           onMouseDown={(event) => {
             event.preventDefault()
-            builder.intensifierEditor?.uid === entry.uid &&
-            builder.intensifierEditor.si === setIndex
-              ? builder.setIntensifier(entry.uid, setIndex, intensifier.type)
-              : builder.setIntensifier(entry.uid, setIndex, intensifier.type)
+            builder.setIntensifier(entry.uid, setIndex, intensifier.type)
           }}
           className={cn(
             "rounded-md border px-2 py-0.5 text-[10px] font-semibold",
@@ -82,6 +131,18 @@ function ProgramBuilderSetChip({
       {builder.useTempo && set.tempo ? (
         <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
           {formatProgramBuilderTempo(set.tempo)}
+        </span>
+      ) : null}
+
+      {builder.useRpe && typeof set.rpe === "number" ? (
+        <span className="rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-[10px] font-semibold text-violet-700">
+          RPE {set.rpe}
+        </span>
+      ) : null}
+
+      {builder.useRir && typeof set.rir === "number" ? (
+        <span className="rounded-md border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-[10px] font-semibold text-fuchsia-700">
+          RIR {set.rir}
         </span>
       ) : null}
     </div>
@@ -100,6 +161,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
     editingSet?.int && builder.intensifierEditor?.uid === entry.uid
       ? PROGRAM_BUILDER_INTENSIFIERS[editingSet.int.type]
       : null
+  const editingSetIndex = builder.editTarget?.si ?? 0
 
   return (
     <div
@@ -131,22 +193,6 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
               {entry.muscle}
             </span>
           </div>
-        </div>
-
-        <div className="hidden items-center gap-1 lg:flex">
-          {PROGRAM_BUILDER_PATTERNS.map((pattern) => (
-            <button
-              key={pattern.id}
-              type="button"
-              onMouseDown={(event) => {
-                event.preventDefault()
-                builder.applyPattern(entry.uid, pattern.id)
-              }}
-              className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[10px] font-medium text-neutral-500 transition-colors hover:border-brand-300 hover:bg-brand-50/35 hover:text-brand-700"
-            >
-              {pattern.label}
-            </button>
-          ))}
         </div>
 
         <Button
@@ -241,7 +287,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                 type="button"
                 onMouseDown={(event) => {
                   event.preventDefault()
-                  builder.setIntensifier(entry.uid, builder.editTarget?.si ?? 0, null)
+                  builder.setIntensifier(entry.uid, editingSetIndex, null)
                 }}
                 className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
               >
@@ -255,11 +301,14 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                     event.preventDefault()
                     builder.setIntensifier(
                       entry.uid,
-                      builder.editTarget?.si ?? 0,
+                      editingSetIndex,
                       type as keyof typeof PROGRAM_BUILDER_INTENSIFIERS
                     )
                   }}
-                  className={cn("rounded-md border px-2.5 py-1 text-[11px] font-medium", definition.className)}
+                  className={cn(
+                    "rounded-md border px-2.5 py-1 text-[11px] font-medium",
+                    definition.className
+                  )}
                 >
                   {definition.short}
                 </button>
@@ -286,7 +335,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                         event.preventDefault()
                         builder.updateIntensifierParam(
                           entry.uid,
-                          builder.editTarget?.si ?? 0,
+                          editingSetIndex,
                           parameter.key,
                           Math.max(parameter.min, currentValue - parameter.step)
                         )
@@ -307,7 +356,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                         event.preventDefault()
                         builder.updateIntensifierParam(
                           entry.uid,
-                          builder.editTarget?.si ?? 0,
+                          editingSetIndex,
                           parameter.key,
                           Math.min(parameter.max, currentValue + parameter.step)
                         )
@@ -329,7 +378,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                 type="button"
                 onMouseDown={(event) => {
                   event.preventDefault()
-                  builder.setTempo(entry.uid, builder.editTarget?.si ?? 0, null)
+                  builder.setTempo(entry.uid, editingSetIndex, null)
                 }}
                 className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
               >
@@ -341,7 +390,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                   type="button"
                   onMouseDown={(event) => {
                     event.preventDefault()
-                    builder.setTempo(entry.uid, builder.editTarget?.si ?? 0, tempo)
+                    builder.setTempo(entry.uid, editingSetIndex, tempo)
                   }}
                   className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-medium text-emerald-700"
                 >
@@ -349,6 +398,30 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                 </button>
               ))}
             </div>
+          ) : null}
+
+          {builder.useRpe ? (
+            <SetOptionRow
+              label="RPE"
+              onClear={() => builder.setRpe(entry.uid, editingSetIndex, null)}
+              options={builder.rpeOptions}
+              selectedValue={editingSet?.rpe}
+              onSelect={(value) => builder.setRpe(entry.uid, editingSetIndex, value)}
+              activeClassName="border-violet-300 bg-violet-50 text-violet-700"
+              idleClassName="border-violet-200/80 bg-violet-50/60 text-violet-700"
+            />
+          ) : null}
+
+          {builder.useRir ? (
+            <SetOptionRow
+              label="RIR"
+              onClear={() => builder.setRir(entry.uid, editingSetIndex, null)}
+              options={builder.rirOptions}
+              selectedValue={editingSet?.rir}
+              onSelect={(value) => builder.setRir(entry.uid, editingSetIndex, value)}
+              activeClassName="border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
+              idleClassName="border-fuchsia-200/80 bg-fuchsia-50/60 text-fuchsia-700"
+            />
           ) : null}
         </div>
       ) : null}

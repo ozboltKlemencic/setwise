@@ -12,12 +12,6 @@ import type {
   ProgramBuilderTempo,
 } from "@/types"
 
-export type ProgramBuilderPattern = {
-  id: string
-  label: string
-  build: (setCount: number) => ProgramBuilderExerciseSet[]
-}
-
 export type ProgramBuilderIntensifierParameter = {
   key: string
   label: string
@@ -118,6 +112,10 @@ export const PROGRAM_BUILDER_ALL_TEMPOS = [
   "2-0-1-3",
 ]
 
+export const PROGRAM_BUILDER_RPE_OPTIONS = [6, 7, 8, 9, 10]
+
+export const PROGRAM_BUILDER_RIR_OPTIONS = [0, 1, 2, 3, 4, 5]
+
 export const PROGRAM_BUILDER_SMART_DEFAULTS: Record<
   ProgramBuilderExerciseLibraryItem["type"],
   ProgramBuilderExerciseSet[]
@@ -126,41 +124,6 @@ export const PROGRAM_BUILDER_SMART_DEFAULTS: Record<
   compound_medium: [rep(8, 10), rep(8, 12), rep(10, 12)],
   isolation: [rep(10, 12), rep(12, 15), rep(12, 15)],
 }
-
-const patternScale = [
-  [4, 6],
-  [6, 8],
-  [8, 10],
-  [10, 12],
-  [12, 15],
-  [15, 20],
-]
-
-export const PROGRAM_BUILDER_PATTERNS: ProgramBuilderPattern[] = [
-  {
-    id: "pyramid-down",
-    label: "Pyramid",
-    build: (setCount) =>
-      Array.from({ length: setCount }, (_, index) => {
-        const range = patternScale[Math.min(index, patternScale.length - 1)]
-        return rep(range[0], range[1])
-      }),
-  },
-  {
-    id: "pyramid-up",
-    label: "Rev. pyramid",
-    build: (setCount) =>
-      Array.from({ length: setCount }, (_, index) => {
-        const range = patternScale[Math.min(setCount - 1 - index, patternScale.length - 1)]
-        return rep(range[0], range[1])
-      }),
-  },
-  {
-    id: "flat",
-    label: "Same reps",
-    build: (setCount) => Array.from({ length: setCount }, () => rep(8, 12)),
-  },
-]
 
 export const PROGRAM_BUILDER_INTENSIFIERS: Record<
   ProgramBuilderIntensifierType,
@@ -300,6 +263,8 @@ export function cloneProgramBuilderExercise(
       ...set,
       int: set.int ? { ...set.int, params: { ...set.int.params } } : undefined,
       tempo: set.tempo ? { ...set.tempo } : set.tempo,
+      rpe: set.rpe ?? null,
+      rir: set.rir ?? null,
     })),
   }
 }
