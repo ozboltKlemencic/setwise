@@ -49,7 +49,12 @@ function SetOptionRow({
           event.preventDefault()
           onClear()
         }}
-        className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+        className={cn(
+          "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+          selectedValue == null
+            ? "border-neutral-300 bg-neutral-100 text-neutral-700"
+            : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+        )}
       >
         None
       </button>
@@ -63,7 +68,7 @@ function SetOptionRow({
             onSelect(value)
           }}
           className={cn(
-            "rounded-md border px-2.5 py-1 text-[11px] font-medium",
+            "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
             selectedValue === value ? activeClassName : idleClassName
           )}
         >
@@ -193,6 +198,9 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
       ? PROGRAM_BUILDER_INTENSIFIERS[editingSet.int.type]
       : null
   const editingSetIndex = builder.editTarget?.si ?? 0
+  const selectedRepRange = editingSet ? formatProgramBuilderRepRange(editingSet) : null
+  const selectedTempo = editingSet?.tempo ? formatProgramBuilderTempo(editingSet.tempo) : null
+  const selectedIntensifierType = editingSet?.int?.type ?? null
 
   return (
     <div
@@ -284,20 +292,12 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                   event.preventDefault()
                   builder.applyQuickRepRange(range)
                 }}
-                className="rounded-md border border-brand-200 bg-brand-50/65 px-2.5 py-1 font-mono text-[11px] font-semibold text-brand-700"
-              >
-                {range}
-              </button>
-            ))}
-            {builder.otherRepRanges.map((range) => (
-              <button
-                key={`preset-${range}`}
-                type="button"
-                onMouseDown={(event) => {
-                  event.preventDefault()
-                  builder.applyQuickRepRange(range)
-                }}
-                className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 font-mono text-[11px] font-medium text-neutral-500 transition-colors hover:border-brand-300 hover:bg-brand-50/35 hover:text-brand-700"
+                className={cn(
+                  "rounded-md border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors",
+                  selectedRepRange === range
+                    ? "border-brand-200 bg-brand-50/65 text-brand-700"
+                    : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                )}
               >
                 {range}
               </button>
@@ -312,7 +312,12 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                 event.preventDefault()
                 builder.setIntensifier(entry.uid, editingSetIndex, null)
               }}
-              className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+              className={cn(
+                "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                selectedIntensifierType == null
+                  ? "border-neutral-300 bg-neutral-100 text-neutral-700"
+                  : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+              )}
             >
               None
             </button>
@@ -329,8 +334,10 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                   )
                 }}
                 className={cn(
-                  "rounded-md border px-2.5 py-1 text-[11px] font-medium",
-                  definition.className
+                  "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                  selectedIntensifierType === type
+                    ? definition.className
+                    : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
                 )}
               >
                 {definition.short}
@@ -401,7 +408,12 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                 event.preventDefault()
                 builder.setTempo(entry.uid, editingSetIndex, null)
               }}
-              className="rounded-md border border-neutral-200 bg-white px-2.5 py-1 text-[11px] font-medium text-neutral-500"
+              className={cn(
+                "rounded-md border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                selectedTempo == null
+                  ? "border-neutral-300 bg-neutral-100 text-neutral-700"
+                  : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+              )}
             >
               None
             </button>
@@ -413,7 +425,12 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
                   event.preventDefault()
                   builder.setTempo(entry.uid, editingSetIndex, tempo)
                 }}
-                className="rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-medium text-emerald-700"
+                className={cn(
+                  "rounded-md border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors",
+                  selectedTempo === tempo
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                    : "border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
+                )}
               >
                 {tempo}
               </button>
@@ -427,7 +444,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             selectedValue={editingSet?.rpe}
             onSelect={(value) => builder.setRpe(entry.uid, editingSetIndex, value)}
             activeClassName="border-violet-300 bg-violet-50 text-violet-700"
-            idleClassName="border-violet-200/80 bg-violet-50/60 text-violet-700"
+            idleClassName="border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
           />
 
           <SetOptionRow
@@ -437,7 +454,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             selectedValue={editingSet?.rir}
             onSelect={(value) => builder.setRir(entry.uid, editingSetIndex, value)}
             activeClassName="border-fuchsia-300 bg-fuchsia-50 text-fuchsia-700"
-            idleClassName="border-fuchsia-200/80 bg-fuchsia-50/60 text-fuchsia-700"
+            idleClassName="border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700"
           />
         </div>
       ) : null}
