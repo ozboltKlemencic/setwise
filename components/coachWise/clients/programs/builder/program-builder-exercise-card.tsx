@@ -240,7 +240,7 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-end gap-3 px-4 py-4">
+      <div className="flex flex-wrap items-end gap-2 px-4 py-4">
         {entry.sets.map((_, setIndex) => (
           <ProgramBuilderSetChip
             key={`${entry.uid}-${setIndex}`}
@@ -255,9 +255,9 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
             event.preventDefault()
             builder.addSet(entry.uid)
           }}
-          className="border-dashed border-neutral-200 bg-transparent text-neutral-500 hover:border-neutral-800 hover:bg-transparent hover:text-neutral-950"
+          className="border-dashed border-neutral-200 bg-transparent text-neutral-400 hover:border-neutral-800 hover:bg-transparent hover:text-neutral-950"
         >
-          <Plus className="size-3.5" />
+          <Plus className="size-3" />
         </ProgramBuilderSetAction>
 
         {entry.sets.length > 1 ? (
@@ -266,9 +266,9 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
               event.preventDefault()
               builder.removeSet(entry.uid)
             }}
-            className="border-neutral-200 bg-transparent text-neutral-500 hover:border-neutral-800 hover:bg-transparent hover:text-neutral-950"
+            className="border-dashed border-neutral-200 bg-transparent text-neutral-400 hover:border-neutral-800 hover:bg-transparent hover:text-neutral-950"
           >
-            <Minus className="size-3.5" />
+            <Minus className="size-3" />
           </ProgramBuilderSetAction>
         ) : null}
       </div>
