@@ -4005,6 +4005,17 @@ export function MealPlanDetailView({
     phase,
     pathHint: backHref ?? pathname,
   })
+  const detail = React.useMemo(
+    () =>
+      mealPlan
+        ? buildNutritionMealPlanDetailModel({
+            mealPlan,
+            sections,
+            builderSnapshot: storedMealPlan?.builderSnapshot,
+          })
+        : null,
+    [mealPlan, sections, storedMealPlan?.builderSnapshot]
+  )
 
   if (!mealPlan && !hasLoadedStoredMealPlans) {
     return null
@@ -4023,22 +4034,13 @@ export function MealPlanDetailView({
     pathname,
     getNutritionPlanEditorHref(mealPlan.id, resolvedBackHref)
   )
-  const detail = React.useMemo(
-    () =>
-      buildNutritionMealPlanDetailModel({
-        mealPlan,
-        sections,
-        builderSnapshot: storedMealPlan?.builderSnapshot,
-      }),
-    [mealPlan, sections, storedMealPlan?.builderSnapshot]
-  )
 
   return (
     <NutritionMealPlanDetailPage
       title={mealPlan.title}
       backHref={resolvedBackHref}
       editHref={editHref}
-      detail={detail}
+      detail={detail!}
     />
   )
 }
