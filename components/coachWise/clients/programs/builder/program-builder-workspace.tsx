@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Dumbbell } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
@@ -34,7 +35,7 @@ export function ProgramBuilderWorkspace({
                 {builder.activeDay.name}
               </div>
               <div className="text-[12px] text-neutral-500">
-                {builder.activeDay.exercises.length} exercises · {builder.totalSets} sets
+                {builder.activeDay.exercises.length} exercises - {builder.totalSets} sets
               </div>
             </div>
           ) : null}
@@ -97,12 +98,15 @@ export function ProgramBuilderWorkspace({
                 event.preventDefault()
                 builder.handleCanvasDrop(0)
               }}
-              className="flex min-h-[420px] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-200 bg-white px-6 text-center"
+              className="mb-2 flex min-h-[calc(90dvh-var(--header-height)-15rem)] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-neutral-100/50 px-6 text-center"
             >
+              <div className="mb-4 flex size-12 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-500">
+                <Dumbbell className="size-5" />
+              </div>
               <div className="text-[16px] font-semibold text-neutral-900">
                 This workout is empty
               </div>
-              <div className="mt-2 max-w-md text-[14px] text-neutral-500">
+              <div className="mt-2 max-w-xs  text-[14px] text-neutral-500">
                 Search exercises on the left, click to add them, or drag an exercise directly into
                 this area.
               </div>

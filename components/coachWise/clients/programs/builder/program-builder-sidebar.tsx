@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { GripVertical, Plus, Search } from "lucide-react"
+import { Bookmark, Dumbbell, GripVertical, Plus, Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,25 +16,52 @@ type ProgramBuilderSidebarProps = {
 export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
   builder,
 }: ProgramBuilderSidebarProps) {
+  const sidebarTabs = React.useMemo(
+    () => [
+      {
+        id: "exercises" as const,
+        label: "Exercises",
+        icon: Dumbbell,
+      },
+      {
+        id: "templates" as const,
+        label: "Templates",
+        icon: Bookmark,
+      },
+    ],
+    []
+  )
+
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden border-r border-neutral-200 bg-neutral-50">
       <div className="border-b border-neutral-200 bg-neutral-50 px-2">
         <div className="grid grid-cols-2 gap-1.5">
-          {(["exercises", "templates"] as const).map((tab) => (
+          {sidebarTabs.map((tab) => {
+            const Icon = tab.icon
+            const isActive = builder.leftTab === tab.id
+
+            return (
             <button
-              key={tab}
+              key={tab.id}
               type="button"
-              onClick={() => builder.setLeftTab(tab)}
+              onClick={() => builder.setLeftTab(tab.id)}
               className={cn(
-                "inline-flex items-center justify-center border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] capitalize transition-colors",
-                builder.leftTab === tab
-                  ? "border-brand-500 font-medium text-brand-600"
+                "inline-flex items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
+                isActive
+                  ? "border-brand-500 font-medium text-neutral-950"
                   : "text-neutral-500 hover:text-neutral-800"
               )}
             >
-              {tab}
+              <Icon
+                className={cn(
+                  "size-3.5 transition-colors",
+                  isActive ? "text-brand-600" : "text-neutral-400"
+                )}
+              />
+              <span>{tab.label}</span>
             </button>
-          ))}
+            )
+          })}
         </div>
       </div>
 
@@ -51,7 +78,7 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
             placeholder={
               builder.leftTab === "exercises" ? "Search exercises..." : "Search templates..."
             }
-            className="h-10 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
+            className="h-10 rounded-sm border-neutral-200 bg-neutral-50 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
           />
         </div>
 
