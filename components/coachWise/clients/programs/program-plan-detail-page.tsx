@@ -173,11 +173,6 @@ function ProgramDetailBuilderExerciseCard({
             >
               {exercise.muscle}
             </span>
-            {instructions ? (
-              <span className="inline-flex shrink-0 rounded-md border border-violet-100 bg-violet-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-violet-700">
-                Cue
-              </span>
-            ) : null}
           </div>
 
           {instructions ? (
