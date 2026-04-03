@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Clapperboard, Dumbbell, Link2, Upload } from "lucide-react"
+import { Link2, Upload } from "lucide-react"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -9,17 +9,18 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import {
+  PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS,
   PROGRAM_BUILDER_MUSCLE_CLASSES,
   PROGRAM_BUILDER_MUSCLE_FILTERS,
 } from "@/lib/programs/program-builder-data"
 import type {
+  ProgramBuilderExerciseEquipment,
   ProgramBuilderExerciseLibraryItem,
   ProgramBuilderExerciseType,
   ProgramBuilderMuscle,
@@ -32,6 +33,7 @@ type ProgramBuilderCreateExerciseDialogProps = {
   onCreate: (
     input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
       instructions?: string | null
+      equipment?: ProgramBuilderExerciseEquipment | null
       youtubeUrl?: string | null
       mediaFileName?: string | null
     }
@@ -68,6 +70,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
     const [name, setName] = React.useState(initialName)
     const [instructions, setInstructions] = React.useState("")
     const [muscle, setMuscle] = React.useState<ProgramBuilderMuscle>("Chest")
+    const [equipment, setEquipment] = React.useState<ProgramBuilderExerciseEquipment | null>(null)
     const [type, setType] = React.useState<ProgramBuilderExerciseType>("compound_medium")
     const [youtubeUrl, setYoutubeUrl] = React.useState("")
     const [mediaFileName, setMediaFileName] = React.useState("")
@@ -80,6 +83,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       setName(initialName)
       setInstructions("")
       setMuscle("Chest")
+      setEquipment(null)
       setType("compound_medium")
       setYoutubeUrl("")
       setMediaFileName("")
@@ -94,6 +98,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       onCreate({
         name: trimmedName,
         instructions: instructions.trim() || null,
+        equipment,
         muscle,
         type,
         youtubeUrl: youtubeUrl.trim() || null,
@@ -101,6 +106,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       })
       onOpenChange(false)
     }, [
+      equipment,
       instructions,
       mediaFileName,
       muscle,
@@ -129,8 +135,8 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           showCloseButton={false}
           className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
         >
-          <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_300px]">
-            <div className="border-b border-neutral-200 md:border-b-0">
+          <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_310px]">
+            <div className="pt-4 pb-5">
               <DialogHeader className="gap-0 px-6 pt-4 pb-2 text-left">
                 <DialogTitle className="text-[17px] font-semibold text-neutral-950">
                   Add Exercise
@@ -140,7 +146,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="space-y-4 px-6 pt-3 pb-5">
+              <div className="space-y-5 px-6 pt-3">
                 <div className="space-y-2">
                   <ProgramBuilderFieldLabel required>Name</ProgramBuilderFieldLabel>
                   <Input
@@ -152,17 +158,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                 </div>
 
                 <div className="space-y-2">
-                  <ProgramBuilderFieldLabel>Instructions</ProgramBuilderFieldLabel>
-                  <textarea
-                    value={instructions}
-                    onChange={(event) => setInstructions(event.target.value)}
-                    placeholder="Enter any additional info"
-                    className="min-h-[96px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <ProgramBuilderFieldLabel>Muscle group</ProgramBuilderFieldLabel>
+                  <ProgramBuilderFieldLabel>Primary muscle group</ProgramBuilderFieldLabel>
                   <div className="grid grid-cols-3 gap-2">
                     {muscleOptions.map((option) => {
                       const isActive = muscle === option
@@ -185,82 +181,117 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                     })}
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <ProgramBuilderFieldLabel>Technical cues</ProgramBuilderFieldLabel>
+                  <textarea
+                    value={instructions}
+                    onChange={(event) => setInstructions(event.target.value)}
+                    placeholder="Explain the form, tempo, and critical cues..."
+                    className="min-h-[116px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col">
-              <div className="px-6 pt-4 pb-2">
-                <div className="text-[17px] font-semibold text-neutral-950">Media</div>
+            <div className="flex flex-col px-6 pt-6 pb-5">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
+                Media
               </div>
 
-              <div className="space-y-4 px-6 pt-3 pb-5">
-                <div className="space-y-2">
-                  <ProgramBuilderFieldLabel>YouTube Link</ProgramBuilderFieldLabel>
-                  <div className="relative">
-                    <Link2 className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
-                    <Input
-                      value={youtubeUrl}
-                      onChange={(event) => setYoutubeUrl(event.target.value)}
-                      placeholder="Enter YouTube link"
-                      className="h-10 rounded-sm border-neutral-100 bg-neutral-50 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+              <div className="mt-3 flex min-h-full flex-col">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="video/*,image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
                     />
+                    <button
+                      type="button"
+                      onClick={handleUploadClick}
+                      className={cn(
+                        "flex min-h-[156px] w-full flex-col items-center justify-center rounded-sm border border-dashed px-4 text-center transition-colors",
+                        mediaFileName
+                          ? "border-brand-300 bg-brand-50/35"
+                          : "border-neutral-200 bg-neutral-50 hover:border-brand-300 hover:bg-brand-50/20"
+                      )}
+                    >
+                      <div className="mb-2 flex size-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-500">
+                        <Upload className="size-4" />
+                      </div>
+                      <div className="text-[13px] font-medium text-neutral-700">
+                        {mediaFileName ? "Uploaded media" : "Upload media"}
+                      </div>
+                      <div className="mt-1 text-[12px] text-neutral-500">
+                        {mediaFileName
+                          ? mediaFileName
+                          : "Click to choose a file from your computer."}
+                      </div>
+                    </button>
+                  </div>
+
+                  <div className="space-y-2">
+                    <ProgramBuilderFieldLabel>YouTube link</ProgramBuilderFieldLabel>
+                    <div className="relative">
+                      <Link2 className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-neutral-400" />
+                      <Input
+                        value={youtubeUrl}
+                        onChange={(event) => setYoutubeUrl(event.target.value)}
+                        placeholder="Enter YouTube link"
+                        className="h-10 rounded-sm border-neutral-100 bg-neutral-50 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <ProgramBuilderFieldLabel>Equipment</ProgramBuilderFieldLabel>
+                    <div className="grid grid-cols-2 gap-2">
+                      {PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.map((option) => {
+                        const isActive = equipment === option.value
+
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() =>
+                              setEquipment((currentValue) =>
+                                currentValue === option.value ? null : option.value
+                              )
+                            }
+                            className={cn(
+                              "rounded-lg border px-3 py-2 text-center text-[13px] font-medium transition-colors",
+                              isActive
+                                ? "border-brand-500 bg-brand-50/35 text-neutral-950"
+                                : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-brand-300 hover:bg-brand-50/20"
+                            )}
+                          >
+                            {option.label}
+                          </button>
+                        )
+                      })}
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="h-px flex-1 bg-neutral-200" />
-                  <span className="text-[11px] font-medium tracking-[0.12em] text-neutral-400 uppercase">
-                    Or
-                  </span>
-                  <div className="h-px flex-1 bg-neutral-200" />
-                </div>
-
-                <div className="space-y-2">
-                  <ProgramBuilderFieldLabel>Custom Video</ProgramBuilderFieldLabel>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="video/*,image/*"
-                    className="hidden"
-                    onChange={handleFileChange}
+                <div className="mt-5 flex flex-col gap-2">
+                  <PrimaryActionButton
+                    label="Add Exercise"
+                    onClick={handleCreate}
+                    disabled={!name.trim()}
+                    className="h-11 w-full justify-center rounded-lg px-5 text-[14px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
                   />
-                  <button
-                    type="button"
-                    onClick={handleUploadClick}
-                    className={cn(
-                      "flex min-h-[124px] w-full flex-col items-center justify-center rounded-sm border border-dashed px-4 text-center transition-colors",
-                      mediaFileName
-                        ? "border-brand-300 bg-brand-50/35"
-                        : "border-neutral-200 bg-neutral-50 hover:border-brand-300 hover:bg-brand-50/20"
-                    )}
-                  >
-                    <div className="mb-2 flex size-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-500">
-                      <Upload className="size-4" />
-                    </div>
-                    <div className="text-[12px] text-neutral-600">
-                      {mediaFileName ? mediaFileName : "Click or drag file to this area to upload"}
-                    </div>
-                  </button>
+                  <SecondaryActionButton
+                    label="Close"
+                    onClick={() => onOpenChange(false)}
+                    className="h-auto w-full justify-center border-transparent bg-transparent px-0 py-1 text-[13px] font-medium text-neutral-500 shadow-none hover:bg-transparent hover:text-neutral-700"
+                  />
                 </div>
               </div>
             </div>
           </div>
-
-          <DialogFooter className="border-t border-neutral-200 bg-neutral-100/80 px-6 py-4 sm:justify-end">
-            <div className="flex w-full justify-end gap-3">
-              <SecondaryActionButton
-                label="Close"
-                onClick={() => onOpenChange(false)}
-                className="h-11 min-w-[132px] justify-center rounded-lg border-neutral-200 bg-white px-5 text-[14px] font-medium text-neutral-500"
-              />
-              <PrimaryActionButton
-                label="Add Exercise"
-                onClick={handleCreate}
-                disabled={!name.trim()}
-                className="h-11 min-w-[180px] justify-center rounded-lg px-5 text-[14px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
-              />
-            </div>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     )
