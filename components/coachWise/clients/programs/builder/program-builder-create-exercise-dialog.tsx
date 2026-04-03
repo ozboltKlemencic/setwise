@@ -130,8 +130,8 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
         >
           <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_300px]">
-            <div className="border-b border-neutral-200 md:border-r md:border-b-0">
-              <DialogHeader className="gap-0 px-6 py-4 text-left">
+            <div className="border-b border-neutral-200 md:border-b-0">
+              <DialogHeader className="gap-0 px-6 pt-4 pb-2 text-left">
                 <DialogTitle className="text-[17px] font-semibold text-neutral-950">
                   Add Exercise
                 </DialogTitle>
@@ -140,7 +140,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="space-y-4 px-6 py-5">
+              <div className="space-y-4 px-6 pt-3 pb-5">
                 <div className="space-y-2">
                   <ProgramBuilderFieldLabel required>Name</ProgramBuilderFieldLabel>
                   <Input
@@ -189,11 +189,11 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
             </div>
 
             <div className="flex flex-col">
-              <div className="px-6 py-4">
+              <div className="px-6 pt-4 pb-2">
                 <div className="text-[17px] font-semibold text-neutral-950">Media</div>
               </div>
 
-              <div className="space-y-4 px-6 py-5">
+              <div className="space-y-4 px-6 pt-3 pb-5">
                 <div className="space-y-2">
                   <ProgramBuilderFieldLabel>YouTube Link</ProgramBuilderFieldLabel>
                   <div className="relative">
@@ -251,13 +251,13 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
               <SecondaryActionButton
                 label="Close"
                 onClick={() => onOpenChange(false)}
-                className="h-11 min-w-[132px] justify-center rounded-lg border-neutral-200 bg-white px-5 text-[15px] font-medium text-neutral-500"
+                className="h-11 min-w-[132px] justify-center rounded-lg border-neutral-200 bg-white px-5 text-[14px] font-medium text-neutral-500"
               />
               <PrimaryActionButton
                 label="Add Exercise"
                 onClick={handleCreate}
                 disabled={!name.trim()}
-                className="h-11 min-w-[180px] justify-center rounded-lg px-5 text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-11 min-w-[180px] justify-center rounded-lg px-5 text-[14px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
           </DialogFooter>
