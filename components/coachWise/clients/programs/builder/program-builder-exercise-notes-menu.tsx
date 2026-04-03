@@ -45,14 +45,14 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
           sideOffset={8}
           className={cn(overflowActionsMenuSurfaceClassName, "w-[260px] p-0")}
         >
-          <div className="space-y-3 p-3">
-            <div className="w-full space-y-1 border-b border-neutral-200 pb-2">
+          <div className="space-y-3 py-3">
+            <div className="w-full space-y-1 px-3 border-b border-neutral-200 pb-2">
               <div className="text-[11px] font-semibold tracking-[0.12em] text-neutral-400 uppercase">
                 Technical cues
               </div>
             </div>
 
-            <div className="text-[13px] leading-5 whitespace-pre-wrap text-neutral-600">
+            <div className="text-[13px] px-3 leading-5 whitespace-pre-wrap text-neutral-600">
               {description?.trim() || "No technical cues added yet."}
             </div>
           </div>

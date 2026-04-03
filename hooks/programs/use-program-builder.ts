@@ -224,6 +224,22 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     [editTarget?.uid, intensifierEditor?.uid, updateActiveDay]
   )
 
+  const updateExerciseInstructions = React.useCallback(
+    (exerciseUid: string, instructions: string | null) => {
+      updateActiveDay((currentExercises) =>
+        currentExercises.map((exercise) =>
+          exercise.uid === exerciseUid
+            ? {
+                ...exercise,
+                instructions: instructions?.trim() || null,
+              }
+            : exercise
+        )
+      )
+    },
+    [updateActiveDay]
+  )
+
   const commitRange = React.useCallback(
     (exerciseUid: string, setIndex: number, nextRange: ProgramBuilderExerciseSet) => {
       updateActiveDay((currentExercises) =>
@@ -763,6 +779,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     addExercise,
     createExercise,
     removeExercise,
+    updateExerciseInstructions,
     openSetEditor,
     closeSetEditor,
     handleSetInputBlur,
