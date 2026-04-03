@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils"
 import { PROGRAM_BUILDER_MUSCLE_CLASSES } from "@/lib/programs/program-builder-data"
 import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 
+import { ProgramBuilderCreateExerciseDialog } from "./program-builder-create-exercise-dialog"
+
 type ProgramBuilderSidebarProps = {
   builder: ReturnType<typeof useProgramBuilder>
 }
@@ -16,6 +18,7 @@ type ProgramBuilderSidebarProps = {
 export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
   builder,
 }: ProgramBuilderSidebarProps) {
+  const [isCreateExerciseOpen, setIsCreateExerciseOpen] = React.useState(false)
   const sidebarTabs = React.useMemo(
     () => [
       {
@@ -31,9 +34,20 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
     ],
     []
   )
+  const showExerciseEmptyState =
+    builder.leftTab === "exercises" &&
+    builder.searchQuery.trim().length > 0 &&
+    builder.filteredExercises.length === 0
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden border-r border-neutral-200 bg-neutral-50">
+      <ProgramBuilderCreateExerciseDialog
+        open={isCreateExerciseOpen}
+        onOpenChange={setIsCreateExerciseOpen}
+        initialName={builder.searchQuery.trim()}
+        onCreate={builder.createExercise}
+      />
+
       <div className="border-b border-neutral-200 bg-neutral-50 px-2">
         <div className="grid grid-cols-2 gap-1.5">
           {sidebarTabs.map((tab) => {
@@ -41,25 +55,25 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
             const isActive = builder.leftTab === tab.id
 
             return (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => builder.setLeftTab(tab.id)}
-              className={cn(
-                "inline-flex items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
-                isActive
-                  ? "border-brand-500 font-medium text-neutral-950"
-                  : "text-neutral-500 hover:text-neutral-800"
-              )}
-            >
-              <Icon
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => builder.setLeftTab(tab.id)}
                 className={cn(
-                  "size-3.5 transition-colors",
-                  isActive ? "text-brand-600" : "text-neutral-400"
+                  "inline-flex items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
+                  isActive
+                    ? "border-brand-500 font-medium text-neutral-950"
+                    : "text-neutral-500 hover:text-neutral-800"
                 )}
-              />
-              <span>{tab.label}</span>
-            </button>
+              >
+                <Icon
+                  className={cn(
+                    "size-3.5 transition-colors",
+                    isActive ? "text-brand-600" : "text-neutral-400"
+                  )}
+                />
+                <span>{tab.label}</span>
+              </button>
             )
           })}
         </div>
@@ -107,77 +121,98 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
         {builder.leftTab === "exercises" ? (
           <div className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 xl:-mr-2 xl:[overflow-y:overlay] xl:pr-2">
-              {builder.filteredExercises.map((exercise) => {
-                const isAddedToDay = builder.dayExerciseIds.has(exercise.id)
-                const isDisabled = !builder.activeDay || builder.activeDay.isRest || isAddedToDay
+              {showExerciseEmptyState ? (
+                <div className="space-y-3">
+                  <div className="text-[11px] font-semibold tracking-[0.14em] text-neutral-400 uppercase">
+                    Search results
+                  </div>
 
-                return (
-                  <div
-                    key={exercise.id}
-                    draggable={!isDisabled}
-                    onDragStart={(event) => {
-                      if (isDisabled) {
-                        event.preventDefault()
-                        return
-                      }
+                  <div className="rounded-xl border border-dashed border-neutral-200 bg-neutral-100 px-4 py-8 text-center text-[13px] text-neutral-500">
+                    No exercises found.
+                  </div>
 
-                      event.dataTransfer.effectAllowed = "copy"
-                      event.dataTransfer.setData("text/plain", String(exercise.id))
-                      builder.setDraggedLibraryExercise(exercise)
-                    }}
-                    onDragEnd={() => builder.setDraggedLibraryExercise(null)}
-                    className={cn(
-                      "flex items-center gap-2 rounded-md border py-3 pr-3 pl-2 transition-colors",
-                      isDisabled && "cursor-not-allowed",
-                      isAddedToDay
-                        ? "border-neutral-200 bg-neutral-50 text-neutral-500"
-                        : "border-neutral-200 bg-white hover:border-brand-400 hover:bg-brand-50/35"
-                    )}
+                  <button
+                    type="button"
+                    onClick={() => setIsCreateExerciseOpen(true)}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-brand-400 bg-brand-50/35 px-4 py-3 text-[14px] font-medium text-brand-700 transition-colors hover:bg-brand-50/50"
                   >
+                    <Plus className="size-4" />
+                    <span>Create &quot;{builder.searchQuery.trim()}&quot;</span>
+                  </button>
+                </div>
+              ) : (
+                builder.filteredExercises.map((exercise) => {
+                  const isAddedToDay = builder.dayExerciseIds.has(exercise.id)
+                  const isDisabled = !builder.activeDay || builder.activeDay.isRest || isAddedToDay
+
+                  return (
                     <div
+                      key={exercise.id}
+                      draggable={!isDisabled}
+                      onDragStart={(event) => {
+                        if (isDisabled) {
+                          event.preventDefault()
+                          return
+                        }
+
+                        event.dataTransfer.effectAllowed = "copy"
+                        event.dataTransfer.setData("text/plain", String(exercise.id))
+                        builder.setDraggedLibraryExercise(exercise)
+                      }}
+                      onDragEnd={() => builder.setDraggedLibraryExercise(null)}
                       className={cn(
-                        "flex size-7 shrink-0 items-center justify-center rounded-lg border",
-                        PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle],
+                        "flex items-center gap-2 rounded-md border py-3 pr-3 pl-2 transition-colors",
+                        isDisabled && "cursor-not-allowed",
                         isAddedToDay
-                          ? "cursor-not-allowed opacity-55"
-                          : "cursor-grab active:cursor-grabbing"
+                          ? "border-neutral-200 bg-neutral-50 text-neutral-500"
+                          : "border-neutral-200 bg-white hover:border-brand-400 hover:bg-brand-50/35"
                       )}
                     >
-                      <GripVertical className="size-3.5" />
-                    </div>
-
-                    <div className="min-w-0 flex-1">
                       <div
                         className={cn(
-                          "truncate text-[13px] font-medium",
-                          isAddedToDay ? "text-neutral-700" : "text-neutral-950"
+                          "flex size-7 shrink-0 items-center justify-center rounded-lg border",
+                          PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle],
+                          isAddedToDay
+                            ? "cursor-not-allowed opacity-55"
+                            : "cursor-grab active:cursor-grabbing"
                         )}
                       >
-                        {exercise.name}
+                        <GripVertical className="size-3.5" />
                       </div>
-                      <div
-                        className={cn(
-                          "mt-0.5 text-[11px]",
-                          isAddedToDay ? "text-neutral-400" : "text-neutral-500"
-                        )}
-                      >
-                        {exercise.muscle.replace("_", " ")}
-                      </div>
-                    </div>
 
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      onClick={() => builder.addExercise(exercise)}
-                      disabled={isDisabled}
-                      className="size-7 rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100 disabled:cursor-not-allowed"
-                    >
-                      <Plus className="size-3" />
-                    </Button>
-                  </div>
-                )
-              })}
+                      <div className="min-w-0 flex-1">
+                        <div
+                          className={cn(
+                            "truncate text-[13px] font-medium",
+                            isAddedToDay ? "text-neutral-700" : "text-neutral-950"
+                          )}
+                        >
+                          {exercise.name}
+                        </div>
+                        <div
+                          className={cn(
+                            "mt-0.5 text-[11px]",
+                            isAddedToDay ? "text-neutral-400" : "text-neutral-500"
+                          )}
+                        >
+                          {exercise.muscle.replace("_", " ")}
+                        </div>
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        onClick={() => builder.addExercise(exercise)}
+                        disabled={isDisabled}
+                        className="size-7 rounded-md border-neutral-200/70 bg-neutral-50 text-neutral-700 shadow-none hover:bg-neutral-100 disabled:cursor-not-allowed"
+                      >
+                        <Plus className="size-3" />
+                      </Button>
+                    </div>
+                  )
+                })
+              )}
             </div>
           </div>
         ) : (

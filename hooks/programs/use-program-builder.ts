@@ -9,6 +9,7 @@ import {
   createProgramBuilderExerciseEntry,
   createProgramBuilderId,
   createProgramBuilderInitialDays,
+  createProgramBuilderLibraryExercise,
   formatProgramBuilderRepRange,
   formatProgramBuilderTempo,
   parseProgramBuilderRepRange,
@@ -26,9 +27,11 @@ import {
 import type {
   FixedProgramEditorProgram,
   ProgramBuilderDayTemplate,
+  ProgramBuilderExerciseEquipment,
   ProgramBuilderExercise,
   ProgramBuilderExerciseLibraryItem,
   ProgramBuilderExerciseSet,
+  ProgramBuilderExerciseLevel,
   ProgramBuilderIntensifierType,
   ProgramBuilderMuscleFilter,
   ProgramBuilderSetEditTarget,
@@ -52,6 +55,8 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateQuery, setTemplateQuery] = React.useState("")
   const [muscleFilter, setMuscleFilter] = React.useState<ProgramBuilderMuscleFilter>("All")
+  const [exerciseLibrary, setExerciseLibrary] =
+    React.useState<ProgramBuilderExerciseLibraryItem[]>(PROGRAM_BUILDER_EXERCISES)
   const [editTarget, setEditTarget] = React.useState<ProgramBuilderSetEditTarget | null>(null)
   const [editValue, setEditValue] = React.useState("")
   const [intensifierEditor, setIntensifierEditor] =
@@ -107,7 +112,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
   )
   const filteredExercises = React.useMemo(
     () =>
-      PROGRAM_BUILDER_EXERCISES.filter((exercise) => {
+      exerciseLibrary.filter((exercise) => {
         if (muscleFilter !== "All" && exercise.muscle !== muscleFilter) {
           return false
         }
@@ -122,7 +127,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
           exercise.muscle.toLowerCase().includes(normalizedQuery)
         )
       }),
-    [muscleFilter, searchQuery]
+    [exerciseLibrary, muscleFilter, searchQuery]
   )
   const filteredTemplates = React.useMemo(
     () =>
@@ -179,6 +184,26 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
       })
     },
     [activeDay, dayExerciseIds, updateActiveDay]
+  )
+
+  const createExercise = React.useCallback(
+    (
+      input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
+        instructions?: string | null
+        equipment?: ProgramBuilderExerciseEquipment | null
+        level?: ProgramBuilderExerciseLevel | null
+        youtubeUrl?: string | null
+        mediaFileName?: string | null
+      }
+    ) => {
+      const nextExercise = createProgramBuilderLibraryExercise(exerciseLibrary, input)
+
+      setExerciseLibrary((currentExercises) => [nextExercise, ...currentExercises])
+      setLeftTab("exercises")
+      setMuscleFilter("All")
+      setSearchQuery(nextExercise.name)
+    },
+    [exerciseLibrary]
   )
 
   const removeExercise = React.useCallback(
@@ -685,6 +710,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     activeDayIndex,
     setActiveDayIndex,
     totalSets,
+    exerciseLibrary,
     dayExerciseIds,
     leftTab,
     setLeftTab,
@@ -735,6 +761,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     rpeOptions: PROGRAM_BUILDER_RPE_OPTIONS,
     rirOptions: PROGRAM_BUILDER_RIR_OPTIONS,
     addExercise,
+    createExercise,
     removeExercise,
     openSetEditor,
     closeSetEditor,

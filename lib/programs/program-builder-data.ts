@@ -1,15 +1,18 @@
 import type {
   FixedProgramEditorProgram,
   ProgramBuilderDay,
+  ProgramBuilderExerciseEquipment,
   ProgramBuilderDayTemplate,
   ProgramBuilderExercise,
   ProgramBuilderExerciseLibraryItem,
   ProgramBuilderExerciseSet,
+  ProgramBuilderExerciseLevel,
   ProgramBuilderIntensifierType,
   ProgramBuilderMuscle,
   ProgramBuilderMuscleFilter,
   ProgramBuilderRepRange,
   ProgramBuilderTempo,
+  ProgramBuilderExerciseType,
 } from "@/types"
 
 export type ProgramBuilderIntensifierParameter = {
@@ -28,6 +31,17 @@ export type ProgramBuilderIntensifierDefinition = {
   params: ProgramBuilderIntensifierParameter[]
   format: (params: Record<string, number>) => string
   className: string
+}
+
+export type ProgramBuilderExerciseTypeOption = {
+  value: ProgramBuilderExerciseType
+  label: string
+  description: string
+}
+
+export type ProgramBuilderExerciseSelectOption<TValue extends string> = {
+  value: TValue
+  label: string
 }
 
 const rep = (min: number, max: number): ProgramBuilderExerciseSet => ({ min, max })
@@ -78,6 +92,43 @@ export const PROGRAM_BUILDER_MUSCLE_FILTERS: ProgramBuilderMuscleFilter[] = [
 ]
 
 export const PROGRAM_BUILDER_DEFAULT_REP_RANGES = ["6-8", "8-10", "8-12", "10-12", "12-15"]
+
+export const PROGRAM_BUILDER_EXERCISE_TYPE_OPTIONS: ProgramBuilderExerciseTypeOption[] = [
+  {
+    value: "compound_heavy",
+    label: "Compound Heavy",
+    description: "Lower rep strength work with bigger lifts.",
+  },
+  {
+    value: "compound_medium",
+    label: "Compound Medium",
+    description: "Main accessory compounds with moderate reps.",
+  },
+  {
+    value: "isolation",
+    label: "Isolation",
+    description: "Single-muscle focus work with higher reps.",
+  },
+]
+
+export const PROGRAM_BUILDER_EXERCISE_LEVEL_OPTIONS: ProgramBuilderExerciseSelectOption<ProgramBuilderExerciseLevel>[] =
+  [
+    { value: "Beginner", label: "Beginner" },
+    { value: "Intermediate", label: "Intermediate" },
+    { value: "Advanced", label: "Advanced" },
+  ]
+
+export const PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS: ProgramBuilderExerciseSelectOption<ProgramBuilderExerciseEquipment>[] =
+  [
+    { value: "Barbell", label: "Barbell" },
+    { value: "Dumbbell", label: "Dumbbell" },
+    { value: "Cable", label: "Cable" },
+    { value: "Machine", label: "Machine" },
+    { value: "Bodyweight", label: "Bodyweight" },
+    { value: "Kettlebell", label: "Kettlebell" },
+    { value: "Band", label: "Band" },
+    { value: "Other", label: "Other" },
+  ]
 
 export const PROGRAM_BUILDER_ALL_REP_RANGES = [
   "1-3",
@@ -251,6 +302,32 @@ export function createProgramBuilderExerciseEntry(
     muscle: exercise.muscle,
     type: exercise.type,
     sets: PROGRAM_BUILDER_SMART_DEFAULTS[exercise.type].map((set) => ({ ...set })),
+  }
+}
+
+export function createProgramBuilderLibraryExercise(
+  exercises: ProgramBuilderExerciseLibraryItem[],
+  input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
+    instructions?: string | null
+    equipment?: ProgramBuilderExerciseEquipment | null
+    level?: ProgramBuilderExerciseLevel | null
+    youtubeUrl?: string | null
+    mediaFileName?: string | null
+  }
+): ProgramBuilderExerciseLibraryItem {
+  const nextId =
+    exercises.reduce((highestId, exercise) => Math.max(highestId, exercise.id), 0) + 1
+
+  return {
+    id: nextId,
+    name: input.name.trim(),
+    muscle: input.muscle,
+    type: input.type,
+    instructions: input.instructions?.trim() || null,
+    equipment: input.equipment ?? null,
+    level: input.level ?? null,
+    youtubeUrl: input.youtubeUrl?.trim() || null,
+    mediaFileName: input.mediaFileName ?? null,
   }
 }
 

@@ -43,6 +43,21 @@ export type ProgramBuilderExerciseType =
   | "compound_medium"
   | "isolation"
 
+export type ProgramBuilderExerciseLevel =
+  | "Beginner"
+  | "Intermediate"
+  | "Advanced"
+
+export type ProgramBuilderExerciseEquipment =
+  | "Barbell"
+  | "Dumbbell"
+  | "Cable"
+  | "Machine"
+  | "Bodyweight"
+  | "Kettlebell"
+  | "Band"
+  | "Other"
+
 export type ProgramBuilderMuscle =
   | "Chest"
   | "Back"
@@ -90,6 +105,11 @@ export type ProgramBuilderExerciseLibraryItem = {
   name: string
   muscle: ProgramBuilderMuscle
   type: ProgramBuilderExerciseType
+  instructions?: string | null
+  equipment?: ProgramBuilderExerciseEquipment | null
+  level?: ProgramBuilderExerciseLevel | null
+  youtubeUrl?: string | null
+  mediaFileName?: string | null
 }
 
 export type ProgramBuilderExercise = {
