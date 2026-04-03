@@ -32,12 +32,10 @@ function countProgramSections(plan: StoredProgramPlan) {
 function ProgramDetailMetricCard({
   label,
   value,
-  description,
   progressClassName,
 }: {
   label: string
   value: string
-  description: string
   progressClassName: string
 }) {
   return (
@@ -47,9 +45,6 @@ function ProgramDetailMetricCard({
       </div>
       <div className="mt-2 text-[11px] uppercase tracking-[0.12em] text-neutral-400">
         {label}
-      </div>
-      <div className="absolute right-4 bottom-3 text-[12px] font-medium text-neutral-500">
-        {description}
       </div>
       <div className="absolute right-0 bottom-0 left-0 h-[3px]">
         <div className={cn("h-full w-full", progressClassName)} />
@@ -229,39 +224,47 @@ function ProgramWorkoutTabs({
   workouts,
   activeWorkoutId,
   onSelectWorkout,
+  summaryText,
 }: {
   workouts: StoredProgramPlan["program"]["editorWorkouts"]
   activeWorkoutId: string
   onSelectWorkout: (workoutId: string) => void
+  summaryText: string
 }) {
   return (
     <div className="border-b border-neutral-200 bg-neutral-50 px-2">
-      <div className="flex items-center gap-1.5 overflow-x-auto">
-        {workouts.map((workout) => {
-          const isActive = workout.id === activeWorkoutId
+      <div className="flex items-end justify-between gap-4">
+        <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto">
+          {workouts.map((workout) => {
+            const isActive = workout.id === activeWorkoutId
 
-          return (
-            <button
-              key={workout.id}
-              type="button"
-              onClick={() => onSelectWorkout(workout.id)}
-              className={cn(
-                "inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
-                isActive
-                  ? "border-brand-500 font-medium text-neutral-950"
-                  : "text-neutral-500 hover:text-neutral-800"
-              )}
-            >
-              <Dumbbell
+            return (
+              <button
+                key={workout.id}
+                type="button"
+                onClick={() => onSelectWorkout(workout.id)}
                 className={cn(
-                  "size-3.5 transition-colors",
-                  isActive ? "text-brand-600" : "text-neutral-400"
+                  "inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
+                  isActive
+                    ? "border-brand-500 font-medium text-neutral-950"
+                    : "text-neutral-500 hover:text-neutral-800"
                 )}
-              />
-              <span>{workout.label}</span>
-            </button>
-          )
-        })}
+              >
+                <Dumbbell
+                  className={cn(
+                    "size-3.5 transition-colors",
+                    isActive ? "text-brand-600" : "text-neutral-400"
+                  )}
+                />
+                <span>{workout.label}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="hidden shrink-0 px-2 pb-2.5 text-right text-[13px] text-neutral-500 lg:block">
+          {summaryText}
+        </div>
       </div>
     </div>
   )
@@ -279,6 +282,7 @@ export function ProgramPlanDetailPage({
   const workoutCount = plan.program.editorWorkouts.length
   const exerciseCount = countProgramExercises(plan)
   const sectionCount = countProgramSections(plan)
+  const tabSummaryText = `${workoutCount} workouts · ${exerciseCount} exercises · ${sectionCount} sections`
   const [activeWorkoutId, setActiveWorkoutId] = React.useState(
     plan.program.editorWorkouts[0]?.id ?? ""
   )
@@ -301,15 +305,12 @@ export function ProgramPlanDetailPage({
       />
 
       <div className="mx-auto max-w-[1080px] space-y-6 px-4 py-5">
-        <div className="text-[14px] text-neutral-500">{plan.description}</div>
-
         <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
           <div className="grid md:grid-cols-3">
             <div className="border-b border-neutral-200 md:border-r md:border-b-0">
               <ProgramDetailMetricCard
                 label="Workouts"
                 value={String(workoutCount)}
-                description="Scheduled days"
                 progressClassName="bg-brand-500"
               />
             </div>
@@ -317,7 +318,6 @@ export function ProgramPlanDetailPage({
               <ProgramDetailMetricCard
                 label="Exercises"
                 value={String(exerciseCount)}
-                description="Across all workouts"
                 progressClassName="bg-emerald-500"
               />
             </div>
@@ -325,7 +325,6 @@ export function ProgramPlanDetailPage({
               <ProgramDetailMetricCard
                 label="Sections"
                 value={String(sectionCount)}
-                description="Workout groups"
                 progressClassName="bg-sky-500"
               />
             </div>
@@ -338,6 +337,7 @@ export function ProgramPlanDetailPage({
               workouts={plan.program.editorWorkouts}
               activeWorkoutId={activeWorkout.id}
               onSelectWorkout={setActiveWorkoutId}
+              summaryText={tabSummaryText}
             />
 
             <ProgramWorkoutCard workout={activeWorkout} />
