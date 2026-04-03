@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Link2, Upload } from "lucide-react"
+import { Link2, Upload, X } from "lucide-react"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -35,7 +35,7 @@ type ProgramBuilderCreateExerciseDialogProps = {
   onCreate: (
     input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
       instructions?: string | null
-      equipment?: ProgramBuilderExerciseEquipment | null
+      equipment?: ProgramBuilderExerciseEquipment[] | null
       youtubeUrl?: string | null
       mediaFileName?: string | null
     }
@@ -72,7 +72,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
     const [name, setName] = React.useState(initialName)
     const [instructions, setInstructions] = React.useState("")
     const [muscle, setMuscle] = React.useState<ProgramBuilderMuscle>("Chest")
-    const [equipment, setEquipment] = React.useState<ProgramBuilderExerciseEquipment | null>(null)
+    const [equipment, setEquipment] = React.useState<ProgramBuilderExerciseEquipment[]>([])
     const [type, setType] = React.useState<ProgramBuilderExerciseType>("compound_medium")
     const [youtubeUrl, setYoutubeUrl] = React.useState("")
     const [mediaFileName, setMediaFileName] = React.useState("")
@@ -85,11 +85,43 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       setName(initialName)
       setInstructions("")
       setMuscle("Chest")
-      setEquipment(null)
+      setEquipment([])
       setType("compound_medium")
       setYoutubeUrl("")
       setMediaFileName("")
     }, [initialName, open])
+
+    const equipmentLabel = React.useMemo(() => {
+      if (equipment.length === 0) {
+        return "Select equipment"
+      }
+
+      const selectedLabels = PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.filter((option) =>
+        equipment.includes(option.value)
+      ).map((option) => option.label)
+
+      if (selectedLabels.length <= 2) {
+        return selectedLabels.join(", ")
+      }
+
+      return `${selectedLabels[0]} +${selectedLabels.length - 1}`
+    }, [equipment])
+
+    const availableEquipmentOptions = React.useMemo(
+      () =>
+        PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.filter(
+          (option) => !equipment.includes(option.value)
+        ),
+      [equipment]
+    )
+
+    const toggleEquipment = React.useCallback((value: ProgramBuilderExerciseEquipment) => {
+      setEquipment((currentEquipment) =>
+        currentEquipment.includes(value)
+          ? currentEquipment.filter((item) => item !== value)
+          : [...currentEquipment, value]
+      )
+    }, [])
 
     const handleCreate = React.useCallback(() => {
       const trimmedName = name.trim()
@@ -100,7 +132,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       onCreate({
         name: trimmedName,
         instructions: instructions.trim() || null,
-        equipment,
+        equipment: equipment.length ? equipment : null,
         muscle,
         type,
         youtubeUrl: youtubeUrl.trim() || null,
@@ -190,7 +222,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                     value={instructions}
                     onChange={(event) => setInstructions(event.target.value)}
                     placeholder="Explain the form, tempo, and critical cues..."
-                    className="min-h-[150px] flex-1 resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
+                    className="min-h-[150px] flex-1 resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 shadow-none outline-none ring-0 transition-colors placeholder:text-neutral-400 focus:border-brand-500 focus:ring-0 focus-visible:border-brand-500 focus-visible:ring-0"
                   />
                 </div>
               </div>
@@ -249,21 +281,53 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                   <div className="space-y-2">
                     <ProgramBuilderFieldLabel>Equipment</ProgramBuilderFieldLabel>
                     <ProgramBuilderToolbarMenu
-                      label={
-                        PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.find(
-                          (option) => option.value === equipment
-                        )?.label ?? "Select equipment"
-                      }
-                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-100 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-200 hover:bg-white/85 data-[state=open]:border-neutral-200 data-[state=open]:bg-white/85"
+                      label={equipmentLabel}
+                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-100 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-200 hover:bg-white/85 data-[state=open]:border-brand-500 data-[state=open]:bg-white"
                       contentClassName="w-[258px]"
                     >
-                      <div className="space-y-1">
+                      <div className="space-y-1.5 p-1">
+                        {equipment.length > 0 ? (
+                          <>
+                            <div className="px-2 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+                              Selected
+                            </div>
+                            <div className="space-y-1">
+                              {equipment.map((selectedEquipment) => {
+                                const selectedOption = PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.find(
+                                  (option) => option.value === selectedEquipment
+                                )
+
+                                if (!selectedOption) {
+                                  return null
+                                }
+
+                                return (
+                                  <div
+                                    key={selectedOption.value}
+                                    className="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-[13px] text-neutral-700"
+                                  >
+                                    <span className="truncate">{selectedOption.label}</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => toggleEquipment(selectedOption.value)}
+                                      className="inline-flex size-5 items-center justify-center rounded-sm text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600"
+                                    >
+                                      <X className="size-3.5" />
+                                    </button>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                            <div className="border-t border-neutral-200/70 pt-2" />
+                          </>
+                        ) : null}
+
                         <button
                           type="button"
-                          onClick={() => setEquipment(null)}
+                          onClick={() => setEquipment([])}
                           className={cn(
                             "flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] transition-colors",
-                            equipment === null
+                            equipment.length === 0
                               ? "bg-neutral-100 text-neutral-950"
                               : "text-neutral-700 hover:bg-neutral-50"
                           )}
@@ -271,27 +335,23 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                           No equipment
                         </button>
 
-                        <div className="my-1 border-t border-neutral-200/70" />
-
-                        {PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.map((option) => {
-                          const isActive = equipment === option.value
-
-                          return (
-                            <button
-                              key={option.value}
-                              type="button"
-                              onClick={() => setEquipment(option.value)}
-                              className={cn(
-                                "flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] transition-colors",
-                                isActive
-                                  ? "bg-neutral-100 text-neutral-950"
-                                  : "text-neutral-700 hover:bg-neutral-50"
-                              )}
-                            >
-                              {option.label}
-                            </button>
-                          )
-                        })}
+                        {availableEquipmentOptions.length > 0 ? (
+                          <>
+                            <div className="border-t border-neutral-200/70 pt-2" />
+                            <div className="space-y-1">
+                              {availableEquipmentOptions.map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => toggleEquipment(option.value)}
+                                  className="flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] text-neutral-700 transition-colors hover:bg-neutral-50"
+                                >
+                                  {option.label}
+                                </button>
+                              ))}
+                            </div>
+                          </>
+                        ) : null}
                       </div>
                     </ProgramBuilderToolbarMenu>
                   </div>

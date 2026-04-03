@@ -309,7 +309,7 @@ export function createProgramBuilderLibraryExercise(
   exercises: ProgramBuilderExerciseLibraryItem[],
   input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
     instructions?: string | null
-    equipment?: ProgramBuilderExerciseEquipment | null
+    equipment?: ProgramBuilderExerciseEquipment[] | null
     level?: ProgramBuilderExerciseLevel | null
     youtubeUrl?: string | null
     mediaFileName?: string | null
@@ -324,7 +324,7 @@ export function createProgramBuilderLibraryExercise(
     muscle: input.muscle,
     type: input.type,
     instructions: input.instructions?.trim() || null,
-    equipment: input.equipment ?? null,
+    equipment: input.equipment?.length ? [...input.equipment] : null,
     level: input.level ?? null,
     youtubeUrl: input.youtubeUrl?.trim() || null,
     mediaFileName: input.mediaFileName ?? null,

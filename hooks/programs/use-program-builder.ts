@@ -190,7 +190,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     (
       input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
         instructions?: string | null
-        equipment?: ProgramBuilderExerciseEquipment | null
+        equipment?: ProgramBuilderExerciseEquipment[] | null
         level?: ProgramBuilderExerciseLevel | null
         youtubeUrl?: string | null
         mediaFileName?: string | null

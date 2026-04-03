@@ -106,7 +106,7 @@ export type ProgramBuilderExerciseLibraryItem = {
   muscle: ProgramBuilderMuscle
   type: ProgramBuilderExerciseType
   instructions?: string | null
-  equipment?: ProgramBuilderExerciseEquipment | null
+  equipment?: ProgramBuilderExerciseEquipment[] | null
   level?: ProgramBuilderExerciseLevel | null
   youtubeUrl?: string | null
   mediaFileName?: string | null
