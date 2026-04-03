@@ -22,7 +22,6 @@ type ProgramBuilderExerciseNotesMenuProps = {
 
 export const ProgramBuilderExerciseNotesMenu = React.memo(
   function ProgramBuilderExerciseNotesMenu({
-    title,
     description,
   }: ProgramBuilderExerciseNotesMenuProps) {
     return (
@@ -48,14 +47,13 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
           className={cn(overflowActionsMenuSurfaceClassName, "w-[260px] p-0")}
         >
           <div className="space-y-3 p-3">
-            <div className="space-y-1">
+            <div className="space-y-1 border-b border-neutral-200 pb-2">
               <div className="text-[11px] font-semibold tracking-[0.12em] text-neutral-400 uppercase">
                 Technical cues
               </div>
-              <div className="text-[13px] font-semibold text-neutral-950">{title}</div>
             </div>
 
-            <div className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-[13px] leading-5 whitespace-pre-wrap text-neutral-600">
+            <div className="text-[13px] leading-5 whitespace-pre-wrap text-neutral-600">
               {description?.trim() || "No technical cues added yet."}
             </div>
           </div>
