@@ -1,4 +1,12 @@
+import {
+  PROGRAM_BUILDER_EXERCISES,
+  PROGRAM_BUILDER_SMART_DEFAULTS,
+  formatProgramBuilderRepRange,
+} from "@/lib/programs/program-builder-data"
 import type {
+  FixedProgramBuilderExercise,
+  FixedProgramBuilderSection,
+  FixedProgramBuilderWorkout,
   FixedProgramEditorProgram,
   ProgramBuilderPreset,
   ProgramBuilderPresetId,
@@ -64,6 +72,100 @@ export function formatProgramPresetSummary(preset: ProgramBuilderPreset) {
   return `${preset.workouts.length} ${dayLabel} · ${workoutsLabel}`
 }
 
+function createProgramBuilderUtilityId(prefix: string, seed: string) {
+  const safeSeed = seed.toLowerCase().replace(/[^a-z0-9]+/g, "-")
+  return `${prefix}-${safeSeed}-${Math.random().toString(36).slice(2, 7)}`
+}
+
+function getPresetExerciseIdsForWorkoutLabel(label: string) {
+  const normalizedLabel = label.toLowerCase()
+
+  if (normalizedLabel.includes("upper")) {
+    return [1, 14, 20, 16, 25]
+  }
+
+  if (
+    normalizedLabel.includes("lower") ||
+    normalizedLabel.includes("legs") ||
+    normalizedLabel.includes("leg") ||
+    normalizedLabel.includes("glute")
+  ) {
+    return [6, 7, 11, 9, 13]
+  }
+
+  if (normalizedLabel.includes("push") || normalizedLabel.includes("chest")) {
+    return [1, 2, 20, 21, 26]
+  }
+
+  if (normalizedLabel.includes("pull") || normalizedLabel.includes("back")) {
+    return [14, 16, 17, 22, 25]
+  }
+
+  if (normalizedLabel.includes("shoulder")) {
+    return [20, 21, 22, 23, 24]
+  }
+
+  if (normalizedLabel.includes("arm")) {
+    return [25, 26, 27, 28, 29]
+  }
+
+  if (normalizedLabel.includes("core")) {
+    return [31, 32, 21, 22]
+  }
+
+  return [6, 1, 14, 20, 9]
+}
+
+function buildPresetEditorExercise(exerciseId: number): FixedProgramBuilderExercise | null {
+  const exercise = PROGRAM_BUILDER_EXERCISES.find((entry) => entry.id === exerciseId)
+
+  if (!exercise) {
+    return null
+  }
+
+  const defaultSets = PROGRAM_BUILDER_SMART_DEFAULTS[exercise.type]
+
+  return {
+    id: createProgramBuilderUtilityId(
+      "program-preset-exercise",
+      `${exercise.id}-${exercise.name}`
+    ),
+    name: exercise.name,
+    note:
+      exercise.instructions?.trim() ||
+      `Focus on controlled reps and consistent setup for ${exercise.muscle.toLowerCase()} work.`,
+    fields: ["Sets", "Range", "Tempo", "RPE", "RIR"],
+    values: [
+      String(defaultSets.length),
+      formatProgramBuilderRepRange(defaultSets[0]),
+      "-",
+      "-",
+      "-",
+    ],
+  }
+}
+
+function buildPresetEditorSection(label: string): FixedProgramBuilderSection {
+  return {
+    id: createProgramBuilderUtilityId("program-preset-section", label),
+    title: "Exercises",
+    note: `Starter exercise block for ${label.toLowerCase()}.`,
+    tone: "light",
+    exercises: getPresetExerciseIdsForWorkoutLabel(label)
+      .map(buildPresetEditorExercise)
+      .filter((exercise): exercise is FixedProgramBuilderExercise => Boolean(exercise)),
+  }
+}
+
+function buildPresetEditorWorkout(label: string): FixedProgramBuilderWorkout {
+  return {
+    id: createProgramBuilderUtilityId("program-preset-workout", label),
+    label,
+    intro: `Build out the ${label.toLowerCase()} session with your preferred exercises, sets, and notes.`,
+    sections: [buildPresetEditorSection(label)],
+  }
+}
+
 export function createProgramBuilderInitialProgram(
   basePrograms: FixedProgramEditorProgram[],
   presetId?: string | null
@@ -79,7 +181,7 @@ export function createProgramBuilderInitialProgram(
       description:
         preset?.description ?? "Build a fixed training program from scratch.",
       workouts: preset?.workouts ?? [],
-      editorWorkouts: [],
+      editorWorkouts: preset ? preset.workouts.map(buildPresetEditorWorkout) : [],
     }
   }
 
@@ -96,27 +198,6 @@ export function createProgramBuilderInitialProgram(
     }
   }
 
-  const presetEditorWorkouts = sampleProgram.editorWorkouts.map((workout, index) => {
-    const label = preset.workouts[index] ?? workout.label
-
-    return {
-      ...workout,
-      id:
-        globalThis.crypto?.randomUUID?.() ??
-        `program-preset-workout-${preset.id}-${index}-${Date.now()}`,
-      label,
-      intro: `Build out the ${label.toLowerCase()} session with your preferred exercises, sets, and notes.`,
-      sections: workout.sections.map((section) => ({
-        ...section,
-        exercises: section.exercises.map((exercise) => ({
-          ...exercise,
-          fields: [...exercise.fields],
-          values: [...exercise.values],
-        })),
-      })),
-    }
-  })
-
   return {
     ...sampleProgram,
     id:
@@ -125,10 +206,12 @@ export function createProgramBuilderInitialProgram(
     title: preset.title,
     description: preset.description,
     workouts: [...preset.workouts],
-    editorWorkouts: presetEditorWorkouts,
+    editorWorkouts: preset.workouts.map(buildPresetEditorWorkout),
   }
 }
 
-export function isProgramBuilderPresetId(value?: string | null): value is ProgramBuilderPresetId {
+export function isProgramBuilderPresetId(
+  value?: string | null
+): value is ProgramBuilderPresetId {
   return Boolean(getProgramBuilderPreset(value))
 }

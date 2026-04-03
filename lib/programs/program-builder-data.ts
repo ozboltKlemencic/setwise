@@ -354,9 +354,174 @@ export function cloneProgramBuilderDay(day: ProgramBuilderDay): ProgramBuilderDa
   }
 }
 
+function normalizeProgramBuilderExerciseName(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
+}
+
+function resolveProgramBuilderExerciseMatch(exerciseName: string) {
+  const normalizedName = normalizeProgramBuilderExerciseName(exerciseName)
+
+  return (
+    PROGRAM_BUILDER_EXERCISES.find(
+      (exercise) => normalizeProgramBuilderExerciseName(exercise.name) === normalizedName
+    ) ??
+    PROGRAM_BUILDER_EXERCISES.find((exercise) =>
+      normalizedName.includes(normalizeProgramBuilderExerciseName(exercise.name))
+    ) ??
+    PROGRAM_BUILDER_EXERCISES.find((exercise) =>
+      normalizeProgramBuilderExerciseName(exercise.name).includes(normalizedName)
+    )
+  )
+}
+
+function inferProgramBuilderMuscle(
+  workoutLabel: string,
+  sectionTitle: string,
+  exerciseName: string
+): ProgramBuilderMuscle {
+  const normalizedContext = `${workoutLabel} ${sectionTitle} ${exerciseName}`.toLowerCase()
+
+  if (normalizedContext.includes("chest") || normalizedContext.includes("push")) {
+    return "Chest"
+  }
+
+  if (
+    normalizedContext.includes("leg") ||
+    normalizedContext.includes("lower") ||
+    normalizedContext.includes("glute")
+  ) {
+    return "Legs"
+  }
+
+  if (normalizedContext.includes("shoulder")) {
+    return "Shoulders"
+  }
+
+  if (normalizedContext.includes("arm") || normalizedContext.includes("bicep") || normalizedContext.includes("tricep")) {
+    return "Arms"
+  }
+
+  if (normalizedContext.includes("core") || normalizedContext.includes("abs")) {
+    return "Core"
+  }
+
+  return "Back"
+}
+
+function inferProgramBuilderExerciseType(
+  exerciseName: string
+): ProgramBuilderExerciseType {
+  const normalizedName = exerciseName.toLowerCase()
+
+  if (
+    normalizedName.includes("curl") ||
+    normalizedName.includes("raise") ||
+    normalizedName.includes("fly") ||
+    normalizedName.includes("extension") ||
+    normalizedName.includes("pushdown") ||
+    normalizedName.includes("crunch")
+  ) {
+    return "isolation"
+  }
+
+  if (
+    normalizedName.includes("bench") ||
+    normalizedName.includes("squat") ||
+    normalizedName.includes("deadlift") ||
+    normalizedName.includes("pull up")
+  ) {
+    return "compound_heavy"
+  }
+
+  return "compound_medium"
+}
+
+function resolveProgramBuilderInitialSetCount(
+  fields: string[],
+  values: string[],
+  fallbackType: ProgramBuilderExerciseType
+) {
+  const setsFieldIndex = fields.findIndex(
+    (field) => field.trim().toLowerCase() === "sets"
+  )
+  const parsedSetCount =
+    setsFieldIndex >= 0 ? Number.parseInt(values[setsFieldIndex] ?? "", 10) : Number.NaN
+  const resolvedSetCount = Number.isNaN(parsedSetCount)
+    ? PROGRAM_BUILDER_SMART_DEFAULTS[fallbackType].length
+    : Math.min(Math.max(parsedSetCount, 1), 6)
+
+  return resolvedSetCount
+}
+
+function createProgramBuilderInitialSets(
+  type: ProgramBuilderExerciseType,
+  setCount: number
+) {
+  const defaults = PROGRAM_BUILDER_SMART_DEFAULTS[type]
+
+  return Array.from({ length: setCount }, (_, index) => ({
+    ...defaults[Math.min(index, defaults.length - 1)],
+  }))
+}
+
+function createProgramBuilderInitialExerciseFromEditor(
+  workoutLabel: string,
+  sectionTitle: string,
+  exercise: FixedProgramEditorProgram["editorWorkouts"][number]["sections"][number]["exercises"][number]
+): ProgramBuilderExercise {
+  const matchedExercise = resolveProgramBuilderExerciseMatch(exercise.name)
+  const type = matchedExercise?.type ?? inferProgramBuilderExerciseType(exercise.name)
+  const setCount = resolveProgramBuilderInitialSetCount(exercise.fields, exercise.values, type)
+
+  return {
+    uid: createProgramBuilderId("program-exercise"),
+    exerciseId:
+      matchedExercise?.id ??
+      Math.abs(
+        Array.from(`${workoutLabel}-${sectionTitle}-${exercise.name}`).reduce(
+          (hash, character) => (hash * 31 + character.charCodeAt(0)) | 0,
+          0
+        )
+      ) +
+        1000,
+    name: exercise.name,
+    muscle:
+      matchedExercise?.muscle ??
+      inferProgramBuilderMuscle(workoutLabel, sectionTitle, exercise.name),
+    type,
+    instructions: exercise.note?.trim() || null,
+    sets: createProgramBuilderInitialSets(type, setCount),
+  }
+}
+
 export function createProgramBuilderInitialDays(
   program: FixedProgramEditorProgram
 ): ProgramBuilderDay[] {
+  if (program.editorWorkouts.length > 0) {
+    return program.editorWorkouts.map((workout) => {
+      const isRest =
+        /\brest\b/i.test(workout.label) ||
+        /\brecovery\b/i.test(workout.intro)
+
+      return {
+        id: createProgramBuilderId("program-day"),
+        name: workout.label,
+        isRest,
+        exercises: isRest
+          ? []
+          : workout.sections.flatMap((section) =>
+              section.exercises.map((exercise) =>
+                createProgramBuilderInitialExerciseFromEditor(
+                  workout.label,
+                  section.title,
+                  exercise
+                )
+              )
+            ),
+      }
+    })
+  }
+
   if (program.workouts.length > 0) {
     return program.workouts.map((label) => ({
       id: createProgramBuilderId("program-day"),
