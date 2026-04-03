@@ -8,22 +8,16 @@ import { SecondaryActionButton } from "@/components/coachWise/secondary-action-b
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import {
-  PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS,
-  PROGRAM_BUILDER_EXERCISE_LEVEL_OPTIONS,
-  PROGRAM_BUILDER_EXERCISE_TYPE_OPTIONS,
-  PROGRAM_BUILDER_MUSCLE_FILTERS,
-} from "@/lib/programs/program-builder-data"
+import { PROGRAM_BUILDER_MUSCLE_FILTERS } from "@/lib/programs/program-builder-data"
 import type {
-  ProgramBuilderExerciseEquipment,
   ProgramBuilderExerciseLibraryItem,
-  ProgramBuilderExerciseLevel,
   ProgramBuilderExerciseType,
   ProgramBuilderMuscle,
 } from "@/types"
@@ -35,8 +29,6 @@ type ProgramBuilderCreateExerciseDialogProps = {
   onCreate: (
     input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
       instructions?: string | null
-      equipment?: ProgramBuilderExerciseEquipment | null
-      level?: ProgramBuilderExerciseLevel | null
       youtubeUrl?: string | null
       mediaFileName?: string | null
     }
@@ -72,8 +64,6 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
     const fileInputRef = React.useRef<HTMLInputElement>(null)
     const [name, setName] = React.useState(initialName)
     const [instructions, setInstructions] = React.useState("")
-    const [equipment, setEquipment] = React.useState<ProgramBuilderExerciseEquipment | "">("")
-    const [level, setLevel] = React.useState<ProgramBuilderExerciseLevel | "">("")
     const [muscle, setMuscle] = React.useState<ProgramBuilderMuscle>("Chest")
     const [type, setType] = React.useState<ProgramBuilderExerciseType>("compound_medium")
     const [youtubeUrl, setYoutubeUrl] = React.useState("")
@@ -86,8 +76,6 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
 
       setName(initialName)
       setInstructions("")
-      setEquipment("")
-      setLevel("")
       setMuscle("Chest")
       setType("compound_medium")
       setYoutubeUrl("")
@@ -103,8 +91,6 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       onCreate({
         name: trimmedName,
         instructions: instructions.trim() || null,
-        equipment: equipment || null,
-        level: level || null,
         muscle,
         type,
         youtubeUrl: youtubeUrl.trim() || null,
@@ -112,9 +98,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       })
       onOpenChange(false)
     }, [
-      equipment,
       instructions,
-      level,
       mediaFileName,
       muscle,
       name,
@@ -138,24 +122,30 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
 
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="overflow-hidden p-0 sm:max-w-[860px]">
+        <DialogContent
+          showCloseButton={false}
+          className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
+        >
           <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_300px]">
             <div className="border-b border-neutral-200 md:border-r md:border-b-0">
-              <DialogHeader className="border-b border-neutral-200 px-5 py-4 text-left">
-                <DialogTitle className="flex items-center gap-2 text-[18px] font-semibold text-neutral-950">
+              <DialogHeader className="gap-0 border-b border-neutral-200 px-6 py-4 text-left">
+                <DialogTitle className="flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
                   <Dumbbell className="size-4 text-neutral-500" />
                   Add Exercise
                 </DialogTitle>
+                <DialogDescription className="mt-1 text-[13px] leading-5 text-neutral-500">
+                  Add an exercise name, instructions, and its main muscle group.
+                </DialogDescription>
               </DialogHeader>
 
-              <div className="space-y-4 px-5 py-4">
+              <div className="space-y-4 px-6 py-5">
                 <div className="space-y-2">
                   <ProgramBuilderFieldLabel required>Name</ProgramBuilderFieldLabel>
                   <Input
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                     placeholder="Name of the exercise e.g. Squat"
-                    className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                    className="h-10 rounded-sm border-neutral-100 bg-neutral-50 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
                   />
                 </div>
 
@@ -165,87 +155,46 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                     value={instructions}
                     onChange={(event) => setInstructions(event.target.value)}
                     placeholder="Enter any additional info"
-                    className="min-h-[88px] w-full resize-none rounded-sm border border-neutral-200 bg-white px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
+                    className="min-h-[96px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-[12px] font-medium text-neutral-700">Filters</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <select
-                      value={equipment}
-                      onChange={(event) =>
-                        setEquipment(event.target.value as ProgramBuilderExerciseEquipment | "")
-                      }
-                      className="h-10 rounded-sm border border-neutral-200 bg-white px-3 text-[13px] text-neutral-700 outline-none transition-colors focus:border-brand-500"
-                    >
-                      <option value="">Select Equipment</option>
-                      {PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
+                  <ProgramBuilderFieldLabel>Muscle group</ProgramBuilderFieldLabel>
+                  <div className="grid grid-cols-3 gap-2">
+                    {muscleOptions.map((option) => {
+                      const isActive = muscle === option
 
-                    <select
-                      value={level}
-                      onChange={(event) =>
-                        setLevel(event.target.value as ProgramBuilderExerciseLevel | "")
-                      }
-                      className="h-10 rounded-sm border border-neutral-200 bg-white px-3 text-[13px] text-neutral-700 outline-none transition-colors focus:border-brand-500"
-                    >
-                      <option value="">Select Level</option>
-                      {PROGRAM_BUILDER_EXERCISE_LEVEL_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-
-                    <select
-                      value={muscle}
-                      onChange={(event) =>
-                        setMuscle(event.target.value as ProgramBuilderMuscle)
-                      }
-                      className="h-10 rounded-sm border border-neutral-200 bg-white px-3 text-[13px] text-neutral-700 outline-none transition-colors focus:border-brand-500"
-                    >
-                      <option value="" disabled>
-                        Select Main Muscle
-                      </option>
-                      {muscleOptions.map((option) => (
-                        <option key={option} value={option}>
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => setMuscle(option)}
+                          className={cn(
+                            "rounded-lg border px-3 py-2 text-center text-[13px] font-medium transition-colors",
+                            isActive
+                              ? "border-brand-500 bg-brand-50/35 text-neutral-950"
+                              : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-brand-300 hover:bg-brand-50/20"
+                          )}
+                        >
                           {option}
-                        </option>
-                      ))}
-                    </select>
-
-                    <select
-                      value={type}
-                      onChange={(event) =>
-                        setType(event.target.value as ProgramBuilderExerciseType)
-                      }
-                      className="h-10 rounded-sm border border-neutral-200 bg-white px-3 text-[13px] text-neutral-700 outline-none transition-colors focus:border-brand-500"
-                    >
-                      {PROGRAM_BUILDER_EXERCISE_TYPE_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col">
-              <div className="border-b border-neutral-200 px-5 py-4">
-                <div className="flex items-center gap-2 text-[15px] font-semibold text-neutral-950">
+              <div className="border-b border-neutral-200 px-6 py-4">
+                <div className="flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
                   <Clapperboard className="size-4 text-neutral-500" />
                   Media
                 </div>
               </div>
 
-              <div className="space-y-4 px-5 py-4">
+              <div className="space-y-4 px-6 py-5">
                 <div className="space-y-2">
                   <ProgramBuilderFieldLabel>YouTube Link</ProgramBuilderFieldLabel>
                   <div className="relative">
@@ -254,7 +203,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                       value={youtubeUrl}
                       onChange={(event) => setYoutubeUrl(event.target.value)}
                       placeholder="Enter YouTube link"
-                      className="h-10 rounded-sm border-neutral-200 bg-white pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                      className="h-10 rounded-sm border-neutral-100 bg-neutral-50 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
                     />
                   </div>
                 </div>
@@ -298,18 +247,18 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
             </div>
           </div>
 
-          <DialogFooter className="border-t border-neutral-200 px-5 py-4">
+          <DialogFooter className="border-t border-neutral-200 bg-neutral-100/80 px-6 py-4 sm:justify-start">
             <div className="grid w-full grid-cols-2 gap-3">
               <SecondaryActionButton
                 label="Close"
                 onClick={() => onOpenChange(false)}
-                className="h-10 w-full justify-center rounded-sm"
+                className="h-11 w-full justify-center rounded-lg border-neutral-200 bg-white text-[15px] font-medium text-neutral-500"
               />
               <PrimaryActionButton
                 label="Add Exercise"
                 onClick={handleCreate}
                 disabled={!name.trim()}
-                className="h-10 w-full justify-center rounded-sm disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-11 w-full justify-center rounded-lg text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
           </DialogFooter>
