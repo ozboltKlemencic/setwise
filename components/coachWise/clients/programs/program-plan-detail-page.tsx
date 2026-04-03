@@ -7,51 +7,8 @@ import { ChevronLeft, Dumbbell, Pencil } from "lucide-react"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { Button } from "@/components/ui/button"
 import { PROGRAM_BUILDER_MUSCLE_CLASSES } from "@/lib/programs/program-builder-data"
-import { cn } from "@/lib/utils"
 import type { StoredProgramPlan } from "@/types"
-
-function countProgramExercises(plan: StoredProgramPlan) {
-  return plan.program.editorWorkouts.reduce(
-    (total, workout) =>
-      total +
-      workout.sections.reduce(
-        (sectionTotal, section) => sectionTotal + section.exercises.length,
-        0
-      ),
-    0
-  )
-}
-
-function countProgramSections(plan: StoredProgramPlan) {
-  return plan.program.editorWorkouts.reduce(
-    (total, workout) => total + workout.sections.length,
-    0
-  )
-}
-
-function ProgramDetailMetricCard({
-  label,
-  value,
-  progressClassName,
-}: {
-  label: string
-  value: string
-  progressClassName: string
-}) {
-  return (
-    <div className="relative min-h-[86px] bg-white px-4 py-3">
-      <div className="text-[24px] leading-none font-semibold text-neutral-950">
-        {value}
-      </div>
-      <div className="mt-2 text-[11px] uppercase tracking-[0.12em] text-neutral-400">
-        {label}
-      </div>
-      <div className="absolute right-0 bottom-0 left-0 h-[3px]">
-        <div className={cn("h-full w-full", progressClassName)} />
-      </div>
-    </div>
-  )
-}
+import { cn } from "@/lib/utils"
 
 function ProgramPlanDetailNav({
   title,
@@ -254,10 +211,7 @@ export function ProgramPlanDetailPage({
   backHref: string
   editHref: string
 }) {
-  const workoutCount = plan.program.editorWorkouts.length
-  const exerciseCount = countProgramExercises(plan)
-  const sectionCount = countProgramSections(plan)
-  const workoutSummaryText = `${workoutCount} workouts - ${exerciseCount} exercises - ${sectionCount} sections`
+  const workoutSummaryText = `${plan.program.editorWorkouts.length} workouts`
   const [activeWorkoutId, setActiveWorkoutId] = React.useState(
     plan.program.editorWorkouts[0]?.id ?? ""
   )
@@ -279,33 +233,7 @@ export function ProgramPlanDetailPage({
         editHref={editHref}
       />
 
-      <div className="mx-auto max-w-[1080px] space-y-6 px-4 py-5">
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-          <div className="grid md:grid-cols-3">
-            <div className="border-b border-neutral-200 md:border-r md:border-b-0">
-              <ProgramDetailMetricCard
-                label="Workouts"
-                value={String(workoutCount)}
-                progressClassName="bg-brand-500"
-              />
-            </div>
-            <div className="border-b border-neutral-200 md:border-r md:border-b-0">
-              <ProgramDetailMetricCard
-                label="Exercises"
-                value={String(exerciseCount)}
-                progressClassName="bg-emerald-500"
-              />
-            </div>
-            <div>
-              <ProgramDetailMetricCard
-                label="Sections"
-                value={String(sectionCount)}
-                progressClassName="bg-sky-500"
-              />
-            </div>
-          </div>
-        </div>
-
+      <div className="mx-auto max-w-[1080px] space-y-4 px-4 py-4">
         {plan.program.editorWorkouts.length > 0 && activeWorkout ? (
           <div className="space-y-4">
             <ProgramWorkoutTabs
