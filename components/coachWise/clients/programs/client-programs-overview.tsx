@@ -151,8 +151,8 @@ function ClientProgramsOverviewComponent({
           />
         </div>
 
-        <div className="mt-5">
-          <NutritionSectionTitle title="Presets" />
+          <div className="mt-5">
+            <NutritionSectionTitle title="Templates" />
           <div className="flex flex-wrap gap-3">
             {programBuilderPresets.map((preset) => (
               <ProgramPresetCard
