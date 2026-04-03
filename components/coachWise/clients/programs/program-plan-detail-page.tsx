@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { ChevronLeft, Pencil } from "lucide-react"
+import { ChevronLeft, Dumbbell, Pencil } from "lucide-react"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { Button } from "@/components/ui/button"
@@ -225,6 +225,48 @@ function ProgramWorkoutCard({
   )
 }
 
+function ProgramWorkoutTabs({
+  workouts,
+  activeWorkoutId,
+  onSelectWorkout,
+}: {
+  workouts: StoredProgramPlan["program"]["editorWorkouts"]
+  activeWorkoutId: string
+  onSelectWorkout: (workoutId: string) => void
+}) {
+  return (
+    <div className="border-b border-neutral-200 bg-neutral-50 px-2">
+      <div className="flex items-center gap-1.5 overflow-x-auto">
+        {workouts.map((workout) => {
+          const isActive = workout.id === activeWorkoutId
+
+          return (
+            <button
+              key={workout.id}
+              type="button"
+              onClick={() => onSelectWorkout(workout.id)}
+              className={cn(
+                "inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
+                isActive
+                  ? "border-brand-500 font-medium text-neutral-950"
+                  : "text-neutral-500 hover:text-neutral-800"
+              )}
+            >
+              <Dumbbell
+                className={cn(
+                  "size-3.5 transition-colors",
+                  isActive ? "text-brand-600" : "text-neutral-400"
+                )}
+              />
+              <span>{workout.label}</span>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export function ProgramPlanDetailPage({
   plan,
   backHref,
@@ -237,7 +279,18 @@ export function ProgramPlanDetailPage({
   const workoutCount = plan.program.editorWorkouts.length
   const exerciseCount = countProgramExercises(plan)
   const sectionCount = countProgramSections(plan)
-  const statusLabel = plan.status
+  const [activeWorkoutId, setActiveWorkoutId] = React.useState(
+    plan.program.editorWorkouts[0]?.id ?? ""
+  )
+
+  React.useEffect(() => {
+    setActiveWorkoutId(plan.program.editorWorkouts[0]?.id ?? "")
+  }, [plan.id, plan.program.editorWorkouts])
+
+  const activeWorkout =
+    plan.program.editorWorkouts.find((workout) => workout.id === activeWorkoutId) ??
+    plan.program.editorWorkouts[0] ??
+    null
 
   return (
     <div className="min-w-0 bg-neutral-50">
@@ -251,7 +304,7 @@ export function ProgramPlanDetailPage({
         <div className="text-[14px] text-neutral-500">{plan.description}</div>
 
         <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-          <div className="grid md:grid-cols-4">
+          <div className="grid md:grid-cols-3">
             <div className="border-b border-neutral-200 md:border-r md:border-b-0">
               <ProgramDetailMetricCard
                 label="Workouts"
@@ -276,28 +329,20 @@ export function ProgramPlanDetailPage({
                 progressClassName="bg-sky-500"
               />
             </div>
-            <ProgramDetailMetricCard
-              label="Status"
-              value={statusLabel}
-              description="Current state"
-              progressClassName={
-                statusLabel === "Active" ? "bg-emerald-500" : "bg-rose-500"
-              }
-            />
           </div>
         </div>
 
-        <div className="space-y-4">
-          <h2 className="text-[18px] font-semibold tracking-[-0.02em] text-neutral-950">
-            Scheduled Workouts
-          </h2>
-
+        {plan.program.editorWorkouts.length > 0 && activeWorkout ? (
           <div className="space-y-4">
-            {plan.program.editorWorkouts.map((workout) => (
-              <ProgramWorkoutCard key={workout.id} workout={workout} />
-            ))}
+            <ProgramWorkoutTabs
+              workouts={plan.program.editorWorkouts}
+              activeWorkoutId={activeWorkout.id}
+              onSelectWorkout={setActiveWorkoutId}
+            />
+
+            <ProgramWorkoutCard workout={activeWorkout} />
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   )
