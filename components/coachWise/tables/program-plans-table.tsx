@@ -2,10 +2,12 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
 import { Copy, Pencil, Trash2 } from "lucide-react"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { secondaryActionButtonClassName } from "@/components/coachWise/secondary-action-button"
+import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import {
   FixedProgramEditorDialog,
 } from "@/components/coachWise/programs/exercise-history-panel"
@@ -20,6 +22,7 @@ export type ProgramPlansTableRow = StoredProgramPlan
 type ProgramPlansTableProps = {
   rows: ProgramPlansTableRow[]
   emptyMessage?: string
+  getDetailRowHref?: (row: ProgramPlansTableRow) => string
   getEditRowHref?: (row: ProgramPlansTableRow) => string
   onDuplicateRow?: (row: ProgramPlansTableRow) => void
   onDeleteRow?: (row: ProgramPlansTableRow) => void
@@ -40,10 +43,14 @@ function getProgramStatusBadgeClassName(status: ProgramPlanStatus) {
 function ProgramPlansTableComponent({
   rows,
   emptyMessage = "No programs available.",
+  getDetailRowHref,
   getEditRowHref,
   onDuplicateRow,
   onDeleteRow,
 }: ProgramPlansTableProps) {
+  const pathname = usePathname()
+  const router = useRouter()
+
   if (rows.length === 0) {
     return (
       <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
@@ -64,128 +71,172 @@ function ProgramPlansTableComponent({
       </div>
 
       <div>
-        {rows.map((row) => (
-          <div
-            key={row.id}
-            className="grid grid-cols-[minmax(0,1fr)_minmax(260px,320px)_120px_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-4 last:border-b-0"
-          >
-            <FixedProgramEditorDialog
-              program={row.program}
-              trigger={
-                <button
-                  type="button"
-                  className="min-w-0 pr-6 text-left transition-colors hover:text-brand-700"
-                >
+        {rows.map((row) => {
+          const detailHref = getDetailRowHref
+            ? buildCoachWiseHref(pathname, getDetailRowHref(row))
+            : null
+          const editHref = getEditRowHref
+            ? buildCoachWiseHref(pathname, getEditRowHref(row))
+            : null
+
+          return (
+            <div
+              key={row.id}
+              role={detailHref ? "button" : undefined}
+              tabIndex={detailHref ? 0 : undefined}
+              onClick={() => {
+                if (detailHref) {
+                  router.push(detailHref)
+                }
+              }}
+              onKeyDown={(event) => {
+                if (!detailHref) {
+                  return
+                }
+
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  router.push(detailHref)
+                }
+              }}
+              className={cn(
+                "grid grid-cols-[minmax(0,1fr)_minmax(260px,320px)_120px_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-4 last:border-b-0",
+                detailHref && "cursor-pointer transition-colors hover:bg-neutral-50"
+              )}
+            >
+              {detailHref ? (
+                <div className="min-w-0 pr-6 text-left">
                   <div className="truncate text-[15px] font-medium text-neutral-950">
                     {row.title}
                   </div>
                   <div className="mt-1 truncate text-[14px] text-neutral-500">
                     {row.description}
                   </div>
-                </button>
-              }
-            />
+                </div>
+              ) : (
+                <FixedProgramEditorDialog
+                  program={row.program}
+                  trigger={
+                    <button
+                      type="button"
+                      className="min-w-0 pr-6 text-left transition-colors hover:text-brand-700"
+                    >
+                      <div className="truncate text-[15px] font-medium text-neutral-950">
+                        {row.title}
+                      </div>
+                      <div className="mt-1 truncate text-[14px] text-neutral-500">
+                        {row.description}
+                      </div>
+                    </button>
+                  }
+                />
+              )}
 
-            <div className="flex min-h-10 w-full justify-self-start flex-wrap items-center justify-start gap-2 pt-0.5 text-left">
-              {row.workouts.length > 0 ? (
-                row.workouts.map((workout) => (
+              <div className="flex min-h-10 w-full justify-self-start flex-wrap items-center justify-start gap-2 pt-0.5 text-left">
+                {row.workouts.length > 0 ? (
+                  row.workouts.map((workout) => (
+                    <span
+                      key={`${row.id}-${workout}`}
+                      className={cn(
+                        secondaryActionButtonClassName,
+                        "h-auto cursor-default px-2.5 py-1 text-[12px] font-normal text-neutral-600 hover:border-neutral-200/80 hover:bg-neutral-100/85 hover:text-neutral-600"
+                      )}
+                    >
+                      {workout}
+                    </span>
+                  ))
+                ) : (
                   <span
-                    key={`${row.id}-${workout}`}
                     className={cn(
                       secondaryActionButtonClassName,
                       "h-auto cursor-default px-2.5 py-1 text-[12px] font-normal text-neutral-600 hover:border-neutral-200/80 hover:bg-neutral-100/85 hover:text-neutral-600"
                     )}
                   >
-                    {workout}
+                    No workouts
                   </span>
-                ))
-              ) : (
-                <span
+                )}
+              </div>
+
+              <div className="flex min-h-10 items-center justify-start">
+                <Badge
+                  variant="outline"
                   className={cn(
-                    secondaryActionButtonClassName,
-                    "h-auto cursor-default px-2.5 py-1 text-[12px] font-normal text-neutral-600 hover:border-neutral-200/80 hover:bg-neutral-100/85 hover:text-neutral-600"
+                    "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
+                    getProgramStatusBadgeClassName(row.status)
                   )}
                 >
-                  No workouts
-                </span>
-              )}
-            </div>
+                  {row.status}
+                </Badge>
+              </div>
 
-            <div className="flex min-h-10 items-center justify-start">
-              <Badge
-                variant="outline"
-                className={cn(
-                  "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
-                  getProgramStatusBadgeClassName(row.status)
-                )}
+              <div
+                className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2"
+                onClick={(event) => event.stopPropagation()}
+                onMouseDown={(event) => event.stopPropagation()}
               >
-                {row.status}
-              </Badge>
-            </div>
-
-            <div className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                className={rowActionButtonClassName}
-                onClick={() => onDuplicateRow?.(row)}
-              >
-                <Copy className="size-3.5" />
-                <span className="sr-only">Duplicate program</span>
-              </Button>
-
-              {getEditRowHref ? (
                 <Button
-                  asChild
                   type="button"
                   variant="outline"
                   size="icon"
                   className={rowActionButtonClassName}
+                  onClick={() => onDuplicateRow?.(row)}
                 >
-                  <Link href={getEditRowHref(row)}>
-                    <Pencil className="size-3.5" />
-                    <span className="sr-only">Edit program</span>
-                  </Link>
+                  <Copy className="size-3.5" />
+                  <span className="sr-only">Duplicate program</span>
                 </Button>
-              ) : (
-                <FixedProgramEditorDialog
-                  program={row.program}
+
+                {editHref ? (
+                  <Button
+                    asChild
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    className={rowActionButtonClassName}
+                  >
+                    <Link href={editHref}>
+                      <Pencil className="size-3.5" />
+                      <span className="sr-only">Edit program</span>
+                    </Link>
+                  </Button>
+                ) : (
+                  <FixedProgramEditorDialog
+                    program={row.program}
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className={rowActionButtonClassName}
+                      >
+                        <Pencil className="size-3.5" />
+                        <span className="sr-only">Edit program</span>
+                      </Button>
+                    }
+                  />
+                )}
+
+                <CoachWiseConfirmationDialog
+                  title="Are you sure you want to delete this program?"
+                  description={`${row.title} will be removed from the current programs list. This action can't be undone.`}
+                  confirmLabel="Delete program"
+                  variant="destructive"
+                  onConfirm={() => onDeleteRow?.(row)}
                   trigger={
                     <Button
                       type="button"
                       variant="outline"
                       size="icon"
-                      className={rowActionButtonClassName}
+                      className={cn(rowActionButtonClassName, rowDeleteActionButtonClassName)}
                     >
-                      <Pencil className="size-3.5" />
-                      <span className="sr-only">Edit program</span>
+                      <Trash2 className="size-3.5" />
+                      <span className="sr-only">Delete program</span>
                     </Button>
                   }
                 />
-              )}
-
-              <CoachWiseConfirmationDialog
-                title="Are you sure you want to delete this program?"
-                description={`${row.title} will be removed from the current programs list. This action can't be undone.`}
-                confirmLabel="Delete program"
-                variant="destructive"
-                onConfirm={() => onDeleteRow?.(row)}
-                trigger={
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className={cn(rowActionButtonClassName, rowDeleteActionButtonClassName)}
-                  >
-                    <Trash2 className="size-3.5" />
-                    <span className="sr-only">Delete program</span>
-                  </Button>
-                }
-              />
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

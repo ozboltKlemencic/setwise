@@ -23,6 +23,7 @@ import {
 } from "@/lib/handlers/program-plan-storage"
 import {
   getClientProgramBuilderHref,
+  getClientProgramDetailHref,
   getClientProgramEditorHref,
 } from "@/lib/handlers/programs.handlers"
 import {
@@ -177,6 +178,11 @@ function ClientProgramsOverviewComponent({
         <NutritionSectionTitle title="Existing programs" />
         <ProgramPlansTable
           rows={rows}
+          getDetailRowHref={(row) =>
+            getClientProgramDetailHref(clientBasePath, row.id, {
+              backTo: overviewHref,
+            })
+          }
           getEditRowHref={(row) =>
             getClientProgramEditorHref(clientBasePath, row.id, {
               backTo: overviewHref,

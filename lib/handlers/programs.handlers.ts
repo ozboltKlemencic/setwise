@@ -23,6 +23,19 @@ export function getClientProgramEditorHref(
   )
 }
 
+export function getClientProgramDetailHref(
+  clientBasePath: string,
+  programPlanId: string,
+  options?: {
+    backTo?: string
+  }
+) {
+  return getProgramsDetailHref(
+    programPlanId,
+    options?.backTo ?? `${clientBasePath}/programs?programTab=calendar`
+  )
+}
+
 export function getProgramsCreateHref(backTo?: string, presetId?: string) {
   const params = new URLSearchParams()
 
@@ -37,6 +50,18 @@ export function getProgramsCreateHref(backTo?: string, presetId?: string) {
   const query = params.toString()
 
   return `/beta-coach-wise/programi/create/${programsCreateRouteId}${query ? `?${query}` : ""}`
+}
+
+export function getProgramsDetailHref(programPlanId: string, backTo?: string) {
+  const params = new URLSearchParams()
+
+  if (backTo) {
+    params.set("backTo", backTo)
+  }
+
+  const query = params.toString()
+
+  return `/beta-coach-wise/programi/${encodeURIComponent(programPlanId)}${query ? `?${query}` : ""}`
 }
 
 export function getProgramsEditHref(programPlanId: string, backTo?: string) {
