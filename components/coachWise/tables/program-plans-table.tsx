@@ -166,9 +166,10 @@ function ProgramPlansTableComponent({
               )}
 
               <CoachWiseConfirmationDialog
-                title="Delete this program?"
-                description={`This will permanently remove ${row.title}.`}
-                confirmLabel="Delete"
+                title="Are you sure you want to delete this program?"
+                description={`${row.title} will be removed from the current programs list. This action can't be undone.`}
+                confirmLabel="Delete program"
+                variant="destructive"
                 onConfirm={() => onDeleteRow?.(row)}
                 trigger={
                   <Button
