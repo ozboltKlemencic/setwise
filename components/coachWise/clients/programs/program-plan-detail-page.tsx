@@ -142,129 +142,104 @@ function ProgramExerciseValuesGrid({
   )
 }
 
-function ProgramWorkoutCard({
-  workout,
+function ProgramWorkoutTabs({
+  workouts,
+  activeWorkoutId,
+  onSelectWorkout,
 }: {
-  workout: StoredProgramPlan["program"]["editorWorkouts"][number]
+  workouts: StoredProgramPlan["program"]["editorWorkouts"]
+  activeWorkoutId: string
+  onSelectWorkout: (workoutId: string) => void
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <div className="flex items-center justify-between gap-4 border-b border-neutral-200 bg-neutral-100/70 px-4 py-3">
-        <div className="min-w-0">
-          <div className="truncate text-[15px] font-semibold text-neutral-950">
-            {workout.label}
-          </div>
-          <div className="mt-1 text-[12px] text-neutral-500">{workout.intro}</div>
-        </div>
+    <div className="border-b border-neutral-200 bg-neutral-50 px-2">
+      <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto">
+        {workouts.map((workout) => {
+          const isActive = workout.id === activeWorkoutId
 
-        <div className="shrink-0 text-[12px] text-neutral-500">
-          {workout.sections.reduce(
-            (total, section) => total + section.exercises.length,
-            0
-          )}{" "}
-          exercises
-        </div>
-      </div>
-
-      <div className="space-y-4 px-4 py-4">
-        {workout.sections.map((section) => (
-          <div key={section.id} className="space-y-3">
-            <div>
-              <div className="text-[13px] font-semibold text-neutral-950">
-                {section.title}
-              </div>
-              <div className="mt-1 text-[12px] text-neutral-500">{section.note}</div>
-            </div>
-
-            <div className="space-y-3">
-              {section.exercises.map((exercise) => (
-                <div
-                  key={exercise.id}
-                  className="rounded-xl border border-neutral-200 bg-neutral-50/50 p-4"
-                >
-                  <div className="flex min-w-0 flex-wrap items-center gap-2">
-                    <div className="truncate text-[14px] font-semibold text-neutral-950">
-                      {exercise.name}
-                    </div>
-                    {exercise.note ? (
-                      <span
-                        className={cn(
-                          "inline-flex shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em]",
-                          PROGRAM_BUILDER_MUSCLE_CLASSES.Back
-                        )}
-                      >
-                        Cue
-                      </span>
-                    ) : null}
-                  </div>
-
-                  {exercise.note ? (
-                    <div className="mt-2 text-[12px] leading-5 text-neutral-500">
-                      {exercise.note}
-                    </div>
-                  ) : null}
-
-                  <div className="mt-3">
-                    <ProgramExerciseValuesGrid
-                      fields={exercise.fields}
-                      values={exercise.values}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+          return (
+            <button
+              key={workout.id}
+              type="button"
+              onClick={() => onSelectWorkout(workout.id)}
+              className={cn(
+                "inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
+                isActive
+                  ? "border-brand-500 font-medium text-neutral-950"
+                  : "text-neutral-500 hover:text-neutral-800"
+              )}
+            >
+              <Dumbbell
+                className={cn(
+                  "size-3.5 transition-colors",
+                  isActive ? "text-brand-600" : "text-neutral-400"
+                )}
+              />
+              <span>{workout.label}</span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
 }
 
-function ProgramWorkoutTabs({
-  workouts,
-  activeWorkoutId,
-  onSelectWorkout,
+function ProgramWorkoutExercises({
+  workout,
   summaryText,
 }: {
-  workouts: StoredProgramPlan["program"]["editorWorkouts"]
-  activeWorkoutId: string
-  onSelectWorkout: (workoutId: string) => void
+  workout: StoredProgramPlan["program"]["editorWorkouts"][number]
   summaryText: string
 }) {
+  const exercises = workout.sections.flatMap((section) => section.exercises)
+
   return (
-    <div className="border-b border-neutral-200 bg-neutral-50 px-2">
-      <div className="flex items-end justify-between gap-4">
-        <div className="flex min-w-0 items-center gap-1.5 overflow-x-auto">
-          {workouts.map((workout) => {
-            const isActive = workout.id === activeWorkoutId
-
-            return (
-              <button
-                key={workout.id}
-                type="button"
-                onClick={() => onSelectWorkout(workout.id)}
-                className={cn(
-                  "inline-flex shrink-0 items-center justify-center gap-2 border-b-2 border-transparent bg-transparent px-3 py-2.5 text-[13px] transition-colors",
-                  isActive
-                    ? "border-brand-500 font-medium text-neutral-950"
-                    : "text-neutral-500 hover:text-neutral-800"
-                )}
-              >
-                <Dumbbell
-                  className={cn(
-                    "size-3.5 transition-colors",
-                    isActive ? "text-brand-600" : "text-neutral-400"
-                  )}
-                />
-                <span>{workout.label}</span>
-              </button>
-            )
-          })}
+    <div className="space-y-3">
+      <div className="flex items-center justify-between gap-4">
+        <div className="truncate text-[18px] font-semibold tracking-[-0.02em] text-neutral-950">
+          {workout.label}
         </div>
-
-        <div className="hidden shrink-0 px-2 pb-2.5 text-right text-[13px] text-neutral-500 lg:block">
+        <div className="shrink-0 text-right text-[13px] text-neutral-500">
           {summaryText}
         </div>
+      </div>
+
+      <div className="space-y-3">
+        {exercises.map((exercise) => (
+          <div
+            key={exercise.id}
+            className="rounded-xl border border-neutral-200 bg-white p-4"
+          >
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
+              <div className="truncate text-[14px] font-semibold text-neutral-950">
+                {exercise.name}
+              </div>
+              {exercise.note ? (
+                <span
+                  className={cn(
+                    "inline-flex shrink-0 rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em]",
+                    PROGRAM_BUILDER_MUSCLE_CLASSES.Back
+                  )}
+                >
+                  Cue
+                </span>
+              ) : null}
+            </div>
+
+            {exercise.note ? (
+              <div className="mt-2 text-[12px] leading-5 text-neutral-500">
+                {exercise.note}
+              </div>
+            ) : null}
+
+            <div className="mt-3">
+              <ProgramExerciseValuesGrid
+                fields={exercise.fields}
+                values={exercise.values}
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
@@ -282,7 +257,7 @@ export function ProgramPlanDetailPage({
   const workoutCount = plan.program.editorWorkouts.length
   const exerciseCount = countProgramExercises(plan)
   const sectionCount = countProgramSections(plan)
-  const tabSummaryText = `${workoutCount} workouts · ${exerciseCount} exercises · ${sectionCount} sections`
+  const workoutSummaryText = `${workoutCount} workouts - ${exerciseCount} exercises - ${sectionCount} sections`
   const [activeWorkoutId, setActiveWorkoutId] = React.useState(
     plan.program.editorWorkouts[0]?.id ?? ""
   )
@@ -321,7 +296,7 @@ export function ProgramPlanDetailPage({
                 progressClassName="bg-emerald-500"
               />
             </div>
-            <div className="border-b border-neutral-200 md:border-r md:border-b-0">
+            <div>
               <ProgramDetailMetricCard
                 label="Sections"
                 value={String(sectionCount)}
@@ -337,10 +312,12 @@ export function ProgramPlanDetailPage({
               workouts={plan.program.editorWorkouts}
               activeWorkoutId={activeWorkout.id}
               onSelectWorkout={setActiveWorkoutId}
-              summaryText={tabSummaryText}
             />
 
-            <ProgramWorkoutCard workout={activeWorkout} />
+            <ProgramWorkoutExercises
+              workout={activeWorkout}
+              summaryText={workoutSummaryText}
+            />
           </div>
         ) : null}
       </div>
