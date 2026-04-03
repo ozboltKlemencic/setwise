@@ -246,18 +246,18 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
             </div>
           </div>
 
-          <DialogFooter className="border-t border-neutral-200 bg-neutral-100/80 px-6 py-4 sm:justify-start">
-            <div className="grid w-full grid-cols-2 gap-3">
+          <DialogFooter className="border-t border-neutral-200 bg-neutral-100/80 px-6 py-4 sm:justify-end">
+            <div className="flex w-full justify-end gap-3">
               <SecondaryActionButton
                 label="Close"
                 onClick={() => onOpenChange(false)}
-                className="h-11 w-full justify-center rounded-lg border-neutral-200 bg-white text-[15px] font-medium text-neutral-500"
+                className="h-11 min-w-[132px] justify-center rounded-lg border-neutral-200 bg-white px-5 text-[15px] font-medium text-neutral-500"
               />
               <PrimaryActionButton
                 label="Add Exercise"
                 onClick={handleCreate}
                 disabled={!name.trim()}
-                className="h-11 w-full justify-center rounded-lg text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-11 min-w-[180px] justify-center rounded-lg px-5 text-[15px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
               />
             </div>
           </DialogFooter>
