@@ -132,6 +132,24 @@ function ProgramWorkoutTabs({
   )
 }
 
+function ProgramDetailEmptyWorkoutState({
+  title,
+  description,
+}: {
+  title: string
+  description: string
+}) {
+  return (
+    <div className="mb-2 flex min-h-[calc(72dvh-var(--header-height)-15rem)] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-neutral-100/50 px-6 text-center">
+      <div className="mb-4 flex size-12 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-500">
+        <Dumbbell className="size-5" />
+      </div>
+      <div className="text-[16px] font-semibold text-neutral-900">{title}</div>
+      <div className="mt-2 max-w-xs text-[14px] text-neutral-500">{description}</div>
+    </div>
+  )
+}
+
 function ProgramDetailSetMetaTag({
   label,
   className,
@@ -277,6 +295,9 @@ function ProgramWorkoutExercises({
 }) {
   const exercises = workout.sections.flatMap((section) => section.exercises)
   const builderExercises = builderDay?.exercises ?? null
+  const isRestWorkout =
+    builderDay?.isRest === true || workout.label.trim().toLowerCase().includes("rest")
+  const hasExercises = builderExercises ? builderExercises.length > 0 : exercises.length > 0
 
   return (
     <div className="space-y-3">
@@ -289,42 +310,54 @@ function ProgramWorkoutExercises({
         </div>
       </div>
 
-      <div className="space-y-3">
-        {builderExercises
+      {isRestWorkout ? (
+        <ProgramDetailEmptyWorkoutState
+          title="This is a rest day"
+          description="No exercises are scheduled for this workout."
+        />
+      ) : hasExercises ? (
+        <div className="space-y-3">
+          {builderExercises
           ? builderExercises.map((exercise) => (
-            <ProgramDetailBuilderExerciseCard key={exercise.uid} exercise={exercise} />
-          ))
+              <ProgramDetailBuilderExerciseCard key={exercise.uid} exercise={exercise} />
+            ))
           : exercises.map((exercise) => (
-            <div
-              key={exercise.id}
-              className="rounded-xl border border-neutral-200 bg-white p-4"
-            >
-              <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <div className="truncate text-[14px] font-semibold text-neutral-950">
-                  {exercise.name}
+              <div
+                key={exercise.id}
+                className="rounded-xl border border-neutral-200 bg-white p-4"
+              >
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <div className="truncate text-[14px] font-semibold text-neutral-950">
+                    {exercise.name}
+                  </div>
+                  {exercise.note ? (
+                    <span className="inline-flex shrink-0 rounded-md border border-violet-100 bg-violet-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-violet-700">
+                      Cue
+                    </span>
+                  ) : null}
                 </div>
+
                 {exercise.note ? (
-                  <span className="inline-flex shrink-0 rounded-md border border-violet-100 bg-violet-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-violet-700">
-                    Cue
-                  </span>
+                  <div className="mt-2 text-[12px] leading-5 text-neutral-500">
+                    {exercise.note}
+                  </div>
                 ) : null}
-              </div>
 
-              {exercise.note ? (
-                <div className="mt-2 text-[12px] leading-5 text-neutral-500">
-                  {exercise.note}
+                <div className="mt-3">
+                  <ProgramExerciseValuesGrid
+                    fields={exercise.fields}
+                    values={exercise.values}
+                  />
                 </div>
-              ) : null}
-
-              <div className="mt-3">
-                <ProgramExerciseValuesGrid
-                  fields={exercise.fields}
-                  values={exercise.values}
-                />
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      ) : (
+        <ProgramDetailEmptyWorkoutState
+          title="This workout is empty"
+          description="No exercises have been added to this workout yet."
+        />
+      )}
     </div>
   )
 }
@@ -368,8 +401,7 @@ export function ProgramPlanDetailPage({
       0
     ) ??
     (activeWorkout ? countWorkoutSetsFromEditorWorkout(activeWorkout) : 0)
-  const workoutSectionCount = activeWorkout?.sections.length ?? 0
-  const workoutSummaryText = `${workoutExerciseCount} exercises - ${workoutSetCount} sets - ${workoutSectionCount} sections`
+  const workoutSummaryText = `${workoutExerciseCount} exercises - ${workoutSetCount} sets`
 
   return (
     <div className="min-w-0 bg-neutral-50">
