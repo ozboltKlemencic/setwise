@@ -400,7 +400,7 @@ export function ProgramPlanDetailPage({
         editHref={editHref}
       />
 
-      <div className="mx-auto max-w-3xl space-y-4 px-4 py-4">
+      <div className="mx-auto max-w-4xl space-y-4 px-4 py-4">
         {plan.program.editorWorkouts.length > 0 && activeWorkout ? (
           <div className="space-y-4">
             <ProgramWorkoutTabs
