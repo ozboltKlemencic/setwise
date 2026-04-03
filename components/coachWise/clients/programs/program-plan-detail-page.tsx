@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { ChevronLeft, Dumbbell, Pencil } from "lucide-react"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
+import { ProgramBuilderExerciseNotesMenu } from "@/components/coachWise/clients/programs/builder/program-builder-exercise-notes-menu"
 import { Button } from "@/components/ui/button"
 import {
   formatProgramBuilderRepRange,
@@ -159,7 +160,7 @@ function ProgramDetailBuilderExerciseCard({
 
   return (
     <div className="rounded-xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(17,24,39,0.04)]">
-      <div className="border-b border-neutral-200 px-4 py-3">
+      <div className="flex items-center gap-3 border-b border-neutral-200 px-4 py-3">
         <div className="min-w-0 flex-1 pl-1">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <div className="truncate text-[14px] font-semibold text-neutral-950">
@@ -174,13 +175,13 @@ function ProgramDetailBuilderExerciseCard({
               {exercise.muscle}
             </span>
           </div>
-
-          {instructions ? (
-            <div className="mt-1.5 text-[12px] leading-5 text-neutral-500 whitespace-pre-line">
-              {instructions}
-            </div>
-          ) : null}
         </div>
+
+        {instructions ? (
+          <div className="flex items-center gap-1.5">
+            <ProgramBuilderExerciseNotesMenu description={instructions} readOnly />
+          </div>
+        ) : null}
       </div>
 
       <div className="space-y-2 px-4 py-4">

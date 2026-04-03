@@ -18,13 +18,15 @@ import { cn } from "@/lib/utils"
 
 type ProgramBuilderExerciseNotesMenuProps = {
   description?: string | null
-  onAddClue: (clue: string) => void
+  onAddClue?: (clue: string) => void
+  readOnly?: boolean
 }
 
 export const ProgramBuilderExerciseNotesMenu = React.memo(
   function ProgramBuilderExerciseNotesMenu({
     description,
     onAddClue,
+    readOnly = false,
   }: ProgramBuilderExerciseNotesMenuProps) {
     const [open, setOpen] = React.useState(false)
     const [nextClue, setNextClue] = React.useState("")
@@ -39,13 +41,13 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
 
     const handleAddClue = React.useCallback(() => {
       const trimmedClue = nextClue.trim()
-      if (!trimmedClue) {
+      if (!trimmedClue || !onAddClue || readOnly) {
         return
       }
 
       onAddClue(trimmedClue)
       setNextClue("")
-    }, [nextClue, onAddClue])
+    }, [nextClue, onAddClue, readOnly])
 
     return (
       <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -81,34 +83,36 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
               {description?.trim() || "No technical cues added yet."}
             </div>
 
-            <div className="mt-3 border-t border-neutral-200 px-3 pt-3">
-              <div className="flex items-center gap-2">
-                <Input
-                  value={nextClue}
-                  onChange={(event) => setNextClue(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault()
-                      handleAddClue()
-                    }
-                  }}
-                  onPointerDown={(event) => event.stopPropagation()}
-                  placeholder="Add another clue"
-                  className="h-9 rounded-sm border-neutral-100 bg-neutral-50 text-[13px] shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={!nextClue.trim()}
-                  onClick={handleAddClue}
-                  onPointerDown={(event) => event.stopPropagation()}
-                  className="h-9 rounded-sm border-neutral-200 bg-white px-3 text-[13px] text-neutral-700 shadow-none hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  Add
-                </Button>
+            {!readOnly && onAddClue ? (
+              <div className="mt-3 border-t border-neutral-200 px-3 pt-3">
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={nextClue}
+                    onChange={(event) => setNextClue(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        event.preventDefault()
+                        handleAddClue()
+                      }
+                    }}
+                    onPointerDown={(event) => event.stopPropagation()}
+                    placeholder="Add another clue"
+                    className="h-9 rounded-sm border-neutral-100 bg-neutral-50 text-[13px] shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={!nextClue.trim()}
+                    onClick={handleAddClue}
+                    onPointerDown={(event) => event.stopPropagation()}
+                    className="h-9 rounded-sm border-neutral-200 bg-white px-3 text-[13px] text-neutral-700 shadow-none hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    Add
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
