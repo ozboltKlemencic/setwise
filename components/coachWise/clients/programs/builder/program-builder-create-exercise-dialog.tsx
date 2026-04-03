@@ -135,8 +135,8 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           showCloseButton={false}
           className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
         >
-          <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_310px]">
-            <div className="pt-4 pb-5">
+          <div className="flex flex-col md:flex-row">
+            <div className="min-w-0 flex-1 pt-4 pb-5">
               <DialogHeader className="gap-0 px-6 pt-4 pb-2 text-left">
                 <DialogTitle className="text-[17px] font-semibold text-neutral-950">
                   Add Exercise
@@ -194,7 +194,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
               </div>
             </div>
 
-            <div className="flex flex-col px-6 pt-6 pb-5">
+            <div className="w-full shrink-0 px-6 pt-6 pb-5 md:w-[310px]">
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
                 Media
               </div>
