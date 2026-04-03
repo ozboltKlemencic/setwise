@@ -137,7 +137,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           showCloseButton={false}
           className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
         >
-          <div className="flex flex-col sm:flex-row">
+          <div className="items-stretch flex flex-col sm:flex-row">
             <div className="min-w-0 flex-1 pt-4 pb-5">
               <DialogHeader className="gap-0 px-6 pt-4 pb-2 text-left">
                 <DialogTitle className="text-[17px] font-semibold text-neutral-950">
@@ -190,16 +190,14 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                     value={instructions}
                     onChange={(event) => setInstructions(event.target.value)}
                     placeholder="Explain the form, tempo, and critical cues..."
-                    className="min-h-[116px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
+                    className="min-h-[220px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
                   />
                 </div>
               </div>
             </div>
 
             <div className="w-full shrink-0 border-t border-neutral-200 bg-neutral-50/80 px-6 pt-6 pb-5 sm:w-[310px] sm:border-t-0 sm:border-l">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                Media
-              </div>
+              <ProgramBuilderFieldLabel>Media</ProgramBuilderFieldLabel>
 
               <div className="mt-3 flex min-h-full flex-col">
                 <div className="space-y-4">
@@ -256,7 +254,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                           (option) => option.value === equipment
                         )?.label ?? "Select equipment"
                       }
-                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-200 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 hover:border-neutral-300 hover:bg-white/85 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-white/85"
+                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-200 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-300 hover:bg-white/85 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-white/85"
                       contentClassName="w-[258px]"
                     >
                       <div className="space-y-1">
