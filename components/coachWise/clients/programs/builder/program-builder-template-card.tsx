@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Trash2 } from "lucide-react"
+import { RefreshCw, Trash2 } from "lucide-react"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -73,6 +73,7 @@ export const ProgramBuilderTemplateCard = React.memo(function ProgramBuilderTemp
         />
         <SecondaryActionButton
           label="Replace"
+          icon={RefreshCw}
           onClick={onReplace}
           className="h-9 w-full justify-center rounded-lg border-brand-300 bg-brand-50/35 text-[13px] text-brand-700 hover:border-brand-400 hover:bg-brand-50/50"
         />
