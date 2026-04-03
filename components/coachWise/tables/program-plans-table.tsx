@@ -4,6 +4,7 @@ import * as React from "react"
 import { Copy, Pencil, Trash2 } from "lucide-react"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
+import { secondaryActionButtonClassName } from "@/components/coachWise/secondary-action-button"
 import {
   FixedProgramEditorDialog,
 } from "@/components/coachWise/programs/exercise-history-panel"
@@ -85,17 +86,25 @@ function ProgramPlansTableComponent({
             <div className="flex min-h-10 w-full justify-self-start flex-wrap items-center justify-start gap-2 pt-0.5 text-left">
               {row.workouts.length > 0 ? (
                 row.workouts.map((workout) => (
-                  <Badge
+                  <span
                     key={`${row.id}-${workout}`}
-                    className="rounded-sm border border-sky-200 bg-sky-50 px-2 py-0.5 text-[12px] font-medium text-sky-700 shadow-none hover:bg-sky-50"
+                    className={cn(
+                      secondaryActionButtonClassName,
+                      "h-auto cursor-default px-2.5 py-1 text-[12px] font-normal text-neutral-600 hover:border-neutral-200/80 hover:bg-neutral-100/85 hover:text-neutral-600"
+                    )}
                   >
                     {workout}
-                  </Badge>
+                  </span>
                 ))
               ) : (
-                <Badge className="rounded-sm border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[12px] font-medium text-neutral-600 shadow-none hover:bg-neutral-50">
+                <span
+                  className={cn(
+                    secondaryActionButtonClassName,
+                    "h-auto cursor-default px-2.5 py-1 text-[12px] font-normal text-neutral-600 hover:border-neutral-200/80 hover:bg-neutral-100/85 hover:text-neutral-600"
+                  )}
+                >
                   No workouts
-                </Badge>
+                </span>
               )}
             </div>
 
