@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, GripVertical, Minus, Plus, Trash2 } from "lucide-react"
+import { ChevronDown, GripVertical, Minus, Plus, Trash2, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -118,38 +118,67 @@ function ProgramBuilderSetChip({
       )}
 
       {intensifier ? (
-        <button
-          type="button"
-          onMouseDown={(event) => {
-            event.preventDefault()
-            builder.setIntensifier(entry.uid, setIndex, intensifier.type)
-          }}
-          className={cn(
-            "rounded-md border px-2 py-0.5 text-[10px] font-semibold",
-            PROGRAM_BUILDER_INTENSIFIERS[intensifier.type].className
-          )}
-        >
-          {PROGRAM_BUILDER_INTENSIFIERS[intensifier.type].format(intensifier.params)}
-        </button>
+        <ProgramBuilderSetMetaTag
+          className={PROGRAM_BUILDER_INTENSIFIERS[intensifier.type].className}
+          label={PROGRAM_BUILDER_INTENSIFIERS[intensifier.type].format(intensifier.params)}
+          onRemove={() => builder.setIntensifier(entry.uid, setIndex, null)}
+        />
       ) : null}
 
       {set.tempo ? (
-        <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-          {formatProgramBuilderTempo(set.tempo)}
-        </span>
+        <ProgramBuilderSetMetaTag
+          className="border-emerald-200 bg-emerald-50 text-emerald-700"
+          label={formatProgramBuilderTempo(set.tempo)}
+          onRemove={() => builder.setTempo(entry.uid, setIndex, null)}
+        />
       ) : null}
 
       {typeof set.rpe === "number" ? (
-        <span className="rounded-md border border-violet-200 bg-violet-50 px-2 py-0.5 text-[10px] font-semibold text-violet-700">
-          RPE {set.rpe}
-        </span>
+        <ProgramBuilderSetMetaTag
+          className="border-violet-200 bg-violet-50 text-violet-700"
+          label={`RPE ${set.rpe}`}
+          onRemove={() => builder.setRpe(entry.uid, setIndex, null)}
+        />
       ) : null}
 
       {typeof set.rir === "number" ? (
-        <span className="rounded-md border border-fuchsia-200 bg-fuchsia-50 px-2 py-0.5 text-[10px] font-semibold text-fuchsia-700">
-          RIR {set.rir}
-        </span>
+        <ProgramBuilderSetMetaTag
+          className="border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700"
+          label={`RIR ${set.rir}`}
+          onRemove={() => builder.setRir(entry.uid, setIndex, null)}
+        />
       ) : null}
+    </div>
+  )
+}
+
+function ProgramBuilderSetMetaTag({
+  label,
+  className,
+  onRemove,
+}: {
+  label: string
+  className?: string
+  onRemove: () => void
+}) {
+  return (
+    <div
+      className={cn(
+        "flex h-6 w-20 items-center justify-between rounded-md border px-2 text-[10px] font-semibold",
+        className
+      )}
+    >
+      <span className="truncate">{label}</span>
+      <button
+        type="button"
+        onMouseDown={(event) => {
+          event.preventDefault()
+          onRemove()
+        }}
+        className="ml-1 inline-flex size-3.5 shrink-0 items-center justify-center rounded-sm text-current/70 transition-opacity hover:opacity-100"
+      >
+        <X className="size-3" />
+      </button>
     </div>
   )
 }
