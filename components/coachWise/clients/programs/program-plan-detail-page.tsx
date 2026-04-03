@@ -70,36 +70,21 @@ function ProgramExerciseValuesGrid({
     return null
   }
 
-  const gridTemplateColumns = `repeat(${fields.length}, minmax(0, 1fr))`
-
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <div
-        className="grid border-b border-neutral-200 bg-neutral-50 text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400"
-        style={{ gridTemplateColumns }}
-      >
-        {fields.map((field) => (
-          <div
-            key={field}
-            className="border-r border-neutral-200 px-3 py-2.5 last:border-r-0"
-          >
+      {fields.map((field, index) => (
+        <div
+          key={`${field}-${index}`}
+          className="flex items-center justify-between gap-4 border-b border-neutral-200 px-3 py-3 last:border-b-0"
+        >
+          <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
             {field}
-          </div>
-        ))}
-      </div>
-      <div
-        className="grid bg-white text-[13px] font-medium text-neutral-800"
-        style={{ gridTemplateColumns }}
-      >
-        {values.map((value, index) => (
-          <div
-            key={`${value}-${index}`}
-            className="border-r border-neutral-200 px-3 py-3 last:border-r-0"
-          >
-            {value}
-          </div>
-        ))}
-      </div>
+          </span>
+          <span className="text-right text-[13px] font-medium text-neutral-800">
+            {values[index] ?? "-"}
+          </span>
+        </div>
+      ))}
     </div>
   )
 }
@@ -170,9 +155,11 @@ function ProgramDetailBuilderExerciseCard({
 }: {
   exercise: ProgramBuilderExercise
 }) {
+  const instructions = exercise.instructions?.trim() || null
+
   return (
     <div className="rounded-xl border border-neutral-200 bg-white shadow-[0_1px_2px_rgba(17,24,39,0.04)]">
-      <div className="flex items-center gap-3 border-b border-neutral-200 px-4 py-3">
+      <div className="border-b border-neutral-200 px-4 py-3">
         <div className="min-w-0 flex-1 pl-1">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <div className="truncate text-[14px] font-semibold text-neutral-950">
@@ -186,62 +173,67 @@ function ProgramDetailBuilderExerciseCard({
             >
               {exercise.muscle}
             </span>
-            {exercise.instructions?.trim() ? (
+            {instructions ? (
               <span className="inline-flex shrink-0 rounded-md border border-violet-100 bg-violet-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-violet-700">
                 Cue
               </span>
             ) : null}
           </div>
+
+          {instructions ? (
+            <div className="mt-1.5 text-[12px] leading-5 text-neutral-500 whitespace-pre-line">
+              {instructions}
+            </div>
+          ) : null}
         </div>
       </div>
 
-      {exercise.instructions?.trim() ? (
-        <div className="border-b border-neutral-200 px-4 py-2.5 text-[12px] leading-5 text-neutral-500">
-          {exercise.instructions}
-        </div>
-      ) : null}
-
-      <div className="flex flex-wrap items-start gap-2 px-4 py-4">
+      <div className="space-y-2 px-4 py-4">
         {exercise.sets.map((set, setIndex) => (
           <div
             key={`${exercise.uid}-${setIndex}`}
-            className="flex flex-col items-center gap-1.5"
+            className="rounded-xl border border-neutral-200 bg-neutral-50/70 px-3 py-3"
           >
-            <span className="text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-400">
-              Set {setIndex + 1}
-            </span>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="shrink-0 text-[10px] font-medium uppercase tracking-[0.08em] text-neutral-400">
+                  Set {setIndex + 1}
+                </span>
+                <div className="min-w-0 font-mono text-[14px] font-semibold text-neutral-900">
+                  {formatProgramBuilderRepRange(set)}
+                </div>
+              </div>
 
-            <div className="flex h-10 min-w-20 items-center justify-center rounded-lg border border-neutral-200 bg-white px-3 font-mono text-[14px] font-semibold text-neutral-800">
-              {formatProgramBuilderRepRange(set)}
+              <div className="flex flex-wrap items-center gap-1.5 sm:justify-end">
+                {set.int ? (
+                  <ProgramDetailSetMetaTag
+                    className={PROGRAM_BUILDER_INTENSIFIERS[set.int.type].className}
+                    label={PROGRAM_BUILDER_INTENSIFIERS[set.int.type].format(set.int.params)}
+                  />
+                ) : null}
+
+                {set.tempo ? (
+                  <ProgramDetailSetMetaTag
+                    className="border-emerald-200 bg-emerald-50 text-emerald-700"
+                    label={formatProgramBuilderTempo(set.tempo)}
+                  />
+                ) : null}
+
+                {typeof set.rpe === "number" ? (
+                  <ProgramDetailSetMetaTag
+                    className="border-violet-200 bg-violet-50 text-violet-700"
+                    label={`RPE ${set.rpe}`}
+                  />
+                ) : null}
+
+                {typeof set.rir === "number" ? (
+                  <ProgramDetailSetMetaTag
+                    className="border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700"
+                    label={`RIR ${set.rir}`}
+                  />
+                ) : null}
+              </div>
             </div>
-
-            {set.int ? (
-              <ProgramDetailSetMetaTag
-                className={PROGRAM_BUILDER_INTENSIFIERS[set.int.type].className}
-                label={PROGRAM_BUILDER_INTENSIFIERS[set.int.type].format(set.int.params)}
-              />
-            ) : null}
-
-            {set.tempo ? (
-              <ProgramDetailSetMetaTag
-                className="border-emerald-200 bg-emerald-50 text-emerald-700"
-                label={formatProgramBuilderTempo(set.tempo)}
-              />
-            ) : null}
-
-            {typeof set.rpe === "number" ? (
-              <ProgramDetailSetMetaTag
-                className="border-violet-200 bg-violet-50 text-violet-700"
-                label={`RPE ${set.rpe}`}
-              />
-            ) : null}
-
-            {typeof set.rir === "number" ? (
-              <ProgramDetailSetMetaTag
-                className="border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700"
-                label={`RIR ${set.rir}`}
-              />
-            ) : null}
           </div>
         ))}
       </div>
