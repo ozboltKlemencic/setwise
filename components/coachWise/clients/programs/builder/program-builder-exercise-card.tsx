@@ -293,7 +293,6 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
 
         <div className="flex items-center gap-1.5">
           <ProgramBuilderExerciseNotesMenu
-            title={entry.name}
             description={entry.instructions}
           />
 

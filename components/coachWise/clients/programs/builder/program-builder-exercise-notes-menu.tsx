@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 type ProgramBuilderExerciseNotesMenuProps = {
-  title: string
   description?: string | null
 }
 
@@ -37,7 +36,7 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
             )}
           >
             <NotebookPen className="size-3.5" />
-            <span className="sr-only">Open technical cues for {title}</span>
+            <span className="sr-only">Open technical cues</span>
           </Button>
         </DropdownMenuTrigger>
 
