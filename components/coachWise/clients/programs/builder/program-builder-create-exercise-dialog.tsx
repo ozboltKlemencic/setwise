@@ -217,11 +217,11 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                       className={cn(
                         "flex min-h-[156px] w-full flex-col items-center justify-center rounded-sm border border-dashed px-4 text-center transition-colors",
                         mediaFileName
-                          ? "border-brand-300 bg-brand-50/35"
-                          : "border-neutral-200 bg-neutral-50 hover:border-brand-300 hover:bg-brand-50/20"
+                          ? "border-brand-300 bg-white"
+                          : "border-neutral-200 bg-white hover:border-brand-300 hover:bg-brand-50/10"
                       )}
                     >
-                      <div className="mb-2 flex size-9 items-center justify-center rounded-lg border border-neutral-200 bg-white text-neutral-500">
+                      <div className="mb-2 flex size-9 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-50 text-neutral-500">
                         <Upload className="size-4" />
                       </div>
                       <div className="text-[13px] font-medium text-neutral-700">
@@ -243,7 +243,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                         value={youtubeUrl}
                         onChange={(event) => setYoutubeUrl(event.target.value)}
                         placeholder="Enter YouTube link"
-                        className="h-10 rounded-sm border-neutral-100 bg-white/70 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                        className="h-10 rounded-sm border-neutral-100 bg-white pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
                       />
                     </div>
                   </div>
