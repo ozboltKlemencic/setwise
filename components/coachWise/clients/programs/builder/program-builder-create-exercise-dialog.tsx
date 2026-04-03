@@ -271,7 +271,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                   </div>
                 </div>
 
-                <div className="mt-auto space-y-2 pt-4">
+                <div className="mt-4 space-y-2">
                   <ProgramBuilderFieldLabel>Equipment</ProgramBuilderFieldLabel>
                   <ProgramBuilderToolbarMenu
                     label={equipmentLabel}
