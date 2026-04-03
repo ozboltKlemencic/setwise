@@ -15,7 +15,10 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { PROGRAM_BUILDER_MUSCLE_FILTERS } from "@/lib/programs/program-builder-data"
+import {
+  PROGRAM_BUILDER_MUSCLE_CLASSES,
+  PROGRAM_BUILDER_MUSCLE_FILTERS,
+} from "@/lib/programs/program-builder-data"
 import type {
   ProgramBuilderExerciseLibraryItem,
   ProgramBuilderExerciseType,
@@ -173,7 +176,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                           className={cn(
                             "rounded-lg border px-3 py-2 text-center text-[13px] font-medium transition-colors",
                             isActive
-                              ? "border-brand-500 bg-brand-50/35 text-neutral-950"
+                              ? PROGRAM_BUILDER_MUSCLE_CLASSES[option]
                               : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-brand-300 hover:bg-brand-50/20"
                           )}
                         >
