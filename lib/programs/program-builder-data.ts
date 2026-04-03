@@ -301,6 +301,7 @@ export function createProgramBuilderExerciseEntry(
     name: exercise.name,
     muscle: exercise.muscle,
     type: exercise.type,
+    instructions: exercise.instructions ?? null,
     sets: PROGRAM_BUILDER_SMART_DEFAULTS[exercise.type].map((set) => ({ ...set })),
   }
 }

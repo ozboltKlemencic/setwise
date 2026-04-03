@@ -15,6 +15,8 @@ import {
 import { cn } from "@/lib/utils"
 import type { ProgramBuilderExercise } from "@/types"
 
+import { ProgramBuilderExerciseNotesMenu } from "./program-builder-exercise-notes-menu"
+
 type ProgramBuilderExerciseCardProps = {
   builder: ReturnType<typeof useProgramBuilder>
   entry: ProgramBuilderExercise
@@ -289,18 +291,25 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
           </div>
         </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          size="icon-sm"
-          onMouseDown={(event) => {
-            event.preventDefault()
-            builder.removeExercise(entry.uid)
-          }}
-          className="size-7 rounded-md border-rose-200 bg-rose-50 text-rose-600 shadow-none hover:bg-rose-100"
-        >
-          <Trash2 className="size-3.5" />
-        </Button>
+        <div className="flex items-center gap-1.5">
+          <ProgramBuilderExerciseNotesMenu
+            title={entry.name}
+            description={entry.instructions}
+          />
+
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onMouseDown={(event) => {
+              event.preventDefault()
+              builder.removeExercise(entry.uid)
+            }}
+            className="size-7 rounded-md border-rose-200 bg-rose-50 text-rose-600 shadow-none hover:bg-rose-100"
+          >
+            <Trash2 className="size-3.5" />
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-start gap-2 px-4 py-4">

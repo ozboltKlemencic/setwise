@@ -118,6 +118,7 @@ export type ProgramBuilderExercise = {
   name: string
   muscle: ProgramBuilderMuscle
   type: ProgramBuilderExerciseType
+  instructions?: string | null
   sets: ProgramBuilderExerciseSet[]
 }
 
