@@ -132,8 +132,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           <div className="grid gap-0 md:grid-cols-[minmax(0,1fr)_300px]">
             <div className="border-b border-neutral-200 md:border-r md:border-b-0">
               <DialogHeader className="gap-0 border-b border-neutral-200 px-6 py-4 text-left">
-                <DialogTitle className="flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
-                  <Dumbbell className="size-4 text-neutral-500" />
+                <DialogTitle className="text-[17px] font-semibold text-neutral-950">
                   Add Exercise
                 </DialogTitle>
                 <DialogDescription className="mt-1 text-[13px] leading-5 text-neutral-500">
@@ -191,10 +190,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
 
             <div className="flex flex-col">
               <div className="border-b border-neutral-200 px-6 py-4">
-                <div className="flex items-center gap-2 text-[17px] font-semibold text-neutral-950">
-                  <Clapperboard className="size-4 text-neutral-500" />
-                  Media
-                </div>
+                <div className="text-[17px] font-semibold text-neutral-950">Media</div>
               </div>
 
               <div className="space-y-4 px-6 py-5">
