@@ -292,38 +292,38 @@ function ProgramWorkoutExercises({
       <div className="space-y-3">
         {builderExercises
           ? builderExercises.map((exercise) => (
-              <ProgramDetailBuilderExerciseCard key={exercise.uid} exercise={exercise} />
-            ))
+            <ProgramDetailBuilderExerciseCard key={exercise.uid} exercise={exercise} />
+          ))
           : exercises.map((exercise) => (
-              <div
-                key={exercise.id}
-                className="rounded-xl border border-neutral-200 bg-white p-4"
-              >
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <div className="truncate text-[14px] font-semibold text-neutral-950">
-                    {exercise.name}
-                  </div>
-                  {exercise.note ? (
-                    <span className="inline-flex shrink-0 rounded-md border border-violet-100 bg-violet-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-violet-700">
-                      Cue
-                    </span>
-                  ) : null}
+            <div
+              key={exercise.id}
+              className="rounded-xl border border-neutral-200 bg-white p-4"
+            >
+              <div className="flex min-w-0 flex-wrap items-center gap-2">
+                <div className="truncate text-[14px] font-semibold text-neutral-950">
+                  {exercise.name}
                 </div>
-
                 {exercise.note ? (
-                  <div className="mt-2 text-[12px] leading-5 text-neutral-500">
-                    {exercise.note}
-                  </div>
+                  <span className="inline-flex shrink-0 rounded-md border border-violet-100 bg-violet-50/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-violet-700">
+                    Cue
+                  </span>
                 ) : null}
-
-                <div className="mt-3">
-                  <ProgramExerciseValuesGrid
-                    fields={exercise.fields}
-                    values={exercise.values}
-                  />
-                </div>
               </div>
-            ))}
+
+              {exercise.note ? (
+                <div className="mt-2 text-[12px] leading-5 text-neutral-500">
+                  {exercise.note}
+                </div>
+              ) : null}
+
+              <div className="mt-3">
+                <ProgramExerciseValuesGrid
+                  fields={exercise.fields}
+                  values={exercise.values}
+                />
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   )
@@ -400,7 +400,7 @@ export function ProgramPlanDetailPage({
         editHref={editHref}
       />
 
-      <div className="mx-auto max-w-[1080px] space-y-4 px-4 py-4">
+      <div className="mx-auto max-w-3xl space-y-4 px-4 py-4">
         {plan.program.editorWorkouts.length > 0 && activeWorkout ? (
           <div className="space-y-4">
             <ProgramWorkoutTabs
