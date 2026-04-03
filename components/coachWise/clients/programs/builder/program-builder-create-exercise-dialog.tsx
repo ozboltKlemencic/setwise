@@ -26,6 +26,8 @@ import type {
   ProgramBuilderMuscle,
 } from "@/types"
 
+import { ProgramBuilderToolbarMenu } from "./program-builder-toolbar-menu"
+
 type ProgramBuilderCreateExerciseDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -248,31 +250,52 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
 
                   <div className="space-y-2">
                     <ProgramBuilderFieldLabel>Equipment</ProgramBuilderFieldLabel>
-                    <div className="grid grid-cols-2 gap-2">
-                      {PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.map((option) => {
-                        const isActive = equipment === option.value
+                    <ProgramBuilderToolbarMenu
+                      label={
+                        PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.find(
+                          (option) => option.value === equipment
+                        )?.label ?? "Select equipment"
+                      }
+                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-200 bg-white px-3 text-[13px] font-normal text-neutral-700 hover:border-neutral-300 hover:bg-neutral-100/80 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-neutral-100/80"
+                      contentClassName="w-[258px]"
+                    >
+                      <div className="space-y-1">
+                        <button
+                          type="button"
+                          onClick={() => setEquipment(null)}
+                          className={cn(
+                            "flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] transition-colors",
+                            equipment === null
+                              ? "bg-neutral-100 text-neutral-950"
+                              : "text-neutral-700 hover:bg-neutral-50"
+                          )}
+                        >
+                          No equipment
+                        </button>
 
-                        return (
-                          <button
-                            key={option.value}
-                            type="button"
-                            onClick={() =>
-                              setEquipment((currentValue) =>
-                                currentValue === option.value ? null : option.value
-                              )
-                            }
-                            className={cn(
-                              "rounded-lg border px-3 py-2 text-center text-[13px] font-medium transition-colors",
-                              isActive
-                                ? "border-brand-500 bg-brand-50/35 text-neutral-950"
-                                : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-brand-300 hover:bg-brand-50/20"
-                            )}
-                          >
-                            {option.label}
-                          </button>
-                        )
-                      })}
-                    </div>
+                        <div className="my-1 border-t border-neutral-200/70" />
+
+                        {PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.map((option) => {
+                          const isActive = equipment === option.value
+
+                          return (
+                            <button
+                              key={option.value}
+                              type="button"
+                              onClick={() => setEquipment(option.value)}
+                              className={cn(
+                                "flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] transition-colors",
+                                isActive
+                                  ? "bg-neutral-100 text-neutral-950"
+                                  : "text-neutral-700 hover:bg-neutral-50"
+                              )}
+                            >
+                              {option.label}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </ProgramBuilderToolbarMenu>
                   </div>
                 </div>
 
