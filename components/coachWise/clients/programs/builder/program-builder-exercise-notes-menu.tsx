@@ -46,7 +46,7 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
           className={cn(overflowActionsMenuSurfaceClassName, "w-[260px] p-0")}
         >
           <div className="space-y-3 p-3">
-            <div className="space-y-1 border-b border-neutral-200 pb-2">
+            <div className="w-full space-y-1 border-b border-neutral-200 pb-2">
               <div className="text-[11px] font-semibold tracking-[0.12em] text-neutral-400 uppercase">
                 Technical cues
               </div>
