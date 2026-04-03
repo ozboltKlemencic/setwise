@@ -12,6 +12,7 @@ import { PROGRAM_BUILDER_MUSCLE_CLASSES } from "@/lib/programs/program-builder-d
 import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 
 import { ProgramBuilderCreateExerciseDialog } from "./program-builder-create-exercise-dialog"
+import { ProgramBuilderTemplateCard } from "./program-builder-template-card"
 
 type ProgramBuilderSidebarProps = {
   builder: ReturnType<typeof useProgramBuilder>
@@ -293,49 +294,13 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
 
             <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 xl:-mr-2 xl:[overflow-y:overlay] xl:pr-2">
               {builder.filteredTemplates.map((template) => (
-                <div
+                <ProgramBuilderTemplateCard
                   key={template.id}
-                  className="rounded-xl border border-neutral-200 bg-white p-3 shadow-[0_1px_2px_rgba(17,24,39,0.04)]"
-                >
-                  <div className="text-[13px] font-semibold text-neutral-950">{template.name}</div>
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {template.exercises.map((exercise) => (
-                      <span
-                        key={`${template.id}-${exercise.uid}`}
-                        className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-0.5 text-[11px] text-neutral-600"
-                      >
-                        {exercise.name}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-3 flex items-center gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => builder.applyTemplate(template)}
-                      className="h-8 flex-1 rounded-md border-neutral-200 bg-white text-[12px] text-neutral-700 shadow-none hover:bg-neutral-50"
-                    >
-                      Add exercises
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => builder.replaceWithTemplate(template)}
-                      className="h-8 rounded-md border-neutral-200 bg-white px-3 text-[12px] text-neutral-600 shadow-none hover:bg-neutral-50"
-                    >
-                      Replace
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => builder.removeTemplate(template.id)}
-                      className="h-8 rounded-md border-rose-200 bg-rose-50 px-2.5 text-[12px] text-rose-600 shadow-none hover:bg-rose-100"
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </div>
+                  template={template}
+                  onApply={() => builder.applyTemplate(template)}
+                  onReplace={() => builder.replaceWithTemplate(template)}
+                  onDelete={() => builder.removeTemplate(template.id)}
+                />
               ))}
 
               {builder.filteredTemplates.length === 0 ? (
