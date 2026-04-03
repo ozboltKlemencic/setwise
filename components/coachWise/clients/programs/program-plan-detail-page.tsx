@@ -355,42 +355,21 @@ export function ProgramPlanDetailPage({
     : -1
   const activeBuilderDay =
     activeWorkoutIndex >= 0 ? plan.builderSnapshot?.days[activeWorkoutIndex] ?? null : null
-  const workoutCount = plan.program.editorWorkouts.length
-  const exerciseCount =
-    plan.builderSnapshot?.days.reduce(
-      (total, day) => total + day.exercises.length,
+  const workoutExerciseCount =
+    activeBuilderDay?.exercises.length ??
+    activeWorkout?.sections.reduce(
+      (sectionTotal, section) => sectionTotal + section.exercises.length,
       0
     ) ??
-    plan.program.editorWorkouts.reduce(
-      (total, workout) =>
-        total +
-        workout.sections.reduce(
-          (sectionTotal, section) => sectionTotal + section.exercises.length,
-          0
-        ),
-      0
-    )
-  const setCount =
-    plan.builderSnapshot?.days.reduce(
-      (total, day) =>
-        total +
-        day.exercises.reduce(
-          (exerciseTotal, exercise) => exerciseTotal + exercise.sets.length,
-          0
-        ),
+    0
+  const workoutSetCount =
+    activeBuilderDay?.exercises.reduce(
+      (exerciseTotal, exercise) => exerciseTotal + exercise.sets.length,
       0
     ) ??
-    plan.program.editorWorkouts.reduce(
-      (total, workout) => total + countWorkoutSetsFromEditorWorkout(workout),
-      0
-    )
-  const sectionCount =
-    plan.builderSnapshot?.days.filter((day) => !day.isRest).length ??
-    plan.program.editorWorkouts.reduce(
-      (total, workout) => total + workout.sections.length,
-      0
-    )
-  const workoutSummaryText = `${workoutCount} workouts - ${exerciseCount} exercises - ${setCount} sets - ${sectionCount} sections`
+    (activeWorkout ? countWorkoutSetsFromEditorWorkout(activeWorkout) : 0)
+  const workoutSectionCount = activeWorkout?.sections.length ?? 0
+  const workoutSummaryText = `${workoutExerciseCount} exercises - ${workoutSetCount} sets - ${workoutSectionCount} sections`
 
   return (
     <div className="min-w-0 bg-neutral-50">
