@@ -184,7 +184,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                 </div>
 
                 <div className="space-y-2">
-                  <ProgramBuilderFieldLabel>Primary muscle group</ProgramBuilderFieldLabel>
+                  <ProgramBuilderFieldLabel required>Primary muscle group</ProgramBuilderFieldLabel>
                   <div className="grid grid-cols-3 gap-2">
                     {muscleOptions.map((option) => {
                       const isActive = muscle === option
