@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Link2, Upload, X } from "lucide-react"
+import { Check, Link2, Upload, X } from "lucide-react"
 
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
@@ -106,14 +106,6 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
 
       return `${selectedLabels[0]} +${selectedLabels.length - 1}`
     }, [equipment])
-
-    const availableEquipmentOptions = React.useMemo(
-      () =>
-        PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.filter(
-          (option) => !equipment.includes(option.value)
-        ),
-      [equipment]
-    )
 
     const toggleEquipment = React.useCallback((value: ProgramBuilderExerciseEquipment) => {
       setEquipment((currentEquipment) =>
@@ -277,84 +269,72 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                       />
                     </div>
                   </div>
+                </div>
 
-                  <div className="space-y-2">
-                    <ProgramBuilderFieldLabel>Equipment</ProgramBuilderFieldLabel>
-                    <ProgramBuilderToolbarMenu
-                      label={equipmentLabel}
-                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-100 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-200 hover:bg-white/85 data-[state=open]:border-brand-500 data-[state=open]:bg-white"
-                      contentClassName="w-[258px]"
-                    >
-                      <div className="space-y-1.5 p-1">
-                        {equipment.length > 0 ? (
-                          <>
-                            <div className="px-2 pb-1 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
-                              Selected
-                            </div>
-                            <div className="space-y-1">
-                              {equipment.map((selectedEquipment) => {
-                                const selectedOption = PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.find(
-                                  (option) => option.value === selectedEquipment
-                                )
+                <div className="mt-auto space-y-2 pt-4">
+                  <ProgramBuilderFieldLabel>Equipment</ProgramBuilderFieldLabel>
+                  <ProgramBuilderToolbarMenu
+                    label={equipmentLabel}
+                    triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-100 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-200 hover:bg-white/85 data-[state=open]:border-brand-500 data-[state=open]:bg-white"
+                    contentClassName="w-[258px]"
+                  >
+                    <div className="space-y-1.5 p-1">
+                      <button
+                        type="button"
+                        onClick={() => setEquipment([])}
+                        className={cn(
+                          "flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-[13px] transition-colors",
+                          equipment.length === 0
+                            ? "bg-neutral-100 text-neutral-950"
+                            : "text-neutral-700 hover:bg-neutral-50"
+                        )}
+                      >
+                        <span className="inline-flex min-w-0 items-center gap-2 truncate">
+                          <span className="flex size-4 items-center justify-center">
+                            {equipment.length === 0 ? (
+                              <Check className="size-3.5 text-neutral-700" />
+                            ) : null}
+                          </span>
+                          <span className="truncate">No equipment</span>
+                        </span>
+                        <span className="size-4" />
+                      </button>
 
-                                if (!selectedOption) {
-                                  return null
-                                }
+                      <div className="border-t border-neutral-200/70 pt-2" />
 
-                                return (
-                                  <div
-                                    key={selectedOption.value}
-                                    className="flex items-center justify-between gap-2 rounded-md px-3 py-2 text-[13px] text-neutral-700"
-                                  >
-                                    <span className="truncate">{selectedOption.label}</span>
-                                    <button
-                                      type="button"
-                                      onClick={() => toggleEquipment(selectedOption.value)}
-                                      className="inline-flex size-5 items-center justify-center rounded-sm text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600"
-                                    >
-                                      <X className="size-3.5" />
-                                    </button>
-                                  </div>
-                                )
-                              })}
-                            </div>
-                            <div className="border-t border-neutral-200/70 pt-2" />
-                          </>
-                        ) : null}
+                      <div className="space-y-1">
+                        {PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS.map((option) => {
+                          const isSelected = equipment.includes(option.value)
 
-                        <button
-                          type="button"
-                          onClick={() => setEquipment([])}
-                          className={cn(
-                            "flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] transition-colors",
-                            equipment.length === 0
-                              ? "bg-neutral-100 text-neutral-950"
-                              : "text-neutral-700 hover:bg-neutral-50"
-                          )}
-                        >
-                          No equipment
-                        </button>
-
-                        {availableEquipmentOptions.length > 0 ? (
-                          <>
-                            <div className="border-t border-neutral-200/70 pt-2" />
-                            <div className="space-y-1">
-                              {availableEquipmentOptions.map((option) => (
-                                <button
-                                  key={option.value}
-                                  type="button"
-                                  onClick={() => toggleEquipment(option.value)}
-                                  className="flex w-full items-center rounded-md px-3 py-2 text-left text-[13px] text-neutral-700 transition-colors hover:bg-neutral-50"
-                                >
-                                  {option.label}
-                                </button>
-                              ))}
-                            </div>
-                          </>
-                        ) : null}
+                          return (
+                            <button
+                              key={option.value}
+                              type="button"
+                              onClick={() => toggleEquipment(option.value)}
+                              className={cn(
+                                "flex w-full items-center justify-between gap-2 rounded-md px-3 py-2 text-left text-[13px] transition-colors",
+                                isSelected
+                                  ? "bg-neutral-100 text-neutral-950"
+                                  : "text-neutral-700 hover:bg-neutral-50"
+                              )}
+                            >
+                              <span className="inline-flex min-w-0 items-center gap-2 truncate">
+                                <span className="flex size-4 items-center justify-center">
+                                  {isSelected ? (
+                                    <Check className="size-3.5 text-neutral-700" />
+                                  ) : null}
+                                </span>
+                                <span className="truncate">{option.label}</span>
+                              </span>
+                              <span className="flex size-4 items-center justify-center text-neutral-400">
+                                {isSelected ? <X className="size-3.5" /> : null}
+                              </span>
+                            </button>
+                          )
+                        })}
                       </div>
-                    </ProgramBuilderToolbarMenu>
-                  </div>
+                    </div>
+                  </ProgramBuilderToolbarMenu>
                 </div>
 
                 <div className="mt-5 flex flex-col gap-2">
