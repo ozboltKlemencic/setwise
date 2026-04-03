@@ -243,7 +243,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                         value={youtubeUrl}
                         onChange={(event) => setYoutubeUrl(event.target.value)}
                         placeholder="Enter YouTube link"
-                        className="h-10 rounded-sm border-neutral-100 bg-neutral-50 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                        className="h-10 rounded-sm border-neutral-100 bg-white/70 pl-9 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
                       />
                     </div>
                   </div>
@@ -256,7 +256,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                           (option) => option.value === equipment
                         )?.label ?? "Select equipment"
                       }
-                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-200 bg-white px-3 text-[13px] font-normal text-neutral-700 hover:border-neutral-300 hover:bg-neutral-100/80 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-neutral-100/80"
+                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-200 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 hover:border-neutral-300 hover:bg-white/85 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-white/85"
                       contentClassName="w-[258px]"
                     >
                       <div className="space-y-1">
