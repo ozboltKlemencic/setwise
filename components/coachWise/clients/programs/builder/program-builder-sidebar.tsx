@@ -3,6 +3,8 @@
 import * as React from "react"
 import { Bookmark, Dumbbell, GripVertical, Plus, Search } from "lucide-react"
 
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
+import { SecondaryActionButton } from "@/components/coachWise/secondary-action-button"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -19,6 +21,9 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
   builder,
 }: ProgramBuilderSidebarProps) {
   const [isCreateExerciseOpen, setIsCreateExerciseOpen] = React.useState(false)
+  const [showSaveTemplateForm, setShowSaveTemplateForm] = React.useState(false)
+  const [newTemplateName, setNewTemplateName] = React.useState("")
+  const [templatedDayIds, setTemplatedDayIds] = React.useState<Set<string>>(() => new Set())
   const sidebarTabs = React.useMemo(
     () => [
       {
@@ -38,6 +43,38 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
     builder.leftTab === "exercises" &&
     builder.searchQuery.trim().length > 0 &&
     builder.filteredExercises.length === 0
+  const activeDayCanBeTemplated = Boolean(
+    builder.activeDay &&
+      !builder.activeDay.isRest &&
+      builder.activeDay.exercises.length > 0 &&
+      !templatedDayIds.has(builder.activeDay.id)
+  )
+
+  React.useEffect(() => {
+    setShowSaveTemplateForm(false)
+    setNewTemplateName("")
+  }, [builder.activeDay?.id, builder.leftTab])
+
+  const handleOpenSaveTemplateForm = React.useCallback(() => {
+    if (!builder.activeDay) {
+      return
+    }
+
+    setShowSaveTemplateForm(true)
+    setNewTemplateName(builder.activeDay.name)
+  }, [builder.activeDay])
+
+  const handleSaveActiveTemplate = React.useCallback(() => {
+    const activeDay = builder.activeDay
+    if (!activeDay) {
+      return
+    }
+
+    builder.saveActiveDayAsTemplate(newTemplateName)
+    setTemplatedDayIds((currentIds) => new Set(currentIds).add(activeDay.id))
+    setShowSaveTemplateForm(false)
+    setNewTemplateName("")
+  }, [builder, newTemplateName])
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden border-r border-neutral-200 bg-neutral-50">
@@ -216,7 +253,44 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
             </div>
           </div>
         ) : (
-          <div className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+          <div className="relative mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+            {showSaveTemplateForm ? (
+              <div className="absolute inset-x-0 top-0 z-20 rounded-xl border border-neutral-200 bg-neutral-50 p-3 shadow-lg shadow-neutral-900/5">
+                <div className="space-y-3">
+                  <div className="text-[13px] font-medium text-neutral-900">
+                    Save current workout as template
+                  </div>
+                  <Input
+                    value={newTemplateName}
+                    onChange={(event) => setNewTemplateName(event.target.value)}
+                    placeholder={`${builder.activeDay?.name ?? "Workout"} template`}
+                    className="h-9 rounded-sm border-neutral-200 bg-neutral-100 shadow-none focus-visible:border-brand-500 focus-visible:ring-0"
+                  />
+                  <div className="flex items-center justify-end gap-2">
+                    <SecondaryActionButton
+                      label="Cancel"
+                      onClick={() => {
+                        setShowSaveTemplateForm(false)
+                        setNewTemplateName("")
+                      }}
+                    />
+                    <PrimaryActionButton
+                      label="Save template"
+                      onClick={handleSaveActiveTemplate}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {activeDayCanBeTemplated && !showSaveTemplateForm ? (
+              <SecondaryActionButton
+                label={`Create "${builder.activeDay?.name}" template`}
+                onClick={handleOpenSaveTemplateForm}
+                className="mb-4 w-full justify-center"
+              />
+            ) : null}
+
             <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-2 [scrollbar-color:var(--color-neutral-100)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-100 [&::-webkit-scrollbar-thumb:hover]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1 xl:-mr-2 xl:[overflow-y:overlay] xl:pr-2">
               {builder.filteredTemplates.map((template) => (
                 <div

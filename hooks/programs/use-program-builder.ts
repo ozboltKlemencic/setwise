@@ -549,7 +549,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     })
   }, [days.length])
 
-  const saveDayAsTemplate = React.useCallback((dayIndex: number) => {
+  const saveDayAsTemplate = React.useCallback((dayIndex: number, templateName?: string) => {
     const sourceDay = days[dayIndex]
     if (!sourceDay || sourceDay.isRest || sourceDay.exercises.length === 0) {
       return
@@ -558,7 +558,7 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     setDayTemplates((currentTemplates) => [
       {
         id: createProgramBuilderId("program-template"),
-        name: sourceDay.name,
+        name: templateName?.trim() || sourceDay.name,
         exercises: sourceDay.exercises.map(cloneProgramBuilderExercise),
       },
       ...currentTemplates,
@@ -576,11 +576,11 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     deleteDay(activeDayIndex)
   }, [activeDayIndex, deleteDay])
 
-  const saveActiveDayAsTemplate = React.useCallback(() => {
+  const saveActiveDayAsTemplate = React.useCallback((templateName?: string) => {
     if (!activeDay) {
       return
     }
-    saveDayAsTemplate(activeDayIndex)
+    saveDayAsTemplate(activeDayIndex, templateName)
   }, [activeDay, activeDayIndex, saveDayAsTemplate])
 
   const applyTemplate = React.useCallback(
