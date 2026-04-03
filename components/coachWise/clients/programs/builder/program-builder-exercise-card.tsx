@@ -164,18 +164,18 @@ function ProgramBuilderSetMetaTag({
   return (
     <div
       className={cn(
-        "flex h-6 w-20 items-center justify-between rounded-md border px-2 text-[10px] font-semibold",
+        "inline-flex h-6 items-center gap-1.5 rounded-md border px-2 text-[10px] font-semibold",
         className
       )}
     >
-      <span className="truncate">{label}</span>
+      <span>{label}</span>
       <button
         type="button"
         onMouseDown={(event) => {
           event.preventDefault()
           onRemove()
         }}
-        className="ml-1 inline-flex size-3.5 shrink-0 items-center justify-center rounded-sm text-current/70 transition-opacity hover:opacity-100"
+        className="inline-flex size-3.5 shrink-0 items-center justify-center rounded-sm text-current/70 transition-opacity hover:opacity-100"
       >
         <X className="size-3" />
       </button>
