@@ -35,6 +35,7 @@ import type {
   ProgramBuilderIntensifierType,
   ProgramBuilderMuscleFilter,
   ProgramBuilderSetEditTarget,
+  StoredProgramBuilderSnapshot,
 } from "@/types"
 
 type LeftTab = "exercises" | "templates"
@@ -46,10 +47,18 @@ function moveArrayItem<T>(items: T[], fromIndex: number, toIndex: number) {
   return nextItems
 }
 
-export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
+export function useProgramBuilder(
+  initialProgram: FixedProgramEditorProgram,
+  initialSnapshot?: StoredProgramBuilderSnapshot | null
+) {
   const skipBlurRef = React.useRef(false)
-  const [description, setDescription] = React.useState(initialProgram.description)
-  const [days, setDays] = React.useState(() => createProgramBuilderInitialDays(initialProgram))
+  const [description, setDescription] = React.useState(
+    initialSnapshot?.description ?? initialProgram.description
+  )
+  const [days, setDays] = React.useState(() =>
+    initialSnapshot?.days.map(cloneProgramBuilderDay) ??
+    createProgramBuilderInitialDays(initialProgram)
+  )
   const [activeDayIndex, setActiveDayIndex] = React.useState(0)
   const [leftTab, setLeftTab] = React.useState<LeftTab>("exercises")
   const [searchQuery, setSearchQuery] = React.useState("")
@@ -72,20 +81,29 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     () => createProgramBuilderDefaultTemplates()
   )
   const [showMyReps, setShowMyReps] = React.useState(false)
-  const [myReps, setMyReps] = React.useState(PROGRAM_BUILDER_DEFAULT_REP_RANGES)
+  const [myReps, setMyReps] = React.useState(
+    initialSnapshot?.myReps ?? PROGRAM_BUILDER_DEFAULT_REP_RANGES
+  )
   const [newRepRange, setNewRepRange] = React.useState("")
   const [showMyTempos, setShowMyTempos] = React.useState(false)
-  const [myTempos, setMyTempos] = React.useState(PROGRAM_BUILDER_DEFAULT_TEMPOS)
+  const [myTempos, setMyTempos] = React.useState(
+    initialSnapshot?.myTempos ?? PROGRAM_BUILDER_DEFAULT_TEMPOS
+  )
   const [newTempo, setNewTempo] = React.useState("")
-  const [showAdvancedSetOptions, setShowAdvancedSetOptions] = React.useState(false)
+  const [showAdvancedSetOptions, setShowAdvancedSetOptions] = React.useState(
+    initialSnapshot?.showAdvancedSetOptions ?? false
+  )
   const [useIntensifiers, setUseIntensifiers] = React.useState(true)
   const [useTempo, setUseTempo] = React.useState(true)
   const [useRpe, setUseRpe] = React.useState(true)
   const [useRir, setUseRir] = React.useState(true)
 
   React.useEffect(() => {
-    setDescription(initialProgram.description)
-    setDays(createProgramBuilderInitialDays(initialProgram))
+    setDescription(initialSnapshot?.description ?? initialProgram.description)
+    setDays(
+      initialSnapshot?.days.map(cloneProgramBuilderDay) ??
+      createProgramBuilderInitialDays(initialProgram)
+    )
     setActiveDayIndex(0)
     setEditTarget(null)
     setEditValue("")
@@ -99,7 +117,10 @@ export function useProgramBuilder(initialProgram: FixedProgramEditorProgram) {
     setDraggedDayIndex(null)
     setDragDayOverIndex(null)
     setRenamingDayIndex(null)
-  }, [initialProgram.id, initialProgram.description])
+    setMyReps(initialSnapshot?.myReps ?? PROGRAM_BUILDER_DEFAULT_REP_RANGES)
+    setMyTempos(initialSnapshot?.myTempos ?? PROGRAM_BUILDER_DEFAULT_TEMPOS)
+    setShowAdvancedSetOptions(initialSnapshot?.showAdvancedSetOptions ?? false)
+  }, [initialProgram.id, initialProgram.description, initialSnapshot])
 
   const activeDay = days[activeDayIndex]
   const dayExerciseIds = React.useMemo(

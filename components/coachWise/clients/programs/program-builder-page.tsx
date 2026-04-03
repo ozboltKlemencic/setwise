@@ -14,11 +14,16 @@ import {
 } from "@/lib/handlers/program-plan-storage"
 import { buildStoredProgramPlanFromBuilderState } from "@/lib/programs/program-plan-storage.utils"
 import { useProgramBuilder } from "@/hooks/programs/use-program-builder"
-import type { FixedProgramEditorProgram } from "@/types"
+import type {
+  FixedProgramEditorProgram,
+  StoredProgramBuilderSnapshot,
+} from "@/types"
 
 type ProgramBuilderPageViewProps = {
   initialProgram: FixedProgramEditorProgram
   backHref: string
+  initialSnapshot?: StoredProgramBuilderSnapshot | null
+  createdAt?: string
 }
 
 const ProgramBuilderWorkspace = React.lazy(async () => {
@@ -30,13 +35,20 @@ const ProgramBuilderWorkspace = React.lazy(async () => {
 export function ProgramBuilderPageView({
   initialProgram,
   backHref,
+  initialSnapshot,
+  createdAt,
 }: ProgramBuilderPageViewProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const builder = useProgramBuilder(initialProgram)
+  const builder = useProgramBuilder(initialProgram, initialSnapshot)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [title, setTitle] = React.useState(initialProgram.title)
   const [isEditingTitle, setIsEditingTitle] = React.useState(false)
+
+  React.useEffect(() => {
+    setTitle(initialProgram.title)
+    setIsEditingTitle(false)
+  }, [initialProgram.id, initialProgram.title])
 
   React.useEffect(() => {
     if (isEditingTitle) {
@@ -97,6 +109,7 @@ export function ProgramBuilderPageView({
       myReps: builder.myReps,
       myTempos: builder.myTempos,
       showAdvancedSetOptions: builder.showAdvancedSetOptions,
+      createdAt,
     })
 
     upsertStoredProgramPlan(storageScopeId, nextStoredProgram)
@@ -115,6 +128,7 @@ export function ProgramBuilderPageView({
     router,
     storageScopeId,
     title,
+    createdAt,
   ])
 
   return (

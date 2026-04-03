@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { Copy, Pencil, Trash2 } from "lucide-react"
 
 import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
@@ -19,6 +20,7 @@ export type ProgramPlansTableRow = StoredProgramPlan
 type ProgramPlansTableProps = {
   rows: ProgramPlansTableRow[]
   emptyMessage?: string
+  getEditRowHref?: (row: ProgramPlansTableRow) => string
   onDuplicateRow?: (row: ProgramPlansTableRow) => void
   onDeleteRow?: (row: ProgramPlansTableRow) => void
 }
@@ -38,6 +40,7 @@ function getProgramStatusBadgeClassName(status: ProgramPlanStatus) {
 function ProgramPlansTableComponent({
   rows,
   emptyMessage = "No programs available.",
+  getEditRowHref,
   onDuplicateRow,
   onDeleteRow,
 }: ProgramPlansTableProps) {
@@ -132,20 +135,35 @@ function ProgramPlansTableComponent({
                 <span className="sr-only">Duplicate program</span>
               </Button>
 
-              <FixedProgramEditorDialog
-                program={row.program}
-                trigger={
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className={rowActionButtonClassName}
-                  >
+              {getEditRowHref ? (
+                <Button
+                  asChild
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className={rowActionButtonClassName}
+                >
+                  <Link href={getEditRowHref(row)}>
                     <Pencil className="size-3.5" />
                     <span className="sr-only">Edit program</span>
-                  </Button>
-                }
-              />
+                  </Link>
+                </Button>
+              ) : (
+                <FixedProgramEditorDialog
+                  program={row.program}
+                  trigger={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className={rowActionButtonClassName}
+                    >
+                      <Pencil className="size-3.5" />
+                      <span className="sr-only">Edit program</span>
+                    </Button>
+                  }
+                />
+              )}
 
               <CoachWiseConfirmationDialog
                 title="Delete this program?"

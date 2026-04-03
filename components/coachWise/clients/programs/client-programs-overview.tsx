@@ -21,7 +21,10 @@ import {
   resolveProgramPlanStorageScopeFromPath,
   upsertStoredProgramPlan,
 } from "@/lib/handlers/program-plan-storage"
-import { getClientProgramBuilderHref } from "@/lib/handlers/programs.handlers"
+import {
+  getClientProgramBuilderHref,
+  getClientProgramEditorHref,
+} from "@/lib/handlers/programs.handlers"
 import {
   cloneStoredProgramPlan,
   createInitialStoredProgramPlans,
@@ -174,6 +177,11 @@ function ClientProgramsOverviewComponent({
         <NutritionSectionTitle title="Existing programs" />
         <ProgramPlansTable
           rows={rows}
+          getEditRowHref={(row) =>
+            getClientProgramEditorHref(clientBasePath, row.id, {
+              backTo: overviewHref,
+            })
+          }
           onDuplicateRow={handleDuplicateRow}
           onDeleteRow={handleDeleteRow}
         />

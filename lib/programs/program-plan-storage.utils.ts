@@ -54,7 +54,7 @@ function cloneEditorProgram(program: FixedProgramEditorProgram): FixedProgramEdi
   }
 }
 
-function cloneStoredProgramBuilderSnapshot(
+export function cloneStoredProgramBuilderSnapshot(
   snapshot: StoredProgramBuilderSnapshot
 ): StoredProgramBuilderSnapshot {
   return {
@@ -63,6 +63,20 @@ function cloneStoredProgramBuilderSnapshot(
     myReps: [...snapshot.myReps],
     myTempos: [...snapshot.myTempos],
     showAdvancedSetOptions: snapshot.showAdvancedSetOptions,
+  }
+}
+
+export function buildProgramBuilderInitialProgramFromStoredPlan(
+  plan: StoredProgramPlan
+): FixedProgramEditorProgram {
+  const clonedProgram = cloneEditorProgram(plan.program)
+
+  return {
+    ...clonedProgram,
+    id: plan.id,
+    title: plan.title,
+    description: plan.description,
+    workouts: [...plan.workouts],
   }
 }
 
