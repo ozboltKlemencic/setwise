@@ -137,8 +137,8 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           showCloseButton={false}
           className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
         >
-          <div className="items-stretch flex flex-col sm:flex-row">
-            <div className="min-w-0 flex-1 pt-4 pb-5">
+          <div className="flex items-stretch flex-col sm:flex-row">
+            <div className="flex min-w-0 flex-1 flex-col pt-4 pb-5">
               <DialogHeader className="gap-0 px-6 pt-4 pb-2 text-left">
                 <DialogTitle className="text-[17px] font-semibold text-neutral-950">
                   Add Exercise
@@ -148,7 +148,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="space-y-5 px-6 pt-3">
+              <div className="flex min-h-0 flex-1 flex-col space-y-5 px-6 pt-3">
                 <div className="space-y-2">
                   <ProgramBuilderFieldLabel required>Name</ProgramBuilderFieldLabel>
                   <Input
@@ -184,13 +184,13 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="flex min-h-0 flex-1 flex-col space-y-2">
                   <ProgramBuilderFieldLabel>Technical cues</ProgramBuilderFieldLabel>
                   <textarea
                     value={instructions}
                     onChange={(event) => setInstructions(event.target.value)}
                     placeholder="Explain the form, tempo, and critical cues..."
-                    className="min-h-[220px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
+                    className="min-h-[150px] flex-1 resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] text-neutral-950 outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500"
                   />
                 </div>
               </div>
@@ -254,7 +254,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
                           (option) => option.value === equipment
                         )?.label ?? "Select equipment"
                       }
-                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-200 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-300 hover:bg-white/85 data-[state=open]:border-neutral-300/80 data-[state=open]:bg-white/85"
+                      triggerClassName="h-10 w-full justify-between rounded-sm border-neutral-100 bg-white/70 px-3 text-[13px] font-normal text-neutral-700 shadow-none hover:border-neutral-200 hover:bg-white/85 data-[state=open]:border-neutral-200 data-[state=open]:bg-white/85"
                       contentClassName="w-[258px]"
                     >
                       <div className="space-y-1">
