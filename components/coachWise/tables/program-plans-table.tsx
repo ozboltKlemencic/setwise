@@ -106,9 +106,14 @@ function ProgramPlansTableComponent({
   const pathname = usePathname()
   const router = useRouter()
   const hasClientColumn = showClientColumn || rows.some((row) => row.clients?.length)
+  const hasActionColumn = Boolean(onDuplicateRow || onDeleteRow || getEditRowHref)
   const headerGridClassName = hasClientColumn
-    ? "grid-cols-[minmax(0,1fr)_minmax(250px,280px)_minmax(260px,320px)_8.5rem]"
-    : "grid-cols-[minmax(0,1fr)_minmax(260px,320px)_8.5rem]"
+    ? hasActionColumn
+      ? "grid-cols-[minmax(0,1fr)_minmax(250px,280px)_minmax(260px,320px)_8.5rem]"
+      : "grid-cols-[minmax(0,1fr)_minmax(250px,280px)_minmax(260px,320px)]"
+    : hasActionColumn
+      ? "grid-cols-[minmax(0,1fr)_minmax(260px,320px)_8.5rem]"
+      : "grid-cols-[minmax(0,1fr)_minmax(260px,320px)]"
 
   if (rows.length === 0) {
     return (
@@ -131,7 +136,9 @@ function ProgramPlansTableComponent({
         <div className="text-left">Program</div>
         {hasClientColumn ? <div className="text-left">Client</div> : null}
         <div className="text-left">Workouts</div>
-        <div className="justify-self-center text-center">Action</div>
+        {hasActionColumn ? (
+          <div className="justify-self-center text-center">Action</div>
+        ) : null}
       </div>
 
       <div>
@@ -232,71 +239,77 @@ function ProgramPlansTableComponent({
                 )}
               </div>
 
-              <div
-                className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2"
-                onClick={(event) => event.stopPropagation()}
-                onMouseDown={(event) => event.stopPropagation()}
-              >
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  className={rowActionButtonClassName}
-                  onClick={() => onDuplicateRow?.(row)}
+              {hasActionColumn ? (
+                <div
+                  className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2"
+                  onClick={(event) => event.stopPropagation()}
+                  onMouseDown={(event) => event.stopPropagation()}
                 >
-                  <Copy className="size-3.5" />
-                  <span className="sr-only">Duplicate program</span>
-                </Button>
-
-                {editHref ? (
-                  <Button
-                    asChild
-                    type="button"
-                    variant="outline"
-                    size="icon"
-                    className={rowActionButtonClassName}
-                  >
-                    <Link href={editHref}>
-                      <Pencil className="size-3.5" />
-                      <span className="sr-only">Edit program</span>
-                    </Link>
-                  </Button>
-                ) : (
-                  <FixedProgramEditorDialog
-                    program={row.program}
-                    trigger={
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        className={rowActionButtonClassName}
-                      >
-                        <Pencil className="size-3.5" />
-                        <span className="sr-only">Edit program</span>
-                      </Button>
-                    }
-                  />
-                )}
-
-                <CoachWiseConfirmationDialog
-                  title="Are you sure you want to delete this program?"
-                  description={`${row.title} will be removed from the current programs list. This action can't be undone.`}
-                  confirmLabel="Delete program"
-                  variant="destructive"
-                  onConfirm={() => onDeleteRow?.(row)}
-                  trigger={
+                  {onDuplicateRow ? (
                     <Button
                       type="button"
                       variant="outline"
                       size="icon"
-                      className={cn(rowActionButtonClassName, rowDeleteActionButtonClassName)}
+                      className={rowActionButtonClassName}
+                      onClick={() => onDuplicateRow(row)}
                     >
-                      <Trash2 className="size-3.5" />
-                      <span className="sr-only">Delete program</span>
+                      <Copy className="size-3.5" />
+                      <span className="sr-only">Duplicate program</span>
                     </Button>
-                  }
-                />
-              </div>
+                  ) : null}
+
+                  {editHref ? (
+                    <Button
+                      asChild
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className={rowActionButtonClassName}
+                    >
+                      <Link href={editHref}>
+                        <Pencil className="size-3.5" />
+                        <span className="sr-only">Edit program</span>
+                      </Link>
+                    </Button>
+                  ) : (
+                    <FixedProgramEditorDialog
+                      program={row.program}
+                      trigger={
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className={rowActionButtonClassName}
+                        >
+                          <Pencil className="size-3.5" />
+                          <span className="sr-only">Edit program</span>
+                        </Button>
+                      }
+                    />
+                  )}
+
+                  {onDeleteRow ? (
+                    <CoachWiseConfirmationDialog
+                      title="Are you sure you want to delete this program?"
+                      description={`${row.title} will be removed from the current programs list. This action can't be undone.`}
+                      confirmLabel="Delete program"
+                      variant="destructive"
+                      onConfirm={() => onDeleteRow(row)}
+                      trigger={
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className={cn(rowActionButtonClassName, rowDeleteActionButtonClassName)}
+                        >
+                          <Trash2 className="size-3.5" />
+                          <span className="sr-only">Delete program</span>
+                        </Button>
+                      }
+                    />
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           )
         })}

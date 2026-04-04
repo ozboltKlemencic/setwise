@@ -12,7 +12,6 @@ import {
 
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
-import { ProgramPresetCard } from "@/components/coachWise/clients/programs/program-preset-card"
 import {
   ProgramPlansTable,
   type ProgramPlansTableRow,
@@ -373,6 +372,25 @@ function ProgramiPageContent() {
         .includes(normalizedQuery)
     )
   }, [templateSearchQuery])
+  const filteredTemplateTableRows = React.useMemo<ProgramPlansTableRow[]>(
+    () =>
+      filteredPresetRows.map((preset, index) => ({
+        id: preset.id,
+        title: preset.title,
+        description: formatProgramPresetSummary(preset),
+        workouts: [...preset.workouts],
+        status: "Active",
+        createdAt: new Date(2026, 0, index + 1).toISOString(),
+        program: {
+          id: `template-${preset.id}`,
+          title: preset.title,
+          description: preset.description,
+          workouts: [...preset.workouts],
+          editorWorkouts: [],
+        },
+      })),
+    [filteredPresetRows]
+  )
 
   const filteredExerciseRows = React.useMemo(() => {
     if (!exerciseSearchQuery.trim()) {
@@ -471,23 +489,12 @@ function ProgramiPageContent() {
               className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
 
-            {filteredPresetRows.length ? (
-              <div className="flex flex-wrap gap-3">
-                {filteredPresetRows.map((preset) => (
-                  <ProgramPresetCard
-                    key={preset.id}
-                    href={getProgramsCreateHref(templatesBackHref, preset.id)}
-                    title={preset.title}
-                    description={formatProgramPresetSummary(preset)}
-                    className="md:w-[14.5rem]"
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white px-5 py-10 text-center text-[14px] text-neutral-500">
-                No templates found.
-              </div>
-            )}
+            <ProgramPlansTable
+              rows={filteredTemplateTableRows}
+              emptyMessage="No templates found."
+              getDetailRowHref={(row) => getProgramsCreateHref(templatesBackHref, row.id)}
+              getEditRowHref={(row) => getProgramsCreateHref(templatesBackHref, row.id)}
+            />
           </div>
         </TabsContent>
 
