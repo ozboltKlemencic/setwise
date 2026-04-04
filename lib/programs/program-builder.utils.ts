@@ -63,13 +63,15 @@ function formatProgramPresetWorkoutLabel(workout: string) {
     .replace(/\b4\b/g, "D")
 }
 
-export function formatProgramPresetSummary(preset: ProgramBuilderPreset) {
-  const dayLabel = preset.workouts.length === 1 ? "dan" : "dni"
-  const workoutsLabel = preset.workouts
-    .map(formatProgramPresetWorkoutLabel)
-    .join(", ")
+export function formatProgramTemplateSummary(workouts: string[]) {
+  const dayLabel = workouts.length === 1 ? "dan" : "dni"
+  const workoutsLabel = workouts.map(formatProgramPresetWorkoutLabel).join(", ")
 
-  return `${preset.workouts.length} ${dayLabel} · ${workoutsLabel}`
+  return `${workouts.length} ${dayLabel} - ${workoutsLabel}`
+}
+
+export function formatProgramPresetSummary(preset: ProgramBuilderPreset) {
+  return formatProgramTemplateSummary(preset.workouts)
 }
 
 function createProgramBuilderUtilityId(prefix: string, seed: string) {
@@ -178,8 +180,7 @@ export function createProgramBuilderInitialProgram(
     return {
       id: `program-builder-${Date.now()}`,
       title: preset?.title ?? "New Program",
-      description:
-        preset?.description ?? "Build a fixed training program from scratch.",
+      description: preset?.description ?? "Build a fixed training program from scratch.",
       workouts: preset?.workouts ?? [],
       editorWorkouts: preset ? preset.workouts.map(buildPresetEditorWorkout) : [],
     }

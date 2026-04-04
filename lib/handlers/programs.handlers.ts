@@ -5,9 +5,14 @@ export function getClientProgramBuilderHref(
   options?: {
     backTo?: string
     presetId?: string
+    templateId?: string
   }
 ) {
-  return getProgramsCreateHref(options?.backTo, options?.presetId)
+  return getProgramsCreateHref(
+    options?.backTo,
+    options?.presetId,
+    options?.templateId
+  )
 }
 
 export function getClientProgramEditorHref(
@@ -36,7 +41,11 @@ export function getClientProgramDetailHref(
   )
 }
 
-export function getProgramsCreateHref(backTo?: string, presetId?: string) {
+export function getProgramsCreateHref(
+  backTo?: string,
+  presetId?: string,
+  templateId?: string
+) {
   const params = new URLSearchParams()
 
   if (backTo) {
@@ -45,6 +54,10 @@ export function getProgramsCreateHref(backTo?: string, presetId?: string) {
 
   if (presetId) {
     params.set("preset", presetId)
+  }
+
+  if (templateId) {
+    params.set("template", templateId)
   }
 
   const query = params.toString()

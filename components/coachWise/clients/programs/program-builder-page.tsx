@@ -15,8 +15,15 @@ import {
   resolveProgramPlanStorageScopeFromPath,
   upsertStoredProgramPlan,
 } from "@/lib/handlers/program-plan-storage"
+import {
+  readStoredProgramTemplate,
+  upsertStoredProgramTemplate,
+} from "@/lib/handlers/program-template-storage"
 import { isGlobalProgramsBuilderBackHref } from "@/lib/handlers/programs.handlers"
-import { buildStoredProgramPlanFromBuilderState } from "@/lib/programs/program-plan-storage.utils"
+import {
+  buildProgramBuilderInitialProgramFromStoredPlan,
+  buildStoredProgramPlanFromBuilderState,
+} from "@/lib/programs/program-plan-storage.utils"
 import { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 import type {
   FixedProgramEditorProgram,
@@ -37,6 +44,7 @@ type ProgramBuilderPageViewProps = {
   backHref: string
   initialSnapshot?: StoredProgramBuilderSnapshot | null
   initialAssignedClientIds?: string[]
+  initialTemplateId?: string
   createdAt?: string
 }
 
@@ -51,19 +59,49 @@ export function ProgramBuilderPageView({
   backHref,
   initialSnapshot,
   initialAssignedClientIds,
+  initialTemplateId,
   createdAt,
 }: ProgramBuilderPageViewProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const builder = useProgramBuilder(initialProgram, initialSnapshot)
+  const [sourceProgram, setSourceProgram] = React.useState(initialProgram)
+  const [sourceSnapshot, setSourceSnapshot] = React.useState<StoredProgramBuilderSnapshot | null | undefined>(
+    initialSnapshot
+  )
+  const builder = useProgramBuilder(sourceProgram, sourceSnapshot)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [title, setTitle] = React.useState(initialProgram.title)
   const [isEditingTitle, setIsEditingTitle] = React.useState(false)
 
   React.useEffect(() => {
-    setTitle(initialProgram.title)
+    setSourceProgram(initialProgram)
+    setSourceSnapshot(initialSnapshot)
+  }, [initialProgram, initialSnapshot])
+
+  React.useEffect(() => {
+    if (!initialTemplateId) {
+      return
+    }
+
+    const storedTemplate = readStoredProgramTemplate(initialTemplateId)
+    if (!storedTemplate) {
+      return
+    }
+
+    const nextProgram = buildProgramBuilderInitialProgramFromStoredPlan(storedTemplate)
+    setSourceProgram({
+      ...nextProgram,
+      id:
+        globalThis.crypto?.randomUUID?.() ??
+        `program-template-seed-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+    })
+    setSourceSnapshot(storedTemplate.builderSnapshot ?? null)
+  }, [initialTemplateId])
+
+  React.useEffect(() => {
+    setTitle(sourceProgram.title)
     setIsEditingTitle(false)
-  }, [initialProgram.id, initialProgram.title])
+  }, [sourceProgram.id, sourceProgram.title])
 
   React.useEffect(() => {
     if (isEditingTitle) {
@@ -74,16 +112,16 @@ export function ProgramBuilderPageView({
 
   const resolvedProgram = React.useMemo(
     () => ({
-      ...initialProgram,
-      title: title.trim() || initialProgram.title,
+      ...sourceProgram,
+      title: title.trim() || sourceProgram.title,
     }),
-    [initialProgram, title]
+    [sourceProgram, title]
   )
 
   const handleTitleBlur = React.useCallback(() => {
-    setTitle((currentTitle) => currentTitle.trim() || initialProgram.title)
+    setTitle((currentTitle) => currentTitle.trim() || sourceProgram.title)
     setIsEditingTitle(false)
-  }, [initialProgram.title])
+  }, [sourceProgram.title])
 
   const handleTitleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -94,11 +132,11 @@ export function ProgramBuilderPageView({
 
       if (event.key === "Escape") {
         event.preventDefault()
-        setTitle(initialProgram.title)
+        setTitle(sourceProgram.title)
         setIsEditingTitle(false)
       }
     },
-    [handleTitleBlur, initialProgram.title]
+    [handleTitleBlur, sourceProgram.title]
   )
 
   const storageScopeId = React.useMemo(
@@ -162,7 +200,7 @@ export function ProgramBuilderPageView({
     }
 
     const nextStoredProgram = buildStoredProgramPlanFromBuilderState({
-      planId: initialProgram.id,
+      planId: sourceProgram.id,
       title,
       description: builder.description,
       days: builder.days,
@@ -186,11 +224,36 @@ export function ProgramBuilderPageView({
     builder.myReps,
     builder.myTempos,
     builder.showAdvancedSetOptions,
-    initialProgram.id,
+    sourceProgram.id,
     router,
     storageScopeId,
     title,
     createdAt,
+  ])
+
+  const handleSaveAsTemplate = React.useCallback(() => {
+    const nextStoredTemplate = buildStoredProgramPlanFromBuilderState({
+      title,
+      description: builder.description,
+      days: builder.days,
+      myReps: builder.myReps,
+      myTempos: builder.myTempos,
+      showAdvancedSetOptions: builder.showAdvancedSetOptions,
+      assignedClientIds: assignedClientIds,
+    })
+
+    upsertStoredProgramTemplate(nextStoredTemplate)
+    toast.success("Template saved", {
+      description: `${nextStoredTemplate.title} is now available in Templates.`,
+    })
+  }, [
+    assignedClientIds,
+    builder.days,
+    builder.description,
+    builder.myReps,
+    builder.myTempos,
+    builder.showAdvancedSetOptions,
+    title,
   ])
 
   return (
@@ -331,6 +394,10 @@ export function ProgramBuilderPageView({
             </ProgramBuilderToolbarMenu>
           </>
         }
+        secondaryAction={{
+          label: "Save as template",
+          onClick: handleSaveAsTemplate,
+        }}
       />
 
       <div className="min-h-[calc(100vh-var(--header-height)-3rem)] bg-neutral-50">

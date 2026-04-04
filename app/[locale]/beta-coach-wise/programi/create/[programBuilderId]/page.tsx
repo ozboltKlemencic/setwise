@@ -32,6 +32,7 @@ export default async function Page({ params, searchParams }: Props) {
     `${localePrefix}/beta-coach-wise/programi`
   )
   const presetId = getSingleSearchParam(resolvedSearchParams.preset)
+  const templateId = getSingleSearchParam(resolvedSearchParams.template)
 
   const initialProgram = createProgramBuilderInitialProgram(
     getFixedPrograms(),
@@ -43,6 +44,7 @@ export default async function Page({ params, searchParams }: Props) {
       <ProgramBuilderPageView
         initialProgram={initialProgram}
         backHref={backHref}
+        initialTemplateId={templateId ?? undefined}
       />
     </section>
   )
