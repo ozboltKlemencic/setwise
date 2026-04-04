@@ -72,13 +72,6 @@ function formatEquipmentValue(equipment?: ProgramBuilderExerciseLibraryItem["equ
   return equipment.join(", ")
 }
 
-function formatTypeValue(type: ProgramBuilderExerciseLibraryItem["type"]) {
-  return type
-    .split("_")
-    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-    .join(" ")
-}
-
 type ProgramExerciseDetailPageProps = {
   exercise: ProgramBuilderExerciseLibraryItem
   backHref: string
@@ -109,7 +102,7 @@ export function ProgramExerciseDetailPage({
       <div className="px-4 py-4">
         <div className="mx-auto max-w-md">
           <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
-            <div className="border-b border-neutral-200 bg-neutral-50/70 px-4 py-3.5">
+            <div className="border-b border-neutral-200 bg-neutral-100/80 px-4 py-3.5">
               <div className="text-[15px] font-semibold text-neutral-950">
                 {exercise.name}
               </div>
@@ -135,10 +128,6 @@ export function ProgramExerciseDetailPage({
 
               <ProgramExerciseDetailRow label="Equipment">
                 {formatEquipmentValue(exercise.equipment)}
-              </ProgramExerciseDetailRow>
-
-              <ProgramExerciseDetailRow label="Type">
-                {formatTypeValue(exercise.type)}
               </ProgramExerciseDetailRow>
 
               <ProgramExerciseDetailRow label="Level">
