@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
   PROGRAM_BUILDER_EXERCISE_EQUIPMENT_OPTIONS,
@@ -176,6 +177,17 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
           showCloseButton={false}
           className="gap-0 overflow-hidden rounded-[20px] border-neutral-200 bg-white p-0 shadow-2xl shadow-black/12 sm:max-w-[860px]"
         >
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => onOpenChange(false)}
+            className="absolute top-3 right-3 z-20 size-8 cursor-pointer rounded-md text-neutral-400 shadow-none hover:bg-neutral-100 hover:text-neutral-700"
+          >
+            <X className="size-4" />
+            <span className="sr-only">Close dialog</span>
+          </Button>
+
           <div className="flex items-stretch flex-col sm:flex-row">
             <div className="flex min-w-0 flex-1 flex-col pt-4 pb-5">
               <DialogHeader className="gap-0 px-6 pt-4 pb-2 text-left">
