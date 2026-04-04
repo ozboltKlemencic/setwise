@@ -77,6 +77,18 @@ export function getProgramsDetailHref(programPlanId: string, backTo?: string) {
   return `/beta-coach-wise/programi/${encodeURIComponent(programPlanId)}${query ? `?${query}` : ""}`
 }
 
+export function getProgramsExerciseDetailHref(exerciseId: number | string, backTo?: string) {
+  const params = new URLSearchParams()
+
+  if (backTo) {
+    params.set("backTo", backTo)
+  }
+
+  const query = params.toString()
+
+  return `/beta-coach-wise/programi/exercises/${encodeURIComponent(String(exerciseId))}${query ? `?${query}` : ""}`
+}
+
 export function getProgramsEditHref(programPlanId: string, backTo?: string) {
   const params = new URLSearchParams()
 

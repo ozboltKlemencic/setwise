@@ -19,6 +19,7 @@ import {
   type ProgramPlansTableRow,
 } from "@/components/coachWise/tables/program-plans-table"
 import { ProgramBuilderCreateExerciseDialog } from "@/components/coachWise/clients/programs/builder/program-builder-create-exercise-dialog"
+import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import { ToolbarSearchInput } from "@/components/coachWise/toolbar-search-input"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -46,6 +47,7 @@ import {
   getProgramsCreateHref,
   getProgramsDetailHref,
   getProgramsEditHref,
+  getProgramsExerciseDetailHref,
 } from "@/lib/handlers/programs.handlers"
 import {
   createProgramBuilderInitialDays,
@@ -182,10 +184,12 @@ function formatExerciseEquipmentLabel(exercise: ProgramBuilderExerciseLibraryIte
 
 function ProgramsExercisesTable({
   rows,
+  onOpenRow,
   onEditRow,
   onDeleteRow,
 }: {
   rows: ProgramBuilderExerciseLibraryItem[]
+  onOpenRow: (row: ProgramBuilderExerciseLibraryItem) => void
   onEditRow: (row: ProgramBuilderExerciseLibraryItem) => void
   onDeleteRow: (row: ProgramBuilderExerciseLibraryItem) => void
 }) {
@@ -217,7 +221,8 @@ function ProgramsExercisesTable({
           return (
             <div
               key={exercise.id}
-              className="grid grid-cols-[minmax(0,1fr)_9rem_minmax(0,18rem)_10rem_8rem_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-3 last:border-b-0 hover:bg-neutral-50"
+              className="grid cursor-pointer grid-cols-[minmax(0,1fr)_9rem_minmax(0,18rem)_10rem_8rem_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-3 last:border-b-0 hover:bg-neutral-50"
+              onClick={() => onOpenRow(exercise)}
             >
               <div className="min-w-0 max-w-[24rem] text-left">
                 <div className="truncate text-[15px] font-medium text-neutral-950">
@@ -272,7 +277,10 @@ function ProgramsExercisesTable({
                       variant="outline"
                       size="icon"
                       className={exerciseRowActionButtonClassName}
-                      onClick={() => onEditRow(exercise)}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        onEditRow(exercise)
+                      }}
                     >
                       <Pencil className="size-3.5" />
                       <span className="sr-only">Edit exercise</span>
@@ -289,6 +297,7 @@ function ProgramsExercisesTable({
                           type="button"
                           variant="outline"
                           size="icon"
+                          onClick={(event) => event.stopPropagation()}
                           className={cn(
                             exerciseRowActionButtonClassName,
                             exerciseDeleteActionButtonClassName
@@ -677,6 +686,18 @@ function ProgramiPageContent() {
     []
   )
 
+  const handleOpenExerciseRow = React.useCallback(
+    (exercise: ProgramBuilderExerciseLibraryItem) => {
+      router.push(
+        buildCoachWiseHref(
+          pathname,
+          getProgramsExerciseDetailHref(exercise.id, `${pathname}?tab=exercises`)
+        )
+      )
+    },
+    [pathname, router]
+  )
+
   const programsBackHref = `${pathname}?tab=programs`
   const templatesBackHref = `${pathname}?tab=templates`
 
@@ -818,6 +839,7 @@ function ProgramiPageContent() {
 
             <ProgramsExercisesTable
               rows={filteredExerciseRows}
+              onOpenRow={handleOpenExerciseRow}
               onEditRow={handleEditExerciseRow}
               onDeleteRow={handleDeleteExerciseRow}
             />
