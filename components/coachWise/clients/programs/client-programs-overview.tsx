@@ -6,6 +6,7 @@ import { toast } from "sonner"
 
 import { ClientQuickActionCard } from "@/components/coachWise/clients/info/client-quick-action-card"
 import { NutritionSectionTitle } from "@/components/coachWise/clients/nutrition/panel/components"
+import { ClientProgramTemplateCardMenu } from "@/components/coachWise/clients/programs/client-program-template-card-menu"
 import {
   ProgramPresetCard,
 } from "@/components/coachWise/clients/programs/program-preset-card"
@@ -23,6 +24,7 @@ import {
 } from "@/lib/handlers/program-plan-storage"
 import {
   PROGRAM_TEMPLATES_UPDATED_EVENT,
+  removeStoredProgramTemplate,
   readStoredProgramTemplates,
 } from "@/lib/handlers/program-template-storage"
 import {
@@ -154,6 +156,13 @@ function ClientProgramsOverviewComponent({
     toast.success("Program deleted", { description: `Removed ${row.title}.` })
   }, [storageScopeId])
 
+  const handleDeleteTemplate = React.useCallback((template: StoredProgramPlan) => {
+    removeStoredProgramTemplate(template.id)
+    toast.success("Template deleted", {
+      description: `Removed ${template.title}.`,
+    })
+  }, [])
+
   return (
     <div className="bg-neutral-50 px-4 py-4">
       <div className="mb-5">
@@ -177,28 +186,57 @@ function ClientProgramsOverviewComponent({
             <NutritionSectionTitle title="Templates" />
           <div className="flex flex-wrap gap-3">
             {storedTemplates.map((template) => (
-              <ProgramPresetCard
-                key={template.id}
-                href={getClientProgramBuilderHref(clientBasePath, {
-                  backTo: overviewHref,
-                  templateId: template.id,
-                })}
-                title={template.title}
-                description={formatProgramTemplateSummary(template.workouts)}
-                className="md:w-[14.25rem]"
-              />
+              <div key={template.id} className="relative md:w-[14.25rem]">
+                <ProgramPresetCard
+                  href={getClientProgramBuilderHref(clientBasePath, {
+                    backTo: overviewHref,
+                    templateId: template.id,
+                  })}
+                  title={template.title}
+                  description={formatProgramTemplateSummary(template.workouts)}
+                  className="w-full pr-12"
+                />
+
+                <div
+                  className="absolute top-2.5 right-2.5"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <ClientProgramTemplateCardMenu
+                    title={template.title}
+                    editHref={getClientProgramBuilderHref(clientBasePath, {
+                      backTo: overviewHref,
+                      templateId: template.id,
+                    })}
+                    onDelete={() => handleDeleteTemplate(template)}
+                  />
+                </div>
+              </div>
             ))}
             {programBuilderPresets.map((preset) => (
-              <ProgramPresetCard
-                key={preset.id}
-                href={getClientProgramBuilderHref(clientBasePath, {
-                  backTo: overviewHref,
-                  presetId: preset.id,
-                })}
-                title={preset.title}
-                description={formatProgramPresetSummary(preset)}
-                className="md:w-[14.25rem]"
-              />
+              <div key={preset.id} className="relative md:w-[14.25rem]">
+                <ProgramPresetCard
+                  href={getClientProgramBuilderHref(clientBasePath, {
+                    backTo: overviewHref,
+                    presetId: preset.id,
+                  })}
+                  title={preset.title}
+                  description={formatProgramPresetSummary(preset)}
+                  className="w-full pr-12"
+                />
+
+                <div
+                  className="absolute top-2.5 right-2.5"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <ClientProgramTemplateCardMenu
+                    title={preset.title}
+                    editHref={getClientProgramBuilderHref(clientBasePath, {
+                      backTo: overviewHref,
+                      presetId: preset.id,
+                    })}
+                  />
+                </div>
+              </div>
             ))}
           </div>
         </div>

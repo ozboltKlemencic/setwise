@@ -181,10 +181,9 @@ export function ProgramBuilderPageView({
   const showClientPicker = React.useMemo(
     () =>
       !isProgramsTemplatesBuilderBackHref(backHref) &&
-      (isGlobalProgramsBuilderBackHref(backHref) ||
-        isGlobalProgramsBuilderBackHref(pathname)) &&
+      isGlobalProgramsBuilderBackHref(backHref) &&
       nutritionBuilderClientOptions.length > 0,
-    [backHref, pathname]
+    [backHref]
   )
   const isTemplatesMode = React.useMemo(
     () => isProgramsTemplatesBuilderBackHref(backHref),
