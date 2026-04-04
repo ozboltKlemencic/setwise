@@ -46,9 +46,9 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
     builder.filteredExercises.length === 0
   const activeDayCanBeTemplated = Boolean(
     builder.activeDay &&
-      !builder.activeDay.isRest &&
-      builder.activeDay.exercises.length > 0 &&
-      !templatedDayIds.has(builder.activeDay.id)
+    !builder.activeDay.isRest &&
+    builder.activeDay.exercises.length > 0 &&
+    !templatedDayIds.has(builder.activeDay.id)
   )
 
   React.useEffect(() => {
@@ -165,9 +165,9 @@ export const ProgramBuilderSidebar = React.memo(function ProgramBuilderSidebar({
                     <button
                       type="button"
                       onClick={() => setIsCreateExerciseOpen(true)}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-brand-400 bg-brand-50/35 px-4 py-3 text-[14px] font-medium text-brand-700 transition-colors hover:bg-brand-50/50"
+                      className="flex w-full items-center justify-center gap-2 rounded-sm border border-dashed border-brand-400 bg-brand-50/35 px-4 py-2 text-[14px] font-normal text-brand-700 transition-colors hover:bg-brand-50/50"
                     >
-                      <Plus className="size-4" />
+                      <Plus className="size-3" />
                       <span>Create &quot;{builder.searchQuery.trim()}&quot;</span>
                     </button>
                   </div>
