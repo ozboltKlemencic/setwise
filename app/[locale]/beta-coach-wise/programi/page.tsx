@@ -35,6 +35,10 @@ import {
   upsertStoredProgramPlan,
 } from "@/lib/handlers/program-plan-storage"
 import {
+  PROGRAM_TEMPLATES_UPDATED_EVENT,
+  readStoredProgramTemplates,
+} from "@/lib/handlers/program-template-storage"
+import {
   getProgramsCreateHref,
   getProgramsDetailHref,
   getProgramsEditHref,
@@ -47,6 +51,7 @@ import {
   createInitialStoredProgramPlans,
 } from "@/lib/programs/program-plan-storage.utils"
 import {
+  formatProgramTemplateSummary,
   formatProgramPresetSummary,
   programBuilderPresets,
 } from "@/lib/programs/program-builder.utils"
@@ -231,6 +236,7 @@ function ProgramiPageContent() {
     [initialSeedPlans]
   )
   const [rows, setRows] = React.useState<ProgramPlansTableRow[]>(initialRows)
+  const [storedTemplates, setStoredTemplates] = React.useState<StoredProgramPlan[]>([])
 
   React.useEffect(() => {
     const syncRows = () => {
@@ -286,6 +292,18 @@ function ProgramiPageContent() {
       window.removeEventListener(PROGRAM_PLANS_UPDATED_EVENT, handleProgramsUpdated)
     }
   }, [initialRows, initialSeedPlans, programClientsByScope, watchedStorageScopeIds])
+
+  React.useEffect(() => {
+    const syncTemplates = () => {
+      setStoredTemplates(readStoredProgramTemplates())
+    }
+
+    syncTemplates()
+    window.addEventListener(PROGRAM_TEMPLATES_UPDATED_EVENT, syncTemplates)
+    return () => {
+      window.removeEventListener(PROGRAM_TEMPLATES_UPDATED_EVENT, syncTemplates)
+    }
+  }, [])
 
   const pushTab = React.useCallback(
     (nextTab: ProgramTab) => {
@@ -359,27 +377,30 @@ function ProgramiPageContent() {
     })
   }, [programSearchQuery, rows])
 
-  const filteredPresetRows = React.useMemo(() => {
-    if (!templateSearchQuery.trim()) {
-      return programBuilderPresets
-    }
+  const filteredTemplateTableRows = React.useMemo<ProgramPlansTableRow[]>(() => {
+    const normalizedQuery = templateSearchQuery.trim().toLowerCase()
+    const matchesTemplateQuery = (values: string[]) =>
+      !normalizedQuery || values.join(" ").toLowerCase().includes(normalizedQuery)
 
-    const normalizedQuery = templateSearchQuery.toLowerCase()
-    return programBuilderPresets.filter((preset) =>
-      [preset.title, preset.description, ...preset.workouts]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedQuery)
-    )
-  }, [templateSearchQuery])
-  const filteredTemplateTableRows = React.useMemo<ProgramPlansTableRow[]>(
-    () =>
-      filteredPresetRows.map((preset, index) => ({
-        id: preset.id,
+    const savedTemplateRows = storedTemplates
+      .filter((template) =>
+        matchesTemplateQuery([template.title, template.description, ...template.workouts])
+      )
+      .map((template) => ({
+        ...template,
+        description: formatProgramTemplateSummary(template.workouts),
+      }))
+
+    const presetTemplateRows = programBuilderPresets
+      .filter((preset) =>
+        matchesTemplateQuery([preset.title, preset.description, ...preset.workouts])
+      )
+      .map((preset, index) => ({
+        id: `preset:${preset.id}`,
         title: preset.title,
         description: formatProgramPresetSummary(preset),
         workouts: [...preset.workouts],
-        status: "Active",
+        status: "Active" as const,
         createdAt: new Date(2026, 0, index + 1).toISOString(),
         program: {
           id: `template-${preset.id}`,
@@ -388,9 +409,10 @@ function ProgramiPageContent() {
           workouts: [...preset.workouts],
           editorWorkouts: [],
         },
-      })),
-    [filteredPresetRows]
-  )
+      }))
+
+    return [...savedTemplateRows, ...presetTemplateRows]
+  }, [storedTemplates, templateSearchQuery])
 
   const filteredExerciseRows = React.useMemo(() => {
     if (!exerciseSearchQuery.trim()) {
@@ -492,8 +514,16 @@ function ProgramiPageContent() {
             <ProgramPlansTable
               rows={filteredTemplateTableRows}
               emptyMessage="No templates found."
-              getDetailRowHref={(row) => getProgramsCreateHref(templatesBackHref, row.id)}
-              getEditRowHref={(row) => getProgramsCreateHref(templatesBackHref, row.id)}
+              getDetailRowHref={(row) =>
+                row.id.startsWith("preset:")
+                  ? getProgramsCreateHref(templatesBackHref, row.id.replace(/^preset:/, ""))
+                  : getProgramsCreateHref(templatesBackHref, undefined, row.id)
+              }
+              getEditRowHref={(row) =>
+                row.id.startsWith("preset:")
+                  ? getProgramsCreateHref(templatesBackHref, row.id.replace(/^preset:/, ""))
+                  : getProgramsCreateHref(templatesBackHref, undefined, row.id)
+              }
             />
           </div>
         </TabsContent>

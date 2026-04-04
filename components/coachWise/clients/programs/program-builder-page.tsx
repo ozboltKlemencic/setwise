@@ -153,9 +153,9 @@ export function ProgramBuilderPageView({
     }
 
     if (
-      initialSnapshot?.assignedClientIds?.length
+      sourceSnapshot?.assignedClientIds?.length
     ) {
-      return Array.from(new Set(initialSnapshot.assignedClientIds))
+      return Array.from(new Set(sourceSnapshot.assignedClientIds))
     }
 
     if (
@@ -169,7 +169,7 @@ export function ProgramBuilderPageView({
     return []
   }, [
     stableInitialAssignedClientIds,
-    initialSnapshot?.assignedClientIds,
+    sourceSnapshot?.assignedClientIds,
     storageScopeId,
   ])
   const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(

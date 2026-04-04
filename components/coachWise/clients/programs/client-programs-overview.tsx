@@ -22,6 +22,10 @@ import {
   upsertStoredProgramPlan,
 } from "@/lib/handlers/program-plan-storage"
 import {
+  PROGRAM_TEMPLATES_UPDATED_EVENT,
+  readStoredProgramTemplates,
+} from "@/lib/handlers/program-template-storage"
+import {
   getClientProgramBuilderHref,
   getClientProgramDetailHref,
   getClientProgramEditorHref,
@@ -31,6 +35,7 @@ import {
   createInitialStoredProgramPlans,
 } from "@/lib/programs/program-plan-storage.utils"
 import {
+  formatProgramTemplateSummary,
   formatProgramPresetSummary,
   programBuilderPresets,
 } from "@/lib/programs/program-builder.utils"
@@ -66,6 +71,7 @@ function ClientProgramsOverviewComponent({
     []
   )
   const [rows, setRows] = React.useState<StoredProgramPlan[]>(initialRows)
+  const [storedTemplates, setStoredTemplates] = React.useState<StoredProgramPlan[]>([])
 
   React.useEffect(() => {
     if (!storageScopeId) {
@@ -98,6 +104,18 @@ function ClientProgramsOverviewComponent({
       )
     }
   }, [initialRows, storageScopeId])
+
+  React.useEffect(() => {
+    const syncTemplates = () => {
+      setStoredTemplates(readStoredProgramTemplates())
+    }
+
+    syncTemplates()
+    window.addEventListener(PROGRAM_TEMPLATES_UPDATED_EVENT, syncTemplates)
+    return () => {
+      window.removeEventListener(PROGRAM_TEMPLATES_UPDATED_EVENT, syncTemplates)
+    }
+  }, [])
 
   const handleDuplicateRow = React.useCallback((row: ProgramPlansTableRow) => {
     if (!storageScopeId) {
@@ -158,6 +176,18 @@ function ClientProgramsOverviewComponent({
           <div className="mt-5">
             <NutritionSectionTitle title="Templates" />
           <div className="flex flex-wrap gap-3">
+            {storedTemplates.map((template) => (
+              <ProgramPresetCard
+                key={template.id}
+                href={getClientProgramBuilderHref(clientBasePath, {
+                  backTo: overviewHref,
+                  templateId: template.id,
+                })}
+                title={template.title}
+                description={formatProgramTemplateSummary(template.workouts)}
+                className="md:w-[14.25rem]"
+              />
+            ))}
             {programBuilderPresets.map((preset) => (
               <ProgramPresetCard
                 key={preset.id}
