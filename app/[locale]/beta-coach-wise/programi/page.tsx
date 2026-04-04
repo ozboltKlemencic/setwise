@@ -585,6 +585,7 @@ function ProgramiPageContent() {
             <ProgramPlansTable
               rows={filteredTemplateTableRows}
               emptyMessage="No templates found."
+              firstColumnLabel="Program template"
               getDetailRowHref={(row) =>
                 row.id.startsWith("preset:")
                   ? getProgramsCreateHref(templatesBackHref, row.id.replace(/^preset:/, ""))

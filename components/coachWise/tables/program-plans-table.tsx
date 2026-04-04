@@ -35,6 +35,7 @@ type ProgramPlansTableProps = {
   rows: ProgramPlansTableRow[]
   emptyMessage?: string
   showClientColumn?: boolean
+  firstColumnLabel?: string
   getDetailRowHref?: (row: ProgramPlansTableRow) => string
   getEditRowHref?: (row: ProgramPlansTableRow) => string
   onDuplicateRow?: (row: ProgramPlansTableRow) => void
@@ -100,6 +101,7 @@ function ProgramPlansTableComponent({
   rows,
   emptyMessage = "No programs available.",
   showClientColumn = false,
+  firstColumnLabel = "Program",
   getDetailRowHref,
   getEditRowHref,
   onDuplicateRow,
@@ -142,7 +144,7 @@ function ProgramPlansTableComponent({
           headerGridClassName
         )}
       >
-        <div className="text-left">Program</div>
+        <div className="text-left">{firstColumnLabel}</div>
         {hasClientColumn ? <div className="text-left">Client</div> : null}
         <div className="text-left">Workouts</div>
         {hasActionColumn ? (
