@@ -63,6 +63,9 @@ export function cloneStoredProgramBuilderSnapshot(
     myReps: [...snapshot.myReps],
     myTempos: [...snapshot.myTempos],
     showAdvancedSetOptions: snapshot.showAdvancedSetOptions,
+    assignedClientIds: snapshot.assignedClientIds
+      ? [...snapshot.assignedClientIds]
+      : undefined,
   }
 }
 
@@ -162,6 +165,7 @@ export function buildStoredProgramPlanFromBuilderState({
   myReps,
   myTempos,
   showAdvancedSetOptions,
+  assignedClientIds,
   createdAt,
 }: {
   planId?: string
@@ -171,6 +175,7 @@ export function buildStoredProgramPlanFromBuilderState({
   myReps: string[]
   myTempos: string[]
   showAdvancedSetOptions: boolean
+  assignedClientIds?: string[]
   createdAt?: string
 }): StoredProgramPlan {
   const resolvedTitle = title.trim() || "New Program"
@@ -182,6 +187,10 @@ export function buildStoredProgramPlanFromBuilderState({
     myReps: [...myReps],
     myTempos: [...myTempos],
     showAdvancedSetOptions,
+    assignedClientIds:
+      assignedClientIds?.length
+        ? Array.from(new Set(assignedClientIds))
+        : undefined,
   }
   const workouts = days.filter((day) => !day.isRest).map((day) => day.name)
 
@@ -196,6 +205,10 @@ export function buildStoredProgramPlanFromBuilderState({
       ? "Active"
       : "Disabled",
     createdAt: createdAt ?? new Date().toISOString(),
+    assignedClientIds:
+      assignedClientIds?.length
+        ? Array.from(new Set(assignedClientIds))
+        : undefined,
     program: buildEditorProgramFromSnapshot(
       resolvedTitle,
       resolvedDescription,

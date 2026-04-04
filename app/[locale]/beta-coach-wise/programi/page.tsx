@@ -104,6 +104,42 @@ function buildProgramsBackHrefWithStorageScope(
   return nextQuery ? `${pathname}?${nextQuery}` : pathname
 }
 
+function resolveProgramRowClients(
+  row: Pick<ProgramPlansTableRow, "assignedClientIds">,
+  programClientsByScope: Map<
+    string,
+    {
+      id: string
+      name: string
+      avatar?: string
+    }
+  >,
+  fallbackStorageScopeId?: string
+) {
+  const assignedClients = (row.assignedClientIds ?? [])
+    .map((clientId) => programClientsByScope.get(clientId))
+    .filter(
+      (
+        client
+      ): client is {
+        id: string
+        name: string
+        avatar?: string
+      } => Boolean(client)
+    )
+
+  if (assignedClients.length > 0) {
+    return assignedClients
+  }
+
+  if (!fallbackStorageScopeId) {
+    return []
+  }
+
+  const fallbackClient = programClientsByScope.get(fallbackStorageScopeId)
+  return fallbackClient ? [fallbackClient] : []
+}
+
 function ProgramsExercisesTable({
   rows,
 }: {
@@ -205,16 +241,20 @@ function ProgramiPageContent() {
       ).map((plan) => ({
         ...plan,
         storageScopeId: GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
+        clients: resolveProgramRowClients(plan, programClientsByScope),
       }))
 
       const clientScopedRows = clientData.flatMap((client) => {
         const storageScopeId = String(client.id)
-        const clientSummary = programClientsByScope.get(storageScopeId)
 
         return readStoredProgramPlans(storageScopeId).map((plan) => ({
           ...plan,
           storageScopeId,
-          clients: clientSummary ? [clientSummary] : [],
+          clients: resolveProgramRowClients(
+            plan,
+            programClientsByScope,
+            storageScopeId
+          ),
         }))
       })
 

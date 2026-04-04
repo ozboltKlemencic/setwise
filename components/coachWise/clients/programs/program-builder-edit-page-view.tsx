@@ -94,6 +94,7 @@ function ProgramBuilderEditPageViewComponent({
     <ProgramBuilderPageView
       initialProgram={buildProgramBuilderInitialProgramFromStoredPlan(storedPlan)}
       initialSnapshot={storedPlan.builderSnapshot}
+      initialAssignedClientIds={storedPlan.assignedClientIds}
       createdAt={storedPlan.createdAt}
       backHref={backHref}
     />

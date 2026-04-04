@@ -86,3 +86,16 @@ export function resolveProgramsEditorBackHref(
 
   return backTo
 }
+
+export function isGlobalProgramsBuilderBackHref(backHref?: string) {
+  if (!backHref) {
+    return false
+  }
+
+  const [pathname = ""] = backHref.split("?")
+
+  return (
+    /\/beta-coach-wise\/programi(?:\/|$)/.test(pathname) &&
+    !/\/beta-coach-wise\/clients\/[^/]+\/programs(?:\/|$)/.test(pathname)
+  )
+}

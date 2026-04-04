@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, Search } from "lucide-react"
+import { Check, ChevronDown, Search } from "lucide-react"
 
 import type { NutritionBuilderClientOption } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
 import {
@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -144,25 +143,31 @@ export function NutritionBuilderClientPicker({
           </div>
         </div>
         <DropdownMenuSeparator className="bg-neutral-200/70" />
-        {filteredClients.map((client) => (
-          <DropdownMenuCheckboxItem
-            key={client.id}
-            checked={selectedClientIds.includes(client.id)}
-            onCheckedChange={() => toggleClient(client.id)}
-            onSelect={(event) => event.preventDefault()}
-            className="rounded-md py-2 pr-3 pl-8 text-[13px] focus:bg-neutral-50 focus:text-neutral-950"
-          >
-            <div className="flex min-w-0 items-center gap-2">
+        {filteredClients.map((client) => {
+          const isSelected = selectedClientIds.includes(client.id)
+
+          return (
+            <button
+              key={client.id}
+              type="button"
+              onClick={() => toggleClient(client.id)}
+              className="flex w-full items-center gap-2 rounded-md py-2 pr-3 pl-3 text-left text-[13px] text-neutral-700 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
+            >
+              <span className="flex size-4 shrink-0 items-center justify-center">
+                {isSelected ? (
+                  <Check className="size-3.5 text-neutral-700" />
+                ) : null}
+              </span>
               <Avatar size="sm" className="ring-white">
                 <AvatarImage src={client.avatar} alt={client.name} />
                 <AvatarFallback className="bg-neutral-200 text-[10px] text-neutral-700">
                   {getInitials(client.name)}
                 </AvatarFallback>
               </Avatar>
-              <span className="truncate">{client.name}</span>
-            </div>
-          </DropdownMenuCheckboxItem>
-        ))}
+              <span className="min-w-0 truncate">{client.name}</span>
+            </button>
+          )
+        })}
         {!filteredClients.length ? (
           <div className="px-3 py-3 text-[12.5px] text-neutral-500">
             No clients found.

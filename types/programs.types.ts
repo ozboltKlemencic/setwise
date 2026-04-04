@@ -148,6 +148,7 @@ export type StoredProgramBuilderSnapshot = {
   myReps: string[]
   myTempos: string[]
   showAdvancedSetOptions: boolean
+  assignedClientIds?: string[]
 }
 
 export type StoredProgramPlan = {
@@ -157,6 +158,7 @@ export type StoredProgramPlan = {
   workouts: string[]
   status: StoredProgramPlanStatus
   createdAt: string
+  assignedClientIds?: string[]
   program: FixedProgramEditorProgram
   builderSnapshot?: StoredProgramBuilderSnapshot
 }

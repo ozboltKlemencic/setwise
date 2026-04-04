@@ -66,6 +66,11 @@ function isStoredProgramPlan(value: unknown): value is StoredProgramPlan {
     typeof candidate.description === "string" &&
     typeof candidate.createdAt === "string" &&
     Array.isArray(candidate.workouts) &&
+    (typeof candidate.assignedClientIds === "undefined" ||
+      (Array.isArray(candidate.assignedClientIds) &&
+        candidate.assignedClientIds.every(
+          (assignedClientId) => typeof assignedClientId === "string"
+        ))) &&
     (candidate.status === "Active" || candidate.status === "Disabled") &&
     Boolean(candidate.program) &&
     Array.isArray(candidate.program?.workouts) &&

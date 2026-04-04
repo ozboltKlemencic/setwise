@@ -4,14 +4,18 @@ import * as React from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { toast } from "sonner"
 
+import { NutritionBuilderClientPicker } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-picker"
+import { nutritionBuilderClientOptions } from "@/components/coachWise/clients/nutrition/nutrition-builder-client-options"
 import { ProgramBuilderToolbarMenu } from "@/components/coachWise/clients/programs/builder/program-builder-toolbar-menu"
 import { NutritionBuilderNav } from "@/components/coachWise/clients/nutrition/nutrition-builder-nav"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
+  GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
   resolveProgramPlanStorageScopeFromPath,
   upsertStoredProgramPlan,
 } from "@/lib/handlers/program-plan-storage"
+import { isGlobalProgramsBuilderBackHref } from "@/lib/handlers/programs.handlers"
 import { buildStoredProgramPlanFromBuilderState } from "@/lib/programs/program-plan-storage.utils"
 import { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 import type {
@@ -23,6 +27,7 @@ type ProgramBuilderPageViewProps = {
   initialProgram: FixedProgramEditorProgram
   backHref: string
   initialSnapshot?: StoredProgramBuilderSnapshot | null
+  initialAssignedClientIds?: string[]
   createdAt?: string
 }
 
@@ -36,6 +41,7 @@ export function ProgramBuilderPageView({
   initialProgram,
   backHref,
   initialSnapshot,
+  initialAssignedClientIds = [],
   createdAt,
 }: ProgramBuilderPageViewProps) {
   const router = useRouter()
@@ -92,6 +98,41 @@ export function ProgramBuilderPageView({
       resolveProgramPlanStorageScopeFromPath(pathname),
     [backHref, pathname]
   )
+  const resolvedAssignedClientIds = React.useMemo(() => {
+    if (initialAssignedClientIds.length > 0) {
+      return Array.from(new Set(initialAssignedClientIds))
+    }
+
+    if (
+      initialSnapshot?.assignedClientIds?.length
+    ) {
+      return Array.from(new Set(initialSnapshot.assignedClientIds))
+    }
+
+    if (
+      storageScopeId &&
+      storageScopeId !== GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE &&
+      /^\d+$/.test(storageScopeId)
+    ) {
+      return [storageScopeId]
+    }
+
+    return []
+  }, [initialAssignedClientIds, initialSnapshot?.assignedClientIds, storageScopeId])
+  const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(
+    () => resolvedAssignedClientIds
+  )
+  const showClientPicker = React.useMemo(
+    () =>
+      (isGlobalProgramsBuilderBackHref(backHref) ||
+        isGlobalProgramsBuilderBackHref(pathname)) &&
+      nutritionBuilderClientOptions.length > 0,
+    [backHref, pathname]
+  )
+
+  React.useEffect(() => {
+    setAssignedClientIds(resolvedAssignedClientIds)
+  }, [resolvedAssignedClientIds])
 
   const handleSave = React.useCallback(() => {
     if (!storageScopeId) {
@@ -109,6 +150,7 @@ export function ProgramBuilderPageView({
       myReps: builder.myReps,
       myTempos: builder.myTempos,
       showAdvancedSetOptions: builder.showAdvancedSetOptions,
+      assignedClientIds,
       createdAt,
     })
 
@@ -118,6 +160,7 @@ export function ProgramBuilderPageView({
     })
     router.push(backHref)
   }, [
+    assignedClientIds,
     backHref,
     builder.days,
     builder.description,
@@ -147,6 +190,13 @@ export function ProgramBuilderPageView({
         saveLabel="Save Program"
         leadingActions={
           <>
+            {showClientPicker ? (
+              <NutritionBuilderClientPicker
+                clients={nutritionBuilderClientOptions}
+                selectedClientIds={assignedClientIds}
+                onSelectedClientIdsChange={setAssignedClientIds}
+              />
+            ) : null}
             <ProgramBuilderToolbarMenu
               label="Ranges"
               open={builder.showMyReps}
