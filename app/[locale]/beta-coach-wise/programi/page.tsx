@@ -9,8 +9,10 @@ import {
   IconLayoutGrid,
   IconPlus,
 } from "@tabler/icons-react"
+import { Pencil, Trash2 } from "lucide-react"
 
 import clientData from "@/app/[locale]/beta-coach-wise/data.json"
+import { CoachWiseConfirmationDialog } from "@/components/coachWise/confirmation-dialog"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import {
   ProgramPlansTable,
@@ -18,17 +20,11 @@ import {
 } from "@/components/coachWise/tables/program-plans-table"
 import { ProgramBuilderCreateExerciseDialog } from "@/components/coachWise/clients/programs/builder/program-builder-create-exercise-dialog"
 import { ToolbarSearchInput } from "@/components/coachWise/toolbar-search-input"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   PROGRAM_EXERCISES_UPDATED_EVENT,
+  removeStoredProgramExercise,
   readStoredProgramExercises,
   upsertStoredProgramExercise,
 } from "@/lib/handlers/program-exercise-storage"
@@ -163,10 +159,20 @@ function isPresetTemplateRow(row: ProgramPlansTableRow) {
   return row.id.startsWith("preset:")
 }
 
+const exerciseRowActionButtonClassName =
+  "size-6 cursor-pointer rounded-md border-neutral-200/60 bg-neutral-100/85 text-muted-foreground shadow-none transition-colors hover:border-neutral-300/80 hover:bg-neutral-200/60 hover:text-foreground"
+
+const exerciseDeleteActionButtonClassName =
+  "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
+
 function ProgramsExercisesTable({
   rows,
+  onEditRow,
+  onDeleteRow,
 }: {
   rows: ProgramBuilderExerciseLibraryItem[]
+  onEditRow: (row: ProgramBuilderExerciseLibraryItem) => void
+  onDeleteRow: (row: ProgramBuilderExerciseLibraryItem) => void
 }) {
   if (!rows.length) {
     return (
@@ -178,36 +184,85 @@ function ProgramsExercisesTable({
 
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <Table>
-        <TableHeader className="bg-neutral-50">
-          <TableRow className="hover:bg-neutral-50">
-            <TableHead className="h-auto px-5 py-3 text-[13px] font-medium text-neutral-900">
-              Exercise
-            </TableHead>
-            <TableHead className="h-auto px-5 py-3 text-[13px] font-medium text-neutral-900">
-              Primary Muscle
-            </TableHead>
-            <TableHead className="h-auto px-5 py-3 text-[13px] font-medium text-neutral-900">
-              Type
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rows.map((exercise) => (
-            <TableRow key={exercise.id} className="hover:bg-neutral-50">
-              <TableCell className="px-5 py-3.5 text-[15px] font-medium text-neutral-950">
-                {exercise.name}
-              </TableCell>
-              <TableCell className="px-5 py-3.5 text-[14px] text-neutral-600">
+      <div className="grid grid-cols-[minmax(0,1fr)_12rem_12rem_8.5rem] items-center gap-6 border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+        <div className="text-left">Exercise</div>
+        <div className="text-left">Primary Muscle</div>
+        <div className="text-left">Type</div>
+        <div className="justify-self-center text-center">Action</div>
+      </div>
+
+      <div>
+        {rows.map((exercise) => {
+          const isCustomExercise = !PROGRAM_BUILDER_EXERCISES.some(
+            (libraryExercise) => libraryExercise.id === exercise.id
+          )
+
+          return (
+            <div
+              key={exercise.id}
+              className="grid grid-cols-[minmax(0,1fr)_12rem_12rem_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-3 last:border-b-0 hover:bg-neutral-50"
+            >
+              <div className="min-w-0 max-w-[30rem] text-left">
+                <div className="truncate text-[15px] font-medium text-neutral-950">
+                  {exercise.name}
+                </div>
+                <div className="mt-0.5 truncate text-[14px] text-neutral-500">
+                  {exercise.instructions?.trim()
+                    ? exercise.instructions
+                    : "Added to the coach exercise library."}
+                </div>
+              </div>
+
+              <div className="flex min-h-10 items-center text-[14px] text-neutral-600">
                 {exercise.muscle}
-              </TableCell>
-              <TableCell className="px-5 py-3.5 text-[14px] text-neutral-600">
+              </div>
+
+              <div className="flex min-h-10 items-center text-[14px] text-neutral-600">
                 {formatExerciseTypeLabel(exercise.type)}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+              </div>
+
+              <div className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2">
+                {isCustomExercise ? (
+                  <>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className={exerciseRowActionButtonClassName}
+                      onClick={() => onEditRow(exercise)}
+                    >
+                      <Pencil className="size-3.5" />
+                      <span className="sr-only">Edit exercise</span>
+                    </Button>
+
+                    <CoachWiseConfirmationDialog
+                      title="Are you sure you want to delete this exercise?"
+                      description={`${exercise.name} will be removed from the coach exercise library. This action can't be undone.`}
+                      confirmLabel="Delete exercise"
+                      variant="destructive"
+                      onConfirm={() => onDeleteRow(exercise)}
+                      trigger={
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          className={cn(
+                            exerciseRowActionButtonClassName,
+                            exerciseDeleteActionButtonClassName
+                          )}
+                        >
+                          <Trash2 className="size-3.5" />
+                          <span className="sr-only">Delete exercise</span>
+                        </Button>
+                      }
+                    />
+                  </>
+                ) : null}
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -224,6 +279,8 @@ function ProgramiPageContent() {
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
   const [exerciseSearchQuery, setExerciseSearchQuery] = React.useState("")
   const [isCreateExerciseOpen, setIsCreateExerciseOpen] = React.useState(false)
+  const [editingExercise, setEditingExercise] =
+    React.useState<ProgramBuilderExerciseLibraryItem | null>(null)
 
   const initialSeedPlans = React.useMemo<StoredProgramPlan[]>(
     () => createInitialStoredProgramPlans(),
@@ -518,17 +575,31 @@ function ProgramiPageContent() {
         mediaFileName?: string | null
       }
     ) => {
-      const nextExercise = createProgramBuilderLibraryExercise(
-        [...storedExercises, ...PROGRAM_BUILDER_EXERCISES],
-        input
-      )
+      const nextExercise = editingExercise
+        ? {
+            ...editingExercise,
+            name: input.name.trim(),
+            muscle: input.muscle,
+            type: input.type,
+            instructions: input.instructions?.trim() || null,
+            equipment: input.equipment?.length ? [...input.equipment] : null,
+            youtubeUrl: input.youtubeUrl?.trim() || null,
+            mediaFileName: input.mediaFileName ?? null,
+          }
+        : createProgramBuilderLibraryExercise(
+            [...storedExercises, ...PROGRAM_BUILDER_EXERCISES],
+            input
+          )
 
       upsertStoredProgramExercise(nextExercise)
-      toast.success("Exercise saved", {
-        description: `${nextExercise.name} is now available in the exercise library.`,
+      setEditingExercise(null)
+      toast.success(editingExercise ? "Exercise updated" : "Exercise saved", {
+        description: editingExercise
+          ? `${nextExercise.name} was updated in the coach exercise library.`
+          : `${nextExercise.name} is now available in the exercise library.`,
       })
     },
-    [storedExercises]
+    [editingExercise, storedExercises]
   )
 
   const filteredExerciseRows = React.useMemo(() => {
@@ -545,6 +616,24 @@ function ProgramiPageContent() {
     )
   }, [exerciseSearchQuery, storedExercises])
 
+  const handleEditExerciseRow = React.useCallback(
+    (exercise: ProgramBuilderExerciseLibraryItem) => {
+      setEditingExercise(exercise)
+      setIsCreateExerciseOpen(true)
+    },
+    []
+  )
+
+  const handleDeleteExerciseRow = React.useCallback(
+    (exercise: ProgramBuilderExerciseLibraryItem) => {
+      removeStoredProgramExercise(exercise.id)
+      toast.success("Exercise deleted", {
+        description: `${exercise.name} was removed from the coach exercise library.`,
+      })
+    },
+    []
+  )
+
   const programsBackHref = `${pathname}?tab=programs`
   const templatesBackHref = `${pathname}?tab=templates`
 
@@ -552,8 +641,15 @@ function ProgramiPageContent() {
     <section className="min-w-0 bg-neutral-50">
       <ProgramBuilderCreateExerciseDialog
         open={isCreateExerciseOpen}
-        onOpenChange={setIsCreateExerciseOpen}
+        onOpenChange={(open) => {
+          setIsCreateExerciseOpen(open)
+          if (!open) {
+            setEditingExercise(null)
+          }
+        }}
         initialName={exerciseSearchQuery.trim()}
+        initialExercise={editingExercise}
+        submitLabel={editingExercise ? "Save Exercise" : "Add Exercise"}
         onCreate={handleCreateExercise}
       />
 
@@ -582,7 +678,10 @@ function ProgramiPageContent() {
               <PrimaryActionButton
                 label="Exercise"
                 icon={IconPlus}
-                onClick={() => setIsCreateExerciseOpen(true)}
+                onClick={() => {
+                  setEditingExercise(null)
+                  setIsCreateExerciseOpen(true)
+                }}
               />
             ) : (
               <PrimaryActionButton
@@ -674,7 +773,11 @@ function ProgramiPageContent() {
               className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
 
-            <ProgramsExercisesTable rows={filteredExerciseRows} />
+            <ProgramsExercisesTable
+              rows={filteredExerciseRows}
+              onEditRow={handleEditExerciseRow}
+              onDeleteRow={handleDeleteExerciseRow}
+            />
           </div>
         </TabsContent>
       </Tabs>

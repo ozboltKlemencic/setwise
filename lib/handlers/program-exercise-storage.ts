@@ -71,3 +71,16 @@ export function upsertStoredProgramExercise(exercise: ProgramBuilderExerciseLibr
     ...currentExercises.filter((currentExercise) => currentExercise.id !== exercise.id),
   ])
 }
+
+export function removeStoredProgramExercise(exerciseId: number) {
+  const currentExercises = readStoredProgramExercises()
+  const nextExercises = currentExercises.filter(
+    (currentExercise) => currentExercise.id !== exerciseId
+  )
+
+  if (nextExercises.length === currentExercises.length) {
+    return
+  }
+
+  writeStoredProgramExercises(nextExercises)
+}

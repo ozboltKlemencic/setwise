@@ -32,6 +32,8 @@ type ProgramBuilderCreateExerciseDialogProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   initialName: string
+  initialExercise?: ProgramBuilderExerciseLibraryItem | null
+  submitLabel?: string
   onCreate: (
     input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
       instructions?: string | null
@@ -66,6 +68,8 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
     open,
     onOpenChange,
     initialName,
+    initialExercise = null,
+    submitLabel = "Add Exercise",
     onCreate,
   }: ProgramBuilderCreateExerciseDialogProps) {
     const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -82,6 +86,17 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
         return
       }
 
+      if (initialExercise) {
+        setName(initialExercise.name)
+        setInstructions(initialExercise.instructions ?? "")
+        setMuscle(initialExercise.muscle)
+        setEquipment(initialExercise.equipment ?? [])
+        setType(initialExercise.type)
+        setYoutubeUrl(initialExercise.youtubeUrl ?? "")
+        setMediaFileName(initialExercise.mediaFileName ?? "")
+        return
+      }
+
       setName(initialName)
       setInstructions("")
       setMuscle("Chest")
@@ -89,7 +104,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
       setType("compound_medium")
       setYoutubeUrl("")
       setMediaFileName("")
-    }, [initialName, open])
+    }, [initialExercise, initialName, open])
 
     const equipmentLabel = React.useMemo(() => {
       if (equipment.length === 0) {
@@ -339,7 +354,7 @@ export const ProgramBuilderCreateExerciseDialog = React.memo(
 
                 <div className="mt-5 flex flex-col gap-2">
                   <PrimaryActionButton
-                    label="Add Exercise"
+                    label={submitLabel}
                     onClick={handleCreate}
                     disabled={!name.trim()}
                     className="h-11 w-full justify-center rounded-lg px-5 text-[14px] font-medium disabled:cursor-not-allowed disabled:opacity-60"
