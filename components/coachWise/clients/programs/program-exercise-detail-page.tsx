@@ -4,6 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
 
+import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { Button } from "@/components/ui/button"
 import { PROGRAM_BUILDER_MUSCLE_CLASSES } from "@/lib/programs/program-builder-data"
 import { cn } from "@/lib/utils"
@@ -12,29 +13,35 @@ import type { ProgramBuilderExerciseLibraryItem } from "@/types"
 function ProgramExerciseDetailNav({
   title,
   backHref,
+  editAction,
 }: {
   title: string
   backHref: string
+  editAction?: React.ReactNode
 }) {
   const router = useRouter()
 
   return (
     <div className="sticky top-(--header-height) z-10 bg-neutral-50">
-      <div className="flex h-12 items-center gap-x-2 border-b border-neutral-200 px-2">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => router.push(backHref)}
-          className="size-7 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
-        >
-          <ChevronLeft className="size-4" />
-          <span className="sr-only">Back</span>
-        </Button>
+      <div className="flex h-12 items-center justify-between gap-x-3 border-b border-neutral-200 px-2">
+        <div className="flex min-w-0 items-center gap-x-2">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => router.push(backHref)}
+            className="size-7 rounded-sm text-neutral-600 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+          >
+            <ChevronLeft className="size-4" />
+            <span className="sr-only">Back</span>
+          </Button>
 
-        <div className="inline-flex h-8 min-w-0 items-center text-left text-[15px] leading-none font-semibold text-neutral-950">
-          <span className="truncate">{title}</span>
+          <div className="inline-flex h-8 min-w-0 items-center text-left text-[15px] leading-none font-semibold text-neutral-950">
+            <span className="truncate">{title}</span>
+          </div>
         </div>
+
+        {editAction}
       </div>
     </div>
   )
@@ -75,15 +82,29 @@ function formatTypeValue(type: ProgramBuilderExerciseLibraryItem["type"]) {
 type ProgramExerciseDetailPageProps = {
   exercise: ProgramBuilderExerciseLibraryItem
   backHref: string
+  onEdit?: () => void
 }
 
 export function ProgramExerciseDetailPage({
   exercise,
   backHref,
+  onEdit,
 }: ProgramExerciseDetailPageProps) {
   return (
     <>
-      <ProgramExerciseDetailNav title={exercise.name} backHref={backHref} />
+      <ProgramExerciseDetailNav
+        title={exercise.name}
+        backHref={backHref}
+        editAction={
+          onEdit ? (
+            <PrimaryActionButton
+              label="Edit Exercise"
+              className="h-8 self-center leading-none"
+              onClick={onEdit}
+            />
+          ) : undefined
+        }
+      />
 
       <div className="px-4 py-4">
         <div className="mx-auto max-w-md">
