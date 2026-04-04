@@ -23,6 +23,15 @@ import type {
   StoredProgramBuilderSnapshot,
 } from "@/types"
 
+const EMPTY_CLIENT_IDS: string[] = []
+
+function areClientIdsEqual(left: string[], right: string[]) {
+  return (
+    left.length === right.length &&
+    left.every((clientId, index) => clientId === right[index])
+  )
+}
+
 type ProgramBuilderPageViewProps = {
   initialProgram: FixedProgramEditorProgram
   backHref: string
@@ -41,7 +50,7 @@ export function ProgramBuilderPageView({
   initialProgram,
   backHref,
   initialSnapshot,
-  initialAssignedClientIds = [],
+  initialAssignedClientIds,
   createdAt,
 }: ProgramBuilderPageViewProps) {
   const router = useRouter()
@@ -98,9 +107,11 @@ export function ProgramBuilderPageView({
       resolveProgramPlanStorageScopeFromPath(pathname),
     [backHref, pathname]
   )
+  const stableInitialAssignedClientIds =
+    initialAssignedClientIds ?? EMPTY_CLIENT_IDS
   const resolvedAssignedClientIds = React.useMemo(() => {
-    if (initialAssignedClientIds.length > 0) {
-      return Array.from(new Set(initialAssignedClientIds))
+    if (stableInitialAssignedClientIds.length > 0) {
+      return Array.from(new Set(stableInitialAssignedClientIds))
     }
 
     if (
@@ -118,7 +129,11 @@ export function ProgramBuilderPageView({
     }
 
     return []
-  }, [initialAssignedClientIds, initialSnapshot?.assignedClientIds, storageScopeId])
+  }, [
+    stableInitialAssignedClientIds,
+    initialSnapshot?.assignedClientIds,
+    storageScopeId,
+  ])
   const [assignedClientIds, setAssignedClientIds] = React.useState<string[]>(
     () => resolvedAssignedClientIds
   )
@@ -131,7 +146,11 @@ export function ProgramBuilderPageView({
   )
 
   React.useEffect(() => {
-    setAssignedClientIds(resolvedAssignedClientIds)
+    setAssignedClientIds((currentAssignedClientIds) =>
+      areClientIdsEqual(currentAssignedClientIds, resolvedAssignedClientIds)
+        ? currentAssignedClientIds
+        : resolvedAssignedClientIds
+    )
   }, [resolvedAssignedClientIds])
 
   const handleSave = React.useCallback(() => {
