@@ -16,6 +16,7 @@ import {
   ProgramPlansTable,
   type ProgramPlansTableRow,
 } from "@/components/coachWise/tables/program-plans-table"
+import { ProgramBuilderCreateExerciseDialog } from "@/components/coachWise/clients/programs/builder/program-builder-create-exercise-dialog"
 import { ToolbarSearchInput } from "@/components/coachWise/toolbar-search-input"
 import {
   Table,
@@ -26,6 +27,11 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  PROGRAM_EXERCISES_UPDATED_EVENT,
+  readStoredProgramExercises,
+  upsertStoredProgramExercise,
+} from "@/lib/handlers/program-exercise-storage"
 import {
   ensureStoredProgramPlans,
   GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
@@ -47,6 +53,7 @@ import {
 } from "@/lib/handlers/programs.handlers"
 import {
   createProgramBuilderInitialDays,
+  createProgramBuilderLibraryExercise,
   PROGRAM_BUILDER_DEFAULT_REP_RANGES,
   PROGRAM_BUILDER_DEFAULT_TEMPOS,
   PROGRAM_BUILDER_EXERCISES,
@@ -216,6 +223,7 @@ function ProgramiPageContent() {
   const [programSearchQuery, setProgramSearchQuery] = React.useState("")
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
   const [exerciseSearchQuery, setExerciseSearchQuery] = React.useState("")
+  const [isCreateExerciseOpen, setIsCreateExerciseOpen] = React.useState(false)
 
   const initialSeedPlans = React.useMemo<StoredProgramPlan[]>(
     () => createInitialStoredProgramPlans(),
@@ -249,6 +257,9 @@ function ProgramiPageContent() {
   )
   const [rows, setRows] = React.useState<ProgramPlansTableRow[]>(initialRows)
   const [storedTemplates, setStoredTemplates] = React.useState<StoredProgramPlan[]>([])
+  const [storedExercises, setStoredExercises] = React.useState<
+    ProgramBuilderExerciseLibraryItem[]
+  >([])
 
   React.useEffect(() => {
     const syncRows = () => {
@@ -314,6 +325,19 @@ function ProgramiPageContent() {
     window.addEventListener(PROGRAM_TEMPLATES_UPDATED_EVENT, syncTemplates)
     return () => {
       window.removeEventListener(PROGRAM_TEMPLATES_UPDATED_EVENT, syncTemplates)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    const syncExercises = () => {
+      setStoredExercises(readStoredProgramExercises())
+    }
+
+    syncExercises()
+    window.addEventListener(PROGRAM_EXERCISES_UPDATED_EVENT, syncExercises)
+
+    return () => {
+      window.removeEventListener(PROGRAM_EXERCISES_UPDATED_EVENT, syncExercises)
     }
   }, [])
 
@@ -485,25 +509,54 @@ function ProgramiPageContent() {
     return [...savedTemplateRows, ...presetTemplateRows]
   }, [storedTemplates, templateSearchQuery])
 
+  const handleCreateExercise = React.useCallback(
+    (
+      input: Pick<ProgramBuilderExerciseLibraryItem, "name" | "muscle" | "type"> & {
+        instructions?: string | null
+        equipment?: ProgramBuilderExerciseLibraryItem["equipment"]
+        youtubeUrl?: string | null
+        mediaFileName?: string | null
+      }
+    ) => {
+      const nextExercise = createProgramBuilderLibraryExercise(
+        [...storedExercises, ...PROGRAM_BUILDER_EXERCISES],
+        input
+      )
+
+      upsertStoredProgramExercise(nextExercise)
+      toast.success("Exercise saved", {
+        description: `${nextExercise.name} is now available in the exercise library.`,
+      })
+    },
+    [storedExercises]
+  )
+
   const filteredExerciseRows = React.useMemo(() => {
     if (!exerciseSearchQuery.trim()) {
-      return PROGRAM_BUILDER_EXERCISES
+      return storedExercises
     }
 
     const normalizedQuery = exerciseSearchQuery.toLowerCase()
-    return PROGRAM_BUILDER_EXERCISES.filter((exercise) =>
+    return [...storedExercises, ...PROGRAM_BUILDER_EXERCISES].filter((exercise) =>
       [exercise.name, exercise.muscle, formatExerciseTypeLabel(exercise.type)]
         .join(" ")
         .toLowerCase()
         .includes(normalizedQuery)
     )
-  }, [exerciseSearchQuery])
+  }, [exerciseSearchQuery, storedExercises])
 
   const programsBackHref = `${pathname}?tab=programs`
   const templatesBackHref = `${pathname}?tab=templates`
 
   return (
     <section className="min-w-0 bg-neutral-50">
+      <ProgramBuilderCreateExerciseDialog
+        open={isCreateExerciseOpen}
+        onOpenChange={setIsCreateExerciseOpen}
+        initialName={exerciseSearchQuery.trim()}
+        onCreate={handleCreateExercise}
+      />
+
       <Tabs value={activeTab} onValueChange={(value) => pushTab(value as ProgramTab)} className="w-full gap-0">
         <div className="border-b border-neutral-200 bg-neutral-50">
           <div className="flex min-w-0 items-center justify-between gap-4 px-4">
@@ -525,13 +578,21 @@ function ProgramiPageContent() {
               </TabsList>
             </div>
 
-            <PrimaryActionButton
-              label={activeTab === "templates" ? "Template" : "Program"}
-              icon={IconPlus}
-              href={getProgramsCreateHref(
-                activeTab === "templates" ? templatesBackHref : programsBackHref
-              )}
-            />
+            {activeTab === "exercises" ? (
+              <PrimaryActionButton
+                label="Exercise"
+                icon={IconPlus}
+                onClick={() => setIsCreateExerciseOpen(true)}
+              />
+            ) : (
+              <PrimaryActionButton
+                label={activeTab === "templates" ? "Template" : "Program"}
+                icon={IconPlus}
+                href={getProgramsCreateHref(
+                  activeTab === "templates" ? templatesBackHref : programsBackHref
+                )}
+              />
+            )}
           </div>
         </div>
 

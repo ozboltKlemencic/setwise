@@ -3,6 +3,11 @@
 import * as React from "react"
 
 import {
+  PROGRAM_EXERCISES_UPDATED_EVENT,
+  readStoredProgramExercises,
+  upsertStoredProgramExercise,
+} from "@/lib/handlers/program-exercise-storage"
+import {
   cloneProgramBuilderDay,
   cloneProgramBuilderExercise,
   createProgramBuilderDefaultTemplates,
@@ -40,6 +45,10 @@ import type {
 
 type LeftTab = "exercises" | "templates"
 
+function buildProgramBuilderExerciseLibrary() {
+  return [...readStoredProgramExercises(), ...PROGRAM_BUILDER_EXERCISES]
+}
+
 function moveArrayItem<T>(items: T[], fromIndex: number, toIndex: number) {
   const nextItems = [...items]
   const [movedItem] = nextItems.splice(fromIndex, 1)
@@ -64,8 +73,9 @@ export function useProgramBuilder(
   const [searchQuery, setSearchQuery] = React.useState("")
   const [templateQuery, setTemplateQuery] = React.useState("")
   const [muscleFilter, setMuscleFilter] = React.useState<ProgramBuilderMuscleFilter>("All")
-  const [exerciseLibrary, setExerciseLibrary] =
-    React.useState<ProgramBuilderExerciseLibraryItem[]>(PROGRAM_BUILDER_EXERCISES)
+  const [exerciseLibrary, setExerciseLibrary] = React.useState<
+    ProgramBuilderExerciseLibraryItem[]
+  >(() => buildProgramBuilderExerciseLibrary())
   const [editTarget, setEditTarget] = React.useState<ProgramBuilderSetEditTarget | null>(null)
   const [editValue, setEditValue] = React.useState("")
   const [intensifierEditor, setIntensifierEditor] =
@@ -121,6 +131,19 @@ export function useProgramBuilder(
     setMyTempos(initialSnapshot?.myTempos ?? PROGRAM_BUILDER_DEFAULT_TEMPOS)
     setShowAdvancedSetOptions(initialSnapshot?.showAdvancedSetOptions ?? false)
   }, [initialProgram.id, initialProgram.description, initialSnapshot])
+
+  React.useEffect(() => {
+    const syncExerciseLibrary = () => {
+      setExerciseLibrary(buildProgramBuilderExerciseLibrary())
+    }
+
+    syncExerciseLibrary()
+    window.addEventListener(PROGRAM_EXERCISES_UPDATED_EVENT, syncExerciseLibrary)
+
+    return () => {
+      window.removeEventListener(PROGRAM_EXERCISES_UPDATED_EVENT, syncExerciseLibrary)
+    }
+  }, [])
 
   const activeDay = days[activeDayIndex]
   const dayExerciseIds = React.useMemo(
@@ -219,7 +242,11 @@ export function useProgramBuilder(
     ) => {
       const nextExercise = createProgramBuilderLibraryExercise(exerciseLibrary, input)
 
-      setExerciseLibrary((currentExercises) => [nextExercise, ...currentExercises])
+      upsertStoredProgramExercise(nextExercise)
+      setExerciseLibrary((currentExercises) => [
+        nextExercise,
+        ...currentExercises.filter((exercise) => exercise.id !== nextExercise.id),
+      ])
       setLeftTab("exercises")
       setMuscleFilter("All")
       setSearchQuery(nextExercise.name)
