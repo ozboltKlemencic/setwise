@@ -53,6 +53,7 @@ import {
   PROGRAM_BUILDER_DEFAULT_REP_RANGES,
   PROGRAM_BUILDER_DEFAULT_TEMPOS,
   PROGRAM_BUILDER_EXERCISES,
+  PROGRAM_BUILDER_MUSCLE_CLASSES,
 } from "@/lib/programs/program-builder-data"
 import { getFixedPrograms } from "@/lib/programs/fixed-programs-data"
 import {
@@ -165,6 +166,20 @@ const exerciseRowActionButtonClassName =
 const exerciseDeleteActionButtonClassName =
   "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
+function formatExerciseEquipmentLabel(exercise: ProgramBuilderExerciseLibraryItem) {
+  const equipment = exercise.equipment ?? []
+
+  if (equipment.length === 0) {
+    return "-"
+  }
+
+  if (equipment.length <= 2) {
+    return equipment.join(", ")
+  }
+
+  return `${equipment[0]} +${equipment.length - 1}`
+}
+
 function ProgramsExercisesTable({
   rows,
   onEditRow,
@@ -184,10 +199,12 @@ function ProgramsExercisesTable({
 
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <div className="grid grid-cols-[minmax(0,1fr)_12rem_12rem_8.5rem] items-center gap-6 border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+      <div className="grid grid-cols-[minmax(0,1fr)_9rem_minmax(0,18rem)_10rem_8rem_8.5rem] items-center gap-6 border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
         <div className="text-left">Exercise</div>
         <div className="text-left">Primary Muscle</div>
-        <div className="text-left">Type</div>
+        <div className="text-left">Technical Clue</div>
+        <div className="text-left">Equipment</div>
+        <div className="text-left">Media</div>
         <div className="justify-self-center text-center">Action</div>
       </div>
 
@@ -200,25 +217,51 @@ function ProgramsExercisesTable({
           return (
             <div
               key={exercise.id}
-              className="grid grid-cols-[minmax(0,1fr)_12rem_12rem_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-3 last:border-b-0 hover:bg-neutral-50"
+              className="grid grid-cols-[minmax(0,1fr)_9rem_minmax(0,18rem)_10rem_8rem_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-3 last:border-b-0 hover:bg-neutral-50"
             >
-              <div className="min-w-0 max-w-[30rem] text-left">
+              <div className="min-w-0 max-w-[24rem] text-left">
                 <div className="truncate text-[15px] font-medium text-neutral-950">
                   {exercise.name}
                 </div>
-                <div className="mt-0.5 truncate text-[14px] text-neutral-500">
-                  {exercise.instructions?.trim()
-                    ? exercise.instructions
-                    : "Added to the coach exercise library."}
-                </div>
               </div>
 
-              <div className="flex min-h-10 items-center text-[14px] text-neutral-600">
-                {exercise.muscle}
+              <div className="flex min-h-10 items-center">
+                <span
+                  className={cn(
+                    "inline-flex h-auto rounded-md border px-2.5 py-1 text-[12px] font-medium",
+                    PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle]
+                  )}
+                >
+                  {exercise.muscle}
+                </span>
               </div>
 
-              <div className="flex min-h-10 items-center text-[14px] text-neutral-600">
-                {formatExerciseTypeLabel(exercise.type)}
+              <div className="min-w-0 max-w-[18rem] py-0.5 text-[13px] leading-5 text-neutral-500 line-clamp-2">
+                {exercise.instructions?.trim()
+                  ? exercise.instructions
+                  : "No technical clues added yet."}
+              </div>
+
+              <div className="flex min-h-10 items-center">
+                <span className="inline-flex h-auto rounded-sm border border-neutral-200/80 bg-neutral-100/85 px-2.5 py-1 text-[12px] font-normal text-neutral-600">
+                  {formatExerciseEquipmentLabel(exercise)}
+                </span>
+              </div>
+
+              <div className="flex min-h-10 items-center gap-2">
+                {exercise.mediaFileName ? (
+                  <span className="inline-flex h-auto rounded-sm border border-neutral-200/80 bg-neutral-100/85 px-2.5 py-1 text-[12px] font-normal text-neutral-600">
+                    Media
+                  </span>
+                ) : null}
+                {exercise.youtubeUrl ? (
+                  <span className="inline-flex h-auto rounded-sm border border-neutral-200/80 bg-neutral-100/85 px-2.5 py-1 text-[12px] font-normal text-neutral-600">
+                    YT Link
+                  </span>
+                ) : null}
+                {!exercise.mediaFileName && !exercise.youtubeUrl ? (
+                  <span className="text-[13px] text-neutral-400">-</span>
+                ) : null}
               </div>
 
               <div className="flex w-[8.5rem] justify-self-center self-center items-center justify-center gap-2">
@@ -655,7 +698,7 @@ function ProgramiPageContent() {
 
       <Tabs value={activeTab} onValueChange={(value) => pushTab(value as ProgramTab)} className="w-full gap-0">
         <div className="border-b border-neutral-200 bg-neutral-50">
-          <div className="flex min-w-0 items-center justify-between gap-4 px-4">
+          <div className="flex min-w-0 items-center justify-between gap-4 pr-4 pl-0">
             <div className="min-w-0 flex-1 overflow-x-auto">
               <TabsList
                 variant="line"
