@@ -8,6 +8,7 @@ import type { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 
 import { ProgramBuilderDayTabs } from "./program-builder-day-tabs"
 import { ProgramBuilderExerciseCard } from "./program-builder-exercise-card"
+import { ProgramBuilderRangeTempoMenus } from "./program-builder-range-tempo-menus"
 import { ProgramBuilderSidebar } from "./program-builder-sidebar"
 
 type ProgramBuilderWorkspaceProps = {
@@ -30,13 +31,16 @@ export function ProgramBuilderWorkspace({
 
         <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
           {builder.activeDay ? (
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              <div className="text-[16px] font-semibold text-neutral-950">
-                {builder.activeDay.name}
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="min-w-0 flex items-center gap-2">
+                <div className="truncate text-[16px] font-semibold text-neutral-950">
+                  {builder.activeDay.name}
+                </div>
+                <div className="text-[12px] text-neutral-500">
+                  {builder.activeDay.exercises.length} exercises - {builder.totalSets} sets
+                </div>
               </div>
-              <div className="text-[12px] text-neutral-500">
-                {builder.activeDay.exercises.length} exercises - {builder.totalSets} sets
-              </div>
+              <ProgramBuilderRangeTempoMenus builder={builder} />
             </div>
           ) : null}
 
