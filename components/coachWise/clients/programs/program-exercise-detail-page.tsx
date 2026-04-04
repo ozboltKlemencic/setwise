@@ -55,7 +55,7 @@ function ProgramExerciseDetailRow({
   children: React.ReactNode
 }) {
   return (
-    <div className="border-b border-neutral-200 px-4 py-3 last:border-b-0">
+    <div>
       <div className="text-[11px] font-medium uppercase tracking-[0.08em] text-neutral-400">
         {label}
       </div>
@@ -108,58 +108,62 @@ export function ProgramExerciseDetailPage({
 
       <div className="px-4 py-4">
         <div className="mx-auto max-w-md">
-          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-            <ProgramExerciseDetailRow label="Exercise name">
-              <span className="font-medium text-neutral-950">{exercise.name}</span>
-            </ProgramExerciseDetailRow>
-
-            <ProgramExerciseDetailRow label="Primary muscle group">
-              <span
-                className={cn(
-                  "inline-flex h-auto rounded-md border px-2.5 py-1 text-[12px] font-medium",
-                  PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle]
-                )}
-              >
-                {exercise.muscle}
-              </span>
-            </ProgramExerciseDetailRow>
-
-            <ProgramExerciseDetailRow label="Technical clues">
-              <div className="whitespace-pre-line text-neutral-700">
-                {exercise.instructions?.trim() || "-"}
+          <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white">
+            <div className="border-b border-neutral-200 bg-neutral-50/70 px-4 py-3.5">
+              <div className="text-[15px] font-semibold text-neutral-950">
+                {exercise.name}
               </div>
-            </ProgramExerciseDetailRow>
+            </div>
 
-            <ProgramExerciseDetailRow label="Equipment">
-              {formatEquipmentValue(exercise.equipment)}
-            </ProgramExerciseDetailRow>
-
-            <ProgramExerciseDetailRow label="Type">
-              {formatTypeValue(exercise.type)}
-            </ProgramExerciseDetailRow>
-
-            <ProgramExerciseDetailRow label="Level">
-              {exercise.level || "-"}
-            </ProgramExerciseDetailRow>
-
-            <ProgramExerciseDetailRow label="Media file">
-              {exercise.mediaFileName || "-"}
-            </ProgramExerciseDetailRow>
-
-            <ProgramExerciseDetailRow label="YouTube link">
-              {exercise.youtubeUrl ? (
-                <a
-                  href={exercise.youtubeUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="break-all text-brand-700 hover:underline"
+            <div className="space-y-4 px-4 py-4">
+              <ProgramExerciseDetailRow label="Primary muscle group">
+                <span
+                  className={cn(
+                    "inline-flex h-auto rounded-md border px-2.5 py-1 text-[12px] font-medium",
+                    PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle]
+                  )}
                 >
-                  {exercise.youtubeUrl}
-                </a>
-              ) : (
-                "-"
-              )}
-            </ProgramExerciseDetailRow>
+                  {exercise.muscle}
+                </span>
+              </ProgramExerciseDetailRow>
+
+              <ProgramExerciseDetailRow label="Technical clues">
+                <div className="whitespace-pre-line text-neutral-700">
+                  {exercise.instructions?.trim() || "-"}
+                </div>
+              </ProgramExerciseDetailRow>
+
+              <ProgramExerciseDetailRow label="Equipment">
+                {formatEquipmentValue(exercise.equipment)}
+              </ProgramExerciseDetailRow>
+
+              <ProgramExerciseDetailRow label="Type">
+                {formatTypeValue(exercise.type)}
+              </ProgramExerciseDetailRow>
+
+              <ProgramExerciseDetailRow label="Level">
+                {exercise.level || "-"}
+              </ProgramExerciseDetailRow>
+
+              <ProgramExerciseDetailRow label="Media file">
+                {exercise.mediaFileName || "-"}
+              </ProgramExerciseDetailRow>
+
+              <ProgramExerciseDetailRow label="YouTube link">
+                {exercise.youtubeUrl ? (
+                  <a
+                    href={exercise.youtubeUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="break-all text-brand-700 hover:underline"
+                  >
+                    {exercise.youtubeUrl}
+                  </a>
+                ) : (
+                  "-"
+                )}
+              </ProgramExerciseDetailRow>
+            </div>
           </div>
         </div>
       </div>
