@@ -430,8 +430,8 @@ function ProgramiPageContent() {
               value={programSearchQuery}
               onValueChange={setProgramSearchQuery}
               placeholder="Search programs"
-              wrapperClassName="max-w-sm"
-              className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-200 focus-visible:ring-0"
+              wrapperClassName="max-w-[17rem]"
+              className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
 
             <ProgramPlansTable
@@ -467,8 +467,8 @@ function ProgramiPageContent() {
               value={templateSearchQuery}
               onValueChange={setTemplateSearchQuery}
               placeholder="Search templates"
-              wrapperClassName="max-w-sm"
-              className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-200 focus-visible:ring-0"
+              wrapperClassName="max-w-[17rem]"
+              className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
 
             {filteredPresetRows.length ? (
@@ -497,8 +497,8 @@ function ProgramiPageContent() {
               value={exerciseSearchQuery}
               onValueChange={setExerciseSearchQuery}
               placeholder="Search exercises"
-              wrapperClassName="max-w-sm"
-              className="h-10 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-200 focus-visible:ring-0"
+              wrapperClassName="max-w-[17rem]"
+              className="h-9 rounded-sm border-neutral-200 bg-white shadow-none focus-visible:border-neutral-300 focus-visible:ring-0"
             />
 
             <ProgramsExercisesTable rows={filteredExerciseRows} />
