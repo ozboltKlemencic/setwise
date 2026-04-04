@@ -19,7 +19,11 @@ import {
   readStoredProgramTemplate,
   upsertStoredProgramTemplate,
 } from "@/lib/handlers/program-template-storage"
-import { isGlobalProgramsBuilderBackHref } from "@/lib/handlers/programs.handlers"
+import {
+  isGlobalProgramsBuilderBackHref,
+  isProgramsTemplatesBuilderBackHref,
+  resolveProgramsTemplatesBackHref,
+} from "@/lib/handlers/programs.handlers"
 import {
   buildProgramBuilderInitialProgramFromStoredPlan,
   buildStoredProgramPlanFromBuilderState,
@@ -177,10 +181,19 @@ export function ProgramBuilderPageView({
   )
   const showClientPicker = React.useMemo(
     () =>
+      !isProgramsTemplatesBuilderBackHref(backHref) &&
       (isGlobalProgramsBuilderBackHref(backHref) ||
         isGlobalProgramsBuilderBackHref(pathname)) &&
       nutritionBuilderClientOptions.length > 0,
     [backHref, pathname]
+  )
+  const isTemplatesMode = React.useMemo(
+    () => isProgramsTemplatesBuilderBackHref(backHref),
+    [backHref]
+  )
+  const templatesBackHref = React.useMemo(
+    () => resolveProgramsTemplatesBackHref(backHref),
+    [backHref]
   )
 
   React.useEffect(() => {
@@ -246,6 +259,7 @@ export function ProgramBuilderPageView({
     toast.success("Template saved", {
       description: `${nextStoredTemplate.title} is now available in Templates.`,
     })
+    router.push(templatesBackHref)
   }, [
     assignedClientIds,
     builder.days,
@@ -253,6 +267,8 @@ export function ProgramBuilderPageView({
     builder.myReps,
     builder.myTempos,
     builder.showAdvancedSetOptions,
+    router,
+    templatesBackHref,
     title,
   ])
 
@@ -268,8 +284,8 @@ export function ProgramBuilderPageView({
         onTitleChange={setTitle}
         onTitleBlur={handleTitleBlur}
         onTitleKeyDown={handleTitleKeyDown}
-        onSave={handleSave}
-        saveLabel="Save Program"
+        onSave={isTemplatesMode ? handleSaveAsTemplate : handleSave}
+        saveLabel={isTemplatesMode ? "Save Template" : "Save Program"}
         leadingActions={
           <>
             {showClientPicker ? (
@@ -394,10 +410,14 @@ export function ProgramBuilderPageView({
             </ProgramBuilderToolbarMenu>
           </>
         }
-        secondaryAction={{
-          label: "Save as template",
-          onClick: handleSaveAsTemplate,
-        }}
+        secondaryAction={
+          isTemplatesMode
+            ? undefined
+            : {
+                label: "Save as template",
+                onClick: handleSaveAsTemplate,
+              }
+        }
       />
 
       <div className="min-h-[calc(100vh-var(--header-height)-3rem)] bg-neutral-50">

@@ -112,3 +112,34 @@ export function isGlobalProgramsBuilderBackHref(backHref?: string) {
     !/\/beta-coach-wise\/clients\/[^/]+\/programs(?:\/|$)/.test(pathname)
   )
 }
+
+export function isProgramsTemplatesBuilderBackHref(backHref?: string) {
+  if (!isGlobalProgramsBuilderBackHref(backHref)) {
+    return false
+  }
+
+  const [, queryString = ""] = (backHref ?? "").split("?")
+  const searchParams = new URLSearchParams(queryString)
+  return searchParams.get("tab") === "templates"
+}
+
+export function resolveProgramsTemplatesBackHref(
+  backHref: string | undefined,
+  fallbackHref = "/beta-coach-wise/programi?tab=templates"
+) {
+  if (!backHref || !backHref.startsWith("/")) {
+    return fallbackHref
+  }
+
+  if (!isGlobalProgramsBuilderBackHref(backHref)) {
+    return backHref
+  }
+
+  const [pathname = fallbackHref, queryString = ""] = backHref.split("?")
+  const searchParams = new URLSearchParams(queryString)
+  searchParams.delete("storageScope")
+  searchParams.set("tab", "templates")
+  const nextQuery = searchParams.toString()
+
+  return nextQuery ? `${pathname}?${nextQuery}` : pathname
+}

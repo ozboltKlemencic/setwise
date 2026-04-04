@@ -36,7 +36,9 @@ import {
 } from "@/lib/handlers/program-plan-storage"
 import {
   PROGRAM_TEMPLATES_UPDATED_EVENT,
+  removeStoredProgramTemplate,
   readStoredProgramTemplates,
+  upsertStoredProgramTemplate,
 } from "@/lib/handlers/program-template-storage"
 import {
   getProgramsCreateHref,
@@ -44,13 +46,19 @@ import {
   getProgramsEditHref,
 } from "@/lib/handlers/programs.handlers"
 import {
+  createProgramBuilderInitialDays,
+  PROGRAM_BUILDER_DEFAULT_REP_RANGES,
+  PROGRAM_BUILDER_DEFAULT_TEMPOS,
   PROGRAM_BUILDER_EXERCISES,
 } from "@/lib/programs/program-builder-data"
+import { getFixedPrograms } from "@/lib/programs/fixed-programs-data"
 import {
+  buildStoredProgramPlanFromBuilderState,
   cloneStoredProgramPlan,
   createInitialStoredProgramPlans,
 } from "@/lib/programs/program-plan-storage.utils"
 import {
+  createProgramBuilderInitialProgram,
   formatProgramTemplateSummary,
   formatProgramPresetSummary,
   programBuilderPresets,
@@ -142,6 +150,10 @@ function resolveProgramRowClients(
 
   const fallbackClient = programClientsByScope.get(fallbackStorageScopeId)
   return fallbackClient ? [fallbackClient] : []
+}
+
+function isPresetTemplateRow(row: ProgramPlansTableRow) {
+  return row.id.startsWith("preset:")
 }
 
 function ProgramsExercisesTable({
@@ -358,6 +370,65 @@ function ProgramiPageContent() {
     toast.success("Program deleted", { description: `Removed ${row.title}.` })
   }, [])
 
+  const handleDuplicateTemplateRow = React.useCallback(
+    (row: ProgramPlansTableRow) => {
+      const nextTitle = buildNextDuplicatedProgramTitle(
+        row.title,
+        [...storedTemplates.map((template) => template.title), ...programBuilderPresets.map((preset) => preset.title)]
+      )
+
+      if (isPresetTemplateRow(row)) {
+        const presetId = row.id.replace(/^preset:/, "")
+        const initialProgram = createProgramBuilderInitialProgram(
+          getFixedPrograms(),
+          presetId
+        )
+        const duplicatedTemplate = buildStoredProgramPlanFromBuilderState({
+          title: nextTitle,
+          description: initialProgram.description,
+          days: createProgramBuilderInitialDays(initialProgram),
+          myReps: PROGRAM_BUILDER_DEFAULT_REP_RANGES,
+          myTempos: PROGRAM_BUILDER_DEFAULT_TEMPOS,
+          showAdvancedSetOptions: false,
+        })
+
+        upsertStoredProgramTemplate(duplicatedTemplate)
+        toast.success("Template duplicated", {
+          description: `Created ${nextTitle}.`,
+        })
+        return
+      }
+
+      const duplicatedTemplate = cloneStoredProgramPlan(row, {
+        id:
+          globalThis.crypto?.randomUUID?.() ??
+          `program-template-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+        title: nextTitle,
+        createdAt: new Date().toISOString(),
+        program: {
+          ...row.program,
+          id:
+            globalThis.crypto?.randomUUID?.() ??
+            `program-template-editor-${Date.now()}-${Math.round(Math.random() * 10000)}`,
+          title: nextTitle,
+        },
+      })
+
+      upsertStoredProgramTemplate(duplicatedTemplate)
+      toast.success("Template duplicated", {
+        description: `Created ${nextTitle}.`,
+      })
+    },
+    [storedTemplates]
+  )
+
+  const handleDeleteTemplateRow = React.useCallback((row: ProgramPlansTableRow) => {
+    removeStoredProgramTemplate(row.id)
+    toast.success("Template deleted", {
+      description: `Removed ${row.title}.`,
+    })
+  }, [])
+
   const filteredProgramRows = React.useMemo(() => {
     if (!programSearchQuery.trim()) {
       return rows
@@ -455,7 +526,7 @@ function ProgramiPageContent() {
             </div>
 
             <PrimaryActionButton
-              label="Program"
+              label={activeTab === "templates" ? "Template" : "Program"}
               icon={IconPlus}
               href={getProgramsCreateHref(
                 activeTab === "templates" ? templatesBackHref : programsBackHref
@@ -524,6 +595,9 @@ function ProgramiPageContent() {
                   ? getProgramsCreateHref(templatesBackHref, row.id.replace(/^preset:/, ""))
                   : getProgramsCreateHref(templatesBackHref, undefined, row.id)
               }
+              onDuplicateRow={handleDuplicateTemplateRow}
+              onDeleteRow={handleDeleteTemplateRow}
+              canDeleteRow={(row) => !isPresetTemplateRow(row)}
             />
           </div>
         </TabsContent>

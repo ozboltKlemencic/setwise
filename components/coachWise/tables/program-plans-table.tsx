@@ -39,6 +39,8 @@ type ProgramPlansTableProps = {
   getEditRowHref?: (row: ProgramPlansTableRow) => string
   onDuplicateRow?: (row: ProgramPlansTableRow) => void
   onDeleteRow?: (row: ProgramPlansTableRow) => void
+  canDuplicateRow?: (row: ProgramPlansTableRow) => boolean
+  canDeleteRow?: (row: ProgramPlansTableRow) => boolean
 }
 
 const rowActionButtonClassName =
@@ -102,11 +104,18 @@ function ProgramPlansTableComponent({
   getEditRowHref,
   onDuplicateRow,
   onDeleteRow,
+  canDuplicateRow,
+  canDeleteRow,
 }: ProgramPlansTableProps) {
   const pathname = usePathname()
   const router = useRouter()
   const hasClientColumn = showClientColumn || rows.some((row) => row.clients?.length)
-  const hasActionColumn = Boolean(onDuplicateRow || onDeleteRow || getEditRowHref)
+  const hasActionColumn = rows.some(
+    (row) =>
+      Boolean(getEditRowHref) ||
+      Boolean(onDuplicateRow && (canDuplicateRow?.(row) ?? true)) ||
+      Boolean(onDeleteRow && (canDeleteRow?.(row) ?? true))
+  )
   const headerGridClassName = hasClientColumn
     ? hasActionColumn
       ? "grid-cols-[minmax(0,1fr)_minmax(250px,280px)_minmax(260px,320px)_8.5rem]"
@@ -149,6 +158,12 @@ function ProgramPlansTableComponent({
           const editHref = getEditRowHref
             ? buildCoachWiseHref(pathname, getEditRowHref(row))
             : null
+          const showDuplicateAction = Boolean(
+            onDuplicateRow && (canDuplicateRow?.(row) ?? true)
+          )
+          const showDeleteAction = Boolean(
+            onDeleteRow && (canDeleteRow?.(row) ?? true)
+          )
 
           return (
             <div
@@ -245,13 +260,13 @@ function ProgramPlansTableComponent({
                   onClick={(event) => event.stopPropagation()}
                   onMouseDown={(event) => event.stopPropagation()}
                 >
-                  {onDuplicateRow ? (
+                  {showDuplicateAction ? (
                     <Button
                       type="button"
                       variant="outline"
                       size="icon"
                       className={rowActionButtonClassName}
-                      onClick={() => onDuplicateRow(row)}
+                      onClick={() => onDuplicateRow?.(row)}
                     >
                       <Copy className="size-3.5" />
                       <span className="sr-only">Duplicate program</span>
@@ -288,13 +303,13 @@ function ProgramPlansTableComponent({
                     />
                   )}
 
-                  {onDeleteRow ? (
+                  {showDeleteAction ? (
                     <CoachWiseConfirmationDialog
                       title="Are you sure you want to delete this program?"
                       description={`${row.title} will be removed from the current programs list. This action can't be undone.`}
                       confirmLabel="Delete program"
                       variant="destructive"
-                      onConfirm={() => onDeleteRow(row)}
+                      onConfirm={() => onDeleteRow?.(row)}
                       trigger={
                         <Button
                           type="button"
