@@ -10,6 +10,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react"
 
+import clientData from "@/app/[locale]/beta-coach-wise/data.json"
 import { PrimaryActionButton } from "@/components/coachWise/primary-action-button"
 import { ProgramPresetCard } from "@/components/coachWise/clients/programs/program-preset-card"
 import {
@@ -87,6 +88,22 @@ function formatExerciseTypeLabel(type: ProgramBuilderExerciseLibraryItem["type"]
     .join(" ")
 }
 
+function buildProgramsBackHrefWithStorageScope(
+  backToHref: string,
+  storageScopeId?: string
+) {
+  if (!storageScopeId || storageScopeId === GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE) {
+    return backToHref
+  }
+
+  const [pathname, queryString = ""] = backToHref.split("?")
+  const searchParams = new URLSearchParams(queryString)
+  searchParams.set("storageScope", storageScopeId)
+  const nextQuery = searchParams.toString()
+
+  return nextQuery ? `${pathname}?${nextQuery}` : pathname
+}
+
 function ProgramsExercisesTable({
   rows,
 }: {
@@ -148,16 +165,63 @@ function ProgramiPageContent() {
   const [templateSearchQuery, setTemplateSearchQuery] = React.useState("")
   const [exerciseSearchQuery, setExerciseSearchQuery] = React.useState("")
 
-  const initialRows = React.useMemo<StoredProgramPlan[]>(
+  const initialSeedPlans = React.useMemo<StoredProgramPlan[]>(
     () => createInitialStoredProgramPlans(),
     []
   )
-  const [rows, setRows] = React.useState<StoredProgramPlan[]>(initialRows)
+  const programClientsByScope = React.useMemo(
+    () =>
+      new Map(
+        clientData.map((client) => [
+          String(client.id),
+          {
+            id: String(client.id),
+            name: client.header,
+            avatar: client.avatar,
+          },
+        ])
+      ),
+    []
+  )
+  const watchedStorageScopeIds = React.useMemo(
+    () => [GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE, ...clientData.map((client) => String(client.id))],
+    []
+  )
+  const initialRows = React.useMemo<ProgramPlansTableRow[]>(
+    () =>
+      initialSeedPlans.map((plan) => ({
+        ...plan,
+        storageScopeId: GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
+      })),
+    [initialSeedPlans]
+  )
+  const [rows, setRows] = React.useState<ProgramPlansTableRow[]>(initialRows)
 
   React.useEffect(() => {
     const syncRows = () => {
+      const globalRows = ensureStoredProgramPlans(
+        GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
+        initialSeedPlans
+      ).map((plan) => ({
+        ...plan,
+        storageScopeId: GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
+      }))
+
+      const clientScopedRows = clientData.flatMap((client) => {
+        const storageScopeId = String(client.id)
+        const clientSummary = programClientsByScope.get(storageScopeId)
+
+        return readStoredProgramPlans(storageScopeId).map((plan) => ({
+          ...plan,
+          storageScopeId,
+          clients: clientSummary ? [clientSummary] : [],
+        }))
+      })
+
       setRows(
-        ensureStoredProgramPlans(GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE, initialRows)
+        [...globalRows, ...clientScopedRows].sort((left, right) =>
+          right.createdAt.localeCompare(left.createdAt)
+        )
       )
     }
 
@@ -168,22 +232,26 @@ function ProgramiPageContent() {
         event as CustomEvent<{ storageScopeId?: string }>
       ).detail?.storageScopeId
 
-      if (updatedStorageScopeId !== GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE) {
+      if (
+        updatedStorageScopeId &&
+        !watchedStorageScopeIds.includes(updatedStorageScopeId)
+      ) {
         return
       }
 
-      setRows(readStoredProgramPlans(GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE))
+      syncRows()
     }
 
     window.addEventListener(PROGRAM_PLANS_UPDATED_EVENT, handleProgramsUpdated)
     return () => {
       window.removeEventListener(PROGRAM_PLANS_UPDATED_EVENT, handleProgramsUpdated)
     }
-  }, [initialRows])
+  }, [initialRows, initialSeedPlans, programClientsByScope, watchedStorageScopeIds])
 
   const pushTab = React.useCallback(
     (nextTab: ProgramTab) => {
       const nextParams = new URLSearchParams(searchParams.toString())
+      nextParams.delete("storageScope")
       if (nextTab === "programs") {
         nextParams.delete("tab")
       } else {
@@ -202,6 +270,8 @@ function ProgramiPageContent() {
         row.title,
         rows.map((entry) => entry.title)
       )
+      const targetStorageScopeId =
+        row.storageScopeId ?? GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE
       const duplicatedProgram = cloneStoredProgramPlan(row, {
         id:
           globalThis.crypto?.randomUUID?.() ??
@@ -217,14 +287,17 @@ function ProgramiPageContent() {
         },
       })
 
-      upsertStoredProgramPlan(GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE, duplicatedProgram)
+      upsertStoredProgramPlan(targetStorageScopeId, duplicatedProgram)
       toast.success("Program duplicated", { description: `Created ${nextTitle}.` })
     },
     [rows]
   )
 
   const handleDeleteRow = React.useCallback((row: ProgramPlansTableRow) => {
-    removeStoredProgramPlan(GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE, row.id)
+    removeStoredProgramPlan(
+      row.storageScopeId ?? GLOBAL_PROGRAM_PLANS_STORAGE_SCOPE,
+      row.id
+    )
     toast.success("Program deleted", { description: `Removed ${row.title}.` })
   }, [])
 
@@ -235,7 +308,12 @@ function ProgramiPageContent() {
 
     const normalizedQuery = programSearchQuery.toLowerCase()
     return rows.filter((row) => {
-      const haystack = [row.title, row.description, ...row.workouts]
+      const haystack = [
+        row.title,
+        row.description,
+        ...row.workouts,
+        ...(row.clients?.map((client) => client.name) ?? []),
+      ]
         .join(" ")
         .toLowerCase()
       return haystack.includes(normalizedQuery)
@@ -318,8 +396,25 @@ function ProgramiPageContent() {
 
             <ProgramPlansTable
               rows={filteredProgramRows}
-              getDetailRowHref={(row) => getProgramsDetailHref(row.id, programsBackHref)}
-              getEditRowHref={(row) => getProgramsEditHref(row.id, programsBackHref)}
+              showClientColumn
+              getDetailRowHref={(row) =>
+                getProgramsDetailHref(
+                  row.id,
+                  buildProgramsBackHrefWithStorageScope(
+                    programsBackHref,
+                    row.storageScopeId
+                  )
+                )
+              }
+              getEditRowHref={(row) =>
+                getProgramsEditHref(
+                  row.id,
+                  buildProgramsBackHrefWithStorageScope(
+                    programsBackHref,
+                    row.storageScopeId
+                  )
+                )
+              }
               onDuplicateRow={handleDuplicateRow}
               onDeleteRow={handleDeleteRow}
             />

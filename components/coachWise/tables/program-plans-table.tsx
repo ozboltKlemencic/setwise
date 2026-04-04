@@ -11,17 +11,30 @@ import { buildCoachWiseHref } from "@/components/coachWise/sidebar/route-utils"
 import {
   FixedProgramEditorDialog,
 } from "@/components/coachWise/programs/exercise-history-panel"
-import { Badge } from "@/components/ui/badge"
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarGroupCount,
+  AvatarImage,
+} from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import type { StoredProgramPlan, StoredProgramPlanStatus } from "@/types"
+import type { StoredProgramPlan } from "@/types"
 
-export type ProgramPlanStatus = StoredProgramPlanStatus
-export type ProgramPlansTableRow = StoredProgramPlan
+export type ProgramPlansTableRow = StoredProgramPlan & {
+  storageScopeId?: string
+  clients?: Array<{
+    id: string
+    name: string
+    avatar?: string
+  }>
+}
 
 type ProgramPlansTableProps = {
   rows: ProgramPlansTableRow[]
   emptyMessage?: string
+  showClientColumn?: boolean
   getDetailRowHref?: (row: ProgramPlansTableRow) => string
   getEditRowHref?: (row: ProgramPlansTableRow) => string
   onDuplicateRow?: (row: ProgramPlansTableRow) => void
@@ -34,15 +47,57 @@ const rowActionButtonClassName =
 const rowDeleteActionButtonClassName =
   "border-rose-200/70 bg-rose-50/70 text-rose-500 hover:border-rose-300/80 hover:bg-rose-100/70 hover:text-rose-600"
 
-function getProgramStatusBadgeClassName(status: ProgramPlanStatus) {
-  return status === "Active"
-    ? "border-emerald-200 bg-linear-to-r from-emerald-50/90 to-emerald-100/65 text-neutral-700"
-    : "border-rose-200 bg-linear-to-r from-rose-50/90 to-rose-100/65 text-neutral-700"
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? "")
+    .join("")
+}
+
+function ProgramPlanClientsCell({
+  clients,
+}: {
+  clients: NonNullable<ProgramPlansTableRow["clients"]>
+}) {
+  const visibleClients = clients.slice(0, 3)
+  const remainingClients = clients.length - visibleClients.length
+  const primaryClient = clients[0]
+  const clientLabel =
+    clients.length > 1
+      ? `${primaryClient.name} +${clients.length - 1} others`
+      : primaryClient.name
+
+  return (
+    <div className="flex items-center gap-3">
+      <AvatarGroup className="shrink-0">
+        {visibleClients.map((client) => (
+          <Avatar key={client.id} size="sm" className="ring-neutral-50">
+            <AvatarImage src={client.avatar} alt={client.name} />
+            <AvatarFallback className="bg-neutral-200 text-[10px] text-neutral-700">
+              {getInitials(client.name)}
+            </AvatarFallback>
+          </Avatar>
+        ))}
+        {remainingClients > 0 ? (
+          <AvatarGroupCount className="size-6 bg-neutral-100 text-[11px] text-neutral-600 ring-neutral-50">
+            +{remainingClients}
+          </AvatarGroupCount>
+        ) : null}
+      </AvatarGroup>
+
+      <div className="min-w-0 text-[13px] text-neutral-700">
+        <span className="truncate">{clientLabel}</span>
+      </div>
+    </div>
+  )
 }
 
 function ProgramPlansTableComponent({
   rows,
   emptyMessage = "No programs available.",
+  showClientColumn = false,
   getDetailRowHref,
   getEditRowHref,
   onDuplicateRow,
@@ -50,6 +105,10 @@ function ProgramPlansTableComponent({
 }: ProgramPlansTableProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const hasClientColumn = showClientColumn || rows.some((row) => row.clients?.length)
+  const headerGridClassName = hasClientColumn
+    ? "grid-cols-[minmax(0,1fr)_minmax(250px,280px)_minmax(260px,320px)_8.5rem]"
+    : "grid-cols-[minmax(0,1fr)_minmax(260px,320px)_8.5rem]"
 
   if (rows.length === 0) {
     return (
@@ -63,10 +122,15 @@ function ProgramPlansTableComponent({
 
   return (
     <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white">
-      <div className="grid grid-cols-[minmax(0,1fr)_minmax(260px,320px)_120px_8.5rem] items-center gap-6 border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900">
+      <div
+        className={cn(
+          "grid items-center gap-6 border-b border-neutral-200 bg-neutral-50 px-5 py-3 text-[13px] font-medium text-neutral-900",
+          headerGridClassName
+        )}
+      >
         <div className="text-left">Program</div>
+        {hasClientColumn ? <div className="text-left">Client</div> : null}
         <div className="text-left">Workouts</div>
-        <div className="text-left">Status</div>
         <div className="justify-self-center text-center">Action</div>
       </div>
 
@@ -81,7 +145,7 @@ function ProgramPlansTableComponent({
 
           return (
             <div
-              key={row.id}
+              key={`${row.storageScopeId ?? "global"}:${row.id}`}
               role={detailHref ? "button" : undefined}
               tabIndex={detailHref ? 0 : undefined}
               onClick={() => {
@@ -100,12 +164,13 @@ function ProgramPlansTableComponent({
                 }
               }}
               className={cn(
-                "grid grid-cols-[minmax(0,1fr)_minmax(260px,320px)_120px_8.5rem] items-start gap-6 border-b border-neutral-200 px-5 py-4 last:border-b-0",
+                "grid items-start gap-6 border-b border-neutral-200 px-5 py-4 last:border-b-0",
+                headerGridClassName,
                 detailHref && "cursor-pointer transition-colors hover:bg-neutral-50"
               )}
             >
               {detailHref ? (
-                <div className="min-w-0 pr-6 text-left">
+                <div className="min-w-0 max-w-[28rem] pr-6 text-left">
                   <div className="truncate text-[15px] font-medium text-neutral-950">
                     {row.title}
                   </div>
@@ -119,7 +184,7 @@ function ProgramPlansTableComponent({
                   trigger={
                     <button
                       type="button"
-                      className="min-w-0 pr-6 text-left transition-colors hover:text-brand-700"
+                      className="min-w-0 max-w-[28rem] pr-6 text-left transition-colors hover:text-brand-700"
                     >
                       <div className="truncate text-[15px] font-medium text-neutral-950">
                         {row.title}
@@ -131,6 +196,16 @@ function ProgramPlansTableComponent({
                   }
                 />
               )}
+
+              {hasClientColumn ? (
+                <div className="flex min-h-10 items-center justify-start">
+                  {row.clients?.length ? (
+                    <ProgramPlanClientsCell clients={row.clients} />
+                  ) : (
+                    <span className="text-[13px] text-neutral-400">-</span>
+                  )}
+                </div>
+              ) : null}
 
               <div className="flex min-h-10 w-full justify-self-start flex-wrap items-center justify-start gap-2 pt-0.5 text-left">
                 {row.workouts.length > 0 ? (
@@ -155,18 +230,6 @@ function ProgramPlansTableComponent({
                     No workouts
                   </span>
                 )}
-              </div>
-
-              <div className="flex min-h-10 items-center justify-start">
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "rounded-md px-2 py-0.5 text-[11.5px] font-normal",
-                    getProgramStatusBadgeClassName(row.status)
-                  )}
-                >
-                  {row.status}
-                </Badge>
               </div>
 
               <div
