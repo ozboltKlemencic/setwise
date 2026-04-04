@@ -14,6 +14,7 @@ import {
 } from "@/lib/handlers/program-plan-storage"
 import {
   readStoredProgramTemplate,
+  readStoredProgramTemplates,
   upsertStoredProgramTemplate,
 } from "@/lib/handlers/program-template-storage"
 import {
@@ -25,6 +26,7 @@ import {
   buildProgramBuilderInitialProgramFromStoredPlan,
   buildStoredProgramPlanFromBuilderState,
 } from "@/lib/programs/program-plan-storage.utils"
+import { programBuilderPresets } from "@/lib/programs/program-builder.utils"
 import { useProgramBuilder } from "@/hooks/programs/use-program-builder"
 import type {
   FixedProgramEditorProgram,
@@ -38,6 +40,24 @@ function areClientIdsEqual(left: string[], right: string[]) {
     left.length === right.length &&
     left.every((clientId, index) => clientId === right[index])
   )
+}
+
+function buildNextSavedTemplateTitle(title: string, existingTitles: string[]) {
+  const resolvedTitle = title.trim() || "New Program"
+
+  if (!existingTitles.includes(resolvedTitle)) {
+    return resolvedTitle
+  }
+
+  let nextIndex = 1
+  let nextTitle = `${resolvedTitle} - copy-${nextIndex}`
+
+  while (existingTitles.includes(nextTitle)) {
+    nextIndex += 1
+    nextTitle = `${resolvedTitle} - copy-${nextIndex}`
+  }
+
+  return nextTitle
 }
 
 type ProgramBuilderPageViewProps = {
@@ -243,8 +263,12 @@ export function ProgramBuilderPageView({
   ])
 
   const handleSaveAsTemplate = React.useCallback(() => {
+    const nextTitle = buildNextSavedTemplateTitle(title, [
+      ...readStoredProgramTemplates().map((template) => template.title),
+      ...programBuilderPresets.map((preset) => preset.title),
+    ])
     const nextStoredTemplate = buildStoredProgramPlanFromBuilderState({
-      title,
+      title: nextTitle,
       description: builder.description,
       days: builder.days,
       myReps: builder.myReps,
