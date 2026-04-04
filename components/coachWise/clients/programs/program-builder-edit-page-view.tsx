@@ -97,6 +97,7 @@ function ProgramBuilderEditPageViewComponent({
       initialAssignedClientIds={storedPlan.assignedClientIds}
       createdAt={storedPlan.createdAt}
       backHref={backHref}
+      isEditMode
     />
   )
 }

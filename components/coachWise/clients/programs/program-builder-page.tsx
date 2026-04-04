@@ -47,6 +47,7 @@ type ProgramBuilderPageViewProps = {
   initialAssignedClientIds?: string[]
   initialTemplateId?: string
   createdAt?: string
+  isEditMode?: boolean
 }
 
 const ProgramBuilderWorkspace = React.lazy(async () => {
@@ -62,6 +63,7 @@ export function ProgramBuilderPageView({
   initialAssignedClientIds,
   initialTemplateId,
   createdAt,
+  isEditMode = false,
 }: ProgramBuilderPageViewProps) {
   const router = useRouter()
   const pathname = usePathname()
@@ -293,7 +295,7 @@ export function ProgramBuilderPageView({
           ) : null
         }
         secondaryAction={
-          isTemplatesMode
+          isTemplatesMode || isEditMode
             ? undefined
             : {
                 label: "Save as template",
