@@ -164,7 +164,7 @@ function ProgramPlansTableComponent({
                 }
               }}
               className={cn(
-                "grid items-start gap-6 border-b border-neutral-200 px-5 py-4 last:border-b-0",
+                "grid items-start gap-6 border-b border-neutral-200 px-5 py-3 last:border-b-0",
                 headerGridClassName,
                 detailHref && "cursor-pointer transition-colors hover:bg-neutral-50"
               )}
@@ -174,7 +174,7 @@ function ProgramPlansTableComponent({
                   <div className="truncate text-[15px] font-medium text-neutral-950">
                     {row.title}
                   </div>
-                  <div className="mt-1 truncate text-[14px] text-neutral-500">
+                  <div className="mt-0.5 truncate text-[14px] text-neutral-500">
                     {row.description}
                   </div>
                 </div>
@@ -189,7 +189,7 @@ function ProgramPlansTableComponent({
                       <div className="truncate text-[15px] font-medium text-neutral-950">
                         {row.title}
                       </div>
-                      <div className="mt-1 truncate text-[14px] text-neutral-500">
+                      <div className="mt-0.5 truncate text-[14px] text-neutral-500">
                         {row.description}
                       </div>
                     </button>
