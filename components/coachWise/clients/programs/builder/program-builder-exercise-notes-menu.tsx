@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils"
 type ProgramBuilderExerciseNotesMenuProps = {
   description?: string | null
   onAddClue?: (clue: string) => void
+  onDescriptionChange?: (description: string | null) => void
   readOnly?: boolean
 }
 
@@ -26,10 +27,15 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
   function ProgramBuilderExerciseNotesMenu({
     description,
     onAddClue,
+    onDescriptionChange,
     readOnly = false,
   }: ProgramBuilderExerciseNotesMenuProps) {
     const [open, setOpen] = React.useState(false)
     const [nextClue, setNextClue] = React.useState("")
+    const [isEditingDescription, setIsEditingDescription] = React.useState(false)
+    const [draftDescription, setDraftDescription] = React.useState(
+      description?.trim() ?? ""
+    )
 
     React.useEffect(() => {
       if (open) {
@@ -37,7 +43,17 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
       }
 
       setNextClue("")
+      setIsEditingDescription(false)
+      setDraftDescription(description?.trim() ?? "")
     }, [open])
+
+    React.useEffect(() => {
+      if (isEditingDescription) {
+        return
+      }
+
+      setDraftDescription(description?.trim() ?? "")
+    }, [description, isEditingDescription])
 
     const handleAddClue = React.useCallback(() => {
       const trimmedClue = nextClue.trim()
@@ -48,6 +64,16 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
       onAddClue(trimmedClue)
       setNextClue("")
     }, [nextClue, onAddClue, readOnly])
+
+    const commitDescription = React.useCallback(() => {
+      if (readOnly || !onDescriptionChange) {
+        setIsEditingDescription(false)
+        return
+      }
+
+      onDescriptionChange(draftDescription.trim() || null)
+      setIsEditingDescription(false)
+    }, [draftDescription, onDescriptionChange, readOnly])
 
     return (
       <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -79,8 +105,51 @@ export const ProgramBuilderExerciseNotesMenu = React.memo(
               </div>
             </div>
 
-            <div className="px-3 pt-3 text-[13px] leading-5 whitespace-pre-wrap text-neutral-600">
-              {description?.trim() || "No technical cues added yet."}
+            <div className="px-3 pt-3">
+              {isEditingDescription && !readOnly && onDescriptionChange ? (
+                <textarea
+                  autoFocus
+                  value={draftDescription}
+                  onChange={(event) => setDraftDescription(event.target.value)}
+                  onBlur={commitDescription}
+                  onKeyDown={(event) => {
+                    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+                      event.preventDefault()
+                      commitDescription()
+                    }
+
+                    if (event.key === "Escape") {
+                      event.preventDefault()
+                      setDraftDescription(description?.trim() ?? "")
+                      setIsEditingDescription(false)
+                    }
+                  }}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  className="min-h-[96px] w-full resize-none rounded-sm border border-neutral-100 bg-neutral-50 px-3 py-2.5 text-[13px] leading-5 text-neutral-700 shadow-none outline-none transition-colors placeholder:text-neutral-400 focus:border-brand-500 focus:ring-0"
+                />
+              ) : (
+                <button
+                  type="button"
+                  disabled={readOnly || !onDescriptionChange}
+                  onClick={() => {
+                    if (readOnly || !onDescriptionChange) {
+                      return
+                    }
+
+                    setDraftDescription(description?.trim() ?? "")
+                    setIsEditingDescription(true)
+                  }}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  className={cn(
+                    "w-full rounded-sm text-left text-[13px] leading-5 whitespace-pre-wrap text-neutral-600",
+                    !readOnly && onDescriptionChange
+                      ? "cursor-text transition-colors hover:bg-neutral-50"
+                      : "cursor-default"
+                  )}
+                >
+                  {description?.trim() || "No technical cues added yet."}
+                </button>
+              )}
             </div>
 
             {!readOnly && onAddClue ? (

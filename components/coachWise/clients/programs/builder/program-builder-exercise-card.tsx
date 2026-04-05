@@ -294,6 +294,9 @@ export const ProgramBuilderExerciseCard = React.memo(function ProgramBuilderExer
         <div className="flex items-center gap-1.5">
           <ProgramBuilderExerciseNotesMenu
             description={entry.instructions}
+            onDescriptionChange={(nextDescription) => {
+              builder.updateExerciseInstructions(entry.uid, nextDescription)
+            }}
             onAddClue={(clue) => {
               const nextDescription = entry.instructions?.trim()
                 ? `${entry.instructions.trim()}\n${clue}`
