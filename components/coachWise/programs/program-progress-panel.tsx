@@ -1177,52 +1177,7 @@ function ProgressExerciseCard({
       <CardContent className="p-0">
         <div>
           <div className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
-            <button
-              type="button"
-              onClick={onToggle}
-              className="min-w-0 flex-1 text-left"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="text-[18px] font-semibold text-neutral-950">
-                  {exercise.name}
-                </div>
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
-                    PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle]
-                  )}
-                >
-                  {exercise.muscle}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
-                    progressionMeta.badgeClassName
-                  )}
-                >
-                  <ProgressionIcon className="mr-1 size-3.5" />
-                  {progressionMeta.label}
-                </Badge>
-                {exercise.weeksStuck ? (
-                  <Badge
-                    variant="outline"
-                    className="rounded-md border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700 shadow-none"
-                  >
-                    {exercise.weeksStuck}w plateau
-                  </Badge>
-                ) : null}
-              </div>
-
-              {exercise.clues ? (
-                <div className="mt-2 text-[13px] leading-6 text-neutral-500">
-                  {exercise.clues}
-                </div>
-              ) : null}
-            </button>
-
-            <div className="flex items-center gap-2">
+            <div className="min-w-0 flex flex-1 items-start gap-3">
               <Button
                 type="button"
                 variant="outline"
@@ -1236,6 +1191,54 @@ function ProgressExerciseCard({
               >
                 <BarChart3 className="size-4" />
               </Button>
+
+              <button
+                type="button"
+                onClick={onToggle}
+                className="min-w-0 flex-1 text-left"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="text-[18px] font-semibold text-neutral-950">
+                    {exercise.name}
+                  </div>
+                </div>
+
+                {exercise.clues ? (
+                  <div className="mt-2 text-[13px] leading-6 text-neutral-500">
+                    {exercise.clues}
+                  </div>
+                ) : null}
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Badge
+                variant="outline"
+                className={cn(
+                  "rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
+                  PROGRAM_BUILDER_MUSCLE_CLASSES[exercise.muscle]
+                )}
+              >
+                {exercise.muscle}
+              </Badge>
+              <Badge
+                variant="outline"
+                className={cn(
+                  "rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
+                  progressionMeta.badgeClassName
+                )}
+              >
+                <ProgressionIcon className="mr-1 size-3.5" />
+                {progressionMeta.label}
+              </Badge>
+              {exercise.weeksStuck ? (
+                <Badge
+                  variant="outline"
+                  className="rounded-md border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700 shadow-none"
+                >
+                  {exercise.weeksStuck}w plateau
+                </Badge>
+              ) : null}
               <Button
                 type="button"
                 variant="ghost"
@@ -1671,7 +1674,7 @@ export function ProgramProgressPanel() {
           </CardContent>
         </Card>
 
-        <div className="min-w-0 space-y-4 px-4 py-4 xl:flex-1">
+        <div className="min-w-0 space-y-4 px-4 py-4 xl:mr-auto xl:w-full xl:max-w-screen-md xl:flex-none">
           <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white lg:grid lg:grid-cols-3">
             <WeeklySummaryCard
               title="Adherence"
