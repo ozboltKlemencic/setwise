@@ -7,9 +7,9 @@ import {
 
 import { ClientProgramsOverview } from "@/components/coachWise/clients/programs/client-programs-overview"
 import { SubtabsNav } from "@/components/coachWise/clients/shared/subtabs-nav"
+import { ProgramProgressPanel } from "@/components/coachWise/programs/program-progress-panel"
 import {
   CompletedWorkoutsPanel,
-  ExerciseHistoryPanel,
   ProgramsPeriodPicker,
   WorkoutDetailView,
 } from "@/components/coachWise/programs/exercise-history-panel"
@@ -77,8 +77,7 @@ export default async function Page({
             },
           ]}
           actions={
-            resolvedProgramTab === "exercise-history" ||
-              resolvedProgramTab === "completed-workouts" ? (
+            resolvedProgramTab === "completed-workouts" ? (
               <ProgramsPeriodPicker />
             ) : null
           }
@@ -92,7 +91,7 @@ export default async function Page({
 
         <TabsContent value="exercise-history" className="mt-0 space-y-0">
           <SectionBody>
-            <ExerciseHistoryPanel />
+            <ProgramProgressPanel />
           </SectionBody>
         </TabsContent>
 
