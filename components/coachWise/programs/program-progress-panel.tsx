@@ -134,8 +134,8 @@ const PROGRESSION_META: Record<
     label: string
     icon: React.ComponentType<{ className?: string }>
     badgeClassName: string
-    accentClassName: string
     dotClassName: string
+    chartButtonClassName: string
     chartColor: string
   }
 > = {
@@ -143,24 +143,27 @@ const PROGRESSION_META: Record<
     label: "Progressing",
     icon: TrendingUp,
     badgeClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
-    accentClassName: "border-l-emerald-400",
-    dotClassName: "bg-emerald-500",
+    dotClassName: "bg-emerald-400/80",
+    chartButtonClassName:
+      "border-emerald-200 bg-emerald-50/70 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50",
     chartColor: "#10b981",
   },
   flat: {
     label: "Flat",
     icon: Minus,
     badgeClassName: "border-amber-200 bg-amber-50 text-amber-700",
-    accentClassName: "border-l-amber-400",
-    dotClassName: "bg-amber-400",
+    dotClassName: "bg-amber-400/80",
+    chartButtonClassName:
+      "border-amber-200 bg-amber-50/70 text-amber-700 hover:border-amber-300 hover:bg-amber-50",
     chartColor: "#f59e0b",
   },
   "needs-attention": {
     label: "Needs attention",
     icon: TrendingDown,
     badgeClassName: "border-rose-200 bg-rose-50 text-rose-700",
-    accentClassName: "border-l-rose-400",
-    dotClassName: "bg-rose-500",
+    dotClassName: "bg-rose-400/80",
+    chartButtonClassName:
+      "border-rose-200 bg-rose-50/70 text-rose-700 hover:border-rose-300 hover:bg-rose-50",
     chartColor: "#f43f5e",
   },
 }
@@ -1083,7 +1086,7 @@ function DayRailItem({
       type="button"
       onClick={onSelect}
       className={cn(
-        "w-full rounded-xl border px-3 py-3 text-left transition-colors",
+        "w-full rounded-lg border px-3 py-3 text-left transition-colors",
         active
           ? "border-brand-300 bg-brand-50/40"
           : "border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-50"
@@ -1115,7 +1118,7 @@ function DayRailItem({
                 <span
                   key={exercise.id}
                   className={cn(
-                    "inline-flex h-2.5 w-2.5 rounded-[3px]",
+                    "inline-flex h-2 w-2 rounded-sm",
                     PROGRESSION_META[exercise.progression].dotClassName
                   )}
                 />
@@ -1172,12 +1175,7 @@ function ProgressExerciseCard({
   return (
     <Card className="overflow-hidden rounded-2xl border-neutral-200 bg-white py-0 shadow-none">
       <CardContent className="p-0">
-        <div
-          className={cn(
-            "border-l-[3px] border-neutral-200 transition-colors",
-            progressionMeta.accentClassName
-          )}
-        >
+        <div>
           <div className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
             <button
               type="button"
@@ -1232,7 +1230,8 @@ function ProgressExerciseCard({
                 onClick={onToggleChart}
                 className={cn(
                   "rounded-lg shadow-none",
-                  showChart && "border-brand-200 bg-brand-50 text-brand-700"
+                  progressionMeta.chartButtonClassName,
+                  showChart && "ring-1 ring-current/10"
                 )}
               >
                 <BarChart3 className="size-4" />
@@ -1240,11 +1239,14 @@ function ProgressExerciseCard({
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
+                size="icon-sm"
                 onClick={onToggle}
-                className="rounded-lg px-2 text-[12px] font-medium text-neutral-500 shadow-none hover:bg-neutral-100 hover:text-neutral-900"
+                className="size-8 rounded-md border-0 bg-transparent text-neutral-400 shadow-none hover:bg-transparent hover:text-neutral-700"
               >
-                {open ? "Collapse" : "Expand"}
+                <ChevronRight
+                  className={cn("size-4 transition-transform", open && "rotate-90")}
+                />
+                <span className="sr-only">{open ? "Collapse" : "Expand"}</span>
               </Button>
             </div>
           </div>
@@ -1456,9 +1458,6 @@ export function ProgramProgressPanel() {
     }
     return base
   }, [selectedDay.exercises, sortMode])
-  const allOpen =
-    sortedExercises.length > 0 &&
-    sortedExercises.every((exercise) => openExerciseIds.has(exercise.id))
   const dayVolumeHistory = React.useMemo(
     () => getDayVolumeHistory(PROGRAM_PROGRESS_WEEKS, selectedDay.id),
     [selectedDay.id]
@@ -1529,11 +1528,6 @@ export function ProgramProgressPanel() {
     })
   }, [])
 
-  const toggleAllExercises = React.useCallback(() => {
-    setOpenExerciseIds(
-      allOpen ? new Set() : new Set(sortedExercises.map((exercise) => exercise.id))
-    )
-  }, [allOpen, sortedExercises])
   const WeekVolumeTrendIcon = weekVolumeTrend.icon
 
   return (
@@ -1548,7 +1542,7 @@ export function ProgramProgressPanel() {
                 size="icon-sm"
                 onClick={() => changeWeek(1)}
                 disabled={weekIndex >= PROGRAM_PROGRESS_WEEKS.length - 1}
-                className="h-10 w-10 rounded-r-none border-neutral-200 border-r-0 bg-white px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
+                className="h-11 w-11 rounded-r-none border-neutral-200 border-r-0 bg-white px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
               >
                 <ChevronLeft className="size-4" />
               </Button>
@@ -1558,7 +1552,7 @@ export function ProgramProgressPanel() {
                   <Button
                     type="button"
                     variant="outline"
-                    className="h-10 min-w-0 flex-1 justify-between rounded-none border-neutral-200 bg-white px-3 shadow-none hover:bg-neutral-50"
+                    className="h-11 min-w-0 flex-1 justify-between rounded-none border-neutral-200 bg-white px-3.5 py-2 shadow-none hover:bg-neutral-50"
                   >
                     <div className="flex items-center gap-2">
                       <CalendarDays className="size-4 text-neutral-400" />
@@ -1630,7 +1624,7 @@ export function ProgramProgressPanel() {
                 size="icon-sm"
                 onClick={() => changeWeek(-1)}
                 disabled={weekIndex <= 0}
-                className="h-10 w-10 rounded-l-none border-neutral-200 border-l-0 bg-white px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
+                className="h-11 w-11 rounded-l-none border-neutral-200 border-l-0 bg-white px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
               >
                 <ChevronRight className="size-4" />
               </Button>
@@ -1707,11 +1701,11 @@ export function ProgramProgressPanel() {
           </div>
 
           {weekAlerts.length > 0 || activeWeek.coachSummary ? (
-            <Card className="rounded-2xl border-neutral-200 bg-white py-0 shadow-none">
-              <CardContent className="px-5 py-3.5">
-                <div className="flex items-start gap-3">
+            <Card className="rounded-2xl border-neutral-200 bg-neutral-100/70 py-0 shadow-none">
+              <CardContent className="px-5 py-4">
+                <div className="flex items-center gap-3">
                   <div className="flex shrink-0 items-center gap-2">
-                    <div className="flex size-7 items-center justify-center rounded-md border border-neutral-200 bg-neutral-50 text-neutral-500">
+                    <div className="flex size-7 items-center justify-center rounded-md border border-neutral-200 bg-white/80 text-neutral-500">
                       <Info className="size-4" />
                     </div>
                     <span className="text-[13px] font-semibold text-neutral-950">
@@ -1719,7 +1713,7 @@ export function ProgramProgressPanel() {
                     </span>
                   </div>
 
-                  <div className="ml-auto flex min-w-0 flex-1 items-start justify-end gap-2">
+                  <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2">
                     <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
                     {weekAlerts.map((alert) => (
                       <Badge
@@ -1751,7 +1745,7 @@ export function ProgramProgressPanel() {
                           type="button"
                           variant="ghost"
                           size="icon-sm"
-                          className="size-8 shrink-0 rounded-md border border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-900 data-[state=open]:bg-neutral-50 data-[state=open]:text-neutral-900"
+                          className="size-8 shrink-0 rounded-md border border-neutral-200 bg-white/90 text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-900 data-[state=open]:bg-neutral-50 data-[state=open]:text-neutral-900"
                         >
                           <ChevronRight
                             className={cn(
@@ -1873,16 +1867,6 @@ export function ProgramProgressPanel() {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={toggleAllExercises}
-                  className="rounded-lg text-neutral-500 shadow-none hover:bg-white hover:text-neutral-900"
-                >
-                  {allOpen ? "Collapse all" : "Expand all"}
-                </Button>
               </div>
             ) : null}
           </div>
