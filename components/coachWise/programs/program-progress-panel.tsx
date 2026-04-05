@@ -47,6 +47,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { overflowActionsMenuSurfaceClassName } from "@/components/coachWise/overflow-actions-menu"
 import {
   formatProgramBuilderTempo,
   PROGRAM_BUILDER_INTENSIFIERS,
@@ -1039,33 +1040,29 @@ function WeeklySummaryCard({
   hint,
   icon: Icon,
   accentClassName,
+  className,
 }: {
   title: string
   value: string
   hint: string
   icon: React.ComponentType<{ className?: string }>
   accentClassName: string
+  className?: string
 }) {
   return (
-    <Card className="overflow-hidden rounded-xl border-neutral-200 bg-white py-0 shadow-none">
-      <CardContent className="p-0">
-        <div className={cn("h-1 w-full", accentClassName)} />
-        <div className="flex items-start justify-between gap-3 px-5 py-4">
-          <div>
-            <div className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
-              {title}
-            </div>
-            <div className="mt-2 text-[28px] leading-none font-semibold text-neutral-950">
-              {value}
-            </div>
-            <div className="mt-2 text-[13px] text-neutral-500">{hint}</div>
-          </div>
-          <div className="rounded-full border border-neutral-200 bg-neutral-50 p-2.5">
-            <Icon className="size-4 text-neutral-500" />
-          </div>
+    <div className={cn("relative flex min-h-[116px] items-start justify-between gap-3 px-5 py-4", className)}>
+      <div>
+        <div className="text-[12px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+          {title}
         </div>
-      </CardContent>
-    </Card>
+        <div className="mt-2 text-[28px] leading-none font-semibold text-neutral-950">
+          {value}
+        </div>
+        <div className="mt-2 text-[13px] text-neutral-500">{hint}</div>
+      </div>
+      <Icon className="mt-0.5 size-4 shrink-0 text-neutral-300" />
+      <div className={cn("absolute inset-x-0 bottom-0 h-0.5", accentClassName)} />
+    </div>
   )
 }
 
@@ -1417,7 +1414,7 @@ function DayPlaceholder({
 export function ProgramProgressPanel() {
   const [weekIndex, setWeekIndex] = React.useState(0)
   const [selectedDayId, setSelectedDayId] = React.useState("mon")
-  const [summaryExpanded, setSummaryExpanded] = React.useState(false)
+  const [summaryMenuOpen, setSummaryMenuOpen] = React.useState(false)
   const [sortMode, setSortMode] = React.useState<SortMode>("priority")
   const [showDayTrend, setShowDayTrend] = React.useState(false)
   const [openExerciseIds, setOpenExerciseIds] = React.useState<Set<string>>(
@@ -1466,9 +1463,29 @@ export function ProgramProgressPanel() {
     () => getDayVolumeHistory(PROGRAM_PROGRESS_WEEKS, selectedDay.id),
     [selectedDay.id]
   )
+  const weekVolumeTrend = React.useMemo(() => {
+    if (activeWeek.volumeChange > 0) {
+      return {
+        icon: TrendingUp,
+        className: "border-emerald-200 bg-emerald-50 text-emerald-700",
+      }
+    }
+
+    if (activeWeek.volumeChange < 0) {
+      return {
+        icon: TrendingDown,
+        className: "border-rose-200 bg-rose-50 text-rose-700",
+      }
+    }
+
+    return {
+      icon: Minus,
+      className: "border-neutral-200 bg-neutral-100 text-neutral-600",
+    }
+  }, [activeWeek.volumeChange])
 
   React.useEffect(() => {
-    setSummaryExpanded(false)
+    setSummaryMenuOpen(false)
   }, [weekIndex])
 
   React.useEffect(() => {
@@ -1517,124 +1534,136 @@ export function ProgramProgressPanel() {
       allOpen ? new Set() : new Set(sortedExercises.map((exercise) => exercise.id))
     )
   }, [allOpen, sortedExercises])
+  const WeekVolumeTrendIcon = weekVolumeTrend.icon
 
   return (
     <div className="min-w-0 bg-neutral-50">
       <div className="relative xl:flex xl:items-start">
-        <Card className="relative overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 bg-transparent py-0 shadow-none xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[320px] xl:flex xl:flex-none xl:flex-col xl:self-start">
+        <Card className="relative overflow-hidden gap-0 rounded-none border-0 border-r border-neutral-200 bg-transparent py-0 shadow-none xl:sticky xl:top-[calc(var(--header-height)+3rem)] xl:left-0 xl:h-[calc(100dvh-var(--header-height)-3rem)] xl:w-[360px] xl:flex xl:flex-none xl:flex-col xl:self-start">
           <div className="border-b border-neutral-200 bg-neutral-50 px-4 py-4">
-            <div className="flex items-center gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={() => changeWeek(1)}
-              disabled={weekIndex >= PROGRAM_PROGRESS_WEEKS.length - 1}
-              className="rounded-lg bg-white shadow-none"
-            >
-              <ChevronLeft className="size-4" />
-            </Button>
+            <div className="flex items-stretch">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                onClick={() => changeWeek(1)}
+                disabled={weekIndex >= PROGRAM_PROGRESS_WEEKS.length - 1}
+                className="h-10 w-10 rounded-r-none border-neutral-200 border-r-0 bg-white px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
+              >
+                <ChevronLeft className="size-4" />
+              </Button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="h-10 min-w-0 flex-1 justify-between rounded-lg bg-white px-3 shadow-none"
-                >
-                  <div className="flex items-center gap-2">
-                    <CalendarDays className="size-4 text-neutral-400" />
-                    <div className="text-left">
-                      <div className="text-[13px] font-semibold text-neutral-950">
-                        {activeWeek.label}
-                      </div>
-                      <div className="text-[11px] text-neutral-500">
-                        {activeWeek.dateRange}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-10 min-w-0 flex-1 justify-between rounded-none border-neutral-200 bg-white px-3 shadow-none hover:bg-neutral-50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CalendarDays className="size-4 text-neutral-400" />
+                      <div className="text-left">
+                        <div className="text-[13px] font-semibold text-neutral-950">
+                          {activeWeek.label}
+                        </div>
+                        <div className="text-[11px] text-neutral-500">
+                          {activeWeek.dateRange}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <ChevronsUpDown className="size-4 text-neutral-400" />
-                </Button>
-              </DropdownMenuTrigger>
+                    <ChevronsUpDown className="size-4 text-neutral-400" />
+                  </Button>
+                </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                align="start"
-                className="w-[320px] rounded-xl border-neutral-200 p-2"
-              >
-                <DropdownMenuLabel className="px-2 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
-                  Weeks
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-neutral-200/70" />
+                <DropdownMenuContent
+                  align="start"
+                  className="w-[320px] rounded-xl border-neutral-200 p-2"
+                >
+                  <DropdownMenuLabel className="px-2 py-1 text-[11px] font-medium uppercase tracking-[0.12em] text-neutral-400">
+                    Weeks
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-neutral-200/70" />
 
-                {PROGRAM_PROGRESS_WEEKS.map((week, index) => {
-                  const verdict = getWeekVerdict(week)
-                  const summary = `${getWorkDays(week).filter((day) => day.status === "done").length}/${getWorkDays(week).length} adherence`
+                  {PROGRAM_PROGRESS_WEEKS.map((week, index) => {
+                    const verdict = getWeekVerdict(week)
+                    const summary = `${getWorkDays(week).filter((day) => day.status === "done").length}/${getWorkDays(week).length} adherence`
 
-                  return (
-                    <DropdownMenuItem
-                      key={week.id}
-                      onSelect={() => setWeekIndex(index)}
-                      className={cn(
-                        "mt-1 flex cursor-pointer items-start justify-between rounded-lg px-3 py-3 focus:bg-neutral-50",
-                        index === weekIndex &&
-                          "bg-brand-50 text-brand-700 focus:bg-brand-50"
-                      )}
-                    >
-                      <div className="min-w-0">
-                        <div className="text-[13px] font-semibold">
-                          {week.label}
-                        </div>
-                        <div className="mt-0.5 text-[12px] text-neutral-500">
-                          {week.dateRange}
-                        </div>
-                        <div className="mt-1 text-[12px] text-neutral-400">
-                          {summary}
-                        </div>
-                      </div>
-                      <Badge
-                        variant="outline"
+                    return (
+                      <DropdownMenuItem
+                        key={week.id}
+                        onSelect={() => setWeekIndex(index)}
                         className={cn(
-                          "shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
-                          verdict.className
+                          "mt-1 flex cursor-pointer items-start justify-between rounded-lg px-3 py-3 focus:bg-neutral-50",
+                          index === weekIndex &&
+                            "bg-brand-50 text-brand-700 focus:bg-brand-50"
                         )}
                       >
-                        {verdict.label}
-                      </Badge>
-                    </DropdownMenuItem>
-                  )
-                })}
-              </DropdownMenuContent>
-            </DropdownMenu>
+                        <div className="min-w-0">
+                          <div className="text-[13px] font-semibold">
+                            {week.label}
+                          </div>
+                          <div className="mt-0.5 text-[12px] text-neutral-500">
+                            {week.dateRange}
+                          </div>
+                          <div className="mt-1 text-[12px] text-neutral-400">
+                            {summary}
+                          </div>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className={cn(
+                            "shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
+                            verdict.className
+                          )}
+                        >
+                          {verdict.label}
+                        </Badge>
+                      </DropdownMenuItem>
+                    )
+                  })}
+                </DropdownMenuContent>
+              </DropdownMenu>
 
-            <Button
-              type="button"
-              variant="outline"
-              size="icon-sm"
-              onClick={() => changeWeek(-1)}
-              disabled={weekIndex <= 0}
-              className="rounded-lg bg-white shadow-none"
-            >
-              <ChevronRight className="size-4" />
-            </Button>
-          </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                onClick={() => changeWeek(-1)}
+                disabled={weekIndex <= 0}
+                className="h-10 w-10 rounded-l-none border-neutral-200 border-l-0 bg-white px-0 text-neutral-600 shadow-none hover:bg-neutral-50"
+              >
+                <ChevronRight className="size-4" />
+              </Button>
+            </div>
 
-          <div className="mt-3 flex items-center justify-between gap-2 text-[12px] text-neutral-500">
-            <Badge
-              variant="outline"
-              className={cn(
-                "rounded-md px-2.5 py-1 text-[12px] font-semibold shadow-none",
-                weekVerdict.className
-              )}
-            >
-              {weekVerdict.label}
-            </Badge>
-            <div className="text-[13px] text-neutral-500">
-              Volume {formatSignedNumber(Number(activeWeek.volumeChange.toFixed(1)), "%")}
+            <div className="mt-3 flex items-center justify-between gap-3 border-t border-neutral-200 pt-3">
+              <Badge
+                variant="outline"
+                className={cn(
+                  "rounded-md px-2.5 py-1 text-[12px] font-semibold shadow-none",
+                  weekVerdict.className
+                )}
+              >
+                {weekVerdict.label}
+              </Badge>
+
+              <div className="flex items-center gap-2">
+                <span className="text-[13px] text-neutral-500">Volume</span>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "rounded-md px-2 py-0.5 text-[11px] font-semibold shadow-none",
+                    weekVolumeTrend.className
+                  )}
+                >
+                  <WeekVolumeTrendIcon className="mr-1 size-3.5" />
+                  {formatSignedNumber(Number(activeWeek.volumeChange.toFixed(1)), "%")}
+                </Badge>
+              </div>
             </div>
           </div>
-          </div>
 
-          <CardContent className="space-y-3 overflow-hidden bg-neutral-50 px-4 py-3 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
+          <CardContent className="space-y-4 overflow-hidden bg-neutral-50 px-4 py-2 xl:flex xl:min-h-0 xl:flex-1 xl:flex-col">
             <div className="space-y-2 xl:-mr-2 xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:[overflow-y:overlay] xl:pr-2 [scrollbar-color:var(--color-neutral-200)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-neutral-200 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:w-1">
               {activeWeek.days.map((day) => (
                 <DayRailItem
@@ -1649,13 +1678,14 @@ export function ProgramProgressPanel() {
         </Card>
 
         <div className="min-w-0 space-y-4 px-4 py-4 xl:flex-1">
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="overflow-hidden rounded-sm border border-neutral-200 bg-white lg:grid lg:grid-cols-3">
             <WeeklySummaryCard
               title="Adherence"
               value={adherenceValue}
               hint="Completed work days"
               icon={Check}
               accentClassName="bg-emerald-400"
+              className="border-b border-neutral-200 lg:border-r lg:border-b-0"
             />
             <WeeklySummaryCard
               title="Progressing"
@@ -1663,6 +1693,7 @@ export function ProgramProgressPanel() {
               hint="Exercises trending up"
               icon={Sparkles}
               accentClassName="bg-brand-500"
+              className="border-b border-neutral-200 lg:border-r lg:border-b-0"
             />
             <WeeklySummaryCard
               title="Weekly Volume"
@@ -1677,9 +1708,19 @@ export function ProgramProgressPanel() {
 
           {weekAlerts.length > 0 || activeWeek.coachSummary ? (
             <Card className="rounded-2xl border-neutral-200 bg-white py-0 shadow-none">
-              <CardContent className="px-5 py-4">
-                <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
-                  <div className="flex flex-wrap items-center gap-2">
+              <CardContent className="px-5 py-3.5">
+                <div className="flex items-start gap-3">
+                  <div className="flex shrink-0 items-center gap-2">
+                    <div className="flex size-7 items-center justify-center rounded-md border border-neutral-200 bg-neutral-50 text-neutral-500">
+                      <Info className="size-4" />
+                    </div>
+                    <span className="text-[13px] font-semibold text-neutral-950">
+                      Summary
+                    </span>
+                  </div>
+
+                  <div className="ml-auto flex min-w-0 flex-1 items-start justify-end gap-2">
+                    <div className="flex min-w-0 flex-wrap items-center justify-end gap-2">
                     {weekAlerts.map((alert) => (
                       <Badge
                         key={alert.id}
@@ -1699,25 +1740,50 @@ export function ProgramProgressPanel() {
                         {alert.title}: {alert.detail}
                       </Badge>
                     ))}
-                  </div>
+                    </div>
 
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSummaryExpanded((current) => !current)}
-                    className="w-fit rounded-lg px-0 text-[13px] font-medium text-neutral-500 shadow-none hover:bg-transparent hover:text-neutral-900"
-                  >
-                    <Info className="mr-1.5 size-4" />
-                    {summaryExpanded ? "Hide summary" : "Show summary"}
-                  </Button>
+                    <DropdownMenu
+                      open={summaryMenuOpen}
+                      onOpenChange={setSummaryMenuOpen}
+                    >
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          className="size-8 shrink-0 rounded-md border border-neutral-200 bg-white text-neutral-500 shadow-none hover:bg-neutral-50 hover:text-neutral-900 data-[state=open]:bg-neutral-50 data-[state=open]:text-neutral-900"
+                        >
+                          <ChevronRight
+                            className={cn(
+                              "size-4 transition-transform",
+                              summaryMenuOpen && "rotate-90"
+                            )}
+                          />
+                          <span className="sr-only">Open summary</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        sideOffset={10}
+                        className={cn(
+                          overflowActionsMenuSurfaceClassName,
+                          "w-[min(32rem,calc(100vw-2rem))] rounded-xl p-0"
+                        )}
+                      >
+                        <div className="border-b border-neutral-200 px-4 py-3">
+                          <div className="flex items-center gap-2 text-[13px] font-semibold text-neutral-950">
+                            <Info className="size-4 text-neutral-500" />
+                            Summary
+                          </div>
+                        </div>
+                        <div className="px-4 py-3 text-[14px] leading-6 text-neutral-600">
+                          {activeWeek.coachSummary ||
+                            "No weekly summary available yet."}
+                        </div>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
-
-                {summaryExpanded ? (
-                  <div className="mt-4 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-[14px] leading-6 text-neutral-600">
-                    {activeWeek.coachSummary}
-                  </div>
-                ) : null}
               </CardContent>
             </Card>
           ) : null}
